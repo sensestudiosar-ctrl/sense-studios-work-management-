@@ -71,7 +71,11 @@ The Owner selected OD-11 option A. The assigned Project Lead or a Team Leader wi
 
 ## 2026-09-25 — C-021: Management closes verified site snags (approved)
 
-The Owner selected OD-12 option B. A snag may move from Verified to Closed only after the assigned Project Lead or an explicitly authorized Team Leader reviews a current passed check and makes a separate recorded closure decision. The record retains the verifier, inspection result, closer and times; the named verifier does not gain closure authority merely by being assigned. A manager who is also the named verifier may close only through a distinct authorized closure action. C-021 in requirements/CLARIFICATIONS.md is authoritative. OD-13 on cancellation of approved leave is open; final architecture approval and S01 remain pending.
+The Owner selected OD-12 option B. A snag may move from Verified to Closed only after the assigned Project Lead or an explicitly authorized Team Leader reviews a current passed check and makes a separate recorded closure decision. The record retains the verifier, inspection result, closer and times; the named verifier does not gain closure authority merely by being assigned. A manager who is also the named verifier may close only through a distinct authorized closure action. C-021 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review continues; final architecture approval and S01 remain pending.
+
+## 2026-09-25 — C-022: Approved leave cancellation requires management approval (approved)
+
+The Owner selected OD-13 option B. An employee may request cancellation of approved leave, but the same level of manager required for the original leave approval must approve the cancellation, including before the leave starts. A pending cancellation does not restore balance or capacity. Approval creates a separate recorded reversal for the unused portion, preserves the original leave approval and ledger history, recalculates affected availability and alerts managers and affected task owners. Existing work handovers are reviewed rather than silently undone. C-022 in requirements/CLARIFICATIONS.md is authoritative. No further owner question is currently recorded; final consistency review, final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 

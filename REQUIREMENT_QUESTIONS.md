@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-021 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-022 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -216,12 +216,12 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** B, because Verified and Closed are separate steps in the listed workflow; a management check gives Closed a distinct meaning. Engineering can enforce the state order, preserve inspection evidence and record the closer; the Owner must decide the final acceptance authority.
 **Owner answer (2026-09-25):** B — The assigned Project Lead or explicitly authorized Team Leader makes a separate Closed decision after reviewing the passed verification (C-021).
 
-### OD-13 — Can an employee cancel approved leave without another approval? (OPEN)
+### OD-13 — Can an employee cancel approved leave without another approval? (RESOLVED)
 **Product/business decision for the Owner:** Approved leave reduces capacity and can cause tasks to be reassigned. If an employee's plans change, who may cancel that approved leave and restore the leave balance and work schedule? For example, a designer cancels next week's approved time off after drawings were handed to a colleague (R-049–R-050, S17).
 **A:** The employee may cancel approved leave themselves before it begins; the Team Leader is notified and the app reverses the balance/capacity effects with history. Once leave begins, an authorized manager must approve any change. Fast for routine changes, but task handovers may need follow-up.
 **B:** Any cancellation of approved leave requires approval by the same level of manager who approved it, even before it begins. Scheduling stays under management control, but routine withdrawals wait for a decision.
 **Technical recommendation:** B, because approval may already have changed assignments and capacity. Engineering can preserve the original approval, record a separate reversal, recalculate balances and alert affected task owners; the Owner must decide who has authority to reverse approved leave.
-**Owner answer:** Pending.
+**Owner answer (2026-09-25):** B — Cancelling approved leave requires approval at the same management level as the original approval, even before the leave starts. Preserve the original decision and record a separate reversal of eligible unused leave (C-022).
 
 ## Already resolved by the owner
 

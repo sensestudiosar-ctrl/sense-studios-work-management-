@@ -57,7 +57,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | --- | --- | --- |
 | Timer / TimeEntry / TimeChange | Start/pause/resume/stop or manual time against work or non-project activity. | Lock after manager approval/export; corrections retain versions, reason and editor; accounting re-export is idempotent. |
 | WorkSchedule / Override / Holiday | Expected days/hours and temporary availability. | Effective-dated; capacity accounts for leave and existing allocations. |
-| LeaveRequest / LeaveBalance | Configurable leave type, allocation, used and carry-forward; Work from Home is a separate attendance/schedule request. | WFH does not consume leave. January–December year, upfront Owner-configured Branch allowance, calendar-day new-hire/transfer proration, five-day carry-forward cap expiring next year; approved leave triggers impact analysis. Policy versions are retained. |
+| LeaveRequest / LeaveBalance | Configurable leave type, allocation, used and carry-forward; Work from Home is a separate attendance/schedule request. | WFH does not consume leave. January–December year, upfront Owner-configured Branch allowance, calendar-day new-hire/transfer proration, five-day carry-forward cap expiring next year; approved leave triggers impact analysis. C-022 cancellation of approved leave requires the same management approval level, with separate request/decision and compensating unused-leave ledger entries; existing handovers are reviewed. Policy versions are retained. |
 | AttendanceRecord / Evidence | Check-in/out, site location/QR/selfie where relevant. | Missing evidence/connectivity creates provisional check-in with reason and manager review; site selfie expires after 90 days under C-003; check legal/contract holds before purge. |
 | Skill / RatingChange | Employee skill profile and official controlled level. | Training may recommend; only authorized approval changes official rating. |
 | CapacityAllocation | Per-person task effort against schedule and availability. | Daily/weekly/monthly workload categories from configurable thresholds. |
@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-13 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md records resolved OD-13 and any later material product decisions found in the final consistency review. No unsupplied policy should be treated as implemented.
