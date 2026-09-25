@@ -29,4 +29,4 @@ Security tests must cover allowed and denied behavior, guessed IDs, cross-branch
 
 ## Decision dependencies
 
-C-002 makes the Owner the only authority for cross-branch project grants and retains final overall client approval with the Primary Client. C-006 resolves vendor/consultant CAD issuance and revocation controls. C-010 makes project cancellation Owner-only; OD-02 task effects remain open. The source does not authorize automatic permission inheritance from a job title. See REQUIREMENT_QUESTIONS.md.
+C-002 makes the Owner the only authority for cross-branch project grants and retains final overall client approval with the Primary Client. C-006 resolves vendor/consultant CAD issuance and revocation controls. C-010 makes project cancellation Owner-only; C-011 stops unfinished delivery tasks and permits separately identified closeout tasks under ordinary authorization. OD-03 vendor/consultant access after cancellation remains open. The source does not authorize automatic permission inheritance from a job title. See REQUIREMENT_QUESTIONS.md.

@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-010 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-011 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -135,11 +135,18 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because cancellation affects tasks, client access, reporting and retention. Engineering can safely make Cancelled terminal, preserve all history, and require reason/audit; it cannot choose business authority for the Owner.
 **Owner answer (2026-09-25):** A — Only the Owner may cancel a Draft, Active or On Hold project; Project Leads/Team Leaders may request it. Reason, actor/time and history are retained (C-010).
 
-### OD-02 — Unfinished tasks when a project is cancelled (OPEN)
+### OD-02 — Unfinished tasks when a project is cancelled (RESOLVED)
 **Product/business decision for the Owner:** When the Owner cancels a project, what happens to its unfinished tasks? For example, a client cancels a home renovation while drawings and a site checklist are still assigned.
 **A:** Mark unfinished delivery tasks Stopped due to project cancellation, retaining their work/time/review history. If cleanup is needed, create separate closeout tasks still linked to the cancelled project without reopening delivery. Active delivery lists stay clean, but closeout work must be added explicitly.
 **B:** Keep unfinished project tasks active until the Owner closes them one by one. Existing assignments remain available, but reminders and workload may continue under a terminal Cancelled project.
 **Technical recommendation:** A, because a terminal project should not carry active delivery work or misleading overdue alerts. Engineering can preserve task history and make the transition atomic; only the Owner can decide the business behavior.
+**Owner answer (2026-09-25):** A — Stop unfinished delivery tasks when the Owner cancels the project, retain their history, and permit separately identified closeout tasks linked to the Cancelled project without reopening delivery (C-011).
+
+### OD-03 — Vendor and consultant access after project cancellation (OPEN)
+**Product/business decision for the Owner:** When a project is cancelled, should assigned vendors and consultants lose access to that project's files and work immediately? For example, a fit-out client cancels while a factory still has a seven-day CAD download link.
+**A:** End their project access when cancellation takes effect. The Owner cancels any active native MinisCloud links as part of the cancellation process. This limits further access, but any legitimate return or cleanup work needs a new, separately approved closeout arrangement.
+**B:** The Owner may keep vendor/consultant access for a specified closeout period. This helps them finish returns or handover, but cancelled-project files remain accessible for longer and need a clear end date and review.
+**Technical recommendation:** A. Cancellation is a clear access boundary and C-006 already requires native links to be cancelled when recipient access ends. Engineering can revoke app access and track link cancellation, but the business timing is for the Owner to decide. Native MinisCloud revocation must be confirmed; the app cannot assume a working automation interface.
 **Status:** Awaiting Owner answer.
 
 ## Already resolved by the owner

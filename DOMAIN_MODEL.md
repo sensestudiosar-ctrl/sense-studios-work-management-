@@ -21,7 +21,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | --- | --- | --- |
 | Lead / LeadActivity | CRM pipeline and interactions; may convert on Won. | New → Contacted → Meeting/Discussion → Proposal → Negotiation → Won/Lost; Lost needs reason. |
 | Client / ClientUser | One organization-wide customer identity may link to branch-owned leads/projects; portal identities are scoped. | Primary approver designated per project; delegates approve specified items only and cannot hold final overall authority. |
-| Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; only the Owner cancels Draft/Active/On Hold with reason and audit. Cancelled is terminal; task effects remain OD-02. |
+| Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; only the Owner cancels Draft/Active/On Hold with reason and audit. Cancelled is terminal; C-011 stops unfinished delivery tasks while allowing distinct linked closeout tasks without reopening delivery. |
 | ProjectScope / ScopeChange | Baseline service scopes and formal later additions. | Original baseline retained; approved change creates new effective scope version. |
 | ProjectTemplate / TemplateVersion | Reusable stages, tasks, folders, reviews, gates, SOP links and automation defaults. | Versioned; creating a project records applied template version. |
 | Stage / Milestone | Project delivery plan and deadlines. | Stage completion and gate decisions audited; actual versus baseline preserved. |
@@ -30,7 +30,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 | Entity | Purpose, ownership and relationships | Lifecycle, invariant and evidence |
 | --- | --- | --- |
-| Task | Unit of work, optional project/stage/milestone, one primary owner. | Type/priority/status/target/committed date; one primary owner always; status transitions authorized. |
+| Task | Unit of work, optional project/stage/milestone, one primary owner. | Type/priority/status/target/committed date; one primary owner always; status transitions authorized. Unfinished delivery work on a Cancelled project enters terminal Stopped due to project cancellation, retaining time/review history and leaving active workload. A separately identified closeout task may link to the Cancelled project. |
 | TaskParticipant / EffortAllocation | Collaborator/reviewer and per-person estimated effort. | Unique task/person role; effort is explicit, never split equally by default. |
 | TaskDependency | Finish-to-start link to predecessor. | No self-link/cycle; unfinished predecessor warns and records override/start event. |
 | RecurrenceRule | Future task generation, linked to template/source. | Generated instances have stable IDs and idempotent scheduling. |
@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds OD-01 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds OD-03 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.

@@ -11,7 +11,7 @@ event_id; event_type; schema_version; occurred_at UTC; organization_id; branch_i
 | Family | Canonical events and key consumers |
 | --- | --- |
 | Lead | lead.created, lead.stage_changed, lead.won, lead.lost → CRM activity, conversion and reporting. |
-| Project | project.created, project.activated, project.on_hold, project.scope_changed, project.completed, project.cancelled → notifications, health and reports. |
+| Project | project.created, project.activated, project.on_hold, project.scope_changed, project.completed, project.cancelled → notifications, health and reports. Project cancellation also emits task.stopped_due_to_project_cancellation for each unfinished delivery task in the same committed transition; these events suppress active-work reminders. |
 | Task | task.created, task.assigned, task.reassigned, task.started, task.waiting, task.deadline_changed, task.overdue, task.completed → reminders, workload and summaries. Overdue is emitted once per due-date version. |
 | Review | review.requested, review.started, review.correction_requested, review.approved → assignee notifications and evidence. |
 | Client | client.review_requested, client.revision_requested, client.item_approved, client.final_approved → portal decision queue and transmittal readiness. Exact item/revision IDs required. |

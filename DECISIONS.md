@@ -27,7 +27,11 @@ C-004 fixes a January–December leave year, full-year upfront credit, Owner-con
 
 ## 2026-09-25 — C-010: Owner-only project cancellation (approved)
 
-Only the Owner may cancel a Draft, Active or On Hold project. The Project Lead or Team Leader may request cancellation, but cannot decide it. Cancelled is terminal, with reason, actor/time, audit and prior evidence retained. C-010 in requirements/CLARIFICATIONS.md is authoritative; unfinished-task behavior remains OD-02. Final architecture and S01 remain unapproved.
+Only the Owner may cancel a Draft, Active or On Hold project. The Project Lead or Team Leader may request cancellation, but cannot decide it. Cancelled is terminal, with reason, actor/time, audit and prior evidence retained. C-010 in requirements/CLARIFICATIONS.md is authoritative; unfinished-task behavior is resolved by C-011. Final architecture and S01 remain unapproved.
+
+## 2026-09-25 — C-011: Stop unfinished delivery tasks on cancellation (approved)
+
+The Owner selected OD-02 option A. Owner cancellation moves unfinished project delivery tasks to terminal Stopped due to project cancellation, retains work/time/review and audit history, and leaves completed tasks completed. Separately identified closeout tasks may remain linked to the Cancelled project without reopening delivery. Active work, overdue reminders and capacity exclude stopped delivery tasks. C-011 in requirements/CLARIFICATIONS.md is authoritative. Vendor/consultant external access remains OD-03; client portal access is a separate later question. Final architecture and S01 remain unapproved.
 
 ## Proposed, not yet approved
 
