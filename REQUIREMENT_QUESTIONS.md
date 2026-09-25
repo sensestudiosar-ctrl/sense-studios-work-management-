@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-013 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-014 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -156,11 +156,19 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because it preserves a usable record of what was actually delivered while preventing new project decisions. Engineering can enforce read-only, exact-item access and existing revocation rules; whether any access remains is the Owner's business decision.
 **Owner answer (2026-09-25):** A — After cancellation, clients retain read-only access to PDFs/images already formally issued to them and their own approval history. New reviews, comments and approvals stop; drafts and internal records stay hidden (C-013).
 
-### OD-05 — Duration of cancelled-project client access (OPEN)
+### OD-05 — Duration of cancelled-project client access (RESOLVED)
 **Product/business decision for the Owner:** How long should a client retain that limited read-only access after cancellation? For example, a homeowner might return months later for an issued PDF drawing.
 **A:** Keep access until the Owner explicitly revokes it or the record reaches its approved retention/deletion date. The client can retrieve issued records later, but the firm must keep the account and permissions secure for longer.
 **B:** End access automatically after a fixed period chosen by the Owner, with an Owner-approved extension if needed. This limits long-term exposure, but the client may need to request records again after expiry and the firm must administer extensions.
 **Technical recommendation:** A for a small firm, because it avoids an arbitrary cutoff on issued records while preserving Owner revocation and the approved retention/deletion rules. Engineering can enforce secure login, exact-item scope and revocation; the access duration is a business decision.
+**Owner answer (2026-09-25):** B — Limited read-only client access ends automatically after a fixed period, with an Owner-approved extension if needed. The exact period remains OD-06 (C-014).
+
+### OD-06 — Length of cancelled-project client access (OPEN)
+**Product/business decision for the Owner:** What fixed period should clients have to retrieve already issued PDFs/images and their own approval history after the project is cancelled? The clock begins when cancellation takes effect, not when someone first requests cancellation.
+**A:** 12 months. Gives clients a full year to retrieve design records; access stays open longer and requires account protection for that year.
+**B:** 90 days. Limits exposure sooner; clients renovating later may need to request an extension or ask the firm for records.
+**C:** 3 years. Convenient for long renovation cycles; keeps a portal grant active much longer and increases review/security work.
+**Technical recommendation:** A (12 months). It allows more time for design and construction follow-up than 90 days while still ending access automatically before the approved ten-year record-retention period. Engineering can calculate expiry, enforce it on every request, and record Owner-approved extensions; the period is the Owner's business choice.
 **Status:** Awaiting Owner answer.
 
 ## Already resolved by the owner
