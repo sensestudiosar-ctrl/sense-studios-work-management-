@@ -1,13 +1,13 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. C-002 records the Owner answers to Q1–Q15. C-003–C-015 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and cancellation-task decisions. OD-07 closeout authorization remains open. See DECISIONS.md.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. C-002 records the Owner answers to Q1–Q15. C-003–C-016 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and cancellation-task decisions. All recorded material owner decisions are resolved; final consistency review and architecture approval remain pending. See DECISIONS.md.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
 | Requirement ID | Source section | Planned module | Planned slice(s) | Status |
 | --- | --- | --- | --- | --- |
 | C-001 | Approved clarification: Branch-only organization hierarchy; overrides organizational terminology in R-004, R-006, R-007, R-092–R-094, R-103 and R-113 | ORG/ACC/PRJ | S03/S07 | APPROVED DECISION; NOT IMPLEMENTED |
-| C-002 | Approved Q1–Q15 answers, further specified by C-003–C-015 | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED; NOT IMPLEMENTED |
+| C-002 | Approved Q1–Q15 answers, further specified by C-003–C-016 | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED; NOT IMPLEMENTED |
 | C-003 | Q8 category retention durations; C-009 fixes clock and expiry policy; legal/contract validation remains a release gate | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED; NOT IMPLEMENTED |
 | C-004 | Branch leave-year, credit, proration, carry-forward and expiry | WFM | S17 | APPROVED; NOT IMPLEMENTED |
 | C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | APPROVED; NOT IMPLEMENTED |
@@ -21,7 +21,7 @@ This is a coverage index, not an implementation claim. Each section can contain 
 | C-013 | Cancelled-project client portal is read-only for previously issued PDF/images and own approval history; no new review/comment/approval | PRJ/ACC/DOC/PORT/REV | S09/S14 | APPROVED; NOT IMPLEMENTED |
 | C-014 | Cancelled-project client read-only access expires automatically after an Owner-chosen period; Owner may approve an extension | ACC/DOC/PORT | S14 | APPROVED; NOT IMPLEMENTED |
 | C-015 | Owner sets a separate required expiry for each client project-access grant at cancellation; no shared period | PRJ/ACC/PORT | S09/S14 | APPROVED; NOT IMPLEMENTED |
-| OD-07 | Authority to approve closeout tasks and temporary vendor/consultant access after cancellation | PRJ/TSK/ACC/PORT | S09/S21 | OPEN; NOT IMPLEMENTED |
+| C-016 | Assigned Project Lead or explicitly authorized Team Leader approves ordinary closeout tasks and scoped time-limited vendor/consultant access; Owner alone issues CAD links | PRJ/TSK/ACC/PORT | S09/S21 | APPROVED; NOT IMPLEMENTED |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
 | R-002 | PRODUCT VISION | PRJ | S07 | NOT STARTED |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |

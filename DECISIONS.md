@@ -47,7 +47,11 @@ The Owner selected OD-05 option B. Limited read-only access to already issued cl
 
 ## 2026-09-25 — C-015: Owner-set access end date for each client (approved clarification)
 
-The Owner rejected the shared 90-day/12-month/3-year choices in OD-06. For each cancelled project, the Owner sets a separate end date for each client portal project-access grant when cancellation is finalized; no global access period is imposed. Primary and Additional Client users can receive distinct dates, subject to their existing item scopes. An end date is required for every retained read-only grant. The Owner may change or extend a grant with reason, actor and time recorded; expiry is enforced on every request. C-015 in requirements/CLARIFICATIONS.md clarifies C-014 without changing record retention. Closeout authorization remains OD-07; final architecture and S01 remain unapproved.
+The Owner rejected the shared 90-day/12-month/3-year choices in OD-06. For each cancelled project, the Owner sets a separate end date for each client portal project-access grant when cancellation is finalized; no global access period is imposed. Primary and Additional Client users can receive distinct dates, subject to their existing item scopes. An end date is required for every retained read-only grant. The Owner may change or extend a grant with reason, actor and time recorded; expiry is enforced on every request. C-015 in requirements/CLARIFICATIONS.md clarifies C-014 without changing record retention. Closeout authorization is resolved by C-016; final architecture and S01 remain unapproved.
+
+## 2026-09-25 — C-016: Delegated closeout authority after cancellation (approved)
+
+The Owner selected OD-07 option B. The assigned Project Lead or a Team Leader with an explicit project closeout approval grant may authorize ordinary closeout tasks and narrow, time-limited vendor/consultant portal access after cancellation, with reason, scope, approver, end time and audit recorded. This does not reopen the Cancelled project or stopped delivery tasks. The Owner alone issues native CAD links under C-006, grants cross-branch employee access under C-002, and retains other Owner-only approvals. Closing or expiring closeout access revokes it; the Owner may revoke sooner. C-016 in requirements/CLARIFICATIONS.md is authoritative. No further material owner decision is currently recorded; final consistency review, final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 

@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-015 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-016 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -172,12 +172,12 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Historical technical recommendation (superseded by the Owner's custom answer):** A (12 months). It allows more time for design and construction follow-up than 90 days while still ending access automatically before the approved ten-year record-retention period. Engineering can calculate expiry, enforce it on every request, and record Owner-approved extensions; the period is the Owner's business choice.
 **Owner answer (2026-09-25):** Custom — No organization-wide fixed period. The Owner sets a separate end date for each client's access to each cancelled project; invited client users may have distinct dates within their existing permissions. The date is required at cancellation and may be extended by the Owner with an audit record (C-015). The A/B/C global durations above were not selected.
 
-### OD-07 — Who authorizes closeout work after cancellation? (OPEN)
+### OD-07 — Who authorizes closeout work after cancellation? (RESOLVED)
 **Product/business decision for the Owner:** Once a project is Cancelled, who may authorize new closeout tasks, such as returning material samples or documenting a final site condition? A Project Lead or Team Leader could request the work. This also affects whether an external vendor or consultant may be brought back for that specific closeout job.
 **A:** Only the Owner authorizes closeout work and any temporary vendor/consultant access. An assigned Project Lead or Team Leader may request it and manage the approved work. Strong control and a clear audit trail, but the Owner must act for each closeout request.
 **B:** An assigned Project Lead or authorized Team Leader may authorize ordinary closeout tasks and limited external portal access; the Owner still alone issues any CAD link under C-006. Faster for routine cleanup, but a cancelled project can gain new work and external access without Owner approval.
 **Technical recommendation:** A, because the Owner alone cancelled the project and C-012 already requires separately approved external closeout access. Engineering can enforce narrow task scope, expiry and audit after authority is chosen; it cannot choose who may restart work on a cancelled project.
-**Status:** Awaiting Owner answer.
+**Owner answer (2026-09-25):** B — The assigned Project Lead or an explicitly authorized Team Leader may approve ordinary closeout tasks and narrow, time-limited vendor/consultant portal access after cancellation. Only the Owner may issue CAD links, and Owner-only cross-branch grants and other protected approvals remain unchanged (C-016).
 
 ## Already resolved by the owner
 
