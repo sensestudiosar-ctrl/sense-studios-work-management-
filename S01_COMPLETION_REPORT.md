@@ -1,9 +1,9 @@
-# S01 COMPLETION REPORT — COMPLETE
+# S01 COMPLETION REPORT — S01 VERIFIED; PRODUCTION BACKUP GATES OPEN
 
 **Date:** 2026-09-25
 **Architecture baseline:** Owner-approved checkpoint 2e46805
 **Authorized scope:** S01 Runtime and Verification only
-Current status: COMPLETE; Owner confirmed hosted CI green for commit 570d52f
+Current status: S01 COMPLETE for its authorized runtime and verification scope. Fresh local verification and Owner-provided Compose/recovery evidence are recorded in section 20. Encrypted offsite backup, key custody and production restore remain open production gates.
 
 ## 1. What was implemented
 
@@ -105,3 +105,47 @@ Implementation checkpoint 5ea5a8f and documentation checkpoint 570d52f are publi
 S01 COMPLETE. The required local and Compose gates passed, and the Owner confirmed hosted GitHub Actions green for commit 570d52f. Compose configuration/build/startup/service checks and the Compose recovery rehearsal have passed. Do not begin S02 without explicit Owner authorization.
 
 Final status: S01 COMPLETE — READY FOR S02 OWNER AUTHORIZATION
+
+## 19. Current workspace re-verification (2026-09-25)
+
+This section records a new verification attempt after recovery of the Codex command runner. Sections 1–18 retain the earlier reported evidence; their PASS results were not reproduced for Compose or recovery in this attempt.
+
+- `node --version`: PASS, v24.19.0. `pnpm --version`: PASS, 11.19.0.
+- `docker --version`, `docker compose version`, and `docker compose -f infra/compose.yaml up --build -d`: BLOCKED. PowerShell reports: `The term 'docker' is not recognized as a name of a cmdlet, function, script file, or executable program.` Docker Desktop processes are running from a per-user installation, but its CLI is not on this shell's PATH. A targeted read of that installation returned `Access is denied`. No ACL or broad permission changes were made.
+- `node scripts/rehearse-backup.mjs`: BLOCKED before database access: `Error: Backup rehearsal requires a dedicated sense_s01*_test database.` The required test environment variables were not set in this shell, and Compose could not start.
+- `pnpm verify`: typecheck, lint, API unit (2), web unit (3), API integration (3), and production build passed. All four Playwright cases reported `ok`, but the runner did not exit after the cases; it was interrupted, so the overall command did not pass. A separate `CI=1` E2E attempt triggered pnpm dependency recreation and registry requests that returned `EACCES`; it was interrupted rather than treated as a test pass.
+
+At the time of this 2026-09-25 attempt, current-attempt status was BLOCKED: Docker was unavailable in the Codex shell, the required S01 environment variables were absent, and `pnpm verify` did not exit after Playwright reported all cases passing. This entry is superseded by the fresh evidence in section 20. Do not begin S02 without explicit Owner authorization.
+
+## 20. Fresh S01 verification (2026-09-26)
+
+### Owner-provided Docker/Compose and recovery evidence
+
+The Owner reported executing these checks in normal Windows PowerShell; Codex did not run Docker or the recovery script for this evidence:
+
+- `docker compose -f infra/compose.yaml up --build -d` — Compose build and startup succeeded.
+- `docker compose -f infra/compose.yaml ps -a` — `db` healthy, `api` healthy, `web` Up, `worker` Up, and `migrate` Exited (0). The database was `sense_s01_test` on `127.0.0.1:55432`.
+- `node scripts/rehearse-backup.mjs` — result `PASS`; database fixture row and stored file checksum restored. The Owner reported the script's local-only/offsite-backup note. The rehearsal used the dedicated S01 PostgreSQL container.
+
+This is externally executed evidence supplied by the Owner, not a Codex-observed command result. Encrypted offsite backup and production restore were not exercised.
+
+### Codex-executed non-Docker checks
+
+- `pnpm install --frozen-lockfile` — PASS after registry access was made available. Reused all 955 locked packages; downloaded 0; no lockfile or manifest changes.
+- `pnpm --filter @sense/api db:validate` — PASS; Prisma schema valid.
+- `pnpm verify` — PASS, exit code 0, with a valid local Vite server already listening on `127.0.0.1:5173`. `playwright.config.ts` has `reuseExistingServer: !process.env.CI`, so Playwright reused that server. Typecheck, lint, unit tests, API integration tests, production build, and E2E all ran.
+  - API unit: 2 passed.
+  - Web unit: 3 passed.
+  - API HTTP integration: 3 passed.
+  - Playwright: 4 passed across desktop/mobile Chromium.
+  - Total automated tests: 12 passed, 0 failed, 0 skipped.
+
+### Playwright process-exit investigation
+
+The prior hang still reproduces in this Codex Windows runner when Playwright starts its own `webServer`: all four tests report `ok`, but the Playwright process does not print its summary or exit. It reproduced under `pnpm verify`, standalone `pnpm test:e2e`, and a direct Playwright CLI invocation. A diagnostic direct-Vite launch also hung when Playwright owned the server lifecycle. With the same Vite app validly prestarted, Playwright reused the server, printed `4 passed`, and exited 0; the complete `pnpm verify` then also exited 0. No tests were skipped or weakened. This points to process cleanup in the runner's Playwright-managed server lifecycle; no application defect was demonstrated, so no application or test changes were made. The standard no-prestarted-server path remains a documented runner limitation.
+
+### Current completion and remaining gates
+
+S01 Runtime and Verification is COMPLETE for its approved local/staging scope: the fresh Owner-provided Compose startup and database/file recovery gates passed, and the complete local verification command exited successfully with all 12 tests passing. The report does not claim encrypted offsite backup, key custody, nightly remote backup, NAS validation, or production restore as complete. Those remain production deployment gates. Hosted CI was not rechecked in this attempt; the prior Owner confirmation remains tied to commit 570d52f.
+
+Final status: S01 COMPLETE — READY FOR S02 OWNER AUTHORIZATION; production backup/restore gates remain open.
