@@ -14,7 +14,7 @@ The approved organizational hierarchy is Organization → Branch → Team → Em
 
 | Area | Approved behavior | Source |
 | --- | --- | --- |
-| Leads and projects | Basic lead CRM in MVP; won lead can become a project. Design and Turnkey delivery types; multiple service scopes, formal scope changes, accountable Project Lead, configurable project templates, stages and milestones. | R-010–R-017 |
+| Leads and projects | Basic lead CRM in MVP; won lead can become a project. Authorized handlers may jump forward over unused stages with a reason; skipped stages remain distinct from completed steps (C-017). Design and Turnkey delivery types; multiple service scopes, formal scope changes, accountable Project Lead, configurable project templates, stages and milestones. | R-010–R-017 |
 | Tasks | One primary owner; optional collaborators. Self-tasks, project/non-project/recurring/correction/site/training tasks, configurable fields and types, priority, target and controlled committed dates, extension requests, waiting reasons, simple finish-to-start dependencies with warning rather than hard block. | R-018–R-026 |
 | Design control | Internal/client review, retained correction rounds, severity/category, internal R and client CR review series, classified client changes, partial approval with exact revision and evidence, transmittals. | R-027–R-034, R-037–R-038 |
 | Files | NAS as primary physical store; app-controlled access and separate metadata, historical revisions, confidential/view-only controls, private galleries and explicitly published portfolio content. | R-035–R-040 |
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 through C-016 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-08 on lead-stage skipping is open. The final consistency review and architecture approval remain pending; proposals in ARCHITECTURE.md are not yet approved product behavior.
+C-001 through C-017 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-09 on returning Lost leads is open. The final consistency review and architecture approval remain pending; proposals in ARCHITECTURE.md are not yet approved product behavior.

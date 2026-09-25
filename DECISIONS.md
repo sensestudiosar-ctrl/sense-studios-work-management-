@@ -51,7 +51,11 @@ The Owner rejected the shared 90-day/12-month/3-year choices in OD-06. For each 
 
 ## 2026-09-25 — C-016: Delegated closeout authority after cancellation (approved)
 
-The Owner selected OD-07 option B. The assigned Project Lead or a Team Leader with an explicit project closeout approval grant may authorize ordinary closeout tasks and narrow, time-limited vendor/consultant portal access after cancellation, with reason, scope, approver, end time and audit recorded. This does not reopen the Cancelled project or stopped delivery tasks. The Owner alone issues native CAD links under C-006, grants cross-branch employee access under C-002, and retains other Owner-only approvals. Closing or expiring closeout access revokes it; the Owner may revoke sooner. C-016 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review has since opened OD-08 on lead-stage skipping; final architecture approval and S01 remain pending.
+The Owner selected OD-07 option B. The assigned Project Lead or a Team Leader with an explicit project closeout approval grant may authorize ordinary closeout tasks and narrow, time-limited vendor/consultant portal access after cancellation, with reason, scope, approver, end time and audit recorded. This does not reopen the Cancelled project or stopped delivery tasks. The Owner alone issues native CAD links under C-006, grants cross-branch employee access under C-002, and retains other Owner-only approvals. Closing or expiring closeout access revokes it; the Owner may revoke sooner. C-016 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review continues; final architecture approval and S01 remain pending.
+
+## 2026-09-25 — C-017: Lead stages may be skipped forward (approved)
+
+The Owner selected OD-08 option A. A staff member with the appropriate lead-stage-change grant and access to that lead may move it directly to a later sales stage when earlier stages did not occur. The change requires a reason and records the from/to stages, skipped stages, actor and time. Skipped stages are not reported as completed activities; no meeting or proposal is fabricated. Existing Lost-reason and Won-conversion rules still apply, and the approval does not decide whether a Lost lead may reopen. C-017 in requirements/CLARIFICATIONS.md is authoritative. OD-09 on returning Lost leads is open; final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 

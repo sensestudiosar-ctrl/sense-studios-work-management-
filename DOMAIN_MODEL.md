@@ -19,7 +19,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 | Entity | Purpose, ownership and relationships | Lifecycle, invariant and evidence |
 | --- | --- | --- |
-| Lead / LeadActivity | CRM pipeline and interactions; may convert on Won. | New → Contacted → Meeting/Discussion → Proposal → Negotiation → Won/Lost; Lost needs reason. |
+| Lead / LeadActivity | CRM pipeline and interactions; may convert on Won. | New → Contacted → Meeting/Discussion → Proposal → Negotiation → Won/Lost; Lost needs reason. C-017 permits scoped, reasoned forward jumps and records skipped stages as skipped, not completed. |
 | Client / ClientUser | One organization-wide customer identity may link to branch-owned leads/projects; portal identities are scoped. | Primary approver designated per project; delegates approve specified items only and cannot hold final overall authority. On cancellation, existing client grants become read-only for previously issued PDF/image items and own approval history under C-013; C-014/C-015 require a distinct Owner-set expiry for each client project-access grant, with audited extension and no shared period. |
 | Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; only the Owner cancels Draft/Active/On Hold with reason and audit. Cancelled is terminal; C-011 stops unfinished delivery tasks while allowing distinct linked closeout tasks under C-016 delegated approval without reopening delivery. C-012 ends vendor/consultant project access at cancellation after active native CAD links are revoked and recorded. C-013 preserves only read-only client access to already issued records and own approval history, subject to C-014/C-015 per-client automatic expiry. |
 | ProjectScope / ScopeChange | Baseline service scopes and formal later additions. | Original baseline retained; approved change creates new effective scope version. |
@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-08 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-09 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.

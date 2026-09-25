@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-016 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-017 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -179,11 +179,18 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because the Owner alone cancelled the project and C-012 already requires separately approved external closeout access. Engineering can enforce narrow task scope, expiry and audit after authority is chosen; it cannot choose who may restart work on a cancelled project.
 **Owner answer (2026-09-25):** B — The assigned Project Lead or an explicitly authorized Team Leader may approve ordinary closeout tasks and narrow, time-limited vendor/consultant portal access after cancellation. Only the Owner may issue CAD links, and Owner-only cross-branch grants and other protected approvals remain unchanged (C-016).
 
-### OD-08 — May a lead skip sales stages? (OPEN)
+### OD-08 — May a lead skip sales stages? (RESOLVED)
 **Product/business decision for the Owner:** When an enquiry reaches a later sales step without completing every listed earlier step, may staff move it directly to the step that really happened? For example, a returning architecture client asks for a proposal without needing a new introductory meeting. This affects the CRM pipeline, staff workload and sales reports (R-010, S06).
 **A:** An authorized lead handler may move forward to a later stage with a required reason. The app records which stages were skipped and who made the change. This is faster and keeps the record truthful, but reports need to distinguish skipped steps from completed steps.
 **B:** Staff must move through every stage in order, marking an unused step as not applicable with a reason. Reports have a uniform path, but staff must make extra updates for steps that did not happen.
 **Technical recommendation:** A, because architecture and interior-design enquiries often enter at different points. Engineering can enforce permission, reason and audit and make reports display skipped stages accurately; the Owner must choose the sales behavior. This question does not decide whether a Won/Lost lead can later reopen.
+**Owner answer (2026-09-25):** A — An authorized lead handler may move forward to the stage actually reached with a required reason. The app records skipped stages and who made the change; reports distinguish skipped steps from completed work (C-017).
+
+### OD-09 — What if a Lost lead returns? (OPEN)
+**Product/business decision for the Owner:** When a lead marked Lost comes back months later, should staff reopen its old sales record or create a new, linked lead? For example, a homeowner declines a renovation proposal in January but asks to restart the project in September. This affects the sales pipeline, conversion reports and history (R-010, S06).
+**A:** Reopen the original Lost lead and continue from the appropriate stage. Staff see one record and less duplicate entry, but the old Lost outcome changes and historical sales reports need special handling.
+**B:** Keep the old lead Lost and create a new lead linked to it. This preserves the original outcome and time-period reports; staff make a new lead record but can see the earlier discussion and proposal.
+**Technical recommendation:** B, because it preserves what happened in January while showing September as a new opportunity. Engineering can link records, carry over contact details with review, and keep audit history; the Owner must choose whether returning business counts as the old or a new sales opportunity. This question concerns Lost leads only; Won-to-project history remains protected.
 **Owner answer:** Pending.
 
 ## Already resolved by the owner

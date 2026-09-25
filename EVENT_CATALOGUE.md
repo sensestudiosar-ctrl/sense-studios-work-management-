@@ -10,7 +10,7 @@ event_id; event_type; schema_version; occurred_at UTC; organization_id; branch_i
 
 | Family | Canonical events and key consumers |
 | --- | --- |
-| Lead | lead.created, lead.stage_changed, lead.won, lead.lost → CRM activity, conversion and reporting. |
+| Lead | lead.created, lead.stage_changed, lead.won, lead.lost → CRM activity, conversion and reporting. C-017 stage_changed includes from/to, skipped-stage list, reason, actor and time; reporting never counts a skipped stage as completed. |
 | Project | project.created, project.activated, project.on_hold, project.scope_changed, project.completed, project.cancelled → notifications, health and reports. Project cancellation also emits task.stopped_due_to_project_cancellation for each unfinished delivery task and project.vendor_consultant_access_revoked and project.client_portal_read_only in the same committed transition; closeout.task_authorized and closeout.external_access_granted/revoked record C-016 scoped follow-up work; client_portal.read_only_access_expired and client_portal.access_extended record later C-014/C-015 per-client expiry/Owner decisions; the committed state denies further vendor/consultant project access, while events suppress active-work reminders and update downstream views (C-011/C-012). |
 | Task | task.created, task.assigned, task.reassigned, task.started, task.waiting, task.deadline_changed, task.overdue, task.completed → reminders, workload and summaries. Overdue is emitted once per due-date version. |
 | Review | review.requested, review.started, review.correction_requested, review.approved → assignee notifications and evidence. |
