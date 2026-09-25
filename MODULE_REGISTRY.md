@@ -6,7 +6,7 @@ All modules are planned, not implemented. IDs are stable planning identifiers us
 | --- | --- | --- |
 | FND | Configuration, health, tenancy context, migration/deployment conventions | — |
 | IDN | Accounts, credentials, OIDC, portal OTP, sessions/devices | FND |
-| ORG | Organization, branch, department, team, hierarchy, employee identity/job roles | FND, IDN |
+| ORG | Organization, branch, team, employee membership/reporting and configurable job roles | FND, IDN |
 | ACC | Permission grants/overrides, membership, scoped authorization | IDN, ORG |
 | AUD | Append-only business/security audit and evidence snapshots | IDN, FND |
 | EVT | Domain event catalogue and durable outbox | FND, AUD |

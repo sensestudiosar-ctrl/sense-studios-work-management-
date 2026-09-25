@@ -4,7 +4,7 @@ Approved requirements have been ingested; Phase 2 planning is ready for owner re
 
 | Proposed release | Slices | Status | Gate |
 | --- | --- | --- | --- |
-| Release 0 foundation | S01–S05 | NOT STARTED | Owner architecture approval and Q1/Q3 decisions; working auth, branch isolation, audit/outbox and approval core. |
+| Release 0 foundation | S01–S05 | NOT STARTED | All material owner decisions resolved and explicit final architecture approval; Q1/Q3/Q15 are among the open decisions. Then verify working auth, branch isolation, audit/outbox and approval core. |
 | Release 1 work core | S06–S10 | NOT STARTED | Lead → project → owned task, state/deadline/dependency and template tests. |
 | Release 2 design control | S11–S15 | NOT STARTED | Exact file revision, internal correction, client approval, transmittal and first real Design project E2E. |
 | Release 3 workforce | S16–S18 | NOT STARTED | Time export, leave/capacity/attendance, skills/training rules verified. |

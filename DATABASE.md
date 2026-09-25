@@ -1,10 +1,10 @@
 # Conceptual database architecture — no schema or migrations yet
 
-Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Newer owner decision: use branch, not brand; each project has one owning branch. No database exists, and names below are conceptual, not a migration contract.
+Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarification C-001: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch. No database exists, and names below are conceptual, not a migration contract.
 
 ## Ownership and constraints
 
-- Every business row carries organization_id where relevant. Branch-owned records carry branch_id. A project has one immutable owning branch_id unless a formally approved transfer process is later specified; project lead is required at activation and exactly one is current. The owner confirmed cross-branch staff may contribute only through explicit project assignment.
+- Every business row carries organization_id where relevant. A Branch belongs to one Organization; a Team belongs to one Branch. Branch-owned records carry branch_id. Employee home Branch/Team cardinality awaits Q1. A project has one immutable owning branch_id unless a formally approved transfer process is later specified; project lead is required at activation and exactly one is current. Cross-branch staff may contribute only through explicit project assignment and applicable permission grants; grant authority awaits Q15. No Brand or Department foreign key or scope is planned.
 - Use stable opaque IDs, foreign keys, unique indexes and check constraints. Composite references including organization/branch where practical prevent linking a task, document or approval to a foreign project accidentally. Scope-sensitive queries must be authorized before reads/writes; consider RLS as defense in depth after testing its interaction with the access model.
 - A task row has one non-null primary_owner_id. Collaborators and per-person effort allocation live in separate association rows, unique by task/person. Dependency edges prohibit self-dependency/cycles; unfinished predecessors warn rather than block.
 - Lead stage, project/task/document/review/leave/snag states are constrained to valid values and changed through domain services. Transactional transition checks use row version/locking where concurrent updates matter.
@@ -15,7 +15,7 @@ Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critica
 
 ## Conceptual domains
 
-Identity/organization: Organization, Branch, Department, Team, Employee, Account, Session, JobRole, HierarchyEdge, Membership, PermissionGrant/Override.
+Identity/organization: Organization, Branch, Team, Employee, Account, Session, JobRole, TeamMembership/manager reference, PermissionGrant/Override. No Brand or Department table.
 
 CRM/project: Lead, LeadActivity, Client, ClientUser, Project, ProjectScope, ScopeChange, ProjectMembership, ProjectTemplate/Version, Stage, Milestone.
 
@@ -37,4 +37,4 @@ Use reviewed, versioned migrations with rollback/forward recovery notes and data
 
 ## Remaining design decisions
 
-Branch membership, cross-branch assignments, project transfer, retention, approval delegation, time-log locking and performance formulas are open in REQUIREMENT_QUESTIONS.md. Database constraints will be finalized only after those owner decisions.
+Employee home Branch/Team cardinality, cross-branch grant authority, project transfer, retention, approval delegation, time-log locking and performance formulas are open in REQUIREMENT_QUESTIONS.md. Database constraints will be finalized only after those owner decisions.

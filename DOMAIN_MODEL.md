@@ -1,17 +1,17 @@
 # Conceptual domain model — no schema implemented
 
-Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. The owner's newer decision replaces brand with branch: each project has one branch; employees may work across branches only through explicit assignment. These are conceptual records, not a demand to create every table in the first release. Permissions are detailed in PERMISSIONS.md; critical mutations and state changes are audited under AUD.
+Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 approves Organization → Branch → Team → Employee, with no separate Brand or Department level; each project has one branch, and employees may work across branches only through explicit assignment. These are conceptual records, not a demand to create every table in the first release. Permissions are detailed in PERMISSIONS.md; critical mutations and state changes are audited under AUD.
 
 ## Organization and identity
 
 | Entity | Purpose, ownership and relationships | Lifecycle, invariant and evidence |
 | --- | --- | --- |
 | Organization | Firm boundary; owns branches, accounts, policy. | Stable ID; no cross-organization reads. |
-| Branch | Operational branch within organization; owns one or more projects. | Each project has exactly one branch; branch transfer policy unresolved. |
-| Department / Team | Reporting and workload grouping; employees may have team membership. | Membership dates retained so historical reporting is stable. |
-| Employee | Internal person/profile, schedule and skill subject; linked to account. | Active/exited access state; exit revokes access but never removes project/audit history. |
+| Branch | Child of Organization; owns teams and projects. | Each project has exactly one owning branch; transfer policy unresolved. |
+| Team | Child of one Branch; groups employees, reporting and workload. | Team membership dates retained; employee home-membership cardinality awaits Q1. |
+| Employee | Internal person/profile under the approved Branch/Team structure; linked to account, schedule and skills. | Active/exited access state; exit revokes access but never removes project/audit history. |
 | Account / Session | Login identity, OIDC/password/OTP methods and revocable devices. | Session revocation blocks future access; secret material never enters audit. |
-| JobRole / HierarchyEdge | Describes work and reporting line separately from authorization. | Configurable roles and dated hierarchy changes; do not hard-code job titles as permissions. |
+| JobRole / manager reference | Describes work and reporting within Branch/Team, separately from authorization; no extra organization tier. | Configurable roles and dated reporting changes; do not hard-code job titles as permissions. |
 | PermissionGrant / Override | Action/resource/scope/condition decision for a principal. | Effective grants versioned/audited; revocation immediate; deny by default. |
 | ProjectMembership | Explicit participation and branch-crossing access. | Unique project/person/role; membership does not imply every file is visible. |
 

@@ -8,7 +8,7 @@ Sense Studios needs an operating platform for an architecture and interior-desig
 
 ## People and organization
 
-One organization contains multiple branches, departments, teams, reporting hierarchy, employees, and projects (R-004 as superseded by the owner's newer decision). Each project belongs to exactly one branch; employees may participate across branches only through explicit assignment. Job role, hierarchy position, and permission are distinct; roles are configurable. Internal users include Owner, Team Leader, employee, site employee, reviewer, part-time worker, and intern. External users include primary/additional client, consultant, vendor, and factory users, each restricted to a portal (R-005–R-009, R-075–R-076).
+The approved organizational hierarchy is Organization → Branch → Team → Employee (C-001); one organization may contain multiple branches. Each project belongs to exactly one branch; employees may participate across branches only through explicit assignment. Job role, reporting relationship within the approved hierarchy, and permission are distinct; roles are configurable. Internal users include Owner, Team Leader, employee, site employee, reviewer, part-time worker, and intern. External users include primary/additional client, consultant, vendor, and factory users, each restricted to a portal (R-005–R-009, R-075–R-076).
 
 ## Operational capabilities
 

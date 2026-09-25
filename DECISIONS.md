@@ -8,9 +8,11 @@ The supplied workspace was empty and had no Git metadata. Git was initialized fo
 
 The owner supplied the 115-section Sense Studios Work Management Platform requirements. An exact copy is stored at requirements/APPROVED_REQUIREMENTS.md (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Architecture and implementation remain unapproved.
 
-## 2026-09-25 — Branch replaces brand (owner decision)
+## 2026-09-25 — C-001: Branch-only organizational architecture (approved owner decision)
 
-The owner's newer explicit instruction says the organization uses branches rather than brands and each project belongs to exactly one branch. This supersedes brand wording in the approved source, including multi-brand isolation references. Branch isolation is the required invariant. The owner also approved explicit cross-branch employee assignment; it grants access to assigned work, not an entire branch by implication.
+The approved hierarchy is Organization → Branch → Team → Employee. One organization may contain multiple branches; each project has exactly one owning branch. There is no separate Brand model, entity, table, permission scope or architectural layer. Brand and multi-brand wording in the verbatim source is superseded only where it describes organizational partitioning or isolation. Branch isolation is the required invariant. Employees may work on projects in other branches only through explicit assignment and applicable permissions; assignment does not confer access to the entire branch.
+
+The source also lists Departments as an organizational layer. C-001 removes that tier. Reporting-manager relationships and configurable job roles remain distinct concepts within the approved hierarchy; their details are subject to the open owner decisions. The original source remains unchanged, and the precise addendum and affected source sections are recorded in requirements/CLARIFICATIONS.md.
 
 ## Proposed, not yet approved
 

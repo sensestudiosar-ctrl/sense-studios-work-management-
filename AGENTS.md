@@ -1,10 +1,10 @@
 # Agent instructions
 
-Initial setup is approved. The product source is requirements/APPROVED_REQUIREMENTS.md. The owner's newer explicit decisions in DECISIONS.md supersede its brand wording: use branches, each project has one owning branch, and employees may work across branches only through explicit assignment. Phase 2 architecture is a proposal. Do not implement product features, install a stack or create migrations until the owner approves the architecture and resolves decisions needed for the slice.
+Initial setup is approved. The product source is requirements/APPROVED_REQUIREMENTS.md plus approved addendum C-001 in requirements/CLARIFICATIONS.md. The organizational hierarchy is Organization → Branch → Team → Employee; there is no separate Brand model or Department organizational tier. Each project has one owning branch, and employees may work across branches only through explicit assignment. Phase 2 architecture is a proposal. Do not implement product features, install a stack or create migrations until all material owner decisions are resolved and the owner explicitly approves the final architecture.
 
 ## Source of truth and reading order
 
-Use, in order: current owner instruction; approved requirements plus newer owner decisions; approved architecture decisions; intended architecture; existing implementation; agent assumptions. Report conflicts rather than silently changing requirements.
+Use, in order: current owner instruction; approved requirements and explicit clarifications/addenda; approved architecture decisions; intended architecture; existing implementation; agent assumptions. Report conflicts rather than silently changing requirements.
 
 For a task, read CURRENT_STATE.md and IMPLEMENTATION_STATUS.md, then its entry in MODULE_REGISTRY.md and relevant PRODUCT.md, REQUIREMENTS_TRACE.md, ARCHITECTURE.md, DOMAIN_MODEL.md, DATABASE.md, PERMISSIONS.md, WORKFLOWS.md, FILE_STORAGE.md and TESTING.md. Inspect only the source and callers needed after that. The full approved source is available when wording matters.
 

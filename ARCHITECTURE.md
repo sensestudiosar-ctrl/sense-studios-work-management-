@@ -1,6 +1,6 @@
 # Proposed target architecture — awaiting owner approval
 
-This is a planning baseline for approved requirements in requirements/APPROVED_REQUIREMENTS.md and the newer owner clarification: the organization has branches, and each project belongs to exactly one branch. No stack or architecture has been implemented. Decisions in REQUIREMENT_QUESTIONS.md can change this proposal.
+This is a planning baseline for approved requirements in requirements/APPROVED_REQUIREMENTS.md and approved clarification C-001: Organization → Branch → Team → Employee, no separate Brand or Department organizational tier, and exactly one owning branch per project. No stack or architecture has been implemented. Decisions in REQUIREMENT_QUESTIONS.md can change this proposal.
 
 ## Stack choices and tradeoffs
 
@@ -27,7 +27,7 @@ UI → API controller/validation → authentication/session → authorization po
 - Frontend owns presentation, navigation, form UX, loading/empty/error states, and offline local queue. Backend owns business validation, transitions, permissions, scoring, audit, and writes.
 - API contracts are generated from the backend OpenAPI document into a typed web client. All external inputs get server validation; version breaking changes.
 - Each request carries authenticated actor, organization, branch scope, project membership and session identity. Default deny; an Owner has full organizational authority, with branch grant authority still being finalized. Use server-side revocable sessions, secure HttpOnly/SameSite cookies, CSRF protection for cookie-authenticated writes, rate limits, password hashing, safe headers/CSP and server upload validation. Support Google/Microsoft OIDC and email/password internally, portal password/expiring email OTP, and optional TOTP 2FA without paid SMS as a dependency.
-- Job role, reporting hierarchy and permission grant are separate. Resource policies combine grants with branch/team/project scope and conditions. Hidden controls improve UX only.
+- Job role, employee reporting relation within the Branch/Team structure, and permission grant are separate. Resource policies combine grants with branch/team/project scope and conditions. Hidden controls improve UX only.
 - A permission change or forced logout must invalidate effective future access immediately: protected requests recheck server-side session/grant state rather than relying on long-lived self-contained tokens.
 - A shared approval engine stores request type/resource, requester, approver/level, status, reason, evidence, expiration, delegation and audit. Type-specific policy validates the decision and applies the owning domain command. A management decision queue projects pending requests; it does not become a second source of business truth.
 - Important mutations write before/after, actor ID/snapshot, reason where required, and business event in the same DB transaction. Audit is append-only; corrections create new entries.

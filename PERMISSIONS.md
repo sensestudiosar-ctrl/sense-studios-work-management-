@@ -1,6 +1,6 @@
 # Proposed authorization model — no enforcement implemented
 
-Approved source: R-004–R-009, R-027–R-039, R-075–R-081, R-087–R-099. Newer owner decision: branch replaces brand; one owning branch per project; employees may work across branches only with explicit assignment. Job role, reporting hierarchy and permission grant remain separate. The matrix below is an initial baseline derived from the source, not hard-coded job titles or a finalized grant list.
+Approved source: R-004–R-009, R-027–R-039, R-075–R-081, R-087–R-099. Approved C-001: Organization → Branch → Team → Employee, no Brand permission scope; one owning branch per project; employees may work across branches only with explicit assignment. Job role, reporting relation within Branch/Team, and permission grant remain separate. The matrix below is an initial baseline derived from the source, not hard-coded job titles or a finalized grant list.
 
 ## Effective access rule
 

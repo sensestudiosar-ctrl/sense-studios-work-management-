@@ -1,15 +1,15 @@
 # Requirement questions requiring owner decisions
 
-These are product decisions left open by the approved source. The owner's newer instructions already resolve two points: use branches rather than brands; every project belongs to one branch, and employees may participate across branches through explicit assignment. Questions are grouped by when their answers are needed. Proposed architecture remains subject to owner approval.
+These are product decisions left open by the approved source. Approved clarification C-001 fixes the Organization → Branch → Team → Employee hierarchy with no Brand or Department organizational tier; every project belongs to one branch, and employees may participate across branches through explicit assignment. Employee home-membership cardinality and grant authority remain separate questions. Questions are grouped by when their answers are needed. Proposed architecture remains subject to owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
-### Q1 — Branch membership and authority
-**Question:** Does each employee have one home branch, and who may grant a cross-branch project assignment?
-**Why:** Determines membership tables, list visibility, and who can expose work across branches.
-**A:** One home branch; Owner or authorized owning-branch Team Lead grants audited project-specific access.
-**B:** Employees may belong to multiple branches and access all projects in each.
-**Technical recommendation:** A. It preserves a clear home branch and limits cross-branch access to explicit projects.
+### Q1 — Employee home membership
+**Question:** Should each employee have exactly one home branch and one home team, while still being able to work on explicitly assigned projects in other branches?
+**Why:** Determines employee membership records, reporting, capacity and default list views. Project-specific permission is still required in either option.
+**A:** Exactly one home branch/team; cross-branch projects are explicit assignments.
+**B:** Multiple formal branch/team memberships; reports and managers must choose a primary one.
+**Technical recommendation:** A. It gives each employee a clear reporting home without blocking cross-branch work.
 
 ### Q2 — Project branch transfer
 **Question:** Can an existing project change its owning branch after creation?
@@ -104,8 +104,15 @@ These are product decisions left open by the approved source. The owner's newer 
 **B:** Separate client records per branch.
 **Technical recommendation:** A to avoid duplicate client identities, while authorizing each project and contact view independently.
 
+### Q15 — Cross-branch assignment authority
+**Question:** Who may grant an employee access to a project owned by another branch?
+**Why:** The grant exposes project work and files, so it must have a clear accountable approver.
+**A:** Owner only; strongest central control, but slower for routine staffing.
+**B:** Owner or an explicitly authorized Team Leader of the project's owning branch; faster, with a recorded grant and audit.
+**Technical recommendation:** B, with the Owner able to revoke any grant.
+
 ## Already resolved by the owner
 
-- D1: Replace the source's brand terminology with branch. Each project has exactly one owning branch.
-- D2: Employees may work across branches when explicitly assigned.
+- C-001: Organization → Branch → Team → Employee; no separate Brand model or Department tier. One owning branch per project.
+- D2: Employees may work across branches when explicitly assigned; grant authority remains Q15.
 - D3: Existing resource is a MINISFORUM NAS with 8 GB RAM and MinisCloud OS, plus a domain. Exact N5 Air model confirmation is pending; deployment must be load-tested and must not run local AI on this 8 GB baseline.

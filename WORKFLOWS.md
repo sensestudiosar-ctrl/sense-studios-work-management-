@@ -1,6 +1,6 @@
 # Workflows and state machines — planning
 
-Specified sequences below come from the approved source; the newer branch decision supersedes brand wording. Arrows describe intended progression, not permission to skip or reverse a state. Unspecified transitions are marked for owner decision. Every protected transition runs server-side validation, authorization and audit in one business transaction.
+Specified sequences below come from the approved source plus approved clarification C-001. Arrows describe intended progression, not permission to skip or reverse a state. Unspecified transitions are marked for owner decision. Every protected transition runs server-side validation, authorization and audit in one business transaction.
 
 | Workflow | Specified path or operations | Controlled transition / unresolved detail |
 | --- | --- | --- |
