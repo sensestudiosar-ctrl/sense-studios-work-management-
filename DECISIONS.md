@@ -79,7 +79,11 @@ The Owner selected OD-13 option B. An employee may request cancellation of appro
 
 ## 2026-09-25 — C-023: Unfinished tasks wait for individual reassignment at employee exit (approved)
 
-The Owner selected OD-14 option A. Departing employee access ends immediately; each unfinished task moves to Waiting with needs-reassignment reason, retaining its departed current owner until an authorized manager explicitly chooses a replacement. The old assignment, previous task state, reviews, approvals, time and deadlines remain historical evidence. The task cannot advance until reassignment and a valid resume; completed or terminal work is unchanged. Managers receive a visible queue and deadline alerts. C-023 in requirements/CLARIFICATIONS.md is authoritative. OD-15 on Active projects led by the departing employee is open; final architecture approval and S01 remain pending.
+The Owner selected OD-14 option A. Departing employee access ends immediately; each unfinished task moves to Waiting with needs-reassignment reason, retaining its departed current owner until an authorized manager explicitly chooses a replacement. The old assignment, previous task state, reviews, approvals, time and deadlines remain historical evidence. The task cannot advance until reassignment and a valid resume; completed or terminal work is unchanged. Managers receive a visible queue and deadline alerts. C-023 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review continues; final architecture approval and S01 remain pending.
+
+## 2026-09-25 — C-024: Project Lead exit holds Active projects (approved)
+
+The Owner selected OD-15 option A. If an employee exits while serving as the current lead of an Active project, the project moves to On Hold with a lead-exit reason as that person's access is revoked. The former lead remains in history and cannot make new decisions; pending work and reviews are retained, while new delivery decisions pause. The Owner appoints an eligible replacement Project Lead before the project can return to Active, with permissions, reason, time and audit checked. C-023 separately puts the leaver's unfinished tasks in Waiting for individual reassignment. C-024 in requirements/CLARIFICATIONS.md is authoritative. No further owner question is currently recorded; final consistency review, final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 

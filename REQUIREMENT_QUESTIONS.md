@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-023 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-024 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -230,12 +230,12 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because project drawings and site tasks need the right replacement rather than an automatic catch-all owner. Engineering can revoke access immediately, preserve the departing employee's historical assignment, flag affected deadlines, and require an audited human reassignment; the Owner must choose how operational responsibility is handed over.
 **Owner answer (2026-09-25):** A — Revoke access immediately; move each unfinished task to Waiting with a needs-reassignment reason, keep the departing person as recorded current owner until an authorized manager chooses a replacement, and preserve all prior work (C-023).
 
-### OD-15 — What happens when a Project Lead leaves an Active project? (OPEN)
+### OD-15 — What happens when a Project Lead leaves an Active project? (RESOLVED)
 **Product/business decision for the Owner:** Every Active project must have one accountable Project Lead. If that person leaves before a replacement is chosen, should the project pause or continue under the Owner? For example, the lead architect leaves during a villa design and client reviews are still pending (R-013/R-016/R-092; S03/S07).
 **A:** Put the affected project On Hold immediately with an exit reason and alerts. The Owner names a replacement Project Lead before it returns to Active. This keeps accountability clear, but pauses new delivery decisions until a replacement is chosen.
 **B:** At exit, the Owner explicitly accepts temporary Project Lead responsibility for each affected project, so it stays Active until a replacement is named. Client work can continue, but the Owner takes the workload and must make an interim leadership decision for every project.
 **Technical recommendation:** A, because the system must revoke the departing person's access immediately and cannot keep an Active project with no accountable lead. Engineering can preserve the old lead history, hold and alert the project, and validate the replacement before resuming; the Owner must choose whether projects pause or receive interim leadership.
-**Owner answer:** Pending.
+**Owner answer (2026-09-25):** A — Move each affected Active project On Hold immediately with a lead-exit reason and alerts. The Owner appoints a replacement Project Lead before the project resumes Active (C-024).
 
 ## Already resolved by the owner
 

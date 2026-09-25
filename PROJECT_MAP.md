@@ -2,7 +2,7 @@
 
 As of 2026-09-25, there is no application source, frontend, backend, tests, migrations or deployment configuration. The repository contains only planning documents and the approved source.
 
-- requirements/APPROVED_REQUIREMENTS.md — verbatim approved source (115 numbered sections); requirements/CLARIFICATIONS.md — dated approved addenda, including C-001 Branch-only hierarchy, C-002 original interview answers and C-003–C-023 later Owner decisions.
+- requirements/APPROVED_REQUIREMENTS.md — verbatim approved source (115 numbered sections); requirements/CLARIFICATIONS.md — dated approved addenda, including C-001 Branch-only hierarchy, C-002 original interview answers and C-003–C-024 later Owner decisions.
 - AGENTS.md, CURRENT_STATE.md, IMPLEMENTATION_STATUS.md — entry points and status.
 - PRODUCT.md, REQUIREMENTS_TRACE.md — product summary and source-section IDs to modules/slices.
 - MODULE_REGISTRY.md, IMPLEMENTATION_PLAN.md — planned boundaries, dependency order and vertical slices.
