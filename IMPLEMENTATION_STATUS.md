@@ -1,6 +1,6 @@
 # Implementation status
 
-Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records owner answers to Q1–Q15; fixed retention periods, leave accrual/carry-forward, score formulas, vendor CAD sharing controls and final architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
+Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records owner answers to Q1–Q15; C-003 fixes retention durations; leave accrual/carry-forward, score formulas, vendor CAD sharing controls and final architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
 
 | Proposed release | Slices | Status | Gate |
 | --- | --- | --- | --- |

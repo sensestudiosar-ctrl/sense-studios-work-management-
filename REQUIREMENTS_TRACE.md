@@ -7,7 +7,8 @@ This is a coverage index, not an implementation claim. Each section can contain 
 | Requirement ID | Source section | Planned module | Planned slice(s) | Status |
 | --- | --- | --- | --- | --- |
 | C-001 | Approved clarification: Branch-only organization hierarchy; overrides organizational terminology in R-004, R-006, R-007, R-092–R-094, R-103 and R-113 | ORG/ACC/PRJ | S03/S07 | APPROVED DECISION; NOT IMPLEMENTED |
-| C-002 | Approved Q1–Q15 answers; Q8 periods, Q10 accrual, Q12 formulas and Q13 vendor share controls remain open | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED DECISIONS; DETAILS OPEN; NOT IMPLEMENTED |
+| C-002 | Approved Q1–Q15 answers; Q8 fixed by C-003; Q10 accrual, Q12 formulas and Q13 vendor share controls remain open | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED DECISIONS; DETAILS OPEN; NOT IMPLEMENTED |
+| C-003 | Approved Q8 category retention durations; legal/contract validation and purge mechanics remain design gates | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED DECISION; NOT IMPLEMENTED |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
 | R-002 | PRODUCT VISION | PRJ | S07 | NOT STARTED |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |

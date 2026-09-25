@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original interview options and records approved owner answers in C-002. C-001 fixes Organization → Branch → Team → Employee with no Brand or Department tier. Every project has one owning branch, with explicit cross-branch assignments. Q8 retention periods, Q10 leave accrual/carry-forward values, Q12 score formulas and Q13 vendor CAD sharing controls still need specifics. Final architecture remains subject to explicit owner approval.
+This preserves the original interview options and records approved owner answers in C-002. C-001 fixes Organization → Branch → Team → Employee with no Brand or Department tier. Every project has one owning branch, with explicit cross-branch assignments. C-003 fixes Q8 retention durations. Q10 leave accrual/carry-forward values, Q12 score formulas and Q13 vendor CAD sharing controls still need specifics. Final architecture remains subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -66,7 +66,7 @@ This preserves the original interview options and records approved owner answers
 **A:** Retain business evidence indefinitely until a later documented policy; set shorter privacy retention for site selfies.
 **B:** Specify fixed periods now by data category.
 **Initial technical recommendation:** B before production, with legal/business advice where needed; never hard-delete protected evidence without policy.
-**Owner answer (2026-09-25):** B — Fixed periods per category. Exact periods remain open; no deletion period is approved yet.
+**Owner answer (2026-09-25):** B — Fixed periods per category; C-003 follow-up Schedule A sets 10 years for approvals/drawings/audit, 7 years after exit for employee records and 90 days for site selfies. Legal/contract review and purge mechanics remain production gates.
 
 ## Before workforce, site and analytics releases
 
@@ -92,7 +92,7 @@ This preserves the original interview options and records approved owner answers
 **A:** Allow a provisional check-in with reason and manager review; retain evidence under a defined privacy period.
 **B:** Reject check-in until all evidence is captured online.
 **Initial technical recommendation:** A with clear audit and an exception queue.
-**Owner answer (2026-09-25):** A — Provisional check-in with reason and manager review when evidence/connectivity is missing. Privacy retention remains open.
+**Owner answer (2026-09-25):** A — Provisional check-in with reason and manager review when evidence/connectivity is missing. C-003 fixes selfie retention at 90 days.
 
 ### Q12 — Performance and health policies
 **Question:** Who approves score weights, thresholds, exclusions and later changes for employee, Team Leader and project health scores?

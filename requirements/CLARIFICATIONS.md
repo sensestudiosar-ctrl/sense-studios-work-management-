@@ -23,3 +23,9 @@ Q8 B: use fixed retention periods by data category. The owner has not supplied t
 Q13 is a custom answer: clients receive PDF and image files only. Vendors may need CAD downloads using the NAS's sharing capabilities. The precise vendor share approval, expiry, revocation, audit and portal handoff workflow remains to be approved; do not assume direct NAS folder access or that large files must pass through the public app Tunnel. Q14 A: one organization-wide Client record may link to branch-owned leads/projects, with contact views scoped by permission. Q15 A: only the Owner may grant an employee cross-branch project access; grant and revocation are audited.
 
 These answers refine the preserved source and C-001. They approve product rules, not the final implementation architecture. Open policy details and the final architecture approval gate remain in REQUIREMENT_QUESTIONS.md and AGENTS.md.
+
+## C-003 — Fixed retention schedule for Q8 (approved 2026-09-25)
+
+The owner selected follow-up Schedule A for Q8. Retain client approval evidence, issued drawings and audit records for **10 years**; exited-employee records for **7 years after exit**; and site attendance selfies for **90 days**. The attendance event may remain after its selfie expires, subject to the applicable employee-record policy. This completes the duration choice in C-002 Q8 and the selfie duration needed for Q11.
+
+The schedule's legal and contract fit must be checked before production. Record expiry clock start, legal-hold exceptions, backup expiry and controlled purge/audit behavior in the final architecture. For planning, use project closure for approvals/drawings, event time for audit/selfies and exit date for employee records; these clock anchors are implementation proposals, not additional owner-approved durations. No application behavior or deletion job is implemented.

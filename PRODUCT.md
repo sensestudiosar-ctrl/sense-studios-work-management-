@@ -26,7 +26,7 @@ The approved organizational hierarchy is Organization → Branch → Team → Em
 ## Rules that must survive implementation
 
 - An Active project has exactly one accountable Project Lead; every task has exactly one primary owner (R-013, R-018, R-092).
-- Client approval binds the exact item and revision; approved and superseded evidence is retained. Important changes produce append-only audit evidence, including actor and reason (R-028, R-034, R-079–R-080, R-092).
+- Client approval binds the exact item and revision; approved and superseded evidence is retained for its approved C-003 period. Important changes produce append-only audit evidence, including actor and reason (R-028, R-034, R-079–R-080, R-092).
 - Revoked permissions stop future access; branch data cannot leak. External users never see internal employee performance or unrestricted NAS paths (R-006, R-036, R-075, R-092).
 - External delay is separated from employee-caused delay; score changes remain explainable and evidence-backed. Quality counts more than speed; attendance and estimated-versus-actual hours have limited weight (R-031, R-061–R-067, R-092).
 - High-impact automation and AI prepare recommendations for human approval; they never finalize assignment, commitments, deletion, publication, or external communication alone (R-054, R-083, R-087–R-090, R-092).
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 and C-002 record approved owner decisions. Retention periods, leave accrual/carry-forward values, scoring formulas, vendor CAD sharing controls and final architecture approval remain open in REQUIREMENT_QUESTIONS.md; proposals in ARCHITECTURE.md are not approved product behavior.
+C-001 through C-003 record approved owner decisions, including fixed category retention durations. Leave accrual/carry-forward values, scoring formulas, vendor CAD sharing controls and final architecture approval remain open in REQUIREMENT_QUESTIONS.md; proposals in ARCHITECTURE.md are not approved product behavior.

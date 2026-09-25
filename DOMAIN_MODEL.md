@@ -57,7 +57,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | Timer / TimeEntry / TimeChange | Start/pause/resume/stop or manual time against work or non-project activity. | Lock after manager approval/export; corrections retain versions, reason and editor; accounting re-export is idempotent. |
 | WorkSchedule / Override / Holiday | Expected days/hours and temporary availability. | Effective-dated; capacity accounts for leave and existing allocations. |
 | LeaveRequest / LeaveBalance | Configurable leave type, allocation, used and carry-forward; Work from Home is a separate attendance/schedule request. | WFH does not consume leave; leave accrual/carry-forward values remain open; approved leave triggers impact analysis. |
-| AttendanceRecord / Evidence | Check-in/out, site location/QR/selfie where relevant. | Missing evidence/connectivity creates provisional check-in with reason and manager review; privacy retention period open. |
+| AttendanceRecord / Evidence | Check-in/out, site location/QR/selfie where relevant. | Missing evidence/connectivity creates provisional check-in with reason and manager review; site selfie expires after 90 days under C-003; check legal/contract holds before purge. |
 | Skill / RatingChange | Employee skill profile and official controlled level. | Training may recommend; only authorized approval changes official rating. |
 | CapacityAllocation | Per-person task effort against schedule and availability. | Daily/weekly/monthly workload categories from configurable thresholds. |
 | SiteWorkPackage / ManpowerEntry / Progress | Turnkey site plan, people, planned/actual quantity or percentage. | Site responsible person validates reported progress. |

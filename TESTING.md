@@ -7,9 +7,9 @@ Current repository contains only planning documentation and the approved require
 | Layer | What it must prove |
 | --- | --- |
 | Unit | State transition tables, permission predicates, date/leave/capacity calculations, revision numbering, scoring formulas, delay attribution, idempotency and validation. |
-| Database/integration | Foreign keys, uniqueness, branch/project ownership, one active lead and task owner, immutable evidence, transactions/outbox, concurrent timer/approval/revision writes, rollback and migration safety. Use isolated PostgreSQL fixtures. |
+| Database/integration | Foreign keys, uniqueness, branch/project ownership, one active lead and task owner, immutable evidence within approved retention, policy expiry/hold constraints, transactions/outbox, concurrent timer/approval/revision writes, rollback and migration safety. Use isolated PostgreSQL fixtures. |
 | API/authorization | Real server request tests for allowed/denied actions, ID tampering, cross-branch Owner-granted versus unassigned access and Owner-approved project transfer, client PDF/image and vendor CAD isolation, confidential file streaming, revocation and forced logout. |
-| Storage/integration | NAS adapter against a temporary test share/fixture; upload interruption, checksum, orphan reconciliation, no path traversal, no raw path disclosure; accounting/calendar retries and dedupe. |
+| Storage/integration | NAS adapter against a temporary test share/fixture; retention expiry and legal-hold simulation, upload interruption, checksum, orphan reconciliation, no path traversal, no raw path disclosure; accounting/calendar retries and dedupe. |
 | E2E | Critical real-user journeys in browser with persisted data and refresh. Cover desktop and mobile viewport, loading/empty/error states, permission changes, portal roles and downloads. |
 | PWA/offline | IndexedDB local IDs, interrupted/replayed sync, conflict display, unsupported browser fallback, no duplicate site reports/photos. Test offline/online transitions in supported browsers. |
 | Security/recovery | Dependency/secret scanning, upload validation, session/CSRF behavior, backup restore drill, audit tamper checks, startup/health and migration rehearsal. |
