@@ -1,34 +1,35 @@
 # Agent instructions
 
-Initial setup is approved. Phase 2 is requirements intake and system planning, but the approved product requirements have not been supplied: the Phase 2 attachment ends with a paste placeholder. Do not implement product features, select a technology stack, or infer business rules from the project name. Once the complete requirements arrive, analyze and review them before implementation.
+Initial setup is approved. The product source is requirements/APPROVED_REQUIREMENTS.md. The owner's newer explicit decisions in DECISIONS.md supersede its brand wording: use branches, each project has one owning branch, and employees may work across branches only through explicit assignment. Phase 2 architecture is a proposal. Do not implement product features, install a stack or create migrations until the owner approves the architecture and resolves decisions needed for the slice.
 
-## Source of truth
+## Source of truth and reading order
 
-Use, in order: the owner's current instruction; approved requirements when supplied; recorded decisions; intended architecture; existing implementation; agent assumptions. Report conflicts instead of silently changing requirements.
+Use, in order: current owner instruction; approved requirements plus newer owner decisions; approved architecture decisions; intended architecture; existing implementation; agent assumptions. Report conflicts rather than silently changing requirements.
+
+For a task, read CURRENT_STATE.md and IMPLEMENTATION_STATUS.md, then its entry in MODULE_REGISTRY.md and relevant PRODUCT.md, REQUIREMENTS_TRACE.md, ARCHITECTURE.md, DOMAIN_MODEL.md, DATABASE.md, PERMISSIONS.md, WORKFLOWS.md, FILE_STORAGE.md and TESTING.md. Inspect only the source and callers needed after that. The full approved source is available when wording matters.
 
 ## Before changing code
 
-1. Read `CURRENT_STATE.md`, `IMPLEMENTATION_STATUS.md`, and the relevant entry in `MODULE_REGISTRY.md`; consult the domain, database, permission, and architecture documents as needed.
-2. Inspect the relevant source, callers, tests, and data consequences. Expand the search only when dependencies require it.
-3. State the task's scope, dependencies, acceptance criteria, and verification plan. Ask the owner to decide unspecified behavior that materially affects workflows, access, ownership, approvals, calculations, notifications, audits, or destructive actions.
-4. Preserve existing work. Do not reset databases, discard unrelated changes, weaken tests or permissions, or perform unrelated refactoring.
+1. Identify the requirement IDs and proposed slice in IMPLEMENTATION_PLAN.md. Expand multi-clause sections to sub-IDs, and state in-scope, out-of-scope, dependencies, acceptance and test plan.
+2. Inspect current behavior, callers, tests and data consequences. Ask the owner to decide unspecified behavior that materially affects workflow, ownership, access, approvals, calculations, notifications, audit or destructive actions.
+3. Preserve existing work. Never reset production-like data, discard unrelated changes, weaken valid tests/permissions or perform unrelated refactoring.
 
 ## Implementation and review
 
-- Prefer small vertical slices with real persistence and server-side business rules. Frontend visibility is not authorization.
-- For meaningful defects, reproduce, trace the root cause, add a regression test where practical, fix, and verify affected behavior.
-- Use existing conventions and the cheapest reliable test layer. Review high-risk work for access bypass, tenant leakage, invalid state transitions, integrity, concurrency, and requirement mismatch.
-- Record significant architecture choices in `DECISIONS.md`. Update context files after meaningful changes; describe implemented behavior only.
-- Classify failures before changing code. Record unrelated, confirmed defects in `KNOWN_ISSUES.md` without widening task scope automatically.
+- Prefer small vertical slices with real persistence and backend-enforced rules. Frontend visibility is not authorization.
+- For meaningful defects, reproduce, trace root cause, add regression coverage where practical, fix and verify affected behavior.
+- Use existing conventions and the cheapest reliable test layer. Review high-risk work for ID tampering, branch leakage, approval bypass, evidence mutation, concurrency and requirement mismatch.
+- Record material approved architecture changes in DECISIONS.md. Update context/status after meaningful changes; describe implemented behavior only.
+- Classify failing checks before changes. Record unrelated confirmed defects separately.
 
 ## Model routing
 
-Use Sol-level reasoning for architecture, schema, authentication, authorization, isolation, complex business logic, difficult debugging, migrations, and ambiguous requirements. Use Luna for routine implementation once architecture is decided. Escalate by reasoning risk, not task size. Model choice does not waive verification.
+Use Sol-level reasoning for architecture, schema, authentication, authorization, branch isolation, state machines, calculations, offline sync, difficult debugging and security review. Use Luna for routine, well-specified implementation after design. Escalate by reasoning risk, not task size. Model choice does not waive verification.
 
 ## Definition of done and reporting
 
-Mark an implementation unit `COMPLETE` only when its applicable acceptance criteria, persistence, authorization, error states, tests, type check, lint, build, and documentation are verified. Mark unverified work `IN PROGRESS` or `BLOCKED` as appropriate. Report what changed, exact verification results, defects, unresolved work, and concrete risks in owner-friendly language. Never claim an unrun check passed.
+Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, permission, real persistence, audit/events, UI states, responsive behavior, tests, type check, lint, build and documentation are verified. Unverified work remains IN PROGRESS or BLOCKED. Report actual changes, exact checks, defects, unresolved work and concrete risks. Never claim an unrun check passed.
 
 ## Repository commands
 
-There are no application, test, lint, type-check, or build commands yet. Update `TESTING.md` and this section after a stack is selected and tooling exists.
+No application/test/lint/type-check/build commands exist yet. Define and verify exact commands during S01 after architecture approval; record them here and in TESTING.md.

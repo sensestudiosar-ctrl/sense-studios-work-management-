@@ -1,0 +1,24 @@
+# Workflows and state machines — planning
+
+Specified sequences below come from the approved source; the newer branch decision supersedes brand wording. Arrows describe intended progression, not permission to skip or reverse a state. Unspecified transitions are marked for owner decision. Every protected transition runs server-side validation, authorization and audit in one business transaction.
+
+| Workflow | Specified path or operations | Controlled transition / unresolved detail |
+| --- | --- | --- |
+| Lead (R-010) | New → Contacted → Meeting/Discussion → Proposal → Negotiation → Won or Lost. | Lost requires reason; Won may convert to Project. Skips/reopen remain unspecified. |
+| Project (R-016) | Draft → Active → On Hold → Completed → Archived; Cancelled alternative. | Active needs exactly one Project Lead; On Hold/Cancelled reason. Owner/authorized Team Lead may override configured gates with actor/reason/time/audit. Whether Hold is optional/resumable and cancellation origins need decision. |
+| Design delivery (R-014) | Measurement → requirements → planning → internal review → client review → corrections → 3D → client approval → working/final drawings → handover. | Template may configure stages/gates; no silent gate bypass. |
+| Turnkey delivery (R-015) | Design approval → BOQ → cost approval → materials → procurement → factory → site → quality → snags → handover. | Operational procurement in this app; financial processing in accounting app. Commitments and approvals require authorized humans. |
+| Task (R-024–R-026) | Not Started → In Progress → Waiting → Submitted Internal Review → In Internal Review → Corrections Required → Internal Approved → Submitted Client Review → In Client Review → Client Revision Required → Client Approved → Completed. | Review steps skipped only when not required. Waiting needs cause/dependency and likely interrupts active work; exact resume semantics need decision. Dependency warning allows early start with event. Overdue is derived. |
+| Internal review/correction (R-027–R-029) | Submission → review round → Approved or Corrections Required → correction task → revised submission → new review round. | Reviewer must be authorized/assigned. Preserve each round, comment/markup/version/time/decision/severity/category. Escalation and deadline changes require their separate authority. |
+| Client review/approval (R-031–R-034) | Submitted revision → client review → item approval, rejection or revision request; partial approval possible. | Primary client is final authority unless explicitly delegated. Approval binds exact item/revision and signature evidence. Team Lead/Owner classify revision cause; changes audited. |
+| Document/revision (R-030, R-037–R-038) | Working → Submitted → Reviewed → Approved → Issued → Superseded. Internal R0/R1/...; client CR1/CR2/... | Revision reason required. Newer approved revision makes previous Superseded—Do Not Use. Formal issue creates transmittal; critical issue may require acknowledgement. Reject/correction path and R/CR relation unresolved. |
+| Time (R-041–R-042) | Timer Start ↔ Pause/Resume → Stop; manual entry allowed. | Concurrent timers prevented/detected. Existing entry corrections append old/new/reason/editor/time. Lock/export policy unresolved. |
+| Leave (R-049–R-050) | Request → authorized one/multilevel decision → approved leave reduces capacity and triggers affected-task analysis. | Leave type/balance policy and cancellation/reversal rules unresolved. Emergency leave runs analysis immediately. |
+| Attendance (R-051) | Check-in → check-out; late/early/missing derived. | Site check-in uses location + QR + selfie. Missing punch correction and data-retention policy unresolved. |
+| Skill/training (R-044–R-045, R-055–R-057) | Training assigned → completed/assessed → skill recommendation → Team Lead/Owner approval → official rating change. | Completion alone never upgrades skill. SOP publication/version/acknowledgement stays separate. |
+| Snag (R-070) | Open → Assigned → In Progress → Ready for Verification → Verified → Closed. | Failed verification may reopen; assigned/verification authority needs policy. |
+| Deletion (R-081) | Employee request → Team Lead/Owner decision → hide from normal view if approved. | Important evidence persists; retention/hard-delete policy unresolved. |
+| Automation/AI (R-054, R-083, R-089) | Event/recommendation → proposed high-impact action → human approval → domain command. | Low-risk notification/report may run automatically; high-impact action cannot bypass ordinary permissions or approval. |
+| Employee exit (R-092) | Access active → exited/revoked. | Historical project/task/audit references remain; exact HR states unresolved. |
+
+Each transition later needs a transition table of from/to, actor/scope, preconditions, effects, audit/event, invalid-transition test and recovery behavior. Do not infer missing arrows from the displayed default sequences.

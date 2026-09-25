@@ -1,5 +1,13 @@
 # Project map
 
-As of 2026-09-25, this repository contains only setup documentation. There is no application source, frontend, backend, shared package, test suite, database migration, deployment configuration, or storage integration.
+As of 2026-09-25, there is no application source, frontend, backend, tests, migrations or deployment configuration. The repository contains only planning documents and the approved source.
 
-The root Markdown files are the project context. Start with `AGENTS.md`, `CURRENT_STATE.md`, `IMPLEMENTATION_STATUS.md`, and `MODULE_REGISTRY.md`; then read topic-specific files. Update this map when directories and entry points are introduced.
+- requirements/APPROVED_REQUIREMENTS.md — verbatim approved source (115 numbered sections).
+- AGENTS.md, CURRENT_STATE.md, IMPLEMENTATION_STATUS.md — entry points and status.
+- PRODUCT.md, REQUIREMENTS_TRACE.md — product summary and source-section IDs to modules/slices.
+- MODULE_REGISTRY.md, IMPLEMENTATION_PLAN.md — planned boundaries, dependency order and vertical slices.
+- ARCHITECTURE.md, DATABASE.md, DOMAIN_MODEL.md, PERMISSIONS.md, WORKFLOWS.md, FILE_STORAGE.md, EVENT_CATALOGUE.md — proposed architecture and rules.
+- TESTING.md — planned gates and critical E2E journeys.
+- DECISIONS.md, REQUIREMENT_QUESTIONS.md, KNOWN_ISSUES.md — approved corrections, pending owner decisions and confirmed risks/defects.
+
+Update this map when code, entry points, migrations, test commands or integrations actually exist.
