@@ -63,7 +63,11 @@ The Owner selected OD-09 option B. A Lost lead stays Lost with its reason, outco
 
 ## 2026-09-25 — C-019: Reasoned backward moves for active leads (approved)
 
-The Owner selected OD-10 option A. An authorized handler may move a lead that has not been Won or Lost to an earlier nonterminal sales stage when real work returns there, with a required reason, actor and time. The earlier stage history and activities remain; reporting shows both the previous progress and the current stage. This does not undo a previously issued proposal, change a formal client decision or reopen Won/Lost leads. C-019 in requirements/CLARIFICATIONS.md is authoritative. OD-11 on site snag verification authority is open; final architecture approval and S01 remain pending.
+The Owner selected OD-10 option A. An authorized handler may move a lead that has not been Won or Lost to an earlier nonterminal sales stage when real work returns there, with a required reason, actor and time. The earlier stage history and activities remain; reporting shows both the previous progress and the current stage. This does not undo a previously issued proposal, change a formal client decision or reopen Won/Lost leads. C-019 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review continues; final architecture approval and S01 remain pending.
+
+## 2026-09-25 — C-020: Named independent verifier for each site snag (approved)
+
+The Owner selected OD-11 option A. The assigned Project Lead or a Team Leader with explicit project/site authority appoints a verifier for each snag. The verifier must have access to that snag and must differ from the person who repaired it. Assignment and any later reassignment are recorded. The named verifier records a passed or failed check with supporting evidence; a failed check returns the same snag to In Progress without losing history. Verification itself does not settle who may make the separate Closed transition. C-020 in requirements/CLARIFICATIONS.md is authoritative. OD-12 on final snag closure is open; final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 

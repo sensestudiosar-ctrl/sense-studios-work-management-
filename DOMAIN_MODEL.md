@@ -62,7 +62,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | Skill / RatingChange | Employee skill profile and official controlled level. | Training may recommend; only authorized approval changes official rating. |
 | CapacityAllocation | Per-person task effort against schedule and availability. | Daily/weekly/monthly workload categories from configurable thresholds. |
 | SiteWorkPackage / ManpowerEntry / Progress | Turnkey site plan, people, planned/actual quantity or percentage. | Site responsible person validates reported progress. |
-| DailySiteReport / Snag | Confirmed site daily evidence and defect resolution. | Report retains source/photos; snag can reopen after failed verification. OD-11 will settle who may verify a snag. |
+| DailySiteReport / Snag | Confirmed site daily evidence and defect resolution. | Report retains source/photos; C-020 gives each snag a named verifier appointed by the assigned Project Lead/authorized Team Leader, different from its fixer. Verification attempts and failed checks remain historical evidence; OD-12 will settle closure authority. |
 | SOPVersion / KnowledgeEntry | Versioned instructions, standards and submitted lessons. | Publication approved; old versions and acknowledgements retained. |
 | TrainingAssignment / Assessment | Video/SOP/quiz/practical/reviewer learning and outcomes. | Completion is not official skill upgrade; recommendation needs approval. |
 
@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-11 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-12 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.

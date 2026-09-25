@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-019 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-020 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -200,12 +200,20 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because design scope and client decisions often change during negotiation. Engineering can retain every stage change, require the reason and show stage movement honestly; the Owner must choose what the current sales stage means for operations and reporting.
 **Owner answer (2026-09-25):** A — An authorized lead handler may move a nonterminal lead back to an earlier stage after a real sales change, with a required reason and preserved history (C-019).
 
-### OD-11 — Who verifies a site snag before it closes? (OPEN)
+### OD-11 — Who verifies a site snag before it closes? (RESOLVED)
 **Product/business decision for the Owner:** A site worker or vendor says a snag is fixed. Who is allowed to check the result and mark it Verified before closure? For example, a joinery defect in a turnkey apartment is repaired and someone must confirm the finish is acceptable. This affects the site task list, quality record and handover (R-070, S20).
 **A:** The Project Lead or authorized Team Leader names a verifier for each snag; the verifier must be someone other than the person who fixed it. The right expert can inspect each issue and responsibility is clear, but someone must assign the verifier.
 **B:** The project's designated site responsible person verifies every snag. The rule is simple and consistent, but verification can stall when that person is absent or lacks the right expertise.
 **C:** The person who reported the snag verifies it. They know what was wrong originally, but they may be unavailable or may not have authority to accept the completed work.
 **Technical recommendation:** A, because different snags need different checks and separating the fixer from the verifier protects the quality record. Engineering can enforce the assignment, keep photo/comment evidence, and reopen a failed check; the Owner must decide who has acceptance authority.
+**Owner answer (2026-09-25):** A — The assigned Project Lead or authorized Team Leader names a verifier for each snag; the verifier must be different from the person who repaired it (C-020).
+
+### OD-12 — Who marks a verified site snag Closed? (OPEN)
+**Product/business decision for the Owner:** After the named verifier confirms a repaired snag passes inspection, who makes the separate final Closed decision? For example, a joinery repair passes inspection, but the project record still needs its final closure before handover. This affects the site quality list and handover evidence (R-070, S20).
+**A:** The named verifier may mark it Closed after recording a passed check. Fast and simple, but the same person handles verification and final closure.
+**B:** The assigned Project Lead or explicitly authorized Team Leader marks it Closed after seeing the passed check. Adds a separate management sign-off, but can delay closure if that person is unavailable.
+**C:** The app closes it automatically as soon as verification passes. No extra click, but there is no deliberate final check of records or handover readiness.
+**Technical recommendation:** B, because Verified and Closed are separate steps in the approved workflow; a management check gives Closed a distinct meaning. Engineering can enforce the state order, preserve inspection evidence and record the closer; the Owner must decide the final acceptance authority.
 **Owner answer:** Pending.
 
 ## Already resolved by the owner
