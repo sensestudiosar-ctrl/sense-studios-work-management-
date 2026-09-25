@@ -1,8 +1,21 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. C-002 records the Owner answers to Q1–Q15. C-003–C-024 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and cancellation-task decisions. No owner question is currently open; the section-level consistency review is complete in FINAL_PRE_IMPLEMENTATION_REVIEW.md, while explicit architecture approval remains pending. See REQUIREMENT_QUESTIONS.md and DECISIONS.md.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805 and authorized S01 only. No product/business owner question remains open.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
+
+## S01 runtime evidence
+
+| Source | S01 evidence | Status |
+| --- | --- | --- |
+| R-091 / C-007 | Isolated test PostgreSQL dump and representative file restore; file SHA-256 matched. Offsite encryption, key custody and production restore remain deployment gates. | LOCAL REHEARSAL PASS; PRODUCTION GATES OPEN |
+| R-093 / R-094 / R-103 | Approved modular-monolith stack and S01-only execution boundary recorded in DECISIONS.md and S01_PLAN.md. | APPROVED; FOUNDATION IN PROGRESS |
+| R-099 | Validated runtime configuration and ignored local environment files; no committed production credential identified. | LOCAL CHECK PASS |
+| R-100 | Unit, API, desktop/mobile browser, typecheck, lint and build commands executed through pnpm verify. | PASS |
+| R-101 / R-102 | Failures fixed and checks rerun; status remains incomplete because Compose/CI were not verified. | PARTIAL; S01 IN PROGRESS |
+| C-007 | Encrypted offsite target, key custody and production restore are documented as production gates. | DOCUMENTED; NOT DEPLOYED |
+
+The Owner's source remains verbatim. Requirements for business slices remain approved but not implemented; this evidence does not claim business functionality.
 
 | Requirement ID | Source section | Planned module | Planned slice(s) | Status |
 | --- | --- | --- | --- | --- |

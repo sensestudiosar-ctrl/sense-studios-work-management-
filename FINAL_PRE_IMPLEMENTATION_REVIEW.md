@@ -12,7 +12,7 @@ The original source remains verbatim. C-001 replaces organizational Brand/Depart
 
 ## 3. Final architecture proposal
 
-Use a single repository and modular monolith: responsive web/PWA → versioned REST API → server-side authentication and authorization → owning domain service → PostgreSQL transaction. A transactional outbox drives notifications, reminders, reconciliation and integrations. External portals use the same API with narrower policies. NAS file operations use staging and reconciliation because they cannot share a PostgreSQL transaction. No UI, background worker or future AI path bypasses domain checks. The architecture remains a proposal until Owner approval.
+Use a single repository and modular monolith: responsive web/PWA → versioned REST API → server-side authentication and authorization → owning domain service → PostgreSQL transaction. A transactional outbox drives notifications, reminders, reconciliation and integrations. External portals use the same API with narrower policies. NAS file operations use staging and reconciliation because they cannot share a PostgreSQL transaction. No UI, background worker or future AI path bypasses domain checks. The Owner approved this architecture at checkpoint 2e46805; S01 Runtime and Verification is in progress.
 
 ## 4. Final technology stack proposal
 

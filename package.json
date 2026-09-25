@@ -1,0 +1,33 @@
+{
+  "name": "sense-studios-work-management",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@11.19.0",
+  "engines": {
+    "node": ">=24.19.0 <25",
+    "pnpm": "11.19.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @sense/contracts build && pnpm --parallel --filter @sense/api --filter @sense/web dev",
+    "build": "pnpm --filter @sense/contracts build && pnpm --filter @sense/api build && pnpm --filter @sense/web build",
+    "typecheck": "pnpm --filter @sense/contracts build && pnpm --filter @sense/contracts typecheck && pnpm --filter @sense/api typecheck && pnpm --filter @sense/web typecheck",
+    "lint": "eslint .",
+    "test:unit": "pnpm --filter @sense/api test:unit && pnpm --filter @sense/web test:unit",
+    "test:integration": "pnpm --filter @sense/api test:integration",
+    "test:e2e": "playwright test",
+    "test": "pnpm test:unit && pnpm test:integration",
+    "db:generate": "pnpm --filter @sense/api db:generate",
+    "db:migrate:dev": "pnpm --filter @sense/api db:migrate:dev",
+    "db:migrate:deploy": "pnpm --filter @sense/api db:migrate:deploy",
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm test:e2e"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.63.0",
+    "@types/node": "^24.13.6",
+    "eslint": "10.11.0",
+    "globals": "17.12.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.70.1"
+  }
+}

@@ -1,0 +1,63 @@
+name: S01 quality
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      CI: "true"
+      DATABASE_URL: postgresql://sense_s01:ci-only-password@127.0.0.1:5432/sense_s01_test
+      S01_DB_USER: sense_s01
+      S01_DB_NAME: sense_s01_test
+      S01_DB_PASSWORD: ci-only-password
+      S01_DB_PORT: "55432"
+      S01_DATABASE_URL: postgresql://sense_s01:ci-only-password@db:5432/sense_s01_test
+    services:
+      postgres:
+        image: postgres:17.10-alpine3.24
+        env:
+          POSTGRES_USER: sense_s01
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: sense_s01_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sense_s01 -d sense_s01_test"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+      - run: pnpm db:migrate:deploy
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Container and recovery rehearsal
+        run: |
+          docker compose -f infra/compose.yaml config --quiet
+          docker compose -f infra/compose.yaml up --build --detach
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8080/api/v1/health/ready; then break; fi
+            sleep 2
+          done
+          curl --fail http://127.0.0.1:8080/api/v1/health/ready
+          node scripts/rehearse-backup.mjs
+      - name: Stop test containers
+        if: always()
+        run: docker compose -f infra/compose.yaml down --volumes --remove-orphans

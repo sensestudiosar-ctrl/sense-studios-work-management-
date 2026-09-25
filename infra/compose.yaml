@@ -1,0 +1,78 @@
+name: sense-studios-s01
+
+services:
+  db:
+    image: postgres:17.10-alpine3.24
+    environment:
+      POSTGRES_USER: ${S01_DB_USER:?Set S01_DB_USER in the untracked env file}
+      POSTGRES_DB: ${S01_DB_NAME:?Set S01_DB_NAME in the untracked env file}
+      POSTGRES_PASSWORD: ${S01_DB_PASSWORD:?Set S01_DB_PASSWORD in the untracked env file}
+    ports:
+      - "127.0.0.1:${S01_DB_PORT:-55432}:5432"
+    volumes:
+      - s01-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  migrate:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.api
+    command: ["pnpm", "--filter", "@sense/api", "db:migrate:deploy"]
+    environment:
+      DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+  api:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.api
+    environment:
+      NODE_ENV: staging
+      PORT: "4000"
+      WEB_ORIGIN: http://localhost:8080
+      DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/v1/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.api
+    command: ["node", "apps/api/dist/worker.js"]
+    environment:
+      NODE_ENV: staging
+      PORT: "4000"
+      WEB_ORIGIN: http://localhost:8080
+      DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile.web
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  s01-postgres:

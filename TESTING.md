@@ -1,6 +1,18 @@
-# Testing architecture — planned, no tests or tooling installed
+# Testing architecture — S01 commands and evidence
 
-Current repository contains only planning documentation and the approved requirements source. There are no application build, type-check, lint or test commands; no checks are claimed to pass.
+Architecture is approved at checkpoint 2e46805. S01 quality commands are implemented and verified locally. Business workflow tests below remain planned for their respective slices and have not been implemented.
+
+## S01 commands and verified results
+
+- pnpm install --frozen-lockfile — passed with pnpm 11.19.0, including from a clean copy without node_modules or generated files.
+- pnpm db:generate and pnpm --filter @sense/api db:validate — passed with Prisma 7.10.0.
+- pnpm db:migrate:deploy against a fresh isolated PostgreSQL 16.15 test database — passed; migration status reported up to date.
+- Restored the test database dump to a separate test database; verified the fixture row and reran Prisma migration deploy — passed. The reusable rehearsal also stores the representative file SHA-256 in the fixture row and confirmed the restored file matches it.
+- Stopped PostgreSQL while the API was running: /api/v1/health/ready returned 503 while /api/v1/health/live remained 200; readiness returned 200 after restart.
+- pnpm verify — passed locally and in a clean copy: typecheck, lint, unit tests (5), API tests (3), production build and Playwright desktop/mobile checks (4).
+- Docker Desktop 29.8.0 and Compose 5.5.1: Compose configuration validation, image builds, service startup, PostgreSQL health, migration, worker/API/web startup, web-proxied API readiness and database/file recovery rehearsal all PASSED on 2026-09-25. OpenSSL installation resolved Prisma engine auto-detection; Prisma client generation has no fallback warning. Local frozen install, generation, migration and pnpm verify passed after this fix. The actual hosted GitHub Actions workflow has NOT RUN. The supplied remote is configured locally, but automatic review rejected publishing the S01 source pending explicit Owner approval.
+
+For PowerShell, set the environment variable DATABASE_URL to a dedicated test database URL before pnpm db:migrate:deploy. To run all local quality gates, use pnpm verify. Compose recovery requires Docker plus the untracked values documented in .env.compose.example, then node scripts/rehearse-backup.mjs.
 
 ## Planned layers and gates
 
@@ -34,4 +46,4 @@ Use the cheapest reliable test layer. Meaningful defects should get a regression
 
 ## Test data and status
 
-Fixtures must span at least two branches, two projects and multiple actor types, with distinct confidential files and a cross-branch assignment. Use deterministic clocks for reminders/time zones and explicit causal event IDs for notifications. No test runner exists yet, so all planned checks are NOT RUN. Future commands will be recorded in AGENTS.md and here after implementation approval.
+S01 tests contain no business fixtures. The business test plan below expects fixtures spanning at least two branches, two projects and multiple actor types, with distinct confidential files and explicit cross-branch assignment. Use deterministic clocks for reminders/time zones and causal event IDs for notifications. These checks are NOT RUN until their owning slices are authorized and implemented.

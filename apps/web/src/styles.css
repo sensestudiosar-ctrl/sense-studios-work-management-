@@ -1,0 +1,51 @@
+:root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #182c29;
+  background: #f4f1e9;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+button, a { font: inherit; }
+a { color: inherit; }
+
+.app-shell { min-height: 100vh; display: flex; flex-direction: column; }
+.site-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.4rem clamp(1.25rem, 4vw, 4rem); border-bottom: 1px solid #d9d8cd; background: #faf8f2; }
+.brand { display: flex; align-items: center; gap: .85rem; text-decoration: none; }
+.brand-mark { display: grid; place-items: center; width: 2.7rem; height: 2.7rem; border-radius: .7rem; background: #182c29; color: #e7c680; font: 700 1.7rem Georgia, serif; }
+.brand strong, .brand small { display: block; letter-spacing: .14em; }
+.brand strong { font-size: .82rem; }
+.brand small { margin-top: .2rem; font-size: .55rem; color: #697b75; }
+.phase-badge { border: 1px solid #a4b1a5; border-radius: 999px; padding: .45rem .75rem; color: #426457; font-size: .66rem; font-weight: 700; letter-spacing: .12em; }
+.main-content { flex: 1; width: min(100%, 880px); margin: 0 auto; padding: clamp(3.5rem, 8vw, 6.5rem) 1.25rem 4rem; }
+.eyebrow, .panel-label { color: #96743e; font-size: .72rem; font-weight: 800; letter-spacing: .16em; }
+h1 { max-width: 740px; margin: 1rem 0 1.2rem; font: 500 clamp(2.7rem, 7vw, 5.3rem)/1.05 Georgia, serif; letter-spacing: -.045em; }
+.intro { max-width: 620px; margin: 0 0 3rem; color: #50645b; font-size: clamp(1rem, 2vw, 1.17rem); line-height: 1.65; }
+.status-panel, .empty-panel { background: #fffdf7; border: 1px solid #d9d8cd; border-radius: 1.15rem; box-shadow: 0 10px 35px #192c2810; }
+.status-panel { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: 130px; padding: 1.5rem 1.8rem; }
+.panel-label { margin: 0 0 .5rem; }
+h2 { margin: 0; font: 500 1.55rem Georgia, serif; }
+.status-line { display: flex; align-items: center; gap: .55rem; margin: 0; color: #50645b; font-size: .92rem; }
+.status-dot { display: inline-block; flex: none; width: .6rem; height: .6rem; border-radius: 50%; }
+.status-dot.pending { background: #c4a56a; }
+.status-dot.ready { background: #5c9670; }
+.status-dot.error { background: #b45b4d; }
+.connection-error { display: flex; align-items: center; gap: 1rem; }
+button, .home-link { border: 1px solid #446257; border-radius: .55rem; background: #182c29; color: white; padding: .65rem .85rem; cursor: pointer; text-decoration: none; font-weight: 650; }
+button:hover, .home-link:hover { background: #35534a; }
+button:focus-visible, a:focus-visible { outline: 3px solid #b98f49; outline-offset: 3px; }
+.empty-panel { display: flex; align-items: center; gap: 1.3rem; margin-top: 1rem; padding: 1.6rem 1.8rem; background: transparent; box-shadow: none; }
+.empty-panel p { max-width: 580px; margin: .5rem 0 0; color: #61736b; line-height: 1.5; }
+.empty-mark { display: grid; flex: none; place-items: center; width: 3.2rem; height: 3.2rem; border: 1px solid #b8bba9; border-radius: 50%; color: #a38551; font: 1.9rem Georgia, serif; }
+.site-footer { padding: 1.3rem clamp(1.25rem, 4vw, 4rem); border-top: 1px solid #d9d8cd; color: #6b7c72; font-size: .78rem; }
+.home-link { display: inline-block; }
+
+@media (max-width: 640px) {
+  .site-header { padding: 1rem 1.25rem; }
+  .phase-badge { font-size: .58rem; padding: .4rem .55rem; }
+  .status-panel { align-items: flex-start; flex-direction: column; }
+  .connection-error { align-items: flex-start; flex-direction: column; }
+  .empty-panel { align-items: flex-start; }
+}

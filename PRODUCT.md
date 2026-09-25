@@ -1,6 +1,6 @@
 # Product context — approved requirements, planning only
 
-The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. No product feature exists yet.
+The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805 and S01 foundation work is in progress. No business product feature exists yet.
 
 ## Purpose and boundary
 
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 through C-024 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. No owner question is currently open. The final planning consistency review is complete in FINAL_PRE_IMPLEMENTATION_REVIEW.md; architecture approval remains pending, and proposals in ARCHITECTURE.md are not yet approved product behavior.
+C-001 through C-024 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. No owner question is currently open. The final planning consistency review is complete in FINAL_PRE_IMPLEMENTATION_REVIEW.md; the architecture was approved at checkpoint 2e46805; remaining content records approved policies and future slice design.

@@ -1,6 +1,6 @@
-# Conceptual database architecture — no schema or migrations yet
+# Database architecture — S01 baseline migration established; business schema not started
 
-Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch, with later leave, score, CAD, backup, identity and retention policies recorded separately. No database exists, and names below are conceptual, not a migration contract.
+Approved architecture specifies a PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch, with later leave, score, CAD, backup, identity and retention policies recorded separately. S01 establishes PostgreSQL connectivity, an empty Prisma business schema and one reviewed baseline SQL migration. Domain names below remain conceptual, not a migration contract.
 
 ## Ownership and constraints
 

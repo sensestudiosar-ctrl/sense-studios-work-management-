@@ -1,6 +1,6 @@
 # Agent instructions
 
-Initial setup is approved. The product source is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024 in requirements/CLARIFICATIONS.md. The organizational hierarchy is Organization → Branch → Team → Employee; there is no separate Brand model or Department organizational tier. Each project has one owning branch, and employees may work across branches only through explicit assignment. Phase 2 architecture is a proposal. Perform the requested final consistency review across all planning documents, resolving any new material owner questions one at a time and recording each answer before requesting explicit final architecture approval. Do not implement product features, install a stack or create migrations until all material owner decisions are resolved and the owner explicitly approves the final architecture.
+Architecture is approved by the Owner at checkpoint 2e46805. The Owner authorized S01 Runtime and Verification only; S02 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
 
 ## Source of truth and reading order
 
@@ -32,4 +32,13 @@ Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, per
 
 ## Repository commands
 
-No application/test/lint/type-check/build commands exist yet. Define and verify exact commands during S01 after architecture approval; record them here and in TESTING.md.
+- Required tool versions: Node 24.19.0 and pnpm 11.19.0.
+- Reproducible dependency setup: pnpm install --frozen-lockfile.
+- Generate the Prisma client: pnpm db:generate.
+- Apply reviewed migrations to a dedicated test database by setting DATABASE_URL, then running pnpm db:migrate:deploy.
+- Run all local quality gates: pnpm verify (typecheck, lint, unit/API tests, production build, and desktop/mobile Playwright checks).
+- Inspect/apply the schema workflow with pnpm --filter @sense/api db:validate, db:migrate:status, or db:migrate:dev as appropriate.
+- Compose recovery rehearsal: set S01_DB_USER, S01_DB_NAME, S01_DB_PASSWORD, S01_DB_PORT and S01_DATABASE_URL in an untracked environment file, start infra/compose.yaml, then run node scripts/rehearse-backup.mjs.
+- Do not claim Compose startup or hosted CI is verified until those environments have actually run successfully.
+
+S01 is still in progress while container/CI gates are outstanding. Do not begin S02 without explicit Owner authorization.

@@ -1,16 +1,26 @@
 # Implementation status
 
-Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-024 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. C-017–C-019 resolve the lead pipeline, C-020/C-021 resolve snag verification/closure, and C-022 resolves approved-leave cancellation. C-023/C-024 resolve task and project-lead handover at employee exit; no owner question is currently open; the final planning consistency review is complete in FINAL_PRE_IMPLEMENTATION_REVIEW.md and explicit architecture approval remains open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
+Architecture approved at checkpoint 2e46805. The Owner authorized S01 Runtime and Verification only. S01 is IN PROGRESS; S02 and all later slices are NOT STARTED and unauthorized. No business capability is implemented or marked complete.
 
-| Proposed release | Slices | Status | Gate |
+## Slice status
+
+| Slice | Status | Evidence or gate |
+| --- | --- | --- |
+| S01 Runtime and verification | IN PROGRESS — awaiting hosted CI verification | Fresh and restored-test DB migration, live API readiness outage/recovery, frozen install, typecheck, lint, unit/API tests, builds and desktop/mobile E2E passed. Compose validation, image builds, service startup, web-proxied API readiness and database/file recovery rehearsal passed on Docker 29.8.0 / Compose 5.5.1. The Prisma OpenSSL warning was fixed in the Node image stages and local pnpm verify passed after the change. Hosted GitHub Actions remains unverified. The supplied remote is configured locally, but automatic review rejected publishing the S01 source pending explicit Owner approval. See S01_PLAN.md, TESTING.md and S01_COMPLETION_REPORT.md. |
+| S02 Identity and sessions | NOT STARTED | Wait for S01 completion and explicit Owner authorization. |
+| S03–S27 | NOT STARTED | No later slice work is authorized. |
+
+## Release status
+
+| Release | Slices | Status | Gate |
 | --- | --- | --- | --- |
-| Release 0 foundation | S01–S05 | NOT STARTED | All material owner decisions resolved and explicit final architecture approval; Q1/Q3/Q15 are resolved by C-002. Then verify working auth, branch isolation, audit/outbox and approval core. |
-| Release 1 work core | S06–S10 | NOT STARTED | Lead → project → owned task, state/deadline/dependency and template tests. |
-| Release 2 design control | S11–S15 | NOT STARTED | Exact file revision, internal correction, client approval, transmittal and first real Design project E2E. |
-| Release 3 workforce | S16–S18 | NOT STARTED | Time export, leave/capacity/attendance, skills/training rules verified. |
-| Release 4 Turnkey/site/portals | S19–S22 | NOT STARTED | Second real Turnkey project E2E, portal isolation and offline sync tests. |
-| Release 5 intelligence | S23–S24 | NOT STARTED | Explainable/versioned scores, health, reports and dashboards. |
-| Release 6 integration/automation | S25–S26 | NOT STARTED | Retry-safe integrations and human approval safety. |
-| Later AI | S27 | NOT STARTED | Permission-filtered context and no autonomous high-impact actions. |
+| Release 0 foundation | S01–S05 | S01 IN PROGRESS; S02–S05 NOT STARTED | Complete S01 gates, then receive explicit authorization before S02. |
+| Release 1 work core | S06–S10 | NOT STARTED | Depends on earlier slices. |
+| Release 2 design control | S11–S15 | NOT STARTED | Depends on earlier slices. |
+| Release 3 workforce | S16–S18 | NOT STARTED | Depends on earlier slices. |
+| Release 4 Turnkey/site/portals | S19–S22 | NOT STARTED | Depends on earlier slices. |
+| Release 5 intelligence | S23–S24 | NOT STARTED | Depends on earlier slices. |
+| Release 6 integration/automation | S25–S26 | NOT STARTED | Depends on earlier slices. |
+| Later AI | S27 | NOT STARTED | Depends on earlier slices. |
 
-See IMPLEMENTATION_PLAN.md for dependencies, DB/API/UI/permission work and acceptance per slice. COMPLETE requires the applicable definition of done in AGENTS.md and recorded verification; UI appearance is insufficient.
+The complete plan is in IMPLEMENTATION_PLAN.md. Slice completion requires applicable acceptance evidence; a successful UI build alone is insufficient.

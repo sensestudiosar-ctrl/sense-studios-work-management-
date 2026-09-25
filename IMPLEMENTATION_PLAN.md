@@ -1,6 +1,6 @@
-# Proposed dependency-based implementation plan
+# Approved dependency-based implementation plan — S01 underway
 
-No implementation is authorized yet. The approved source is requirements/APPROVED_REQUIREMENTS.md plus C-001–C-024 in requirements/CLARIFICATIONS.md; IDs R-001–R-115 are indexed in REQUIREMENTS_TRACE.md. Every slice below is NOT STARTED. Each row names database/backend (DB/API), frontend (UI), authorization, and tests/acceptance. Exact schema and endpoints follow owner decisions and architecture approval. Routing describes approximate reasoning risk, not a tool invocation.
+The Owner approved the architecture at checkpoint 2e46805 and authorized S01 only. The source is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001–C-024; R-001–R-115 are indexed in REQUIREMENTS_TRACE.md. S01 is IN PROGRESS; S02–S27 remain NOT STARTED and unauthorized. Exact schema and endpoints follow the approved architecture and slice-specific acceptance.
 
 ## Dependency hierarchy
 
@@ -74,4 +74,4 @@ Later optional native wrapper, WhatsApp, deep CAD/BIM, advanced forecasting and 
 
 ## Release gates and first step
 
-No slice is complete until its applicable schema, backend, API, permissions, frontend, audit/events, error/loading/empty states, responsive behavior, persisted refresh, targeted tests, type/lint/build, and documentation pass. The first implementation slice after explicit approval is S01; production deployment later depends on NAS verification, the approved Cloudflare Tunnel, offsite-backup connection, email delivery and restore validation. S02–S03 are the first user-facing authorization vertical slices. Architecture and owner decisions must be approved before any of these start.
+No slice is complete until its applicable schema, backend, API, permissions, frontend, audit/events, error/loading/empty states, responsive behavior, persisted refresh, targeted tests, type/lint/build, and documentation pass. S01 is the only authorized slice. Its container/CI verification remains outstanding. Production deployment later depends on NAS verification, the approved Cloudflare Tunnel, offsite-backup connection, email delivery and restore validation. S02–S03 are the first user-facing authorization vertical slices and require explicit Owner authorization before work starts.

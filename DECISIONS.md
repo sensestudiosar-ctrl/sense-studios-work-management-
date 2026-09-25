@@ -88,3 +88,9 @@ The Owner selected OD-15 option A. If an employee exits while serving as the cur
 ## Proposed, not yet approved
 
 ARCHITECTURE.md recommends a TypeScript/React/NestJS/PostgreSQL modular monolith and NAS-hosted Docker deployment if capacity and security checks pass. The owner selected Cloudflare Tunnel for public app ingress in C-002 Q3; the complete architecture is still a proposal. REQUIREMENT_QUESTIONS.md records remaining material product decisions and deployment verification gates before implementation.
+## 2026-09-25 — Final architecture approved; S01 authorized
+
+The Owner approved FINAL_PRE_IMPLEMENTATION_REVIEW.md at checkpoint 2e46805 as the architecture baseline and authorized S01 Runtime and Verification. The approved stack is TypeScript, supported Node LTS, pnpm, React/Vite PWA, NestJS REST/OpenAPI, PostgreSQL, Prisma with reviewed SQL migrations, appropriate Jest/Vitest/Playwright tests and planned Docker Compose. Stable versions are pinned during S01. Business features and S02 onward remain unauthorized. A material change to the architecture requires an intentional recorded decision. S01_PLAN.md maps the implementation work and evidence.
+## 2026-09-25 — S01 execution evidence and remaining gate
+
+The Owner-approved S01 scope has been implemented through the foundation/runtime layer only. An isolated PostgreSQL 16.15 cluster was used because the installed PostgreSQL16-FirmBooksTest service belongs to another application. Fresh and restored-test database migration checks, API database outage/recovery behavior, frozen install, typecheck, lint, unit/API tests, production builds and desktop/mobile browser checks passed. Docker Desktop and Compose are installed, but the engine reports Stopped and did not become ready within 90 seconds. Compose startup and the actual CI workflow remain unverified; S01 stays in progress and S02 has not started.
