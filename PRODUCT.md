@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 through C-022 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. No owner question is currently open. The final consistency review and architecture approval remain pending; proposals in ARCHITECTURE.md are not yet approved product behavior.
+C-001 through C-022 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-14 on unfinished tasks when an employee leaves is open. The final consistency review and architecture approval remain pending; proposals in ARCHITECTURE.md are not yet approved product behavior.

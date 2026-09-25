@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md records resolved OD-13 and any later material product decisions found in the final consistency review. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-14 on ownership of unfinished tasks when an employee leaves, alongside later material product decisions found in the final consistency review. No unsupplied policy should be treated as implemented.

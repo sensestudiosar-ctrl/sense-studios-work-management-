@@ -223,6 +223,13 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** B, because approval may already have changed assignments and capacity. Engineering can preserve the original approval, record a separate reversal, recalculate balances and alert affected task owners; the Owner must decide who has authority to reverse approved leave.
 **Owner answer (2026-09-25):** B — Cancelling approved leave requires approval at the same management level as the original approval, even before the leave starts. Preserve the original decision and record a separate reversal of eligible unused leave (C-022).
 
+### OD-14 — What happens to unfinished tasks when an employee leaves? (OPEN)
+**Product/business decision for the Owner:** If a designer or site employee leaves while owning unfinished tasks, who takes responsibility for those tasks? Their app access must end immediately, while the task history and deadlines remain visible (R-018, R-024, R-092; S03/S09).
+**A:** The departure immediately revokes access and puts each unfinished task in Waiting with a clear "needs reassignment" reason. The departing employee stays recorded as the current owner while the task waits; an authorized manager chooses a new owner before work resumes. This preserves an intentional owner choice, but managers must clear the queue promptly.
+**B:** At departure, an authorized manager approves a bulk transfer: project tasks go to each project's assigned Project Lead and non-project tasks to the employee's Team Leader, only where the recipient already has access. Work stays assigned without a queue, but managers may suddenly own too many tasks or the wrong specialist work; exceptions still need individual reassignment.
+**Technical recommendation:** A, because project drawings and site tasks need the right replacement rather than an automatic catch-all owner. Engineering can revoke access immediately, preserve the departing employee's historical assignment, flag affected deadlines, and require an audited human reassignment; the Owner must choose how operational responsibility is handed over.
+**Owner answer:** Pending.
+
 ## Already resolved by the owner
 
 - C-001: Organization → Branch → Team → Employee; no separate Brand model or Department tier. One owning branch per project.

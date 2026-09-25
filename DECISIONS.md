@@ -75,7 +75,7 @@ The Owner selected OD-12 option B. A snag may move from Verified to Closed only 
 
 ## 2026-09-25 — C-022: Approved leave cancellation requires management approval (approved)
 
-The Owner selected OD-13 option B. An employee may request cancellation of approved leave, but the same level of manager required for the original leave approval must approve the cancellation, including before the leave starts. A pending cancellation does not restore balance or capacity. Approval creates a separate recorded reversal for the unused portion, preserves the original leave approval and ledger history, recalculates affected availability and alerts managers and affected task owners. Existing work handovers are reviewed rather than silently undone. C-022 in requirements/CLARIFICATIONS.md is authoritative. No further owner question is currently recorded; final consistency review, final architecture approval and S01 remain pending.
+The Owner selected OD-13 option B. An employee may request cancellation of approved leave, but the same level of manager required for the original leave approval must approve the cancellation, including before the leave starts. A pending cancellation does not restore balance or capacity. Approval creates a separate recorded reversal for the unused portion, preserves the original leave approval and ledger history, recalculates affected availability and alerts managers and affected task owners. Existing work handovers are reviewed rather than silently undone. C-022 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review has since opened OD-14 on unfinished tasks at employee exit; final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 
