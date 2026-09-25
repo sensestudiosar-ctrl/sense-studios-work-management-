@@ -20,7 +20,7 @@ The approved organizational hierarchy is Organization → Branch → Team → Em
 | Files | NAS as primary physical store; app-controlled access and separate metadata, historical revisions, confidential/view-only controls, private galleries and explicitly published portfolio content. | R-035–R-040 |
 | Workforce | Timers/manual time, reasoned corrections, accounting transfer; skills, training, schedules, capacity, workload, leave and impact analysis, attendance including site validation. | R-041–R-057 |
 | Communication and intelligence | In-app/email at launch, with mobile push later; reminders, summaries; explainable employee/Team Leader performance, project health and delay attribution; dashboards, decision queue, reports and frozen snapshots. | R-058–R-067, R-073–R-074, R-077–R-078 |
-| Site and mobile | Daily site reports, progress, manpower, photos, snags with a named independent verifier chosen by the assigned Project Lead/authorized Team Leader (C-020); responsive installable PWA first, safe offline site capture later. | R-068–R-072, R-098 |
+| Site and mobile | Daily site reports, progress, manpower, photos, snags with a named independent verifier chosen by the assigned Project Lead/authorized Team Leader and separate management closure after verification (C-020/C-021); responsive installable PWA first, safe offline site capture later. | R-068–R-072, R-098 |
 | External and future | Client PDF/image portal, consultant/vendor portals with Owner-controlled file-specific CAD links for assigned consultants/vendors, integrations, guarded automation and provider-independent, permission-filtered AI. Native wrapper, WhatsApp, CAD/BIM, advanced recommendations and custom builders are later work. | R-075–R-076, R-082–R-090, R-103, R-112 |
 
 ## Rules that must survive implementation
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 through C-020 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-12 on final snag closure authority is open. The final consistency review and architecture approval remain pending; proposals in ARCHITECTURE.md are not yet approved product behavior.
+C-001 through C-021 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-13 on approved-leave cancellation authority is open. The final consistency review and architecture approval remain pending; proposals in ARCHITECTURE.md are not yet approved product behavior.
