@@ -1,6 +1,6 @@
 # Agent instructions
 
-This project is in initial setup. The owner has not supplied approved product requirements. Do not implement product features, select a technology stack, or infer business rules from the project name.
+Initial setup is approved. Phase 2 is requirements intake and system planning, but the approved product requirements have not been supplied: the Phase 2 attachment ends with a paste placeholder. Do not implement product features, select a technology stack, or infer business rules from the project name. Once the complete requirements arrive, analyze and review them before implementation.
 
 ## Source of truth
 
