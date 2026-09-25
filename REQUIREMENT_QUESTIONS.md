@@ -137,7 +137,7 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 
 ### OD-02 — Unfinished tasks when a project is cancelled (OPEN)
 **Product/business decision for the Owner:** When the Owner cancels a project, what happens to its unfinished tasks? For example, a client cancels a home renovation while drawings and a site checklist are still assigned.
-**A:** Mark unfinished project tasks Stopped due to project cancellation, retaining their work/time/review history. Any administrative closeout work is created as separate non-project tasks. The active task list is clean, but staff must create new closeout tasks.
+**A:** Mark unfinished delivery tasks Stopped due to project cancellation, retaining their work/time/review history. If cleanup is needed, create separate closeout tasks still linked to the cancelled project without reopening delivery. Active delivery lists stay clean, but closeout work must be added explicitly.
 **B:** Keep unfinished project tasks active until the Owner closes them one by one. Existing assignments remain available, but reminders and workload may continue under a terminal Cancelled project.
 **Technical recommendation:** A, because a terminal project should not carry active delivery work or misleading overdue alerts. Engineering can preserve task history and make the transition atomic; only the Owner can decide the business behavior.
 **Status:** Awaiting Owner answer.
