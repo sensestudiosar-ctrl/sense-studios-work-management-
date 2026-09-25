@@ -79,6 +79,6 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | IntegrationDelivery | Accounting/calendar/website/maps/webhook transport state. | Retry-safe with external IDs, dedupe and failure visibility. |
 | AIRecommendation | Future structured evidence/recommendation and human decision. | Permission-filtered context; no autonomous high-impact action; no hidden chain-of-thought storage. |
 
-## Unsettled lifecycle details
+## Transition ownership
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md records resolved OD-15 and any later material product decisions found in the final consistency review. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md records approved paths and implementation guards. Each slice must finish its exact transition matrix and denied-transition tests before release. REQUIREMENT_QUESTIONS.md records the resolved owner decisions; no additional business permission may be inferred from a technical default.

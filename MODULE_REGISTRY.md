@@ -5,7 +5,7 @@ All modules are planned, not implemented. IDs are stable planning identifiers us
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
 | FND | Configuration, health, tenancy context, migration/deployment conventions | — |
-| IDN | Accounts, credentials, OIDC, portal OTP, sessions/devices | FND |
+| IDN | Accounts, passkey credentials, portal email codes, sessions/devices | FND |
 | ORG | Organization, branch, team, employee membership/reporting and configurable job roles | FND, IDN |
 | ACC | Permission grants/overrides, membership, scoped authorization | IDN, ORG |
 | AUD | Append-only business/security audit and evidence snapshots | IDN, FND |
