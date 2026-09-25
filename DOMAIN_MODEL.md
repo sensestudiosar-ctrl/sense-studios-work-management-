@@ -10,7 +10,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | Branch | Child of Organization; owns teams and projects. | Each project has one current owning branch; formal Owner-approved transfer preserves history and recalculates access. |
 | Team | Child of one Branch; groups employees, reporting and workload. | Each employee has one current home Team within one home Branch; dated history is retained. |
 | Employee | Internal person/profile under the approved Branch/Team structure; linked to account, schedule and skills. | Active/exited access state; exit revokes access but never removes project/audit history. |
-| Account / Session | Login identity, OIDC/password/OTP methods and revocable devices. | Session revocation blocks future access; secret material never enters audit. |
+| Account / Session | Login identity, passkey authenticators, external email-code challenges, recovery records and revocable devices. | Session revocation blocks future access; Owner-verified employee recovery revokes lost passkeys; the Owner has a second passkey and offline recovery code. Secret material never enters audit. |
 | JobRole / manager reference | Describes work and reporting within Branch/Team, separately from authorization; no extra organization tier. | Configurable roles and dated reporting changes; do not hard-code job titles as permissions. |
 | PermissionGrant / Override | Action/resource/scope/condition decision for a principal. | Effective grants versioned/audited; revocation immediate; deny by default. |
 | ProjectMembership | Explicit participation and branch-crossing access. | Unique project/person/role; membership does not imply every file is visible. |
@@ -46,8 +46,9 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | --- | --- | --- |
 | Folder / Document | App metadata and access container for NAS content; document number and project. | Confidential/file-level restrictions; no raw NAS path in browser. |
 | DocumentRevision / FileBlobMetadata | Exact immutable file version, checksum, storage key, distinct R internal-review and CR client-review series, and current flag. | R0 starts internal review; client review uses CR; one approved current version is designated; history retained. |
-| ClientApprovalEvidence | Client identity/signature, exact item/revision, time, comments, device/IP where appropriate. | Append-only; partial item approval supported; delegation recorded. |
+| ClientApprovalEvidence | Client identity/signature, passkey-backed formal approval, exact item/revision, time, comments, device/IP where appropriate. | Append-only; partial item approval supported; delegation recorded. |
 | Transmittal / Acknowledgement | Formal issue to recipient with exact document/revision and purpose. | Issued evidence preserved; critical acknowledgement tracked. |
+| ExternalCADShare | Owner-issued native MinisCloud link record for one CAD file/revision and assigned vendor/consultant. | Seven-day expiry, extraction code required, issue/recipient/expiry/cancellation audited; active link cancelled when project access ends. Link secret/code stored protected, never in audit payload. |
 | GalleryEntry / PublicationGrant | Private client gallery item or approved public portfolio item. | Public content requires explicit publication approval; internal files never publish automatically. |
 
 ## Workforce, site and learning
@@ -56,7 +57,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | --- | --- | --- |
 | Timer / TimeEntry / TimeChange | Start/pause/resume/stop or manual time against work or non-project activity. | Lock after manager approval/export; corrections retain versions, reason and editor; accounting re-export is idempotent. |
 | WorkSchedule / Override / Holiday | Expected days/hours and temporary availability. | Effective-dated; capacity accounts for leave and existing allocations. |
-| LeaveRequest / LeaveBalance | Configurable leave type, allocation, used and carry-forward; Work from Home is a separate attendance/schedule request. | WFH does not consume leave; leave accrual/carry-forward values remain open; approved leave triggers impact analysis. |
+| LeaveRequest / LeaveBalance | Configurable leave type, allocation, used and carry-forward; Work from Home is a separate attendance/schedule request. | WFH does not consume leave. January–December year, upfront Owner-configured Branch allowance, calendar-day new-hire/transfer proration, five-day carry-forward cap expiring next year; approved leave triggers impact analysis. Policy versions are retained. |
 | AttendanceRecord / Evidence | Check-in/out, site location/QR/selfie where relevant. | Missing evidence/connectivity creates provisional check-in with reason and manager review; site selfie expires after 90 days under C-003; check legal/contract holds before purge. |
 | Skill / RatingChange | Employee skill profile and official controlled level. | Training may recommend; only authorized approval changes official rating. |
 | CapacityAllocation | Per-person task effort against schedule and availability. | Daily/weekly/monthly workload categories from configurable thresholds. |
@@ -69,10 +70,10 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 | Entity | Purpose, ownership and relationships | Lifecycle, invariant and evidence |
 | --- | --- | --- |
-| Notification / Delivery | In-app/push record, preference and delivery attempt. | Event-linked and deduplicated; quiet hours/critical bypass documented. |
+| Notification / Delivery | In-app/push record, preference and delivery attempt. | Event-linked and deduplicated; launch delivery is in-app plus Brevo email, with quota/failure monitoring. Quiet hours/critical bypass documented; SMS/WhatsApp and push are later. |
 | AuditEvent / DomainEvent / Outbox | Append-only evidence and durable work dispatch. | Stable actor/entity IDs plus display snapshot, causal event ID, idempotent consumption. |
-| PerformanceEvidence / ScoreVersion | Traceable employee and Team Leader score inputs, Owner-approved weight version and explanation. | External delay excluded; policies change prospectively, exact weights/thresholds remain open, and historical scores are not silently overwritten. |
-| ProjectHealthSnapshot / DelayAttribution | Health status, variance, cause/time split and source evidence. | Design/Turnkey weights may differ; corrections/version history preserved. |
+| PerformanceEvidence / ScoreVersion | Traceable employee and Team Leader score inputs, Owner-approved weight version and explanation. | External delay excluded; separate Owner-approved role-group formulas, prospectively versioned weights/thresholds and no score before initial Owner approval. Historical scores are not silently overwritten. |
+| ProjectHealthSnapshot / DelayAttribution | Health status, variance, cause/time split and source evidence. | Design and Turnkey use separate Owner-approved formulas; corrections/version history preserved. |
 | ReportSnapshot | Frozen weekly/monthly report values and filters. | Append-only once finalized; later corrections create new version. |
 | AutomationRule / Run | Event-condition-action rule and execution/approval result. | High-impact action cannot execute without human approval. |
 | IntegrationDelivery | Accounting/calendar/website/maps/webhook transport state. | Retry-safe with external IDs, dedupe and failure visibility. |
@@ -80,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds OD-01 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.

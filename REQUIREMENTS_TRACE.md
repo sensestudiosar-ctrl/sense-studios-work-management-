@@ -1,14 +1,21 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. C-002 records the owner answers to Q1–Q15 and remaining detail gaps. See DECISIONS.md.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. C-002 records the Owner answers to Q1–Q15. C-003–C-009 record later approved retention, leave, scoring, CAD sharing, backup, identity and notification details. OD-01 cancellation authority remains open. See DECISIONS.md.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
 | Requirement ID | Source section | Planned module | Planned slice(s) | Status |
 | --- | --- | --- | --- | --- |
 | C-001 | Approved clarification: Branch-only organization hierarchy; overrides organizational terminology in R-004, R-006, R-007, R-092–R-094, R-103 and R-113 | ORG/ACC/PRJ | S03/S07 | APPROVED DECISION; NOT IMPLEMENTED |
-| C-002 | Approved Q1–Q15 answers; Q8 fixed by C-003; Q10 accrual, Q12 formulas and Q13 vendor share controls remain open | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED DECISIONS; DETAILS OPEN; NOT IMPLEMENTED |
-| C-003 | Approved Q8 category retention durations; legal/contract validation and purge mechanics remain design gates | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED DECISION; NOT IMPLEMENTED |
+| C-002 | Approved Q1–Q15 answers, further specified by C-003–C-009 | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED; NOT IMPLEMENTED |
+| C-003 | Q8 category retention durations; C-009 fixes clock and expiry policy; legal/contract validation remains a release gate | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED; NOT IMPLEMENTED |
+| C-004 | Branch leave-year, credit, proration, carry-forward and expiry | WFM | S17 | APPROVED; NOT IMPLEMENTED |
+| C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | APPROVED; NOT IMPLEMENTED |
+| C-006 | Owner-issued file-specific native CAD links for assigned vendors/consultants | DOC/PORT/ACC | S11/S21 | APPROVED; NOT IMPLEMENTED |
+| C-007 | Nightly encrypted database-and-file backup to separate offsite computer/NAS; one-day loss target | FND/DOC | S01/S11 | APPROVED; NOT IMPLEMENTED |
+| C-008 | Staff passkeys, external email codes, client approval passkey, Brevo and launch channels | IDN/PORT/NTF | S02/S04/S14 | APPROVED; NOT IMPLEMENTED |
+| C-009 | Retention clock anchors, scheduled expiry, notice and holds | AUD/DOC/WFM | S04/S11/S17 | APPROVED; NOT IMPLEMENTED |
+| OD-01 | Project cancellation authority, awaiting Owner decision | PRJ/ACC | S07 | OPEN; NOT IMPLEMENTED |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
 | R-002 | PRODUCT VISION | PRJ | S07 | NOT STARTED |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |
@@ -119,7 +126,7 @@ This is a coverage index, not an implementation claim. Each section can contain 
 | R-108 | CHANGE CONTROL | GOV | S01–S27 | NOT STARTED |
 | R-109 | DO NOT OVERENGINEER | GOV | S01–S27 | NOT STARTED |
 | R-110 | COST PRINCIPLE | GOV | S01–S27 | NOT STARTED |
-| R-111 | CURRENT BACKUP DECISION | GOV | S01–S27 | NOT STARTED |
+| R-111 | CURRENT BACKUP DECISION; superseded by approved offsite policy C-007 where inconsistent | GOV | S01–S27 | NOT STARTED |
 | R-112 | THINGS NOT TO BUILD EARLY | GOV | S01–S27 | NOT STARTED |
 | R-113 | YOUR FIRST TASK AFTER RECEIVING THIS PROMPT | GOV | S01–S27 | NOT STARTED |
 | R-114 | STOP CONDITION FOR THIS FIRST PASS | GOV | S01–S27 | NOT STARTED |

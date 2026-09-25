@@ -15,10 +15,10 @@ event_id; event_type; schema_version; occurred_at UTC; organization_id; branch_i
 | Task | task.created, task.assigned, task.reassigned, task.started, task.waiting, task.deadline_changed, task.overdue, task.completed → reminders, workload and summaries. Overdue is emitted once per due-date version. |
 | Review | review.requested, review.started, review.correction_requested, review.approved → assignee notifications and evidence. |
 | Client | client.review_requested, client.revision_requested, client.item_approved, client.final_approved → portal decision queue and transmittal readiness. Exact item/revision IDs required. |
-| Document | document.uploaded, revision.created, document.approved, document.issued, document.superseded, transmittal.acknowledged → register and recipient notifications. |
+| Document | document.uploaded, revision.created, document.approved, document.issued, document.superseded, transmittal.acknowledged, external_share.issued, external_share.cancelled → register and recipient notifications. Native share secrets/extraction codes never enter event payloads. |
 | Workforce | time.started, time.logged, time.changed, leave.requested, leave.approved, attendance.checked_in, skill.change_approved → capacity and accounting integration. |
 | Site | site.progress_recorded, site.daily_report_submitted, snag.state_changed → project health and site alerts. |
-| Decision/security | approval.requested, approval.decided, permission.changed, session.revoked → management queue and access invalidation. Security events carry no secret material. |
+| Decision/security | approval.requested, approval.decided, permission.changed, session.revoked, passkey.revoked, retention.hold_placed, retention.deleted → management queue, expiry and access invalidation. Security events carry no secret material. |
 | Analytics | employee_performance.changed, project_health.changed, capacity.threshold_exceeded → dashboards/summaries; payload points to versioned evidence rather than copying private details. |
 
 Only create events when a domain slice needs them. A source module owns its event schema. Consumers must not replicate another module's business rule; projections can be rebuilt from authoritative records.

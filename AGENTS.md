@@ -1,6 +1,6 @@
 # Agent instructions
 
-Initial setup is approved. The product source is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001, C-002 and C-003 in requirements/CLARIFICATIONS.md. The organizational hierarchy is Organization → Branch → Team → Employee; there is no separate Brand model or Department organizational tier. Each project has one owning branch, and employees may work across branches only through explicit assignment. Phase 2 architecture is a proposal. Do not implement product features, install a stack or create migrations until all material owner decisions are resolved and the owner explicitly approves the final architecture.
+Initial setup is approved. The product source is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-009 in requirements/CLARIFICATIONS.md. The organizational hierarchy is Organization → Branch → Team → Employee; there is no separate Brand model or Department organizational tier. Each project has one owning branch, and employees may work across branches only through explicit assignment. Phase 2 architecture is a proposal. Resolve OD-01 and later material owner questions one at a time, recording each answer in planning documents. Do not implement product features, install a stack or create migrations until all material owner decisions are resolved and the owner explicitly approves the final architecture.
 
 ## Source of truth and reading order
 

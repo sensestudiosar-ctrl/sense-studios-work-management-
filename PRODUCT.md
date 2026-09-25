@@ -19,15 +19,15 @@ The approved organizational hierarchy is Organization → Branch → Team → Em
 | Design control | Internal/client review, retained correction rounds, severity/category, internal R and client CR review series, classified client changes, partial approval with exact revision and evidence, transmittals. | R-027–R-034, R-037–R-038 |
 | Files | NAS as primary physical store; app-controlled access and separate metadata, historical revisions, confidential/view-only controls, private galleries and explicitly published portfolio content. | R-035–R-040 |
 | Workforce | Timers/manual time, reasoned corrections, accounting transfer; skills, training, schedules, capacity, workload, leave and impact analysis, attendance including site validation. | R-041–R-057 |
-| Communication and intelligence | In-app/mobile push, reminders, summaries; explainable employee/Team Leader performance, project health and delay attribution; dashboards, decision queue, reports and frozen snapshots. | R-058–R-067, R-073–R-074, R-077–R-078 |
+| Communication and intelligence | In-app/email at launch, with mobile push later; reminders, summaries; explainable employee/Team Leader performance, project health and delay attribution; dashboards, decision queue, reports and frozen snapshots. | R-058–R-067, R-073–R-074, R-077–R-078 |
 | Site and mobile | Daily site reports, progress, manpower, photos, snags; responsive installable PWA first, safe offline site capture later. | R-068–R-072, R-098 |
-| External and future | Client PDF/image portal, consultant/vendor portals with controlled vendor CAD download when approved, integrations, guarded automation and provider-independent, permission-filtered AI. Native wrapper, WhatsApp, CAD/BIM, advanced recommendations and custom builders are later work. | R-075–R-076, R-082–R-090, R-103, R-112 |
+| External and future | Client PDF/image portal, consultant/vendor portals with Owner-controlled file-specific CAD links for assigned consultants/vendors, integrations, guarded automation and provider-independent, permission-filtered AI. Native wrapper, WhatsApp, CAD/BIM, advanced recommendations and custom builders are later work. | R-075–R-076, R-082–R-090, R-103, R-112 |
 
 ## Rules that must survive implementation
 
 - An Active project has exactly one accountable Project Lead; every task has exactly one primary owner (R-013, R-018, R-092).
 - Client approval binds the exact item and revision; approved and superseded evidence is retained for its approved C-003 period. Important changes produce append-only audit evidence, including actor and reason (R-028, R-034, R-079–R-080, R-092).
-- Revoked permissions stop future access; branch data cannot leak. External users never see internal employee performance or unrestricted NAS paths (R-006, R-036, R-075, R-092).
+- Revoked permissions stop future access; active external CAD links are cancelled by the Owner and recorded; branch data cannot leak. External users never see internal employee performance or unrestricted NAS paths (R-006, R-036, R-075, R-092).
 - External delay is separated from employee-caused delay; score changes remain explainable and evidence-backed. Quality counts more than speed; attendance and estimated-versus-actual hours have limited weight (R-031, R-061–R-067, R-092).
 - High-impact automation and AI prepare recommendations for human approval; they never finalize assignment, commitments, deletion, publication, or external communication alone (R-054, R-083, R-087–R-090, R-092).
 
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 through C-003 record approved owner decisions, including fixed category retention durations. Leave accrual/carry-forward values, scoring formulas, vendor CAD sharing controls and final architecture approval remain open in REQUIREMENT_QUESTIONS.md; proposals in ARCHITECTURE.md are not approved product behavior.
+C-001 through C-009 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-01 project cancellation authority remains open in REQUIREMENT_QUESTIONS.md, along with final architecture approval; proposals in ARCHITECTURE.md are not yet approved product behavior.

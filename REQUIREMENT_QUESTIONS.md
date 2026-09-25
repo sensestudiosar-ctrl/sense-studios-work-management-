@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original interview options and records approved owner answers in C-002. C-001 fixes Organization → Branch → Team → Employee with no Brand or Department tier. Every project has one owning branch, with explicit cross-branch assignments. C-003 fixes Q8 retention durations. Q10 leave accrual/carry-forward values, Q12 score formulas and Q13 vendor CAD sharing controls still need specifics. Final architecture remains subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-009 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in and notification decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -66,7 +66,7 @@ This preserves the original interview options and records approved owner answers
 **A:** Retain business evidence indefinitely until a later documented policy; set shorter privacy retention for site selfies.
 **B:** Specify fixed periods now by data category.
 **Initial technical recommendation:** B before production, with legal/business advice where needed; never hard-delete protected evidence without policy.
-**Owner answer (2026-09-25):** B — Fixed periods per category; C-003 follow-up Schedule A sets 10 years for approvals/drawings/audit, 7 years after exit for employee records and 90 days for site selfies. Legal/contract review and purge mechanics remain production gates.
+**Owner answer (2026-09-25):** B — C-003 fixes 10 years for approvals/drawings/audit, 7 years after exit for employee records and 90 days for site selfies. C-009 fixes the clock anchors and scheduled expiry with advance Owner notice and documented holds. Legal/contract review remains a production gate.
 
 ## Before workforce, site and analytics releases
 
@@ -84,7 +84,7 @@ This preserves the original interview options and records approved owner answers
 **A:** WFH is an attendance/schedule request, not leave consumption; leave types have explicit balance policy.
 **B:** WFH uses a leave allocation.
 **Initial technical recommendation:** A, with firm-specific leave accrual rules supplied before S17.
-**Owner answer (2026-09-25):** A — Work from Home changes attendance/schedule, not leave balance. Accrual/carry-forward values remain open.
+**Owner answer (2026-09-25):** A — Work from Home changes attendance/schedule, not leave balance. C-004 fixes the leave year, upfront credit, Branch-specific Owner-configured allowance, calendar-day proration, five-day carry-forward cap and expiry; actual Branch allowance values are Owner setup data before S17.
 
 ### Q11 — Site attendance evidence
 **Question:** How should location + QR + selfie be handled if the device lacks permission or connectivity?
@@ -100,7 +100,7 @@ This preserves the original interview options and records approved owner answers
 **A:** Owner-approved versioned policies, effective prospectively; recalculate history only by explicit decision.
 **B:** Team Leaders can independently alter weights for their teams.
 **Initial technical recommendation:** A. Exact formulas and thresholds are required before S23, not before foundation.
-**Owner answer (2026-09-25):** A — Owner-approved versioned policies; exact score weights/thresholds remain open.
+**Owner answer (2026-09-25):** A — Owner-approved versioned policies. C-005 fixes role-group employee formulas, separate Design/Turnkey project-health formulas and no score until the Owner enters and approves initial weights. Numerical weights/thresholds are Owner setup data before S23.
 
 ### Q13 — External file size and access
 **Question:** Must clients/consultants/vendors upload or download large CAD/BIM/video files remotely, or will the largest files stay on the office LAN?
@@ -108,7 +108,7 @@ This preserves the original interview options and records approved owner answers
 **A:** Remote large-file transfer is required; implement resumable chunks before portal launch.
 **B:** Remote portal handles previews/smaller files; large source files use controlled LAN transfer initially.
 **Initial technical recommendation:** A if external consultants/factory must exchange source files; validate with representative file sizes.
-**Owner answer (2026-09-25):** Custom — Clients receive PDFs/images only. Vendors may download CAD through NAS sharing capabilities; exact controlled workflow remains open.
+**Owner answer (2026-09-25):** Custom — Clients receive PDFs/images only. C-006 permits assigned vendors and consultants to receive Owner-issued, file-specific native MinisCloud CAD links with seven-day expiry, extraction code, app record and cancellation when access ends.
 
 ### Q14 — Client and lead ownership across branches
 **Question:** Can one client have projects in multiple branches, and who may see the shared contact record?
@@ -125,6 +125,15 @@ This preserves the original interview options and records approved owner answers
 **B:** Owner or an explicitly authorized Team Leader of the project's owning branch; faster, with a recorded grant and audit.
 **Initial technical recommendation:** B, with the Owner able to revoke any grant.
 **Owner answer (2026-09-25):** A — Only the Owner grants cross-branch project access; grant and revocation are audited.
+
+## New material owner decisions after the original interview
+
+### OD-01 — Project cancellation authority (OPEN)
+**Product/business decision for the Owner:** Who may cancel a Draft, Active or On Hold project? The source calls Cancelled a terminal state and requires a reason, but does not name the cancelling authority. For example, if a client abandons an interior-design project after measurement, this determines who can close it as Cancelled.
+**A:** Owner only; Project Leads/Team Leaders can request cancellation. Strongest control, but Owner action may delay closure.
+**B:** Owner or the assigned Project Lead/authorized Team Leader. Faster operations, but a project can be terminated without Owner review.
+**Technical recommendation:** A, because cancellation affects tasks, client access, reporting and retention. Engineering can safely make Cancelled terminal, preserve all history, and require reason/audit; it cannot choose business authority for the Owner.
+**Status:** Awaiting Owner answer.
 
 ## Already resolved by the owner
 

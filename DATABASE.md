@@ -1,6 +1,6 @@
 # Conceptual database architecture — no schema or migrations yet
 
-Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarification C-001: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch. No database exists, and names below are conceptual, not a migration contract.
+Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarifications C-001–C-009: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch, with later leave, score, CAD, backup, identity and retention policies recorded separately. No database exists, and names below are conceptual, not a migration contract.
 
 ## Ownership and constraints
 
@@ -9,21 +9,21 @@ Proposed PostgreSQL relational model. Approved source: R-004–R-098 and critica
 - A task row has one non-null primary_owner_id. Collaborators and per-person effort allocation live in separate association rows, unique by task/person. Dependency edges prohibit self-dependency/cycles; unfinished predecessors warn rather than block.
 - Lead stage, project/task/document/review/leave/snag states are constrained to valid values and changed through domain services. Transactional transition checks use row version/locking where concurrent updates matter.
 - Revision identity is immutable: unique project/document/series/number, with file checksum and storage key immutable after finalization. Approval references exact item and revision. At most one current approved/issued revision per document (reviewed partial unique constraint or equivalent). Old revisions and transmittals remain addressable.
-- Approved client evidence, issued drawings/transmittals, audit events and historical report snapshots are append-only during their retention period. C-003 sets 10 years for approvals, issued drawings and audit; exited-employee records remain 7 years after exit and site selfies 90 days. Corrective entries supersede originals. User-requested deletion is archive/soft-hide plus audit; controlled expiry after legal/contract review must respect holds, backup lifecycle and an audit tombstone.
+- Approved client evidence, issued drawings/transmittals, audit events and historical report snapshots are append-only during their retention period. C-003/C-009 set ten years from project closure for approvals and issued drawings, ten years from event time for audit, seven years after exit for employee records and ninety days from capture for site selfies. Scheduled expiry has advance Owner notice and documented holds. Corrective entries supersede originals. User-requested deletion is archive/soft-hide plus audit; controlled expiry after legal/contract review must respect holds, backup lifecycle and an audit tombstone.
 - Deadline and time-log changes create dedicated history with old/new value, reason, actor and time. Personnel exit deactivates access but retains stable employee references and display snapshots in history.
 - Use unique idempotency keys for offline commands, integrations, notification deliveries and outbox consumers. Store created_at/updated_at in UTC and use explicit project/employee time zones for dates and schedules.
 
 ## Conceptual domains
 
-Identity/organization: Organization, Branch, Team, Employee, Account, Session, JobRole, TeamMembership/manager reference, PermissionGrant/Override. No Brand or Department table.
+Identity/organization: Organization, Branch, Team, Employee, Account, Session, PasskeyCredential, EmailCodeChallenge, RecoveryRecord, JobRole, TeamMembership/manager reference, PermissionGrant/Override. No Brand or Department table.
 
 CRM/project: Lead, LeadActivity, organization-wide Client, ClientUser, Project with one current Branch, ProjectBranchTransferHistory, ProjectScope, ScopeChange, ProjectMembership, ProjectTemplate/Version, Stage, Milestone.
 
 Work/design: Task, TaskParticipant, TaskDependency, TaskDateChange, ExtensionRequest, RecurrenceRule, ReviewRound, Submission, Correction, ClientRevisionClassification, ApprovalRequest/Decision.
 
-Files: Folder, Document, DocumentRevision, FileBlobMetadata, Transmittal, Acknowledgement, GalleryEntry, PublicationGrant.
+Files: Folder, Document, DocumentRevision, FileBlobMetadata, Transmittal, Acknowledgement, ExternalCADShare, GalleryEntry, PublicationGrant, RetentionHold/ExpiryRecord.
 
-Workforce/site: TimeEntry/Change, Timer, WorkSchedule/Override, Holiday, LeaveRequest/Balance, AttendanceRecord/Evidence, Skill/RatingChange, CapacityAllocation, SiteWorkPackage, ManpowerEntry, SiteProgress, DailySiteReport, Snag.
+Workforce/site: TimeEntry/Change, Timer, WorkSchedule/Override, Holiday, LeavePolicyVersion/EntitlementLedger, LeaveRequest/Balance, AttendanceRecord/Evidence, Skill/RatingChange, CapacityAllocation, SiteWorkPackage, ManpowerEntry, SiteProgress, DailySiteReport, Snag.
 
 Intelligence/platform: Notification/Delivery, AuditEvent, DomainEvent/Outbox, DecisionQueue projection, PerformanceEvidence/ScoreVersion, ProjectHealthSnapshot, DelayAttribution, ReportSnapshot, SOP/Version, KnowledgeEntry, TrainingAssignment/Assessment, AutomationRule/Run, IntegrationDelivery.
 
@@ -37,4 +37,4 @@ Use reviewed, versioned migrations with rollback/forward recovery notes and data
 
 ## Remaining design decisions
 
-C-002 settles employee home membership, Owner-only cross-branch grants, formal project transfer, item-only client delegation and time-log locking. C-003 fixes retention durations; legal/contract validation and purge mechanics, leave accrual/carry-forward values, scoring formulas and vendor CAD sharing controls remain open in REQUIREMENT_QUESTIONS.md. Constraints await those details and final architecture approval.
+C-002 through C-009 settle home membership, cross-branch grants, project transfer, client delegation, time locks, retention mechanics, leave policy, scoring governance, native CAD links, backups and authentication. OD-01 cancellation authority remains a product decision in REQUIREMENT_QUESTIONS.md. Branch leave allowance values and score weights/thresholds are Owner setup data before their features run. Legal/contract retention validation, NAS link capability, offsite restore and final architecture approval remain release gates.
