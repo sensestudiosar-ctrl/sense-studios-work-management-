@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-017 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-018 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -186,11 +186,18 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because architecture and interior-design enquiries often enter at different points. Engineering can enforce permission, reason and audit and make reports display skipped stages accurately; the Owner must choose the sales behavior. This question does not decide whether a Won/Lost lead can later reopen.
 **Owner answer (2026-09-25):** A — An authorized lead handler may move forward to the stage actually reached with a required reason. The app records skipped stages and who made the change; reports distinguish skipped steps from completed work (C-017).
 
-### OD-09 — What if a Lost lead returns? (OPEN)
+### OD-09 — What if a Lost lead returns? (RESOLVED)
 **Product/business decision for the Owner:** When a lead marked Lost comes back months later, should staff reopen its old sales record or create a new, linked lead? For example, a homeowner declines a renovation proposal in January but asks to restart the project in September. This affects the sales pipeline, conversion reports and history (R-010, S06).
 **A:** Reopen the original Lost lead and continue from the appropriate stage. Staff see one record and less duplicate entry, but the old Lost outcome changes and historical sales reports need special handling.
 **B:** Keep the old lead Lost and create a new lead linked to it. This preserves the original outcome and time-period reports; staff make a new lead record but can see the earlier discussion and proposal.
 **Technical recommendation:** B, because it preserves what happened in January while showing September as a new opportunity. Engineering can link records, carry over contact details with review, and keep audit history; the Owner must choose whether returning business counts as the old or a new sales opportunity. This question concerns Lost leads only; Won-to-project history remains protected.
+**Owner answer (2026-09-25):** B — Keep the old lead Lost and create a new lead linked to it when the person returns. Preserve the original loss and its reporting period (C-018).
+
+### OD-10 — Can an active lead move back to an earlier sales stage? (OPEN)
+**Product/business decision for the Owner:** If real discussions move backward, may staff update the lead's current stage to match? For example, a client negotiating a turnkey fit-out changes the scope, so the team must prepare a new proposal. This affects the CRM screen, follow-up work and sales-stage reports (R-010, S06). A mistaken click can always be corrected with an audited correction; this question concerns a real change in sales progress.
+**A:** Permit an authorized lead handler to move an active lead to an earlier stage with a required reason. Staff see the work actually needed, but reports must show both the backward move and earlier progress rather than erasing history.
+**B:** Keep active leads moving forward only; staff record renewed proposal work as an activity while the current stage stays at Negotiation. The pipeline remains simple and stable, but its current stage may no longer show the team's actual next step.
+**Technical recommendation:** A, because design scope and client decisions often change during negotiation. Engineering can retain every stage change, require the reason and show stage movement honestly; the Owner must choose what the current sales stage means for operations and reporting.
 **Owner answer:** Pending.
 
 ## Already resolved by the owner
