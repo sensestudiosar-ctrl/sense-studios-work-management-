@@ -1,6 +1,6 @@
 # Implementation status
 
-Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-012 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. OD-04 client portal access after cancellation and final architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
+Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-013 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. OD-05 cancelled-project client access duration and final architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
 
 | Proposed release | Slices | Status | Gate |
 | --- | --- | --- | --- |
