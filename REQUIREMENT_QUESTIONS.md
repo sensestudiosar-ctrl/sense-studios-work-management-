@@ -213,7 +213,7 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **A:** The named verifier may mark it Closed after recording a passed check. Fast and simple, but the same person handles verification and final closure.
 **B:** The assigned Project Lead or explicitly authorized Team Leader marks it Closed after seeing the passed check. Adds a separate management sign-off, but can delay closure if that person is unavailable.
 **C:** The app closes it automatically as soon as verification passes. No extra click, but there is no deliberate final check of records or handover readiness.
-**Technical recommendation:** B, because Verified and Closed are separate steps in the approved workflow; a management check gives Closed a distinct meaning. Engineering can enforce the state order, preserve inspection evidence and record the closer; the Owner must decide the final acceptance authority.
+**Technical recommendation:** B, because Verified and Closed are separate steps in the listed workflow; a management check gives Closed a distinct meaning. Engineering can enforce the state order, preserve inspection evidence and record the closer; the Owner must decide the final acceptance authority.
 **Owner answer:** Pending.
 
 ## Already resolved by the owner
