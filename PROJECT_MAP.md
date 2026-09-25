@@ -1,6 +1,6 @@
 # Project map
 
-As of 2026-09-25, S01 Runtime and Verification is in progress. Architecture is approved at checkpoint 2e46805. Only foundation/runtime code is authorized; S02 and later business capabilities have not started.
+As of 2026-09-25, S01 Runtime and Verification is complete. Architecture is approved at checkpoint 2e46805. Only foundation/runtime code is authorized; S02 and later business capabilities have not started.
 
 - requirements/APPROVED_REQUIREMENTS.md — verbatim Owner source; requirements/CLARIFICATIONS.md — approved addenda C-001–C-024.
 - AGENTS.md, CURRENT_STATE.md, IMPLEMENTATION_STATUS.md — entry points, commands and current state.
@@ -18,4 +18,4 @@ As of 2026-09-25, S01 Runtime and Verification is in progress. Architecture is a
 - .github/workflows/s01-quality.yml — CI quality and container/recovery workflow.
 - scripts/rehearse-backup.mjs — database-and-file backup rehearsal for a running Compose stack.
 
-No business module or business schema has been created. Compose startup and hosted CI remain unverified because container tooling and a configured remote runner are unavailable locally.
+No business module or business schema has been created. Compose startup and recovery rehearsal passed locally. The Owner confirmed hosted GitHub Actions is green for commit 570d52f. S02 and later remain unauthorized.

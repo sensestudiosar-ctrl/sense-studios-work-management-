@@ -1,9 +1,9 @@
-# S01 COMPLETION REPORT — IN PROGRESS
+# S01 COMPLETION REPORT — COMPLETE
 
 **Date:** 2026-09-25
 **Architecture baseline:** Owner-approved checkpoint 2e46805
 **Authorized scope:** S01 Runtime and Verification only
-Current status: IN PROGRESS; final S01 checkpoint not created
+Current status: COMPLETE; Owner confirmed hosted CI green for commit 570d52f
 
 ## 1. What was implemented
 
@@ -21,7 +21,7 @@ Established the TypeScript/pnpm workspace, shared health contracts, responsive R
 
 ## 3. Versions and dependencies selected
 
-Verified locally: Node 24.19.0, pnpm 11.19.0 and PostgreSQL 16.15. Key pinned packages: NestJS 12.1.0, Prisma 7.10.0, React 19.3.0, Vite 8.3.1, TypeScript 5.9.3, Jest 30.5.2, Vitest 5.0.2 and Playwright 1.63.0. Container image references are configured but were not run: Node 24.19.0, PostgreSQL 17.10 Alpine and Nginx 1.30.5 Alpine.
+Verified locally: Node 24.19.0, pnpm 11.19.0 and PostgreSQL 16.15. Key pinned packages: NestJS 12.1.0, Prisma 7.10.0, React 19.3.0, Vite 8.3.1, TypeScript 5.9.3, Jest 30.5.2, Vitest 5.0.2 and Playwright 1.63.0. Container images were built and verified locally: Node 24.19.0, PostgreSQL 17.10 Alpine and Nginx 1.30.5 Alpine.
 
 ## 4. Commands established
 
@@ -74,7 +74,7 @@ A clean-copy verification initially failed because API typechecking depended on 
 
 ## 14. Remaining warnings and limitations
 
-Compose verification passed. The initial Prisma OpenSSL warning was resolved by installing OpenSSL in both Node build environments; a clean rebuild and Prisma client generation produced no fallback warning. Local frozen install, database migration, pnpm verify, Compose readiness and recovery rehearsal passed after the fix. Commit 5ea5a8f is present on the GitHub s01-runtime-verification branch. The hosted GitHub Actions workflow remains unverified. Encrypted offsite destination, key custody, nightly schedule and production restore validation remain deployment gates. The exact NAS model and its production capacity/security validation remain a real-world gate. No production authentication, business data model, branch permission enforcement, or business workflow exists.
+Compose verification passed. The initial Prisma OpenSSL warning was resolved by installing OpenSSL in both Node build environments; a clean rebuild and Prisma client generation produced no fallback warning. Local frozen install, database migration, pnpm verify, Compose readiness and recovery rehearsal passed after the fix. Commit 5ea5a8f is present on the GitHub s01-runtime-verification branch. The Owner confirmed the hosted GitHub Actions workflow is green for commit 570d52f. Encrypted offsite destination, key custody, nightly schedule and production restore validation remain deployment gates. The exact NAS model and its production capacity/security validation remain a real-world gate. No production authentication, business data model, branch permission enforcement, or business workflow exists.
 
 ## 15. Files and documentation updated
 
@@ -82,7 +82,7 @@ Added the workspace, apps, shared contracts, migration, Compose and Docker files
 
 ## 16. Git checkpoint
 
-S01 checkpoint commit 5ea5a8f was published to the GitHub s01-runtime-verification branch after Owner approval. The hosted workflow result remains to be verified. The starting approved baseline remains 2e4680570e6f6e31bb3fff58f7a01b92782980dc.
+Implementation checkpoint 5ea5a8f and documentation checkpoint 570d52f are published to the GitHub s01-runtime-verification branch. The Owner confirmed hosted Actions green for commit 570d52f. The starting approved baseline remains 2e4680570e6f6e31bb3fff58f7a01b92782980dc.
 
 ## 17. S01 Definition of Done checklist
 
@@ -92,7 +92,7 @@ S01 checkpoint commit 5ea5a8f was published to the GitHub s01-runtime-verificati
 4. Fresh database migration — PASS.
 5. Migration against backed-up test database — PASS.
 6. Local/staging containers start and connect — PASS; Compose build/startup and web-proxied API readiness succeeded.
-7. CI/quality commands — local quality commands PASS; Compose and recovery rehearsal PASS; hosted GitHub Actions workflow result NOT VERIFIED.
+7. CI/quality commands — local quality commands PASS; Compose and recovery rehearsal PASS; hosted GitHub Actions workflow result GREEN per Owner confirmation for commit 570d52f.
 8. Test database plus file restored — PASS locally.
 9. Restored file checksum matches database-linked checksum — PASS.
 10. Offsite backup, key custody and production restore gate documented — DOCUMENTED; production exercise NOT RUN.
@@ -102,6 +102,6 @@ S01 checkpoint commit 5ea5a8f was published to the GitHub s01-runtime-verificati
 
 ## 18. Readiness for S02
 
-NOT READY. Run the hosted GitHub Actions workflow before closing S01. Compose configuration/build/startup/service checks and the Compose recovery rehearsal have passed. Do not begin S02 without explicit Owner authorization.
+S01 COMPLETE. The required local and Compose gates passed, and the Owner confirmed hosted GitHub Actions green for commit 570d52f. Compose configuration/build/startup/service checks and the Compose recovery rehearsal have passed. Do not begin S02 without explicit Owner authorization.
 
-Final status: S01 IN PROGRESS — HOSTED CI VERIFICATION PENDING
+Final status: S01 COMPLETE — READY FOR S02 OWNER AUTHORIZATION

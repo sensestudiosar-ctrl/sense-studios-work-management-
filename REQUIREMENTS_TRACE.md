@@ -9,10 +9,10 @@ This is a coverage index, not an implementation claim. Each section can contain 
 | Source | S01 evidence | Status |
 | --- | --- | --- |
 | R-091 / C-007 | Isolated test PostgreSQL dump and representative file restore; file SHA-256 matched. Offsite encryption, key custody and production restore remain deployment gates. | LOCAL REHEARSAL PASS; PRODUCTION GATES OPEN |
-| R-093 / R-094 / R-103 | Approved modular-monolith stack and S01-only execution boundary recorded in DECISIONS.md and S01_PLAN.md. | APPROVED; FOUNDATION IN PROGRESS |
+| R-093 / R-094 / R-103 | Approved modular-monolith stack and S01-only execution boundary recorded in DECISIONS.md and S01_PLAN.md. | APPROVED; S01 FOUNDATION COMPLETE |
 | R-099 | Validated runtime configuration and ignored local environment files; no committed production credential identified. | LOCAL CHECK PASS |
 | R-100 | Unit, API, desktop/mobile browser, typecheck, lint and build commands executed through pnpm verify. | PASS |
-| R-101 / R-102 | Failures fixed and checks rerun; status remains incomplete because Compose/CI were not verified. | PARTIAL; S01 IN PROGRESS |
+| R-101 / R-102 | Failures fixed; local and Compose checks passed, and the Owner confirmed hosted GitHub Actions green for the latest push. | PASS; S01 COMPLETE |
 | C-007 | Encrypted offsite target, key custody and production restore are documented as production gates. | DOCUMENTED; NOT DEPLOYED |
 
 The Owner's source remains verbatim. Requirements for business slices remain approved but not implemented; this evidence does not claim business functionality.

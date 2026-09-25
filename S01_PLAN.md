@@ -6,7 +6,7 @@ Architecture baseline: approved by the Owner on 2026-09-25 at Git checkpoint 2e4
 
 - The Git baseline is clean at 2e4680570e6f6e31bb3fff58f7a01b92782980dc.
 - Node 24.19.0 is installed and is an LTS release; pnpm 11.19.0 is installed. Pin exact versions in the workspace. Pin supported stable package versions after registry compatibility checks.
-- The Windows host has PostgreSQL 16.15 installed, but its running PostgreSQL16-FirmBooksTest service belongs to another application. Do not touch that data directory. A separate temporary cluster on port 55433 was used for S01 checks. Docker Desktop is now running (Docker 29.8.0; Compose 5.5.1); Compose configuration, builds, startup, service readiness and recovery rehearsal passed on 2026-09-25. Commit 5ea5a8f is present on the GitHub s01-runtime-verification branch. The hosted GitHub Actions workflow remains unverified.
+- The Windows host has PostgreSQL 16.15 installed, but its running PostgreSQL16-FirmBooksTest service belongs to another application. Do not touch that data directory. A separate temporary cluster on port 55433 was used for S01 checks. Docker Desktop is now running (Docker 29.8.0; Compose 5.5.1); Compose configuration, builds, startup, service readiness and recovery rehearsal passed on 2026-09-25. Commit 5ea5a8f is present on the GitHub s01-runtime-verification branch. The Owner confirmed the hosted GitHub Actions workflow is green for commit 570d52f.
 - No new product or architecture owner decision is required to establish the foundation. Exact package versions, file layout and test harness are engineering choices within the approved stack.
 
 ## Tasks, requirement map and acceptance evidence

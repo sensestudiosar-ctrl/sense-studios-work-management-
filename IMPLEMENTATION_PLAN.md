@@ -1,6 +1,6 @@
 # Approved dependency-based implementation plan — S01 underway
 
-The Owner approved the architecture at checkpoint 2e46805 and authorized S01 only. The source is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001–C-024; R-001–R-115 are indexed in REQUIREMENTS_TRACE.md. S01 is IN PROGRESS; S02–S27 remain NOT STARTED and unauthorized. Exact schema and endpoints follow the approved architecture and slice-specific acceptance.
+The Owner approved the architecture at checkpoint 2e46805 and authorized S01 only. The source is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001–C-024; R-001–R-115 are indexed in REQUIREMENTS_TRACE.md. S01 Runtime and Verification is COMPLETE; S02–S27 remain NOT STARTED and unauthorized. Exact schema and endpoints follow the approved architecture and slice-specific acceptance.
 
 ## Dependency hierarchy
 
