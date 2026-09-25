@@ -21,7 +21,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | --- | --- | --- |
 | Lead / LeadActivity | CRM pipeline and interactions; may convert on Won. | New → Contacted → Meeting/Discussion → Proposal → Negotiation → Won/Lost; Lost needs reason. |
 | Client / ClientUser | One organization-wide customer identity may link to branch-owned leads/projects; portal identities are scoped. | Primary approver designated per project; delegates approve specified items only and cannot hold final overall authority. |
-| Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; hold/cancel reason and gate override audited. |
+| Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; only the Owner cancels Draft/Active/On Hold with reason and audit. Cancelled is terminal; task effects remain OD-02. |
 | ProjectScope / ScopeChange | Baseline service scopes and formal later additions. | Original baseline retained; approved change creates new effective scope version. |
 | ProjectTemplate / TemplateVersion | Reusable stages, tasks, folders, reviews, gates, SOP links and automation defaults. | Versioned; creating a project records applied template version. |
 | Stage / Milestone | Project delivery plan and deadlines. | Stage completion and gate decisions audited; actual versus baseline preserved. |

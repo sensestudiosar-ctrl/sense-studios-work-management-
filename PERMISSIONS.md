@@ -8,8 +8,8 @@ Authenticate and verify an active server-side session; determine organization, b
 
 | Principal | Resource → actions | Scope | Conditions/evidence |
 | --- | --- | --- | --- |
-| Owner | Organization, branches, roles, grants, employees, teams, projects, workflow gates, deletion, automation, security audit, sessions → manage/view/override | Whole organization | Protected changes audited; override reason required; no destructive rewrite of evidence. |
-| Team Leader | Assigned projects and managed employees → assign/reassign/manage/review/deadline/leave/skills/automation as granted | Own reporting team and assigned projects; explicit Owner-granted cross-branch project access | Grant and project/team relation required; no automatic detailed access to other teams. Deadline change reason; skill/leave approval only within policy. |
+| Owner | Organization, branches, roles, grants, employees, teams, projects, workflow gates, deletion, automation, security audit, sessions → manage/view/override | Whole organization | Protected changes audited; Owner alone may cancel Draft/Active/On Hold projects with a reason. Override reason required; no destructive rewrite of evidence. |
+| Team Leader | Assigned projects and managed employees → assign/reassign/manage/review/deadline/leave/skills/automation as granted | Own reporting team and assigned projects; explicit Owner-granted cross-branch project access | Grant and project/team relation required; no automatic detailed access to other teams. Deadline change reason; skill/leave approval only within policy. May request project cancellation but cannot decide it. |
 | Employee | Assigned/collaborator/reviewer projects/tasks → view/work/comment; self-task → create; own time/attendance/performance/training → view or submit as allowed | Own work and explicit memberships | Cannot assign others without separate permission; confidential file policy may narrow project access. |
 | Site Employee | Assigned site projects/tasks, progress/manpower/photos/snags/reports, own attendance → submit/view | Explicit site/project membership | Site evidence validation; report confirmation by site responsible person. No broad office or financial access. |
 | Reviewer | Assigned submission/review → view/comment/annotate/approve/request correction/escalate | Assigned review and permitted files | Distinct review permission; deadline/priority changes require separate grant. |
@@ -29,4 +29,4 @@ Security tests must cover allowed and denied behavior, guessed IDs, cross-branch
 
 ## Decision dependencies
 
-C-002 makes the Owner the only authority for cross-branch project grants and retains final overall client approval with the Primary Client. C-006 resolves vendor/consultant CAD issuance and revocation controls. The source does not authorize automatic permission inheritance from a job title. See REQUIREMENT_QUESTIONS.md.
+C-002 makes the Owner the only authority for cross-branch project grants and retains final overall client approval with the Primary Client. C-006 resolves vendor/consultant CAD issuance and revocation controls. C-010 makes project cancellation Owner-only; OD-02 task effects remain open. The source does not authorize automatic permission inheritance from a job title. See REQUIREMENT_QUESTIONS.md.

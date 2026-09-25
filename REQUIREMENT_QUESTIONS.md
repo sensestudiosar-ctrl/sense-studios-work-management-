@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-009 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in and notification decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-010 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -128,11 +128,18 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 
 ## New material owner decisions after the original interview
 
-### OD-01 — Project cancellation authority (OPEN)
+### OD-01 — Project cancellation authority (RESOLVED)
 **Product/business decision for the Owner:** Who may cancel a Draft, Active or On Hold project? The source calls Cancelled a terminal state and requires a reason, but does not name the cancelling authority. For example, if a client abandons an interior-design project after measurement, this determines who can close it as Cancelled.
 **A:** Owner only; Project Leads/Team Leaders can request cancellation. Strongest control, but Owner action may delay closure.
 **B:** Owner or the assigned Project Lead/authorized Team Leader. Faster operations, but a project can be terminated without Owner review.
 **Technical recommendation:** A, because cancellation affects tasks, client access, reporting and retention. Engineering can safely make Cancelled terminal, preserve all history, and require reason/audit; it cannot choose business authority for the Owner.
+**Owner answer (2026-09-25):** A — Only the Owner may cancel a Draft, Active or On Hold project; Project Leads/Team Leaders may request it. Reason, actor/time and history are retained (C-010).
+
+### OD-02 — Unfinished tasks when a project is cancelled (OPEN)
+**Product/business decision for the Owner:** When the Owner cancels a project, what happens to its unfinished tasks? For example, a client cancels a home renovation while drawings and a site checklist are still assigned.
+**A:** Mark unfinished project tasks Stopped due to project cancellation, retaining their work/time/review history. Any administrative closeout work is created as separate non-project tasks. The active task list is clean, but staff must create new closeout tasks.
+**B:** Keep unfinished project tasks active until the Owner closes them one by one. Existing assignments remain available, but reminders and workload may continue under a terminal Cancelled project.
+**Technical recommendation:** A, because a terminal project should not carry active delivery work or misleading overdue alerts. Engineering can preserve task history and make the transition atomic; only the Owner can decide the business behavior.
 **Status:** Awaiting Owner answer.
 
 ## Already resolved by the owner

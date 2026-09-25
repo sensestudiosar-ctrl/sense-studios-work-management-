@@ -53,3 +53,7 @@ Invited clients and consultants sign in to their restricted portals with an emai
 ## C-009 — Retention clock and controlled expiry (approved 2026-09-25)
 
 The C-003 ten-year clock for client approval evidence and issued drawings starts when the associated project closes. The ten-year clock for each audit event starts when that event occurs. Exited-employee record retention starts at exit, and the ninety-day site-selfie clock starts at capture. At expiry, deletion is scheduled with advance Owner notice; a documented hold may prevent deletion while a contract or dispute requires it. The final design must account for holds, linked records, backup expiry and proof of deletion. This is a product policy, not a conclusion that the periods comply with every applicable law or contract; legal and contract review remains a production gate.
+
+## C-010 — Project cancellation authority (approved 2026-09-25)
+
+The Owner selected OD-01 option A. Only the Owner may make a Draft, Active or On Hold project Cancelled. A Project Lead or Team Leader may request cancellation but cannot make it effective. Cancellation requires a reason and immutable actor/time/audit evidence. Cancelled is terminal under source R-016; prior project, task, review, approval and file history is preserved. This decision does not authorize cancelling a Completed or Archived project. Handling of unfinished tasks and remaining external access after cancellation are separate dependencies; OD-02 asks the task question next. No application behavior is implemented.
