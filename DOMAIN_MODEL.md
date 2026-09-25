@@ -21,7 +21,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | --- | --- | --- |
 | Lead / LeadActivity | CRM pipeline and interactions; may convert on Won. | New → Contacted → Meeting/Discussion → Proposal → Negotiation → Won/Lost; Lost needs reason. |
 | Client / ClientUser | One organization-wide customer identity may link to branch-owned leads/projects; portal identities are scoped. | Primary approver designated per project; delegates approve specified items only and cannot hold final overall authority. |
-| Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; only the Owner cancels Draft/Active/On Hold with reason and audit. Cancelled is terminal; C-011 stops unfinished delivery tasks while allowing distinct linked closeout tasks without reopening delivery. |
+| Project | Delivery container, type Design/Turnkey, one current owning Branch, one accountable lead when Active. | Formal Owner-approved Branch transfer retains history; On Hold is optional and reversible; only the Owner cancels Draft/Active/On Hold with reason and audit. Cancelled is terminal; C-011 stops unfinished delivery tasks while allowing distinct linked closeout tasks without reopening delivery. C-012 ends vendor/consultant project access at cancellation after active native CAD links are revoked and recorded. |
 | ProjectScope / ScopeChange | Baseline service scopes and formal later additions. | Original baseline retained; approved change creates new effective scope version. |
 | ProjectTemplate / TemplateVersion | Reusable stages, tasks, folders, reviews, gates, SOP links and automation defaults. | Versioned; creating a project records applied template version. |
 | Stage / Milestone | Project delivery plan and deadlines. | Stage completion and gate decisions audited; actual versus baseline preserved. |
@@ -48,7 +48,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 | DocumentRevision / FileBlobMetadata | Exact immutable file version, checksum, storage key, distinct R internal-review and CR client-review series, and current flag. | R0 starts internal review; client review uses CR; one approved current version is designated; history retained. |
 | ClientApprovalEvidence | Client identity/signature, passkey-backed formal approval, exact item/revision, time, comments, device/IP where appropriate. | Append-only; partial item approval supported; delegation recorded. |
 | Transmittal / Acknowledgement | Formal issue to recipient with exact document/revision and purpose. | Issued evidence preserved; critical acknowledgement tracked. |
-| ExternalCADShare | Owner-issued native MinisCloud link record for one CAD file/revision and assigned vendor/consultant. | Seven-day expiry, extraction code required, issue/recipient/expiry/cancellation audited; active link cancelled when project access ends. Link secret/code stored protected, never in audit payload. |
+| ExternalCADShare | Owner-issued native MinisCloud link record for one CAD file/revision and assigned vendor/consultant. | Seven-day expiry, extraction code required, issue/recipient/expiry/cancellation audited; active link cancelled when project access ends; project cancellation cannot finalize while an active link lacks confirmed revocation. Link secret/code stored protected, never in audit payload. |
 | GalleryEntry / PublicationGrant | Private client gallery item or approved public portfolio item. | Public content requires explicit publication approval; internal files never publish automatically. |
 
 ## Workforce, site and learning
@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds OD-03 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds OD-04 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.

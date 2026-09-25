@@ -25,7 +25,7 @@ The approved organizational hierarchy is Organization → Branch → Team → Em
 
 ## Rules that must survive implementation
 
-- An Active project has exactly one accountable Project Lead; every task has exactly one primary owner. Only the Owner can cancel a Draft, Active or On Hold project, with reason and preserved history. Unfinished delivery tasks stop; completed tasks stay completed; distinct closeout tasks may link to the Cancelled project without reopening delivery (R-013, R-016, R-018, R-024, R-092, C-010, C-011).
+- An Active project has exactly one accountable Project Lead; every task has exactly one primary owner. Only the Owner can cancel a Draft, Active or On Hold project, with reason and preserved history. Unfinished delivery tasks stop; completed tasks stay completed; distinct closeout tasks may link to the Cancelled project without reopening delivery. Vendor/consultant project access ends and active native CAD links are confirmed revoked at cancellation (R-013, R-016, R-018, R-024, R-092, C-010, C-011).
 - Client approval binds the exact item and revision; approved and superseded evidence is retained for its approved C-003 period. Important changes produce append-only audit evidence, including actor and reason (R-028, R-034, R-079–R-080, R-092).
 - Revoked permissions stop future access; active external CAD links are cancelled by the Owner and recorded; branch data cannot leak. External users never see internal employee performance or unrestricted NAS paths (R-006, R-036, R-075, R-092).
 - External delay is separated from employee-caused delay; score changes remain explainable and evidence-backed. Quality counts more than speed; attendance and estimated-versus-actual hours have limited weight (R-031, R-061–R-067, R-092).
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-C-001 through C-011 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-03 vendor/consultant access after project cancellation remains open in REQUIREMENT_QUESTIONS.md, along with final architecture approval; proposals in ARCHITECTURE.md are not yet approved product behavior.
+C-001 through C-012 record approved owner decisions. Branch leave allowances and numerical score policies are Owner setup data before their features become active. OD-04 client portal access after project cancellation remains open in REQUIREMENT_QUESTIONS.md, along with final architecture approval; proposals in ARCHITECTURE.md are not yet approved product behavior.

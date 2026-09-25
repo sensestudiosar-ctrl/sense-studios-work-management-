@@ -31,7 +31,11 @@ Only the Owner may cancel a Draft, Active or On Hold project. The Project Lead o
 
 ## 2026-09-25 — C-011: Stop unfinished delivery tasks on cancellation (approved)
 
-The Owner selected OD-02 option A. Owner cancellation moves unfinished project delivery tasks to terminal Stopped due to project cancellation, retains work/time/review and audit history, and leaves completed tasks completed. Separately identified closeout tasks may remain linked to the Cancelled project without reopening delivery. Active work, overdue reminders and capacity exclude stopped delivery tasks. C-011 in requirements/CLARIFICATIONS.md is authoritative. Vendor/consultant external access remains OD-03; client portal access is a separate later question. Final architecture and S01 remain unapproved.
+The Owner selected OD-02 option A. Owner cancellation moves unfinished project delivery tasks to terminal Stopped due to project cancellation, retains work/time/review and audit history, and leaves completed tasks completed. Separately identified closeout tasks may remain linked to the Cancelled project without reopening delivery. Active work, overdue reminders and capacity exclude stopped delivery tasks. C-011 in requirements/CLARIFICATIONS.md is authoritative. Vendor/consultant external access is resolved by C-012; client portal access remains OD-04. Final architecture and S01 remain unapproved.
+
+## 2026-09-25 — C-012: End vendor and consultant access on project cancellation (approved)
+
+The Owner selected OD-03 option A. Vendor and consultant project/portal access ends when Owner cancellation takes effect. Active native MinisCloud CAD links must be cancelled by the Owner and cancellation recorded before project cancellation is finalized; the app does not assume an unverified NAS automation interface. Legitimate later return or cleanup work needs a separately approved, scoped closeout arrangement. C-012 in requirements/CLARIFICATIONS.md is authoritative. Client portal access remains OD-04; final architecture and S01 remain unapproved.
 
 ## Proposed, not yet approved
 
