@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds OD-07 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-08 and any later material product decisions that affect state, ownership, retention, scoring or approval authority. No unsupplied policy should be treated as implemented.

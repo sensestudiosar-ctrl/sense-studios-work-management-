@@ -179,6 +179,13 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** A, because the Owner alone cancelled the project and C-012 already requires separately approved external closeout access. Engineering can enforce narrow task scope, expiry and audit after authority is chosen; it cannot choose who may restart work on a cancelled project.
 **Owner answer (2026-09-25):** B — The assigned Project Lead or an explicitly authorized Team Leader may approve ordinary closeout tasks and narrow, time-limited vendor/consultant portal access after cancellation. Only the Owner may issue CAD links, and Owner-only cross-branch grants and other protected approvals remain unchanged (C-016).
 
+### OD-08 — May a lead skip sales stages? (OPEN)
+**Product/business decision for the Owner:** When an enquiry reaches a later sales step without completing every listed earlier step, may staff move it directly to the step that really happened? For example, a returning architecture client asks for a proposal without needing a new introductory meeting. This affects the CRM pipeline, staff workload and sales reports (R-010, S06).
+**A:** An authorized lead handler may move forward to a later stage with a required reason. The app records which stages were skipped and who made the change. This is faster and keeps the record truthful, but reports need to distinguish skipped steps from completed steps.
+**B:** Staff must move through every stage in order, marking an unused step as not applicable with a reason. Reports have a uniform path, but staff must make extra updates for steps that did not happen.
+**Technical recommendation:** A, because architecture and interior-design enquiries often enter at different points. Engineering can enforce permission, reason and audit and make reports display skipped stages accurately; the Owner must choose the sales behavior. This question does not decide whether a Won/Lost lead can later reopen.
+**Owner answer:** Pending.
+
 ## Already resolved by the owner
 
 - C-001: Organization → Branch → Team → Employee; no separate Brand model or Department tier. One owning branch per project.
