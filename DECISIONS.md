@@ -75,7 +75,11 @@ The Owner selected OD-12 option B. A snag may move from Verified to Closed only 
 
 ## 2026-09-25 — C-022: Approved leave cancellation requires management approval (approved)
 
-The Owner selected OD-13 option B. An employee may request cancellation of approved leave, but the same level of manager required for the original leave approval must approve the cancellation, including before the leave starts. A pending cancellation does not restore balance or capacity. Approval creates a separate recorded reversal for the unused portion, preserves the original leave approval and ledger history, recalculates affected availability and alerts managers and affected task owners. Existing work handovers are reviewed rather than silently undone. C-022 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review has since opened OD-14 on unfinished tasks at employee exit; final architecture approval and S01 remain pending.
+The Owner selected OD-13 option B. An employee may request cancellation of approved leave, but the same level of manager required for the original leave approval must approve the cancellation, including before the leave starts. A pending cancellation does not restore balance or capacity. Approval creates a separate recorded reversal for the unused portion, preserves the original leave approval and ledger history, recalculates affected availability and alerts managers and affected task owners. Existing work handovers are reviewed rather than silently undone. C-022 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review continues; final architecture approval and S01 remain pending.
+
+## 2026-09-25 — C-023: Unfinished tasks wait for individual reassignment at employee exit (approved)
+
+The Owner selected OD-14 option A. Departing employee access ends immediately; each unfinished task moves to Waiting with needs-reassignment reason, retaining its departed current owner until an authorized manager explicitly chooses a replacement. The old assignment, previous task state, reviews, approvals, time and deadlines remain historical evidence. The task cannot advance until reassignment and a valid resume; completed or terminal work is unchanged. Managers receive a visible queue and deadline alerts. C-023 in requirements/CLARIFICATIONS.md is authoritative. OD-15 on Active projects led by the departing employee is open; final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 

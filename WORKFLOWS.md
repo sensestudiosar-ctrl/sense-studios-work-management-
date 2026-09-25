@@ -1,6 +1,6 @@
 # Workflows and state machines — planning
 
-Specified sequences below come from the approved source plus approved clarifications C-001–C-022. Arrows show default progression; C-017 and C-019 define explicit lead-stage exceptions. Unspecified transitions are marked for owner decision. Every protected transition runs server-side validation, authorization and audit in one business transaction.
+Specified sequences below come from the approved source plus approved clarifications C-001–C-023. Arrows show default progression; C-017 and C-019 define explicit lead-stage exceptions. Unspecified transitions are marked for owner decision. Every protected transition runs server-side validation, authorization and audit in one business transaction.
 
 | Workflow | Specified path or operations | Controlled transition / unresolved detail |
 | --- | --- | --- |
@@ -21,6 +21,6 @@ Specified sequences below come from the approved source plus approved clarificat
 | Deletion (R-081) | Employee request → Team Lead/Owner decision → hide from normal view if approved. | Protected evidence follows C-003/C-009 retention. Expiry schedules deletion with advance Owner notice; documented holds suspend it. Backup lifecycle and deletion proof require design/legal review. |
 | External CAD share (C-006) | Owner verifies assigned vendor/consultant and exact file revision → creates native MinisCloud link with seven-day expiry and extraction code → records recipient/link metadata → cancels on access loss or expiry, including project cancellation. | Only Owner issues/cancels; on project cancellation, Owner verifies active link revocation in MinisCloud and records it before the project transition is finalized (C-012). Clients never receive CAD; link can be forwarded, and installed NAS controls need validation. |
 | Automation/AI (R-054, R-083, R-089) | Event/recommendation → proposed high-impact action → human approval → domain command. | Low-risk notification/report may run automatically; high-impact action cannot bypass ordinary permissions or approval. |
-| Employee exit (R-092) | Access active → exited/revoked. | Historical project/task/audit references remain and access revokes immediately. OD-14 will settle how unfinished tasks receive a new accountable owner; HR state detail is a technical design task. |
+| Employee exit (R-092) | Access active → exited/revoked. | C-023 revokes access immediately and moves unfinished tasks to Waiting with needs-reassignment reason, preserving prior state/owner/review history. A scoped manager selects each replacement before resuming; completed tasks remain unchanged. OD-15 will settle Active-project lead succession; HR state detail is a technical design task. |
 
 Each transition later needs a transition table of from/to, actor/scope, preconditions, effects, audit/event, invalid-transition test and recovery behavior. Do not infer missing arrows from the displayed default sequences.

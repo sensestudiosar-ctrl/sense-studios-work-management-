@@ -30,7 +30,7 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 | Entity | Purpose, ownership and relationships | Lifecycle, invariant and evidence |
 | --- | --- | --- |
-| Task | Unit of work, optional project/stage/milestone, one primary owner. | Type/priority/status/target/committed date; one primary owner always; status transitions authorized. Unfinished delivery work on a Cancelled project enters terminal Stopped due to project cancellation, retaining time/review history and leaving active workload. A separately identified closeout task may link to the Cancelled project only after an assigned Project Lead or explicitly authorized Team Leader approves its scope, owner and due date under C-016. |
+| Task | Unit of work, optional project/stage/milestone, one primary owner. | Type/priority/status/target/committed date; one primary owner always; status transitions authorized. Unfinished delivery work on a Cancelled project enters terminal Stopped due to project cancellation, retaining time/review history and leaving active workload. A separately identified closeout task may link to the Cancelled project only after an assigned Project Lead or explicitly authorized Team Leader approves its scope, owner and due date under C-016. Under C-023, an exiting owner's unfinished tasks enter Waiting for individually authorized reassignment while preserving old owner and all review history. |
 | TaskParticipant / EffortAllocation | Collaborator/reviewer and per-person estimated effort. | Unique task/person role; effort is explicit, never split equally by default. |
 | TaskDependency | Finish-to-start link to predecessor. | No self-link/cycle; unfinished predecessor warns and records override/start event. |
 | RecurrenceRule | Future task generation, linked to template/source. | Generated instances have stable IDs and idempotent scheduling. |
@@ -81,4 +81,4 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 
 ## Unsettled lifecycle details
 
-WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-14 on ownership of unfinished tasks when an employee leaves, alongside later material product decisions found in the final consistency review. No unsupplied policy should be treated as implemented.
+WORKFLOWS.md marks transitions specified versus proposed. REQUIREMENT_QUESTIONS.md holds open OD-15 on Active-project leadership when a Project Lead leaves, alongside later material product decisions found in the final consistency review. No unsupplied policy should be treated as implemented.

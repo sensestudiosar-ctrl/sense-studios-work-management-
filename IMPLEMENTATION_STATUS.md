@@ -1,6 +1,6 @@
 # Implementation status
 
-Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-022 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. C-017–C-019 resolve the lead pipeline, C-020/C-021 resolve snag verification/closure, and C-022 resolves approved-leave cancellation. OD-14 on unfinished tasks when an employee leaves is open; final consistency review and architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
+Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-023 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. C-017–C-019 resolve the lead pipeline, C-020/C-021 resolve snag verification/closure, and C-022 resolves approved-leave cancellation. C-023 resolves unfinished-task handling at employee exit; OD-15 on Active-project lead succession is open; final consistency review and architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
 
 | Proposed release | Slices | Status | Gate |
 | --- | --- | --- | --- |
