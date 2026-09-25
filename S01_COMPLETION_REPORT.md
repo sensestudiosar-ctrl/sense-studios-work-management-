@@ -74,7 +74,7 @@ A clean-copy verification initially failed because API typechecking depended on 
 
 ## 14. Remaining warnings and limitations
 
-Compose verification passed. The initial Prisma OpenSSL warning was resolved by installing OpenSSL in both Node build environments; a clean rebuild and Prisma client generation produced no fallback warning. Local frozen install, database migration, pnpm verify, Compose readiness and recovery rehearsal passed after the fix. The hosted GitHub Actions workflow remains unverified. The supplied remote is configured locally, but automatic review rejected publishing the S01 source pending explicit Owner approval. Encrypted offsite destination, key custody, nightly schedule and production restore validation remain deployment gates. The exact NAS model and its production capacity/security validation remain a real-world gate. No production authentication, business data model, branch permission enforcement, or business workflow exists.
+Compose verification passed. The initial Prisma OpenSSL warning was resolved by installing OpenSSL in both Node build environments; a clean rebuild and Prisma client generation produced no fallback warning. Local frozen install, database migration, pnpm verify, Compose readiness and recovery rehearsal passed after the fix. Commit 5ea5a8f is present on the GitHub s01-runtime-verification branch. The hosted GitHub Actions workflow remains unverified. Encrypted offsite destination, key custody, nightly schedule and production restore validation remain deployment gates. The exact NAS model and its production capacity/security validation remain a real-world gate. No production authentication, business data model, branch permission enforcement, or business workflow exists.
 
 ## 15. Files and documentation updated
 
@@ -82,7 +82,7 @@ Added the workspace, apps, shared contracts, migration, Compose and Docker files
 
 ## 16. Git checkpoint
 
-A local S01 checkpoint commit was created on branch `s01-runtime-verification`. It has not been published. The hosted workflow remains pending explicit Owner approval to push this source to the supplied repository. The starting approved baseline remains 2e4680570e6f6e31bb3fff58f7a01b92782980dc.
+S01 checkpoint commit 5ea5a8f was published to the GitHub s01-runtime-verification branch after Owner approval. The hosted workflow result remains to be verified. The starting approved baseline remains 2e4680570e6f6e31bb3fff58f7a01b92782980dc.
 
 ## 17. S01 Definition of Done checklist
 
@@ -92,7 +92,7 @@ A local S01 checkpoint commit was created on branch `s01-runtime-verification`. 
 4. Fresh database migration — PASS.
 5. Migration against backed-up test database — PASS.
 6. Local/staging containers start and connect — PASS; Compose build/startup and web-proxied API readiness succeeded.
-7. CI/quality commands — local quality commands PASS; Compose and recovery rehearsal PASS; hosted GitHub Actions workflow NOT RUN because no Git remote is configured.
+7. CI/quality commands — local quality commands PASS; Compose and recovery rehearsal PASS; hosted GitHub Actions workflow result NOT VERIFIED.
 8. Test database plus file restored — PASS locally.
 9. Restored file checksum matches database-linked checksum — PASS.
 10. Offsite backup, key custody and production restore gate documented — DOCUMENTED; production exercise NOT RUN.
@@ -104,4 +104,4 @@ A local S01 checkpoint commit was created on branch `s01-runtime-verification`. 
 
 NOT READY. Run the hosted GitHub Actions workflow before closing S01. Compose configuration/build/startup/service checks and the Compose recovery rehearsal have passed. Do not begin S02 without explicit Owner authorization.
 
-Final status: S01 IN PROGRESS — PUSH APPROVAL AND HOSTED CI PENDING
+Final status: S01 IN PROGRESS — HOSTED CI VERIFICATION PENDING

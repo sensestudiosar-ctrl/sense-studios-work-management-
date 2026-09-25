@@ -26,6 +26,13 @@ For a task, read CURRENT_STATE.md and IMPLEMENTATION_STATUS.md, then its entry i
 
 Use Sol-level reasoning for architecture, schema, authentication, authorization, branch isolation, state machines, calculations, offline sync, difficult debugging and security review. Use Luna for routine, well-specified implementation after design. Escalate by reasoning risk, not task size. Model choice does not waive verification.
 
+Apply this routing automatically to future tasks in this project; the Owner does not need to repeat it.
+
+- Keep requirement interpretation, architecture, permissions, schema and migration design, security, difficult debugging, and final acceptance review with Sol-level reasoning.
+- When there is a concrete, bounded, well-specified implementation or documentation subtask that can run independently alongside useful work, assign it to a Luna agent. Give it the requirement IDs, slice boundary, acceptance criteria, relevant files or interfaces, and required checks. Review its result against the approved sources before accepting it.
+- If Luna encounters an unclear business rule, an access or data consequence, a schema change, or a failed acceptance criterion, resolve the issue with Sol-level reasoning and involve the Owner only when an approved source does not settle a material product choice.
+- Report the models actually used. Instructions in this file guide routing but do not change an existing task's model automatically.
+
 ## Definition of done and reporting
 
 Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, permission, real persistence, audit/events, UI states, responsive behavior, tests, type check, lint, build and documentation are verified. Unverified work remains IN PROGRESS or BLOCKED. Report actual changes, exact checks, defects, unresolved work and concrete risks. Never claim an unrun check passed.

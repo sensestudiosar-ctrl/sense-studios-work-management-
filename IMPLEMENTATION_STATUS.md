@@ -6,7 +6,7 @@ Architecture approved at checkpoint 2e46805. The Owner authorized S01 Runtime an
 
 | Slice | Status | Evidence or gate |
 | --- | --- | --- |
-| S01 Runtime and verification | IN PROGRESS — awaiting hosted CI verification | Fresh and restored-test DB migration, live API readiness outage/recovery, frozen install, typecheck, lint, unit/API tests, builds and desktop/mobile E2E passed. Compose validation, image builds, service startup, web-proxied API readiness and database/file recovery rehearsal passed on Docker 29.8.0 / Compose 5.5.1. The Prisma OpenSSL warning was fixed in the Node image stages and local pnpm verify passed after the change. Hosted GitHub Actions remains unverified. The supplied remote is configured locally, but automatic review rejected publishing the S01 source pending explicit Owner approval. See S01_PLAN.md, TESTING.md and S01_COMPLETION_REPORT.md. |
+| S01 Runtime and verification | IN PROGRESS — awaiting hosted CI verification | Fresh and restored-test DB migration, live API readiness outage/recovery, frozen install, typecheck, lint, unit/API tests, builds and desktop/mobile E2E passed. Compose validation, image builds, service startup, web-proxied API readiness and database/file recovery rehearsal passed on Docker 29.8.0 / Compose 5.5.1. The Prisma OpenSSL warning was fixed in the Node image stages and local pnpm verify passed after the change. Commit 5ea5a8f is present on the GitHub s01-runtime-verification branch. Hosted GitHub Actions remains unverified. See S01_PLAN.md, TESTING.md and S01_COMPLETION_REPORT.md. |
 | S02 Identity and sessions | NOT STARTED | Wait for S01 completion and explicit Owner authorization. |
 | S03–S27 | NOT STARTED | No later slice work is authorized. |
 
