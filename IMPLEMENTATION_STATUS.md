@@ -1,6 +1,6 @@
 # Implementation status
 
-Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-018 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. C-017 resolves lead-stage skipping and C-018 resolves returning Lost leads; OD-10 on active-lead backward moves is open; final consistency review and architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
+Approved requirements have been ingested; Phase 2 planning is ready for owner review. C-002 records Owner answers to Q1–Q15; C-003 through C-019 record later approved retention, leave, scoring, CAD sharing, backup, identity, notification and project cancellation/task decisions. C-017–C-019 resolve lead-stage movement and returning Lost leads; OD-11 on snag verification authority is open; final consistency review and architecture approval remain open. Product implementation has NOT STARTED; no feature is COMPLETE or verified.
 
 | Proposed release | Slices | Status | Gate |
 | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Owner decision register and open policy details
 
-This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-018 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
+This preserves the original Q1–Q15 interview options and answers. C-001 fixes the Branch-only hierarchy; C-002 answers Q1–Q15; C-003 through C-019 record the later approved retention, leave, scoring, CAD sharing, backup, sign-in, notification and project-cancellation decisions. The original numbered questions are answered. New material owner questions discovered during consistency review are listed below. Final architecture and S01 remain subject to explicit owner approval.
 
 ## Before foundation and first Design-project checkpoint
 
@@ -193,11 +193,19 @@ This preserves the original Q1–Q15 interview options and answers. C-001 fixes 
 **Technical recommendation:** B, because it preserves what happened in January while showing September as a new opportunity. Engineering can link records, carry over contact details with review, and keep audit history; the Owner must choose whether returning business counts as the old or a new sales opportunity. This question concerns Lost leads only; Won-to-project history remains protected.
 **Owner answer (2026-09-25):** B — Keep the old lead Lost and create a new lead linked to it when the person returns. Preserve the original loss and its reporting period (C-018).
 
-### OD-10 — Can an active lead move back to an earlier sales stage? (OPEN)
+### OD-10 — Can an active lead move back to an earlier sales stage? (RESOLVED)
 **Product/business decision for the Owner:** If real discussions move backward, may staff update the lead's current stage to match? For example, a client negotiating a turnkey fit-out changes the scope, so the team must prepare a new proposal. This affects the CRM screen, follow-up work and sales-stage reports (R-010, S06). A mistaken click can always be corrected with an audited correction; this question concerns a real change in sales progress.
 **A:** Permit an authorized lead handler to move an active lead to an earlier stage with a required reason. Staff see the work actually needed, but reports must show both the backward move and earlier progress rather than erasing history.
 **B:** Keep active leads moving forward only; staff record renewed proposal work as an activity while the current stage stays at Negotiation. The pipeline remains simple and stable, but its current stage may no longer show the team's actual next step.
 **Technical recommendation:** A, because design scope and client decisions often change during negotiation. Engineering can retain every stage change, require the reason and show stage movement honestly; the Owner must choose what the current sales stage means for operations and reporting.
+**Owner answer (2026-09-25):** A — An authorized lead handler may move a nonterminal lead back to an earlier stage after a real sales change, with a required reason and preserved history (C-019).
+
+### OD-11 — Who verifies a site snag before it closes? (OPEN)
+**Product/business decision for the Owner:** A site worker or vendor says a snag is fixed. Who is allowed to check the result and mark it Verified before closure? For example, a joinery defect in a turnkey apartment is repaired and someone must confirm the finish is acceptable. This affects the site task list, quality record and handover (R-070, S20).
+**A:** The Project Lead or authorized Team Leader names a verifier for each snag; the verifier must be someone other than the person who fixed it. The right expert can inspect each issue and responsibility is clear, but someone must assign the verifier.
+**B:** The project's designated site responsible person verifies every snag. The rule is simple and consistent, but verification can stall when that person is absent or lacks the right expertise.
+**C:** The person who reported the snag verifies it. They know what was wrong originally, but they may be unavailable or may not have authority to accept the completed work.
+**Technical recommendation:** A, because different snags need different checks and separating the fixer from the verifier protects the quality record. Engineering can enforce the assignment, keep photo/comment evidence, and reopen a failed check; the Owner must decide who has acceptance authority.
 **Owner answer:** Pending.
 
 ## Already resolved by the owner

@@ -59,7 +59,11 @@ The Owner selected OD-08 option A. A staff member with the appropriate lead-stag
 
 ## 2026-09-25 — C-018: Returning Lost enquiry creates a linked new lead (approved)
 
-The Owner selected OD-09 option B. A Lost lead stays Lost with its reason, outcome date, activity and audit history preserved. When the person returns with a renewed enquiry, staff create a separate lead linked to the prior Lost lead; the new lead has its own stage history and reporting period. Linking and viewing the earlier record require applicable permissions, and prior discussions may be referenced without copying prior decisions as new approvals. C-018 in requirements/CLARIFICATIONS.md is authoritative. OD-10 on backward moves within an active lead is open; final architecture approval and S01 remain pending.
+The Owner selected OD-09 option B. A Lost lead stays Lost with its reason, outcome date, activity and audit history preserved. When the person returns with a renewed enquiry, staff create a separate lead linked to the prior Lost lead; the new lead has its own stage history and reporting period. Linking and viewing the earlier record require applicable permissions, and prior discussions may be referenced without copying prior decisions as new approvals. C-018 in requirements/CLARIFICATIONS.md is authoritative. Final consistency review continues; final architecture approval and S01 remain pending.
+
+## 2026-09-25 — C-019: Reasoned backward moves for active leads (approved)
+
+The Owner selected OD-10 option A. An authorized handler may move a lead that has not been Won or Lost to an earlier nonterminal sales stage when real work returns there, with a required reason, actor and time. The earlier stage history and activities remain; reporting shows both the previous progress and the current stage. This does not undo a previously issued proposal, change a formal client decision or reopen Won/Lost leads. C-019 in requirements/CLARIFICATIONS.md is authoritative. OD-11 on site snag verification authority is open; final architecture approval and S01 remain pending.
 
 ## Proposed, not yet approved
 
