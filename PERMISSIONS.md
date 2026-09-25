@@ -9,15 +9,17 @@ Authenticate and verify an active server-side session; determine organization, b
 | Principal | Resource → actions | Scope | Conditions/evidence |
 | --- | --- | --- | --- |
 | Owner | Organization, branches, roles, grants, employees, teams, projects, workflow gates, deletion, automation, security audit, sessions → manage/view/override | Whole organization | Protected changes audited; override reason required; no destructive rewrite of evidence. |
-| Team Leader | Assigned projects and managed employees → assign/reassign/manage/review/deadline/leave/skills/automation as granted | Own reporting team and assigned projects; explicit cross-branch project access | Grant and project/team relation required; no automatic detailed access to other teams. Deadline change reason; skill/leave approval only within policy. |
+| Team Leader | Assigned projects and managed employees → assign/reassign/manage/review/deadline/leave/skills/automation as granted | Own reporting team and assigned projects; explicit Owner-granted cross-branch project access | Grant and project/team relation required; no automatic detailed access to other teams. Deadline change reason; skill/leave approval only within policy. |
 | Employee | Assigned/collaborator/reviewer projects/tasks → view/work/comment; self-task → create; own time/attendance/performance/training → view or submit as allowed | Own work and explicit memberships | Cannot assign others without separate permission; confidential file policy may narrow project access. |
 | Site Employee | Assigned site projects/tasks, progress/manpower/photos/snags/reports, own attendance → submit/view | Explicit site/project membership | Site evidence validation; report confirmation by site responsible person. No broad office or financial access. |
 | Reviewer | Assigned submission/review → view/comment/annotate/approve/request correction/escalate | Assigned review and permitted files | Distinct review permission; deadline/priority changes require separate grant. |
-| Primary Client | Own project portal → view/comment/review/approve/invite delegated client users/download where granted | Named client projects/items | Exact revision and signature evidence; final authority by default. No internal-only files, employee data or NAS paths. |
-| Additional Client | Own project portal → view/comment/review; approve only if explicitly delegated | Explicit invitation and item/project scope | Delegation, expiry and final authority rule must be decided; no internal data. |
+| Primary Client | Own project portal → view/comment/review/approve/invite delegated client users/download where granted | Named client projects/items | Exact revision and signature evidence; Primary Client retains final overall authority. PDF/image items only; no internal-only files, employee data or NAS paths. |
+| Additional Client | Own project portal → view/comment/review; approve only if explicitly delegated | Explicit invitation and item/project scope | Delegation is item-specific and time-limited; Primary Client retains final overall authority; no internal data. |
 | Consultant | Assigned project documents/requests/reviews/transmittals → view/upload/comment/acknowledge | Explicit consultant project/folder/item grant | Cannot see internal performance or unrelated projects. |
-| Vendor / Factory | Relevant drawings, production requests/deadlines/status → view/upload/acknowledge | Explicit project/work package and permitted revision | No unrelated files, internal performance or financials. |
+| Vendor / Factory | Relevant drawings, production requests/deadlines/status → view/upload/acknowledge | Explicit project/work package and permitted revision | CAD download only through an approved project/item grant and controlled NAS-share workflow; no unrelated files, internal performance or financials. |
 | Public visitor | Public portfolio → view | Explicitly published entries only | No project portal or internal file access. |
+
+All client portal accounts receive PDF and image files only under C-002 Q13; this applies to Primary and Additional Clients. Native NAS links for vendor CAD remain outside ordinary client access until the share workflow is approved.
 
 ## Permission names and scopes
 
@@ -27,4 +29,4 @@ Security tests must cover allowed and denied behavior, guessed IDs, cross-branch
 
 ## Decision dependencies
 
-Owner must confirm grant precedence, approval delegation/final authority and any exceptional cross-branch management access. The source does not authorize automatic permission inheritance from a job title. See REQUIREMENT_QUESTIONS.md.
+C-002 makes the Owner the only authority for cross-branch project grants and retains final overall client approval with the Primary Client. Vendor CAD share issuance/revocation controls still need a decision. The source does not authorize automatic permission inheritance from a job title. See REQUIREMENT_QUESTIONS.md.

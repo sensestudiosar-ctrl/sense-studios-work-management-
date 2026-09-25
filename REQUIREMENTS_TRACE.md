@@ -1,12 +1,13 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. See DECISIONS.md.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the owner attachment (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). Each R-### ID maps to the source section of the same number. Approved addendum C-001 in requirements/CLARIFICATIONS.md supersedes the source only for the organizational hierarchy: Organization → Branch → Team → Employee, no separate Brand model or Department tier, one owning branch per project, and explicit cross-branch assignment. C-002 records the owner answers to Q1–Q15 and remaining detail gaps. See DECISIONS.md.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
 | Requirement ID | Source section | Planned module | Planned slice(s) | Status |
 | --- | --- | --- | --- | --- |
 | C-001 | Approved clarification: Branch-only organization hierarchy; overrides organizational terminology in R-004, R-006, R-007, R-092–R-094, R-103 and R-113 | ORG/ACC/PRJ | S03/S07 | APPROVED DECISION; NOT IMPLEMENTED |
+| C-002 | Approved Q1–Q15 answers; Q8 periods, Q10 accrual, Q12 formulas and Q13 vendor share controls remain open | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED DECISIONS; DETAILS OPEN; NOT IMPLEMENTED |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
 | R-002 | PRODUCT VISION | PRJ | S07 | NOT STARTED |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |

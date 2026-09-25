@@ -8,7 +8,7 @@ Sense Studios needs an operating platform for an architecture and interior-desig
 
 ## People and organization
 
-The approved organizational hierarchy is Organization → Branch → Team → Employee (C-001); one organization may contain multiple branches. Each project belongs to exactly one branch; employees may participate across branches only through explicit assignment. Job role, reporting relationship within the approved hierarchy, and permission are distinct; roles are configurable. Internal users include Owner, Team Leader, employee, site employee, reviewer, part-time worker, and intern. External users include primary/additional client, consultant, vendor, and factory users, each restricted to a portal (R-005–R-009, R-075–R-076).
+The approved organizational hierarchy is Organization → Branch → Team → Employee (C-001); one organization may contain multiple branches. Each project belongs to exactly one current branch and may move only by formal Owner-approved transfer; each employee has one home branch/team and may participate across branches only through an Owner-granted project assignment. Job role, reporting relationship within the approved hierarchy, and permission are distinct; roles are configurable. Internal users include Owner, Team Leader, employee, site employee, reviewer, part-time worker, and intern. External users include primary/additional client, consultant, vendor, and factory users, each restricted to a portal (R-005–R-009, R-075–R-076).
 
 ## Operational capabilities
 
@@ -16,12 +16,12 @@ The approved organizational hierarchy is Organization → Branch → Team → Em
 | --- | --- | --- |
 | Leads and projects | Basic lead CRM in MVP; won lead can become a project. Design and Turnkey delivery types; multiple service scopes, formal scope changes, accountable Project Lead, configurable project templates, stages and milestones. | R-010–R-017 |
 | Tasks | One primary owner; optional collaborators. Self-tasks, project/non-project/recurring/correction/site/training tasks, configurable fields and types, priority, target and controlled committed dates, extension requests, waiting reasons, simple finish-to-start dependencies with warning rather than hard block. | R-018–R-026 |
-| Design control | Internal/client review, retained correction rounds, severity/category, R and CR revision series, classified client changes, partial approval with exact revision and evidence, transmittals. | R-027–R-034, R-037–R-038 |
+| Design control | Internal/client review, retained correction rounds, severity/category, internal R and client CR review series, classified client changes, partial approval with exact revision and evidence, transmittals. | R-027–R-034, R-037–R-038 |
 | Files | NAS as primary physical store; app-controlled access and separate metadata, historical revisions, confidential/view-only controls, private galleries and explicitly published portfolio content. | R-035–R-040 |
 | Workforce | Timers/manual time, reasoned corrections, accounting transfer; skills, training, schedules, capacity, workload, leave and impact analysis, attendance including site validation. | R-041–R-057 |
 | Communication and intelligence | In-app/mobile push, reminders, summaries; explainable employee/Team Leader performance, project health and delay attribution; dashboards, decision queue, reports and frozen snapshots. | R-058–R-067, R-073–R-074, R-077–R-078 |
 | Site and mobile | Daily site reports, progress, manpower, photos, snags; responsive installable PWA first, safe offline site capture later. | R-068–R-072, R-098 |
-| External and future | Client/consultant/vendor portals, integrations, guarded automation and provider-independent, permission-filtered AI. Native wrapper, WhatsApp, CAD/BIM, advanced recommendations and custom builders are later work. | R-075–R-076, R-082–R-090, R-103, R-112 |
+| External and future | Client PDF/image portal, consultant/vendor portals with controlled vendor CAD download when approved, integrations, guarded automation and provider-independent, permission-filtered AI. Native wrapper, WhatsApp, CAD/BIM, advanced recommendations and custom builders are later work. | R-075–R-076, R-082–R-090, R-103, R-112 |
 
 ## Rules that must survive implementation
 
@@ -37,4 +37,4 @@ The first operational proof is one real Design project from creation through tas
 
 ## Open decisions
 
-The source specifies direction but leaves material policies and transitions unresolved. REQUIREMENT_QUESTIONS.md records them; proposals in ARCHITECTURE.md are not approved product behavior.
+C-001 and C-002 record approved owner decisions. Retention periods, leave accrual/carry-forward values, scoring formulas, vendor CAD sharing controls and final architecture approval remain open in REQUIREMENT_QUESTIONS.md; proposals in ARCHITECTURE.md are not approved product behavior.
