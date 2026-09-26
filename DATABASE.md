@@ -1,6 +1,6 @@
-# Database architecture — S01 baseline migration established; business schema not started
+# Database architecture — S01 baseline and S02 identity migration implemented; business schema not started
 
-Approved architecture specifies a PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch, with later leave, score, CAD, backup, identity and retention policies recorded separately. S01 establishes PostgreSQL connectivity, an empty Prisma business schema and one reviewed baseline SQL migration. Domain names below remain conceptual, not a migration contract.
+Approved architecture specifies a PostgreSQL relational model. Approved source: R-004–R-098 and critical invariants R-092. Approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department tier; each project has one owning branch, with later leave, score, CAD, backup, identity and retention policies recorded separately. S01 established PostgreSQL connectivity and the baseline migration. The authorized S02 migration adds only identity tables: accounts, passkey credentials, WebAuthn challenges, sessions, identity enrollment grants, Owner recovery codes, staff recovery authorizations and security events. No business-domain schema is implemented. Domain names below remain conceptual, not a migration contract.
 
 ## Ownership and constraints
 

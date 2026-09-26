@@ -1,6 +1,6 @@
-# Conceptual domain model — no schema implemented
+# Conceptual domain model — S02 identity schema implemented; business schema not started
 
-Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 approves Organization → Branch → Team → Employee, with no separate Brand or Department level; each project has one branch, and employees may work across branches only through explicit assignment. These are conceptual records, not a demand to create every table in the first release. Permissions are detailed in PERMISSIONS.md; critical mutations and state changes are audited under AUD.
+Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 approves Organization → Branch → Team → Employee, with no separate Brand or Department level; each project has one branch, and employees may work across branches only through explicit assignment. These are conceptual records, not a demand to create every table in the first release. S02 implements only Account, PasskeyCredential, WebAuthnChallenge, Session, identity enrollment/recovery records and SecurityEvent; no Organization, Branch, Team, Employee or permission-grant tables exist. Permissions are detailed in PERMISSIONS.md; critical mutations and state changes are audited under AUD.
 
 ## Organization and identity
 

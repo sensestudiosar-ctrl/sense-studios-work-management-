@@ -1,6 +1,6 @@
 # Agent instructions
 
-Architecture is approved by the Owner at checkpoint 2e46805. The Owner authorized S01 Runtime and Verification only; S02 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
+Architecture is approved by the Owner at checkpoint 2e46805. The Owner approved S01 as COMPLETE for development/local staging on 2026-09-26 and authorized S02 Identity and Sessions. S03 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
 
 ## Source of truth and reading order
 
@@ -48,4 +48,4 @@ Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, per
 - Compose recovery rehearsal: set S01_DB_USER, S01_DB_NAME, S01_DB_PASSWORD, S01_DB_PORT and S01_DATABASE_URL in an untracked environment file, start infra/compose.yaml, then run node scripts/rehearse-backup.mjs.
 - Do not claim Compose startup or hosted CI is verified until those environments have actually run successfully.
 
-S01 is still in progress while container/CI gates are outstanding. Do not begin S02 without explicit Owner authorization.
+S01 is COMPLETE for its authorized development/local-staging scope. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates. S02 is authorized. Do not begin S03 or later without explicit Owner authorization.

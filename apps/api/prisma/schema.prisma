@@ -6,3 +6,186 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum AccountKind {
+  OWNER
+  STAFF
+}
+
+enum AccountState {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum WebAuthnChallengePurpose {
+  REGISTRATION
+  AUTHENTICATION
+}
+
+enum EnrollmentGrantPurpose {
+  OWNER_BOOTSTRAP
+  STAFF_INVITATION
+  STAFF_RECOVERY
+  OWNER_RECOVERY_SETUP
+}
+
+enum SecurityEventType {
+  LOGIN
+  CREDENTIAL_ADDED
+  CREDENTIAL_REVOKED
+  SESSION_REVOKED
+  RECOVERY_AUTHORIZED
+  RECOVERY_USED
+  RECOVERY_KIT_ISSUED
+  RECOVERY_KIT_ACKNOWLEDGED
+  ACCOUNT_STATE_CHANGED
+}
+
+enum SecurityEventResult {
+  SUCCESS
+  FAILURE
+}
+
+model Account {
+  id                       String                    @id @default(uuid()) @db.Uuid
+  normalizedEmail          String                    @unique @db.VarChar(320)
+  kind                     AccountKind
+  state                    AccountState              @default(PENDING)
+  createdAt                DateTime                  @default(now()) @db.Timestamptz(3)
+  updatedAt                DateTime                  @updatedAt @db.Timestamptz(3)
+  passkeyCredentials       PasskeyCredential[]
+  webAuthnChallenges       WebAuthnChallenge[]
+  sessions                 Session[]
+  enrollmentGrants         IdentityEnrollmentGrant[]
+  recoveryCodes            OwnerRecoveryCode[]
+  recoveryAuthorizations   StaffRecoveryAuthorization[] @relation("RecoveryTarget")
+  authorizationsIssued     StaffRecoveryAuthorization[] @relation("RecoveryAuthorizer")
+  enrollmentGrantsIssued   IdentityEnrollmentGrant[]     @relation("GrantAuthorizer")
+  securityEventsAsActor    SecurityEvent[]            @relation("SecurityActor")
+  securityEventsAsSubject  SecurityEvent[]            @relation("SecuritySubject")
+
+  @@index([state, kind])
+  @@map("accounts")
+}
+
+model PasskeyCredential {
+  id           String    @id @default(uuid()) @db.Uuid
+  credentialId String    @unique @db.VarChar(2048)
+  accountId    String    @db.Uuid
+  publicKey    Bytes
+  counter      BigInt    @default(0)
+  transports   Json?
+  label        String?   @db.VarChar(120)
+  createdAt    DateTime  @default(now()) @db.Timestamptz(3)
+  lastUsedAt   DateTime? @db.Timestamptz(3)
+  revokedAt    DateTime? @db.Timestamptz(3)
+  account      Account   @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([accountId, revokedAt])
+  @@map("passkey_credentials")
+}
+
+model WebAuthnChallenge {
+  id          String                    @id @default(uuid()) @db.Uuid
+  accountId   String?                   @db.Uuid
+  purpose     WebAuthnChallengePurpose
+  challenge   String                    @unique @db.VarChar(512)
+  createdAt   DateTime                  @default(now()) @db.Timestamptz(3)
+  expiresAt   DateTime                  @db.Timestamptz(3)
+  consumedAt  DateTime?                 @db.Timestamptz(3)
+  account     Account?                  @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([expiresAt, consumedAt])
+  @@index([accountId, purpose, createdAt])
+  @@map("webauthn_challenges")
+}
+
+model Session {
+  id            String    @id @default(uuid()) @db.Uuid
+  accountId     String    @db.Uuid
+  tokenHash     String    @unique @db.VarChar(128)
+  csrfTokenHash String    @db.VarChar(128)
+  createdAt     DateTime  @default(now()) @db.Timestamptz(3)
+  lastUsedAt    DateTime  @default(now()) @db.Timestamptz(3)
+  expiresAt     DateTime  @db.Timestamptz(3)
+  revokedAt     DateTime? @db.Timestamptz(3)
+  userAgent     String?   @db.VarChar(512)
+  ipAddress     String?   @db.VarChar(64)
+  account       Account   @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([accountId, revokedAt, expiresAt])
+  @@index([expiresAt, revokedAt])
+  @@map("sessions")
+}
+
+model IdentityEnrollmentGrant {
+  id                      String                @id @default(uuid()) @db.Uuid
+  purpose                 EnrollmentGrantPurpose
+  tokenHash               String                @unique @db.VarChar(128)
+  accountId               String?               @db.Uuid
+  normalizedEmail         String?               @db.VarChar(320)
+  authorizedByAccountId   String?               @db.Uuid
+  recoveryAuthorizationId String?               @unique @db.Uuid
+  reason                  String?               @db.VarChar(1000)
+  createdAt               DateTime              @default(now()) @db.Timestamptz(3)
+  expiresAt               DateTime              @db.Timestamptz(3)
+  consumedAt              DateTime?             @db.Timestamptz(3)
+  account                 Account?              @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  authorizedBy            Account?               @relation("GrantAuthorizer", fields: [authorizedByAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  recoveryAuthorization  StaffRecoveryAuthorization? @relation(fields: [recoveryAuthorizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([purpose, expiresAt, consumedAt])
+  @@index([normalizedEmail, purpose])
+  @@index([authorizedByAccountId, createdAt])
+  @@map("identity_enrollment_grants")
+}
+
+model OwnerRecoveryCode {
+  id         String    @id @default(uuid()) @db.Uuid
+  accountId  String    @db.Uuid
+  codeHash   String    @unique @db.VarChar(128)
+  createdAt  DateTime  @default(now()) @db.Timestamptz(3)
+  usedAt     DateTime? @db.Timestamptz(3)
+  replacedAt DateTime? @db.Timestamptz(3)
+  acknowledgedAt DateTime? @db.Timestamptz(3)
+  account    Account   @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([accountId, usedAt, replacedAt])
+  @@map("owner_recovery_codes")
+}
+
+model StaffRecoveryAuthorization {
+  id                       String                    @id @default(uuid()) @db.Uuid
+  accountId                String                    @db.Uuid
+  authorizedByAccountId    String                    @db.Uuid
+  reason                   String                    @db.VarChar(1000)
+  lostCredentialIds        Json
+  createdAt                DateTime                  @default(now()) @db.Timestamptz(3)
+  usedAt                   DateTime?                 @db.Timestamptz(3)
+  account                  Account                   @relation("RecoveryTarget", fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  authorizedBy             Account                   @relation("RecoveryAuthorizer", fields: [authorizedByAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  enrollmentGrant          IdentityEnrollmentGrant?
+
+  @@index([accountId, createdAt])
+  @@index([authorizedByAccountId, createdAt])
+  @@map("staff_recovery_authorizations")
+}
+
+model SecurityEvent {
+  id          String             @id @default(uuid()) @db.Uuid
+  eventType   SecurityEventType
+  result      SecurityEventResult
+  actorId     String?            @db.Uuid
+  subjectId   String?            @db.Uuid
+  occurredAt  DateTime           @default(now()) @db.Timestamptz(3)
+  metadata    Json?
+  actor       Account?           @relation("SecurityActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  subject     Account?           @relation("SecuritySubject", fields: [subjectId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([occurredAt])
+  @@index([eventType, occurredAt])
+  @@index([actorId, occurredAt])
+  @@index([subjectId, occurredAt])
+  @@map("security_events")
+}

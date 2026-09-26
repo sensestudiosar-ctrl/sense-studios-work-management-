@@ -21,4 +21,13 @@ describe("runtime configuration", () => {
     expect(parseRuntimeConfig({ ...valid, NODE_ENV: "staging", PORT: "4400" }).port).toBe(4400);
     expect(() => parseRuntimeConfig({ ...valid, PORT: "70000" })).toThrow("Invalid configuration: PORT");
   });
+
+  it("requires HTTPS in production and a complete one-time Owner bootstrap configuration", () => {
+    expect(() => parseRuntimeConfig({ ...valid, NODE_ENV: "production", WEB_ORIGIN: "http://example.test" })).toThrow("Invalid configuration: WEB_ORIGIN");
+    expect(() => parseRuntimeConfig({ ...valid, OWNER_BOOTSTRAP_EMAIL: "owner@example.test" })).toThrow("Invalid configuration: OWNER_BOOTSTRAP_EMAIL");
+    expect(parseRuntimeConfig({ ...valid, WEB_ORIGIN: "https://example.test/", OWNER_BOOTSTRAP_EMAIL: "Owner@Example.test", OWNER_BOOTSTRAP_SECRET: "x".repeat(32) })).toMatchObject({
+      webOrigin: "https://example.test",
+      ownerBootstrapEmail: "owner@example.test"
+    });
+  });
 });

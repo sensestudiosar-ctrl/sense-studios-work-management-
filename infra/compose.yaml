@@ -38,6 +38,8 @@ services:
       PORT: "4000"
       WEB_ORIGIN: http://localhost:8080
       DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+      OWNER_BOOTSTRAP_EMAIL: ${S02_OWNER_BOOTSTRAP_EMAIL:-}
+      OWNER_BOOTSTRAP_SECRET: ${S02_OWNER_BOOTSTRAP_SECRET:-}
     depends_on:
       migrate:
         condition: service_completed_successfully

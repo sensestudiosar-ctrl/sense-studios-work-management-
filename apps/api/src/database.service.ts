@@ -13,6 +13,10 @@ export interface DatabaseProbe {
 export class DatabaseService implements DatabaseProbe, OnModuleDestroy {
   private readonly client: PrismaClient;
 
+  get prisma(): PrismaClient {
+    return this.client;
+  }
+
   constructor(@Inject(RUNTIME_CONFIG) config: RuntimeConfig) {
     this.client = new PrismaClient({
       adapter: new PrismaPg({ connectionString: config.databaseUrl })

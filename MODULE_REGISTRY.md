@@ -1,11 +1,11 @@
 # Planned module registry
 
-All modules are planned, not implemented. IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. There are no source directories, APIs, services, or database tables yet. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 development/local-staging scope; see S02_COMPLETION_REPORT.md. Other business modules remain planned; S03+ are unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
 | FND | Configuration, health, tenancy context, migration/deployment conventions | — |
-| IDN | Accounts, passkey credentials, portal email codes, sessions/devices | FND |
+| IDN | Internal accounts, passkey credentials, enrollment/recovery, sessions/devices; external portal email codes are deferred to S14 | FND |
 | ORG | Organization, branch, team, employee membership/reporting and configurable job roles | FND, IDN |
 | ACC | Permission grants/overrides, membership, scoped authorization | IDN, ORG |
 | AUD | Append-only business/security audit and evidence snapshots | IDN, FND |

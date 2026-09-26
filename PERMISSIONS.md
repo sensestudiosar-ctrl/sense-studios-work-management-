@@ -1,6 +1,6 @@
-# Approved permission model — enforcement planned in S02–S03
+# Approved permission model — identity session enforcement in S02; business authorization planned for S03+
 
-Approved source: R-004–R-009, R-027–R-039, R-075–R-081, R-087–R-099. Approved C-001: Organization → Branch → Team → Employee, no Brand permission scope; one owning branch per project; employees may work across branches only with explicit assignment. Job role, reporting relation within Branch/Team, and permission grant remain separate. The matrix below is an initial baseline derived from the source, not hard-coded job titles or a finalized grant list.
+Approved source: R-004–R-009, R-027–R-039, R-075–R-081, R-087–R-099. Approved C-001: Organization → Branch → Team → Employee, no Brand permission scope; one owning branch per project; employees may work across branches only with explicit assignment. Job role, reporting relation within Branch/Team, and permission grant remain separate. The matrix below is an initial baseline derived from the source, not hard-coded job titles or a finalized grant list. S02 enforces identity/session authentication and Owner-only identity operations in the service; it does not implement business resource grants. S03 owns membership, RBAC and business authorization and remains unauthorized.
 
 ## Effective access rule
 

@@ -10,7 +10,16 @@ const environment = z.object({
     const protocol = new URL(value).protocol;
     return protocol === "postgresql:" || protocol === "postgres:";
   }, "must be a PostgreSQL URL"),
-  WEB_ORIGIN: z.url().default("http://localhost:5173")
+  WEB_ORIGIN: z.url().default("http://localhost:5173"),
+  OWNER_BOOTSTRAP_EMAIL: z.preprocess((value) => value === "" ? undefined : value, z.email().optional()),
+  OWNER_BOOTSTRAP_SECRET: z.preprocess((value) => value === "" ? undefined : value, z.string().min(32).optional())
+}).superRefine((value, context) => {
+  if (Boolean(value.OWNER_BOOTSTRAP_EMAIL) !== Boolean(value.OWNER_BOOTSTRAP_SECRET)) {
+    context.addIssue({ code: "custom", path: ["OWNER_BOOTSTRAP_EMAIL"], message: "bootstrap email and secret must be configured together" });
+  }
+  if (value.NODE_ENV === "production" && !value.WEB_ORIGIN.startsWith("https://")) {
+    context.addIssue({ code: "custom", path: ["WEB_ORIGIN"], message: "production origin must use HTTPS" });
+  }
 });
 
 export interface RuntimeConfig {
@@ -18,6 +27,8 @@ export interface RuntimeConfig {
   port: number;
   databaseUrl: string;
   webOrigin: string;
+  ownerBootstrapEmail: string | undefined;
+  ownerBootstrapSecret: string | undefined;
 }
 
 export const RUNTIME_CONFIG = Symbol("RUNTIME_CONFIG");
@@ -32,7 +43,9 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
     nodeEnv: result.data.NODE_ENV,
     port: result.data.PORT,
     databaseUrl: result.data.DATABASE_URL,
-    webOrigin: result.data.WEB_ORIGIN
+    webOrigin: new URL(result.data.WEB_ORIGIN).origin,
+    ownerBootstrapEmail: result.data.OWNER_BOOTSTRAP_EMAIL?.trim().toLowerCase(),
+    ownerBootstrapSecret: result.data.OWNER_BOOTSTRAP_SECRET
   };
 }
 

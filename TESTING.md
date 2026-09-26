@@ -1,6 +1,6 @@
-# Testing architecture — S01 commands and evidence
+# Testing architecture — S01 and S02 local evidence
 
-Architecture is approved at checkpoint 2e46805. S01 quality commands are implemented and verified locally. Business workflow tests below remain planned for their respective slices and have not been implemented.
+Architecture is approved at checkpoint 2e46805. S01 and S02 development/local-staging quality evidence is recorded below and in their completion reports. Business workflow tests remain planned for their respective unauthorized slices.
 
 ## S01 commands and verified results
 
@@ -47,3 +47,6 @@ Use the cheapest reliable test layer. Meaningful defects should get a regression
 ## Test data and status
 
 S01 tests contain no business fixtures. The business test plan below expects fixtures spanning at least two branches, two projects and multiple actor types, with distinct confidential files and explicit cross-branch assignment. Use deterministic clocks for reminders/time zones and causal event IDs for notifications. These checks are NOT RUN until their owning slices are authorized and implemented.
+## S02 verification status
+
+On 2026-09-26, dedicated PostgreSQL 16 test databases accepted the S02 migration both fresh and after the S01 baseline; Prisma reported schema current. Frozen pnpm install passed. With DATABASE_URL pointing to sense_s02_final_test, S02_E2E_BOOTSTRAP_SECRET set, and current API/Vite servers prestarted for the documented Windows lifecycle caveat, `pnpm verify` exited 0: typecheck, lint, 15 API unit tests, 12 web unit tests, 16 API integration tests, production build and five Playwright desktop/mobile tests including a virtual-authenticator Owner passkey journey. The E2E identity journey requires the secret and dedicated `_test` database. See S02_COMPLETION_REPORT.md for exact scope and limitations. S01 production gates (encrypted offsite backup, key custody, production NAS validation and production restore) remain open.

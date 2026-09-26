@@ -3,8 +3,10 @@ import { ApiOkResponse, ApiServiceUnavailableResponse, ApiTags } from "@nestjs/s
 import type { Response } from "express";
 import type { LivenessResponse, ReadinessResponse } from "@sense/contracts";
 import { DATABASE_PROBE, type DatabaseProbe } from "./database.service.js";
+import { PublicRoute } from "./auth.guard.js";
 
 @ApiTags("health")
+@PublicRoute()
 @Controller("health")
 export class HealthController {
   constructor(@Inject(DATABASE_PROBE) private readonly database: DatabaseProbe) {}

@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805 and authorized S01 only. No product/business owner question remains open.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, and authorized S02 Identity and Sessions on 2026-09-26. S03 and later remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -26,7 +26,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | APPROVED; NOT IMPLEMENTED |
 | C-006 | Owner-issued file-specific native CAD links for assigned vendors/consultants | DOC/PORT/ACC | S11/S21 | APPROVED; NOT IMPLEMENTED |
 | C-007 | Nightly encrypted database-and-file backup to separate offsite computer/NAS; one-day loss target | FND/DOC | S01/S11 | APPROVED; NOT IMPLEMENTED |
-| C-008 | Staff passkeys, external email codes, client approval passkey, Brevo and launch channels | IDN/PORT/NTF | S02/S04/S14 | APPROVED; NOT IMPLEMENTED |
+| C-008 | Staff passkeys, external email codes, client approval passkey, Brevo and launch channels | IDN/PORT/NTF | S02/S04/S14 | APPROVED; internal S02 passkey portion COMPLETE for development/local staging; external email codes and client approval passkey deferred to S14 |
 | C-009 | Retention clock anchors, scheduled expiry, notice and holds | AUD/DOC/WFM | S04/S11/S17 | APPROVED; NOT IMPLEMENTED |
 | C-010 | Owner-only cancellation from Draft/Active/On Hold with reason and audit | PRJ/ACC/APR | S05/S07/S09 | APPROVED; NOT IMPLEMENTED |
 | C-011 | Stop unfinished delivery tasks on project cancellation; preserve history; permit distinct linked closeout tasks | PRJ/TSK/NTF | S09/S14 | APPROVED; NOT IMPLEMENTED |
@@ -47,9 +47,9 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-002 | PRODUCT VISION | PRJ | S07 | NOT STARTED |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |
 | R-004 | ORGANIZATION MODEL | ORG | S03 | NOT STARTED |
-| R-005 | USER TYPES | IDN | S02 | NOT STARTED |
+| R-005 | USER TYPES: R-005.a Owner identity, R-005.b staff identity, R-005.c external portal identities, R-005.d public visitor | IDN/PORT | S02/S14/S21 | R-005.a–b identity-only Owner/Staff kinds implemented in S02 for development/local staging; R-005.c–d deferred |
 | R-006 | PERMISSION MODEL | ACC/ORG | S03 | NOT STARTED |
-| R-007 | OWNER | ACC/ORG | S03 | NOT STARTED |
+| R-007 | OWNER: R-007.a authentication identity, R-007.b organization authority, R-007.c account recovery/security duties | IDN/ACC/ORG | S02/S03 | Identity portions of R-007.a/c implemented in S02 for development/local staging; organization authority and business permissions deferred to unauthorized S03 |
 | R-008 | TEAM LEADER | ACC/ORG | S03 | NOT STARTED |
 | R-009 | EMPLOYEE | ACC/ORG | S03 | NOT STARTED |
 | R-010 | LEAD MANAGEMENT | CRM | S06 | NOT STARTED |
@@ -118,7 +118,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-073 | DASHBOARDS | DASH | S24 | NOT STARTED |
 | R-074 | MANAGEMENT ACTION CENTER | DASH | S24 | NOT STARTED |
 | R-075 | EXTERNAL PORTALS | PORT | S14/S21 | NOT STARTED |
-| R-076 | PORTAL AUTHENTICATION | PORT | S14/S21 | NOT STARTED |
+| R-076 | PORTAL AUTHENTICATION: R-076.a external portal email-code authentication, R-076.b client passkey step-up for formal approval | PORT/IDN | S14/S21 | DEFERRED; S02 covers internal passkeys only |
 | R-077 | REPORTS | RPT | S24 | NOT STARTED |
 | R-078 | CUSTOM REPORT BUILDER | RPT | S26 | NOT STARTED |
 | R-079 | AUDIT TRAIL | AUD | S04 | NOT STARTED |
@@ -141,7 +141,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-096 | SHARED APPROVAL ENGINE | APR | S05 | NOT STARTED |
 | R-097 | MANAGEMENT DECISION QUEUE | APR | S05 | NOT STARTED |
 | R-098 | OFFLINE SITE DATA | SITE | S22 | NOT STARTED |
-| R-099 | SECURITY | IDN/ACC | S02/S03 | NOT STARTED |
+| R-099 | SECURITY: R-099.a internal passkey authentication, R-099.b session/CSRF/origin controls, R-099.c recovery, R-099.d throttling/enumeration, R-099.e authorization, R-099.f audit/secrets | IDN/ACC/AUD | S02/S03/S04 | Identity subset COMPLETE for development/local staging; business authorization deferred S03; general audit foundation S04 |
 | R-100 | TESTING PHILOSOPHY | GOV | S01 | NOT STARTED |
 | R-101 | BUG RULE | GOV | S01 | NOT STARTED |
 | R-102 | DEFINITION OF DONE | GOV | S01 | NOT STARTED |
