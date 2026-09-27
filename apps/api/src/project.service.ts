@@ -57,7 +57,7 @@ export class ProjectService {
       if (new Set(normalized.map((x) => x.normalizedName)).size !== normalized.length) throw new ConflictException("Scopes must be unique ignoring case");
       let project: Awaited<ReturnType<typeof tx.project.create>>;
       try {
-        project = await tx.project.create({ data: { organizationId: actor.organizationId, branchId: input.branchId, title: input.title, deliveryType: input.deliveryType, ...(clientId ? { clientId } : {}), ...(input.wonLeadId ? { wonLeadId: input.wonLeadId } : {}), createdById: actor.accountId } });
+        project = await tx.project.create({ data: { organizationId: actor.organizationId, branchId: input.branchId, title: input.title, deliveryType: input.deliveryType, ...(clientId ? { clientId } : {}), ...(input.wonLeadId ? { wonLeadId: input.wonLeadId, wonStageChangeId: String(wonProvenance?.stageChangeId) } : {}), createdById: actor.accountId } });
         await tx.projectScope.createMany({ data: normalized.map((scope) => ({ organizationId: actor.organizationId, projectId: project.id, ...scope, baseline: true })) });
         await tx.projectStatusChange.create({ data: { organizationId: actor.organizationId, projectId: project.id, toStatus: ProjectStatus.DRAFT, projectVersion: 1, reason: input.reason, actorId: actor.accountId } });
       } catch (error) {
@@ -81,7 +81,7 @@ export class ProjectService {
     if (!project) throw new NotFoundException("Project not found");
     let wonLeadProvenance: Record<string, unknown> | undefined;
     if (project.wonLeadId) {
-      const won = await this.db.leadStageChange.findFirst({ where: { leadId: project.wonLeadId, organizationId: actor.organizationId, toStage: "WON" }, orderBy: [{ occurredAt: "asc" }, { id: "asc" }] });
+      const won = project.wonStageChangeId ? await this.db.leadStageChange.findFirst({ where: { id: project.wonStageChangeId, leadId: project.wonLeadId, organizationId: actor.organizationId, toStage: "WON" } }) : null;
       if (won) wonLeadProvenance = { leadId: project.wonLeadId, stageChangeId: won.id, occurredAt: won.occurredAt, actorId: won.actorId, fromStage: won.fromStage, toStage: won.toStage, leadVersion: won.leadVersion, skippedStages: won.skippedStages };
     }
     return { project, ...(wonLeadProvenance ? { wonLeadProvenance } : {}) };

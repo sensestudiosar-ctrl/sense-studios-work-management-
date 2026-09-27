@@ -113,3 +113,7 @@ Owner authorized staff with a separate source-management grant to add or deactiv
 ## 2026-09-27 — S07 project conversion and scope approval (Owner decision)
 
 The Owner authorized S07. A project may be created directly or from a Won lead; each Won lead may produce at most one project. A direct project has no invented lead provenance. Each project has an Owner-configured named approver for formal scope changes, and that person cannot approve a change they requested. If no approver is configured, the scope change cannot take effect. S07_SPEC.md records the implementation boundary and evidence. Effective project cancellation remains gated on S09 and later dependent access workflows.
+
+## 2026-09-28 — S07 transfer, completion and scope recovery (Owner decision)
+
+On an Owner transfer of the owning Branch, every contributor whose home Branch differs from the new owning Branch loses project access. The Owner may explicitly grant it again. Before S08 supplies stage and milestone templates, only the Owner may mark an Active project Completed, with a required reason confirming delivery. If the named scope approver is unavailable while a request is pending, the Owner withdraws that request with a reason, then names a replacement; the requester may submit a new request. Withdrawal preserves the original request and approval history.

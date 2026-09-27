@@ -1,6 +1,6 @@
 # Testing architecture — S01–S05 local evidence
 
-Architecture is approved at checkpoint 2e46805. S01–S05 development/local-staging quality evidence is recorded below and in their completion reports. S06 is COMPLETE for development/local staging; S07 is authorized and IN PROGRESS; S08+ remain unauthorized. S05 verification is detailed in S05_COMPLETION_REPORT.md.
+Architecture is approved at checkpoint 2e46805. S01–S07 development/local-staging quality evidence is recorded below and in their completion reports. S08+ remain unauthorized. S07 verification is detailed in S07_COMPLETION_REPORT.md.
 
 ## S01 commands and verified results
 
@@ -70,3 +70,7 @@ Final verification: 85 API unit, 56 PostgreSQL/API, 35 web unit and seven deskto
 ## S07A progress — 2026-09-27
 
 The Owner Draft project creation/read increment passed 89 API unit tests, 63 PostgreSQL/API tests on a fresh dedicated database, 40 web unit tests, Prisma validation/generation and fresh migration deployment, contracts/API/web type checks, ESLint and API/web production builds. The project-specific suites passed 4 lifecycle, 3 database, 4 HTTP and 4 UI tests. Desktop/mobile Playwright and full `pnpm verify` have not run for S07. See S07_PROGRESS_REPORT.md for exact scope and limits. S07 remains IN PROGRESS.
+
+## S07 completion — 2026-09-28
+
+On a pristine PostgreSQL 18 test database with all 16 migrations, `pnpm verify` exited 0: contracts/API/web typecheck, ESLint, 89 API unit tests, 43 web unit tests, 68 PostgreSQL integration tests, production builds and nine desktop/mobile Playwright cases. Two new browser cases cover assigned staff project isolation and persisted cancellation requests after refresh. Prisma validate/status and an S06 data-preserving upgrade rehearsal also passed. The S07A section above is a historical checkpoint; final scope, review and limits are in S07_COMPLETION_REPORT.md.

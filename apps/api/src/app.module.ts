@@ -22,6 +22,7 @@ import { CrmController } from "./crm.controller.js";
 import { CrmService } from "./crm.service.js";
 import { ProjectController } from "./project.controller.js";
 import { ProjectService } from "./project.service.js";
+import { ProjectWorkflowService } from "./project-workflow.service.js";
 
 @Module({
   controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController],
@@ -37,6 +38,7 @@ import { ProjectService } from "./project.service.js";
     ApprovalService,
     CrmService,
     ProjectService,
+    ProjectWorkflowService,
     NotificationsService,
     { provide: BrevoEmailAdapter, useFactory: (config: ReturnType<typeof loadRuntimeConfig>) => new BrevoEmailAdapter({ apiKey: config.brevoApiKey, senderEmail: config.brevoSenderEmail, senderName: config.brevoSenderName }) , inject: [RUNTIME_CONFIG] },
     { provide: VERIFIED_ADDRESS_PREDICATE, useClass: PersistedVerifiedAddressPredicate },

@@ -135,6 +135,7 @@ model Project {
   version                Int                   @default(1)
   clientId               String?               @db.Uuid
   wonLeadId              String?               @db.Uuid
+  wonStageChangeId       String?               @db.Uuid
   currentLeadEmployeeId  String?               @db.Uuid
   scopeApproverAccountId String?               @db.Uuid
   createdById            String                @db.Uuid
@@ -149,6 +150,12 @@ model Project {
   createdBy              Account               @relation("ProjectCreator", fields: [createdById], references: [id], onDelete: Restrict)
   scopes                 ProjectScope[]
   statusChanges          ProjectStatusChange[]
+  assignments            ProjectAssignment[]
+  leadChanges            ProjectLeadChange[]
+  transfers              ProjectBranchTransfer[]
+  scopeChanges           ProjectScopeChange[]
+  scopePolicyChanges     ProjectScopePolicyChange[]
+  cancellationRequests   ProjectCancellationRequest[]
 
   @@unique([id, organizationId])
   @@unique([wonLeadId, organizationId])
@@ -163,8 +170,10 @@ model ProjectScope {
   name           String   @db.VarChar(120)
   normalizedName String   @db.VarChar(120)
   baseline       Boolean  @default(true)
+  scopeChangeId  String?  @unique @db.Uuid
   createdAt      DateTime @default(now()) @db.Timestamptz(3)
   project        Project  @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  scopeChange    ProjectScopeChange? @relation(fields: [scopeChangeId], references: [id], onDelete: Restrict)
 
   @@unique([projectId, normalizedName])
   @@index([organizationId, projectId])
@@ -187,6 +196,105 @@ model ProjectStatusChange {
   @@unique([projectId, projectVersion])
   @@index([projectId, occurredAt, id])
   @@map("project_status_changes")
+}
+
+model ProjectAssignment {
+  id                    String    @id @default(uuid()) @db.Uuid
+  projectId             String    @db.Uuid
+  organizationId        String    @db.Uuid
+  employeeId            String    @db.Uuid
+  crossBranchAuthorized Boolean   @default(false)
+  grantedById           String    @db.Uuid
+  grantReason           String    @db.VarChar(1000)
+  grantedAt             DateTime  @default(now()) @db.Timestamptz(3)
+  revokedAt             DateTime? @db.Timestamptz(3)
+  revokedById           String?   @db.Uuid
+  revocationReason      String?   @db.VarChar(1000)
+  project               Project   @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@index([projectId, revokedAt, employeeId])
+  @@index([employeeId, revokedAt])
+  @@map("project_assignments")
+}
+
+model ProjectLeadChange {
+  id             String   @id @default(uuid()) @db.Uuid
+  projectId      String   @db.Uuid
+  organizationId String   @db.Uuid
+  oldEmployeeId  String?  @db.Uuid
+  newEmployeeId  String?  @db.Uuid
+  projectVersion Int
+  actorId        String   @db.Uuid
+  reason         String   @db.VarChar(1000)
+  occurredAt     DateTime @default(now()) @db.Timestamptz(3)
+  project        Project  @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@unique([projectId, projectVersion])
+  @@index([projectId, occurredAt, id])
+  @@map("project_lead_changes")
+}
+
+model ProjectBranchTransfer {
+  id             String   @id @default(uuid()) @db.Uuid
+  projectId      String   @db.Uuid
+  organizationId String   @db.Uuid
+  fromBranchId   String   @db.Uuid
+  toBranchId     String   @db.Uuid
+  projectVersion Int
+  actorId        String   @db.Uuid
+  reason         String   @db.VarChar(1000)
+  occurredAt     DateTime @default(now()) @db.Timestamptz(3)
+  project        Project  @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@unique([projectId, projectVersion])
+  @@index([projectId, occurredAt, id])
+  @@map("project_branch_transfers")
+}
+
+model ProjectScopeChange {
+  id             String    @id @default(uuid()) @db.Uuid
+  projectId      String    @db.Uuid
+  organizationId String    @db.Uuid
+  name           String    @db.VarChar(120)
+  normalizedName String    @db.VarChar(120)
+  requesterId    String    @db.Uuid
+  requestReason  String    @db.VarChar(1000)
+  requestedAt    DateTime  @default(now()) @db.Timestamptz(3)
+  approvalId     String?   @unique @db.Uuid
+  project        Project   @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  approvedScope  ProjectScope?
+
+  @@index([projectId, requestedAt, id])
+  @@map("project_scope_changes")
+}
+
+model ProjectScopePolicyChange {
+  id                String   @id @default(uuid()) @db.Uuid
+  projectId         String   @db.Uuid
+  organizationId    String   @db.Uuid
+  oldApproverId     String?  @db.Uuid
+  newApproverId     String   @db.Uuid
+  projectVersion    Int
+  actorId           String   @db.Uuid
+  reason            String   @db.VarChar(1000)
+  occurredAt        DateTime @default(now()) @db.Timestamptz(3)
+  project           Project  @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@unique([projectId, projectVersion])
+  @@map("project_scope_policy_changes")
+}
+
+model ProjectCancellationRequest {
+  id             String   @id @default(uuid()) @db.Uuid
+  projectId      String   @db.Uuid
+  organizationId String   @db.Uuid
+  requesterId    String   @db.Uuid
+  reason         String   @db.VarChar(1000)
+  requestedAt    DateTime @default(now()) @db.Timestamptz(3)
+  project        Project  @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@index([projectId, requestedAt, id])
+  @@map("project_cancellation_requests")
 }
 
 enum AccountKind {

@@ -36,10 +36,101 @@ describe("ProjectWorkspace", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("You need Owner access to manage projects.");
   });
 
-  it("does not request or render project data for staff", () => {
-    const fetchMock = vi.fn(); vi.stubGlobal("fetch", fetchMock);
-    const { container } = render(<ProjectWorkspace csrfToken="csrf" owner={false} />);
-    expect(container).toBeEmptyDOMElement(); expect(fetchMock).not.toHaveBeenCalled();
+  it("lets staff read server-visible projects and request pending cancellation", async () => {
+    const project = { id: "assigned-project", title: "Assigned work", status: "ACTIVE", deliveryType: "DESIGN", version: 4, scopes: [], branch: { id: "branch-1", name: "Mumbai" } };
+    const calls: Array<[string, RequestInit | undefined]> = [];
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/projects/setup") return response({ owner: false, branches: [{ id: "branch-1", name: "Mumbai" }], employees: [] });
+      if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
+      if (url === "/api/v1/projects/" + project.id) return response({ project, capabilities: { requestCancellation: true }, cancellationRequests: [] });
+      if (url === "/api/v1/projects/" + project.id + "/cancellation-requests") return response({ request: { status: "PENDING" } }, 201);
+      return response({}, 404);
+    }));
+    render(<ProjectWorkspace csrfToken="csrf-project" owner={false} />);
+    fireEvent.click(await screen.findByRole("button", { name: /Assigned work/ }));
+    fireEvent.change(await screen.findByLabelText("Project action reason"), { target: { value: "Delivery date is at risk" } });
+    fireEvent.click(screen.getByRole("button", { name: "Request cancellation" }));
+    expect(await screen.findByText("Cancellation request submitted and pending Owner review.")).toBeInTheDocument();
+    const call = calls.find(([url]) => url.endsWith("/cancellation-requests"));
+    expect(call?.[1]).toMatchObject({ method: "POST", headers: { "X-CSRF-Token": "csrf-project" } });
+    expect(JSON.parse(String(call?.[1]?.body))).toEqual({ reason: "Delivery date is at risk" });
+  });
+
+  it("reloads details after a stale-version conflict and sends the version and reason", async () => {
+    const branch = { id: "branch-1", name: "Mumbai" };
+    const project = { id: "project-1", title: "Studio", status: "DRAFT", deliveryType: "DESIGN", version: 3, scopes: [], branch };
+    const calls: Array<[string, RequestInit | undefined]> = [];
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/projects/setup") return response({ branches: [branch], ownerAccountId: "owner-acct", employees: [{ id: "emp-1", accountId: "acct-1", name: "Asha", homeBranchId: branch.id }] });
+      if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
+      if (url === "/api/v1/projects/" + project.id) return response({ project, capabilities: { assignLead: true } });
+      if (url === "/api/v1/projects/" + project.id + "/lead") return response({}, 409);
+      return response({}, 404);
+    }));
+    render(<ProjectWorkspace csrfToken="csrf-project" owner />);
+    fireEvent.click(await screen.findByRole("button", { name: /Studio/ }));
+    expect(await screen.findByRole("option", { name: "Owner" })).toHaveValue("owner-acct");
+    fireEvent.change(await screen.findByLabelText("Project action reason"), { target: { value: "Appoint accountable lead" } });
+    fireEvent.change(screen.getByLabelText("Project lead"), { target: { value: "emp-1" } });
+    fireEvent.click(screen.getByRole("button", { name: "Set lead" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("The latest details are loaded");
+    const action = calls.find(([url]) => url.endsWith("/lead"));
+    expect(action?.[1]).toMatchObject({ method: "POST", headers: { "X-CSRF-Token": "csrf-project" } });
+    expect(JSON.parse(String(action?.[1]?.body))).toEqual({ employeeId: "emp-1", expectedVersion: 3, reason: "Appoint accountable lead" });
+  });
+
+  it("lets the current scope approver decide a pending change with a reason", async () => {
+    const branch = { id: "branch-1", name: "Mumbai" };
+    const project = { id: "project-2", title: "Residence", status: "ACTIVE", deliveryType: "DESIGN", version: 5, scopes: [], branch };
+    const calls: Array<[string, RequestInit | undefined]> = [];
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/projects/setup") return response({ branches: [branch], employees: [], owner: false });
+      if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
+      if (url === "/api/v1/projects/" + project.id) return response({ project, currentLeadName: "Mira Shah", capabilities: { decideScope: true }, scopeChanges: [{ name: "Landscape", status: "PENDING", approvalId: "approval-7", approval: { state: "PENDING" }, reason: "Client requested it" }] });
+      if (url === "/api/v1/projects/" + project.id + "/scope-requests/approval-7/decision") return response({ decided: true });
+      return response({}, 404);
+    }));
+    render(<ProjectWorkspace csrfToken="csrf-project" owner={false} />);
+    fireEvent.click(await screen.findByRole("button", { name: /Residence/ }));
+    expect(await screen.findByText("Mira Shah")).toBeInTheDocument();
+    expect(await screen.findByText(/Landscape · PENDING · Client requested it/)).toBeInTheDocument();
+    expect(screen.getByText(/requester cannot approve their own request/i)).toBeInTheDocument();
+    const approve = await screen.findByRole("button", { name: "Approve" });
+    expect(approve).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Project action reason"), { target: { value: "Approved after scope review" } });
+    fireEvent.click(approve);
+    expect(await screen.findByText("Scope change approved.")).toBeInTheDocument();
+    const decision = calls.find(([url]) => url.endsWith("/scope-requests/approval-7/decision"));
+    expect(decision?.[1]).toMatchObject({ method: "POST", headers: { "X-CSRF-Token": "csrf-project" } });
+    expect(JSON.parse(String(decision?.[1]?.body))).toEqual({ outcome: "APPROVED", reason: "Approved after scope review" });
+  });
+
+  it("lets only the Owner withdraw a pending scope request with a reason", async () => {
+    const branch = { id: "branch-1", name: "Mumbai" };
+    const project = { id: "project-3", title: "Townhouse", status: "ACTIVE", deliveryType: "DESIGN", version: 2, scopes: [], branch };
+    const calls: Array<[string, RequestInit | undefined]> = [];
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/projects/setup") return response({ branches: [branch], employees: [], owner: true, ownerAccountId: "owner-account" });
+      if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
+      if (url === "/api/v1/projects/" + project.id) return response({ project, scopeChanges: [{ name: "Lighting", status: "PENDING", approvalId: "approval-9", approval: { state: "PENDING" }, reason: "Client request" }] });
+      if (url === "/api/v1/projects/" + project.id + "/scope-requests/approval-9/withdraw") return response({ withdrawn: true });
+      return response({}, 404);
+    }));
+    render(<ProjectWorkspace csrfToken="csrf-project" owner />);
+    fireEvent.click(await screen.findByRole("button", { name: /Townhouse/ }));
+    expect(await screen.findByText(/withdraw the request with a reason, change the approver above/i)).toBeInTheDocument();
+    const withdraw = await screen.findByRole("button", { name: "Withdraw" });
+    expect(withdraw).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Project action reason"), { target: { value: "Approver is unavailable" } });
+    fireEvent.click(withdraw);
+    expect(await screen.findByText(/Pending scope request withdrawn/)).toBeInTheDocument();
+    const call = calls.find(([url]) => url.endsWith("/scope-requests/approval-9/withdraw"));
+    expect(call?.[1]).toMatchObject({ method: "POST", headers: { "X-CSRF-Token": "csrf-project" } });
+    expect(JSON.parse(String(call?.[1]?.body))).toEqual({ reason: "Approver is unavailable" });
   });
 
   it("ignores a stale Branch response after the Owner switches branches", async () => {

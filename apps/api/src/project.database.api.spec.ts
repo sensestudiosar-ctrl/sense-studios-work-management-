@@ -50,7 +50,7 @@ databaseDescribe("S07 project baseline database invariants", () => {
 
   async function expectRejected(tx: Prisma.TransactionClient, action: () => Promise<unknown>) {
     await tx.$executeRaw`SAVEPOINT project_test`;
-    await expect(action()).rejects.toThrow();
+    await expect((async () => { await action(); await tx.$executeRaw`SET CONSTRAINTS ALL IMMEDIATE`; })()).rejects.toThrow();
     await tx.$executeRaw`ROLLBACK TO SAVEPOINT project_test`;
     await tx.$executeRaw`RELEASE SAVEPOINT project_test`;
   }
@@ -77,10 +77,11 @@ databaseDescribe("S07 project baseline database invariants", () => {
       await tx.leadStageChange.create({ data: { organizationId, leadId: lead.id, toStage: "NEW", direction: "CREATED", skippedStages: [], actorId: ownerId, leadVersion: 1 } });
       await tx.lead.update({ where: { id: lead.id }, data: { stage: "WON", outcomeAt: new Date(), version: { increment: 1 } } });
       await tx.leadStageChange.create({ data: { organizationId, leadId: lead.id, fromStage: "NEW", toStage: "WON", direction: "FORWARD", skippedStages: ["CONTACTED", "MEETING_DISCUSSION", "PROPOSAL", "NEGOTIATION"], reason: "Direct agreement", actorId: ownerId, leadVersion: 2 } });
-      const project = await tx.project.create({ data: { organizationId, branchId, wonLeadId: lead.id, clientId, title: "Converted design project", deliveryType: "DESIGN", createdById: ownerId } });
+      const project = await tx.project.create({ data: { organizationId, branchId, wonLeadId: lead.id, wonStageChangeId: (await tx.leadStageChange.findFirstOrThrow({ where: { leadId: lead.id, toStage: "WON" } })).id, clientId, title: "Converted design project", deliveryType: "DESIGN", createdById: ownerId } });
       await tx.projectScope.create({ data: { organizationId, projectId: project.id, name: "Interior Design", normalizedName: "interior design" } });
       await tx.projectStatusChange.create({ data: { organizationId, projectId: project.id, toStatus: "DRAFT", projectVersion: 1, actorId: ownerId } });
       await tx.$executeRaw`SET CONSTRAINTS ALL IMMEDIATE`;
+      expect((await tx.project.findUniqueOrThrow({ where: { id: project.id } })).wonStageChangeId).toBe((await tx.leadStageChange.findFirstOrThrow({ where: { leadId: lead.id, toStage: "WON" } })).id);
       await expectRejected(tx, () => tx.project.create({ data: { organizationId, branchId, wonLeadId: lead.id, clientId, title: "Duplicate conversion", deliveryType: "TURNKEY", createdById: ownerId } }));
       await expectRejected(tx, () => tx.project.create({ data: { organizationId, branchId: otherBranchId, wonLeadId: lead.id, clientId, title: "Wrong Branch conversion", deliveryType: "DESIGN", createdById: ownerId } }));
       await expectRejected(tx, () => tx.project.create({ data: { organizationId, branchId, wonLeadId: lead.id, title: "Client-mismatched conversion", deliveryType: "DESIGN", createdById: ownerId } }));
@@ -115,6 +116,35 @@ databaseDescribe("S07 project baseline database invariants", () => {
       expect((await service.detail(actor, converted.project.id)).wonLeadProvenance).toMatchObject({ stageChangeId: won.id });
       await expect(service.create(actor, { branchId, title: "Second conversion", deliveryType: "TURNKEY", scopes: ["Construction"], wonLeadId: lead.id, reason: "Duplicate conversion attempt" })).rejects.toThrow();
       expect(await tx.project.count({ where: { wonLeadId: lead.id } })).toBe(1);
+    });
+  });
+
+  it("enforces assignment, lifecycle, transfer, scope approval, and cancellation guards in PostgreSQL", async () => {
+    await fixture(async ({ tx, organizationId, branchId, otherBranchId, ownerId, service, actor }) => {
+      const project = (await service.create(actor, { branchId, title: "Guarded workflow", deliveryType: "DESIGN", scopes: ["Architecture"], reason: "Create baseline" })).project;
+      const suffix = randomUUID();
+      const team = await tx.team.create({ data: { organizationId, branchId, name: `S07 team ${suffix}` } });
+      const account = await tx.account.create({ data: { normalizedEmail: `s07-employee-${suffix}@example.test`, kind: AccountKind.STAFF, state: AccountState.ACTIVE } });
+      const employee = await tx.employee.create({ data: { organizationId, accountId: account.id, homeBranchId: branchId, homeTeamId: team.id, hiredAt: new Date("2026-01-01T00:00:00Z") } });
+      const foreignTeam = await tx.team.create({ data: { organizationId, branchId: otherBranchId, name: `S07 other team ${suffix}` } });
+      const foreignAccount = await tx.account.create({ data: { normalizedEmail: `s07-foreign-${suffix}@example.test`, kind: AccountKind.STAFF, state: AccountState.ACTIVE } });
+      const foreignEmployee = await tx.employee.create({ data: { organizationId, accountId: foreignAccount.id, homeBranchId: otherBranchId, homeTeamId: foreignTeam.id, hiredAt: new Date("2026-01-01T00:00:00Z") } });
+
+      const assignment = await tx.projectAssignment.create({ data: { projectId: project.id, organizationId, employeeId: employee.id, grantedById: ownerId, grantReason: "Same Branch work" } });
+      await expectRejected(tx, () => tx.projectAssignment.create({ data: { projectId: project.id, organizationId, employeeId: foreignEmployee.id, grantedById: ownerId, grantReason: "Missing cross-Branch authorization" } }));
+      const crossBranchAssignment = await tx.projectAssignment.create({ data: { projectId: project.id, organizationId, employeeId: foreignEmployee.id, crossBranchAuthorized: true, grantedById: ownerId, grantReason: "Owner approved cross-Branch work" } });
+      await expectRejected(tx, () => tx.projectAssignment.delete({ where: { id: assignment.id } }));
+
+      await expectRejected(tx, () => tx.project.update({ where: { id: project.id }, data: { status: "ACTIVE", version: { increment: 1 }, currentLeadEmployeeId: employee.id } }));
+      await expectRejected(tx, () => tx.project.update({ where: { id: project.id }, data: { branchId: otherBranchId, version: { increment: 1 } } }));
+      await expectRejected(tx, () => tx.project.update({ where: { id: project.id }, data: { status: "CANCELLED", version: { increment: 1 } } }));
+
+      const scopeChange = await tx.projectScopeChange.create({ data: { projectId: project.id, organizationId, name: "Lighting", normalizedName: "lighting", requesterId: ownerId, requestReason: "Client requested lighting scope" } });
+      await expectRejected(tx, () => tx.projectScope.create({ data: { projectId: project.id, organizationId, name: "Lighting", normalizedName: "lighting", baseline: false, scopeChangeId: scopeChange.id } }));
+      await expectRejected(tx, () => tx.projectScopeChange.delete({ where: { id: scopeChange.id } }));
+
+      await expectRejected(tx, () => tx.project.update({ where: { id: project.id }, data: { scopeApproverAccountId: ownerId, version: { increment: 1 } } }));
+      expect((await tx.projectAssignment.findUniqueOrThrow({ where: { id: crossBranchAssignment.id } })).revokedAt).toBeNull();
     });
   });
 });

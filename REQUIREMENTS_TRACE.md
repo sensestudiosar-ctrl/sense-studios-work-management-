@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04, S05, S06 and S07 on 2026-09-27. S01–S06 are COMPLETE for development/local staging; S07 is IN PROGRESS; S08+ remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04, S05, S06 and S07 on 2026-09-27. S01–S07 are COMPLETE for development/local staging; S08+ remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -19,7 +19,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 
 | Requirement ID | Source section | Planned module | Planned slice(s) | Status |
 | --- | --- | --- | --- | --- |
-| C-001 | Approved clarification: Branch-only organization hierarchy; overrides organizational terminology in R-004, R-006, R-007, R-092–R-094, R-103 and R-113 | ORG/ACC/PRJ | S03/S07 | APPROVED; S03 Organization/Branch/Team schema and APIs COMPLETE; project ownership awaits S07 |
+| C-001 | Approved clarification: Branch-only organization hierarchy; overrides organizational terminology in R-004, R-006, R-007, R-092–R-094, R-103 and R-113 | ORG/ACC/PRJ | S03/S07 | APPROVED; S03 organization hierarchy and S07 project ownership COMPLETE |
 | C-002 | Approved Q1–Q15 answers, further specified by C-003–C-024 | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED; Q1/Q15 implemented in S03; remaining owner policies belong to later slices |
 | C-003 | Q8 category retention durations; C-009 fixes clock and expiry policy; legal/contract validation remains a release gate | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED; S04 audit retention controls COMPLETE for development/local staging; legal/contract/backup validation is a production gate; other categories later |
 | C-004 | Branch leave-year, credit, proration, carry-forward and expiry | WFM | S17 | APPROVED; NOT IMPLEMENTED |
@@ -42,23 +42,23 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-021 | Assigned Project Lead/explicitly authorized Team Leader makes a separate Closed decision after passed snag verification | SITE/ACC/AUD | S20 | APPROVED; NOT IMPLEMENTED |
 | C-022 | Approved-leave cancellation requires same-level management decision; reversal retains ledger and capacity history | WFM/APR/AUD/NTF | S17 | APPROVED; NOT IMPLEMENTED |
 | C-023 | Employee exit immediately revokes access; unfinished tasks wait for individual authorized reassignment | ORG/ACC/TSK/AUD/NTF | S03/S09 | APPROVED; S03 supplies immediate suspension and fail-closed exit refusal; atomic task-wait and reassignment workflow awaits S09 |
-| C-024 | Exiting Project Lead puts Active project On Hold; Owner names replacement before resume | ORG/PRJ/ACC/AUD/NTF | S03/S07 | APPROVED; S03 refuses effective exit until the dependency exists; project hold/replacement workflow awaits S07 |
+| C-024 | Exiting Project Lead puts Active project On Hold; Owner names replacement before resume | ORG/PRJ/ACC/AUD/NTF | S03/S07/S09 | APPROVED; S07 project hold/replacement primitive COMPLETE; S03 effective exit remains gated until S09 task waits are atomic with it |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
-| R-002 | PRODUCT VISION | PRJ | S07 | NOT STARTED |
+| R-002 | PRODUCT VISION | PRJ | S07+ | S07 project ownership foundation COMPLETE; later delivery modules remain planned |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |
-| R-004 | ORGANIZATION MODEL | ORG | S03 | S03 COMPLETE: Organization/Branch/Team, Employee home membership/history, and multiple dated configurable JobRole assignments; project membership waits for S07 |
+| R-004 | ORGANIZATION MODEL | ORG/PRJ | S03/S07 | S03 hierarchy/membership and S07 explicit project assignment COMPLETE |
 | R-005 | USER TYPES: R-005.a Owner identity, R-005.b staff identity, R-005.c external portal identities, R-005.d public visitor | IDN/PORT | S02/S14/S21 | R-005.a–b identity-only Owner/Staff kinds implemented in S02 for development/local staging; R-005.c–d deferred |
-| R-006 | PERMISSION MODEL | ACC/ORG | S03 | S03 COMPLETE: explicit scoped role grants/employee overrides, deny-by-default evaluator, scoped API checks and tests; project scopes await S07 |
+| R-006 | PERMISSION MODEL | ACC/ORG/PRJ | S03/S07 | S03 scoped grants/evaluator and S07 project assignment plus permission checks COMPLETE |
 | R-007 | OWNER: R-007.a authentication identity, R-007.b organization authority, R-007.c account recovery/security duties | IDN/ACC/ORG | S02/S03 | Identity portions of R-007.a/c implemented in S02 for development/local staging; organization authority and business permissions implemented in S03 |
 | R-008 | TEAM LEADER | ACC/ORG | S03 | S03 COMPLETE: explicit Team-scoped report-tree listing and reporting updates; no title-based authority |
 | R-009 | EMPLOYEE | ACC/ORG | S03 | S03 COMPLETE for identity-linked home membership and scoped Team UI; own/assigned work APIs await their owning slices |
 | R-010 | LEAD MANAGEMENT | CRM | S06 | R-010.a–d COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
-| R-011 | PROJECT DELIVERY TYPES | PRJ | S07 | S07A: Design/Turnkey Draft creation implemented; full delivery workflows IN PROGRESS |
-| R-012 | PROJECT SERVICE SCOPES | PRJ | S07 | S07A: immutable creation baseline implemented; formal change approval IN PROGRESS |
-| R-013 | PROJECT ACCOUNTABILITY | PRJ | S07 | NOT STARTED |
+| R-011 | PROJECT DELIVERY TYPES | PRJ | S07 | S07 COMPLETE: Design/Turnkey project delivery type separate from service scopes |
+| R-012 | PROJECT SERVICE SCOPES | PRJ | S07 | S07 COMPLETE: immutable baseline and S05-backed named approval for additions |
+| R-013 | PROJECT ACCOUNTABILITY | PRJ | S07 | S07 COMPLETE: one current eligible Active Project Lead, assignment and lead history |
 | R-014 | DESIGN PROJECT DEFAULT WORKFLOW | PRJ/TMP | S08 | NOT STARTED |
 | R-015 | TURNKEY DEFAULT WORKFLOW | PRJ/TMP | S08 | NOT STARTED |
-| R-016 | PROJECT STATUS STATE MACHINE | PRJ/TMP | S08 | NOT STARTED |
+| R-016 | PROJECT STATUS STATE MACHINE | PRJ/TMP | S07/S08/S09 | S07 COMPLETE for Draft, Active, On Hold, Completed, Archived; effective cancellation waits for S09 and template gates for S08 |
 | R-017 | PROJECT TEMPLATES | PRJ/TMP | S08 | NOT STARTED |
 | R-018 | TASK OWNERSHIP | TSK | S09 | NOT STARTED |
 | R-019 | TASK CREATION | TSK | S09 | NOT STARTED |
@@ -161,8 +161,12 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 
 ## S06 authorization and initial implementation — 2026-09-27
 
-Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07 is authorized and IN PROGRESS; S08+ remain unauthorized.
+Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07 is COMPLETE for development/local staging; S08+ remain unauthorized.
 
 ## S07A initial implementation — 2026-09-27
 
 R-011.a, R-012.a, R-013.a, R-016.a–b and C-002 Q2/Q15 are expanded in S07_SPEC.md. Owner-only persisted Draft creation/read, baseline scopes, Won lead conversion, canonical audit/event/outbox and database safeguards are implemented and verified as the first increment. Project Lead assignment, scoped staff access, scope-change approval, status transitions and cancellation dependencies remain open. See S07_PROGRESS_REPORT.md.
+
+## S07 completion — 2026-09-28
+
+R-011.a, R-012.a–b, R-013.a and the S07 portion of R-016.a–b, C-002 Q2/Q15 and C-024.a are implemented with branch-owned persistence, exact Won conversion, explicit grants, Project Lead and transfer history, named scope approval, reasoned lifecycle, cancellation requests and the lead-exit hold primitive. Effective cancellation and employee exit remain gated on S09; S08 adds template/milestone gates. See S07_COMPLETION_REPORT.md for evidence and precise limits.

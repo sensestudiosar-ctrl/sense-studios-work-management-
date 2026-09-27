@@ -1,0 +1,58 @@
+import { test, expect } from "@playwright/test";
+import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
+import { createRequire } from "node:module";
+import { resolve } from "node:path";
+
+test("assigned staff sees only its project and a cancellation request persists after refresh", async ({ page, context, baseURL }) => {
+  test.skip(!process.env.DATABASE_URL, "Dedicated local test database required");
+  const url = new URL(process.env.DATABASE_URL!);
+  if (!["localhost", "127.0.0.1", "db"].includes(url.hostname) || !url.pathname.endsWith("_test")) throw new Error("Project browser fixture requires a dedicated test database");
+  const require = createRequire(resolve("apps/api/package.json"));
+  const { Client } = require("pg") as typeof import("pg");
+  const db = new Client({ connectionString: process.env.DATABASE_URL });
+  const session = randomBytes(32).toString("base64url");
+  const csrf = createHmac("sha256", session).update("csrf").digest("base64url");
+  const hash = (value: string) => createHash("sha256").update(value).digest("hex");
+  const branchId = randomUUID(), otherBranchId = randomUUID(), teamId = randomUUID();
+  const accountId = randomUUID(), employeeId = randomUUID(), projectId = randomUUID();
+  const title = `Assigned project ${projectId.slice(0, 8)}`;
+  await db.connect();
+  try {
+    await db.query("BEGIN");
+    await db.query("SELECT pg_advisory_xact_lock(6092706)");
+    const org = await db.query<{ id: string }>("SELECT id FROM organizations LIMIT 1");
+    const organizationId = org.rows[0]?.id ?? randomUUID();
+    if (!org.rows[0]) await db.query('INSERT INTO organizations(id,name,"updatedAt") VALUES ($1,$2,CURRENT_TIMESTAMP)', [organizationId, "Project browser fixture"]);
+    await db.query('INSERT INTO branches(id,"organizationId",name,"updatedAt") VALUES ($1,$2,$3,CURRENT_TIMESTAMP),($4,$2,$5,CURRENT_TIMESTAMP)', [branchId, organizationId, `Project assigned ${branchId}`, otherBranchId, `Project hidden ${otherBranchId}`]);
+    await db.query('INSERT INTO teams(id,"organizationId","branchId",name,"updatedAt") VALUES ($1,$2,$3,$4,CURRENT_TIMESTAMP)', [teamId, organizationId, branchId, "Project fixture team"]);
+    await db.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES ($1,$2,\'STAFF\',\'ACTIVE\',CURRENT_TIMESTAMP)', [accountId, `project-${accountId}@example.test`]);
+    await db.query('INSERT INTO employees(id,"organizationId","accountId","homeBranchId","homeTeamId","hiredAt","updatedAt") VALUES ($1,$2,$3,$4,$5,CURRENT_DATE,CURRENT_TIMESTAMP)', [employeeId, organizationId, accountId, branchId, teamId]);
+    for (const key of ["project.view", "project.cancellation_request"]) await db.query('INSERT INTO employee_permission_overrides(id,"organizationId","employeeId","permissionKey",effect,"scopeKind","branchId",reason) VALUES ($1,$2,$3,$4,\'ALLOW\',\'BRANCH\',$5,$6)', [randomUUID(), organizationId, employeeId, key, branchId, "Project browser grant"]);
+    await db.query('INSERT INTO projects(id,"organizationId","branchId",title,"deliveryType","createdById","updatedAt") VALUES ($1,$2,$3,$4,\'DESIGN\',$5,CURRENT_TIMESTAMP)', [projectId, organizationId, branchId, title, accountId]);
+    await db.query('INSERT INTO project_scopes(id,"projectId","organizationId",name,"normalizedName") VALUES ($1,$2,$3,$4,$5)', [randomUUID(), projectId, organizationId, "Architecture", "architecture"]);
+    await db.query('INSERT INTO project_status_changes(id,"projectId","organizationId","toStatus","projectVersion","actorId") VALUES ($1,$2,$3,\'DRAFT\',1,$4)', [randomUUID(), projectId, organizationId, accountId]);
+    await db.query('INSERT INTO project_assignments(id,"projectId","organizationId","employeeId","grantedById","grantReason") VALUES ($1,$2,$3,$4,$5,$6)', [randomUUID(), projectId, organizationId, employeeId, accountId, "Assigned project fixture"]);
+    await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES ($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [randomUUID(), accountId, hash(session), hash(csrf)]);
+    await db.query("COMMIT");
+    await context.addCookies([{ name: "sense_sid", value: session, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
+    await page.goto("/");
+    const workspace = page.locator(".project-workspace");
+    await expect(workspace.getByRole("heading", { name: "Projects" })).toBeVisible();
+    expect(await workspace.getByLabel("Project branch").locator("option").allTextContents()).not.toContain(`Project hidden ${otherBranchId}`);
+    expect((await page.request.get(`/api/v1/projects?branchId=${otherBranchId}`)).status()).toBe(403);
+    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await expect(workspace.getByText("Architecture", { exact: true })).toBeVisible();
+    await workspace.getByLabel("Project action reason").fill("Delivery request needs Owner review");
+    await workspace.getByRole("button", { name: "Request cancellation" }).click();
+    await expect(workspace.getByText(/Cancellation request submitted/)).toBeVisible();
+    await page.reload();
+    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await expect(workspace.getByText(/Cancellation request · PENDING · Delivery request needs Owner review/)).toBeVisible();
+    const evidence = await db.query<{ count: string }>('SELECT count(*) FROM project_cancellation_requests WHERE "projectId"=$1', [projectId]);
+    expect(evidence.rows[0]?.count).toBe("1");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  } finally {
+    await db.query('UPDATE sessions SET "revokedAt"=CURRENT_TIMESTAMP WHERE "accountId"=$1', [accountId]);
+    await db.end();
+  }
+});

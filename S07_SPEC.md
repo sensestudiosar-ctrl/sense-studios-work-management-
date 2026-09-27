@@ -1,6 +1,6 @@
 # S07 Project ownership and scope
 
-**Status:** IN PROGRESS for development/local staging. Owner authorized starting S07 on 2026-09-27. S08 and later remain unauthorized.
+**Status:** COMPLETE for development/local staging on 2026-09-28. Owner authorized starting S07 on 2026-09-27. S08 and later remain unauthorized. See S07_COMPLETION_REPORT.md for verification.
 
 ## Approved requirements and slice boundary
 
@@ -32,6 +32,8 @@ S07A exposes strict Owner-only setup, Branch-filtered list, detail and create en
 - Formal scope changes use a named active approver configured by the Owner for each project. No scope change takes effect while the policy is absent. The requester cannot approve their own request. The request and decision use S05's persisted approval engine, with current authority rechecked at decision time.
 
 ## Acceptance and test plan
+
+The Owner further decided on 2026-09-28 that Branch transfer revokes every contributor whose home Branch differs from the destination until explicit Owner regrant; only the Owner may confirm Active → Completed before S08, with a delivery reason; and an unavailable named scope approver is replaced only after the Owner withdraws the pending request with a reason. The requester can submit again. Scope request history remains intact.
 
 1. Migration applies to a fresh dedicated PostgreSQL database and upgrades an S06 database without changing existing account, lead, approval or audit records. Composite organization/branch references, one current lead for Active projects, version checks, and append-only evidence prevent ID tampering and silent overwrite.
 2. Backend grants are deny-by-default and evaluated on the persisted project/owning Branch. Cross-branch assignment and transfer are Owner-only, audited and do not reveal unrelated Branch projects. Guessed IDs and stale versions are denied.
