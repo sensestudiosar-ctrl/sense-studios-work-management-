@@ -84,6 +84,10 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     await mobilePage.getByRole("button", { name: "Confirm offline storage" }).click();
     await mobilePage.reload();
     await expect(mobilePage.getByRole("heading", { name: "You’re signed in." })).toBeVisible();
+    await expect(mobilePage.getByRole("heading", { name: "Needs your attention" })).toBeVisible();
+    await expect(mobilePage.getByText(/You’re all caught up/)).toBeVisible();
+    await expect(mobilePage.getByRole("heading", { name: "Needs your attention" })).toBeVisible();
+    await expect(mobilePage.getByText(/You’re all caught up/)).toBeVisible();
     await expect(mobilePage.getByRole("heading", { name: "Secure your Owner account" })).toHaveCount(0);
 
     await mobilePage.getByRole("button", { name: "Sign out" }).click();

@@ -109,6 +109,18 @@ enum AuditRetentionBackupDisposition {
   NOT_APPLICABLE
 }
 
+enum ApprovalRequestState {
+  PENDING
+  APPROVED
+  REJECTED
+  WITHDRAWN
+}
+
+enum ApprovalDecisionOutcome {
+  APPROVED
+  REJECTED
+}
+
 model Account {
   id                       String                    @id @default(uuid()) @db.Uuid
   normalizedEmail          String                    @unique @db.VarChar(320)
@@ -143,6 +155,11 @@ model Account {
   auditRetentionNoticesAcknowledged AuditRetentionNotice[] @relation("RetentionNoticeAcknowledgedBy")
   auditRetentionHoldsPlaced AuditRetentionHold[] @relation("RetentionHoldPlacedBy")
   auditRetentionHoldsReleased AuditRetentionHold[] @relation("RetentionHoldReleasedBy")
+  approvalRequestsCreated ApprovalRequest[] @relation("ApprovalRequester")
+  approvalRequestsAssigned ApprovalRequest[] @relation("ApprovalApprover")
+  approvalDelegationsIssued ApprovalRequest[] @relation("ApprovalDelegator")
+  approvalRequestsDelegated ApprovalRequest[] @relation("ApprovalDelegate")
+  approvalDecisions ApprovalDecision[] @relation("ApprovalDecider")
 
   @@index([state, kind])
   @@map("accounts")
@@ -177,6 +194,7 @@ model Organization {
   events    OrganizationEvent[]
   auditEvents AuditEvent[]
   domainEvents DomainEvent[]
+  approvalRequests ApprovalRequest[]
 
   @@map("organizations")
 }
@@ -410,6 +428,63 @@ model AuditEvent {
   @@index([eventKey, occurredAt(sort: Desc), id(sort: Desc)])
   @@index([retentionExpiresAt])
   @@map("audit_events")
+}
+
+model ApprovalRequest {
+  id                       String               @id @default(uuid()) @db.Uuid
+  organizationId           String               @db.Uuid
+  typeKey                  String               @db.VarChar(120)
+  sourceType               String               @db.VarChar(100)
+  sourceId                 String               @db.VarChar(200)
+  sourceGeneration         Int                  @default(1)
+  requesterId              String               @db.Uuid
+  approverId               String               @db.Uuid
+  approvalLevel            String               @db.VarChar(80)
+  state                    ApprovalRequestState @default(PENDING)
+  reason                   String               @db.VarChar(1000)
+  comment                  String?              @db.VarChar(2000)
+  context                  Json
+  evidence                 Json?
+  requestedAt              DateTime             @default(now()) @db.Timestamptz(3)
+  expiresAt                DateTime?            @db.Timestamptz(3)
+  resolvedAt               DateTime?            @db.Timestamptz(3)
+  delegationAccountId      String?              @db.Uuid
+  delegationIssuedById     String?              @db.Uuid
+  delegationReason         String?              @db.VarChar(1000)
+  delegatedAt              DateTime?            @db.Timestamptz(3)
+  delegationExpiresAt      DateTime?            @db.Timestamptz(3)
+  organization             Organization         @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  requester                Account              @relation("ApprovalRequester", fields: [requesterId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  approver                 Account              @relation("ApprovalApprover", fields: [approverId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  delegationAccount        Account?             @relation("ApprovalDelegate", fields: [delegationAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  delegationIssuedBy       Account?             @relation("ApprovalDelegator", fields: [delegationIssuedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  decision                 ApprovalDecision?
+
+  @@unique([organizationId, typeKey, sourceType, sourceId, sourceGeneration])
+  @@unique([id, organizationId])
+  @@index([organizationId, state, requestedAt, id])
+  @@index([approverId, state, requestedAt, id])
+  @@index([delegationAccountId, state, requestedAt, id])
+  @@map("approval_requests")
+}
+
+model ApprovalDecision {
+  id             String                 @id @default(uuid()) @db.Uuid
+  requestId      String                 @unique @db.Uuid
+  organizationId String                 @db.Uuid
+  outcome        ApprovalDecisionOutcome
+  deciderId      String                 @db.Uuid
+  reason         String                 @db.VarChar(1000)
+  comment        String?                @db.VarChar(2000)
+  evidence       Json?
+  decidedAt      DateTime               @default(now()) @db.Timestamptz(3)
+  request        ApprovalRequest        @relation(fields: [requestId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  decider        Account                @relation("ApprovalDecider", fields: [deciderId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([organizationId, decidedAt])
+  @@index([deciderId, decidedAt])
+  @@unique([requestId, organizationId])
+  @@map("approval_decisions")
 }
 
 model DomainEvent {

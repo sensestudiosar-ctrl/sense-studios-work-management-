@@ -1,6 +1,6 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 scope; see S02_COMPLETION_REPORT.md. ORG and ACC are COMPLETE for the authorized S03 scope; AUD, EVT and S04's NTF foundation are COMPLETE for development/local staging; see S04_COMPLETION_REPORT.md. S05 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 scope; see S02_COMPLETION_REPORT.md. ORG and ACC are COMPLETE for the authorized S03 scope; AUD, EVT and S04's NTF foundation are COMPLETE for development/local staging; APR/S05 is COMPLETE for development/local staging; see S05_COMPLETION_REPORT.md. Later slices remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |

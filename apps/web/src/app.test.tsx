@@ -26,7 +26,7 @@ beforeEach(() => {
 
 describe("identity authentication shell", () => {
   it("restores the session and shows only the authenticated identity", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => response(session)));
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).startsWith("/api/v1/approvals/attention") ? response({ items: [], nextCursor: null }) : response(session)));
     renderApp();
 
     expect(screen.getByRole("status")).toHaveTextContent(/Checking your session/);
@@ -41,6 +41,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ ceremonyId: "ceremony-1", options: { challenge: "test" } }))
       .mockResolvedValueOnce(response({}))
       .mockResolvedValueOnce(response(session))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]));
     vi.stubGlobal("fetch", fetchMock);
     startAuthentication.mockResolvedValue({ id: "credential-response" });
@@ -55,6 +56,7 @@ describe("identity authentication shell", () => {
       "/api/v1/auth/passkey/login/options",
       "/api/v1/auth/passkey/login/verify",
       "/api/v1/auth/session",
+      "/api/v1/approvals/attention?limit=30",
       "/api/v1/auth/sessions",
     ]);
     expect(JSON.parse(fetchMock.mock.calls[1]?.[1]?.body as string)).toEqual({ email: "owner@example.test" });
@@ -89,13 +91,14 @@ describe("identity authentication shell", () => {
   it("sends the session CSRF token on logout and confirms completion", async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response(session))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({}));
     vi.stubGlobal("fetch", fetchMock);
     renderApp();
     fireEvent.click(await screen.findByRole("button", { name: "Sign out" }));
     expect(await screen.findByText(/You’ve signed out/)).toBeInTheDocument();
-    expect(fetchMock.mock.calls[2]?.[1]).toMatchObject({
+    expect(fetchMock.mock.calls[3]?.[1]).toMatchObject({
       method: "POST",
       headers: { "X-CSRF-Token": "csrf-test-token" },
     });
@@ -104,6 +107,7 @@ describe("identity authentication shell", () => {
   it("returns to sign in when a refreshed session has been revoked", async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response(session))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({}, 401));
     vi.stubGlobal("fetch", fetchMock);
@@ -153,6 +157,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ authenticated: true }))
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]));
     vi.stubGlobal("fetch", fetchMock);
     startRegistration.mockResolvedValue({ id: "staff-registration" });
@@ -187,6 +192,7 @@ describe("identity authentication shell", () => {
     const ownerSession = { ...session, ownerSetupRequired: false, activePasskeyCount: 2 };
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response(ownerSession))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({ invitationToken: "invite-once-token", expiresInSeconds: 86400 }))
       .mockResolvedValueOnce(response({ account: { id: "staff-account-id", email: "staff@example.test", state: "ACTIVE" } }))
@@ -207,11 +213,11 @@ describe("identity authentication shell", () => {
     fireEvent.click(screen.getByRole("checkbox", { name: /verified this staff member out of band/i }));
     fireEvent.click(screen.getByRole("button", { name: "Revoke access and authorize recovery" }));
     expect(await screen.findByDisplayValue("recovery-once-token")).toBeInTheDocument();
-    expect(fetchMock.mock.calls[2]?.[1]?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
-    expect(fetchMock.mock.calls[3]?.[0]).toBe("/api/v1/auth/staff?email=staff%40example.test");
-    expect(fetchMock.mock.calls[4]?.[0]).toBe("/api/v1/auth/staff/staff-account-id/revoke-sessions");
-    expect(fetchMock.mock.calls[4]?.[1]?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
+    expect(fetchMock.mock.calls[3]?.[1]?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
+    expect(fetchMock.mock.calls[4]?.[0]).toBe("/api/v1/auth/staff?email=staff%40example.test");
+    expect(fetchMock.mock.calls[5]?.[0]).toBe("/api/v1/auth/staff/staff-account-id/revoke-sessions");
     expect(fetchMock.mock.calls[5]?.[1]?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
+    expect(fetchMock.mock.calls[6]?.[1]?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
   });
 
   it("shows session loading, then a readable error with retry and empty state", async () => {
@@ -219,6 +225,7 @@ describe("identity authentication shell", () => {
     const pendingSessions = new Promise<Response>((resolve) => { finishSessionsRequest = resolve; });
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response(session))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockReturnValueOnce(pendingSessions)
       .mockResolvedValueOnce(response([]));
     vi.stubGlobal("fetch", fetchMock);
@@ -244,6 +251,7 @@ describe("identity authentication shell", () => {
     const revoked = { ...other, revokedAt: "2026-09-26T10:00:00.000Z" };
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response(session))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([current, other]))
       .mockResolvedValueOnce(response({}, 204))
       .mockResolvedValueOnce(response([current, revoked]));
@@ -256,13 +264,13 @@ describe("identity authentication shell", () => {
     expect(screen.queryByText(/current-id-secret-like|other-id-secret-like/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Revoke" }));
     await waitFor(() => expect(screen.getByText("Safari on iOS").closest("li")).toHaveTextContent(/Revoked/));
-    expect(fetchMock.mock.calls[2]?.[0]).toBe("/api/v1/auth/sessions/other-id-secret-like");
-    expect(fetchMock.mock.calls[2]?.[1]).toMatchObject({
+    expect(fetchMock.mock.calls[3]?.[0]).toBe("/api/v1/auth/sessions/other-id-secret-like");
+    expect(fetchMock.mock.calls[3]?.[1]).toMatchObject({
       method: "DELETE",
       credentials: "include",
       headers: { "X-CSRF-Token": session.csrfToken },
     });
-    expect(fetchMock.mock.calls[3]?.[0]).toBe("/api/v1/auth/sessions");
+    expect(fetchMock.mock.calls[4]?.[0]).toBe("/api/v1/auth/sessions");
   });
 
   it("lets the Owner grant and revoke scoped role permissions and employee overrides", async () => {
@@ -283,6 +291,7 @@ describe("identity authentication shell", () => {
       const url = String(input);
       const method = init?.method ?? "GET";
       if (url === "/api/v1/auth/session") return response(ownerSession);
+      if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
       if (url === "/api/v1/auth/sessions") return response([]);
       if (url === "/api/v1/org") return response(org);
       if (url === `/api/v1/org/branches?organizationId=${org.id}`) return response([branch]);
@@ -348,6 +357,7 @@ describe("identity authentication shell", () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/v1/auth/session") return response(staffSession);
+      if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
       if (url === "/api/v1/auth/sessions") return response([]);
       if (url === "/api/v1/org/team/employees") return response({ employees: [managedEmployee], managerOptions: [{ id: "leader-employee", email: "lead@example.test" }, { id: managedEmployee.id, email: "report@example.test" }] });
       if (url === `/api/v1/org/team/employees/${managedEmployee.id}/reporting` && init?.method === "PUT") return response({ changed: true });

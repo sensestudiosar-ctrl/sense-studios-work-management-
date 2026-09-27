@@ -1,6 +1,6 @@
-# Testing architecture — S01–S04 local evidence
+# Testing architecture — S01–S05 local evidence
 
-Architecture is approved at checkpoint 2e46805. S01–S04 development/local-staging quality evidence is recorded below and in their completion reports. S05+ remain unauthorized.
+Architecture is approved at checkpoint 2e46805. S01–S05 development/local-staging quality evidence is recorded below and in their completion reports. S06+ remain unauthorized. S05 verification is detailed in S05_COMPLETION_REPORT.md.
 
 ## S01 commands and verified results
 
@@ -58,3 +58,7 @@ S03_SPEC.md records the 2026-09-27 acceptance run: fresh and existing PostgreSQL
 ## S04 verification status
 
 S04 original acceptance evidence is recorded in S04_COMPLETION_REPORT.md. The later efficiency follow-up was independently verified by [GitHub Actions run 36316987630](https://github.com/vijaychintala05/WORK-MANAGEMENT-APP-sense-studios/actions/runs/36316987630), job 108613442816, for commit `d54deda9bddc22038e745b29207257fc6f19b2d8` (success, 2026-09-27 11:53:58 UTC). The hosted job applied all ten migrations, including `20260927070000_s04_audit_search_index`; frozen install, Prisma generation, typecheck, lint and production builds passed. API/web unit tests passed 68/68 and 20/20; PostgreSQL integration passed 32/32 across 10 suites; browser checks passed 5/5. CI used PostgreSQL `17.10-alpine3.24`. Compose built and started, `/api/v1/health/ready` succeeded, and database/file restore rehearsal passed with stored checksum match. This closes the follow-up's database and browser gates. Original local evidence and its Windows Playwright cleanup caveat remain historical; this hosted result does not assert the local API/database is running or resolve the local preview issue. Live Brevo delivery, production legal/retention review, encrypted offsite backup/key custody, and production NAS validation/restore remain unverified production gates.
+
+## S05 verification status
+
+S05 acceptance was run locally on 2026-09-27 with Node 24.19.0 and fresh PostgreSQL 18 test databases. Prisma generation, validation and migration status passed with all 11 migrations applied. Typecheck, ESLint, API TypeScript build and web production build passed. API unit tests passed 76/76; web unit tests passed 25/25; PostgreSQL integration passed 39/39 across 12 suites; desktop/mobile Playwright passed 5/5. Direct local binaries were used because the pnpm wrapper attempted an unavailable registry metadata fetch. See S05_COMPLETION_REPORT.md for scope and limits.

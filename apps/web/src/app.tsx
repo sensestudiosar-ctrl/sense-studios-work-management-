@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { NotificationCenter } from "./notifications.js";
 import { AuditRetentionCenter } from "./audit-retention.js";
+import { ApprovalQueue } from "./approval-queue.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -367,6 +368,7 @@ function Identity({ session, onLogout, busy, error }: {
         </button>
       </section>
       {error && <p className="auth-error" role="alert">{error}</p>}
+      {!ownerNeedsSetup && <ApprovalQueue />}
       <section className="identity-section sessions-section" aria-labelledby="sessions-heading">
         <div className="sessions-heading-row">
           <div><div className="eyebrow">DEVICES</div><h2 id="sessions-heading">Active sessions</h2></div>

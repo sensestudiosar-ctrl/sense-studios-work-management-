@@ -166,6 +166,19 @@ button:focus-visible, a:focus-visible { outline: 3px solid #b98f49; outline-offs
 .audit-event-list summary { color: #29463d; cursor: pointer; font-weight: 650; }
 .audit-change-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin-top: .6rem; }
 .audit-change-grid pre { max-width: 100%; overflow: auto; padding: .75rem; border-radius: .5rem; background: #f3f5f0; color: #334d44; font-size: .75rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+.approval-queue { margin-top: 1.2rem; }
+.approval-queue-empty { margin: .7rem 0 0; padding: 1.25rem; border: 1px dashed #b5c3b4; border-radius: .65rem; background: #f7faf4; color: #50645b; text-align: center; }
+.approval-queue-list { display: grid; gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.approval-queue-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid #d5dfd3; border-radius: .7rem; background: white; }
+.approval-queue-copy { min-width: 0; }
+.approval-queue-copy h3 { margin: .5rem 0; color: #29463d; font-size: 1.05rem; }
+.approval-queue-copy p { margin: .35rem 0; color: #50645b; line-height: 1.5; overflow-wrap: anywhere; }
+.approval-queue-meta { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; color: #697b75; font-size: .77rem; }
+.approval-queue-meta span, .approval-queue-type { padding: .22rem .5rem; border-radius: 999px; background: #edf2e9; color: #416151; font-size: .68rem; font-weight: 700; text-transform: uppercase; }
+.approval-queue-summary { color: #334d44 !important; }
+.approval-queue-expiry { font-size: .82rem; font-weight: 650; }
+.approval-queue-type { flex: none; }
+.approval-load-more { margin-top: .9rem; }
 .loading-state { width: fit-content; margin: 4rem auto; color: #50645b; }
 .home-link { display: inline-block; margin-top: 1rem; }
 .site-footer { padding: 1.3rem clamp(1.25rem, 4vw, 4rem); border-top: 1px solid #d9d8cd; color: #6b7c72; font-size: .78rem; }
@@ -202,4 +215,6 @@ button:focus-visible, a:focus-visible { outline: 3px solid #b98f49; outline-offs
   .audit-interval-form, .audit-search-form { grid-template-columns: minmax(0, 1fr); }
   .audit-event-list > li { grid-template-columns: minmax(0, 1fr); }
   .audit-change-grid { grid-template-columns: minmax(0, 1fr); }
+  .approval-queue-item { flex-direction: column; }
+  .approval-queue-type { order: -1; }
 }

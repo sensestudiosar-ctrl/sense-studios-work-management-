@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04 on 2026-09-27. S01–S04 are COMPLETE for development/local staging; S05+ remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04 and S05 on 2026-09-27. S01–S05 are COMPLETE for development/local staging; S06+ remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -138,8 +138,8 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-093 | ARCHITECTURE PRINCIPLES | GOV | S01 | NOT STARTED |
 | R-094 | RECOMMENDED MODULE BOUNDARIES | GOV | S01 | NOT STARTED |
 | R-095 | DOMAIN EVENTS | EVT | S04 | COMPLETE for development/local staging — versioned catalogue, safe payload validation, S03 producer/outbox atomicity, retries and concurrent claims verified on PostgreSQL |
-| R-096 | SHARED APPROVAL ENGINE | APR | S05 | NOT STARTED |
-| R-097 | MANAGEMENT DECISION QUEUE | APR | S05 | NOT STARTED |
+| R-096 | SHARED APPROVAL ENGINE | APR | S05 | COMPLETE for development/local staging — typed internal handlers, persisted immutable decisions, audited lifecycle, atomic outbox and PostgreSQL concurrency/rollback evidence; see S05_COMPLETION_REPORT.md |
+| R-097 | MANAGEMENT DECISION QUEUE | APR | S05 | COMPLETE for development/local staging — read-only paginated policy-filtered queue, responsive empty/error/loading UI and desktop/mobile browser evidence; no producer handlers until later authorized domain slices; see S05_COMPLETION_REPORT.md |
 | R-098 | OFFLINE SITE DATA | SITE | S22 | NOT STARTED |
 | R-099 | SECURITY: R-099.a internal passkey authentication, R-099.b session/CSRF/origin controls, R-099.c recovery, R-099.d throttling/enumeration, R-099.e authorization, R-099.f audit/secrets | IDN/ACC/AUD | S02/S03/S04 | Identity and S03 business-authorization subsets COMPLETE for development/local staging; S04 append-only audit and notification secret controls COMPLETE for development/local staging |
 | R-100 | TESTING PHILOSOPHY | GOV | S01 | NOT STARTED |

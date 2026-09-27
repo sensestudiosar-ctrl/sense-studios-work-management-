@@ -16,9 +16,11 @@ import { CURRENT_RECIPIENT_AUTHORIZATION_PREDICATE, NotificationWorker, Persiste
 import { AuditRetentionController } from "./audit-retention.controller.js";
 import { AuditRetentionService } from "./audit-retention.service.js";
 import { EmailVerificationService } from "./email-verification.service.js";
+import { ApprovalService } from "./approval.service.js";
+import { ApprovalsController } from "./approvals.controller.js";
 
 @Module({
-  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController],
+  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController],
   providers: [
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
@@ -28,6 +30,7 @@ import { EmailVerificationService } from "./email-verification.service.js";
     AuthorizationService,
     AuditRetentionService,
     EmailVerificationService,
+    ApprovalService,
     NotificationsService,
     { provide: BrevoEmailAdapter, useFactory: (config: ReturnType<typeof loadRuntimeConfig>) => new BrevoEmailAdapter({ apiKey: config.brevoApiKey, senderEmail: config.brevoSenderEmail, senderName: config.brevoSenderName }) , inject: [RUNTIME_CONFIG] },
     { provide: VERIFIED_ADDRESS_PREDICATE, useClass: PersistedVerifiedAddressPredicate },

@@ -49,7 +49,11 @@ export const DOMAIN_EVENT_CATALOGUE = {
   "attendance.checked_in": { producer: "S17 workforce", subjectType: "attendance", schemaVersion: 1 },
   "employee_performance.changed": { producer: "S23 analytics", subjectType: "employee_performance", schemaVersion: 1 },
   "project_health.changed": { producer: "S23 analytics", subjectType: "project_health", schemaVersion: 1 },
-  "capacity.threshold_exceeded": { producer: "S17 workforce", subjectType: "capacity", schemaVersion: 1 }
+  "capacity.threshold_exceeded": { producer: "S17 workforce", subjectType: "capacity", schemaVersion: 1 },
+  "approval.requested": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
+  "approval.delegated": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
+  "approval.withdrawn": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
+  "approval.decided": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 }
 } as const;
 
 export type DomainEventName = keyof typeof DOMAIN_EVENT_CATALOGUE;
