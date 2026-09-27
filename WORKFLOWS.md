@@ -41,3 +41,7 @@ Offline site commands retain a stable client ID, base record version and idempot
 ## S06 implemented workflows
 
 Granted actors create NEW leads in an authorized branch, record interactions, and change stages with optimistic versions. Skips, backward moves and Lost require reasons. Won/Lost remain terminal; returning enquiries create separate linked leads under creation and prior-view authority. Owner edits shared clients/contacts with reason and version, preserving contact identities. Source managers use organization-scoped authority to add or activate/deactivate sources with reason and expected timestamp. Each command persists audit/event/outbox evidence; no automatic customer message or project creation is performed.
+
+## S07A implemented workflow
+
+The Owner creates a Draft Design or Turnkey project directly or from one Won lead. Won conversion inherits the lead's Branch and Client and is limited to one project per lead; direct creation has no invented lead provenance. The initial baseline scopes and Draft status evidence are retained. S07A has no status transition endpoint, effective cancellation, scope-change decision or lead assignment. The lifecycle policy is unit-tested as a pure guard for later persisted transitions; it does not itself change a project.

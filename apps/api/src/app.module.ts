@@ -20,9 +20,11 @@ import { ApprovalService } from "./approval.service.js";
 import { ApprovalsController } from "./approvals.controller.js";
 import { CrmController } from "./crm.controller.js";
 import { CrmService } from "./crm.service.js";
+import { ProjectController } from "./project.controller.js";
+import { ProjectService } from "./project.service.js";
 
 @Module({
-  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController],
+  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController],
   providers: [
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
@@ -34,6 +36,7 @@ import { CrmService } from "./crm.service.js";
     EmailVerificationService,
     ApprovalService,
     CrmService,
+    ProjectService,
     NotificationsService,
     { provide: BrevoEmailAdapter, useFactory: (config: ReturnType<typeof loadRuntimeConfig>) => new BrevoEmailAdapter({ apiKey: config.brevoApiKey, senderEmail: config.brevoSenderEmail, senderName: config.brevoSenderName }) , inject: [RUNTIME_CONFIG] },
     { provide: VERIFIED_ADDRESS_PREDICATE, useClass: PersistedVerifiedAddressPredicate },

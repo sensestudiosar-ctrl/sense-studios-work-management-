@@ -110,3 +110,6 @@ Owner explicitly selected Owner-only shared client/contact edits. Granted staff 
 ## S06 source configuration — Owner clarification, 2026-09-27
 
 Owner authorized staff with a separate source-management grant to add or deactivate enquiry sources. The implementation uses organization-scoped `crm_source.manage`, because sources are shared across the organization. Source edits require a reason and optimistic concurrency token with canonical audit/events. Source identity is retained; deactivation affects new lead selection and preserves historical leads. No source rename or deletion is exposed.
+## 2026-09-27 — S07 project conversion and scope approval (Owner decision)
+
+The Owner authorized S07. A project may be created directly or from a Won lead; each Won lead may produce at most one project. A direct project has no invented lead provenance. Each project has an Owner-configured named approver for formal scope changes, and that person cannot approve a change they requested. If no approver is configured, the scope change cannot take effect. S07_SPEC.md records the implementation boundary and evidence. Effective project cancellation remains gated on S09 and later dependent access workflows.

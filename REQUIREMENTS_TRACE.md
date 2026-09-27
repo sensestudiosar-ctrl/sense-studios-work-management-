@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04, S05 and S06 on 2026-09-27. S01–S06 are COMPLETE for development/local staging; S07+ remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04, S05, S06 and S07 on 2026-09-27. S01–S06 are COMPLETE for development/local staging; S07 is IN PROGRESS; S08+ remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -53,8 +53,8 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-008 | TEAM LEADER | ACC/ORG | S03 | S03 COMPLETE: explicit Team-scoped report-tree listing and reporting updates; no title-based authority |
 | R-009 | EMPLOYEE | ACC/ORG | S03 | S03 COMPLETE for identity-linked home membership and scoped Team UI; own/assigned work APIs await their owning slices |
 | R-010 | LEAD MANAGEMENT | CRM | S06 | R-010.a–d COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
-| R-011 | PROJECT DELIVERY TYPES | PRJ | S07 | NOT STARTED |
-| R-012 | PROJECT SERVICE SCOPES | PRJ | S07 | NOT STARTED |
+| R-011 | PROJECT DELIVERY TYPES | PRJ | S07 | S07A: Design/Turnkey Draft creation implemented; full delivery workflows IN PROGRESS |
+| R-012 | PROJECT SERVICE SCOPES | PRJ | S07 | S07A: immutable creation baseline implemented; formal change approval IN PROGRESS |
 | R-013 | PROJECT ACCOUNTABILITY | PRJ | S07 | NOT STARTED |
 | R-014 | DESIGN PROJECT DEFAULT WORKFLOW | PRJ/TMP | S08 | NOT STARTED |
 | R-015 | TURNKEY DEFAULT WORKFLOW | PRJ/TMP | S08 | NOT STARTED |
@@ -161,4 +161,8 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 
 ## S06 authorization and initial implementation — 2026-09-27
 
-Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07+ remain unauthorized.
+Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07 is authorized and IN PROGRESS; S08+ remain unauthorized.
+
+## S07A initial implementation — 2026-09-27
+
+R-011.a, R-012.a, R-013.a, R-016.a–b and C-002 Q2/Q15 are expanded in S07_SPEC.md. Owner-only persisted Draft creation/read, baseline scopes, Won lead conversion, canonical audit/event/outbox and database safeguards are implemented and verified as the first increment. Project Lead assignment, scoped staff access, scope-change approval, status transitions and cancellation dependencies remain open. See S07_PROGRESS_REPORT.md.

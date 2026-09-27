@@ -1,6 +1,6 @@
 # Testing architecture — S01–S05 local evidence
 
-Architecture is approved at checkpoint 2e46805. S01–S05 development/local-staging quality evidence is recorded below and in their completion reports. S06 is COMPLETE for development/local staging; S07+ remain unauthorized. S05 verification is detailed in S05_COMPLETION_REPORT.md.
+Architecture is approved at checkpoint 2e46805. S01–S05 development/local-staging quality evidence is recorded below and in their completion reports. S06 is COMPLETE for development/local staging; S07 is authorized and IN PROGRESS; S08+ remain unauthorized. S05 verification is detailed in S05_COMPLETION_REPORT.md.
 
 ## S01 commands and verified results
 
@@ -66,3 +66,7 @@ S05 acceptance was run locally on 2026-09-27 with Node 24.19.0 and fresh Postgre
 ## S06 acceptance — 2026-09-27
 
 Final verification: 85 API unit, 56 PostgreSQL/API, 35 web unit and seven desktop/mobile Playwright tests passed, plus Prisma migration/validation/generation, contracts/API/web type checks, lint and production builds. See S06_COMPLETION_REPORT.md for exact environments, direct-binary execution, dependency repair, upgrade preservation and production limits.
+
+## S07A progress — 2026-09-27
+
+The Owner Draft project creation/read increment passed 89 API unit tests, 63 PostgreSQL/API tests on a fresh dedicated database, 40 web unit tests, Prisma validation/generation and fresh migration deployment, contracts/API/web type checks, ESLint and API/web production builds. The project-specific suites passed 4 lifecycle, 3 database, 4 HTTP and 4 UI tests. Desktop/mobile Playwright and full `pnpm verify` have not run for S07. See S07_PROGRESS_REPORT.md for exact scope and limits. S07 remains IN PROGRESS.

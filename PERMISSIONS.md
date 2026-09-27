@@ -40,3 +40,7 @@ S03 is COMPLETE for development/local staging. The schema supports multiple date
 ## S06 CRM enforcement
 
 Leads require separate branch-scoped `lead.view`, `lead.create`, `lead.edit`, `lead.stage_change` and `lead.activity_create` grants. Staff client selection requires current lead visibility in the selected branch. Only Owner creates/edits shared clients and contacts. Owner or staff with organization-scoped `crm_source.manage` may add or activate/deactivate shared sources; branch/team/self grants do not grant this organization action. Mutations recheck current authority in their transaction. Lead branch ownership and terminal outcomes remain protected.
+
+## S07A project access
+
+The first project endpoints are Owner-only: setup, branch-filtered list, detail and Draft creation. The API checks the current Owner session and setup state; create also enforces CSRF/origin. Project IDs and Branch IDs from requests do not authorize staff access. Staff project grants and cross-branch project assignments are not implemented yet, so staff cannot use these endpoints. Named scope approver configuration and independent approval are approved S07 design decisions, not yet an effective permission or workflow.

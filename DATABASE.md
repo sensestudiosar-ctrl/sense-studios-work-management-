@@ -45,3 +45,7 @@ C-002 through C-024 settle home membership, cross-branch grants, project transfe
 ## Implemented S06 persistence
 
 S06 adds organization-bound sources and shared clients/contacts, branch-owned leads, immutable stage evidence and append-only activities. Composite foreign keys enforce organization consistency; database guards retain source/customer/lead identity, forbid history deletion and terminal rewrites, and enforce advancing versions/timestamps. Source deactivation retains historical references. CRM transactions commit canonical audit, domain events and outbox delivery together. See S06_SPEC.md and S06_COMPLETION_REPORT.md for contracts and verification.
+
+## Implemented S07A persistence
+
+S07A adds branch-owned `Project` records with optional shared Client or unique Won Lead provenance, immutable baseline `ProjectScope` rows and append-only `ProjectStatusChange` evidence. New projects start in Draft at version 1. Composite references and guards enforce organization/branch/client consistency, one project per Won lead, at least one baseline scope and no effective cancellation before its dependent workflows exist. Owner Draft creation writes project, scope, status evidence, audit, domain event and outbox in one transaction. Later S07 increments must add accountable lead history, project-scoped grants, lifecycle transitions and approved scope revisions; the existing table fields alone do not implement those workflows.

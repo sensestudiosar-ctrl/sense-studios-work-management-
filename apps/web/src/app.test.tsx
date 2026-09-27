@@ -18,9 +18,12 @@ function response(body: unknown, status = 200): Response {
 }
 
 function stubFetchWithCrmSetup(fetchMock: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): void {
-  vi.stubGlobal("fetch", vi.fn((input: RequestInfo | URL, init?: RequestInit) => String(input) === "/api/v1/crm/setup"
-    ? Promise.resolve(response({ branches: [], sources: [], owner: false }))
-    : fetchMock(input, init)));
+  vi.stubGlobal("fetch", vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
+    const url = String(input);
+    if (url === "/api/v1/crm/setup") return Promise.resolve(response({ branches: [], sources: [], owner: false }));
+    if (url === "/api/v1/projects/setup") return Promise.resolve(response({ branches: [] }));
+    return fetchMock(input, init);
+  }));
 }
 
 beforeEach(() => {
@@ -38,7 +41,7 @@ describe("identity authentication shell", () => {
     expect(screen.getByRole("status")).toHaveTextContent(/Checking your session/);
     expect(await screen.findByRole("heading", { name: "You’re signed in." })).toBeInTheDocument();
     expect(screen.getByText("owner@example.test")).toBeInTheDocument();
-    expect(screen.queryByText(/project/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Projects" })).toBeInTheDocument();
   });
 
   it("runs options, browser assertion, verification, and restores the new session", async () => {

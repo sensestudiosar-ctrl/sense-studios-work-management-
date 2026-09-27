@@ -1,0 +1,46 @@
+.project-workspace { margin-top: 1.5rem; padding: clamp(1rem, 2.5vw, 1.75rem); border: 1px solid #d9e0e8; border-radius: 1.1rem; background: #f8fafc; color: #172033; }
+.project-heading, .project-panel-heading, .project-detail-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.project-heading { margin-bottom: 1.15rem; }
+.project-heading h2 { margin: .2rem 0; font-size: clamp(1.4rem, 3vw, 1.8rem); }
+.project-heading p { margin: .25rem 0 0; color: #536174; }
+.project-count { color: #536174; font-size: .85rem; }
+.project-branch { display: flex; align-items: center; gap: .8rem; margin: .7rem 0 1rem; max-width: 32rem; font-weight: 650; }
+.project-workspace select, .project-workspace input, .project-workspace textarea { width: 100%; min-width: 0; padding: .7rem .75rem; border: 1px solid #bac5d3; border-radius: .55rem; background: white; color: #172033; font: inherit; }
+.project-workspace select:focus, .project-workspace input:focus, .project-workspace textarea:focus { outline: 3px solid #bcd5ff; border-color: #3168be; }
+.project-columns { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(17rem, .95fr); gap: 1rem; align-items: start; }
+.project-panel { padding: 1rem; border: 1px solid #e0e6ed; border-radius: .85rem; background: white; min-width: 0; }
+.project-panel-heading { margin-bottom: .8rem; }
+.project-panel h3 { margin: 0; font-size: 1.05rem; }
+.project-quiet-button { border: 0; background: transparent; color: #2256a4; font: inherit; font-weight: 650; cursor: pointer; }
+.project-quiet-button:disabled { opacity: .55; cursor: wait; }
+.project-list, .project-scope-list { list-style: none; margin: 0; padding: 0; }
+.project-list { display: grid; gap: .5rem; }
+.project-list-item { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: .75rem; padding: .75rem; text-align: left; border: 1px solid #e0e6ed; border-radius: .65rem; background: white; color: inherit; cursor: pointer; }
+.project-list-item:hover, .project-list-item.is-selected { border-color: #5984c6; background: #f2f7ff; }
+.project-list-item strong, .project-list-item small { display: block; }
+.project-list-item small { margin-top: .25rem; color: #536174; }
+.project-status-pill { flex: 0 0 auto; padding: .25rem .5rem; border-radius: 999px; background: #edf2f7; color: #354458; font-size: .72rem; font-weight: 750; letter-spacing: .02em; }
+.project-empty, .project-status { margin: 0; padding: 1rem; color: #536174; }
+.project-detail { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e6ed; }
+.project-detail h3 { margin: .2rem 0 .8rem; }
+.project-detail h4 { margin: 1rem 0 .5rem; }
+.project-detail dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin: 0; }
+.project-detail dl div { min-width: 0; }
+.project-detail dt { color: #657387; font-size: .78rem; }
+.project-detail dd { margin: .15rem 0 0; overflow-wrap: anywhere; }
+.project-scope-list { display: flex; flex-wrap: wrap; gap: .4rem; }
+.project-scope-list li { padding: .32rem .55rem; border-radius: .45rem; background: #eef3f8; }
+.project-provenance { margin: .8rem 0 0; color: #536174; font-size: .85rem; }
+.project-form { display: grid; gap: .8rem; }
+.project-form label { display: grid; gap: .35rem; font-weight: 650; }
+.project-form label span, .project-form small { color: #657387; font-size: .78rem; font-weight: 400; }
+.project-form textarea { resize: vertical; }
+.project-form-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; }
+.project-primary-button { justify-self: start; padding: .7rem 1rem; border: 0; border-radius: .6rem; background: #214f92; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+.project-primary-button:disabled { opacity: .55; cursor: wait; }
+.project-alert { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: .75rem 0; padding: .75rem; border: 1px solid #e8b7b4; border-radius: .65rem; background: #fff6f5; color: #7d2823; }
+.project-alert button { border: 0; background: transparent; color: inherit; font: inherit; font-weight: 700; cursor: pointer; }
+.project-inline-error { color: #a12f29; }
+.project-success { padding: .65rem .8rem; border-radius: .6rem; background: #e8f7ed; color: #145b2b; }
+@media (max-width: 760px) { .project-columns { grid-template-columns: 1fr; } .project-branch { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 480px) { .project-form-pair { grid-template-columns: 1fr; } .project-heading { align-items: flex-start; } .project-detail dl { grid-template-columns: 1fr; } }

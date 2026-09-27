@@ -33,6 +33,7 @@ model Client {
   organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   contacts       ClientContact[]
   leads          Lead[]
+  projects       Project[]
 
   @@unique([id, organizationId])
   @@index([organizationId, name, id])
@@ -55,32 +56,33 @@ model ClientContact {
 }
 
 model Lead {
-  id              String            @id @default(uuid()) @db.Uuid
-  organizationId  String            @db.Uuid
-  branchId        String            @db.Uuid
-  title           String            @db.VarChar(160)
-  contactName     String            @db.VarChar(160)
-  email           String?           @db.VarChar(320)
-  phone           String?           @db.VarChar(64)
-  sourceId        String            @db.Uuid
-  clientId        String?           @db.Uuid
-  priorLostLeadId String?           @db.Uuid
-  stage           LeadStage         @default(NEW)
-  version         Int               @default(1)
-  createdById     String            @db.Uuid
-  createdAt       DateTime          @default(now()) @db.Timestamptz(3)
-  updatedAt       DateTime          @updatedAt @db.Timestamptz(3)
-  outcomeAt       DateTime?         @db.Timestamptz(3)
-  lostReason      String?           @db.VarChar(1000)
-  organization    Organization      @relation(fields: [organizationId], references: [id], onDelete: Restrict)
-  branch          Branch            @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict)
-  source          CrmSource         @relation(fields: [sourceId, organizationId], references: [id, organizationId], onDelete: Restrict)
-  client          Client?           @relation(fields: [clientId, organizationId], references: [id, organizationId], onDelete: Restrict)
-  priorLostLead   Lead?             @relation("ReturningLead", fields: [priorLostLeadId, organizationId], references: [id, organizationId], onDelete: Restrict)
-  returningLeads  Lead[]            @relation("ReturningLead")
-  createdBy       Account           @relation("LeadCreator", fields: [createdById], references: [id], onDelete: Restrict)
-  stageChanges    LeadStageChange[]
-  activities      LeadActivity[]
+  id               String            @id @default(uuid()) @db.Uuid
+  organizationId   String            @db.Uuid
+  branchId         String            @db.Uuid
+  title            String            @db.VarChar(160)
+  contactName      String            @db.VarChar(160)
+  email            String?           @db.VarChar(320)
+  phone            String?           @db.VarChar(64)
+  sourceId         String            @db.Uuid
+  clientId         String?           @db.Uuid
+  priorLostLeadId  String?           @db.Uuid
+  stage            LeadStage         @default(NEW)
+  version          Int               @default(1)
+  createdById      String            @db.Uuid
+  createdAt        DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime          @updatedAt @db.Timestamptz(3)
+  outcomeAt        DateTime?         @db.Timestamptz(3)
+  lostReason       String?           @db.VarChar(1000)
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  branch           Branch            @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  source           CrmSource         @relation(fields: [sourceId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  client           Client?           @relation(fields: [clientId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  priorLostLead    Lead?             @relation("ReturningLead", fields: [priorLostLeadId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  returningLeads   Lead[]            @relation("ReturningLead")
+  createdBy        Account           @relation("LeadCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  stageChanges     LeadStageChange[]
+  activities       LeadActivity[]
+  convertedProject Project?          @relation("ProjectWonLead")
 
   @@unique([id, organizationId])
   @@index([organizationId, branchId, stage, createdAt, id])
@@ -121,6 +123,70 @@ model LeadActivity {
 
   @@index([leadId, occurredAt, id])
   @@map("lead_activities")
+}
+
+model Project {
+  id                     String                @id @default(uuid()) @db.Uuid
+  organizationId         String                @db.Uuid
+  branchId               String                @db.Uuid
+  title                  String                @db.VarChar(160)
+  deliveryType           ProjectDeliveryType
+  status                 ProjectStatus         @default(DRAFT)
+  version                Int                   @default(1)
+  clientId               String?               @db.Uuid
+  wonLeadId              String?               @db.Uuid
+  currentLeadEmployeeId  String?               @db.Uuid
+  scopeApproverAccountId String?               @db.Uuid
+  createdById            String                @db.Uuid
+  createdAt              DateTime              @default(now()) @db.Timestamptz(3)
+  updatedAt              DateTime              @updatedAt @db.Timestamptz(3)
+  organization           Organization          @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  branch                 Branch                @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  client                 Client?               @relation(fields: [clientId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  wonLead                Lead?                 @relation("ProjectWonLead", fields: [wonLeadId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  currentLead            Employee?             @relation("CurrentProjectLead", fields: [currentLeadEmployeeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  scopeApprover          Account?              @relation("ProjectScopeApprover", fields: [scopeApproverAccountId], references: [id], onDelete: Restrict)
+  createdBy              Account               @relation("ProjectCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  scopes                 ProjectScope[]
+  statusChanges          ProjectStatusChange[]
+
+  @@unique([id, organizationId])
+  @@unique([wonLeadId, organizationId])
+  @@index([organizationId, branchId, status, createdAt, id])
+  @@map("projects")
+}
+
+model ProjectScope {
+  id             String   @id @default(uuid()) @db.Uuid
+  projectId      String   @db.Uuid
+  organizationId String   @db.Uuid
+  name           String   @db.VarChar(120)
+  normalizedName String   @db.VarChar(120)
+  baseline       Boolean  @default(true)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  project        Project  @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@unique([projectId, normalizedName])
+  @@index([organizationId, projectId])
+  @@map("project_scopes")
+}
+
+model ProjectStatusChange {
+  id             String         @id @default(uuid()) @db.Uuid
+  projectId      String         @db.Uuid
+  organizationId String         @db.Uuid
+  fromStatus     ProjectStatus?
+  toStatus       ProjectStatus
+  projectVersion Int
+  reason         String?        @db.VarChar(1000)
+  actorId        String         @db.Uuid
+  occurredAt     DateTime       @default(now()) @db.Timestamptz(3)
+  project        Project        @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor          Account        @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@unique([projectId, projectVersion])
+  @@index([projectId, occurredAt, id])
+  @@map("project_status_changes")
 }
 
 enum AccountKind {
@@ -247,6 +313,20 @@ enum LeadStage {
   LOST
 }
 
+enum ProjectDeliveryType {
+  DESIGN
+  TURNKEY
+}
+
+enum ProjectStatus {
+  DRAFT
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  ARCHIVED
+  CANCELLED
+}
+
 model Account {
   id                                String                        @id @default(uuid()) @db.Uuid
   normalizedEmail                   String                        @unique @db.VarChar(320)
@@ -289,20 +369,23 @@ model Account {
   leadsCreated                      Lead[]                        @relation("LeadCreator")
   leadStageChanges                  LeadStageChange[]
   leadActivities                    LeadActivity[]
+  projectsCreated                   Project[]                     @relation("ProjectCreator")
+  projectsScopeApprover             Project[]                     @relation("ProjectScopeApprover")
+  projectStatusChanges              ProjectStatusChange[]
 
   @@index([state, kind])
   @@map("accounts")
 }
 
 model EmailVerificationChallenge {
-  accountId             String   @id @db.Uuid
-  codeHash              String   @db.Char(64)
-  attempts              Int      @default(0)
-  sendWindowStartedAt   DateTime @db.Timestamptz(3)
-  sendsInWindow         Int      @default(1)
-  lastSentAt            DateTime @default(now()) @db.Timestamptz(3)
-  expiresAt             DateTime @db.Timestamptz(3)
-  account               Account  @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  accountId           String   @id @db.Uuid
+  codeHash            String   @db.Char(64)
+  attempts            Int      @default(0)
+  sendWindowStartedAt DateTime @db.Timestamptz(3)
+  sendsInWindow       Int      @default(1)
+  lastSentAt          DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt           DateTime @db.Timestamptz(3)
+  account             Account  @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([expiresAt])
   @@map("email_verification_challenges")
@@ -327,6 +410,7 @@ model Organization {
   crmSources        CrmSource[]
   clients           Client[]
   leads             Lead[]
+  projects          Project[]
 
   @@map("organizations")
 }
@@ -345,6 +429,7 @@ model Branch {
   rolePermissions   RolePermission[]
   employeeOverrides EmployeePermissionOverride[]
   leads             Lead[]
+  projects          Project[]
 
   @@unique([organizationId, name])
   @@unique([id, organizationId])
@@ -352,18 +437,18 @@ model Branch {
 }
 
 model Team {
-  id             String       @id @default(uuid()) @db.Uuid
-  organizationId String       @db.Uuid
-  branchId       String       @db.Uuid
-  name           String       @db.VarChar(120)
-  active         Boolean      @default(true)
-  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  branch         Branch       @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  employees      Employee[]
-  history        EmployeeMembershipHistory[]
-  rolePermissions RolePermission[]
+  id                String                       @id @default(uuid()) @db.Uuid
+  organizationId    String                       @db.Uuid
+  branchId          String                       @db.Uuid
+  name              String                       @db.VarChar(120)
+  active            Boolean                      @default(true)
+  createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                     @updatedAt @db.Timestamptz(3)
+  organization      Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  branch            Branch                       @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  employees         Employee[]
+  history           EmployeeMembershipHistory[]
+  rolePermissions   RolePermission[]
   employeeOverrides EmployeePermissionOverride[]
 
   @@unique([branchId, name])
@@ -372,14 +457,14 @@ model Team {
 }
 
 model JobRole {
-  id             String       @id @default(uuid()) @db.Uuid
-  organizationId String       @db.Uuid
-  name           String       @db.VarChar(120)
-  description    String?      @db.VarChar(1000)
-  active         Boolean      @default(true)
-  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id             String                      @id @default(uuid()) @db.Uuid
+  organizationId String                      @db.Uuid
+  name           String                      @db.VarChar(120)
+  description    String?                     @db.VarChar(1000)
+  active         Boolean                     @default(true)
+  createdAt      DateTime                    @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime                    @updatedAt @db.Timestamptz(3)
+  organization   Organization                @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   assignments    EmployeeJobRoleAssignment[]
   permissions    RolePermission[]
 
@@ -389,28 +474,29 @@ model JobRole {
 }
 
 model Employee {
-  id             String        @id @default(uuid()) @db.Uuid
-  organizationId String        @db.Uuid
-  accountId      String        @unique @db.Uuid
-  employeeCode   String?       @db.VarChar(64)
-  homeBranchId   String        @db.Uuid
-  homeTeamId     String        @db.Uuid
-  reportsToId    String?       @db.Uuid
-  state          EmployeeState @default(ACTIVE)
-  hiredAt        DateTime      @db.Date
-  suspendedAt    DateTime?     @db.Timestamptz(3)
-  exitedAt       DateTime?     @db.Timestamptz(3)
-  createdAt      DateTime      @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime      @updatedAt @db.Timestamptz(3)
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  account        Account       @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  homeBranch     Branch        @relation(fields: [homeBranchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  homeTeam       Team          @relation(fields: [homeTeamId, homeBranchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  reportsTo      Employee?     @relation("EmployeeReporting", fields: [reportsToId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  directReports  Employee[]    @relation("EmployeeReporting")
-  membershipHistory EmployeeMembershipHistory[]
-  jobRoleAssignments EmployeeJobRoleAssignment[]
+  id                  String                       @id @default(uuid()) @db.Uuid
+  organizationId      String                       @db.Uuid
+  accountId           String                       @unique @db.Uuid
+  employeeCode        String?                      @db.VarChar(64)
+  homeBranchId        String                       @db.Uuid
+  homeTeamId          String                       @db.Uuid
+  reportsToId         String?                      @db.Uuid
+  state               EmployeeState                @default(ACTIVE)
+  hiredAt             DateTime                     @db.Date
+  suspendedAt         DateTime?                    @db.Timestamptz(3)
+  exitedAt            DateTime?                    @db.Timestamptz(3)
+  createdAt           DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt           DateTime                     @updatedAt @db.Timestamptz(3)
+  organization        Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  account             Account                      @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  homeBranch          Branch                       @relation(fields: [homeBranchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  homeTeam            Team                         @relation(fields: [homeTeamId, homeBranchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  reportsTo           Employee?                    @relation("EmployeeReporting", fields: [reportsToId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  directReports       Employee[]                   @relation("EmployeeReporting")
+  membershipHistory   EmployeeMembershipHistory[]
+  jobRoleAssignments  EmployeeJobRoleAssignment[]
   permissionOverrides EmployeePermissionOverride[]
+  projectsLed         Project[]                    @relation("CurrentProjectLead")
 
   @@unique([organizationId, employeeCode])
   @@unique([id, organizationId])
@@ -420,21 +506,21 @@ model Employee {
 }
 
 model EmployeeMembershipHistory {
-  id             String   @id @default(uuid()) @db.Uuid
-  employeeId     String   @db.Uuid
-  organizationId String   @db.Uuid
-  branchId       String   @db.Uuid
-  teamId         String   @db.Uuid
-  reportsToId    String?  @db.Uuid
-  effectiveFrom  DateTime @db.Timestamptz(3)
+  id             String    @id @default(uuid()) @db.Uuid
+  employeeId     String    @db.Uuid
+  organizationId String    @db.Uuid
+  branchId       String    @db.Uuid
+  teamId         String    @db.Uuid
+  reportsToId    String?   @db.Uuid
+  effectiveFrom  DateTime  @db.Timestamptz(3)
   effectiveTo    DateTime? @db.Timestamptz(3)
-  recordedAt     DateTime @default(now()) @db.Timestamptz(3)
-  recordedById   String   @db.Uuid
-  reason         String   @db.VarChar(1000)
-  employee       Employee @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  branch         Branch   @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  team           Team     @relation(fields: [teamId, branchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  recordedBy     Account  @relation("MembershipChangeActor", fields: [recordedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  recordedAt     DateTime  @default(now()) @db.Timestamptz(3)
+  recordedById   String    @db.Uuid
+  reason         String    @db.VarChar(1000)
+  employee       Employee  @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  branch         Branch    @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  team           Team      @relation(fields: [teamId, branchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  recordedBy     Account   @relation("MembershipChangeActor", fields: [recordedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([employeeId, effectiveFrom])
   @@index([organizationId, branchId, teamId, effectiveTo])
@@ -472,11 +558,11 @@ model RolePermission {
   revokedAt        DateTime?           @db.Timestamptz(3)
   revokedById      String?             @db.Uuid
   revocationReason String?             @db.VarChar(1000)
-  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  role           JobRole             @relation(fields: [roleId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  branch         Branch?             @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  team           Team?               @relation(fields: [teamId, branchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  revokedBy      Account?            @relation("RolePermissionRevoker", fields: [revokedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  organization     Organization        @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  role             JobRole             @relation(fields: [roleId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  branch           Branch?             @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  team             Team?               @relation(fields: [teamId, branchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  revokedBy        Account?            @relation("RolePermissionRevoker", fields: [revokedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([permissionKey, scopeKind])
   @@map("role_permissions")
@@ -494,14 +580,14 @@ model EmployeePermissionOverride {
   reason           String              @db.VarChar(1000)
   createdAt        DateTime            @default(now()) @db.Timestamptz(3)
   expiresAt        DateTime?           @db.Timestamptz(3)
-  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  employee       Employee            @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  branch         Branch?             @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  team           Team?               @relation(fields: [teamId, branchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  organization     Organization        @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  employee         Employee            @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  branch           Branch?             @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  team             Team?               @relation(fields: [teamId, branchId, organizationId], references: [id, branchId, organizationId], onDelete: Restrict, onUpdate: Cascade)
   revokedAt        DateTime?           @db.Timestamptz(3)
   revokedById      String?             @db.Uuid
-  revocationReason String?            @db.VarChar(1000)
-  revokedBy      Account?            @relation("EmployeePermissionOverrideRevoker", fields: [revokedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  revocationReason String?             @db.VarChar(1000)
+  revokedBy        Account?            @relation("EmployeePermissionOverrideRevoker", fields: [revokedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([employeeId, permissionKey, expiresAt])
   @@index([permissionKey, scopeKind])
@@ -530,28 +616,28 @@ model OrganizationEvent {
 }
 
 model AuditEvent {
-  id                        String       @id @default(uuid()) @db.Uuid
-  organizationId            String       @db.Uuid
-  eventKey                  String       @db.VarChar(160)
-  schemaVersion             Int          @default(1)
-  occurredAt                DateTime     @default(now()) @db.Timestamptz(3)
-  actorId                   String       @db.Uuid
+  id                        String                @id @default(uuid()) @db.Uuid
+  organizationId            String                @db.Uuid
+  eventKey                  String                @db.VarChar(160)
+  schemaVersion             Int                   @default(1)
+  occurredAt                DateTime              @default(now()) @db.Timestamptz(3)
+  actorId                   String                @db.Uuid
   actorSnapshot             Json
   sessionDeviceRequest      Json?
-  subjectType               String       @db.VarChar(100)
-  subjectId                 String       @db.VarChar(200)
-  reason                    String?      @db.VarChar(1000)
+  subjectType               String                @db.VarChar(100)
+  subjectId                 String                @db.VarChar(200)
+  reason                    String?               @db.VarChar(1000)
   before                    Json?
   after                     Json?
-  correctsEventId           String?      @db.Uuid
-  retentionExpiresAt        DateTime     @db.Timestamptz(3)
-  correlationId             String       @db.Uuid
-  legacyOrganizationEventId String?      @unique @db.Uuid
-  organization              Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  actor                     Account      @relation("AuditEventActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  correctionOf              AuditEvent?  @relation("AuditCorrections", fields: [correctsEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  corrections               AuditEvent[] @relation("AuditCorrections")
-  legacyOrganizationEvent   OrganizationEvent? @relation(fields: [legacyOrganizationEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  correctsEventId           String?               @db.Uuid
+  retentionExpiresAt        DateTime              @db.Timestamptz(3)
+  correlationId             String                @db.Uuid
+  legacyOrganizationEventId String?               @unique @db.Uuid
+  organization              Organization          @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  actor                     Account               @relation("AuditEventActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  correctionOf              AuditEvent?           @relation("AuditCorrections", fields: [correctsEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  corrections               AuditEvent[]          @relation("AuditCorrections")
+  legacyOrganizationEvent   OrganizationEvent?    @relation(fields: [legacyOrganizationEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   retentionNotice           AuditRetentionNotice?
   retentionHolds            AuditRetentionHold[]
 
@@ -564,34 +650,34 @@ model AuditEvent {
 }
 
 model ApprovalRequest {
-  id                       String               @id @default(uuid()) @db.Uuid
-  organizationId           String               @db.Uuid
-  typeKey                  String               @db.VarChar(120)
-  sourceType               String               @db.VarChar(100)
-  sourceId                 String               @db.VarChar(200)
-  sourceGeneration         Int                  @default(1)
-  requesterId              String               @db.Uuid
-  approverId               String               @db.Uuid
-  approvalLevel            String               @db.VarChar(80)
-  state                    ApprovalRequestState @default(PENDING)
-  reason                   String               @db.VarChar(1000)
-  comment                  String?              @db.VarChar(2000)
-  context                  Json
-  evidence                 Json?
-  requestedAt              DateTime             @default(now()) @db.Timestamptz(3)
-  expiresAt                DateTime?            @db.Timestamptz(3)
-  resolvedAt               DateTime?            @db.Timestamptz(3)
-  delegationAccountId      String?              @db.Uuid
-  delegationIssuedById     String?              @db.Uuid
-  delegationReason         String?              @db.VarChar(1000)
-  delegatedAt              DateTime?            @db.Timestamptz(3)
-  delegationExpiresAt      DateTime?            @db.Timestamptz(3)
-  organization             Organization         @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  requester                Account              @relation("ApprovalRequester", fields: [requesterId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  approver                 Account              @relation("ApprovalApprover", fields: [approverId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  delegationAccount        Account?             @relation("ApprovalDelegate", fields: [delegationAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  delegationIssuedBy       Account?             @relation("ApprovalDelegator", fields: [delegationIssuedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  decision                 ApprovalDecision?
+  id                   String               @id @default(uuid()) @db.Uuid
+  organizationId       String               @db.Uuid
+  typeKey              String               @db.VarChar(120)
+  sourceType           String               @db.VarChar(100)
+  sourceId             String               @db.VarChar(200)
+  sourceGeneration     Int                  @default(1)
+  requesterId          String               @db.Uuid
+  approverId           String               @db.Uuid
+  approvalLevel        String               @db.VarChar(80)
+  state                ApprovalRequestState @default(PENDING)
+  reason               String               @db.VarChar(1000)
+  comment              String?              @db.VarChar(2000)
+  context              Json
+  evidence             Json?
+  requestedAt          DateTime             @default(now()) @db.Timestamptz(3)
+  expiresAt            DateTime?            @db.Timestamptz(3)
+  resolvedAt           DateTime?            @db.Timestamptz(3)
+  delegationAccountId  String?              @db.Uuid
+  delegationIssuedById String?              @db.Uuid
+  delegationReason     String?              @db.VarChar(1000)
+  delegatedAt          DateTime?            @db.Timestamptz(3)
+  delegationExpiresAt  DateTime?            @db.Timestamptz(3)
+  organization         Organization         @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  requester            Account              @relation("ApprovalRequester", fields: [requesterId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  approver             Account              @relation("ApprovalApprover", fields: [approverId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  delegationAccount    Account?             @relation("ApprovalDelegate", fields: [delegationAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  delegationIssuedBy   Account?             @relation("ApprovalDelegator", fields: [delegationIssuedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  decision             ApprovalDecision?
 
   @@unique([organizationId, typeKey, sourceType, sourceId, sourceGeneration])
   @@unique([id, organizationId])
@@ -621,22 +707,22 @@ model ApprovalDecision {
 }
 
 model DomainEvent {
-  id                           String       @id @default(uuid()) @db.Uuid
-  eventName                    String       @db.VarChar(160)
-  schemaVersion                Int          @default(1)
-  occurredAt                   DateTime     @default(now()) @db.Timestamptz(3)
-  organizationId               String?      @db.Uuid
-  actorId                      String?      @db.Uuid
-  subjectType                  String       @db.VarChar(100)
-  subjectId                    String       @db.VarChar(200)
-  correlationId                String       @db.Uuid
-  payload                      Json
-  legacyOrganizationEventId    String?      @unique @db.Uuid
-  organization                 Organization? @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  actor                        Account?     @relation("DomainEventActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  legacyOrganizationEvent      OrganizationEvent? @relation(fields: [legacyOrganizationEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  deliveries                   OutboxDelivery[]
-  notifications                Notification[]
+  id                        String             @id @default(uuid()) @db.Uuid
+  eventName                 String             @db.VarChar(160)
+  schemaVersion             Int                @default(1)
+  occurredAt                DateTime           @default(now()) @db.Timestamptz(3)
+  organizationId            String?            @db.Uuid
+  actorId                   String?            @db.Uuid
+  subjectType               String             @db.VarChar(100)
+  subjectId                 String             @db.VarChar(200)
+  correlationId             String             @db.Uuid
+  payload                   Json
+  legacyOrganizationEventId String?            @unique @db.Uuid
+  organization              Organization?      @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  actor                     Account?           @relation("DomainEventActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  legacyOrganizationEvent   OrganizationEvent? @relation(fields: [legacyOrganizationEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  deliveries                OutboxDelivery[]
+  notifications             Notification[]
 
   @@index([eventName, occurredAt])
   @@index([organizationId, occurredAt])
@@ -645,17 +731,17 @@ model DomainEvent {
 }
 
 model OutboxDelivery {
-  id               String               @id @default(uuid()) @db.Uuid
-  eventId          String               @db.Uuid
-  consumer         OutboxConsumer
-  state            OutboxDeliveryState  @default(PENDING)
-  attempts         Int                  @default(0)
-  availableAt      DateTime             @default(now()) @db.Timestamptz(3)
-  leaseExpiresAt   DateTime?            @db.Timestamptz(3)
-  leaseToken       String?              @db.Uuid
-  failureCode      String?              @db.VarChar(100)
-  deliveredAt      DateTime?            @db.Timestamptz(3)
-  event            DomainEvent          @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id             String              @id @default(uuid()) @db.Uuid
+  eventId        String              @db.Uuid
+  consumer       OutboxConsumer
+  state          OutboxDeliveryState @default(PENDING)
+  attempts       Int                 @default(0)
+  availableAt    DateTime            @default(now()) @db.Timestamptz(3)
+  leaseExpiresAt DateTime?           @db.Timestamptz(3)
+  leaseToken     String?             @db.Uuid
+  failureCode    String?             @db.VarChar(100)
+  deliveredAt    DateTime?           @db.Timestamptz(3)
+  event          DomainEvent         @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@unique([eventId, consumer])
   @@index([state, availableAt, leaseExpiresAt])
@@ -663,24 +749,24 @@ model OutboxDelivery {
 }
 
 model Notification {
-  id                    String                    @id @default(uuid()) @db.Uuid
-  eventId               String                    @db.Uuid
-  recipientAccountId    String                    @db.Uuid
-  channel               NotificationChannel
-  category              String                    @db.VarChar(100)
-  title                 String                    @db.VarChar(180)
-  body                  String                    @db.VarChar(1000)
-  internalRoute         String                    @db.VarChar(500)
-  critical              Boolean                   @default(false)
-  mandatory             Boolean                   @default(false)
-  createdAt             DateTime                  @default(now()) @db.Timestamptz(3)
-  readAt                DateTime?                 @db.Timestamptz(3)
-  deliveryState         NotificationDeliveryState @default(PENDING)
-  deliveredAt           DateTime?                 @db.Timestamptz(3)
-  attempts              Int                       @default(0)
-  failureCode           String?                   @db.VarChar(100)
-  event                 DomainEvent               @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  recipient             Account                   @relation(fields: [recipientAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id                 String                    @id @default(uuid()) @db.Uuid
+  eventId            String                    @db.Uuid
+  recipientAccountId String                    @db.Uuid
+  channel            NotificationChannel
+  category           String                    @db.VarChar(100)
+  title              String                    @db.VarChar(180)
+  body               String                    @db.VarChar(1000)
+  internalRoute      String                    @db.VarChar(500)
+  critical           Boolean                   @default(false)
+  mandatory          Boolean                   @default(false)
+  createdAt          DateTime                  @default(now()) @db.Timestamptz(3)
+  readAt             DateTime?                 @db.Timestamptz(3)
+  deliveryState      NotificationDeliveryState @default(PENDING)
+  deliveredAt        DateTime?                 @db.Timestamptz(3)
+  attempts           Int                       @default(0)
+  failureCode        String?                   @db.VarChar(100)
+  event              DomainEvent               @relation(fields: [eventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  recipient          Account                   @relation(fields: [recipientAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@unique([eventId, recipientAccountId, channel])
   @@index([recipientAccountId, createdAt])
@@ -690,14 +776,14 @@ model Notification {
 }
 
 model NotificationPreference {
-  id                    String              @id @default(uuid()) @db.Uuid
-  accountId             String              @db.Uuid
-  category              String              @db.VarChar(100)
-  channel               NotificationChannel
-  enabled               Boolean
-  createdAt             DateTime            @default(now()) @db.Timestamptz(3)
-  updatedAt             DateTime            @updatedAt @db.Timestamptz(3)
-  account               Account             @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id        String              @id @default(uuid()) @db.Uuid
+  accountId String              @db.Uuid
+  category  String              @db.VarChar(100)
+  channel   NotificationChannel
+  enabled   Boolean
+  createdAt DateTime            @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime            @updatedAt @db.Timestamptz(3)
+  account   Account             @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@unique([accountId, category, channel])
   @@index([accountId, category])
@@ -705,69 +791,69 @@ model NotificationPreference {
 }
 
 model NotificationQuietHours {
-  accountId             String   @id @db.Uuid
-  startLocal            String   @db.Char(5)
-  endLocal              String   @db.Char(5)
-  timeZone              String   @db.VarChar(100)
-  updatedAt             DateTime @updatedAt @db.Timestamptz(3)
-  account               Account  @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  accountId  String   @id @db.Uuid
+  startLocal String   @db.Char(5)
+  endLocal   String   @db.Char(5)
+  timeZone   String   @db.VarChar(100)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  account    Account  @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@map("notification_quiet_hours")
 }
 
 model AuditRetentionConfiguration {
-  singletonKey       Int       @id @default(1) @db.SmallInt
-  noticeIntervalDays Int?      @db.SmallInt
-  updatedAt          DateTime  @updatedAt @db.Timestamptz(3)
-  updatedById        String?   @db.Uuid
-  updatedBy          Account?  @relation(fields: [updatedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  singletonKey       Int      @id @default(1) @db.SmallInt
+  noticeIntervalDays Int?     @db.SmallInt
+  updatedAt          DateTime @updatedAt @db.Timestamptz(3)
+  updatedById        String?  @db.Uuid
+  updatedBy          Account? @relation(fields: [updatedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@map("audit_retention_configuration")
 }
 
 model AuditRetentionNotice {
-  id                   String                          @id @default(uuid()) @db.Uuid
-  auditEventId         String                          @unique @db.Uuid
-  noticeAt             DateTime                        @default(now()) @db.Timestamptz(3)
-  acknowledgedAt       DateTime?                       @db.Timestamptz(3)
-  acknowledgedById     String?                         @db.Uuid
-  backupDisposition    AuditRetentionBackupDisposition?
-  backupEvidenceRef    String?                         @db.VarChar(200)
-  backupClearedAt      DateTime?                       @db.Timestamptz(3)
-  auditEvent           AuditEvent                      @relation(fields: [auditEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  acknowledgedBy       Account?                        @relation("RetentionNoticeAcknowledgedBy", fields: [acknowledgedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id                String                           @id @default(uuid()) @db.Uuid
+  auditEventId      String                           @unique @db.Uuid
+  noticeAt          DateTime                         @default(now()) @db.Timestamptz(3)
+  acknowledgedAt    DateTime?                        @db.Timestamptz(3)
+  acknowledgedById  String?                          @db.Uuid
+  backupDisposition AuditRetentionBackupDisposition?
+  backupEvidenceRef String?                          @db.VarChar(200)
+  backupClearedAt   DateTime?                        @db.Timestamptz(3)
+  auditEvent        AuditEvent                       @relation(fields: [auditEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  acknowledgedBy    Account?                         @relation("RetentionNoticeAcknowledgedBy", fields: [acknowledgedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([noticeAt, acknowledgedAt])
   @@map("audit_retention_notices")
 }
 
 model AuditRetentionHold {
-  id            String       @id @default(uuid()) @db.Uuid
-  auditEventId  String       @db.Uuid
-  heldById      String       @db.Uuid
-  reason        String       @db.VarChar(1000)
-  heldAt        DateTime     @default(now()) @db.Timestamptz(3)
-  releasedAt    DateTime?    @db.Timestamptz(3)
-  releasedById  String?      @db.Uuid
-  releaseReason String?      @db.VarChar(1000)
-  auditEvent    AuditEvent   @relation(fields: [auditEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  heldBy        Account      @relation("RetentionHoldPlacedBy", fields: [heldById], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  releasedBy    Account?     @relation("RetentionHoldReleasedBy", fields: [releasedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id            String     @id @default(uuid()) @db.Uuid
+  auditEventId  String     @db.Uuid
+  heldById      String     @db.Uuid
+  reason        String     @db.VarChar(1000)
+  heldAt        DateTime   @default(now()) @db.Timestamptz(3)
+  releasedAt    DateTime?  @db.Timestamptz(3)
+  releasedById  String?    @db.Uuid
+  releaseReason String?    @db.VarChar(1000)
+  auditEvent    AuditEvent @relation(fields: [auditEventId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  heldBy        Account    @relation("RetentionHoldPlacedBy", fields: [heldById], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  releasedBy    Account?   @relation("RetentionHoldReleasedBy", fields: [releasedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([auditEventId, releasedAt])
   @@map("audit_retention_holds")
 }
 
 model AuditDeletionTombstone {
-  id                      String                          @id @default(uuid()) @db.Uuid
-  auditEventId            String                          @unique @db.Uuid
-  eventKey                String                          @db.VarChar(160)
-  occurredAt              DateTime                        @db.Timestamptz(3)
-  retentionExpiresAt      DateTime                        @db.Timestamptz(3)
-  purgedAt                DateTime                        @default(now()) @db.Timestamptz(3)
-  noticeAcknowledgedAt    DateTime                        @db.Timestamptz(3)
-  backupDisposition       AuditRetentionBackupDisposition
-  backupClearedAt         DateTime                        @db.Timestamptz(3)
+  id                   String                          @id @default(uuid()) @db.Uuid
+  auditEventId         String                          @unique @db.Uuid
+  eventKey             String                          @db.VarChar(160)
+  occurredAt           DateTime                        @db.Timestamptz(3)
+  retentionExpiresAt   DateTime                        @db.Timestamptz(3)
+  purgedAt             DateTime                        @default(now()) @db.Timestamptz(3)
+  noticeAcknowledgedAt DateTime                        @db.Timestamptz(3)
+  backupDisposition    AuditRetentionBackupDisposition
+  backupClearedAt      DateTime                        @db.Timestamptz(3)
 
   @@index([purgedAt])
   @@map("audit_deletion_tombstones")
@@ -791,14 +877,14 @@ model PasskeyCredential {
 }
 
 model WebAuthnChallenge {
-  id          String                    @id @default(uuid()) @db.Uuid
-  accountId   String?                   @db.Uuid
-  purpose     WebAuthnChallengePurpose
-  challenge   String                    @unique @db.VarChar(512)
-  createdAt   DateTime                  @default(now()) @db.Timestamptz(3)
-  expiresAt   DateTime                  @db.Timestamptz(3)
-  consumedAt  DateTime?                 @db.Timestamptz(3)
-  account     Account?                  @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id         String                   @id @default(uuid()) @db.Uuid
+  accountId  String?                  @db.Uuid
+  purpose    WebAuthnChallengePurpose
+  challenge  String                   @unique @db.VarChar(512)
+  createdAt  DateTime                 @default(now()) @db.Timestamptz(3)
+  expiresAt  DateTime                 @db.Timestamptz(3)
+  consumedAt DateTime?                @db.Timestamptz(3)
+  account    Account?                 @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([expiresAt, consumedAt])
   @@index([accountId, purpose, createdAt])
@@ -824,20 +910,20 @@ model Session {
 }
 
 model IdentityEnrollmentGrant {
-  id                      String                @id @default(uuid()) @db.Uuid
+  id                      String                      @id @default(uuid()) @db.Uuid
   purpose                 EnrollmentGrantPurpose
-  tokenHash               String                @unique @db.VarChar(128)
-  accountId               String?               @db.Uuid
-  normalizedEmail         String?               @db.VarChar(320)
-  authorizedByAccountId   String?               @db.Uuid
-  recoveryAuthorizationId String?               @unique @db.Uuid
-  reason                  String?               @db.VarChar(1000)
-  createdAt               DateTime              @default(now()) @db.Timestamptz(3)
-  expiresAt               DateTime              @db.Timestamptz(3)
-  consumedAt              DateTime?             @db.Timestamptz(3)
-  account                 Account?              @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  authorizedBy            Account?               @relation("GrantAuthorizer", fields: [authorizedByAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  recoveryAuthorization  StaffRecoveryAuthorization? @relation(fields: [recoveryAuthorizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  tokenHash               String                      @unique @db.VarChar(128)
+  accountId               String?                     @db.Uuid
+  normalizedEmail         String?                     @db.VarChar(320)
+  authorizedByAccountId   String?                     @db.Uuid
+  recoveryAuthorizationId String?                     @unique @db.Uuid
+  reason                  String?                     @db.VarChar(1000)
+  createdAt               DateTime                    @default(now()) @db.Timestamptz(3)
+  expiresAt               DateTime                    @db.Timestamptz(3)
+  consumedAt              DateTime?                   @db.Timestamptz(3)
+  account                 Account?                    @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  authorizedBy            Account?                    @relation("GrantAuthorizer", fields: [authorizedByAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  recoveryAuthorization   StaffRecoveryAuthorization? @relation(fields: [recoveryAuthorizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([purpose, expiresAt, consumedAt])
   @@index([normalizedEmail, purpose])
@@ -846,30 +932,30 @@ model IdentityEnrollmentGrant {
 }
 
 model OwnerRecoveryCode {
-  id         String    @id @default(uuid()) @db.Uuid
-  accountId  String    @db.Uuid
-  codeHash   String    @unique @db.VarChar(128)
-  createdAt  DateTime  @default(now()) @db.Timestamptz(3)
-  usedAt     DateTime? @db.Timestamptz(3)
-  replacedAt DateTime? @db.Timestamptz(3)
+  id             String    @id @default(uuid()) @db.Uuid
+  accountId      String    @db.Uuid
+  codeHash       String    @unique @db.VarChar(128)
+  createdAt      DateTime  @default(now()) @db.Timestamptz(3)
+  usedAt         DateTime? @db.Timestamptz(3)
+  replacedAt     DateTime? @db.Timestamptz(3)
   acknowledgedAt DateTime? @db.Timestamptz(3)
-  account    Account   @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  account        Account   @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([accountId, usedAt, replacedAt])
   @@map("owner_recovery_codes")
 }
 
 model StaffRecoveryAuthorization {
-  id                       String                    @id @default(uuid()) @db.Uuid
-  accountId                String                    @db.Uuid
-  authorizedByAccountId    String                    @db.Uuid
-  reason                   String                    @db.VarChar(1000)
-  lostCredentialIds        Json
-  createdAt                DateTime                  @default(now()) @db.Timestamptz(3)
-  usedAt                   DateTime?                 @db.Timestamptz(3)
-  account                  Account                   @relation("RecoveryTarget", fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  authorizedBy             Account                   @relation("RecoveryAuthorizer", fields: [authorizedByAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  enrollmentGrant          IdentityEnrollmentGrant?
+  id                    String                   @id @default(uuid()) @db.Uuid
+  accountId             String                   @db.Uuid
+  authorizedByAccountId String                   @db.Uuid
+  reason                String                   @db.VarChar(1000)
+  lostCredentialIds     Json
+  createdAt             DateTime                 @default(now()) @db.Timestamptz(3)
+  usedAt                DateTime?                @db.Timestamptz(3)
+  account               Account                  @relation("RecoveryTarget", fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  authorizedBy          Account                  @relation("RecoveryAuthorizer", fields: [authorizedByAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  enrollmentGrant       IdentityEnrollmentGrant?
 
   @@index([accountId, createdAt])
   @@index([authorizedByAccountId, createdAt])
@@ -877,15 +963,15 @@ model StaffRecoveryAuthorization {
 }
 
 model SecurityEvent {
-  id          String             @id @default(uuid()) @db.Uuid
-  eventType   SecurityEventType
-  result      SecurityEventResult
-  actorId     String?            @db.Uuid
-  subjectId   String?            @db.Uuid
-  occurredAt  DateTime           @default(now()) @db.Timestamptz(3)
-  metadata    Json?
-  actor       Account?           @relation("SecurityActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  subject     Account?           @relation("SecuritySubject", fields: [subjectId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  id         String              @id @default(uuid()) @db.Uuid
+  eventType  SecurityEventType
+  result     SecurityEventResult
+  actorId    String?             @db.Uuid
+  subjectId  String?             @db.Uuid
+  occurredAt DateTime            @default(now()) @db.Timestamptz(3)
+  metadata   Json?
+  actor      Account?            @relation("SecurityActor", fields: [actorId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  subject    Account?            @relation("SecuritySubject", fields: [subjectId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
   @@index([occurredAt])
   @@index([eventType, occurredAt])
