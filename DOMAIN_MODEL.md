@@ -82,3 +82,6 @@ Source: requirements/APPROVED_REQUIREMENTS.md, especially R-004–R-098. C-001 a
 ## Transition ownership
 
 WORKFLOWS.md records approved paths and implementation guards. Each slice must finish its exact transition matrix and denied-transition tests before release. REQUIREMENT_QUESTIONS.md records the resolved owner decisions; no additional business permission may be inferred from a technical default.
+## S06 implemented domain boundary
+
+Lead owns branch, contact snapshot, immutable source/client/prior-Lost references and current stage/version. LeadStageChange retains from/to, direction, skipped stages, actor/time/reason and lead version. LeadActivity records interactions independently. Client and ClientContact are shared organization identities managed by Owner. CrmSource is a shared organization identity managed through `crm_source.manage`; inactive sources remain historical. Won produces a candidate with exact winning history provenance; project creation remains S07.

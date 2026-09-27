@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04 and S05 on 2026-09-27. S01–S05 are COMPLETE for development/local staging; S06+ remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04, S05 and S06 on 2026-09-27. S01–S06 are COMPLETE for development/local staging; S07+ remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -35,9 +35,9 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-014 | Cancelled-project client read-only access expires automatically after an Owner-chosen period; Owner may approve an extension | ACC/DOC/PORT | S14 | APPROVED; NOT IMPLEMENTED |
 | C-015 | Owner sets a separate required expiry for each client project-access grant at cancellation; no shared period | PRJ/ACC/PORT | S09/S14 | APPROVED; NOT IMPLEMENTED |
 | C-016 | Assigned Project Lead or explicitly authorized Team Leader approves ordinary closeout tasks and scoped time-limited vendor/consultant access; Owner alone issues CAD links | PRJ/TSK/ACC/PORT | S09/S21 | APPROVED; NOT IMPLEMENTED |
-| C-017 | Authorized lead handler may jump forward over unused sales stages with required reason and audited skipped-stage evidence | CRM/AUD | S06 | APPROVED; NOT IMPLEMENTED |
-| C-018 | Returning Lost enquiry creates a new linked lead; prior Lost outcome and history remain intact | CRM/AUD/ACC | S06 | APPROVED; NOT IMPLEMENTED |
-| C-019 | Authorized handler may move a nonterminal lead to an earlier nonterminal stage with reason and preserved history | CRM/AUD/ACC | S06 | APPROVED; NOT IMPLEMENTED |
+| C-017 | Authorized lead handler may jump forward over unused sales stages with required reason and audited skipped-stage evidence | CRM/AUD | S06 | COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
+| C-018 | Returning Lost enquiry creates a new linked lead; prior Lost outcome and history remain intact | CRM/AUD/ACC | S06 | COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
+| C-019 | Authorized handler may move a nonterminal lead to an earlier nonterminal stage with reason and preserved history | CRM/AUD/ACC | S06 | COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
 | C-020 | Project Lead/authorized Team Leader appoints a named snag verifier independent of the fixer; verification attempts retain evidence | SITE/ACC/AUD | S20 | APPROVED; NOT IMPLEMENTED |
 | C-021 | Assigned Project Lead/explicitly authorized Team Leader makes a separate Closed decision after passed snag verification | SITE/ACC/AUD | S20 | APPROVED; NOT IMPLEMENTED |
 | C-022 | Approved-leave cancellation requires same-level management decision; reversal retains ledger and capacity history | WFM/APR/AUD/NTF | S17 | APPROVED; NOT IMPLEMENTED |
@@ -52,7 +52,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-007 | OWNER: R-007.a authentication identity, R-007.b organization authority, R-007.c account recovery/security duties | IDN/ACC/ORG | S02/S03 | Identity portions of R-007.a/c implemented in S02 for development/local staging; organization authority and business permissions implemented in S03 |
 | R-008 | TEAM LEADER | ACC/ORG | S03 | S03 COMPLETE: explicit Team-scoped report-tree listing and reporting updates; no title-based authority |
 | R-009 | EMPLOYEE | ACC/ORG | S03 | S03 COMPLETE for identity-linked home membership and scoped Team UI; own/assigned work APIs await their owning slices |
-| R-010 | LEAD MANAGEMENT | CRM | S06 | NOT STARTED |
+| R-010 | LEAD MANAGEMENT | CRM | S06 | R-010.a–d COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
 | R-011 | PROJECT DELIVERY TYPES | PRJ | S07 | NOT STARTED |
 | R-012 | PROJECT SERVICE SCOPES | PRJ | S07 | NOT STARTED |
 | R-013 | PROJECT ACCOUNTABILITY | PRJ | S07 | NOT STARTED |
@@ -158,3 +158,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-113 | YOUR FIRST TASK AFTER RECEIVING THIS PROMPT | GOV | S01–S27 | NOT STARTED |
 | R-114 | STOP CONDITION FOR THIS FIRST PASS | GOV | S01–S27 | NOT STARTED |
 | R-115 | FINAL OPERATING PRINCIPLE | GOV | S01–S27 | NOT STARTED |
+
+## S06 authorization and initial implementation — 2026-09-27
+
+Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07+ remain unauthorized.

@@ -4,6 +4,7 @@ import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import { NotificationCenter } from "./notifications.js";
 import { AuditRetentionCenter } from "./audit-retention.js";
 import { ApprovalQueue } from "./approval-queue.js";
+import { CrmWorkspace } from "./crm.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -244,15 +245,18 @@ function Identity({ session, onLogout, busy, error }: {
     setPending(true);
     setActionError(undefined);
     setActionSuccess(undefined);
+    let browserRegistration = false;
     try {
       const options = await apiPost(`${AUTH_PATH}/passkey/register/options`, {}, currentSession.csrfToken) as Ceremony;
+      browserRegistration = true;
       const response = await startRegistration({ optionsJSON: options.options });
+      browserRegistration = false;
       await apiPost(`${AUTH_PATH}/passkey/register/verify`, { ceremonyId: options.ceremonyId, response }, currentSession.csrfToken);
       const updated = await readSession();
       if (updated) setCurrentSession(updated);
       setActionSuccess("Passkey added to this account.");
     } catch (cause) {
-      setActionError(publicFlowError(cause));
+      setActionError(browserRegistration ? passkeyRegistrationError(cause) : publicFlowError(cause));
     } finally { setPending(false); }
   };
 
@@ -369,6 +373,7 @@ function Identity({ session, onLogout, busy, error }: {
       </section>
       {error && <p className="auth-error" role="alert">{error}</p>}
       {!ownerNeedsSetup && <ApprovalQueue />}
+      {!ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
       <section className="identity-section sessions-section" aria-labelledby="sessions-heading">
         <div className="sessions-heading-row">
           <div><div className="eyebrow">DEVICES</div><h2 id="sessions-heading">Active sessions</h2></div>
@@ -465,6 +470,14 @@ function Identity({ session, onLogout, busy, error }: {
       </div>
     </main>
   );
+}
+
+function passkeyRegistrationError(error: unknown): string {
+  const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
+  if (code === "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED") return "That passkey is already registered. Choose a different passkey method, such as your phone or a security key.";
+  if (isCancellation(error)) return "The passkey request was cancelled. You can try again when ready.";
+  if (isUnsupportedPasskeyBrowser(error)) return "This browser does not support passkeys. Open this page in a supported browser or device.";
+  return "The browser could not create another passkey with that method. Choose a different device or security key and try again.";
 }
 
 function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element {

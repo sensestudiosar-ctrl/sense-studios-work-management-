@@ -17,6 +17,12 @@ function response(body: unknown, status = 200): Response {
   return { ok: status >= 200 && status < 300, status, json: async () => body } as Response;
 }
 
+function stubFetchWithCrmSetup(fetchMock: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): void {
+  vi.stubGlobal("fetch", vi.fn((input: RequestInfo | URL, init?: RequestInit) => String(input) === "/api/v1/crm/setup"
+    ? Promise.resolve(response({ branches: [], sources: [], owner: false }))
+    : fetchMock(input, init)));
+}
+
 beforeEach(() => {
   vi.restoreAllMocks();
   startAuthentication.mockReset();
@@ -26,7 +32,7 @@ beforeEach(() => {
 
 describe("identity authentication shell", () => {
   it("restores the session and shows only the authenticated identity", async () => {
-    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).startsWith("/api/v1/approvals/attention") ? response({ items: [], nextCursor: null }) : response(session)));
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input).startsWith("/api/v1/approvals/attention") ? response({ items: [], nextCursor: null }) : response(session)));
     renderApp();
 
     expect(screen.getByRole("status")).toHaveTextContent(/Checking your session/);
@@ -43,7 +49,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response(session))
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     startAuthentication.mockResolvedValue({ id: "credential-response" });
     renderApp();
 
@@ -63,7 +69,7 @@ describe("identity authentication shell", () => {
   });
 
   it("shows a generic invalid response without exposing account details", async () => {
-    vi.stubGlobal("fetch", vi.fn()
+    stubFetchWithCrmSetup(vi.fn()
       .mockResolvedValueOnce(response({}, 401))
       .mockResolvedValueOnce(response({}, 401)));
     renderApp();
@@ -74,7 +80,7 @@ describe("identity authentication shell", () => {
   });
 
   it("reports network failure and passkey cancellation in generic terms", async () => {
-    vi.stubGlobal("fetch", vi.fn()
+    stubFetchWithCrmSetup(vi.fn()
       .mockResolvedValueOnce(response({}, 401))
       .mockRejectedValueOnce(new Error("offline")));
     renderApp();
@@ -94,11 +100,11 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({}));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
     fireEvent.click(await screen.findByRole("button", { name: "Sign out" }));
     expect(await screen.findByText(/You’ve signed out/)).toBeInTheDocument();
-    expect(fetchMock.mock.calls[3]?.[1]).toMatchObject({
+    expect(fetchMock.mock.calls.find(([url]) => url === "/api/v1/auth/logout")?.[1]).toMatchObject({
       method: "POST",
       headers: { "X-CSRF-Token": "csrf-test-token" },
     });
@@ -110,7 +116,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({}, 401));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
     expect(await screen.findByRole("heading", { name: "You’re signed in." })).toBeInTheDocument();
     fireEvent.focus(window);
@@ -134,7 +140,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ recoveryCode: "offline-recovery-code-once" }))
       .mockResolvedValueOnce(response({ acknowledged: true }))
       .mockResolvedValueOnce(response(readySession));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     startRegistration.mockResolvedValue({ id: "registration-response" });
     renderApp("/bootstrap");
 
@@ -151,6 +157,24 @@ describe("identity authentication shell", () => {
     expect(fetchMock.mock.calls.map(([url]) => url)).toContain("/api/v1/auth/owner/recovery-code/ack");
   });
 
+  it("explains a rejected second passkey without reporting a network failure", async () => {
+    const setupSession = { ...session, ownerSetupRequired: true, activePasskeyCount: 1 };
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/session") return response(setupSession);
+      if (url === "/api/v1/auth/passkey/register/options") return response({ ceremonyId: "second-c", options: { challenge: "second" } });
+      if (url === "/api/v1/approvals/attention?limit=30") return response({ items: [], nextCursor: null });
+      if (url === "/api/v1/crm/setup") return response({ branches: [], sources: [] });
+      if (url === "/api/v1/auth/sessions") return response([]);
+      return response({}, 404);
+    }));
+    startRegistration.mockRejectedValue(Object.assign(new Error("Previously registered"), { code: "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED", name: "InvalidStateError" }));
+    renderApp();
+    fireEvent.click(await screen.findByRole("button", { name: "Add second passkey" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/already registered.*different passkey method/i);
+    expect(screen.queryByText(/couldn’t reach the identity service/i)).not.toBeInTheDocument();
+  });
+
   it("accepts a staff invitation or recovery token and registers a passkey", async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response({ ceremonyId: "staff-c", options: { challenge: "staff" } }))
@@ -159,7 +183,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     startRegistration.mockResolvedValue({ id: "staff-registration" });
     renderApp("/enroll");
     fireEvent.change(screen.getByLabelText("One-time enrollment token"), { target: { value: "t".repeat(44) } });
@@ -177,7 +201,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ ...session, ownerSetupRequired: true, activePasskeyCount: 1 }))
       .mockResolvedValueOnce(response({ ...session, ownerSetupRequired: true, activePasskeyCount: 1 }))
       .mockResolvedValueOnce(response([]));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     startRegistration.mockResolvedValue({ id: "replacement-registration" });
     renderApp("/owner-recovery");
     fireEvent.change(screen.getByLabelText("Owner work email"), { target: { value: "owner@example.test" } });
@@ -198,7 +222,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ account: { id: "staff-account-id", email: "staff@example.test", state: "ACTIVE" } }))
       .mockResolvedValueOnce(response({ revokedSessions: 2 }))
       .mockResolvedValueOnce(response({ recoveryToken: "recovery-once-token", expiresInSeconds: 86400 }));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
     fireEvent.change(await screen.findByLabelText("Invite staff by work email"), { target: { value: "staff@example.test" } });
     fireEvent.click(screen.getByRole("button", { name: "Create invitation" }));
@@ -228,7 +252,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockReturnValueOnce(pendingSessions)
       .mockResolvedValueOnce(response([]));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
 
     expect(await screen.findByText("Loading your sessions…")).toBeInTheDocument();
@@ -255,7 +279,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response([current, other]))
       .mockResolvedValueOnce(response({}, 204))
       .mockResolvedValueOnce(response([current, revoked]));
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
 
     expect(await screen.findByText("Chrome on Windows")).toBeInTheDocument();
@@ -318,7 +342,7 @@ describe("identity authentication shell", () => {
       }
       return response({}, 404);
     });
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
 
     fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
@@ -363,7 +387,7 @@ describe("identity authentication shell", () => {
       if (url === `/api/v1/org/team/employees/${managedEmployee.id}/reporting` && init?.method === "PUT") return response({ changed: true });
       return response({}, 404);
     });
-    vi.stubGlobal("fetch", fetchMock);
+    stubFetchWithCrmSetup(fetchMock);
     renderApp();
 
     fireEvent.click(await screen.findByRole("button", { name: "Open team workspace" }));

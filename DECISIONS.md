@@ -103,3 +103,10 @@ S02 implementation and acceptance evidence is recorded in S02_SPEC.md and S02_CO
 ## 2026-09-27 — S04 Audit, Outbox and Core Notifications authorization and email eligibility
 
 The Owner authorized S04 after S03 was accepted. For internal email delivery, the Owner selected mailbox verification in S04. A signed-in account's current email is eligible only after completing the persisted one-time challenge; active status and passkey enrollment alone are not proof of mailbox ownership. Challenge codes are never stored in raw form and delivery is unavailable unless Brevo and the verification secret are configured. S03 organization events remain notification-neutral until an authorized event-specific recipient/template is defined; the S04 worker fails closed when current recipient authorization is absent. S04 implementation, evidence and production limits are recorded in S04_SPEC.md and S04_COMPLETION_REPORT.md.
+
+## S06 shared client authority — Owner decision 2026-09-27
+
+Owner explicitly selected Owner-only shared client/contact edits. Granted staff may select clients visible through currently authorized lead scope and create leads; a shared organization-wide customer identity does not grant access to unrelated branch leads/history. S06_SPEC.md records the implementation contract. Source-configuration authority remains pending. S07+ are unauthorized.
+## S06 source configuration — Owner clarification, 2026-09-27
+
+Owner authorized staff with a separate source-management grant to add or deactivate enquiry sources. The implementation uses organization-scoped `crm_source.manage`, because sources are shared across the organization. Source edits require a reason and optimistic concurrency token with canonical audit/events. Source identity is retained; deactivation affects new lead selection and preserves historical leads. No source rename or deletion is exposed.

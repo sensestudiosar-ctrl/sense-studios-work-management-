@@ -53,7 +53,15 @@ export const DOMAIN_EVENT_CATALOGUE = {
   "approval.requested": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
   "approval.delegated": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
   "approval.withdrawn": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
-  "approval.decided": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 }
+  "approval.decided": { producer: "S05 approvals", subjectType: "approval_request", schemaVersion: 1 },
+  "crm.lead.created": { producer: "S06 CRM", subjectType: "lead", schemaVersion: 1 },
+  "crm.lead.updated": { producer: "S06 CRM", subjectType: "lead", schemaVersion: 1 },
+  "crm.lead.stage_changed": { producer: "S06 CRM", subjectType: "lead", schemaVersion: 1 },
+  "crm.lead.activity_recorded": { producer: "S06 CRM", subjectType: "lead_activity", schemaVersion: 1 },
+  "crm.client.created": { producer: "S06 CRM", subjectType: "client", schemaVersion: 1 },
+  "crm.client.updated": { producer: "S06 CRM", subjectType: "client", schemaVersion: 1 },
+  "crm.source.created": { producer: "S06 CRM", subjectType: "crm_source", schemaVersion: 1 },
+  "crm.source.updated": { producer: "S06 CRM", subjectType: "crm_source", schemaVersion: 1 }
 } as const;
 
 export type DomainEventName = keyof typeof DOMAIN_EVENT_CATALOGUE;

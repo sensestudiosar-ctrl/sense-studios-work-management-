@@ -7,6 +7,122 @@ datasource db {
   provider = "postgresql"
 }
 
+model CrmSource {
+  id             String       @id @default(uuid()) @db.Uuid
+  organizationId String       @db.Uuid
+  name           String       @db.VarChar(120)
+  active         Boolean      @default(true)
+  builtIn        Boolean      @default(false)
+  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  leads          Lead[]
+
+  @@unique([organizationId, name])
+  @@unique([id, organizationId])
+  @@map("crm_sources")
+}
+
+model Client {
+  id             String          @id @default(uuid()) @db.Uuid
+  organizationId String          @db.Uuid
+  name           String          @db.VarChar(160)
+  version        Int             @default(1)
+  createdAt      DateTime        @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime        @updatedAt @db.Timestamptz(3)
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  contacts       ClientContact[]
+  leads          Lead[]
+
+  @@unique([id, organizationId])
+  @@index([organizationId, name, id])
+  @@map("clients")
+}
+
+model ClientContact {
+  id             String   @id @default(uuid()) @db.Uuid
+  clientId       String   @db.Uuid
+  organizationId String   @db.Uuid
+  name           String   @db.VarChar(160)
+  email          String?  @db.VarChar(320)
+  phone          String?  @db.VarChar(64)
+  createdAt      DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt      DateTime @updatedAt @db.Timestamptz(3)
+  client         Client   @relation(fields: [clientId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  @@index([clientId])
+  @@map("client_contacts")
+}
+
+model Lead {
+  id              String            @id @default(uuid()) @db.Uuid
+  organizationId  String            @db.Uuid
+  branchId        String            @db.Uuid
+  title           String            @db.VarChar(160)
+  contactName     String            @db.VarChar(160)
+  email           String?           @db.VarChar(320)
+  phone           String?           @db.VarChar(64)
+  sourceId        String            @db.Uuid
+  clientId        String?           @db.Uuid
+  priorLostLeadId String?           @db.Uuid
+  stage           LeadStage         @default(NEW)
+  version         Int               @default(1)
+  createdById     String            @db.Uuid
+  createdAt       DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime          @updatedAt @db.Timestamptz(3)
+  outcomeAt       DateTime?         @db.Timestamptz(3)
+  lostReason      String?           @db.VarChar(1000)
+  organization    Organization      @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  branch          Branch            @relation(fields: [branchId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  source          CrmSource         @relation(fields: [sourceId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  client          Client?           @relation(fields: [clientId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  priorLostLead   Lead?             @relation("ReturningLead", fields: [priorLostLeadId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  returningLeads  Lead[]            @relation("ReturningLead")
+  createdBy       Account           @relation("LeadCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  stageChanges    LeadStageChange[]
+  activities      LeadActivity[]
+
+  @@unique([id, organizationId])
+  @@index([organizationId, branchId, stage, createdAt, id])
+  @@index([clientId, branchId])
+  @@map("leads")
+}
+
+model LeadStageChange {
+  id             String      @id @default(uuid()) @db.Uuid
+  organizationId String      @db.Uuid
+  leadId         String      @db.Uuid
+  fromStage      LeadStage?
+  toStage        LeadStage
+  direction      String      @db.VarChar(16)
+  skippedStages  LeadStage[]
+  reason         String?     @db.VarChar(1000)
+  actorId        String      @db.Uuid
+  occurredAt     DateTime    @default(now()) @db.Timestamptz(3)
+  leadVersion    Int
+  lead           Lead        @relation(fields: [leadId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor          Account     @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@unique([leadId, leadVersion])
+  @@index([leadId, occurredAt, id])
+  @@map("lead_stage_changes")
+}
+
+model LeadActivity {
+  id             String   @id @default(uuid()) @db.Uuid
+  organizationId String   @db.Uuid
+  leadId         String   @db.Uuid
+  kind           String   @db.VarChar(64)
+  note           String   @db.VarChar(2000)
+  actorId        String   @db.Uuid
+  occurredAt     DateTime @default(now()) @db.Timestamptz(3)
+  lead           Lead     @relation(fields: [leadId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor          Account  @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([leadId, occurredAt, id])
+  @@map("lead_activities")
+}
+
 enum AccountKind {
   OWNER
   STAFF
@@ -121,45 +237,58 @@ enum ApprovalDecisionOutcome {
   REJECTED
 }
 
+enum LeadStage {
+  NEW
+  CONTACTED
+  MEETING_DISCUSSION
+  PROPOSAL
+  NEGOTIATION
+  WON
+  LOST
+}
+
 model Account {
-  id                       String                    @id @default(uuid()) @db.Uuid
-  normalizedEmail          String                    @unique @db.VarChar(320)
-  kind                     AccountKind
-  state                    AccountState              @default(PENDING)
-  emailVerifiedAt          DateTime?                  @db.Timestamptz(3)
-  createdAt                DateTime                  @default(now()) @db.Timestamptz(3)
-  updatedAt                DateTime                  @updatedAt @db.Timestamptz(3)
-  passkeyCredentials       PasskeyCredential[]
-  webAuthnChallenges       WebAuthnChallenge[]
-  sessions                 Session[]
-  enrollmentGrants         IdentityEnrollmentGrant[]
-  recoveryCodes            OwnerRecoveryCode[]
-  recoveryAuthorizations   StaffRecoveryAuthorization[] @relation("RecoveryTarget")
-  authorizationsIssued     StaffRecoveryAuthorization[] @relation("RecoveryAuthorizer")
-  enrollmentGrantsIssued   IdentityEnrollmentGrant[]     @relation("GrantAuthorizer")
-  securityEventsAsActor    SecurityEvent[]            @relation("SecurityActor")
-  securityEventsAsSubject  SecurityEvent[]            @relation("SecuritySubject")
-  employee                 Employee?
-  organizationEvents       OrganizationEvent[]        @relation("OrganizationEventActor")
-  membershipChanges        EmployeeMembershipHistory[] @relation("MembershipChangeActor")
-  employeeJobRoleChanges   EmployeeJobRoleAssignment[] @relation("EmployeeJobRoleActor")
-  rolePermissionRevocations RolePermission[]           @relation("RolePermissionRevoker")
-  employeeOverrideRevocations EmployeePermissionOverride[] @relation("EmployeePermissionOverrideRevoker")
-  auditEventsAsActor       AuditEvent[]             @relation("AuditEventActor")
-  domainEventsAsActor      DomainEvent[]            @relation("DomainEventActor")
-  notifications            Notification[]
-  notificationPreferences  NotificationPreference[]
-  notificationQuietHours   NotificationQuietHours?
-  emailVerification        EmailVerificationChallenge?
-  auditRetentionConfigs   AuditRetentionConfiguration[]
-  auditRetentionNoticesAcknowledged AuditRetentionNotice[] @relation("RetentionNoticeAcknowledgedBy")
-  auditRetentionHoldsPlaced AuditRetentionHold[] @relation("RetentionHoldPlacedBy")
-  auditRetentionHoldsReleased AuditRetentionHold[] @relation("RetentionHoldReleasedBy")
-  approvalRequestsCreated ApprovalRequest[] @relation("ApprovalRequester")
-  approvalRequestsAssigned ApprovalRequest[] @relation("ApprovalApprover")
-  approvalDelegationsIssued ApprovalRequest[] @relation("ApprovalDelegator")
-  approvalRequestsDelegated ApprovalRequest[] @relation("ApprovalDelegate")
-  approvalDecisions ApprovalDecision[] @relation("ApprovalDecider")
+  id                                String                        @id @default(uuid()) @db.Uuid
+  normalizedEmail                   String                        @unique @db.VarChar(320)
+  kind                              AccountKind
+  state                             AccountState                  @default(PENDING)
+  emailVerifiedAt                   DateTime?                     @db.Timestamptz(3)
+  createdAt                         DateTime                      @default(now()) @db.Timestamptz(3)
+  updatedAt                         DateTime                      @updatedAt @db.Timestamptz(3)
+  passkeyCredentials                PasskeyCredential[]
+  webAuthnChallenges                WebAuthnChallenge[]
+  sessions                          Session[]
+  enrollmentGrants                  IdentityEnrollmentGrant[]
+  recoveryCodes                     OwnerRecoveryCode[]
+  recoveryAuthorizations            StaffRecoveryAuthorization[]  @relation("RecoveryTarget")
+  authorizationsIssued              StaffRecoveryAuthorization[]  @relation("RecoveryAuthorizer")
+  enrollmentGrantsIssued            IdentityEnrollmentGrant[]     @relation("GrantAuthorizer")
+  securityEventsAsActor             SecurityEvent[]               @relation("SecurityActor")
+  securityEventsAsSubject           SecurityEvent[]               @relation("SecuritySubject")
+  employee                          Employee?
+  organizationEvents                OrganizationEvent[]           @relation("OrganizationEventActor")
+  membershipChanges                 EmployeeMembershipHistory[]   @relation("MembershipChangeActor")
+  employeeJobRoleChanges            EmployeeJobRoleAssignment[]   @relation("EmployeeJobRoleActor")
+  rolePermissionRevocations         RolePermission[]              @relation("RolePermissionRevoker")
+  employeeOverrideRevocations       EmployeePermissionOverride[]  @relation("EmployeePermissionOverrideRevoker")
+  auditEventsAsActor                AuditEvent[]                  @relation("AuditEventActor")
+  domainEventsAsActor               DomainEvent[]                 @relation("DomainEventActor")
+  notifications                     Notification[]
+  notificationPreferences           NotificationPreference[]
+  notificationQuietHours            NotificationQuietHours?
+  emailVerification                 EmailVerificationChallenge?
+  auditRetentionConfigs             AuditRetentionConfiguration[]
+  auditRetentionNoticesAcknowledged AuditRetentionNotice[]        @relation("RetentionNoticeAcknowledgedBy")
+  auditRetentionHoldsPlaced         AuditRetentionHold[]          @relation("RetentionHoldPlacedBy")
+  auditRetentionHoldsReleased       AuditRetentionHold[]          @relation("RetentionHoldReleasedBy")
+  approvalRequestsCreated           ApprovalRequest[]             @relation("ApprovalRequester")
+  approvalRequestsAssigned          ApprovalRequest[]             @relation("ApprovalApprover")
+  approvalDelegationsIssued         ApprovalRequest[]             @relation("ApprovalDelegator")
+  approvalRequestsDelegated         ApprovalRequest[]             @relation("ApprovalDelegate")
+  approvalDecisions                 ApprovalDecision[]            @relation("ApprovalDecider")
+  leadsCreated                      Lead[]                        @relation("LeadCreator")
+  leadStageChanges                  LeadStageChange[]
+  leadActivities                    LeadActivity[]
 
   @@index([state, kind])
   @@map("accounts")
@@ -180,38 +309,42 @@ model EmailVerificationChallenge {
 }
 
 model Organization {
-  id        String   @id @default(uuid()) @db.Uuid
-  singletonKey Int   @unique @default(1) @db.SmallInt
-  name      String   @db.VarChar(160)
-  createdAt DateTime @default(now()) @db.Timestamptz(3)
-  updatedAt DateTime @updatedAt @db.Timestamptz(3)
-  branches  Branch[]
-  teams     Team[]
-  jobRoles  JobRole[]
-  employees Employee[]
-  rolePermissions RolePermission[]
+  id                String                       @id @default(uuid()) @db.Uuid
+  singletonKey      Int                          @unique @default(1) @db.SmallInt
+  name              String                       @db.VarChar(160)
+  createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                     @updatedAt @db.Timestamptz(3)
+  branches          Branch[]
+  teams             Team[]
+  jobRoles          JobRole[]
+  employees         Employee[]
+  rolePermissions   RolePermission[]
   employeeOverrides EmployeePermissionOverride[]
-  events    OrganizationEvent[]
-  auditEvents AuditEvent[]
-  domainEvents DomainEvent[]
-  approvalRequests ApprovalRequest[]
+  events            OrganizationEvent[]
+  auditEvents       AuditEvent[]
+  domainEvents      DomainEvent[]
+  approvalRequests  ApprovalRequest[]
+  crmSources        CrmSource[]
+  clients           Client[]
+  leads             Lead[]
 
   @@map("organizations")
 }
 
 model Branch {
-  id             String       @id @default(uuid()) @db.Uuid
-  organizationId String       @db.Uuid
-  name           String       @db.VarChar(120)
-  active         Boolean      @default(true)
-  createdAt      DateTime     @default(now()) @db.Timestamptz(3)
-  updatedAt      DateTime     @updatedAt @db.Timestamptz(3)
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  teams          Team[]
-  employees      Employee[]
-  history        EmployeeMembershipHistory[]
-  rolePermissions RolePermission[]
+  id                String                       @id @default(uuid()) @db.Uuid
+  organizationId    String                       @db.Uuid
+  name              String                       @db.VarChar(120)
+  active            Boolean                      @default(true)
+  createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime                     @updatedAt @db.Timestamptz(3)
+  organization      Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  teams             Team[]
+  employees         Employee[]
+  history           EmployeeMembershipHistory[]
+  rolePermissions   RolePermission[]
   employeeOverrides EmployeePermissionOverride[]
+  leads             Lead[]
 
   @@unique([organizationId, name])
   @@unique([id, organizationId])
@@ -469,21 +602,21 @@ model ApprovalRequest {
 }
 
 model ApprovalDecision {
-  id             String                 @id @default(uuid()) @db.Uuid
-  requestId      String                 @unique @db.Uuid
-  organizationId String                 @db.Uuid
+  id             String                  @id @default(uuid()) @db.Uuid
+  requestId      String                  @unique @db.Uuid
+  organizationId String                  @db.Uuid
   outcome        ApprovalDecisionOutcome
-  deciderId      String                 @db.Uuid
-  reason         String                 @db.VarChar(1000)
-  comment        String?                @db.VarChar(2000)
+  deciderId      String                  @db.Uuid
+  reason         String                  @db.VarChar(1000)
+  comment        String?                 @db.VarChar(2000)
   evidence       Json?
-  decidedAt      DateTime               @default(now()) @db.Timestamptz(3)
-  request        ApprovalRequest        @relation(fields: [requestId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
-  decider        Account                @relation("ApprovalDecider", fields: [deciderId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  decidedAt      DateTime                @default(now()) @db.Timestamptz(3)
+  request        ApprovalRequest         @relation(fields: [requestId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Cascade)
+  decider        Account                 @relation("ApprovalDecider", fields: [deciderId], references: [id], onDelete: Restrict, onUpdate: Cascade)
 
+  @@unique([requestId, organizationId])
   @@index([organizationId, decidedAt])
   @@index([deciderId, decidedAt])
-  @@unique([requestId, organizationId])
   @@map("approval_decisions")
 }
 

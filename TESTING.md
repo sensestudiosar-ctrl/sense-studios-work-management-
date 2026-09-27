@@ -1,6 +1,6 @@
 # Testing architecture — S01–S05 local evidence
 
-Architecture is approved at checkpoint 2e46805. S01–S05 development/local-staging quality evidence is recorded below and in their completion reports. S06+ remain unauthorized. S05 verification is detailed in S05_COMPLETION_REPORT.md.
+Architecture is approved at checkpoint 2e46805. S01–S05 development/local-staging quality evidence is recorded below and in their completion reports. S06 is COMPLETE for development/local staging; S07+ remain unauthorized. S05 verification is detailed in S05_COMPLETION_REPORT.md.
 
 ## S01 commands and verified results
 
@@ -62,3 +62,7 @@ S04 original acceptance evidence is recorded in S04_COMPLETION_REPORT.md. The la
 ## S05 verification status
 
 S05 acceptance was run locally on 2026-09-27 with Node 24.19.0 and fresh PostgreSQL 18 test databases. Prisma generation, validation and migration status passed with all 11 migrations applied. Typecheck, ESLint, API TypeScript build and web production build passed. API unit tests passed 76/76; web unit tests passed 25/25; PostgreSQL integration passed 39/39 across 12 suites; desktop/mobile Playwright passed 5/5. Direct local binaries were used because the pnpm wrapper attempted an unavailable registry metadata fetch. See S05_COMPLETION_REPORT.md for scope and limits.
+
+## S06 acceptance — 2026-09-27
+
+Final verification: 85 API unit, 56 PostgreSQL/API, 35 web unit and seven desktop/mobile Playwright tests passed, plus Prisma migration/validation/generation, contracts/API/web type checks, lint and production builds. See S06_COMPLETION_REPORT.md for exact environments, direct-binary execution, dependency repair, upgrade preservation and production limits.

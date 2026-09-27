@@ -1,6 +1,6 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 scope; see S02_COMPLETION_REPORT.md. ORG and ACC are COMPLETE for the authorized S03 scope; AUD, EVT and S04's NTF foundation are COMPLETE for development/local staging; APR/S05 is COMPLETE for development/local staging; see S05_COMPLETION_REPORT.md. Later slices remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 scope; see S02_COMPLETION_REPORT.md. ORG and ACC are COMPLETE for the authorized S03 scope; AUD, EVT and S04's NTF foundation are COMPLETE for development/local staging; APR/S05 is COMPLETE for development/local staging; see S05_COMPLETION_REPORT.md. CRM/S06 is authorized and COMPLETE for development/local staging; S07 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | AUD | Append-only business/security audit and evidence snapshots | IDN, FND; S04 COMPLETE for development/local staging |
 | EVT | Domain event catalogue and durable outbox | FND, AUD; S04 COMPLETE for development/local staging |
 | APR | Shared approval requests and management decision queue | ACC, AUD, EVT |
-| CRM | Leads, clients, client contacts | ORG, ACC, EVT |
+| CRM | Leads, clients, client contacts; S06 COMPLETE for development/local staging | ORG, ACC, EVT |
 | TMP | Project/task/stage templates and SOP references | ORG, ACC |
 | PRJ | Projects, scope changes, accountable lead, stages, milestones, delivery lifecycle | CRM, ORG, ACC, TMP, APR, EVT |
 | TSK | Tasks, assignments, collaborators, dates, dependencies, recurrence, waiting | PRJ, ORG, ACC, APR, EVT |

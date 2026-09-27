@@ -42,3 +42,6 @@ Use reviewed, versioned migrations with rollback/forward recovery notes and data
 ## Remaining design decisions
 
 C-002 through C-024 settle home membership, cross-branch grants, project transfer, client delegation, time locks, retention mechanics, leave policy, scoring governance, native CAD links, backups, authentication and cancellation-task behavior. No owner question is currently open; final consistency review may identify further material choices; the final consistency review may identify further material choices before architecture approval. Branch leave allowance values and score weights/thresholds are Owner setup data before their features run. Legal/contract retention validation, NAS link capability, offsite restore and final architecture approval remain release gates.
+## Implemented S06 persistence
+
+S06 adds organization-bound sources and shared clients/contacts, branch-owned leads, immutable stage evidence and append-only activities. Composite foreign keys enforce organization consistency; database guards retain source/customer/lead identity, forbid history deletion and terminal rewrites, and enforce advancing versions/timestamps. Source deactivation retains historical references. CRM transactions commit canonical audit, domain events and outbox delivery together. See S06_SPEC.md and S06_COMPLETION_REPORT.md for contracts and verification.
