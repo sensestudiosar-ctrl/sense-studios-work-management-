@@ -7,10 +7,12 @@ services:
       POSTGRES_USER: ${S01_DB_USER:?Set S01_DB_USER in the untracked env file}
       POSTGRES_DB: ${S01_DB_NAME:?Set S01_DB_NAME in the untracked env file}
       POSTGRES_PASSWORD: ${S01_DB_PASSWORD:?Set S01_DB_PASSWORD in the untracked env file}
+      S04_APP_DB_PASSWORD: ${S04_APP_DB_PASSWORD:?Set S04_APP_DB_PASSWORD in the untracked env file}
     ports:
       - "127.0.0.1:${S01_DB_PORT:-55432}:5432"
     volumes:
       - s01-postgres:/var/lib/postgresql/data
+      - ./init-s04-app-role.sh:/docker-entrypoint-initdb.d/10-s04-app-role.sh:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
       interval: 5s
@@ -24,7 +26,7 @@ services:
       dockerfile: infra/Dockerfile.api
     command: ["pnpm", "--filter", "@sense/api", "db:migrate:deploy"]
     environment:
-      DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+      MIGRATION_DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
     depends_on:
       db:
         condition: service_healthy
@@ -37,9 +39,13 @@ services:
       NODE_ENV: staging
       PORT: "4000"
       WEB_ORIGIN: http://localhost:8080
-      DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+      DATABASE_URL: ${S01_APP_DATABASE_URL:?Set S01_APP_DATABASE_URL in the untracked env file}
       OWNER_BOOTSTRAP_EMAIL: ${S02_OWNER_BOOTSTRAP_EMAIL:-}
       OWNER_BOOTSTRAP_SECRET: ${S02_OWNER_BOOTSTRAP_SECRET:-}
+      BREVO_API_KEY: ${BREVO_API_KEY:-}
+      BREVO_SENDER_EMAIL: ${BREVO_SENDER_EMAIL:-}
+      BREVO_SENDER_NAME: ${BREVO_SENDER_NAME:-}
+      EMAIL_VERIFICATION_SECRET: ${EMAIL_VERIFICATION_SECRET:-}
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -59,7 +65,11 @@ services:
       NODE_ENV: staging
       PORT: "4000"
       WEB_ORIGIN: http://localhost:8080
-      DATABASE_URL: ${S01_DATABASE_URL:?Set S01_DATABASE_URL in the untracked env file}
+      DATABASE_URL: ${S01_APP_DATABASE_URL:?Set S01_APP_DATABASE_URL in the untracked env file}
+      BREVO_API_KEY: ${BREVO_API_KEY:-}
+      BREVO_SENDER_EMAIL: ${BREVO_SENDER_EMAIL:-}
+      BREVO_SENDER_NAME: ${BREVO_SENDER_NAME:-}
+      EMAIL_VERIFICATION_SECRET: ${EMAIL_VERIFICATION_SECRET:-}
     depends_on:
       migrate:
         condition: service_completed_successfully

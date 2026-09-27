@@ -10,12 +10,15 @@ jobs:
     timeout-minutes: 35
     env:
       CI: "true"
-      DATABASE_URL: postgresql://sense_s01:ci-only-password@127.0.0.1:5432/sense_s01_test
+      DATABASE_URL: postgresql://sense_app_runtime:ci-only-app-password@127.0.0.1:5432/sense_s01_test
+      MIGRATION_DATABASE_URL: postgresql://sense_s01:ci-only-password@127.0.0.1:5432/sense_s01_test
       S01_DB_USER: sense_s01
       S01_DB_NAME: sense_s01_test
       S01_DB_PASSWORD: ci-only-password
       S01_DB_PORT: "55432"
       S01_DATABASE_URL: postgresql://sense_s01:ci-only-password@db:5432/sense_s01_test
+      S04_APP_DB_PASSWORD: ci-only-app-password
+      S01_APP_DATABASE_URL: postgresql://sense_app_runtime:ci-only-app-password@db:5432/sense_s01_test
     services:
       postgres:
         image: postgres:17.10-alpine3.24
@@ -42,6 +45,11 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
       - run: pnpm db:migrate:deploy
+      - name: Set the restricted test runtime password
+        run: |
+          psql "$MIGRATION_DATABASE_URL" --set=app_password="$S04_APP_DB_PASSWORD" <<'SQL'
+          ALTER ROLE sense_app_runtime PASSWORD :'app_password';
+          SQL
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm test

@@ -1,15 +1,15 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 development/local-staging scope; see S02_COMPLETION_REPORT.md. Other business modules remain planned; S03+ are unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND is complete for the authorized S01 development/local-staging scope; IDN is COMPLETE for the authorized S02 scope; see S02_COMPLETION_REPORT.md. ORG and ACC are COMPLETE for the authorized S03 scope; AUD, EVT and S04's NTF foundation are COMPLETE for development/local staging; see S04_COMPLETION_REPORT.md. S05 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
 | FND | Configuration, health, tenancy context, migration/deployment conventions | — |
 | IDN | Internal accounts, passkey credentials, enrollment/recovery, sessions/devices; external portal email codes are deferred to S14 | FND |
-| ORG | Organization, branch, team, employee membership/reporting and configurable job roles | FND, IDN |
-| ACC | Permission grants/overrides, membership, scoped authorization | IDN, ORG |
-| AUD | Append-only business/security audit and evidence snapshots | IDN, FND |
-| EVT | Domain event catalogue and durable outbox | FND, AUD |
+| ORG | Organization, branch, team, employee membership/reporting and configurable job roles | FND, IDN; S03 COMPLETE |
+| ACC | Permission grants/overrides, membership, scoped authorization | IDN, ORG; S03 COMPLETE |
+| AUD | Append-only business/security audit and evidence snapshots | IDN, FND; S04 COMPLETE for development/local staging |
+| EVT | Domain event catalogue and durable outbox | FND, AUD; S04 COMPLETE for development/local staging |
 | APR | Shared approval requests and management decision queue | ACC, AUD, EVT |
 | CRM | Leads, clients, client contacts | ORG, ACC, EVT |
 | TMP | Project/task/stage templates and SOP references | ORG, ACC |
@@ -24,7 +24,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | TRN | Training assignments, quizzes/practical assessments, effectiveness | KNW, SKL, TSK, APR |
 | SITE | Site work packages, manpower, progress, daily reports, snags | PRJ, TSK, DOC, WFM, EVT |
 | PORT | Client/consultant/vendor portals and scoped sharing | IDN, ACC, PRJ, DOC, REV, SITE |
-| NTF | In-app/push delivery, preferences, reminders, summaries, escalation | EVT, IDN, ACC |
+| NTF | In-app/email delivery, preferences, reminders, summaries, escalation; push later | EVT, IDN, ACC; S04 core foundation COMPLETE for development/local staging; reminder/summaries remain S24 |
 | PER | Employee and Team Leader evidence, scoring, review cycles | TSK, REV, TIM, WFM, SKL, TRN |
 | HLT | Project health, schedule/delay attribution, risk evidence | PRJ, TSK, REV, SITE, WFM |
 | DASH | Role-based dashboards and management action center views | APR, NTF, HLT, PER, TSK |

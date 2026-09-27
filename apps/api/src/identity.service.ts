@@ -7,7 +7,7 @@ import {
   verifyRegistrationResponse
 } from "@simplewebauthn/server";
 import type { AuthenticationResponseJSON, RegistrationResponseJSON } from "@simplewebauthn/server";
-import { AccountKind, AccountState, EnrollmentGrantPurpose, SecurityEventResult, SecurityEventType, WebAuthnChallengePurpose } from "./generated/prisma/client.js";
+import { AccountKind, AccountState, EnrollmentGrantPurpose, Prisma, SecurityEventResult, SecurityEventType, WebAuthnChallengePurpose } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { Inject } from "@nestjs/common";
@@ -48,6 +48,24 @@ export class IdentityService {
 
   private get db() {
     return this.database.prisma;
+  }
+
+  /** S03 calls this only inside its membership/suspension transaction so account and access revocation are atomic. */
+  async suspendStaffWithinTransaction(tx: Prisma.TransactionClient, accountId: string, actorId: string, reason: string): Promise<number> {
+    const changed = await tx.account.updateMany({
+      where: { id: accountId, kind: AccountKind.STAFF, state: AccountState.ACTIVE },
+      data: { state: AccountState.SUSPENDED }
+    });
+    if (changed.count !== 1) throw new UnauthorizedException("Active staff identity not found");
+    const sessions = await tx.session.updateMany({ where: { accountId, revokedAt: null }, data: { revokedAt: new Date() } });
+    await tx.securityEvent.create({ data: {
+      eventType: SecurityEventType.ACCOUNT_STATE_CHANGED,
+      result: SecurityEventResult.SUCCESS,
+      actorId,
+      subjectId: accountId,
+      metadata: { state: AccountState.SUSPENDED, reason }
+    } });
+    return sessions.count;
   }
 
   private async event(eventType: SecurityEventType, result: SecurityEventResult, actorId?: string, subjectId?: string): Promise<void> {

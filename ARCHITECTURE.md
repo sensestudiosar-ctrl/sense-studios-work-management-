@@ -1,6 +1,6 @@
-# Approved target architecture — S01 and S02 complete
+# Approved target architecture — S01–S04 complete for development/local staging
 
-This is a planning baseline for approved requirements in requirements/APPROVED_REQUIREMENTS.md and approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department organizational tier, exactly one owning branch per project, and the later owner policies recorded in requirements/CLARIFICATIONS.md. The Owner approved the final architecture at checkpoint 2e46805. S01 is COMPLETE for development/local-staging scope. S02 Identity and Sessions is COMPLETE for development/local staging; S03 and later remain unauthorized. S02 adds identity persistence and an identity-only UI, not business capabilities. Material architecture changes require a recorded Owner decision.
+This is a planning baseline for approved requirements in requirements/APPROVED_REQUIREMENTS.md and approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department organizational tier, exactly one owning branch per project, and the later owner policies recorded in requirements/CLARIFICATIONS.md. The Owner approved the final architecture at checkpoint 2e46805. S01 is COMPLETE for development/local-staging scope. S02 Identity and Sessions, S03 Branch, Employees and RBAC, and S04 Audit, Outbox and Core Notifications are COMPLETE for development/local staging. S04 design/evidence is recorded in S04_SPEC.md and S04_COMPLETION_REPORT.md. S05 and later remain unauthorized. Material architecture changes require a recorded Owner decision.
 
 ## Stack choices and tradeoffs
 

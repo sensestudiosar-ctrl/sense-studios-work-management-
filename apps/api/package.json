@@ -1,6 +1,6 @@
 {
   "name": "@sense/api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "worker": "node dist/worker.js",
     "typecheck": "pnpm db:generate && tsc -p tsconfig.json --noEmit",
     "test:unit": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.config.cjs",
-    "test:integration": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.integration.config.cjs",
+    "test:integration": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.integration.config.cjs --runInBand",
     "db:generate": "prisma generate",
     "db:validate": "prisma validate",
     "db:migrate:dev": "prisma migrate dev",

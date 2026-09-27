@@ -1,6 +1,6 @@
-# Product context — approved requirements, planning only
+# Product context — approved requirements and current delivery boundary
 
-The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805 and S01 foundation work is in progress. No business product feature exists yet.
+The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805; S01–S04 are complete for development/local staging. See IMPLEMENTATION_STATUS.md and S04_COMPLETION_REPORT.md for current delivery evidence and production limits.
 
 ## Purpose and boundary
 

@@ -7,6 +7,7 @@ export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: { path: "prisma/migrations" },
   datasource: {
-    url: process.env.DATABASE_URL ?? ""
+    // Production migrations use a separate, privileged URL. DATABASE_URL remains the API runtime role.
+    url: process.env.MIGRATION_DATABASE_URL ?? process.env.DATABASE_URL ?? ""
   }
 });

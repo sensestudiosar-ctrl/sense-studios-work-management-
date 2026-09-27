@@ -30,4 +30,18 @@ describe("runtime configuration", () => {
       ownerBootstrapEmail: "owner@example.test"
     });
   });
+
+  it("accepts no email provider settings or one complete Brevo configuration", () => {
+    expect(parseRuntimeConfig(valid).brevoApiKey).toBeUndefined();
+    expect(() => parseRuntimeConfig({ ...valid, BREVO_API_KEY: "secret" })).toThrow("Invalid configuration: BREVO_API_KEY");
+    expect(parseRuntimeConfig({
+      ...valid,
+      BREVO_API_KEY: "private-provider-key",
+      BREVO_SENDER_EMAIL: "notifications@example.test",
+      BREVO_SENDER_NAME: "Sense Studios",
+      EMAIL_VERIFICATION_SECRET: "verification-hmac-secret-0123456789abcdef"
+    })).toMatchObject({ brevoSenderEmail: "notifications@example.test", brevoSenderName: "Sense Studios" });
+    expect(() => parseRuntimeConfig({ ...valid, BREVO_API_KEY: "x", BREVO_SENDER_EMAIL: "notifications@example.test", BREVO_SENDER_NAME: "Sense Studios" }))
+      .toThrow("Invalid configuration: EMAIL_VERIFICATION_SECRET");
+  });
 });

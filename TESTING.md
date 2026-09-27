@@ -1,6 +1,6 @@
-# Testing architecture — S01 and S02 local evidence
+# Testing architecture — S01–S04 local evidence
 
-Architecture is approved at checkpoint 2e46805. S01 and S02 development/local-staging quality evidence is recorded below and in their completion reports. Business workflow tests remain planned for their respective unauthorized slices.
+Architecture is approved at checkpoint 2e46805. S01–S04 development/local-staging quality evidence is recorded below and in their completion reports. S05+ remain unauthorized.
 
 ## S01 commands and verified results
 
@@ -50,3 +50,11 @@ S01 tests contain no business fixtures. The business test plan below expects fix
 ## S02 verification status
 
 On 2026-09-26, dedicated PostgreSQL 16 test databases accepted the S02 migration both fresh and after the S01 baseline; Prisma reported schema current. Frozen pnpm install passed. With DATABASE_URL pointing to sense_s02_final_test, S02_E2E_BOOTSTRAP_SECRET set, and current API/Vite servers prestarted for the documented Windows lifecycle caveat, `pnpm verify` exited 0: typecheck, lint, 15 API unit tests, 12 web unit tests, 16 API integration tests, production build and five Playwright desktop/mobile tests including a virtual-authenticator Owner passkey journey. The E2E identity journey requires the secret and dedicated `_test` database. See S02_COMPLETION_REPORT.md for exact scope and limitations. S01 production gates (encrypted offsite backup, key custody, production NAS validation and production restore) remain open.
+
+## S03 verification status
+
+S03_SPEC.md records the 2026-09-27 acceptance run: fresh and existing PostgreSQL migration checks, 31 API unit tests, 14 web unit tests, 23 API integration tests, five Playwright checks, typecheck, lint and production builds passed. See S03_COMPLETION_REPORT.md for that historical record and the later independent recheck. On the current 2026-09-27 host, `pnpm verify` passed typecheck, lint, 31 API unit, 14 web unit, 16 API integration and API/web production builds; seven PostgreSQL-dependent API tests were skipped. Playwright could not start because DATABASE_URL is unset. This partial recheck does not repeat the historical PostgreSQL migration or browser evidence.
+
+## S04 verification status
+
+S04 verification evidence is recorded in S04_COMPLETION_REPORT.md. On 2026-09-27, Prisma validation/generation passed, all nine migrations applied to a fresh isolated PostgreSQL 18 test database, and Prisma reported the schema current. The S03 migration was also exercised against a simulated pre-existing S02 dataset and preserved its legacy event identity/content. Typecheck and lint passed; unit suites passed (65 API, 20 web); PostgreSQL API integration passed (32); production API/web builds passed; `pnpm verify` exited 0 after all five desktop/mobile Playwright cases passed, including Owner passkey enrollment/login. The Windows runner needed the isolated API stopped after the Playwright summary. Tests cover append-only controls, corrections, guarded retention/tombstones, atomic S03 event writes, safe payloads, outbox retries/parallel claims, recipient authorization, mailbox verification, notification isolation/preferences and time-zone handling. Brevo live send, Compose/hosted CI, production legal review and backup retention are not verified here.

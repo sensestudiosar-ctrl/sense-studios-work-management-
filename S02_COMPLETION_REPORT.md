@@ -70,3 +70,7 @@ Schema/migration, backend and API, persistent sessions, server-side enforcement,
 S02 exposes session revocation for future grant and employee-exit enforcement. S03 requires separate Owner authorization before any work begins.
 
 S02 COMPLETE — READY FOR REVIEW
+
+## 17. Later local rerun and subsequent authorization
+
+On 2026-09-26, a later checkout run of `pnpm verify` completed successfully for typecheck, lint, unit tests, build and four browser checks. Six PostgreSQL integration cases and the virtual-authenticator browser journey were skipped because this host had no dedicated test database URL or S02 E2E bootstrap secret; this was not a complete fresh S02 acceptance rerun. The Owner subsequently authorized S03 on 2026-09-26. Current S03 scope and progress are recorded in S03_SPEC.md and IMPLEMENTATION_STATUS.md; the original readiness statement above reflects the report's earlier checkpoint.

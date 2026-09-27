@@ -6,14 +6,33 @@ import { HealthController } from "./health.controller.js";
 import { IdentityController } from "./identity.controller.js";
 import { IdentityService } from "./identity.service.js";
 import { AuthGuard } from "./auth.guard.js";
+import { OrganizationController } from "./organization.controller.js";
+import { OrganizationService } from "./organization.service.js";
+import { AuthorizationService } from "./authorization.service.js";
+import { NotificationsController } from "./notifications.controller.js";
+import { NotificationsService } from "./notifications.service.js";
+import { BrevoEmailAdapter } from "./brevo-email.js";
+import { CURRENT_RECIPIENT_AUTHORIZATION_PREDICATE, NotificationWorker, PersistedVerifiedAddressPredicate, UnauthorizedRecipientPredicate, VERIFIED_ADDRESS_PREDICATE } from "./notification-worker.js";
+import { AuditRetentionController } from "./audit-retention.controller.js";
+import { AuditRetentionService } from "./audit-retention.service.js";
+import { EmailVerificationService } from "./email-verification.service.js";
 
 @Module({
-  controllers: [HealthController, IdentityController],
+  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController],
   providers: [
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
     { provide: DATABASE_PROBE, useExisting: DatabaseService },
     IdentityService,
+    OrganizationService,
+    AuthorizationService,
+    AuditRetentionService,
+    EmailVerificationService,
+    NotificationsService,
+    { provide: BrevoEmailAdapter, useFactory: (config: ReturnType<typeof loadRuntimeConfig>) => new BrevoEmailAdapter({ apiKey: config.brevoApiKey, senderEmail: config.brevoSenderEmail, senderName: config.brevoSenderName }) , inject: [RUNTIME_CONFIG] },
+    { provide: VERIFIED_ADDRESS_PREDICATE, useClass: PersistedVerifiedAddressPredicate },
+    { provide: CURRENT_RECIPIENT_AUTHORIZATION_PREDICATE, useClass: UnauthorizedRecipientPredicate },
+    NotificationWorker,
     { provide: APP_GUARD, useClass: AuthGuard }
   ]
 })

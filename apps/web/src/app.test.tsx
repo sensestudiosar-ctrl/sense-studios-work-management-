@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, vi } from "vitest";
 import { App } from "./app.js";
@@ -263,5 +263,105 @@ describe("identity authentication shell", () => {
       headers: { "X-CSRF-Token": session.csrfToken },
     });
     expect(fetchMock.mock.calls[3]?.[0]).toBe("/api/v1/auth/sessions");
+  });
+
+  it("lets the Owner grant and revoke scoped role permissions and employee overrides", async () => {
+    const ownerSession = { ...session, ownerSetupRequired: false, activePasskeyCount: 2 };
+    const org = { id: "org-s03", name: "Sense Studios" };
+    const branch = { id: "branch-s03", organizationId: org.id, name: "Mumbai" };
+    const team = { id: "team-s03", branchId: branch.id, organizationId: org.id, name: "Design" };
+    const role = { id: "role-s03", name: "Team Leader" };
+    const employee = {
+      id: "employee-s03", state: "ACTIVE", employeeCode: null,
+      account: { normalizedEmail: "designer@example.test", state: "ACTIVE" },
+      homeBranch: { id: branch.id, name: branch.name }, homeTeam: { id: team.id, name: team.name },
+      jobRoleAssignments: [], permissionOverrides: [], reportsTo: null,
+    };
+    let rolePermissions: Array<{ id: string; permissionKey: string; scopeKind: string; branchId?: string; teamId?: string }> = [];
+    let employeeOverrides: Array<{ id: string; permissionKey: string; effect: "ALLOW" | "DENY"; scopeKind: string; expiresAt: null }> = [];
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      const method = init?.method ?? "GET";
+      if (url === "/api/v1/auth/session") return response(ownerSession);
+      if (url === "/api/v1/auth/sessions") return response([]);
+      if (url === "/api/v1/org") return response(org);
+      if (url === `/api/v1/org/branches?organizationId=${org.id}`) return response([branch]);
+      if (url === `/api/v1/org/teams?organizationId=${org.id}`) return response([team]);
+      if (url === `/api/v1/org/roles?organizationId=${org.id}`) return response([{ ...role, permissions: rolePermissions }]);
+      if (url === `/api/v1/org/employees?organizationId=${org.id}`) return response([{ ...employee, permissionOverrides: employeeOverrides }]);
+      if (url === `/api/v1/org/roles/${role.id}/permissions` && method === "POST") {
+        const body = JSON.parse(String(init?.body)) as { permissionKey: string; scopeKind: string; branchId: string; teamId: string };
+        rolePermissions = [{ id: "role-permission-s03", ...body }];
+        return response(rolePermissions[0]);
+      }
+      if (url === `/api/v1/org/roles/${role.id}/permissions/role-permission-s03/revoke` && method === "PUT") {
+        rolePermissions = [];
+        return response({ revoked: true });
+      }
+      if (url === `/api/v1/org/employees/${employee.id}/permissions` && method === "POST") {
+        const body = JSON.parse(String(init?.body)) as { permissionKey: string; effect: "ALLOW" | "DENY"; scopeKind: string; expiresAt?: string };
+        employeeOverrides = [{ id: "override-s03", ...body, expiresAt: null }];
+        return response(employeeOverrides[0]);
+      }
+      if (url === `/api/v1/org/employees/${employee.id}/permissions/override-s03/revoke` && method === "PUT") {
+        employeeOverrides = [];
+        return response({ revoked: true });
+      }
+      return response({}, 404);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
+    expect(await screen.findByRole("heading", { name: "Job role permission bundles" })).toBeInTheDocument();
+    expect(await screen.findByLabelText("Permission key")).toBeInTheDocument();
+    expect(fetchMock.mock.calls.filter(([url]) => url === "/api/v1/org")).toHaveLength(1);
+    fireEvent.change(screen.getByLabelText("Job role"), { target: { value: role.id } });
+    fireEvent.change(screen.getByLabelText("Permission key"), { target: { value: "org.employee.read" } });
+    fireEvent.change(screen.getByLabelText("Permission scope"), { target: { value: "TEAM" } });
+    fireEvent.change(document.getElementById("permission-branch") as HTMLSelectElement, { target: { value: branch.id } });
+    fireEvent.change(document.getElementById("permission-team") as HTMLSelectElement, { target: { value: team.id } });
+    fireEvent.change(document.getElementById("permission-reason") as HTMLTextAreaElement, { target: { value: "Authorize team reads" } });
+    fireEvent.click(screen.getByRole("button", { name: "Grant permission" }));
+    const rolePermissionRow = await screen.findByText("org.employee.read");
+    expect(fetchMock.mock.calls.some(([url, init]) => url === `/api/v1/org/roles/${role.id}/permissions` && init?.method === "POST" && JSON.parse(String(init.body)).teamId === team.id)).toBe(true);
+    fireEvent.click(within(rolePermissionRow.closest("li") as HTMLElement).getByRole("button", { name: "Revoke org.employee.read from Team Leader" }));
+    await waitFor(() => expect(rolePermissions).toHaveLength(0));
+
+    const employeeRow = screen.getByText(employee.account.normalizedEmail).closest("li") as HTMLElement;
+    fireEvent.click(within(employeeRow).getByRole("button", { name: "Manage access overrides" }));
+    fireEvent.change(within(employeeRow).getByLabelText("Permission key"), { target: { value: "task.review" } });
+    fireEvent.change(within(employeeRow).getByLabelText("Reason"), { target: { value: "Temporarily deny review access" } });
+    fireEvent.click(within(employeeRow).getByRole("button", { name: "Save override" }));
+    const overrideRow = await within(employeeRow).findByText("DENY", { selector: "strong" });
+    expect(fetchMock.mock.calls.some(([url, init]) => url === `/api/v1/org/employees/${employee.id}/permissions` && init?.method === "POST" && JSON.parse(String(init.body)).effect === "DENY")).toBe(true);
+    fireEvent.click(within(overrideRow.closest("li") as HTMLElement).getByRole("button", { name: "Revoke task.review override from designer@example.test" }));
+    await waitFor(() => expect(employeeOverrides).toHaveLength(0));
+  });
+
+  it("shows only server-scoped team reports and sends CSRF on a reporting change", async () => {
+    const staffSession = { ...session, account: { ...account, kind: "STAFF" as const } };
+    const managedEmployee = {
+      id: "managed-employee", employeeCode: "D-12", hiredAt: "2025-01-01", reportsToId: "leader-employee",
+      account: { normalizedEmail: "report@example.test" }, jobRoleAssignments: [{ jobRole: { id: "designer-role", name: "Designer" } }]
+    };
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/session") return response(staffSession);
+      if (url === "/api/v1/auth/sessions") return response([]);
+      if (url === "/api/v1/org/team/employees") return response({ employees: [managedEmployee], managerOptions: [{ id: "leader-employee", email: "lead@example.test" }, { id: managedEmployee.id, email: "report@example.test" }] });
+      if (url === `/api/v1/org/team/employees/${managedEmployee.id}/reporting` && init?.method === "PUT") return response({ changed: true });
+      return response({}, 404);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Open team workspace" }));
+    expect(await screen.findByText("report@example.test", { selector: "strong" })).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText("Reports to"), { target: { value: "leader-employee" } });
+    fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Confirm reporting line" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save reporting line" }));
+    await waitFor(() => expect(fetchMock.mock.calls.some(([url, init]) => url === `/api/v1/org/team/employees/${managedEmployee.id}/reporting` && init?.method === "PUT" && init.headers && (init.headers as Record<string, string>)["X-CSRF-Token"] === session.csrfToken && JSON.parse(String(init.body)).reportsToId === "leader-employee")).toBe(true));
+    expect(await screen.findByText("Reporting relationship saved.")).toBeInTheDocument();
   });
 });
