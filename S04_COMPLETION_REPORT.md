@@ -1,6 +1,6 @@
 # S04 completion report — Audit, outbox and core notifications
 
-**Status:** COMPLETE for authorized development/local-staging scope
+**Status:** COMPLETE for authorized development/local-staging scope, including the efficiency follow-up
 **Acceptance date:** 2026-09-27
 **Owner authorization:** S04 authorized 2026-09-27; Owner selected mailbox verification for email eligibility.
 
@@ -38,11 +38,11 @@ Sol-level reasoning handled requirement mapping, schema and role separation, tra
 - A live Brevo send was not performed because production sender credentials were not available. Email remains unavailable until `BREVO_API_KEY`, `BREVO_SENDER_EMAIL`, `BREVO_SENDER_NAME` and `EMAIL_VERIFICATION_SECRET` are configured.
 - No event-specific recipient/template matrix was defined for S03 organization events; those notices remain disabled and delivery authorization fails closed without a current recipient authorizer.
 - The retention notice interval remains unset until Owner configuration. A purge is blocked until notice, holds, linked delivery, backup disposition and tombstone requirements pass.
-- Legal/contract retention fit, production backup lifecycle, Compose/hosted CI, production restore, and key custody remain production gates. No claim is made that those environments were tested in this acceptance run.
+- Legal/contract retention fit, encrypted offsite backup lifecycle/key custody, production NAS validation and production restore remain production gates. Hosted CI and Compose recovery are verified by the follow-up run below.
 - The Windows Playwright cleanup hang remains a runner limitation. All five browser assertions passed; clean exit required stopping the isolated API only after the test summary printed.
 
 ## Efficiency-risk follow-up — 2026-09-27
 
 The two scale risks found in the readiness review were addressed in the implementation: the worker claims one delivery at a time and renews its fenced lease while processing; event-key lookup is now case-insensitive exact matching with a composite index migration and matching UI guidance. A lost lease prevents further delivery-state writes, including retry state after an in-flight send fails. External email remains at-least-once as required by R-058.c.
 
-Follow-up checks passed: Prisma schema validation, typecheck, lint, unit tests (68 API and 20 web), API/web production builds, and `git diff --check`. The isolated PostgreSQL migration/integration suite and browser E2E were not rerun for this follow-up: the sandbox had no `DATABASE_URL`, Docker Desktop's daemon/service was unavailable, and the unrelated Windows PostgreSQL service was left untouched. Therefore the new index migration and database integration case remain pending execution on the dedicated PostgreSQL test database; this report does not claim the follow-up database acceptance gate passed.
+The local follow-up checks passed: Prisma schema validation, typecheck, lint, unit tests (68 API and 20 web), API/web production builds, and `git diff --check`. At that time, the local isolated PostgreSQL migration/integration suite and browser E2E were not rerun because no dedicated `DATABASE_URL` or usable Docker daemon was available. Those historical local limitations are closed by independent hosted evidence: GitHub Actions run [36316987630](https://github.com/vijaychintala05/WORK-MANAGEMENT-APP-sense-studios/actions/runs/36316987630), job 108613442816, completed successfully at 2026-09-27 11:53:58 UTC for exact commit `d54deda9bddc22038e745b29207257fc6f19b2d8`. Its API evidence confirms all ten migrations applied, including `20260927070000_s04_audit_search_index`; API unit 68/68, web unit 20/20, PostgreSQL integration 32/32 across 10 suites, and five browser cases passed. Frozen install, generation, typecheck, lint and production builds passed. The PostgreSQL service was `17.10-alpine3.24`. Compose built and started, `/api/v1/health/ready` succeeded, and database/file restore rehearsal passed with the stored checksum matching. The efficiency follow-up's migration, database regression and browser acceptance gates are therefore verified. This is hosted evidence; it does not assert that a local API/database is running or that the local preview issue is fixed.
