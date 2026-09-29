@@ -7,6 +7,7 @@ import { ApprovalQueue } from "./approval-queue.js";
 import { CrmWorkspace } from "./crm.js";
 import { ProjectWorkspace } from "./project.js";
 import { TaskWorkspace } from "./task.js";
+import { DocumentWorkspace } from "./document.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -373,6 +374,7 @@ function Identity({ session, onLogout, busy, error }: {
           {busy ? "Signing out…" : "Sign out"}
         </button>
       </section>
+      <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/documents">Project documents</Link></nav>
       {error && <p className="auth-error" role="alert">{error}</p>}
       {!ownerNeedsSetup && <ApprovalQueue />}
       {!ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
@@ -1071,6 +1073,21 @@ function NotFound(): React.JSX.Element {
   return <main className="auth-content"><section className="auth-card"><div className="eyebrow">PAGE NOT FOUND</div><h1>That page is not here.</h1><Link to="/" className="home-link">Return to sign in</Link></section></main>;
 }
 
+function DocumentsRoute(): React.JSX.Element {
+  const [session, setSession] = useState<Session | null>();
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    let active = true;
+    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
+    return () => { active = false; };
+  }, []);
+  if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
+  if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
+  if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view project documents</h1><Link to="/">Return to sign in</Link></section></main>;
+  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
+  return <main className="identity-content"><div className="document-route-heading"><Link to="/">← Workspace</Link><span>{session.account.email}</span></div><DocumentWorkspace csrfToken={session.csrfToken} /></main>;
+}
+
 export function App(): React.JSX.Element {
   return (
     <div className="app-shell">
@@ -1086,6 +1103,7 @@ export function App(): React.JSX.Element {
         <Route path="/bootstrap" element={<Bootstrap />} />
         <Route path="/enroll" element={<Enrollment />} />
         <Route path="/owner-recovery" element={<OwnerRecovery />} />
+        <Route path="/documents" element={<DocumentsRoute />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <footer className="site-footer">Sense Studios · Secure workspace</footer>

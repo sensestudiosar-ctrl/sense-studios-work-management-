@@ -1,5 +1,11 @@
 # Decisions and proposals
 
+## 2026-09-29 — S11 authorization and document boundary
+
+The Owner requested S11 completion using Sol/Luna routing. This instruction supersedes earlier unauthorized S11 snapshots. Owner decisions: Owner and assigned staff with document grants may create folders/upload; Confidential reads require Owner or explicit item grants; only Owner classifies Confidential content. S12 and later remain unauthorized.
+
+DOC uses a private existing NAS mount configured by absolute `NAS_ROOT`, opaque UUID keys, 8 MiB binary chunks, SHA-256 manifests and a configurable 20 GiB default ceiling. Restricted service-account/ACL setup is a deployment prerequisite. Database metadata and physical blob finalization are coordinated with idempotent retry and orphan inventory; physical storage cannot share a PostgreSQL transaction. Existing finalized blobs are retained and never overwritten. Finalized orphan blobs are reported for investigation rather than automatically purged. S11 stores view-only and retention association metadata; formal revisions/issues, protected client viewing and controlled expiry remain later slices. Local fixture acceptance does not establish production NAS, offsite backup or legal retention fitness.
+
 ## 2026-09-25 — Initialize an empty repository and context baseline
 
 The supplied workspace was empty and had no Git metadata. Git was initialized for controlled checkpoints and project context files were added. No technology or product behavior was selected.

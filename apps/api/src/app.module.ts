@@ -29,9 +29,11 @@ import { TaskController } from "./task.controller.js";
 import { TaskService } from "./task.service.js";
 import { TaskRecurrenceController } from "./task-recurrence.controller.js";
 import { TaskRecurrenceService } from "./task-recurrence.service.js";
+import { DocumentController } from "./document.controller.js";
+import { DocumentService } from "./document.service.js";
 
 @Module({
-  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController],
+  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController],
   providers: [
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
@@ -48,6 +50,7 @@ import { TaskRecurrenceService } from "./task-recurrence.service.js";
     ProjectTemplateService,
     TaskService,
     TaskRecurrenceService,
+    DocumentService,
     NotificationsService,
     { provide: BrevoEmailAdapter, useFactory: (config: ReturnType<typeof loadRuntimeConfig>) => new BrevoEmailAdapter({ apiKey: config.brevoApiKey, senderEmail: config.brevoSenderEmail, senderName: config.brevoSenderName }) , inject: [RUNTIME_CONFIG] },
     { provide: VERIFIED_ADDRESS_PREDICATE, useClass: PersistedVerifiedAddressPredicate },

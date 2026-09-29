@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04–S09 by 2026-09-28. S01–S09 are COMPLETE for development/local staging; S10 was authorized on 2026-09-29 and is COMPLETE for development/local staging. S10A–F implementations cover ordinary Waiting/resume, committed dates/extensions, dependencies, configured Waiting notices and recurrence; S10 whole-slice acceptance passed. S11 and later remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805. S01–S11 are COMPLETE for development/local staging; S11 was authorized on 2026-09-29 with explicit folder/upload and Confidential access decisions. S12 and later remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -77,11 +77,11 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-032 | CLIENT PORTAL REVIEW | REV/PORT | S14 | NOT STARTED |
 | R-033 | CLIENT APPROVAL AUTHORITY | REV/PORT | S14 | NOT STARTED |
 | R-034 | CLIENT APPROVAL EVIDENCE | REV/PORT | S14 | NOT STARTED |
-| R-035 | FILE MANAGEMENT | DOC | S11 | NOT STARTED |
-| R-036 | NAS ARCHITECTURE | DOC | S11 | NOT STARTED |
+| R-035 | FILE MANAGEMENT | DOC | S11 | S11 base COMPLETE for development/local staging; revisions/issue remain S12 |
+| R-036 | NAS ARCHITECTURE | DOC | S11 | S11 base COMPLETE for development/local staging; production NAS validation remains a gate |
 | R-037 | DOCUMENT STATES | DOC | S12 | NOT STARTED |
 | R-038 | TRANSMITTALS | DOC | S12 | NOT STARTED |
-| R-039 | FILE SECURITY | DOC/ACC | S11 | NOT STARTED |
+| R-039 | FILE SECURITY | DOC/ACC | S11 | S11 internal access and Confidential base COMPLETE for development/local staging; protected client viewer remains S14 |
 | R-040 | PROJECT GALLERIES | DOC | S15 | NOT STARTED |
 | R-041 | TIME TRACKING | TIM | S16 | NOT STARTED |
 | R-042 | TIME LOG EDITING | TIM | S16 | NOT STARTED |
@@ -161,7 +161,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 
 ## S06 authorization and initial implementation — 2026-09-27
 
-Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07 and S08 are COMPLETE for development/local staging; S09 is authorized and COMPLETE for development/local staging; S10 was Owner-authorized on 2026-09-29 and is COMPLETE for development/local staging; S11 and later remain unauthorized.
+Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07–S11 are COMPLETE for development/local staging; S12 and later remain unauthorized.
 
 ## S07A initial implementation — 2026-09-27
 
@@ -175,4 +175,4 @@ R-011.a, R-012.a–b, R-013.a and the S07 portion of R-016.a–b, C-002 Q2/Q15 a
 
 The authorized S09 portions of R-018.a–b, R-019.a–c, R-020.a, R-021.a–b, R-022.a–b, R-023.a, R-024.a–b, C-010/C-011.a–b/C-016.a/C-023.a–b/C-024.a are verified for development/local staging. S09 delivers task schema, scoped backend/API, responsive own/assigned UI, reasoned state and assignment history, audit/events/outbox, Owner-only cancellation with atomic unfinished-task stops, internal closeout approval/revocation, and atomic employee exit with account/session/grant revocation, task Waiting/reassignment gate, and Active lead project hold/Owner replacement. C-012–C-015 external client/vendor/CAD access effects and C-016.b external closeout grants remain deferred to S14/S21; those grants and links are absent from the current schema. Committed due dates/dependencies/recurrence remain S10; review execution remains S13/S14; Critical escalation remains S24. S09_SPEC.md identifies each implemented and deferred sub-clause.
 
-Final `pnpm verify` exited 0: 108 API unit, 51 web unit, 91 PostgreSQL/API, and 13 Playwright tests. The final UI increment also passed the 52-test web suite, web typecheck/lint/build, and two task Playwright journeys. S09 is COMPLETE for development/local staging; production gates remain separate. S10 was Owner-authorized on 2026-09-29 and is COMPLETE for development/local staging; S11 and later remain unauthorized.
+At S09 acceptance, `pnpm verify` exited 0: 108 API unit, 51 web unit, 91 PostgreSQL/API, and 13 Playwright tests. The final UI increment also passed the 52-test web suite, web typecheck/lint/build, and two task Playwright journeys. Later S10 and S11 completion evidence is recorded in their own reports. S12 and later remain unauthorized; production gates remain separate.

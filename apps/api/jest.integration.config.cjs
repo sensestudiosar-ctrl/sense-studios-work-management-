@@ -1,5 +1,6 @@
 module.exports = {
   testEnvironment: "node",
+  testSequencer: "<rootDir>/jest.integration-sequencer.cjs",
   roots: ["<rootDir>/src"],
   testMatch: ["**/*.api.spec.ts"],
   transform: {

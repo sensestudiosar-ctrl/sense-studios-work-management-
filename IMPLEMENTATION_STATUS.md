@@ -1,6 +1,6 @@
 # Implementation status
 
-Architecture approved at checkpoint 2e46805. S01–S09 are COMPLETE for development/local staging; their completion reports record evidence and limits. The Owner authorized S09 on 2026-09-28 and S10 on 2026-09-29. S10 is COMPLETE for development/local staging; all S10A–F increments and whole-slice gates passed. See S10_COMPLETION_REPORT.md. S11 and later remain unauthorized. Current owner instruction takes precedence over older status text.
+Architecture approved at checkpoint 2e46805. S01–S11 are COMPLETE for development/local staging; their completion reports record evidence and limits. The Owner authorized S11 on 2026-09-29 and settled folder/upload and Confidential access rules. Its whole-slice gates passed; see S11_COMPLETION_REPORT.md. S12 and later remain unauthorized. Current owner instruction takes precedence over older status text.
 
 ## Slice status
 
@@ -16,15 +16,16 @@ Architecture approved at checkpoint 2e46805. S01–S09 are COMPLETE for developm
 | S08 Templates, stages, milestones | COMPLETE — development/local staging | Versioned templates, atomic creation/retry, assigned plan completion, required gates, audited overrides and desktop/mobile UI verified; pnpm verify exited 0. See S08_COMPLETION_REPORT.md. |
 | S09 Tasks, participants and state | COMPLETE — development/local staging | Scoped task persistence/API/UI, owner/collaborators, immutable history, atomic exit/holds, Owner cancellation and internal closeout verified. Full pnpm verify exited 0: 108 API unit, 51 web unit, 91 PostgreSQL/API, 13 Playwright plus typecheck/lint/build. Final UI follow-up: 52 web unit, typecheck/lint/build and both task browser cases passed. Twenty-seven migrations, preserved S08 rows, real concurrency and injected rollback passed. See S09_COMPLETION_REPORT.md. |
 | S10 Dates, waiting, dependency, recurrence | COMPLETE — development/local staging | All S10A–F behavior and 37 migrations verified. Frozen install, clean production audit, upgrade preservation, real races and final pnpm verify (121 API unit, 64 web, 115 PostgreSQL/API, 17 browser plus typecheck/lint/build) passed. See S10_COMPLETION_REPORT.md. |
-| S11–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
+| S11 NAS document base | COMPLETE — development/local staging | Private NAS adapter, physical template folders, resumable uploads, metadata, backend scoped access, exact Confidential grants, audit/outbox, reconciliation and responsive UI verified. Fresh/upgrade migration checks and `pnpm verify` passed. See S11_SPEC.md and S11_COMPLETION_REPORT.md. |
+| S12–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
 
 ## Release status
 
 | Release | Slices | Status | Gate |
 | --- | --- | --- | --- |
 | Release 0 foundation | S01–S05 | S01–S05 COMPLETE for development/local staging | See S05_COMPLETION_REPORT.md for acceptance evidence and S05_SPEC.md for the approved slice boundary. |
-| Release 1 work core | S06–S10 | S06–S10 COMPLETE for development/local staging | S09 and S10 acceptance is recorded in their completion reports. S11+ remain unauthorized. |
-| Release 2 design control | S11–S15 | NOT STARTED | Depends on earlier slices. |
+| Release 1 work core | S06–S10 | S06–S10 COMPLETE for development/local staging | S09 and S10 acceptance is recorded in their completion reports. |
+| Release 2 design control | S11–S15 | S11 COMPLETE for development/local staging | S11 acceptance is recorded in S11_COMPLETION_REPORT.md; S12–S15 remain unauthorized. |
 | Release 3 workforce | S16–S18 | NOT STARTED | Depends on earlier slices. |
 | Release 4 Turnkey/site/portals | S19–S22 | NOT STARTED | Depends on earlier slices. |
 | Release 5 intelligence | S23–S24 | NOT STARTED | Depends on earlier slices. |
@@ -37,7 +38,7 @@ The Windows Codex runner can hang during cleanup after Playwright reports all ca
 
 ## S02 acceptance notes
 
-Owner decisions and implementation limits are recorded in S02_SPEC.md, DECISIONS.md and S02_COMPLETION_REPORT.md. S02 has identity-only schema/migration, WebAuthn enrollment/login/recovery, session enforcement, CSRF/origin checks, Owner identity administration and responsive session/device UI. Dedicated PostgreSQL migration and API checks, browser E2E, `pnpm verify` and security review passed. Deployment must remove the bootstrap secret after first enrollment; its persisted one-use guard blocks reuse. A shared rate limiter is required before multi-instance deployment. S03–S09 are COMPLETE for development/local staging; see their completion reports. S07 registers the first domain approval handler for formal project scope changes. S10 is COMPLETE for development/local staging under Owner authorization dated 2026-09-29; see S10_COMPLETION_REPORT.md. S11 and later remain unauthorized. S01 production gates and the Windows Playwright managed-server lifecycle caveat remain documented in S01_COMPLETION_REPORT.md.
+Owner decisions and implementation limits are recorded in the slice specifications and completion reports. S01–S11 are COMPLETE for development/local staging. S12 and later remain unauthorized. Production NAS, encrypted offsite backup/key custody and restore remain release gates. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md.
 
 ## S10 final acceptance — 2026-09-29
 

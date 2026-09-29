@@ -2,6 +2,7 @@ import { config as loadDotEnv } from "dotenv";
 
 loadDotEnv({ quiet: true });
 import { z } from "zod";
+import { isAbsolute } from "node:path";
 
 const environment = z.object({
   NODE_ENV: z.enum(["development", "test", "staging", "production"]).default("development"),
@@ -16,7 +17,9 @@ const environment = z.object({
   BREVO_API_KEY: z.preprocess((value) => value === "" ? undefined : value, z.string().min(1).max(512).optional()),
   BREVO_SENDER_EMAIL: z.preprocess((value) => value === "" ? undefined : value, z.email().max(320).optional()),
   BREVO_SENDER_NAME: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().min(1).max(100).optional()),
-  EMAIL_VERIFICATION_SECRET: z.preprocess((value) => value === "" ? undefined : value, z.string().min(32).max(512).optional())
+  EMAIL_VERIFICATION_SECRET: z.preprocess((value) => value === "" ? undefined : value, z.string().min(32).max(512).optional()),
+  NAS_ROOT: z.preprocess((value) => value === "" ? undefined : value, z.string().max(1000).refine(isAbsolute, "must be an absolute path").optional()),
+  DOCUMENT_MAX_FILE_BYTES: z.coerce.number().int().min(1).max(1_099_511_627_776).default(20 * 1024 * 1024 * 1024)
 }).superRefine((value, context) => {
   if (Boolean(value.OWNER_BOOTSTRAP_EMAIL) !== Boolean(value.OWNER_BOOTSTRAP_SECRET)) {
     context.addIssue({ code: "custom", path: ["OWNER_BOOTSTRAP_EMAIL"], message: "bootstrap email and secret must be configured together" });
@@ -44,6 +47,8 @@ export interface RuntimeConfig {
   brevoSenderEmail?: string | undefined;
   brevoSenderName?: string | undefined;
   emailVerificationSecret?: string | undefined;
+  nasRoot?: string | undefined;
+  documentMaxFileBytes?: number | undefined;
 }
 
 export const RUNTIME_CONFIG = Symbol("RUNTIME_CONFIG");
@@ -64,7 +69,9 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
     brevoApiKey: result.data.BREVO_API_KEY,
     brevoSenderEmail: result.data.BREVO_SENDER_EMAIL?.trim().toLowerCase(),
     brevoSenderName: result.data.BREVO_SENDER_NAME?.trim(),
-    emailVerificationSecret: result.data.EMAIL_VERIFICATION_SECRET
+    emailVerificationSecret: result.data.EMAIL_VERIFICATION_SECRET,
+    nasRoot: result.data.NAS_ROOT,
+    documentMaxFileBytes: result.data.DOCUMENT_MAX_FILE_BYTES
   };
 }
 

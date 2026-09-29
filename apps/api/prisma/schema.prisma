@@ -380,6 +380,10 @@ model Project {
   planItems              ProjectPlanItem[]
   creationReceipts        ProjectCreationReceipt[]
   tasks                   Task[]
+  documentFolders         DocumentFolder[]
+  documents               Document[]
+  documentUploads         DocumentUpload[]
+  documentAccessGrants    DocumentAccessGrant[]
 
   @@unique([id, organizationId])
   @@unique([wonLeadId, organizationId])
@@ -854,6 +858,10 @@ model Account {
   taskCloseoutRevocations          TaskCloseoutApproval[]         @relation("TaskCloseoutRevoker")
   recurrenceRulesConfigured        TaskRecurrenceRule[]          @relation("RecurrenceConfigurer")
   recurrenceChanges               TaskRecurrenceChange[]        @relation("RecurrenceChangeActor")
+  documentUploads                 DocumentUpload[]              @relation("DocumentUploadActor")
+  documentsCreated                Document[]                    @relation("DocumentCreator")
+  documentFolderCreators          DocumentFolder[]              @relation("DocumentFolderCreator")
+  documentAccessGrantsGiven       DocumentAccessGrant[]         @relation("DocumentGrantActor")
   projectStatusChanges              ProjectStatusChange[]
 
   @@index([state, kind])
@@ -897,6 +905,9 @@ model Organization {
   leads             Lead[]
   projects          Project[]
   tasks             Task[]
+  documentFolders   DocumentFolder[]
+  documents         Document[]
+  documentUploads   DocumentUpload[]
 
   @@map("organizations")
 }
@@ -987,6 +998,7 @@ model Employee {
   projectsLed         Project[]                    @relation("CurrentProjectLead")
   taskCollaborations  TaskCollaborator[]
   tasksOwned          Task[]                       @relation("TaskPrimaryOwner")
+  documentAccessGrants DocumentAccessGrant[]
 
   taskOwnerChangesOld TaskOwnerChange[]             @relation("TaskOldOwner")
   taskOwnerChangesNew TaskOwnerChange[]             @relation("TaskNewOwner")
@@ -1472,4 +1484,169 @@ model SecurityEvent {
   @@index([actorId, occurredAt])
   @@index([subjectId, occurredAt])
   @@map("security_events")
+}
+
+enum DocumentProvisionState {
+  PENDING
+  READY
+  FAILED
+}
+
+enum DocumentUploadState {
+  STAGING
+  FINALIZED
+  ABORTED
+}
+
+enum DocumentResourceKind {
+  FOLDER
+  FILE
+}
+
+enum DocumentRetentionClass {
+  NONE
+  ISSUED_DRAWING
+  CLIENT_APPROVAL_EVIDENCE
+}
+
+model DocumentFolder {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  parentId String? @db.Uuid
+  name String @db.VarChar(160)
+  normalizedName String @db.VarChar(160)
+  logicalPath String @db.VarChar(600)
+  templatePath String? @db.VarChar(240)
+  confidential Boolean @default(false)
+  provisionState DocumentProvisionState @default(PENDING)
+  provisionError String? @db.VarChar(500)
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  parent DocumentFolder? @relation("DocumentFolderTree", fields: [parentId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  children DocumentFolder[] @relation("DocumentFolderTree")
+  createdBy Account @relation("DocumentFolderCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  documents Document[]
+  uploads DocumentUpload[]
+  @@unique([id, organizationId])
+  @@unique([id, organizationId, projectId])
+  @@unique([projectId, logicalPath])
+  @@index([organizationId, projectId, parentId])
+  @@map("document_folders")
+}
+
+model Document {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  folderId String @db.Uuid
+  documentNumber String? @db.VarChar(80)
+  title String @db.VarChar(160)
+  confidential Boolean @default(false)
+  viewOnly Boolean @default(false)
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  folder DocumentFolder @relation(fields: [folderId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  createdBy Account @relation("DocumentCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  blobs FileBlobMetadata[]
+  @@unique([id, organizationId])
+  @@index([organizationId, projectId, folderId, createdAt])
+  @@map("documents")
+}
+
+model FileBlobMetadata {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  documentId String @db.Uuid
+  storageKey String @unique @db.Uuid
+  fileName String @db.VarChar(240)
+  mimeType String @db.VarChar(160)
+  sizeBytes BigInt
+  sha256 String @db.Char(64)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  document Document @relation(fields: [documentId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  retention FileRetentionRecord?
+  @@unique([id, organizationId])
+  @@index([organizationId, documentId, createdAt])
+  @@map("file_blob_metadata")
+}
+
+model DocumentUpload {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  folderId String @db.Uuid
+  actorId String @db.Uuid
+  fileName String @db.VarChar(240)
+  mimeType String @db.VarChar(160)
+  sizeBytes BigInt
+  chunkSize Int
+  chunkCount Int
+  confidential Boolean @default(false)
+  viewOnly Boolean @default(false)
+  reason String @db.VarChar(1000)
+  state DocumentUploadState @default(STAGING)
+  finalizedBlobId String? @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  finalizedAt DateTime? @db.Timestamptz(3)
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  folder DocumentFolder @relation(fields: [folderId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  actor Account @relation("DocumentUploadActor", fields: [actorId], references: [id], onDelete: Restrict)
+  chunks DocumentUploadChunk[]
+  @@unique([id, organizationId])
+  @@index([organizationId, projectId, state, expiresAt])
+  @@map("document_uploads")
+}
+
+model DocumentUploadChunk {
+  uploadId String @db.Uuid
+  index Int
+  organizationId String @db.Uuid
+  sizeBytes Int
+  sha256 String @db.Char(64)
+  writtenAt DateTime @default(now()) @db.Timestamptz(3)
+  upload DocumentUpload @relation(fields: [uploadId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@id([uploadId, index])
+  @@map("document_upload_chunks")
+}
+
+model DocumentAccessGrant {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  resourceKind DocumentResourceKind
+  resourceId String @db.Uuid
+  employeeId String @db.Uuid
+  grantedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  grantedAt DateTime @default(now()) @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  employee Employee @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  grantedBy Account @relation("DocumentGrantActor", fields: [grantedById], references: [id], onDelete: Restrict)
+  @@index([organizationId, projectId, resourceKind, resourceId, employeeId, revokedAt])
+  @@map("document_access_grants")
+}
+
+model FileRetentionRecord {
+  blobId String @id @db.Uuid
+  organizationId String @db.Uuid
+  retentionClass DocumentRetentionClass
+  projectClosedAt DateTime? @db.Timestamptz(3)
+  retainUntil DateTime? @db.Timestamptz(3)
+  ownerNoticeAt DateTime? @db.Timestamptz(3)
+  holdPlacedAt DateTime? @db.Timestamptz(3)
+  holdReason String? @db.VarChar(1000)
+  backupExpiresAt DateTime? @db.Timestamptz(3)
+  deletionProof Json?
+  blob FileBlobMetadata @relation(fields: [blobId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@unique([blobId, organizationId])
+  @@map("file_retention_records")
 }
