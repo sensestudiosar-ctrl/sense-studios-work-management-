@@ -1,6 +1,10 @@
-# Proposed NAS and file-control architecture
+# NAS and file-control architecture — S11 base implemented for development/local staging
 
-Approved source: R-030, R-034–R-040, R-075, R-079–R-080, R-091–R-092. Primary physical file storage is the existing NAS; PostgreSQL stores metadata and approval/revision relationships. No integration has been implemented.
+Approved source: R-030, R-034–R-040, R-075, R-079–R-080, R-091–R-092. Primary physical file storage is the existing NAS; PostgreSQL stores metadata and later approval/revision relationships. S11 implements the internal document base against a restricted, absolute `NAS_ROOT` mount. Local acceptance used an isolated filesystem mount fixture; production NAS behavior remains a release gate.
+
+## Implemented S11 base
+
+The API holds NAS access; browser users receive opaque document IDs and streamed responses, never storage keys or NAS credentials. Physical project folders are provisioned from the applied S08 template intent, with pending/failed/ready state and an idempotent retry. Uploads use 8 MiB binary chunks, per-chunk and whole-file SHA-256, staging, size/type checks, exclusive immutable blob finalization and a reconciliation inventory. `DOCUMENT_MAX_FILE_BYTES` defaults to 20 GiB. Owner and assigned staff with `project.view`, `document.view` and `document.upload` scope may create folders/upload; only the Owner classifies Confidential content and grants exact folder/file access to assigned employees. Every stream checks current assignment, permissions and each Confidential ancestor/file grant. Material folder/upload/grant transitions have canonical audit, domain event and outbox evidence. View-only and ten-year retention-class association are metadata for later issue/client workflows; S11 has no protected client viewer or expiry deletion job. See S11_SPEC.md and S11_COMPLETION_REPORT.md.
 
 ## Storage and identity
 
@@ -30,4 +34,4 @@ References: MINISFORUM N5 Air Docker capability (https://store.minisforum.com/pr
 
 ## S08 folder intent boundary
 
-S08 stores configured folder names and file naming convention as immutable template-version JSON and copies that definition into the applied project plan. This is planning metadata only: it creates no directory, file, NAS path, upload grant or storage operation. Physical project folders and files depend on S11 and this document's NAS controls.
+S08 stores configured folder names and file naming convention as immutable template-version JSON and copies that definition into the applied project plan. That S08 step creates no directory or file. S11 now provisions physical folders from the applied intent through the private adapter.

@@ -1,6 +1,6 @@
-# Approved target architecture — S01–S08 implemented for development/local staging
+# Approved target architecture — S01–S11 implemented for development/local staging
 
-This is a planning baseline for approved requirements in requirements/APPROVED_REQUIREMENTS.md and approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department organizational tier, exactly one owning branch per project, and the later owner policies recorded in requirements/CLARIFICATIONS.md. The Owner approved the final architecture at checkpoint 2e46805. S01–S09 are COMPLETE for development/local staging; S10 was Owner-authorized on 2026-09-29 and is COMPLETE for development/local staging; S11 and later remain unauthorized. Material architecture changes require a recorded Owner decision.
+This is a planning baseline for approved requirements in requirements/APPROVED_REQUIREMENTS.md and approved clarifications C-001–C-024: Organization → Branch → Team → Employee, no separate Brand or Department organizational tier, exactly one owning branch per project, and later Owner policies recorded in requirements/CLARIFICATIONS.md. Architecture is approved at checkpoint 2e46805. S01–S11 are COMPLETE for development/local staging; S12 and later remain unauthorized. S11 DOC owns folder/upload/grant commands, coordinates private mounted NAS storage with PostgreSQL metadata, and rechecks access on each stream. S11_SPEC.md, FILE_STORAGE.md and S11_COMPLETION_REPORT.md record its boundary and production gates. Material architecture changes require a recorded Owner decision.
 
 ## Stack choices and tradeoffs
 

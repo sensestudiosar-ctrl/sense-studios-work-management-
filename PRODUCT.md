@@ -1,6 +1,6 @@
 # Product context — approved requirements and current delivery boundary
 
-The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805; S01–S09 are complete for development/local staging. S10 is COMPLETE for development/local staging; see S10_COMPLETION_REPORT.md.
+The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805; S01–S11 are complete for development/local staging. S11 provides internal project document folders, uploads/register/downloads and exact Confidential grants; see S11_COMPLETION_REPORT.md. S12 and later remain unauthorized.
 
 ## Purpose and boundary
 

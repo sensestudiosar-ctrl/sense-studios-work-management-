@@ -1,5 +1,9 @@
 # Workflows and state machines — planning
 
+## Implemented S11 document base
+
+Owner/assigned granted staff selects a project and provisions template folders or creates a folder. Storage failure remains FAILED and retryable. Upload initiation binds actor/project/folder/name/type/size/policy; each bounded binary chunk has SHA-256 and exact retry semantics. Finalization checks the manifest and physical content, then atomically registers immutable metadata with audit/event/outbox and marks the upload FINALIZED. Expired staging becomes ABORTED through Owner reconciliation. Every read/stream rechecks current assignment/permissions and exact Confidential ancestor/file grants. Only Owner classifies Confidential content and grants/revokes item access. No revision, issue, approval or client viewer transition is implemented by S11.
+
 Specified sequences below come from the approved source plus approved clarifications C-001–C-024. Arrows show default progression; C-017 and C-019 define explicit lead-stage exceptions. Unsupported transitions are denied until a slice specifies their guards and tests. Every protected transition runs server-side validation, authorization and audit in one business transaction.
 
 | Workflow | Specified path or operations | Transition control and exceptions |

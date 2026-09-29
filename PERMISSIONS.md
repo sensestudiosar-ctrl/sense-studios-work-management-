@@ -1,4 +1,8 @@
-# Approved permission model — identity sessions in S02; business authorization in S03; notification reauthorization in S04
+# Approved permission model — identity sessions in S02; business authorization in S03; document authorization in S11
+
+## S11 internal document access
+
+The Owner may create project folders, upload files, classify Confidential content and grant/revoke exact Confidential folder or file access. Active assigned staff may create folders and upload files only with scoped `project.view` and `document.upload` grants; reading requires scoped `project.view` and `document.view`. A cross-branch assignment must be explicit and authorized. Confidential reads require the Owner or explicit active grants on every Confidential ancestor folder and on the Confidential file itself. Assignment, role/permission and item grants are rechecked at stream time. Staff cannot self-grant or create Confidential content. The S11 API provides no external/client stream or direct NAS credential/path access. The exact approved Owner decisions and verification are in S11_SPEC.md and S11_COMPLETION_REPORT.md.
 
 Approved source: R-004–R-009, R-027–R-039, R-075–R-081, R-087–R-099. Approved C-001: Organization → Branch → Team → Employee, no Brand permission scope; one owning branch per project; employees may work across branches only with explicit assignment. Job role, reporting relation within Branch/Team, and permission grant remain separate. The matrix below is an initial baseline derived from the source, not hard-coded job titles or a finalized grant list. S02 enforces identity/session authentication and Owner-only identity operations. S03 implements membership, RBAC and business authorization; S04 adds delivery-time recipient reauthorization for notifications. See S03_COMPLETION_REPORT.md and S04_SPEC.md.
 
