@@ -19,10 +19,42 @@ export class ProjectWorkflowService {
   private get db() { return this.database.prisma; }
   private owner(actor: ProjectActor) { if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required"); }
   private async activeActor(tx: Tx, actor: ProjectActor) {
+    await tx.$queryRaw`SELECT "id" FROM "accounts" WHERE "id" = ${actor.accountId}::uuid FOR SHARE`;
     const account = await tx.account.findUnique({ where: { id: actor.accountId }, include: { employee: true } });
     if (!account || account.state !== AccountState.ACTIVE || account.kind !== actor.kind ||
       (account.kind === AccountKind.STAFF && (!account.employee || account.employee.state !== EmployeeState.ACTIVE || account.employee.organizationId !== actor.organizationId))) throw new ForbiddenException("Permission denied");
     return account;
+  }
+  async plan(actor: ProjectActor, id: string) {
+    return this.db.$transaction(async (tx) => {
+      const project = await this.project(tx, actor, id);
+      await this.access(tx, actor, project, "project.view");
+      const plan = await tx.projectPlan.findUnique({ where: { projectId: id }, include: { templateVersion: { include: { template: { select: { name: true } } } } } });
+      const items = await tx.projectPlanItem.findMany({ where: { projectId: id }, orderBy: [{ kind: "desc" }, { position: "asc" }] });
+      const history = await tx.projectPlanCompletion.findMany({ where: { itemId: { in: items.map((item) => item.id) } }, orderBy: [{ occurredAt: "asc" }, { id: "asc" }] });
+      const employee = actor.kind === AccountKind.STAFF ? await tx.employee.findUnique({ where: { accountId: actor.accountId } }) : null;
+      const complete = project.status === ProjectStatus.ACTIVE && (actor.kind === AccountKind.OWNER || employee?.id === project.currentLeadEmployeeId || await this.can(tx, actor, project, "project.plan_complete"));
+      const override = actor.kind === AccountKind.OWNER || await this.can(tx, actor, project, "project.gate_override");
+      return { plan, items, history, capabilities: { complete, override } };
+    });
+  }
+  async completePlanItem(actor: ProjectActor, id: string, itemId: string, input: { expectedVersion: number; reason: string }) {
+    return this.db.$transaction(async (tx) => {
+      const project = await this.project(tx, actor, id, input.expectedVersion);
+      await this.access(tx, actor, project, "project.view");
+      if (project.status !== ProjectStatus.ACTIVE) throw new ConflictException("Only Active project plan items can be completed");
+      const employee = actor.kind === AccountKind.STAFF ? await tx.employee.findUnique({ where: { accountId: actor.accountId } }) : null;
+      if (actor.kind !== AccountKind.OWNER && employee?.id !== project.currentLeadEmployeeId) await this.access(tx, actor, project, "project.plan_complete");
+      const item = await tx.projectPlanItem.findFirst({ where: { id: itemId, projectId: id, organizationId: actor.organizationId } });
+      if (!item) throw new NotFoundException("Plan item not found");
+      if (item.completedAt) throw new ConflictException("Plan item is already completed");
+      const occurredAt = new Date();
+      const row = await this.bump(tx, project);
+      await tx.projectPlanItem.update({ where: { id: item.id }, data: { completedAt: occurredAt } });
+      await tx.projectPlanCompletion.create({ data: { organizationId: actor.organizationId, itemId, actorId: actor.accountId, reason: input.reason, occurredAt, projectVersion: row.version } });
+      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.plan_item_completed", subjectType: "project", subjectId: id, reason: input.reason, after: { itemId, kind: item.kind, key: item.key, projectVersion: row.version, completedAt: occurredAt.toISOString() } });
+      return row;
+    });
   }
   private async project(tx: Tx, actor: ProjectActor, id: string, expectedVersion?: number): Promise<ProjectRow> {
     const rows = await tx.$queryRaw<Array<{ id: string }>>`SELECT "id" FROM "projects" WHERE "id" = ${id}::uuid AND "organizationId" = ${actor.organizationId}::uuid FOR UPDATE`;
@@ -46,6 +78,7 @@ export class ProjectWorkflowService {
     catch (error) { if (error instanceof ForbiddenException) return false; throw error; }
   }
   private async bump(tx: Tx, project: ProjectRow, data: Prisma.ProjectUncheckedUpdateInput = {}) {
+    if (project.status === ProjectStatus.CANCELLED || project.status === ProjectStatus.ARCHIVED) throw new ConflictException("Terminal project cannot change");
     return tx.project.update({ where: { id: project.id, version: project.version }, data: { ...data, version: { increment: 1 } } });
   }
   private async eligible(tx: Tx, project: ProjectRow, employeeId: string) {
@@ -101,7 +134,8 @@ export class ProjectWorkflowService {
     const approvals = await this.db.approvalRequest.findMany({ where: { id: { in: project.scopeChanges.flatMap((row) => row.approvalId ? [row.approvalId] : []) }, organizationId: actor.organizationId }, select: { id: true, state: true, approverId: true, requestedAt: true, resolvedAt: true } });
     const rights = actor.kind === AccountKind.OWNER ? { manage: true, scopeRequest: true, cancellationRequest: true, decideScope: project.scopeApproverAccountId === actor.accountId } : await this.db.$transaction(async (tx) => ({ manage: await this.can(tx, actor, project, "project.manage"), scopeRequest: await this.can(tx, actor, project, "project.scope_request"), cancellationRequest: await this.can(tx, actor, project, "project.cancellation_request"), decideScope: project.scopeApproverAccountId === actor.accountId && await this.can(tx, actor, project, "project.scope_decide") }));
     const currentAccountEmployee = actor.kind === AccountKind.STAFF ? await this.db.employee.findUnique({ where: { accountId: actor.accountId }, select: { id: true } }) : null;
-    const capabilities = { ...rights, assignLead: actor.kind === AccountKind.OWNER, manageLead: actor.kind === AccountKind.OWNER, assignContributor: actor.kind === AccountKind.OWNER, manageAssignments: actor.kind === AccountKind.OWNER, changeStatus: rights.manage, manageLifecycle: rights.manage, requestScopeChange: rights.scopeRequest, requestScope: rights.scopeRequest, requestCancellation: rights.cancellationRequest || currentAccountEmployee?.id === project.currentLeadEmployeeId };
+    const override = actor.kind === AccountKind.OWNER || await this.db.$transaction(async (tx) => this.can(tx, actor, project, "project.gate_override"));
+    const capabilities = { ...rights, override, assignLead: actor.kind === AccountKind.OWNER, manageLead: actor.kind === AccountKind.OWNER, assignContributor: actor.kind === AccountKind.OWNER, manageAssignments: actor.kind === AccountKind.OWNER, changeStatus: rights.manage, manageLifecycle: rights.manage, requestScopeChange: rights.scopeRequest, requestScope: rights.scopeRequest, requestCancellation: rights.cancellationRequest || currentAccountEmployee?.id === project.currentLeadEmployeeId };
     const people = await this.db.employee.findMany({ where: { id: { in: [...new Set([...project.assignments.map((row) => row.employeeId), ...(project.currentLeadEmployeeId ? [project.currentLeadEmployeeId] : [])])] } }, include: { account: { select: { normalizedEmail: true } } } });
     const peopleById = new Map(people.map((person) => [person.id, person.account.normalizedEmail]));
     const won = project.wonStageChangeId ? await this.db.leadStageChange.findUnique({ where: { id: project.wonStageChangeId } }) : null;
@@ -137,10 +171,11 @@ export class ProjectWorkflowService {
       const row = await tx.projectAssignment.findFirst({ where: { projectId: id, employeeId, revokedAt: null } });
       if (!row) throw new NotFoundException("Active assignment not found");
       await tx.projectAssignment.update({ where: { id: row.id }, data: { revokedAt: new Date(), revokedById: actor.accountId, revocationReason: input.reason } });
-      const removedLead = project.currentLeadEmployeeId === employeeId;
-      const updated = await this.bump(tx, project, removedLead ? { currentLeadEmployeeId: null } : {});
+      const terminal = project.status === ProjectStatus.CANCELLED || project.status === ProjectStatus.ARCHIVED;
+      const removedLead = !terminal && project.currentLeadEmployeeId === employeeId;
+      const updated = terminal ? project : await this.bump(tx, project, removedLead ? { currentLeadEmployeeId: null } : {});
       if (removedLead) await tx.projectLeadChange.create({ data: { projectId: id, organizationId: actor.organizationId, oldEmployeeId: employeeId, projectVersion: updated.version, actorId: actor.accountId, reason: input.reason } });
-      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.assignment_changed", subjectType: "project", subjectId: id, reason: input.reason, before: { employeeId, assignmentId: row.id }, after: { revoked: true, version: project.version + 1 } });
+      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.assignment_changed", subjectType: "project", subjectId: id, reason: input.reason, before: { employeeId, assignmentId: row.id }, after: { revoked: true, version: updated.version } });
       return { revoked: true };
     });
   }
@@ -157,7 +192,7 @@ export class ProjectWorkflowService {
       return row;
     });
   }
-  async status(actor: ProjectActor, id: string, input: { toStatus: ProjectStatus; expectedVersion: number; reason: string }) {
+  async status(actor: ProjectActor, id: string, input: { toStatus: ProjectStatus; expectedVersion: number; reason: string; overrideMilestones?: boolean | undefined }) {
     return this.db.$transaction(async (tx) => {
       await this.activeActor(tx, actor);
       const project = await this.project(tx, actor, id, input.expectedVersion);
@@ -165,12 +200,21 @@ export class ProjectWorkflowService {
       let transition;
       try { transition = evaluateProjectLifecycleTransition(project.status, input.toStatus, input.reason); }
       catch (error) { throw new ConflictException(error instanceof Error ? error.message : "Invalid project transition"); }
-      if (input.toStatus === ProjectStatus.COMPLETED || input.toStatus === ProjectStatus.ARCHIVED) this.owner(actor);
+      if (input.toStatus === ProjectStatus.ARCHIVED) this.owner(actor);
+      if (input.overrideMilestones && input.toStatus !== ProjectStatus.COMPLETED) throw new ConflictException("Milestone override applies only to project completion");
+      if (input.toStatus === ProjectStatus.COMPLETED && actor.kind !== AccountKind.OWNER) await this.access(tx, actor, project, "project.gate_override");
       if (transition.requiredGates.includes("PROJECT_LEAD_ASSIGNED")) {
         if (!project.currentLeadEmployeeId) throw new ConflictException("An eligible Project Lead is required");
         await this.eligible(tx, project, project.currentLeadEmployeeId);
       }
       if (input.toStatus === ProjectStatus.COMPLETED && await tx.approvalRequest.count({ where: { organizationId: actor.organizationId, typeKey: SCOPE_TYPE, sourceType: "project_scope_change", sourceId: { in: (await tx.projectScopeChange.findMany({ where: { projectId: id }, select: { id: true } })).map((row) => row.id) }, state: "PENDING" } })) throw new ConflictException("Resolve pending scope changes before completion");
+      const missing = input.toStatus === ProjectStatus.COMPLETED ? await tx.projectPlanItem.findMany({ where: { projectId: id, kind: "MILESTONE", required: true, completedAt: null }, select: { id: true }, orderBy: { id: "asc" } }) : [];
+      if (missing.length && !input.overrideMilestones) throw new ConflictException("Complete required milestones before project completion, or record an authorized override");
+      if (missing.length) {
+        await this.access(tx, actor, project, "project.gate_override");
+        await tx.projectGateOverride.create({ data: { organizationId: actor.organizationId, projectId: id, actorId: actor.accountId, reason: input.reason, projectVersion: project.version + 1, milestoneIds: missing.map((item) => item.id) } });
+        await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.gate_overridden", subjectType: "project", subjectId: id, reason: input.reason, after: { milestoneIds: missing.map((item) => item.id), projectVersion: project.version + 1 } });
+      }
       const row = await this.bump(tx, project, { status: input.toStatus });
       await tx.projectStatusChange.create({ data: { projectId: id, organizationId: actor.organizationId, fromStatus: project.status, toStatus: input.toStatus, projectVersion: row.version, reason: input.reason, actorId: actor.accountId } });
       const eventName = input.toStatus === ProjectStatus.ACTIVE ? "project.activated" : input.toStatus === ProjectStatus.ON_HOLD ? "project.on_hold" : input.toStatus === ProjectStatus.COMPLETED ? "project.completed" : "project.archived";
@@ -292,6 +336,7 @@ export class ProjectWorkflowService {
     const actor = await tx.account.findUnique({ where: { id: actorId } });
     if (!actor || actor.state !== AccountState.ACTIVE || actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required");
     const ids = (await tx.project.findMany({ where: { organizationId, currentLeadEmployeeId: employeeId, status: ProjectStatus.ACTIVE }, select: { id: true }, orderBy: { id: "asc" } })).map((row) => row.id);
+    const heldIds: string[] = [];
     for (const id of ids) {
       const project = await this.project(tx, { accountId: actorId, organizationId, kind: AccountKind.OWNER }, id);
       if (project.status !== ProjectStatus.ACTIVE || project.currentLeadEmployeeId !== employeeId) continue;
@@ -300,15 +345,16 @@ export class ProjectWorkflowService {
       await tx.projectLeadChange.create({ data: { projectId: id, organizationId, oldEmployeeId: employeeId, projectVersion: row.version, actorId, reason } });
       await tx.projectStatusChange.create({ data: { projectId: id, organizationId, fromStatus: ProjectStatus.ACTIVE, toStatus: ProjectStatus.ON_HOLD, projectVersion: row.version, actorId, reason } });
       await recordProjectEvent(tx, { organizationId, actorId, eventName: "project.on_hold", subjectType: "project", subjectId: id, reason, before: { status: ProjectStatus.ACTIVE, leadEmployeeId: employeeId }, after: { status: ProjectStatus.ON_HOLD, leadEmployeeId: null, version: row.version } });
+      heldIds.push(id);
     }
     const assignments = await tx.projectAssignment.findMany({ where: { organizationId, employeeId, revokedAt: null } });
     for (const assignment of assignments) {
       const project = await this.project(tx, { accountId: actorId, organizationId, kind: AccountKind.OWNER }, assignment.projectId);
       await tx.projectAssignment.update({ where: { id: assignment.id }, data: { revokedAt: new Date(), revokedById: actorId, revocationReason: "Employee exited" } });
-      const version = ids.includes(project.id) || project.status === ProjectStatus.ARCHIVED ? project.version : (await this.bump(tx, project)).version;
+      const version = heldIds.includes(project.id) || project.status === ProjectStatus.ARCHIVED || project.status === ProjectStatus.CANCELLED ? project.version : (await this.bump(tx, project)).version;
       await recordProjectEvent(tx, { organizationId, actorId, eventName: "project.assignment_changed", subjectType: "project", subjectId: project.id, reason: "Employee exited", before: { assignmentId: assignment.id, employeeId }, after: { revoked: true, version } });
     }
-    return ids;
+    return heldIds;
   }
   private scopeHandler(): ApprovalHandler {
     const load = async (tx: Tx, request: ApprovalRequest) => {

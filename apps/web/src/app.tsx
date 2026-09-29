@@ -6,6 +6,7 @@ import { AuditRetentionCenter } from "./audit-retention.js";
 import { ApprovalQueue } from "./approval-queue.js";
 import { CrmWorkspace } from "./crm.js";
 import { ProjectWorkspace } from "./project.js";
+import { TaskWorkspace } from "./task.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -21,9 +22,9 @@ type DeviceSession = {
   userAgent: string | null;
   current: boolean;
 };
-type Org = { id: string; name: string };
+type Org = { id: string; name: string; timezone?: string; settingsVersion?: number };
 type Branch = { id: string; name: string };
-type Team = { id: string; branchId: string; name: string };
+type Team = { id: string; branchId: string; name: string; waitingAlertsEnabled?: boolean; settingsVersion?: number };
 type RolePermission = { id: string; permissionKey: string; scopeKind: "ORGANIZATION" | "BRANCH" | "TEAM" | "SELF"; branchId?: string | null; teamId?: string | null };
 type JobRole = { id: string; name: string; permissions?: RolePermission[] };
 type EmployeeOverride = RolePermission & { effect: "ALLOW" | "DENY"; expiresAt: string | null };
@@ -376,6 +377,7 @@ function Identity({ session, onLogout, busy, error }: {
       {!ownerNeedsSetup && <ApprovalQueue />}
       {!ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
       {!ownerNeedsSetup && <ProjectWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
+      {!ownerNeedsSetup && <TaskWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
       <section className="identity-section sessions-section" aria-labelledby="sessions-heading">
         <div className="sessions-heading-row">
           <div><div className="eyebrow">DEVICES</div><h2 id="sessions-heading">Active sessions</h2></div>
@@ -476,10 +478,12 @@ function Identity({ session, onLogout, busy, error }: {
 
 function passkeyRegistrationError(error: unknown): string {
   const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
-  if (code === "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED") return "That passkey is already registered. Choose a different passkey method, such as your phone or a security key.";
-  if (isCancellation(error)) return "The passkey request was cancelled. You can try again when ready.";
-  if (isUnsupportedPasskeyBrowser(error)) return "This browser does not support passkeys. Open this page in a supported browser or device.";
-  return "The browser could not create another passkey with that method. Choose a different device or security key and try again.";
+  const name = error instanceof Error ? error.name : "UnknownError";
+  const detail = import.meta.env.DEV ? ` (browser detail: ${name}${code ? ` / ${code}` : ""})` : "";
+  if (code === "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED") return `That passkey is already registered. Choose a different passkey method, such as your phone or a security key.${detail}`;
+  if (isCancellation(error)) return `The passkey request was cancelled or declined by the browser. You can try again when ready.${detail}`;
+  if (isUnsupportedPasskeyBrowser(error)) return `This browser does not support passkeys. Open this page in a supported browser or device.${detail}`;
+  return `The browser could not create another passkey with that method. Choose a different device or security key and try again.${detail}`;
 }
 
 function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element {
@@ -493,6 +497,7 @@ function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element
   const [error, setError] = useState<string>();
   const [success, setSuccess] = useState<string>();
   const [orgName, setOrgName] = useState("");
+  const [orgTimezone, setOrgTimezone] = useState("Asia/Kolkata");
   const [branchName, setBranchName] = useState("");
   const [selectedBranchId, setSelectedBranchId] = useState("");
   const [teamName, setTeamName] = useState("");
@@ -527,6 +532,7 @@ function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element
   const [hiredAt, setHiredAt] = useState(new Date().toISOString().slice(0, 10));
   const [reason, setReason] = useState("");
   const [suspendingEmployee, setSuspendingEmployee] = useState("");
+  const [exitingEmployee, setExitingEmployee] = useState("");
 
   const load = useCallback(async (): Promise<void> => {
     setLoading(true);
@@ -536,6 +542,7 @@ function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element
       if (!orgResponse.ok) throw Object.assign(new Error("organization-unavailable"), { status: orgResponse.status });
       const org = await orgResponse.json() as Org | null;
       setOrganization(org);
+      setOrgTimezone(org?.timezone ?? "Asia/Kolkata");
       if (!org) { setBranches([]); setTeams([]); setRoles([]); setEmployees([]); return; }
       const query = `?organizationId=${encodeURIComponent(org.id)}`;
       const [branchResponse, teamResponse, roleResponse, employeeResponse] = await Promise.all([
@@ -653,7 +660,8 @@ function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element
       </div>
       <div className="org-list-grid">
         <section aria-labelledby="branches-list-heading"><h3 id="branches-list-heading">Branches</h3>{branches.length ? <ul>{branches.map((branch) => <li key={branch.id}>{branch.name}</li>)}</ul> : <p className="identity-note">No branches yet.</p>}</section>
-        <section aria-labelledby="teams-list-heading"><h3 id="teams-list-heading">Teams</h3>{teams.length ? <ul>{teams.map((team) => <li key={team.id}>{branches.find((branch) => branch.id === team.branchId)?.name}: {team.name}</li>)}</ul> : <p className="identity-note">No teams yet.</p>}</section>
+        <section aria-labelledby="teams-list-heading"><h3 id="teams-list-heading">Teams</h3>{teams.length ? <ul>{teams.map((team) => <li key={team.id}><span>{branches.find((branch) => branch.id === team.branchId)?.name}: {team.name} · Waiting alerts {team.waitingAlertsEnabled ? "enabled" : "disabled"}</span><button className="secondary-action" type="button" disabled={pending || requireReason.length < 3} onClick={() => void mutate(`/teams/${team.id}/waiting-alerts`, "PUT", { enabled: !team.waitingAlertsEnabled, expectedVersion: team.settingsVersion ?? 1, reason: requireReason })}>{team.waitingAlertsEnabled ? "Disable" : "Enable"} Waiting alerts for {team.name}</button></li>)}</ul> : <p className="identity-note">No teams yet.</p>}</section>
+        <form className="identity-form" aria-label="Organization timezone" onSubmit={(event) => submit(event, () => mutate(`/${organization.id}/timezone`, "PUT", { timezone: orgTimezone.trim(), expectedVersion: organization.settingsVersion ?? 1, reason: requireReason }))}><h3>Recurring task timezone</h3><p className="identity-note">Schedule dates use this organization timezone. Missed dates are skipped; monthly dates use the last day in shorter months.</p><label htmlFor="organization-timezone">IANA timezone</label><input id="organization-timezone" value={orgTimezone} onChange={(event) => setOrgTimezone(event.target.value)} maxLength={80} required /><button className="secondary-action" type="submit" disabled={pending || requireReason.length < 3 || !orgTimezone.trim() || orgTimezone.trim() === (organization.timezone ?? "Asia/Kolkata")}>Change timezone</button></form>
         <section aria-labelledby="roles-list-heading"><h3 id="roles-list-heading">Job roles</h3>{roles.length ? <ul>{roles.map((role) => <li key={role.id}>{role.name}</li>)}</ul> : <p className="identity-note">No job roles yet.</p>}</section>
       </div>
       <section className="org-permission-manager" aria-labelledby="role-permissions-heading">
@@ -734,6 +742,7 @@ function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element
             <button type="button" className="secondary-action" disabled={pending} onClick={() => setEditingPermissionsEmployeeId((current) => current === employee.id ? "" : employee.id)}>Manage access overrides</button>
             <button type="button" className="secondary-action" disabled={pending} onClick={() => setSuspendingEmployee(employee.id)}>Suspend access</button>
           </div>}
+          {employee.state !== "EXITED" && <button type="button" className="secondary-action" disabled={pending} aria-label={`Finalize exit for ${employee.account.normalizedEmail}`} onClick={() => { setReason(""); setExitingEmployee(employee.id); }}>Finalize employee exit</button>}
           {editingMembershipEmployeeId === employee.id && employee.state === "ACTIVE" && <form className="org-role-editor" onSubmit={(event) => submit(event, async () => {
             await mutate(`/employees/${encodeURIComponent(employee.id)}/membership`, "PUT", {
               organizationId: organization.id, branchId: membershipBranchId, teamId: membershipTeamId,
@@ -800,6 +809,11 @@ function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element
         <h3>Confirm employee suspension</h3><p className="identity-note">This immediately blocks sign-in and revokes every current session. It does not finalize employment exit or change project/task ownership.</p>
         <label htmlFor="suspend-reason">Reason</label><textarea id="suspend-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
         <div className="identity-actions"><button disabled={pending || requireReason.length < 10}>Confirm suspension</button><button type="button" className="secondary-action" onClick={() => setSuspendingEmployee("")}>Cancel</button></div>
+      </form>}
+      {exitingEmployee && <form className="identity-form" onSubmit={(event) => submit(event, async () => { await mutate(`/employees/${encodeURIComponent(exitingEmployee)}/exit`, "POST", { reason: requireReason }); setExitingEmployee(""); })}>
+        <h3>Finalize employee exit</h3><p className="identity-note">Access and sessions end immediately. Unfinished owned tasks wait for individual reassignment; Active projects led by this employee go On Hold until you appoint a replacement. Completed work and history are retained.</p>
+        <label htmlFor="exit-reason">Exit reason</label><textarea id="exit-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
+        <div className="identity-actions"><button disabled={pending || requireReason.length < 10}>Finalize exit</button><button type="button" className="secondary-action" onClick={() => setExitingEmployee("")}>Cancel</button></div>
       </form>}
     </>}
   </section>;

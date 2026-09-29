@@ -85,6 +85,20 @@ The Owner selected OD-14 option A. Departing employee access ends immediately; e
 
 The Owner selected OD-15 option A. If an employee exits while serving as the current lead of an Active project, the project moves to On Hold with a lead-exit reason as that person's access is revoked. The former lead remains in history and cannot make new decisions; pending work and reviews are retained, while new delivery decisions pause. The Owner appoints an eligible replacement Project Lead before the project can return to Active, with permissions, reason, time and audit checked. C-023 separately puts the leaver's unfinished tasks in Waiting for individual reassignment. C-024 in requirements/CLARIFICATIONS.md is authoritative. No further owner question is currently recorded; final consistency review, final architecture approval and S01 remain pending.
 
+## 2026-09-29 — S10 dependency scope (Owner decision)
+
+For the initial S10 finish-to-start dependency workflow, a task may depend only on another task in the same project. Cross-project links are deferred. Task B's current primary owner or a scoped manager may add or remove its dependency only with current access to both tasks; a manager's title alone confers no authority. Links may be added or removed while B remains open, with reason, actor, time and audit evidence. An early-start warning applies to unfinished predecessors linked when B starts; a later-added link cannot retroactively warn that start. These choices limit link selection and completion notices without granting access to another project. The Owner confirmed these boundaries during S10 implementation; R-026 remains the approved dependency behavior within them.
+
+## 2026-09-29 — S10 extension routing and recurrence policy (Owner decisions)
+
+Only the task's current primary owner may request a committed-deadline extension; collaborators cannot submit one. That employee chooses an eligible, currently scoped manager or the Owner as approver. The request proposes a new date and gives a reason; management's separate approve/reject decision remains required before any commitment changes. Eligibility and current authority must be checked at request and decision time, and self-approval is not implied.
+
+S10 recurrence uses daily, weekly or monthly schedules in the organization's configured timezone, with at most one generated occurrence per scheduled date. The Owner selected Asia/Kolkata as the initial organization timezone and an Owner setting may change it later. Dates missed while the scheduler is unavailable are skipped rather than backfilled. Generation pauses when the assigned owner has exited or the linked project is inactive. These rules do not authorize reactivating inactive work or generating duplicate tasks after retries. The Owner's choice for a monthly 29th, 30th or 31st that a short month lacks remains pending.
+
+For ordinary task Waiting alerts, the Owner selected a per-Team opt-in setting. Enabled alerts may reach only recipients with current authority; job title alone grants no task or notification access. Dependency-completion notices to a Waiting task's owner are a separate S10C path and do not depend on this opt-in.
+
+On 2026-09-29 the Owner additionally chose Owner-only control of the Team Waiting-alert opt-in; monthly recurring dates on the 29th–31st use the month's last day in shorter months; and recurrence may be configured on a Recurring task by its current primary owner or scoped manager. The first future occurrence date is explicit. Generated tasks copy the task title, description, priority, current owner, collaborators, estimates, tags, checklist and review requirement; commitments and dependencies remain separate. The Owner instructed that S10 be pushed to NAS only after S10 is complete and verified.
+
 ## Proposed, not yet approved
 
 ARCHITECTURE.md recommends a TypeScript/React/NestJS/PostgreSQL modular monolith and NAS-hosted Docker deployment if capacity and security checks pass. The owner selected Cloudflare Tunnel for public app ingress in C-002 Q3; the complete architecture is still a proposal. REQUIREMENT_QUESTIONS.md records remaining material product decisions and deployment verification gates before implementation.
@@ -117,3 +131,24 @@ The Owner authorized S07. A project may be created directly or from a Won lead; 
 ## 2026-09-28 — S07 transfer, completion and scope recovery (Owner decision)
 
 On an Owner transfer of the owning Branch, every contributor whose home Branch differs from the new owning Branch loses project access. The Owner may explicitly grant it again. Before S08 supplies stage and milestone templates, only the Owner may mark an Active project Completed, with a required reason confirming delivery. If the named scope approver is unavailable while a request is pending, the Owner withdraws that request with a reason, then names a replacement; the requester may submit a new request. Withdrawal preserves the original request and approval history.
+
+
+## 2026-09-28 — S08 authorization and stage/milestone authority (Owner decision)
+
+The Owner instructed S08 to start once S07 was complete. S07 completion is recorded at commit `09b5d95`, so S08 is authorized and IN PROGRESS. The Owner approved stage/milestone completion by the assigned Project Lead or explicitly granted staff. Required milestones block project completion unless the Owner or an explicitly granted Team Leader records a reasoned audited override. Current project access and assignment remain prerequisites; job titles confer no implicit permission. See S08_SPEC.md for scope, dependencies and pending verification. S09 and later remain unauthorized.
+
+## 2026-09-28 — S08 organization template authority (Owner decision)
+
+The Owner authorized staff with an explicit organization template-management grant to create reusable templates and new immutable versions. Existing projects retain the version originally applied. Owner project-creation authority remains unchanged. Implementation uses template.manage at organization scope; template.view is separate read authority, and template management confers no project access. Completion authority uses permission-defined Team Leader grants under S03's no-title-inheritance rule.
+
+## 2026-09-28 — S09 authorized; task and handover implementation
+
+The Owner confirmed the S08-to-S09 continuation and requested completion using the established Sol/Luna routing. This current instruction authorizes S09 despite older authorization snapshots. S10 and later remain unauthorized.
+
+TaskService owns scoped task commands and state policy in the approved modular monolith. OrganizationService joins session/grant revocation, task exit waits, ProjectWorkflowService lead holds, audit/outbox and mandatory alerts in one PostgreSQL transaction. Owner cancellation similarly joins the project outcome with per-task terminal stops. Row locks and optimistic versions protect competing commands; a deadlock or serialization conflict returns a refresh/retry conflict, with no partial outcome. Immutable per-task records preserve granular evidence; exit/cancellation summary audits store counts to keep payloads bounded.
+
+C-016 ordinary internal closeout approval is recorded directly by the assigned Project Lead or expressly granted assigned staff with current project access. It is not an Owner approval or external access grant. The immutable approval binds scope, task owner and target date; Owner revocation preserves that evidence and prevents later work. The S05 engine is available for later workflows but supplies no implicit closeout authority. Required task review configuration is immutable and completion fails closed until S13/S14 handlers exist. Recurring, correction, site and training labels supply no execution authority. These implementation choices preserve the approved source and introduce no new product policy.
+
+## 2026-09-29 — S09 confirmation and S10 authorization
+
+The Owner requested confirmation of S09 completion and instructed S10 to start using the established Sol/Luna routing. S09_COMPLETION_REPORT.md records development/local-staging completion and its production limits. S10 is authorized; S11 and later remain unauthorized. S10_SPEC.md maps the first ordinary Waiting/resume increment to R-025.a–b and C-002 Q6, with C-023 exit waiting retaining its separate reassignment gate. gpt-6-sol owns schema/security/backend design and review; gpt-6-luna implements bounded UI and documentation. Extension approver routing and recurrence execution rules were submitted for Owner decisions and remain unresolved until answered. No S10 whole-slice completion or production deployment is approved or claimed.

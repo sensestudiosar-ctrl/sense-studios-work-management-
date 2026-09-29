@@ -126,6 +126,18 @@ export class OrganizationController {
     return this.organization.listTeams(organizationId!, branchId);
   }
 
+  @Put(":id/timezone")
+  async changeTimezone(@Req() request: Request, @Headers("x-csrf-token") csrfToken: string | undefined, @Param("id") organizationId: string, @Body() body: unknown) {
+    const active = await this.mutation(request, csrfToken);
+    return this.organization.changeTimezone(active.row.accountId, parse(id, organizationId), parse(z.object({ timezone: z.string().trim().min(1).max(80), expectedVersion: z.number().int().min(1), reason }).strict(), body));
+  }
+
+  @Put("teams/:id/waiting-alerts")
+  async changeWaitingAlerts(@Req() request: Request, @Headers("x-csrf-token") csrfToken: string | undefined, @Param("id") teamId: string, @Body() body: unknown) {
+    const active = await this.mutation(request, csrfToken);
+    return this.organization.changeWaitingAlerts(active.row.accountId, parse(id, teamId), parse(z.object({ enabled: z.boolean(), expectedVersion: z.number().int().min(1), reason }).strict(), body));
+  }
+
   @Post("teams")
   async createTeam(@Req() request: Request, @Headers("x-csrf-token") csrfToken: string | undefined, @Body() body: unknown) {
     const active = await this.mutation(request, csrfToken);
@@ -238,10 +250,10 @@ export class OrganizationController {
 
   @Post("employees/:id/exit")
   async finalizeEmployeeExit(@Req() request: Request, @Param("id") employeeId: string, @Headers("x-csrf-token") csrfToken: string | undefined, @Body() body: unknown) {
-    await this.mutation(request, csrfToken);
+    const active = await this.mutation(request, csrfToken);
     if (!id.safeParse(employeeId).success) throw new BadRequestException("Invalid employee");
-    parse(reasonOnlyBody, body);
-    return this.organization.finalizeEmployeeExit(employeeId);
+    const input = parse(reasonOnlyBody, body);
+    return this.organization.finalizeEmployeeExit(active.row.accountId, employeeId, input.reason);
   }
 
   @Get("team/employees")

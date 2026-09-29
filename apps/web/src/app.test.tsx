@@ -21,7 +21,10 @@ function stubFetchWithCrmSetup(fetchMock: (input: RequestInfo | URL, init?: Requ
   vi.stubGlobal("fetch", vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input);
     if (url === "/api/v1/crm/setup") return Promise.resolve(response({ branches: [], sources: [], owner: false }));
+    if (url === "/api/v1/project-templates") return Promise.resolve(response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } }));
     if (url === "/api/v1/projects/setup") return Promise.resolve(response({ branches: [] }));
+    if (url === "/api/v1/tasks/setup") return Promise.resolve(response({ actorEmployeeId: null, projects: [], employees: [], canAssign: false }));
+    if (url.startsWith("/api/v1/tasks?")) return Promise.resolve(response({ total: 0, items: [] }));
     return fetchMock(input, init);
   }));
 }
@@ -373,6 +376,65 @@ describe("identity authentication shell", () => {
     expect(fetchMock.mock.calls.some(([url, init]) => url === `/api/v1/org/employees/${employee.id}/permissions` && init?.method === "POST" && JSON.parse(String(init.body)).effect === "DENY")).toBe(true);
     fireEvent.click(within(overrideRow.closest("li") as HTMLElement).getByRole("button", { name: "Revoke task.review override from designer@example.test" }));
     await waitFor(() => expect(employeeOverrides).toHaveLength(0));
+  });
+
+  it("persists Owner waiting-alert opt-in and timezone changes with reasons and versions", async () => {
+    const ownerSession = { ...session, ownerSetupRequired: false, activePasskeyCount: 2 };
+    const org = { id: "org-s10e", name: "Sense Studios", timezone: "Asia/Kolkata", settingsVersion: 3 };
+    const branch = { id: "branch-s10e", organizationId: org.id, name: "Mumbai" };
+    let currentOrg = { ...org };
+    let team = { id: "team-s10e", branchId: branch.id, name: "Design", waitingAlertsEnabled: false, settingsVersion: 7 };
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      const method = init?.method ?? "GET";
+      if (url === "/api/v1/auth/session") return response(ownerSession);
+      if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
+      if (url === "/api/v1/auth/sessions") return response([]);
+      if (url === "/api/v1/org") return response(currentOrg);
+      if (url === `/api/v1/org/branches?organizationId=${org.id}`) return response([branch]);
+      if (url === `/api/v1/org/teams?organizationId=${org.id}` && method === "GET") return response([team]);
+      if (url === `/api/v1/org/roles?organizationId=${org.id}`) return response([]);
+      if (url === `/api/v1/org/employees?organizationId=${org.id}`) return response([]);
+      if (url === `/api/v1/org/teams/${team.id}/waiting-alerts` && method === "PUT") {
+        expect(JSON.parse(String(init?.body))).toEqual({ enabled: true, expectedVersion: 7, reason: "Enable ordinary waiting notices" });
+        expect(init?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
+        team = { ...team, waitingAlertsEnabled: true, settingsVersion: 8 };
+        return response(team);
+      }
+      if (url === `/api/v1/org/${org.id}/timezone` && method === "PUT") {
+        expect(JSON.parse(String(init?.body))).toEqual({ timezone: "America/New_York", expectedVersion: 3, reason: "Use the project office calendar" });
+        expect(init?.headers).toMatchObject({ "X-CSRF-Token": session.csrfToken });
+        currentOrg = { ...currentOrg, timezone: "America/New_York", settingsVersion: 4 };
+        return response(currentOrg);
+      }
+      return response({}, 404);
+    });
+    stubFetchWithCrmSetup(fetchMock);
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
+    expect(await screen.findByRole("heading", { name: "Recurring task timezone" })).toBeInTheDocument();
+    const enableAlerts = screen.getByRole("button", { name: "Enable Waiting alerts for Design" });
+    expect(enableAlerts).toBeDisabled();
+    fireEvent.click(enableAlerts);
+    expect(fetchMock.mock.calls.some(([url, init]) => String(url).includes("/waiting-alerts") && init?.method === "PUT")).toBe(false);
+    fireEvent.change(document.getElementById("org-reason-branch") as HTMLTextAreaElement, { target: { value: "Enable ordinary waiting notices" } });
+    fireEvent.click(enableAlerts);
+    expect(await screen.findByText(/Waiting alerts enabled/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Disable Waiting alerts for Design" })).toBeInTheDocument();
+
+    fireEvent.change(screen.getByLabelText("IANA timezone"), { target: { value: "America/New_York" } });
+    fireEvent.change(document.getElementById("org-reason-branch") as HTMLTextAreaElement, { target: { value: "" } });
+    const changeTimezone = screen.getByRole("button", { name: "Change timezone" });
+    expect(changeTimezone).toBeDisabled();
+    fireEvent.click(changeTimezone);
+    expect(fetchMock.mock.calls.some(([url, init]) => String(url).endsWith("/timezone") && init?.method === "PUT")).toBe(false);
+    fireEvent.change(document.getElementById("org-reason-branch") as HTMLTextAreaElement, { target: { value: "Use the project office calendar" } });
+    fireEvent.click(changeTimezone);
+    expect(await screen.findByText("Organization settings saved.")).toBeInTheDocument();
+    expect(screen.getByLabelText("IANA timezone")).toHaveValue("America/New_York");
+    expect(fetchMock.mock.calls.filter(([url, init]) => String(url).endsWith("/timezone") && init?.method === "PUT")).toHaveLength(1);
+    expect(fetchMock.mock.calls.filter(([url]) => url === `/api/v1/org/teams?organizationId=${org.id}`)).toHaveLength(3);
   });
 
   it("shows only server-scoped team reports and sends CSRF on a reporting change", async () => {

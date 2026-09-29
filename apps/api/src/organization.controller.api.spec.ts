@@ -18,7 +18,7 @@ describe("organization HTTP security contract", () => {
   let kind: "OWNER" | "STAFF";
   let isReady: boolean;
   let sessionCreatedAt: Date;
-  let service: { createBranch: jest.Mock; listEmployees: jest.Mock; listManagedEmployees: jest.Mock; changeManagedEmployeeReporting: jest.Mock; finalizeEmployeeExit: jest.Mock };
+  let service: { createBranch: jest.Mock; listEmployees: jest.Mock; listManagedEmployees: jest.Mock; changeManagedEmployeeReporting: jest.Mock; finalizeEmployeeExit: jest.Mock; changeTimezone: jest.Mock; changeWaitingAlerts: jest.Mock };
 
   beforeAll(async () => {
     kind = "OWNER";
@@ -39,7 +39,9 @@ describe("organization HTTP security contract", () => {
       listEmployees: jest.fn(async () => []),
       listManagedEmployees: jest.fn(async () => []),
       changeManagedEmployeeReporting: jest.fn(async () => ({ changed: true })),
-      finalizeEmployeeExit: jest.fn(async () => { throw new ConflictException("S07/S09 dependency gate"); })
+      finalizeEmployeeExit: jest.fn(async () => { throw new ConflictException("S07/S09 dependency gate"); }),
+      changeTimezone: jest.fn(async () => ({ changed: true })),
+      changeWaitingAlerts: jest.fn(async () => ({ changed: true }))
     };
     const config: RuntimeConfig = {
       nodeEnv: "test", port: 4000,
@@ -144,13 +146,32 @@ describe("organization HTTP security contract", () => {
     expect(service.changeManagedEmployeeReporting).toHaveBeenCalledWith(ownerId, employeeId, reportsToId, payload.reason);
   });
 
-  it("refuses Owner exit finalization until task and active-project dependencies are available", async () => {
+  it("passes the Owner, employee and reason to exit finalization and propagates a workflow conflict", async () => {
     const employeeId = "20cfef90-f016-4b85-8c57-74ade820b71b";
     const result = await request(app.getHttpServer()).post(`/api/v1/org/employees/${employeeId}/exit`)
       .set("Cookie", cookie).set("Origin", "http://localhost:5173").set("x-csrf-token", csrfToken)
       .send({ reason: "Employee is leaving the organization" });
     expect(result.status).toBe(409);
     expect(result.body.message).toContain("S07/S09 dependency gate");
-    expect(service.finalizeEmployeeExit).toHaveBeenCalledWith(employeeId);
+    expect(service.finalizeEmployeeExit).toHaveBeenCalledWith(ownerId, employeeId, "Employee is leaving the organization");
+  });
+
+  it("requires strict, recent Owner origin and CSRF guards for Team alerts and organization timezone", async () => {
+    const id = "20cfef90-f016-4b85-8c57-74ade820b71b";
+    const alerts = { enabled: true, expectedVersion: 1, reason: "Enable team waiting visibility" };
+    const write = (path: string, body: object) => request(app.getHttpServer()).put(`/api/v1/org/${path}`).set("Cookie", cookie).set("Origin", "http://localhost:5173").set("x-csrf-token", csrfToken).send(body);
+    expect((await write(`teams/${id}/waiting-alerts`, alerts)).status).toBe(200);
+    expect(service.changeWaitingAlerts).toHaveBeenCalledWith(ownerId, id, alerts);
+    const timezone = { timezone: "Asia/Kolkata", expectedVersion: 1, reason: "Use organization local schedule" };
+    expect((await write(`${id}/timezone`, timezone)).status).toBe(200);
+    expect(service.changeTimezone).toHaveBeenCalledWith(ownerId, id, timezone);
+    expect((await write(`teams/${id}/waiting-alerts`, { ...alerts, force: true })).status).toBe(400);
+    kind = "STAFF";
+    expect((await write(`teams/${id}/waiting-alerts`, alerts)).status).toBe(403);
+    expect((await write(`${id}/timezone`, timezone)).status).toBe(403);
+    kind = "OWNER";
+    expect((await request(app.getHttpServer()).put(`/api/v1/org/teams/${id}/waiting-alerts`).set("Cookie", cookie).set("Origin", "http://localhost:5173").send(alerts)).status).toBe(403);
+    sessionCreatedAt = new Date(Date.now() - 6 * 60_000);
+    expect((await write(`${id}/timezone`, timezone)).status).toBe(403);
   });
 });

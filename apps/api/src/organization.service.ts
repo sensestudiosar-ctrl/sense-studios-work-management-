@@ -1,15 +1,19 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
-import { AccountKind, AccountState, EmployeeState, OrganizationEventType, PermissionEffect, PermissionScopeKind, Prisma } from "./generated/prisma/client.js";
+import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { AccountKind, AccountState, EmployeeState, NotificationChannel, OrganizationEventType, PermissionEffect, PermissionScopeKind, Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
 import { IdentityService } from "./identity.service.js";
 import { AuthorizationService } from "./authorization.service.js";
 import { recordOrganizationMutation } from "./organization-events.js";
+import { ProjectWorkflowService } from "./project-workflow.service.js";
+import { TaskService } from "./task.service.js";
+import { recordProjectEvent } from "./project-events.js";
+import { NotificationsService } from "./notifications.service.js";
 
 type PermissionScopeInput = { scopeKind: PermissionScopeKind; branchId?: string; teamId?: string };
 
 @Injectable()
 export class OrganizationService {
-  constructor(private readonly database: DatabaseService, private readonly identity: IdentityService, private readonly authorization: AuthorizationService) {}
+  constructor(private readonly database: DatabaseService, private readonly identity: IdentityService, private readonly authorization: AuthorizationService, private readonly projects: ProjectWorkflowService, private readonly tasks: TaskService, private readonly notifications: NotificationsService) {}
 
   private get db() {
     return this.database.prisma;
@@ -17,6 +21,44 @@ export class OrganizationService {
 
   async getOrganization() {
     return this.db.organization.findFirst({ include: { branches: { where: { active: true }, orderBy: { name: "asc" } } } });
+  }
+
+  private async settingsOwner(tx: Prisma.TransactionClient, actorId: string) {
+    const actors = await tx.$queryRaw<Array<{ id: string }>>`SELECT "id" FROM "accounts" WHERE "id"=${actorId}::uuid AND "kind"='OWNER' AND "state"='ACTIVE' FOR SHARE`;
+    if (!actors[0]) throw new ForbiddenException("Owner access is required");
+  }
+
+  async changeTimezone(actorId: string, organizationId: string, input: { timezone: string; expectedVersion: number; reason: string }) {
+    try { new Intl.DateTimeFormat("en", { timeZone: input.timezone }); }
+    catch { throw new BadRequestException("Invalid organization timezone"); }
+    if (!input.timezone.includes("/") && input.timezone !== "UTC") throw new BadRequestException("An IANA timezone is required");
+    const reason = input.reason.trim();
+    if (reason.length < 3 || reason.length > 1000) throw new BadRequestException("A settings reason is required");
+    return this.db.$transaction(async (tx) => {
+      await this.settingsOwner(tx, actorId);
+      await tx.$queryRaw`SELECT "id" FROM "organizations" WHERE "id"=${organizationId}::uuid FOR UPDATE`;
+      const current = await tx.organization.findUnique({ where: { id: organizationId } });
+      if (!current) throw new NotFoundException("Organization not found");
+      if (current.settingsVersion !== input.expectedVersion || current.timezone === input.timezone) throw new ConflictException("Organization settings changed or timezone is unchanged");
+      const updated = await tx.organization.update({ where: { id: organizationId }, data: { timezone: input.timezone, settingsVersion: { increment: 1 } } });
+      await recordProjectEvent(tx, { organizationId, actorId, eventName: "organization.settings.changed", subjectType: "organization", subjectId: organizationId, reason, before: { timezone: current.timezone, settingsVersion: current.settingsVersion }, after: { timezone: updated.timezone, settingsVersion: updated.settingsVersion } });
+      return updated;
+    });
+  }
+
+  async changeWaitingAlerts(actorId: string, teamId: string, input: { enabled: boolean; expectedVersion: number; reason: string }) {
+    const reason = input.reason.trim();
+    if (reason.length < 3 || reason.length > 1000) throw new BadRequestException("A settings reason is required");
+    return this.db.$transaction(async (tx) => {
+      await this.settingsOwner(tx, actorId);
+      await tx.$queryRaw`SELECT "id" FROM "teams" WHERE "id"=${teamId}::uuid FOR UPDATE`;
+      const current = await tx.team.findUnique({ where: { id: teamId } });
+      if (!current || !current.active) throw new NotFoundException("Active team not found");
+      if (current.settingsVersion !== input.expectedVersion || current.waitingAlertsEnabled === input.enabled) throw new ConflictException("Team settings changed or alert setting is unchanged");
+      const updated = await tx.team.update({ where: { id: teamId }, data: { waitingAlertsEnabled: input.enabled, settingsVersion: { increment: 1 } } });
+      await recordOrganizationMutation(tx, { organizationId: current.organizationId, eventType: OrganizationEventType.TEAM_UPDATED, actorId, subjectId: teamId, reason, before: { waitingAlertsEnabled: current.waitingAlertsEnabled, settingsVersion: current.settingsVersion }, after: { waitingAlertsEnabled: updated.waitingAlertsEnabled, settingsVersion: updated.settingsVersion } });
+      return updated;
+    });
   }
 
   async createOrganization(actorId: string, name: string, reason: string) {
@@ -458,9 +500,38 @@ export class OrganizationService {
     });
   }
 
-  async finalizeEmployeeExit(employeeId: string) {
-    const employee = await this.db.employee.findFirst({ where: { id: employeeId, state: { not: EmployeeState.EXITED } }, select: { id: true } });
-    if (!employee) throw new NotFoundException("Employee not found");
-    throw new ConflictException("Employee exit cannot be finalized until active project leads and unfinished tasks are handled by S07 and S09");
+  async finalizeEmployeeExit(actorId: string, employeeId: string, reason: string) {
+    return this.db.$transaction(async (tx) => {
+      const actor = await tx.account.findUnique({ where: { id: actorId } });
+      if (!actor || actor.kind !== AccountKind.OWNER || actor.state !== AccountState.ACTIVE) throw new NotFoundException("Active Owner not found");
+      await tx.$queryRaw`SELECT "id" FROM "employees" WHERE "id" = ${employeeId}::uuid FOR UPDATE`;
+      const employee = await tx.employee.findFirst({ where: { id: employeeId, state: { not: EmployeeState.EXITED } }, include: { account: true } });
+      if (!employee) throw new NotFoundException("Employee not found");
+      const now = new Date();
+      if (employee.account.state === AccountState.ACTIVE) await this.identity.suspendStaffWithinTransaction(tx, employee.accountId, actorId, reason);
+      else await tx.session.updateMany({ where: { accountId: employee.accountId, revokedAt: null }, data: { revokedAt: now } });
+      const waitingTaskIds = await this.tasks.waitForEmployeeExit(tx, employee.organizationId, employee.id, actorId);
+      const heldProjectIds = await this.projects.holdForLeadExit(tx, employee.organizationId, employee.id, actorId);
+      await tx.employeePermissionOverride.updateMany({ where: { employeeId, revokedAt: null }, data: { revokedAt: now, revokedById: actorId, revocationReason: reason } });
+      await tx.employeeJobRoleAssignment.updateMany({ where: { employeeId, effectiveTo: null }, data: { effectiveTo: now } });
+      await tx.employeeMembershipHistory.updateMany({ where: { employeeId, effectiveTo: null }, data: { effectiveTo: now } });
+      await tx.employee.update({ where: { id: employeeId }, data: { state: EmployeeState.EXITED, exitedAt: now } });
+      const eventId = await recordProjectEvent(tx, { organizationId: employee.organizationId, actorId, eventName: "organization.employee.exited", subjectType: "employee", subjectId: employeeId, reason, before: { state: employee.state }, after: { state: EmployeeState.EXITED, waitingTaskCount: waitingTaskIds.length, heldProjectCount: heldProjectIds.length, exitedAt: now.toISOString() } });
+      const owner = await tx.account.findFirst({ where: { kind: AccountKind.OWNER, state: AccountState.ACTIVE }, select: { id: true } });
+      if (!owner) throw new ConflictException("Owner alert recipient is unavailable");
+      await this.notifications.createForEvent(tx, { eventId, recipientAccountId: owner.id, channel: NotificationChannel.IN_APP, category: "employee.exit", title: "Employee exit requires handover", body: `${waitingTaskIds.length} tasks need reassignment; ${heldProjectIds.length} projects were placed on hold.`, internalRoute: "/", critical: true, mandatory: true });
+      if (heldProjectIds.length) {
+        for (const projectId of heldProjectIds) {
+          const holdEvent = await tx.domainEvent.findFirstOrThrow({ where: { organizationId: employee.organizationId, eventName: "project.on_hold", subjectId: projectId, actorId, occurredAt: { gte: now } }, orderBy: { occurredAt: "desc" } });
+          const assignments = await tx.projectAssignment.findMany({ where: { organizationId: employee.organizationId, projectId, revokedAt: null }, select: { employeeId: true } });
+          const assignedEmployees = await tx.employee.findMany({ where: { id: { in: assignments.map((row) => row.employeeId) }, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE } }, select: { accountId: true } });
+          for (const recipientAccountId of new Set(assignedEmployees.map((row) => row.accountId))) await this.notifications.createForEvent(tx, { eventId: holdEvent.id, recipientAccountId, channel: NotificationChannel.IN_APP, category: "project.lead_exit_hold", title: "Project on hold", body: "A Project Lead exit has put an assigned project on hold until the Owner appoints a replacement.", internalRoute: "/", critical: true, mandatory: true });
+        }
+      }
+      return { exited: true, waitingTaskIds, heldProjectIds };
+    }, { timeout: 30_000 }).catch((error: unknown) => {
+      if (error instanceof Prisma.PrismaClientKnownRequestError && (error.code === "P2034" || error.code === "P2010" && error.meta?.code === "40P01")) throw new ConflictException("Work changed concurrently. Refresh and retry exit");
+      throw error;
+    });
   }
 }

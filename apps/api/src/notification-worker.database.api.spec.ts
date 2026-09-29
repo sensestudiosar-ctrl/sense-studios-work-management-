@@ -31,6 +31,16 @@ workerDescribe("notification worker concurrency with PostgreSQL", () => {
   afterAll(async () => { await database?.onModuleDestroy(); await secondDatabase?.onModuleDestroy(); });
 
   it("claims one outbox item across concurrent workers and rechecks persisted mailbox verification", async () => {
+    // Earlier integration suites preserve durable approval/project outbox rows.
+    // The production worker correctly claims globally, so isolate this fixture
+    // with row locks instead of deleting or rewriting other suites' evidence.
+    const olderEvent = await database.prisma.domainEvent.create({ data: {
+      eventName: "project.created", schemaVersion: 1, subjectType: "project", subjectId: randomUUID(),
+      correlationId: randomUUID(), payload: { test: true }
+    } });
+    const olderDelivery = await database.prisma.outboxDelivery.create({ data: {
+      eventId: olderEvent.id, consumer: OutboxConsumer.NTF, availableAt: new Date("2000-01-01T00:00:00Z")
+    } });
     const account = await database.prisma.account.create({ data: {
       normalizedEmail: `worker-${randomUUID()}@example.test`, kind: AccountKind.STAFF,
       state: AccountState.ACTIVE, emailVerifiedAt: new Date()
@@ -58,14 +68,23 @@ workerDescribe("notification worker concurrency with PostgreSQL", () => {
     const concurrentWorker = new NotificationWorker(secondDatabase, email as never, new PersistedVerifiedAddressPredicate(secondDatabase), recipients, config);
 
     try {
-      const first = worker.runBatch();
-      await started;
-      await expect(concurrentWorker.runBatch()).resolves.toBe(0);
-      expect(sends).toBe(1);
-      finishSend?.();
-      await expect(first).resolves.toBe(1);
+      await database.prisma.$transaction(async (isolation) => {
+        // Workers use independent connections and SKIP LOCKED. Only our delivery
+        // can be claimed during this test, including by the competing worker.
+        await isolation.$queryRaw`SELECT "id" FROM "outbox_deliveries" WHERE "id" <> ${delivery.id}::uuid FOR UPDATE`;
+        const first = worker.runBatch();
+        try {
+          await Promise.race([started, first.then(() => { throw new Error("Worker completed before sending the fixture email"); })]);
+          await expect(concurrentWorker.runBatch()).resolves.toBe(0);
+          expect(sends).toBe(1);
+        } finally {
+          finishSend?.();
+          await expect(first).resolves.toBe(1);
+        }
+      });
       expect((await database.prisma.notification.findUniqueOrThrow({ where: { id: notification.id } })).deliveryState).toBe("DELIVERED");
       expect((await database.prisma.outboxDelivery.findUniqueOrThrow({ where: { id: delivery.id } })).state).toBe("DELIVERED");
+      expect(await database.prisma.outboxDelivery.findUniqueOrThrow({ where: { id: olderDelivery.id } })).toEqual(olderDelivery);
     } finally {
       finishSend?.();
       await database.prisma.notification.deleteMany({ where: { id: notification.id } });

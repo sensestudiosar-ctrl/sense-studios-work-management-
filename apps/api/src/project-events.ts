@@ -6,7 +6,7 @@ import { assertSafeDomainPayload } from "./domain-event-catalogue.js";
 export async function recordProjectEvent(tx: Prisma.TransactionClient, input: {
   organizationId: string; actorId: string; eventName: string; subjectType: string; subjectId: string;
   reason: string; before?: Record<string, unknown>; after?: Record<string, unknown>;
-}): Promise<void> {
+}): Promise<string> {
   const occurredAt = new Date();
   const correlationId = randomUUID();
   const retentionExpiresAt = new Date(occurredAt);
@@ -33,4 +33,5 @@ export async function recordProjectEvent(tx: Prisma.TransactionClient, input: {
     actorId: input.actorId, subjectType: input.subjectType, subjectId: input.subjectId, correlationId, payload
   } });
   await tx.outboxDelivery.create({ data: { eventId: event.id, consumer: OutboxConsumer.NTF } });
+  return event.id;
 }

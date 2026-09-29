@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04, S05, S06 and S07 on 2026-09-27. S01–S07 are COMPLETE for development/local staging; S08+ remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805, approved S01 complete for development/local-staging, authorized S02 Identity and Sessions and S03 Branch, Employees and RBAC on 2026-09-26, and authorized S04–S09 by 2026-09-28. S01–S09 are COMPLETE for development/local staging; S10 was authorized on 2026-09-29 and is COMPLETE for development/local staging. S10A–F implementations cover ordinary Waiting/resume, committed dates/extensions, dependencies, configured Waiting notices and recurrence; S10 whole-slice acceptance passed. S11 and later remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -28,21 +28,21 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-007 | Nightly encrypted database-and-file backup to separate offsite computer/NAS; one-day loss target | FND/DOC | S01/S11 | APPROVED; NOT IMPLEMENTED |
 | C-008 | Staff passkeys, external email codes, client approval passkey, Brevo and launch channels | IDN/PORT/NTF | S02/S04/S14 | APPROVED; internal S02 passkey portion COMPLETE for development/local staging; external email codes and client approval passkey deferred to S14 |
 | C-009 | Retention clock anchors, scheduled expiry, notice and holds | AUD/DOC/WFM | S04/S11/S17 | APPROVED; S04 audit controls COMPLETE for development/local staging; legal/contract and backup validation remain production gates; other categories later |
-| C-010 | Owner-only cancellation from Draft/Active/On Hold with reason and audit | PRJ/ACC/APR | S05/S07/S09 | APPROVED; NOT IMPLEMENTED |
-| C-011 | Stop unfinished delivery tasks on project cancellation; preserve history; permit distinct linked closeout tasks | PRJ/TSK/NTF | S09/S14 | APPROVED; NOT IMPLEMENTED |
-| C-012 | Vendor/consultant access ends at project cancellation; Owner revokes active native CAD links first; closeout access requires separate approval | PRJ/ACC/DOC/PORT | S09/S21 | APPROVED; NOT IMPLEMENTED |
-| C-013 | Cancelled-project client portal is read-only for previously issued PDF/images and own approval history; no new review/comment/approval | PRJ/ACC/DOC/PORT/REV | S09/S14 | APPROVED; NOT IMPLEMENTED |
-| C-014 | Cancelled-project client read-only access expires automatically after an Owner-chosen period; Owner may approve an extension | ACC/DOC/PORT | S14 | APPROVED; NOT IMPLEMENTED |
-| C-015 | Owner sets a separate required expiry for each client project-access grant at cancellation; no shared period | PRJ/ACC/PORT | S09/S14 | APPROVED; NOT IMPLEMENTED |
-| C-016 | Assigned Project Lead or explicitly authorized Team Leader approves ordinary closeout tasks and scoped time-limited vendor/consultant access; Owner alone issues CAD links | PRJ/TSK/ACC/PORT | S09/S21 | APPROVED; NOT IMPLEMENTED |
+| C-010 | Owner-only cancellation from Draft/Active/On Hold with reason and audit | PRJ/ACC/APR | S05/S07/S09 | S09 COMPLETE for development/local staging; verified in final S09 acceptance |
+| C-011 | Stop unfinished delivery tasks on project cancellation; preserve history; permit distinct linked closeout tasks | PRJ/TSK/NTF | S09/S14 | S09 internal task-stop/history and closeout approval COMPLETE for development/local staging; external consequences remain deferred |
+| C-012 | Vendor/consultant access ends at project cancellation; Owner revokes active native CAD links first; closeout access requires separate approval | PRJ/ACC/DOC/PORT | S09/S21 | External grants and CAD links do not exist in the S09 schema; integration deferred to S21 |
+| C-013 | Cancelled-project client portal is read-only for previously issued PDF/images and own approval history; no new review/comment/approval | PRJ/ACC/DOC/PORT/REV | S09/S14 | Client portal and issued-record controls deferred to S14; no such grants exist in S09 schema |
+| C-014 | Cancelled-project client read-only access expires automatically after an Owner-chosen period; Owner may approve an extension | ACC/DOC/PORT | S14 | Deferred to S14; no client portal grants exist in S09 schema |
+| C-015 | Owner sets a separate required expiry for each client project-access grant at cancellation; no shared period | PRJ/ACC/PORT | S09/S14 | Deferred to S14/S21 integration; no client grants exist in S09 schema |
+| C-016 | Assigned Project Lead or explicitly authorized Team Leader approves ordinary closeout tasks and scoped time-limited vendor/consultant access; Owner alone issues CAD links | PRJ/TSK/ACC/PORT | S09/S21 | S09 internal closeout task approval COMPLETE for development/local staging; scoped time-limited external access/CAD links deferred to S21 |
 | C-017 | Authorized lead handler may jump forward over unused sales stages with required reason and audited skipped-stage evidence | CRM/AUD | S06 | COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
 | C-018 | Returning Lost enquiry creates a new linked lead; prior Lost outcome and history remain intact | CRM/AUD/ACC | S06 | COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
 | C-019 | Authorized handler may move a nonterminal lead to an earlier nonterminal stage with reason and preserved history | CRM/AUD/ACC | S06 | COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
 | C-020 | Project Lead/authorized Team Leader appoints a named snag verifier independent of the fixer; verification attempts retain evidence | SITE/ACC/AUD | S20 | APPROVED; NOT IMPLEMENTED |
 | C-021 | Assigned Project Lead/explicitly authorized Team Leader makes a separate Closed decision after passed snag verification | SITE/ACC/AUD | S20 | APPROVED; NOT IMPLEMENTED |
 | C-022 | Approved-leave cancellation requires same-level management decision; reversal retains ledger and capacity history | WFM/APR/AUD/NTF | S17 | APPROVED; NOT IMPLEMENTED |
-| C-023 | Employee exit immediately revokes access; unfinished tasks wait for individual authorized reassignment | ORG/ACC/TSK/AUD/NTF | S03/S09 | APPROVED; S03 supplies immediate suspension and fail-closed exit refusal; atomic task-wait and reassignment workflow awaits S09 |
-| C-024 | Exiting Project Lead puts Active project On Hold; Owner names replacement before resume | ORG/PRJ/ACC/AUD/NTF | S03/S07/S09 | APPROVED; S07 project hold/replacement primitive COMPLETE; S03 effective exit remains gated until S09 task waits are atomic with it |
+| C-023 | Employee exit immediately revokes access; unfinished tasks wait for individual authorized reassignment | ORG/ACC/TSK/AUD/NTF | S03/S09 | S09 atomic exit revocation, task waits and reassignment gate COMPLETE for development/local staging |
+| C-024 | Exiting Project Lead puts Active project On Hold; Owner names replacement before resume | ORG/PRJ/ACC/AUD/NTF | S03/S07/S09 | S09 atomic employee-exit project hold and Owner replacement gate COMPLETE for development/local staging |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
 | R-002 | PRODUCT VISION | PRJ | S07+ | S07 project ownership foundation COMPLETE; later delivery modules remain planned |
 | R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |
@@ -51,24 +51,24 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-006 | PERMISSION MODEL | ACC/ORG/PRJ | S03/S07 | S03 scoped grants/evaluator and S07 project assignment plus permission checks COMPLETE |
 | R-007 | OWNER: R-007.a authentication identity, R-007.b organization authority, R-007.c account recovery/security duties | IDN/ACC/ORG | S02/S03 | Identity portions of R-007.a/c implemented in S02 for development/local staging; organization authority and business permissions implemented in S03 |
 | R-008 | TEAM LEADER | ACC/ORG | S03 | S03 COMPLETE: explicit Team-scoped report-tree listing and reporting updates; no title-based authority |
-| R-009 | EMPLOYEE | ACC/ORG | S03 | S03 COMPLETE for identity-linked home membership and scoped Team UI; own/assigned work APIs await their owning slices |
+| R-009 | EMPLOYEE | ACC/ORG | S03/S09 | S03 identity-linked home membership and scoped Team UI plus S09 own/assigned task APIs COMPLETE for development/local staging |
 | R-010 | LEAD MANAGEMENT | CRM | S06 | R-010.a–d COMPLETE for development/local staging; see S06_COMPLETION_REPORT.md |
 | R-011 | PROJECT DELIVERY TYPES | PRJ | S07 | S07 COMPLETE: Design/Turnkey project delivery type separate from service scopes |
 | R-012 | PROJECT SERVICE SCOPES | PRJ | S07 | S07 COMPLETE: immutable baseline and S05-backed named approval for additions |
 | R-013 | PROJECT ACCOUNTABILITY | PRJ | S07 | S07 COMPLETE: one current eligible Active Project Lead, assignment and lead history |
-| R-014 | DESIGN PROJECT DEFAULT WORKFLOW | PRJ/TMP | S08 | NOT STARTED |
-| R-015 | TURNKEY DEFAULT WORKFLOW | PRJ/TMP | S08 | NOT STARTED |
-| R-016 | PROJECT STATUS STATE MACHINE | PRJ/TMP | S07/S08/S09 | S07 COMPLETE for Draft, Active, On Hold, Completed, Archived; effective cancellation waits for S09 and template gates for S08 |
-| R-017 | PROJECT TEMPLATES | PRJ/TMP | S08 | NOT STARTED |
-| R-018 | TASK OWNERSHIP | TSK | S09 | NOT STARTED |
-| R-019 | TASK CREATION | TSK | S09 | NOT STARTED |
-| R-020 | TASK TYPES | TSK | S09 | NOT STARTED |
-| R-021 | TASK FIELDS | TSK | S09 | NOT STARTED |
-| R-022 | TASK PRIORITIES | TSK | S09 | NOT STARTED |
-| R-023 | TASK DATES | TSK | S10 | NOT STARTED |
-| R-024 | TASK STATE MACHINE | TSK | S10 | NOT STARTED |
-| R-025 | WAITING / BLOCKED WORK | TSK | S10 | NOT STARTED |
-| R-026 | DEPENDENCIES | TSK | S10 | NOT STARTED |
+| R-014 | DESIGN PROJECT DEFAULT WORKFLOW | PRJ/TMP | S08 | S08 supported template/default scope COMPLETE; dependent runtime behavior remains with later slices; see S08_COMPLETION_REPORT.md |
+| R-015 | TURNKEY DEFAULT WORKFLOW | PRJ/TMP | S08 | S08 supported template/default scope COMPLETE; dependent runtime behavior remains with later slices; see S08_COMPLETION_REPORT.md |
+| R-016 | PROJECT STATUS STATE MACHINE | PRJ/TMP | S07/S08/S09 | S07 lifecycle, S08 template gates and S09 Owner-only effective cancellation COMPLETE for development/local staging |
+| R-017 | PROJECT TEMPLATES | PRJ/TMP | S08 | S08 supported template scope COMPLETE; see S08_COMPLETION_REPORT.md |
+| R-018 | TASK OWNERSHIP | TSK | S09 | S09 owner/collaborator persistence and scoped assignment COMPLETE for development/local staging |
+| R-019 | TASK CREATION | TSK | S09 | S09 self-task and authorized assignment API/UI COMPLETE for development/local staging |
+| R-020 | TASK TYPES | TSK | S09/S10 | S09 task types persisted; S10F implements timezone-aware DAILY/WEEKLY/MONTHLY recurrence for existing RECURRING source tasks. Review/site/training execution remains deferred to owning slices. |
+| R-021 | TASK FIELDS | TSK | S09/S10 | S09 required/optional task metadata and task views; S10F adds reasoned recurrence rules, pause/resume and generated occurrences. Attachments and later workflow fields remain deferred per owning specs. |
+| R-022 | TASK PRIORITIES | TSK | S09 | S09 priorities persisted and visible; Critical escalation deferred to S24; S09 COMPLETE |
+| R-023 | TASK DATES | TSK | S09/S10 | R-023.a operational target date in S09; R-023.b controlled committed-date setting/change history in S10B; R-023.c current-primary-owner extension request with employee-selected eligible scoped manager/Owner decision and Owner withdrawal implemented in S10D. S10 whole-slice acceptance passed. |
+| R-024 | TASK STATE MACHINE | TSK | S09/S10/S13/S14 | S09 states/history, exit wait, cancellation stop, and fail-closed review gates COMPLETE; later review handlers deferred |
+| R-025 | WAITING / BLOCKED WORK | TSK | S10 | S10A ordinary Waiting/resume R-025.a–b; S10C per-Waiting-task dependency-completion notice R-025.d; S10E Owner-configured per-Team ordinary Waiting notices R-025.c with delivery-time state/access rechecks. Forced-exit notices remain separate. |
+| R-026 | DEPENDENCIES | TSK | S10 | S10C same-project finish-to-start edges, cycle denial, reasoned edits and explicit early-start warning/evidence. Cross-project links remain deferred by Owner decision; see S10_SPEC.md. |
 | R-027 | INTERNAL REVIEWS | REV | S13 | NOT STARTED |
 | R-028 | CORRECTION LOOP | REV | S13 | NOT STARTED |
 | R-029 | CORRECTION SEVERITY | REV | S13 | NOT STARTED |
@@ -134,7 +134,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-089 | AI SAFETY / HUMAN CONTROL | AI | S27 | NOT STARTED |
 | R-090 | AI AUDITABILITY | AI | S27 | NOT STARTED |
 | R-091 | BACKUP | FND | S01 | NOT STARTED |
-| R-092 | CRITICAL DOMAIN INVARIANTS | ACC/AUD/PRJ/TSK/DOC/PER | S03/S09/S12/S14/S23/S26/S27 | S03 identity, membership, permission and branch-scope invariants COMPLETE; task/project/document/performance/automation/AI invariants await their slices |
+| R-092 | CRITICAL DOMAIN INVARIANTS | ACC/AUD/PRJ/TSK/DOC/PER | S03/S09/S12/S14/S23/S26/S27 | S03 identity/membership/permission, S07–S09 project/task scope, state and audit invariants COMPLETE for development/local staging; document/performance/automation/AI invariants remain with their slices |
 | R-093 | ARCHITECTURE PRINCIPLES | GOV | S01 | NOT STARTED |
 | R-094 | RECOMMENDED MODULE BOUNDARIES | GOV | S01 | NOT STARTED |
 | R-095 | DOMAIN EVENTS | EVT | S04 | COMPLETE for development/local staging — versioned catalogue, safe payload validation, S03 producer/outbox atomicity, retries and concurrent claims verified on PostgreSQL |
@@ -161,7 +161,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 
 ## S06 authorization and initial implementation — 2026-09-27
 
-Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07 is COMPLETE for development/local staging; S08+ remain unauthorized.
+Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07 and S08 are COMPLETE for development/local staging; S09 is authorized and COMPLETE for development/local staging; S10 was Owner-authorized on 2026-09-29 and is COMPLETE for development/local staging; S11 and later remain unauthorized.
 
 ## S07A initial implementation — 2026-09-27
 
@@ -169,4 +169,10 @@ R-011.a, R-012.a, R-013.a, R-016.a–b and C-002 Q2/Q15 are expanded in S07_SPEC
 
 ## S07 completion — 2026-09-28
 
-R-011.a, R-012.a–b, R-013.a and the S07 portion of R-016.a–b, C-002 Q2/Q15 and C-024.a are implemented with branch-owned persistence, exact Won conversion, explicit grants, Project Lead and transfer history, named scope approval, reasoned lifecycle, cancellation requests and the lead-exit hold primitive. Effective cancellation and employee exit remain gated on S09; S08 adds template/milestone gates. See S07_COMPLETION_REPORT.md for evidence and precise limits.
+R-011.a, R-012.a–b, R-013.a and the S07 portion of R-016.a–b, C-002 Q2/Q15 and C-024.a are implemented with branch-owned persistence, exact Won conversion, explicit grants, Project Lead and transfer history, named scope approval, reasoned lifecycle, cancellation requests and the lead-exit hold primitive. Effective cancellation and atomic employee exit were completed and verified in S09. S08 template/milestone gates are COMPLETE. See S07_COMPLETION_REPORT.md for historical S07 evidence and precise limits.
+
+## S09 completion — 2026-09-28
+
+The authorized S09 portions of R-018.a–b, R-019.a–c, R-020.a, R-021.a–b, R-022.a–b, R-023.a, R-024.a–b, C-010/C-011.a–b/C-016.a/C-023.a–b/C-024.a are verified for development/local staging. S09 delivers task schema, scoped backend/API, responsive own/assigned UI, reasoned state and assignment history, audit/events/outbox, Owner-only cancellation with atomic unfinished-task stops, internal closeout approval/revocation, and atomic employee exit with account/session/grant revocation, task Waiting/reassignment gate, and Active lead project hold/Owner replacement. C-012–C-015 external client/vendor/CAD access effects and C-016.b external closeout grants remain deferred to S14/S21; those grants and links are absent from the current schema. Committed due dates/dependencies/recurrence remain S10; review execution remains S13/S14; Critical escalation remains S24. S09_SPEC.md identifies each implemented and deferred sub-clause.
+
+Final `pnpm verify` exited 0: 108 API unit, 51 web unit, 91 PostgreSQL/API, and 13 Playwright tests. The final UI increment also passed the 52-test web suite, web typecheck/lint/build, and two task Playwright journeys. S09 is COMPLETE for development/local staging; production gates remain separate. S10 was Owner-authorized on 2026-09-29 and is COMPLETE for development/local staging; S11 and later remain unauthorized.

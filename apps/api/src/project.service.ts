@@ -2,6 +2,8 @@ import { ConflictException, ForbiddenException, Injectable, NotFoundException } 
 import { AccountKind, AccountState, Prisma, ProjectDeliveryType, ProjectStatus } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
 import { recordProjectEvent } from "./project-events.js";
+import { createHash } from "node:crypto";
+import { templateDefinitionSchema } from "./template-definition.js";
 
 export interface ProjectActor { accountId: string; kind: AccountKind; organizationId: string; }
 type Tx = Prisma.TransactionClient;
@@ -30,10 +32,26 @@ export class ProjectService {
     const rows = await this.db.branch.findMany({ where: { organizationId: actor.organizationId, active: true }, orderBy: [{ name: "asc" }, { id: "asc" }], select: { id: true, name: true } });
     return { branches: rows };
   }
-  async create(actor: ProjectActor, input: { branchId: string; title: string; deliveryType: ProjectDeliveryType; scopes: string[]; clientId?: string | undefined; wonLeadId?: string | undefined; reason: string }) {
+  async create(actor: ProjectActor, input: { branchId: string; title: string; deliveryType: ProjectDeliveryType; scopes: string[]; clientId?: string | undefined; wonLeadId?: string | undefined; reason: string; templateVersionId?: string | undefined; idempotencyKey?: string | undefined }) {
     this.owner(actor);
     return this.db.$transaction(async (tx) => {
       await this.lockedOwner(tx, actor);
+      if (!!input.templateVersionId !== !!input.idempotencyKey) throw new ConflictException("Template creation requires a version and retry key");
+      const payloadHash = createHash("sha256").update(JSON.stringify({ branchId: input.branchId, title: input.title, deliveryType: input.deliveryType, scopes: input.scopes, clientId: input.clientId ?? null, wonLeadId: input.wonLeadId ?? null, reason: input.reason, templateVersionId: input.templateVersionId ?? null })).digest("hex");
+      if (input.idempotencyKey) {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`${actor.organizationId}:${actor.accountId}:${input.idempotencyKey}`}, 0))`;
+        const receipt = await tx.projectCreationReceipt.findUnique({ where: { organizationId_actorId_key: { organizationId: actor.organizationId, actorId: actor.accountId, key: input.idempotencyKey } } });
+        if (receipt) {
+          if (receipt.payloadHash !== payloadHash) throw new ConflictException("Retry key was used for different project details");
+          const project = await tx.project.findUniqueOrThrow({ where: { id: receipt.projectId }, include: { scopes: true, statusChanges: true, branch: { select: { id: true, name: true } }, client: { select: { id: true, name: true } } } });
+          const won = project.wonStageChangeId ? await tx.leadStageChange.findUnique({ where: { id: project.wonStageChangeId } }) : null;
+          return { project, ...(won ? { wonLeadProvenance: { leadId: won.leadId, stageChangeId: won.id, occurredAt: won.occurredAt.toISOString(), actorId: won.actorId, fromStage: won.fromStage, toStage: won.toStage, leadVersion: won.leadVersion, skippedStages: won.skippedStages } } : {}) };
+        }
+      }
+      const templateVersion = input.templateVersionId ? await tx.projectTemplateVersion.findFirst({ where: { id: input.templateVersionId, organizationId: actor.organizationId, template: { active: true } } }) : null;
+      if (input.templateVersionId && !templateVersion) throw new NotFoundException("Template version not found");
+      const definition = templateVersion ? templateDefinitionSchema.parse(templateVersion.definition) : null;
+      if (definition && (definition.deliveryType !== input.deliveryType || JSON.stringify(definition.scopes) !== JSON.stringify(input.scopes))) throw new ConflictException("Project type and scopes must match the selected template version");
       const branchRows = await tx.$queryRaw<Array<{ id: string }>>`SELECT "id" FROM "branches" WHERE "id" = ${input.branchId}::uuid AND "organizationId" = ${actor.organizationId}::uuid AND "active" = true FOR SHARE`;
       if (!branchRows[0]) throw new NotFoundException("Branch not found");
       let clientId = input.clientId;
@@ -65,6 +83,15 @@ export class ProjectService {
         throw error;
       }
       const persisted = await tx.project.findUniqueOrThrow({ where: { id: project.id }, include: { scopes: true, statusChanges: true, branch: { select: { id: true, name: true } }, client: { select: { id: true, name: true } } } });
+      if (templateVersion && definition) {
+        await tx.projectPlan.create({ data: { organizationId: actor.organizationId, projectId: persisted.id, templateVersionId: templateVersion.id, definition: definition as Prisma.InputJsonValue } });
+        await tx.projectPlanItem.createMany({ data: [
+          ...definition.stages.map((stage, position) => ({ organizationId: actor.organizationId, projectId: persisted.id, kind: "STAGE", key: stage.key, label: stage.label, position, required: false })),
+          ...definition.milestones.map((milestone, position) => ({ organizationId: actor.organizationId, projectId: persisted.id, kind: "MILESTONE", key: milestone.key, label: milestone.label, stageKey: milestone.stageKey, position, required: milestone.required, ...(milestone.targetOffsetDays !== undefined ? { targetAt: new Date(persisted.createdAt.getTime() + milestone.targetOffsetDays * 86400000) } : {}) }))
+        ] });
+        await tx.projectCreationReceipt.create({ data: { organizationId: actor.organizationId, actorId: actor.accountId, key: input.idempotencyKey!, payloadHash, projectId: persisted.id } });
+        await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.template_applied", subjectType: "project", subjectId: persisted.id, reason: input.reason, after: { templateVersionId: templateVersion.id, templateNumber: templateVersion.number, stageCount: definition.stages.length, milestoneCount: definition.milestones.length, folderCount: definition.folders.length } });
+      }
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.created", subjectType: "project", subjectId: persisted.id, reason: input.reason, after: { projectId: persisted.id, branchId: persisted.branchId, title: persisted.title, deliveryType: persisted.deliveryType, status: persisted.status, version: persisted.version, clientId: persisted.clientId, wonLead: wonProvenance ?? null, scopeIds: persisted.scopes.map((scope) => scope.id), statusChangeId: persisted.statusChanges[0]?.id } });
       return { project: persisted, ...(wonProvenance ? { wonLeadProvenance: wonProvenance } : {}) };
     });

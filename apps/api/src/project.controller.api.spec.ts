@@ -9,12 +9,15 @@ import { IdentityService } from "./identity.service.js";
 import { ProjectController } from "./project.controller.js";
 import { ProjectService } from "./project.service.js";
 import { ProjectWorkflowService } from "./project-workflow.service.js";
+import { TaskService } from "./task.service.js";
 
 const accountId = "55555555-5555-4555-8555-555555555555";
 const branchId = "11111111-1111-4111-8111-111111111111";
 const projectId = "22222222-2222-4222-8222-222222222222";
 const employeeId = "33333333-3333-4333-8333-333333333333";
 const secondAccountId = "66666666-6666-4666-8666-666666666666";
+const planItemId = "77777777-7777-4777-8777-777777777777";
+const templateVersionId = "88888888-8888-4888-8888-888888888888";
 const token = "project-current-csrf";
 const cookie = "sense_sid=project-session";
 
@@ -25,6 +28,7 @@ describe("S07A Draft project HTTP boundary", () => {
   let validSession: boolean;
   let service: Record<string, jest.Mock>;
   let workflows: Record<string, jest.Mock>;
+  let tasks: Record<string, jest.Mock>;
   beforeAll(async () => {
     kind = "OWNER"; ready = true; validSession = true;
     const identity = {
@@ -48,15 +52,18 @@ describe("S07A Draft project HTTP boundary", () => {
     workflows = {
       setup: jest.fn(async () => ({ branches: [] })), list: jest.fn(async () => ({ items: [], total: 0 })),
       detail: jest.fn(async () => ({ project: { id: projectId } })),
+      plan: jest.fn(async () => ({ projectId, items: [] })),
+      completePlanItem: jest.fn(async () => ({ itemId: planItemId, completed: true })),
       assignment: ownerOnly("assignment"), revokeAssignment: ownerOnly("revokeAssignment"), lead: ownerOnly("lead"),
       status: ownerOnly("status"), transfer: ownerOnly("transfer"), setScopeApprover: ownerOnly("setScopeApprover"),
       requestScope: jest.fn(async () => ({ changeId: projectId })), decideScope: jest.fn(async () => ({ decided: true })), withdrawScope: ownerOnly("withdrawScope"),
       requestCancellation: jest.fn(async () => ({ id: projectId }))
     };
+    tasks = { cancelProject: ownerOnly("cancelProject") };
     const config: RuntimeConfig = { nodeEnv: "test", port: 4000, databaseUrl: "postgresql://test:test@localhost:5432/test", webOrigin: "http://localhost:5173", ownerBootstrapEmail: "owner@example.test", ownerBootstrapSecret: "b".repeat(48) };
     const module = await Test.createTestingModule({ controllers: [ProjectController], providers: [
       { provide: IdentityService, useValue: identity }, { provide: ProjectService, useValue: service },
-      { provide: ProjectWorkflowService, useValue: workflows }, { provide: RUNTIME_CONFIG, useValue: config }
+      { provide: ProjectWorkflowService, useValue: workflows }, { provide: TaskService, useValue: tasks }, { provide: RUNTIME_CONFIG, useValue: config }
     ] }).compile();
     app = module.createNestApplication(); app.setGlobalPrefix("api/v1"); await app.init();
   });
@@ -95,6 +102,56 @@ describe("S07A Draft project HTTP boundary", () => {
     expect(list.headers["cache-control"]).toBe("no-store");
     expect(detail.headers["cache-control"]).toBe("no-store");
     expect(workflows.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), branchId, 0, 50);
+  });
+
+  it("reads the project plan with no-store and denies unauthenticated plan reads", async () => {
+    const response = await request(app.getHttpServer()).get(`/api/v1/projects/${projectId}/plan`).set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(workflows.plan).toHaveBeenCalledWith(expect.objectContaining({ accountId, kind: "OWNER" }), projectId);
+    validSession = false;
+    const unauthenticated = await request(app.getHttpServer()).get(`/api/v1/projects/${projectId}/plan`).set("Cookie", cookie);
+    expect(unauthenticated.status).toBe(401);
+    expect(workflows.plan).toHaveBeenCalledTimes(1);
+  });
+
+  it("validates plan project and item IDs and protects completion with origin, CSRF and strict positive-version input", async () => {
+    const badProject = await request(app.getHttpServer()).get("/api/v1/projects/not-a-uuid/plan").set("Cookie", cookie);
+    const badProjectWrite = await write("post", `not-a-uuid/plan-items/${planItemId}/complete`, { expectedVersion: 2, reason: "Work completed" });
+    const badItemWrite = await write("post", `${projectId}/plan-items/not-a-uuid/complete`, { expectedVersion: 2, reason: "Work completed" });
+    const wrongOrigin = await request(app.getHttpServer()).post(`/api/v1/projects/${projectId}/plan-items/${planItemId}/complete`).set("Cookie", cookie).set("Origin", "https://attacker.test").set("x-csrf-token", token).send({ expectedVersion: 2, reason: "Work completed" });
+    const noCsrf = await request(app.getHttpServer()).post(`/api/v1/projects/${projectId}/plan-items/${planItemId}/complete`).set("Cookie", cookie).set("Origin", "http://localhost:5173").send({ expectedVersion: 2, reason: "Work completed" });
+    const extraField = await write("post", `${projectId}/plan-items/${planItemId}/complete`, { expectedVersion: 2, reason: "Work completed", completed: true });
+    const zeroVersion = await write("post", `${projectId}/plan-items/${planItemId}/complete`, { expectedVersion: 0, reason: "Work completed" });
+    const missingReason = await write("post", `${projectId}/plan-items/${planItemId}/complete`, { expectedVersion: 2, reason: "  " });
+    expect([badProject.status, badProjectWrite.status, badItemWrite.status, wrongOrigin.status, noCsrf.status, extraField.status, zeroVersion.status, missingReason.status]).toEqual([400, 400, 400, 403, 403, 400, 400, 400]);
+    expect(workflows.plan).not.toHaveBeenCalled();
+    expect(workflows.completePlanItem).not.toHaveBeenCalled();
+
+    const valid = await write("post", `${projectId}/plan-items/${planItemId}/complete`, { expectedVersion: 3, reason: "Site measurement verified" });
+    expect(valid.status).toBe(201);
+    expect(workflows.completePlanItem).toHaveBeenCalledWith(expect.objectContaining({ accountId, kind: "OWNER" }), projectId, planItemId, { expectedVersion: 3, reason: "Site measurement verified" });
+  });
+
+  it("accepts only boolean status milestone-override input", async () => {
+    const valid = await write("post", `${projectId}/status`, { toStatus: "COMPLETED", expectedVersion: 4, reason: "Delivery accepted", overrideMilestones: true });
+    const invalid = await write("post", `${projectId}/status`, { toStatus: "COMPLETED", expectedVersion: 4, reason: "Delivery accepted", overrideMilestones: "true" });
+    expect([valid.status, invalid.status]).toEqual([201, 400]);
+    expect(workflows.status).toHaveBeenCalledWith(expect.objectContaining({ accountId, kind: "OWNER" }), projectId, { toStatus: "COMPLETED", expectedVersion: 4, reason: "Delivery accepted", overrideMilestones: true });
+    expect(workflows.status).toHaveBeenCalledTimes(1);
+  });
+
+  it("requires template version and idempotency key as a valid UUID pair on project creation", async () => {
+    const versionOnly = await create({ ...createBody, templateVersionId });
+    const keyOnly = await create({ ...createBody, idempotencyKey: projectId });
+    const invalidVersion = await create({ ...createBody, templateVersionId: "not-a-uuid", idempotencyKey: projectId });
+    const invalidKey = await create({ ...createBody, templateVersionId, idempotencyKey: "not-a-uuid" });
+    expect([versionOnly.status, keyOnly.status, invalidVersion.status, invalidKey.status]).toEqual([400, 400, 400, 400]);
+    expect(service.create).not.toHaveBeenCalled();
+
+    const paired = await create({ ...createBody, templateVersionId, idempotencyKey: projectId });
+    expect(paired.status).toBe(201);
+    expect(service.create).toHaveBeenCalledWith(expect.objectContaining({ accountId, kind: "OWNER" }), { ...createBody, templateVersionId, idempotencyKey: projectId });
   });
 
   it("rejects malformed IDs and pagination before service calls", async () => {
@@ -150,11 +207,14 @@ describe("S07A Draft project HTTP boundary", () => {
     expect(workflows.status).toHaveBeenCalledWith(expect.objectContaining({ kind: "OWNER" }), projectId, { toStatus: "ON_HOLD", expectedVersion: 1, reason: "Client pause" });
   });
 
-  it("exposes cancellation requests without an effective cancellation command", async () => {
+  it("exposes cancellation requests and confines effective cancellation to the Owner", async () => {
     const requested = await write("post", `${projectId}/cancellation-requests`, { reason: "Client ended the engagement" });
     const effective = await write("post", `${projectId}/cancel`, { expectedVersion: 2, reason: "Stop all work" });
     expect(requested.status).toBe(201);
-    expect(effective.status).toBe(404);
+    expect(effective.status).toBe(201);
     expect(workflows.requestCancellation).toHaveBeenCalledTimes(1);
+    expect(tasks.cancelProject).toHaveBeenCalledWith(expect.objectContaining({ kind: "OWNER" }), projectId, { expectedVersion: 2, reason: "Stop all work" });
+    kind = "STAFF";
+    expect((await write("post", `${projectId}/cancel`, { expectedVersion: 2, reason: "Unauthorized stop" })).status).toBe(403);
   });
 });

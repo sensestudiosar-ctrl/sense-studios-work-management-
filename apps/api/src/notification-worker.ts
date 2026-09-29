@@ -1,11 +1,15 @@
 import { Injectable } from "@nestjs/common";
 import { randomUUID } from "node:crypto";
-import { AccountState, NotificationChannel, NotificationDeliveryState, OutboxDeliveryState } from "./generated/prisma/client.js";
+import { AccountKind, AccountState, EmployeeState, NotificationChannel, NotificationDeliveryState, OutboxDeliveryState, type Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
+import { AuthorizationService } from "./authorization.service.js";
+import { ForbiddenException } from "@nestjs/common";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { Inject } from "@nestjs/common";
 import { BrevoEmailAdapter, SafeEmailDeliveryError } from "./brevo-email.js";
 import { isWithinQuietHours } from "./notification-time.js";
+import { TaskService } from "./task.service.js";
+import { lockTaskNotificationScope } from "./notification-task-locks.js";
 
 export interface VerifiedAddressPredicate {
   isVerified(accountId: string, normalizedEmail: string): Promise<boolean>;
@@ -13,7 +17,7 @@ export interface VerifiedAddressPredicate {
 export const VERIFIED_ADDRESS_PREDICATE = Symbol("VERIFIED_ADDRESS_PREDICATE");
 
 export interface CurrentRecipientAuthorizationPredicate {
-  isAuthorized(eventId: string, accountId: string): Promise<boolean>;
+  isAuthorized(eventId: string, accountId: string, tx?: Prisma.TransactionClient): Promise<boolean>;
 }
 export const CURRENT_RECIPIENT_AUTHORIZATION_PREDICATE = Symbol("CURRENT_RECIPIENT_AUTHORIZATION_PREDICATE");
 
@@ -39,6 +43,72 @@ export class PersistedVerifiedAddressPredicate implements VerifiedAddressPredica
 @Injectable()
 export class UnauthorizedRecipientPredicate implements CurrentRecipientAuthorizationPredicate {
   async isAuthorized(): Promise<boolean> { return false; }
+}
+
+/** S09 authorizes only current Owner and assigned project contributors for exit alerts. */
+@Injectable()
+export class OperationalRecipientPredicate implements CurrentRecipientAuthorizationPredicate {
+  constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly tasks: TaskService = new TaskService(database, authorization)) {}
+  async isAuthorized(eventId: string, accountId: string, tx?: Prisma.TransactionClient): Promise<boolean> {
+    if (tx) {
+      // TaskService's transaction wrapper must reuse the delivery transaction;
+      // a nested independent transaction would release the scope locks early.
+      const prisma = new Proxy(tx, { get(target, key) {
+        if (key === "$transaction") return async (run: (client: Prisma.TransactionClient) => Promise<unknown>) => run(tx);
+        return Reflect.get(target, key);
+      } });
+      const database = { prisma } as unknown as DatabaseService;
+      const authorization = new AuthorizationService(database);
+      return new OperationalRecipientPredicate(database, authorization, new TaskService(database, authorization)).isAuthorized(eventId, accountId);
+    }
+    const event = await this.database.prisma.domainEvent.findUnique({ where: { id: eventId } });
+    if (event?.eventName === "task.waiting") return this.tasks.waitingAlertAuthorized(eventId, accountId);
+    if (event?.eventName === "task.dependency_completed") {
+      const payload = event.payload;
+      const auditEventId = payload && typeof payload === "object" && !Array.isArray(payload) ? payload.auditEventId : undefined;
+      if (typeof auditEventId !== "string") return false;
+      const audit = await this.database.prisma.auditEvent.findUnique({ where: { id: auditEventId } });
+      const after = audit?.after;
+      const dependentTaskId = event.subjectId;
+      const organizationId = event.organizationId;
+      if (typeof dependentTaskId !== "string" || typeof organizationId !== "string" || audit?.eventKey !== event.eventName || audit.subjectId !== dependentTaskId || !after || typeof after !== "object" || Array.isArray(after)) return false;
+      const predecessorTaskId = after.predecessorTaskId;
+      if (typeof predecessorTaskId !== "string" || after.dependentTaskId !== dependentTaskId) return false;
+      const dependent = await this.database.prisma.task.findFirst({ where: { id: dependentTaskId, organizationId }, include: { project: true, primaryOwner: { include: { account: true } } } });
+      if (!dependent || dependent.status !== "WAITING" || dependent.requiresReassignment || !dependent.waitingDelayCause ||
+        !dependent.project || dependent.project.status !== "ACTIVE" || dependent.primaryOwner.state !== EmployeeState.ACTIVE ||
+        dependent.primaryOwner.account.state !== AccountState.ACTIVE || dependent.primaryOwner.accountId !== accountId) return false;
+      const edge = await this.database.prisma.taskDependency.findFirst({ where: { dependentTaskId: dependent.id, predecessorTaskId, removedAt: null, predecessorTask: { status: "COMPLETED" } } });
+      if (!edge) return false;
+      const assignment = await this.database.prisma.projectAssignment.findFirst({ where: { projectId: dependent.project.id, employeeId: dependent.primaryOwnerEmployeeId, revokedAt: null } });
+      if (!assignment || dependent.primaryOwner.homeBranchId !== dependent.project.branchId && !assignment.crossBranchAuthorized) return false;
+      try {
+        await this.authorization.assertPermission(accountId, "project.view", { kind: "BRANCH", organizationId, branchId: dependent.project.branchId });
+        return true;
+      } catch (error) { if (error instanceof ForbiddenException) return false; throw error; }
+    }
+    if (event?.eventName !== "organization.employee.exited" && event?.eventName !== "project.on_hold") return false;
+    const account = await this.database.prisma.account.findUnique({ where: { id: accountId }, include: { employee: true } });
+    if (!account || account.state !== AccountState.ACTIVE) return false;
+    if (account.kind === AccountKind.OWNER) return true;
+    if (event.eventName === "organization.employee.exited") return false;
+    if (!account.employee || account.employee.state !== EmployeeState.ACTIVE || account.employee.organizationId !== event.organizationId) return false;
+    const payload = event.payload;
+    const auditEventId = payload && typeof payload === "object" && !Array.isArray(payload) ? payload.auditEventId : undefined;
+    if (typeof auditEventId !== "string") return false;
+    const audit = await this.database.prisma.auditEvent.findUnique({ where: { id: auditEventId } });
+    const after = audit?.after;
+    if (audit?.reason !== "Current Project Lead exited; Owner replacement required" || !after || typeof after !== "object" || Array.isArray(after) || after.status !== "ON_HOLD") return false;
+    const assignments = await this.database.prisma.projectAssignment.findMany({ where: { organizationId: event.organizationId, employeeId: account.employee.id, projectId: event.subjectId, revokedAt: null }, include: { project: true } });
+    for (const assignment of assignments) {
+      if (account.employee.homeBranchId !== assignment.project.branchId && !assignment.crossBranchAuthorized) continue;
+      try {
+        await this.authorization.assertPermission(accountId, "project.view", { kind: "BRANCH", organizationId: event.organizationId, branchId: assignment.project.branchId });
+        return true;
+      } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+    }
+    return false;
+  }
 }
 
 interface ClaimedDelivery { id: string; eventId: string; attempts: number; leaseToken: string }
@@ -119,6 +189,10 @@ export class NotificationWorker {
       let retryAt: Date | undefined;
       for (const notification of pending) {
         if (hasLostLease()) return;
+        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed"].includes(notification.category)) {
+          await this.deliverTaskNotice(delivery, notification.id, notification.recipientAccountId);
+          continue;
+        }
         if (!await this.recipientAuthorization.isAuthorized(delivery.eventId, notification.recipientAccountId)) {
           await this.db.notification.updateMany({ where: { id: notification.id, deliveryState: NotificationDeliveryState.PENDING }, data: {
             deliveryState: NotificationDeliveryState.DEAD, failureCode: "recipient_not_authorized"
@@ -198,6 +272,28 @@ export class NotificationWorker {
       await this.release(delivery, attempts >= maxAttempts ? OutboxDeliveryState.DEAD : OutboxDeliveryState.PENDING,
         new Date(Date.now() + Math.min(60 * 60_000, 15_000 * 2 ** Math.max(0, attempts - 1))), "notification_processing_failed", attempts);
     }
+  }
+
+  private async deliverTaskNotice(delivery: ClaimedDelivery, notificationId: string, recipientAccountId: string): Promise<void> {
+    await this.db.$transaction(async (tx) => {
+      const lease = await tx.$queryRaw<Array<{ id: string }>>`SELECT "id" FROM "outbox_deliveries"
+        WHERE "id"=${delivery.id}::uuid AND "state"='LEASED' AND "leaseToken"=${delivery.leaseToken}::uuid
+          AND "leaseExpiresAt">CURRENT_TIMESTAMP FOR SHARE`;
+      if (!lease[0]) return;
+      await tx.$queryRaw`SELECT "id" FROM "notifications" WHERE "id"=${notificationId}::uuid FOR UPDATE`;
+      const notice = await tx.notification.findFirst({ where: { id: notificationId, eventId: delivery.eventId, recipientAccountId, channel: NotificationChannel.IN_APP, deliveryState: NotificationDeliveryState.PENDING } });
+      if (!notice) return;
+      const authorized = await lockTaskNotificationScope(tx, delivery.eventId, recipientAccountId) && await this.recipientAuthorization.isAuthorized(delivery.eventId, recipientAccountId, tx);
+      const account = authorized ? await tx.account.findFirst({ where: { id: recipientAccountId, state: AccountState.ACTIVE } }) : null;
+      let failureCode: string | null = !authorized ? "recipient_not_authorized" : !account ? "recipient_unverified" : null;
+      if (!failureCode && !notice.mandatory) {
+        const preference = await tx.notificationPreference.findUnique({ where: { accountId_category_channel: { accountId: recipientAccountId, category: notice.category, channel: notice.channel } } });
+        if (preference && !preference.enabled) failureCode = "preference_disabled";
+      }
+      await tx.notification.updateMany({ where: { id: notice.id, deliveryState: NotificationDeliveryState.PENDING }, data: failureCode
+        ? { deliveryState: NotificationDeliveryState.DEAD, failureCode }
+        : { deliveryState: NotificationDeliveryState.DELIVERED, deliveredAt: new Date(), failureCode: null } });
+    }, { timeout: 30_000 });
   }
 
   private async release(delivery: ClaimedDelivery, state: OutboxDeliveryState, availableAt: Date, failureCode: string | null, attempts?: number): Promise<void> {

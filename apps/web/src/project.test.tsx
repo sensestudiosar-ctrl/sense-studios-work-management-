@@ -11,6 +11,8 @@ describe("ProjectWorkspace", () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+      if (url.endsWith("/plan")) return response({ plan: null, items: [], history: [], capabilities: { complete: false, override: false } });
       if (url === "/api/v1/projects/setup") return response({ branches: [branch] });
       if (url.startsWith("/api/v1/projects?")) return response({ total: 0, items: [] });
       if (url === "/api/v1/projects" && init?.method === "POST") return response({ project: { id: "project-1" } }, 201);
@@ -27,7 +29,8 @@ describe("ProjectWorkspace", () => {
     await waitFor(() => expect(calls.some(([url, init]) => url === "/api/v1/projects" && init?.method === "POST")).toBe(true));
     const init = calls.find(([url]) => url === "/api/v1/projects")?.[1];
     expect(init?.headers).toMatchObject({ "X-CSRF-Token": "csrf-project" });
-    expect(JSON.parse(String(init?.body))).toEqual({ branchId: branch.id, title: "Studio renovation", deliveryType: "TURNKEY", scopes: ["Architecture", "Interior design"], wonLeadId: "lead-won-1", reason: "Won proposal accepted" });
+    expect(JSON.parse(String(init?.body))).toMatchObject({ branchId: branch.id, title: "Studio renovation", deliveryType: "TURNKEY", scopes: ["Architecture", "Interior design"], wonLeadId: "lead-won-1", reason: "Won proposal accepted" });
+    expect(JSON.parse(String(init?.body)).idempotencyKey).toBeUndefined();
   });
 
   it("shows the Owner access denial from setup", async () => {
@@ -41,6 +44,8 @@ describe("ProjectWorkspace", () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+      if (url.endsWith("/plan")) return response({ plan: null, items: [], history: [], capabilities: { complete: false, override: false } });
       if (url === "/api/v1/projects/setup") return response({ owner: false, branches: [{ id: "branch-1", name: "Mumbai" }], employees: [] });
       if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
       if (url === "/api/v1/projects/" + project.id) return response({ project, capabilities: { requestCancellation: true }, cancellationRequests: [] });
@@ -63,6 +68,8 @@ describe("ProjectWorkspace", () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+      if (url.endsWith("/plan")) return response({ plan: null, items: [], history: [], capabilities: { complete: false, override: false } });
       if (url === "/api/v1/projects/setup") return response({ branches: [branch], ownerAccountId: "owner-acct", employees: [{ id: "emp-1", accountId: "acct-1", name: "Asha", homeBranchId: branch.id }] });
       if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
       if (url === "/api/v1/projects/" + project.id) return response({ project, capabilities: { assignLead: true } });
@@ -87,6 +94,8 @@ describe("ProjectWorkspace", () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+      if (url.endsWith("/plan")) return response({ plan: null, items: [], history: [], capabilities: { complete: false, override: false } });
       if (url === "/api/v1/projects/setup") return response({ branches: [branch], employees: [], owner: false });
       if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
       if (url === "/api/v1/projects/" + project.id) return response({ project, currentLeadName: "Mira Shah", capabilities: { decideScope: true }, scopeChanges: [{ name: "Landscape", status: "PENDING", approvalId: "approval-7", approval: { state: "PENDING" }, reason: "Client requested it" }] });
@@ -114,6 +123,8 @@ describe("ProjectWorkspace", () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push([url, init]);
+      if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+      if (url.endsWith("/plan")) return response({ plan: null, items: [], history: [], capabilities: { complete: false, override: false } });
       if (url === "/api/v1/projects/setup") return response({ branches: [branch], employees: [], owner: true, ownerAccountId: "owner-account" });
       if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
       if (url === "/api/v1/projects/" + project.id) return response({ project, scopeChanges: [{ name: "Lighting", status: "PENDING", approvalId: "approval-9", approval: { state: "PENDING" }, reason: "Client request" }] });

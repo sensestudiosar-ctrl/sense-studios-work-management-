@@ -1,0 +1,32 @@
+.project-template-panel { display: grid; gap: .8rem; padding: 1rem; border: 1px solid #e0e6ed; border-radius: .85rem; background: #f8fafc; }
+.project-template-panel > h3, .template-manager h3 { margin: 0; font-size: 1rem; }
+.project-template-panel h3 span { color: #657387; font-size: .8rem; font-weight: 400; }
+.project-template-panel label, .template-form label, .project-plan-reason { display: grid; gap: .35rem; font-weight: 650; }
+.project-template-panel select, .project-template-panel input:not([type="checkbox"]), .project-template-panel textarea { width: 100%; min-width: 0; padding: .65rem .7rem; border: 1px solid #bac5d3; border-radius: .5rem; background: white; color: #172033; font: inherit; }
+.project-template-panel input[type="checkbox"] { width: auto; }
+.project-template-panel small, .template-manager > p, .template-selection-note { color: #657387; font-size: .8rem; font-weight: 400; }
+.template-manager { display: grid; gap: .7rem; padding-top: .8rem; border-top: 1px solid #dfe5ec; }
+.template-manager > p { margin: 0; }
+.template-list { display: grid; gap: .4rem; }
+.template-list-row, .template-edit-heading { display: flex; align-items: center; justify-content: space-between; gap: .6rem; }
+.template-list-row { padding: .6rem; border: 1px solid #e0e6ed; border-radius: .55rem; background: white; }
+.template-list-row strong, .template-list-row small { display: block; }
+.template-list-row button, .template-edit-heading button, .template-row > button, .template-milestone > button, .template-new-button { border: 1px solid #b9c7d8; border-radius: .45rem; padding: .45rem .65rem; background: white; color: #214f92; font: inherit; font-size: .82rem; font-weight: 650; cursor: pointer; }
+.template-form { display: grid; gap: .75rem; padding: .85rem; border: 1px solid #dfe5ec; border-radius: .65rem; background: white; }
+.template-form h4 { margin: 0; }
+.template-form textarea { resize: vertical; }
+.template-row, .template-milestone { display: grid; gap: .5rem; align-items: end; }
+.template-row { grid-template-columns: 1fr 1fr auto; }
+.template-milestone { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: .65rem; border: 1px solid #e0e6ed; border-radius: .55rem; }
+.template-checkbox { display: flex !important; align-items: center; gap: .4rem !important; }
+.project-plan { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e6ed; }
+.project-plan h4 { margin: 0 0 .5rem; }
+.project-plan h5 { margin: .9rem 0 .4rem; }
+.project-plan-provenance { color: #536174; }
+.project-plan-items, .project-plan-folders { display: grid; gap: .4rem; padding-left: 1.2rem; }
+.project-plan-items li { display: flex; justify-content: space-between; align-items: center; gap: .75rem; padding: .55rem; border: 1px solid #e0e6ed; border-radius: .5rem; }
+.project-plan-items li.is-complete { background: #f1f8f3; }
+.project-plan-items strong, .project-plan-items small { display: block; }
+.project-plan-items small { color: #657387; }
+.project-plan-items button { flex: 0 0 auto; padding: .4rem .6rem; border: 1px solid #b9c7d8; border-radius: .45rem; background: white; color: #214f92; font: inherit; cursor: pointer; }
+@media (max-width: 560px) { .template-row, .template-milestone { grid-template-columns: 1fr; } .project-plan-items li { align-items: flex-start; flex-direction: column; } }

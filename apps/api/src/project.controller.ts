@@ -5,15 +5,16 @@ import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { IdentityService } from "./identity.service.js";
 import { ProjectService } from "./project.service.js";
 import { ProjectWorkflowService } from "./project-workflow.service.js";
+import { TaskService } from "./task.service.js";
 
 const uuid = z.uuid();
-const createProject = z.object({ branchId: uuid, title: z.string().trim().min(2).max(160), deliveryType: z.enum(["DESIGN", "TURNKEY"]), scopes: z.array(z.string().trim().min(2).max(120)).min(1).max(12), clientId: uuid.optional(), wonLeadId: uuid.optional(), reason: z.string().trim().min(3).max(1000) }).strict();
+const createProject = z.object({ branchId: uuid, title: z.string().trim().min(2).max(160), deliveryType: z.enum(["DESIGN", "TURNKEY"]), scopes: z.array(z.string().trim().min(2).max(120)).min(1).max(12), clientId: uuid.optional(), wonLeadId: uuid.optional(), reason: z.string().trim().min(3).max(1000), templateVersionId: uuid.optional(), idempotencyKey: uuid.optional() }).strict().refine((value) => !!value.templateVersionId === !!value.idempotencyKey);
 const page = z.preprocess((value) => typeof value === "string" && /^\d+$/.test(value) ? Number(value) : value, z.number().int().min(0).max(100_000));
 const reason = z.string().trim().min(3).max(1000);
 const version = z.number().int().min(1);
 const assignment = z.object({ employeeId: uuid, expectedVersion: version, reason }).strict();
 const versionedReason = z.object({ expectedVersion: version, reason }).strict();
-const statusChange = versionedReason.extend({ toStatus: z.enum(["ACTIVE", "ON_HOLD", "COMPLETED", "ARCHIVED"]) }).strict();
+const statusChange = versionedReason.extend({ toStatus: z.enum(["ACTIVE", "ON_HOLD", "COMPLETED", "ARCHIVED"]), overrideMilestones: z.boolean().optional() }).strict();
 const transfer = versionedReason.extend({ toBranchId: uuid }).strict();
 const scopeApprover = versionedReason.extend({ accountId: uuid }).strict();
 const scopeRequest = versionedReason.extend({ name: z.string().trim().min(2).max(120) }).strict();
@@ -23,7 +24,7 @@ function parse<T>(schema: z.ZodType<T>, value: unknown): T { const out = schema.
 
 @Controller("projects")
 export class ProjectController {
-  constructor(private readonly identity: IdentityService, private readonly projects: ProjectService, private readonly workflows: ProjectWorkflowService, @Inject(RUNTIME_CONFIG) private readonly config: RuntimeConfig) {}
+  constructor(private readonly identity: IdentityService, private readonly projects: ProjectService, private readonly workflows: ProjectWorkflowService, private readonly tasks: TaskService, @Inject(RUNTIME_CONFIG) private readonly config: RuntimeConfig) {}
   private cookie(request: Request) { const name = this.config.webOrigin.startsWith("https:") ? "__Host-sense_sid" : "sense_sid"; const pair = request.headers.cookie?.split(";").map((x) => x.trim()).find((x) => x.startsWith(`${name}=`)); return pair?.slice(name.length + 1); }
   private async actor(request: Request) {
     const active = await this.identity.session(this.cookie(request));
@@ -43,6 +44,8 @@ export class ProjectController {
     return this.workflows.list(actor, branchId!, parsedOffset.data, parsedLimit.data);
   }
   @Get(":id") async detail(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("id") id: string) { this.noStore(response); const { actor } = await this.actor(request); if (!uuid.safeParse(id).success) throw new BadRequestException("Invalid project"); return this.workflows.detail(actor, id); }
+  @Get(":id/plan") async plan(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("id") id: string) { this.noStore(response); const { actor } = await this.actor(request); return this.workflows.plan(actor, parse(uuid, id)); }
+  @Post(":id/plan-items/:itemId/complete") async completePlanItem(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("itemId") itemId: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.completePlanItem(actor, parse(uuid, id), parse(uuid, itemId), parse(versionedReason, body)); }
   @Post() async create(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.projects.create(actor, parse(createProject, body)); }
   @Post(":id/assignments") async assign(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.assignment(actor, parse(uuid, id), parse(assignment, body)); }
   @Delete(":id/assignments/:employeeId") async revoke(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("employeeId") employeeId: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.revokeAssignment(actor, parse(uuid, id), parse(uuid, employeeId), parse(versionedReason, body)); }
@@ -54,4 +57,5 @@ export class ProjectController {
   @Post(":id/scope-requests/:approvalId/decision") async scopeDecision(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("approvalId") approvalId: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.decideScope(actor, parse(uuid, id), parse(uuid, approvalId), parse(scopeDecision, body)); }
   @Post(":id/scope-requests/:approvalId/withdraw") async scopeWithdraw(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("approvalId") approvalId: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.withdrawScope(actor, parse(uuid, id), parse(uuid, approvalId), parse(cancellationRequest, body).reason); }
   @Post(":id/cancellation-requests") async cancellationRequest(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.requestCancellation(actor, parse(uuid, id), parse(cancellationRequest, body).reason); }
+  @Post(":id/cancel") async cancel(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.tasks.cancelProject(actor, parse(uuid, id), parse(versionedReason, body)); }
 }

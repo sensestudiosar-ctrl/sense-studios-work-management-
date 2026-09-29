@@ -7,6 +7,226 @@ datasource db {
   provider = "postgresql"
 }
 
+
+model Task {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String? @db.Uuid
+  planItemId String? @db.Uuid
+  tags String[] @default([])
+  checklist Json @default("[]")
+  title String @db.VarChar(160)
+  description String? @db.VarChar(2000)
+  type TaskType
+  priority TaskPriority
+  status TaskStatus @default(NOT_STARTED)
+  reviewRequirement TaskReviewRequirement @default(NONE)
+  version Int @default(1)
+  dependencyRevision Int @default(0)
+  targetDate DateTime @db.Date
+  committedDueDate DateTime? @db.Date
+  startDate DateTime? @db.Date
+  estimatedHours Decimal? @db.Decimal(8,2)
+  primaryOwnerEmployeeId String @db.Uuid
+  createdById String @db.Uuid
+  requiresReassignment Boolean @default(false)
+  waitingPreviousStatus TaskStatus?
+  waitingReason String? @db.VarChar(1000)
+  waitingDelayCause String? @db.VarChar(1000)
+  waitingResponsibleParty String? @db.VarChar(160)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  project Project? @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  planItem ProjectPlanItem? @relation(fields: [planItemId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  primaryOwner Employee @relation("TaskPrimaryOwner", fields: [primaryOwnerEmployeeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  createdBy Account @relation("TaskCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  collaborators TaskCollaborator[]
+  ownerChanges TaskOwnerChange[]
+  statusChanges TaskStatusChange[]
+  committedDateChanges TaskCommittedDateChange[]
+  predecessorDependencies TaskDependency[] @relation("DependentTask")
+  successorDependencies TaskDependency[] @relation("PredecessorTask")
+  closeoutApproval TaskCloseoutApproval?
+  recurrenceRule TaskRecurrenceRule? @relation("RecurrenceSource")
+  recurrenceOccurrence TaskRecurrenceOccurrence? @relation("RecurrenceGeneratedTask")
+  @@unique([id, organizationId])
+  @@index([organizationId, primaryOwnerEmployeeId, status, targetDate, id])
+  @@index([organizationId, projectId, status, targetDate, id])
+  @@map("tasks")
+}
+enum TaskRecurrenceFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+model TaskRecurrenceRule {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  sourceTaskId String @unique @db.Uuid
+  frequency TaskRecurrenceFrequency
+  anchorDate DateTime @db.Date
+  effectiveFromDate DateTime @db.Date
+  paused Boolean @default(false)
+  version Int @default(1)
+  configuredById String @db.Uuid
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  sourceTask Task @relation("RecurrenceSource", fields: [sourceTaskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  configuredBy Account @relation("RecurrenceConfigurer", fields: [configuredById], references: [id], onDelete: Restrict)
+  changes TaskRecurrenceChange[]
+  occurrences TaskRecurrenceOccurrence[]
+  @@unique([id, organizationId])
+  @@unique([sourceTaskId, organizationId])
+  @@index([organizationId, paused])
+  @@map("task_recurrence_rules")
+}
+model TaskRecurrenceChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  ruleId String @db.Uuid
+  ruleVersion Int
+  action String @db.VarChar(20)
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  before Json?
+  after Json
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  rule TaskRecurrenceRule @relation(fields: [ruleId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor Account @relation("RecurrenceChangeActor", fields: [actorId], references: [id], onDelete: Restrict)
+  @@unique([ruleId, ruleVersion])
+  @@map("task_recurrence_changes")
+}
+model TaskRecurrenceOccurrence {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  ruleId String @db.Uuid
+  scheduledDate DateTime @db.Date
+  generatedTaskId String @unique @db.Uuid
+  ruleVersion Int
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  rule TaskRecurrenceRule @relation(fields: [ruleId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  generatedTask Task @relation("RecurrenceGeneratedTask", fields: [generatedTaskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@unique([ruleId, scheduledDate])
+  @@unique([generatedTaskId, organizationId])
+  @@map("task_recurrence_occurrences")
+}
+model TaskCollaborator {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  taskId String @db.Uuid
+  employeeId String @db.Uuid
+  estimatedHours Decimal? @db.Decimal(8,2)
+  addedById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  task Task @relation(fields: [taskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  employee Employee @relation(fields: [employeeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  addedBy Account @relation("TaskCollaboratorAdder", fields: [addedById], references: [id], onDelete: Restrict)
+  @@unique([taskId, employeeId])
+  @@index([organizationId, employeeId])
+  @@map("task_collaborators")
+}
+model TaskOwnerChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  taskId String @db.Uuid
+  oldOwnerEmployeeId String? @db.Uuid
+  newOwnerEmployeeId String @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  taskVersion Int
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  task Task @relation(fields: [taskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  oldOwner Employee? @relation("TaskOldOwner", fields: [oldOwnerEmployeeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  newOwner Employee @relation("TaskNewOwner", fields: [newOwnerEmployeeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor Account @relation("TaskOwnerChangeActor", fields: [actorId], references: [id], onDelete: Restrict)
+  @@unique([taskId, taskVersion])
+  @@index([organizationId, taskId, occurredAt])
+  @@map("task_owner_changes")
+}
+model TaskStatusChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  taskId String @db.Uuid
+  fromStatus TaskStatus?
+  toStatus TaskStatus
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  taskVersion Int
+  previousStatus TaskStatus?
+  earlyStartAcknowledged Boolean @default(false)
+  unfinishedPredecessorIds String[] @default([]) @db.Uuid
+  delayCause String? @db.VarChar(1000)
+  responsibleParty String? @db.VarChar(160)
+  projectStatusChangeId String? @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  task Task @relation(fields: [taskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor Account @relation("TaskStatusChangeActor", fields: [actorId], references: [id], onDelete: Restrict)
+  projectStatusChange ProjectStatusChange? @relation(fields: [projectStatusChangeId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@unique([taskId, taskVersion])
+  @@index([organizationId, taskId, occurredAt])
+  @@map("task_status_changes")
+}
+model TaskCommittedDateChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  taskId String @db.Uuid
+  oldDate DateTime? @db.Date
+  newDate DateTime @db.Date
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  taskVersion Int
+  extensionApprovalId String? @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  task Task @relation(fields: [taskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  actor Account @relation("TaskCommittedDateActor", fields: [actorId], references: [id], onDelete: Restrict)
+  extensionApproval ApprovalRequest? @relation("ApprovedTaskExtensionDateChange", fields: [extensionApprovalId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@unique([taskId, taskVersion])
+  @@unique([extensionApprovalId, organizationId])
+  @@index([organizationId, taskId, occurredAt])
+  @@map("task_committed_date_changes")
+}
+model TaskDependency {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  dependentTaskId String @db.Uuid
+  predecessorTaskId String @db.Uuid
+  addedById String @db.Uuid
+  addReason String @db.VarChar(1000)
+  addedTaskVersion Int
+  addedAt DateTime @default(now()) @db.Timestamptz(3)
+  removedById String? @db.Uuid
+  removeReason String? @db.VarChar(1000)
+  removedTaskVersion Int?
+  removedAt DateTime? @db.Timestamptz(3)
+  dependentTask Task @relation("DependentTask", fields: [dependentTaskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  predecessorTask Task @relation("PredecessorTask", fields: [predecessorTaskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  addedBy Account @relation("TaskDependencyAdder", fields: [addedById], references: [id], onDelete: Restrict)
+  removedBy Account? @relation("TaskDependencyRemover", fields: [removedById], references: [id], onDelete: Restrict)
+  @@unique([dependentTaskId, addedTaskVersion])
+  @@unique([dependentTaskId, removedTaskVersion])
+  @@index([organizationId, dependentTaskId, removedAt])
+  @@index([organizationId, predecessorTaskId, removedAt])
+  @@map("task_dependencies")
+}
+model TaskCloseoutApproval {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  taskId String @unique @db.Uuid
+  approverId String @db.Uuid
+  reason String @db.VarChar(1000)
+  workScope String @db.VarChar(2000)
+  approvedAt DateTime @default(now()) @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  revokedById String? @db.Uuid
+  revocationReason String? @db.VarChar(1000)
+  task Task @relation(fields: [taskId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  approver Account @relation("TaskCloseoutApprover", fields: [approverId], references: [id], onDelete: Restrict)
+  revokedBy Account? @relation("TaskCloseoutRevoker", fields: [revokedById], references: [id], onDelete: Restrict)
+  @@unique([taskId, organizationId])
+  @@map("task_closeout_approvals")
+}
+
 model CrmSource {
   id             String       @id @default(uuid()) @db.Uuid
   organizationId String       @db.Uuid
@@ -156,11 +376,117 @@ model Project {
   scopeChanges           ProjectScopeChange[]
   scopePolicyChanges     ProjectScopePolicyChange[]
   cancellationRequests   ProjectCancellationRequest[]
+  plan                   ProjectPlan?
+  planItems              ProjectPlanItem[]
+  creationReceipts        ProjectCreationReceipt[]
+  tasks                   Task[]
 
   @@unique([id, organizationId])
   @@unique([wonLeadId, organizationId])
   @@index([organizationId, branchId, status, createdAt, id])
   @@map("projects")
+}
+
+model ProjectTemplate {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  name String @db.VarChar(160)
+  active Boolean @default(true)
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  versions ProjectTemplateVersion[]
+  @@unique([id, organizationId])
+  @@index([organizationId, createdAt])
+  @@map("project_templates")
+}
+
+model ProjectTemplateVersion {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  templateId String @db.Uuid
+  number Int
+  definition Json
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  template ProjectTemplate @relation(fields: [templateId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  plans ProjectPlan[]
+  @@unique([id, organizationId])
+  @@unique([templateId, number])
+  @@map("project_template_versions")
+}
+
+model ProjectPlan {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @unique @db.Uuid
+  templateVersionId String @db.Uuid
+  definition Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  templateVersion ProjectTemplateVersion @relation(fields: [templateVersionId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@unique([id, organizationId])
+  @@unique([projectId, organizationId])
+  @@map("project_plans")
+}
+
+model ProjectPlanItem {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  kind String @db.VarChar(20)
+  key String @db.VarChar(80)
+  label String @db.VarChar(160)
+  stageKey String? @db.VarChar(80)
+  position Int
+  required Boolean @default(false)
+  targetAt DateTime? @db.Timestamptz(3)
+  completedAt DateTime? @db.Timestamptz(3)
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  completions ProjectPlanCompletion[]
+  tasks Task[]
+  @@unique([id, organizationId])
+  @@unique([projectId, kind, key])
+  @@index([projectId, kind, position])
+  @@map("project_plan_items")
+}
+
+model ProjectPlanCompletion {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  itemId String @unique @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @db.Timestamptz(3)
+  projectVersion Int
+  item ProjectPlanItem @relation(fields: [itemId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@map("project_plan_completions")
+}
+
+model ProjectGateOverride {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  projectVersion Int
+  milestoneIds String[] @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([projectId, projectVersion])
+  @@unique([id, organizationId])
+  @@map("project_gate_overrides")
+}
+
+model ProjectCreationReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  key String @db.Uuid
+  payloadHash String @db.VarChar(64)
+  projectId String @db.Uuid
+  project Project @relation(fields: [projectId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  @@unique([organizationId, actorId, key])
+  @@map("project_creation_receipts")
 }
 
 model ProjectScope {
@@ -194,6 +520,8 @@ model ProjectStatusChange {
   actor          Account        @relation(fields: [actorId], references: [id], onDelete: Restrict)
 
   @@unique([projectId, projectVersion])
+  @@unique([id, organizationId])
+  taskStatusChanges TaskStatusChange[]
   @@index([projectId, occurredAt, id])
   @@map("project_status_changes")
 }
@@ -426,6 +754,42 @@ enum ProjectDeliveryType {
   TURNKEY
 }
 
+enum TaskType {
+ PROJECT
+ NON_PROJECT
+ RECURRING
+ CORRECTION
+ SITE
+ TRAINING_PRACTICAL
+ CLOSEOUT
+}
+enum TaskPriority {
+ LOW
+ MEDIUM
+ HIGH
+ CRITICAL
+}
+enum TaskStatus {
+ NOT_STARTED
+ IN_PROGRESS
+ WAITING
+ SUBMITTED_INTERNAL_REVIEW
+ IN_INTERNAL_REVIEW
+ CORRECTIONS_REQUIRED
+ INTERNAL_APPROVED
+ SUBMITTED_CLIENT_REVIEW
+ IN_CLIENT_REVIEW
+ CLIENT_REVISION_REQUIRED
+ CLIENT_APPROVED
+ COMPLETED
+ STOPPED_DUE_TO_PROJECT_CANCELLATION
+}
+enum TaskReviewRequirement {
+ NONE
+ INTERNAL
+ CLIENT
+ BOTH
+}
 enum ProjectStatus {
   DRAFT
   ACTIVE
@@ -479,6 +843,17 @@ model Account {
   leadActivities                    LeadActivity[]
   projectsCreated                   Project[]                     @relation("ProjectCreator")
   projectsScopeApprover             Project[]                     @relation("ProjectScopeApprover")
+  tasksCreated                     Task[]                        @relation("TaskCreator")
+  taskCollaborationsAdded          TaskCollaborator[]            @relation("TaskCollaboratorAdder")
+  taskOwnerChangesAsActor          TaskOwnerChange[]              @relation("TaskOwnerChangeActor")
+  taskStatusChangesAsActor         TaskStatusChange[]              @relation("TaskStatusChangeActor")
+  taskCommittedDateChangesAsActor  TaskCommittedDateChange[]        @relation("TaskCommittedDateActor")
+  taskDependenciesAdded           TaskDependency[]               @relation("TaskDependencyAdder")
+  taskDependenciesRemoved         TaskDependency[]               @relation("TaskDependencyRemover")
+  taskCloseoutApprovals            TaskCloseoutApproval[]         @relation("TaskCloseoutApprover")
+  taskCloseoutRevocations          TaskCloseoutApproval[]         @relation("TaskCloseoutRevoker")
+  recurrenceRulesConfigured        TaskRecurrenceRule[]          @relation("RecurrenceConfigurer")
+  recurrenceChanges               TaskRecurrenceChange[]        @relation("RecurrenceChangeActor")
   projectStatusChanges              ProjectStatusChange[]
 
   @@index([state, kind])
@@ -503,6 +878,8 @@ model Organization {
   id                String                       @id @default(uuid()) @db.Uuid
   singletonKey      Int                          @unique @default(1) @db.SmallInt
   name              String                       @db.VarChar(160)
+  timezone          String                       @default("Asia/Kolkata") @db.VarChar(80)
+  settingsVersion   Int                          @default(1)
   createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
   updatedAt         DateTime                     @updatedAt @db.Timestamptz(3)
   branches          Branch[]
@@ -519,6 +896,7 @@ model Organization {
   clients           Client[]
   leads             Lead[]
   projects          Project[]
+  tasks             Task[]
 
   @@map("organizations")
 }
@@ -550,6 +928,8 @@ model Team {
   branchId          String                       @db.Uuid
   name              String                       @db.VarChar(120)
   active            Boolean                      @default(true)
+  waitingAlertsEnabled Boolean                   @default(false)
+  settingsVersion   Int                          @default(1)
   createdAt         DateTime                     @default(now()) @db.Timestamptz(3)
   updatedAt         DateTime                     @updatedAt @db.Timestamptz(3)
   organization      Organization                 @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
@@ -605,6 +985,11 @@ model Employee {
   jobRoleAssignments  EmployeeJobRoleAssignment[]
   permissionOverrides EmployeePermissionOverride[]
   projectsLed         Project[]                    @relation("CurrentProjectLead")
+  taskCollaborations  TaskCollaborator[]
+  tasksOwned          Task[]                       @relation("TaskPrimaryOwner")
+
+  taskOwnerChangesOld TaskOwnerChange[]             @relation("TaskOldOwner")
+  taskOwnerChangesNew TaskOwnerChange[]             @relation("TaskNewOwner")
 
   @@unique([organizationId, employeeCode])
   @@unique([id, organizationId])
@@ -786,6 +1171,7 @@ model ApprovalRequest {
   delegationAccount    Account?             @relation("ApprovalDelegate", fields: [delegationAccountId], references: [id], onDelete: Restrict, onUpdate: Cascade)
   delegationIssuedBy   Account?             @relation("ApprovalDelegator", fields: [delegationIssuedById], references: [id], onDelete: Restrict, onUpdate: Cascade)
   decision             ApprovalDecision?
+  approvedTaskDateChange TaskCommittedDateChange? @relation("ApprovedTaskExtensionDateChange")
 
   @@unique([organizationId, typeKey, sourceType, sourceId, sourceGeneration])
   @@unique([id, organizationId])
