@@ -1,4 +1,4 @@
-# Database architecture — S01–S11 complete; S12 in progress
+# Database architecture — S01–S12 complete for development/local staging
 
 ## S11 document persistence
 
@@ -98,4 +98,4 @@ Migration `20260929150000_s12_revisions` adds project-scoped `drawing_records`, 
 
 Database checks and triggers require new revisions to start WORKING and non-current, consecutive numbering and ordinal allocation, exact project file/blob/checksum matching, and valid state/current transitions. Drawing identity, revision contents, state history, approval facts, transmittal contents and client-review selection evidence are protected against rewrite/deletion under runtime privileges. Deferred guards bind creation, state changes, approvals, issues and acknowledgements to canonical exact-revision audit/domain evidence. The issue guard requires an Active project, exact approved revision(s), named recipients and matching checksums; the HTTP service separately rechecks permissions, approval facts and recipient file access.
 
-Transmittals and issued-file retention rows carry closure, ten-year expiry, Owner notice, hold, backup-expiry and deletion-proof metadata. A project-status evidence trigger anchors issued-drawing and client-approval retention to the earliest effective Completed or Cancelled status change; later archive/closeout does not reset the clock. S12 includes no expiry purge or production legal/backup certification. Fresh migration, S11-upgrade preservation and full acceptance remain pending; do not infer them from this schema description.
+Transmittals and issued-file retention rows carry closure, ten-year expiry, Owner notice, hold, backup-expiry and deletion-proof metadata. A project-status evidence trigger anchors issued-drawing and client-approval retention to the earliest effective Completed or Cancelled status change; later archive/closeout does not reset the clock. S12 includes no expiry purge or production legal/backup certification. Fresh migration, S11-upgrade preservation and local-staging acceptance passed; see S12_COMPLETION_REPORT.md for evidence and limits.

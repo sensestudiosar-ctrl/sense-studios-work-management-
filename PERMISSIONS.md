@@ -1,4 +1,4 @@
-# Approved permission model — identity in S02, business access in S03, S12 revision rules in progress
+# Approved permission model — identity in S02, business access in S03, S12 revision rules complete for development/local staging
 
 ## S11 internal document access
 
