@@ -1,4 +1,4 @@
-# Workflows and state machines — planning
+# Workflows and state machines — S01–S11 complete; S12 in progress
 
 ## Implemented S11 document base
 
@@ -89,3 +89,11 @@ The Owner may enable or disable ordinary Waiting alerts per Team using a reason 
 ## S10F recurring task generation
 
 The current primary owner, Owner or an existing scoped task manager configures a DAILY, WEEKLY or MONTHLY rule for a persisted RECURRING source task with a future first occurrence date and reason. Rules may be paused/resumed separately, each with a reason and expected task/rule versions; resume keeps the original frequency anchor and begins on the next scheduled date strictly after the current organization-local date. The worker evaluates only today's local date, skips missed dates and creates at most one occurrence per rule/date. Monthly anchors on the 29th, 30th or 31st use the last day of shorter months while retaining the anchor. An exited/inactive owner or non-Active linked project suspends generation. Generated tasks begin Not started and copy approved current source fields, but not commitments, dependencies or another recurrence rule. Generation never resumes, completes or bypasses review of existing work.
+
+## S12 revision register and formal issue — COMPLETE for development/local staging
+
+An authorized project user registers an existing accessible S11 file as R0 with a document number, title and reason. Later revisions append a new unclaimed project file with series R or CR, a reason and the drawing's expected version. Numbers are allocated by the service under drawing locking; concurrent stale writes must refresh and retry. Every revision is a new immutable file/checksum record and starts WORKING/non-current. The register shows retained history and serves a revision through the revision-specific S11-authorized stream; a superseded record is labeled “Superseded — Do Not Use.”
+
+S13 review producers may consume canonical review evidence to move the exact revision through Submitted/Reviewed. Exact internal approval can then select the eligible current revision and supersede the older current approval atomically. S12 exposes no generic state or approval write. The Owner or an assigned permission-authorized Team Leader may select a drawing for client review once with a reason and expected version; the selection is one-way in S12. A CR revision or selected drawing needs its exact S14 client approval before issue.
+
+Formal issue checks the Active project, scoped issue grant, current exact Approved/Issued revisions, required canonical S13/S14 approval facts, and each named recipient's project and file access. The transaction retains the transmittal, exact revision/checksum/gate snapshot, sender, purpose, reason, recipients and acknowledgement requirement, changes newly issued revisions to ISSUED, and associates the issued blob with retention. The production HTTP command remains blocked when required S13/S14 facts are absent. The named internal recipient alone may acknowledge after current access is rechecked. When a project first becomes Completed or Cancelled, the earliest such status-change time anchors the ten-year retention metadata; archive/closeout does not reset it. S12 has no purge job, external delivery, client portal or S13/S14 approval workflow. Whole-slice acceptance is pending.

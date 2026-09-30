@@ -1,4 +1,4 @@
-# Domain model — S01–S11 complete for development/local staging
+# Domain model — S01–S11 complete; S12 in progress
 
 S11 adds DocumentFolder, Document, FileBlobMetadata, DocumentUpload/DocumentUploadChunk, DocumentAccessGrant and FileRetentionRecord. These are organization/project-bound; file identity is separate from its private immutable storage key. Confidential policy is exact folder/file grants plus project assignment and scoped permissions. Upload lifecycle is STAGING → FINALIZED or ABORTED; physical folder lifecycle is PENDING → READY/FAILED with retry. Revisions, formal issues, client approvals and protected viewing remain later slices.
 
@@ -114,3 +114,11 @@ ExtensionRequest is task-scoped and retains requester, selected approver, old/pr
 Team waiting-alert opt-in is disabled by default and is changed only by the Owner with a reason and settings version. The source task owner's current home Team selects the setting. Ordinary Waiting remains distinct from forced exit Waiting and dependency-completion notices. At delivery, current task state/version, owner/team, setting and recipient authority are rechecked.
 
 RecurrenceRule belongs to an existing RECURRING source task and stores DAILY, WEEKLY or MONTHLY frequency, original anchor, effective first date, manual pause state and version. Rule history is append-only with before/after values, actor and reason. A generated occurrence is unique per rule and scheduled local date and points to one generated task; generated tasks do not themselves carry a recurrence rule or inherit committed dates/dependencies. Dates are evaluated in the organization timezone; missed dates are skipped, and monthly anchors on days 29–31 clamp to the short month's last day without changing the anchor. Generation suspends for an exited/inactive owner or non-Active project.
+
+## S12 revision and issue domain — COMPLETE for development/local staging
+
+`DrawingRecord` identifies a project drawing by a project-unique normalized document number, title and optimistic version. Its client-review requirement starts false. A one-way `DrawingClientReviewSelection` records actor, reason, drawing version and time when the Owner or permission-authorized Team Leader selects it; S12 has no unselection command.
+
+`DocumentRevision` binds one existing S11 file/blob and SHA-256 to the drawing. The blob is unique across revisions. R and CR have separate consecutive numbers (R0 is the initial file; CR1 is the first client-review-series revision) and a shared ordinal orders the drawing history. Each append requires a reason and expected drawing version. New entries start WORKING and not current. Immutable `RevisionStateChange` records lifecycle transitions. `RevisionApprovalFact` binds INTERNAL or CLIENT approval to one revision and its canonical audit event; the S12 HTTP surface does not create review or approval decisions.
+
+`DrawingTransmittal` retains sender, purpose, issue time and project-closure retention metadata. Immutable `TransmittalItem` rows bind the exact revision, checksum and client-review gate snapshot; `TransmittalRecipient` rows retain each named internal recipient and acknowledgement state. Acknowledgement is recorded by that same recipient with time, note and canonical event. Formal issue is available only for an exact current approved/issued revision with required exact approval facts; missing S13 internal or S14 client evidence keeps the public command blocked. External delivery and client portal records remain future S14/S21 work.

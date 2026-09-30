@@ -1,6 +1,6 @@
 # Agent instructions
 
-Architecture is approved by the Owner at checkpoint 2e46805. The Owner approved S01 as COMPLETE for development/local staging on 2026-09-26; subsequent historical authorizations and completions are recorded in the project status documents. Current Owner instruction controls authorization: S01–S11 are COMPLETE for development/local staging. S11 was Owner-authorized on 2026-09-29; implementation, access decisions and verification are recorded in S11_SPEC.md and S11_COMPLETION_REPORT.md. S12 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
+Architecture is approved by the Owner at checkpoint 2e46805. The Owner approved S01 as COMPLETE for development/local staging on 2026-09-26; subsequent historical authorizations and completions are recorded in the project status documents. Current Owner instruction controls authorization: S01–S12 are COMPLETE for development/local staging. S12 was Owner-authorized on 2026-09-29; implementation, Owner clarifications and verification are recorded in S12_SPEC.md and S12_COMPLETION_REPORT.md. S13 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
 
 ## Source of truth and reading order
 
@@ -48,4 +48,8 @@ Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, per
 - Compose recovery rehearsal: set S01_DB_USER, S01_DB_NAME, S01_DB_PASSWORD, S01_DB_PORT and S01_DATABASE_URL in an untracked environment file, start infra/compose.yaml, then run node scripts/rehearse-backup.mjs.
 - Do not claim Compose startup or hosted CI is verified until those environments have actually run successfully.
 
-S01–S11 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S12 and later remain unauthorized without explicit Owner authorization. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
+S01–S12 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S13 and later remain unauthorized. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
+
+## Current Owner routing preference
+
+Aim for approximately 70% Luna and 30% Sol task allocation. Sol handles important decisions, schema/permissions, difficult debugging and final review. Luna handles general work within settled boundaries. This is a task allocation target; report actual models used and do not substitute the ratio for verification.

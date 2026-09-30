@@ -1,6 +1,6 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S10 are COMPLETE for development/local staging. S11 DOC/NAS base was Owner-authorized 2026-09-29 and is COMPLETE for development/local staging; see S11_COMPLETION_REPORT.md. S12 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S12 are COMPLETE for development/local staging; see the slice completion reports, including S12_COMPLETION_REPORT.md. S13 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
@@ -15,7 +15,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | TMP | Project/task/stage templates and SOP references | ORG, ACC |
 | PRJ | S07 COMPLETE: branch-owned projects, baseline and approved scope changes, accountable lead, explicit assignments, transfer, reasoned lifecycle and cancellation requests. S08 stages/milestones COMPLETE. S09 adds effective Owner cancellation and lead-exit hold within the atomic employee-exit operation; acceptance passed; see S09_COMPLETION_REPORT.md. | CRM, ORG, ACC, TMP, APR, EVT |
 | TSK | S09 COMPLETE for development/local staging: owner/collaborator persistence, scoped assignment and states, internal closeout approval, cancellation stops, atomic exit waits and audit/outbox. S10 is COMPLETE for development/local staging. Implemented S10A–F includes ordinary Waiting/resume, committed dates/extensions, same-project dependencies, configured Team Waiting notices and recurrence rules/generation; see S10_SPEC.md and S10_PROGRESS_REPORT.md for behavior, evidence and whole-slice acceptance. S13/S14 add review execution. | PRJ, ORG, ACC, APR, EVT |
-| DOC | S11 COMPLETE for development/local staging: private NAS adapter, physical folders, scoped chunked upload/register/stream, exact Confidential grants, reconciliation and retention association metadata. Revisions, issues/transmittals, client viewer and galleries remain S12–S15. | PRJ, ACC, AUD, EVT |
+| DOC | S11–S12 COMPLETE for development/local staging: private NAS adapter, scoped files and Confidential grants; immutable R/CR register, approved-current supersession, exact issue/transmittal and named acknowledgement, ten-year close clock. S13/S14 supply review/client approval producers and portal; galleries remain S15. | PRJ, ACC, AUD, EVT |
 | REV | Internal/client reviews, corrections, approval evidence, classification | TSK, DOC, APR, ACC, EVT |
 | TIM | Timers, time entries/corrections, accounting-ready time data | TSK, ORG, ACC, AUD |
 | WFM | Schedules, attendance, leave, capacity, workload | ORG, TSK, TIM, APR, EVT |

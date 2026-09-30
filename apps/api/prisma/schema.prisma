@@ -1650,3 +1650,145 @@ model FileRetentionRecord {
   @@unique([blobId, organizationId])
   @@map("file_retention_records")
 }
+
+enum RevisionSeries {
+  R
+  CR
+}
+enum RevisionState {
+  WORKING
+  SUBMITTED
+  REVIEWED
+  APPROVED
+  ISSUED
+  SUPERSEDED
+}
+enum RevisionApprovalKind {
+  INTERNAL
+  CLIENT
+}
+model DrawingRecord {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  documentNumber String @db.VarChar(80)
+  normalizedNumber String @db.VarChar(80)
+  title String @db.VarChar(160)
+  clientApprovalRequired Boolean @default(false)
+  version Int @default(1)
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  revisions DocumentRevision[]
+  clientSelections DrawingClientReviewSelection[]
+  @@unique([id, organizationId, projectId])
+  @@unique([projectId, normalizedNumber])
+  @@map("drawing_records")
+}
+model DocumentRevision {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  drawingId String @db.Uuid
+  fileId String @db.Uuid
+  blobId String @unique @db.Uuid
+  series RevisionSeries
+  number Int
+  ordinal Int
+  state RevisionState @default(WORKING)
+  isCurrent Boolean @default(false)
+  sha256 String @db.Char(64)
+  reason String @db.VarChar(1000)
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  drawing DrawingRecord @relation(fields: [drawingId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  approvals RevisionApprovalFact[]
+  changes RevisionStateChange[]
+  @@unique([id, organizationId, projectId])
+  @@unique([drawingId, series, number])
+  @@unique([drawingId, ordinal])
+  @@map("document_revisions")
+}
+model RevisionApprovalFact {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  revisionId String @db.Uuid
+  kind RevisionApprovalKind
+  auditEventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  revision DocumentRevision @relation(fields: [revisionId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  @@unique([revisionId, kind])
+  @@map("revision_approval_facts")
+}
+model RevisionStateChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  revisionId String @db.Uuid
+  fromState RevisionState
+  toState RevisionState
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  eventId String @unique @db.Uuid
+  revision DocumentRevision @relation(fields: [revisionId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  @@index([revisionId, occurredAt])
+  @@map("revision_state_changes")
+}
+model DrawingTransmittal {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  senderId String @db.Uuid
+  purpose String @db.VarChar(1000)
+  reason String @db.VarChar(1000)
+  issuedAt DateTime @default(now()) @db.Timestamptz(3)
+  projectClosedAt DateTime? @db.Timestamptz(3)
+  retainUntil DateTime? @db.Timestamptz(3)
+  ownerNoticeAt DateTime? @db.Timestamptz(3)
+  holdPlacedAt DateTime? @db.Timestamptz(3)
+  holdReason String? @db.VarChar(1000)
+  backupExpiresAt DateTime? @db.Timestamptz(3)
+  deletionProof Json?
+  items TransmittalItem[]
+  recipients TransmittalRecipient[]
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, projectId, issuedAt])
+  @@map("drawing_transmittals")
+}
+model TransmittalItem {
+  clientApprovalRequired Boolean
+  transmittalId String @db.Uuid
+  revisionId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  sha256 String @db.Char(64)
+  transmittal DrawingTransmittal @relation(fields: [transmittalId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  @@id([transmittalId, revisionId])
+  @@map("transmittal_items")
+}
+model TransmittalRecipient {
+  transmittalId String @db.Uuid
+  accountId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  acknowledgementRequired Boolean
+  acknowledgedAt DateTime? @db.Timestamptz(3)
+  note String? @db.VarChar(1000)
+  transmittal DrawingTransmittal @relation(fields: [transmittalId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  @@id([transmittalId, accountId])
+  @@map("transmittal_recipients")
+}
+
+model DrawingClientReviewSelection {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  drawingId String @unique @db.Uuid
+  drawingVersion Int
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  selectedAt DateTime @default(now()) @db.Timestamptz(3)
+  drawing DrawingRecord @relation(fields: [drawingId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
+  @@map("drawing_client_review_selections")
+}

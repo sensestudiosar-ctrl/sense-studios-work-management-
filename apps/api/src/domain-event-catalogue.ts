@@ -1,4 +1,7 @@
 export const DOMAIN_EVENT_CATALOGUE = {
+  "revision.state_changed": { producer: "S12 revisions", subjectType: "document_revision", schemaVersion: 1 },
+  "drawing.client_review_selected": { producer: "S12 revisions", subjectType: "drawing", schemaVersion: 1 },
+  "transmittal.acknowledged": { producer: "S12 issue", subjectType: "transmittal", schemaVersion: 1 },
   "task.recurrence_configured": { producer: "S10 recurrence", subjectType: "task_recurrence", schemaVersion: 1 },
   "task.recurrence_paused": { producer: "S10 recurrence", subjectType: "task_recurrence", schemaVersion: 1 },
   "task.recurrence_resumed": { producer: "S10 recurrence", subjectType: "task_recurrence", schemaVersion: 1 },

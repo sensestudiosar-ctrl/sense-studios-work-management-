@@ -4,7 +4,7 @@
 
 On fresh dedicated PostgreSQL 18.6 `sense_s11_acceptance_test`, all 41 migrations applied with Prisma. Final `pnpm verify` exited 0: 128 API unit, 64 web unit, 120 PostgreSQL/API integration, 19 desktop/mobile browser checks, typecheck, lint and production builds. The S11 browser case covers template physical folder setup, Owner Confidential upload, exact folder/file grants and revocation, assigned-staff upload, refresh, download and mobile width. A separate populated S10-shaped database upgrade applied the four S11 migration SQL files and preserved counts and ordered old-column digests for all 63 prior tables (six populated, six rows). Prisma schema validation passed. Integration order is deterministic so singleton bootstrap tests run before committed S05 fixtures. See S11_COMPLETION_REPORT.md for limitations and production gates.
 
-Architecture is approved at checkpoint 2e46805. S01–S11 development/local-staging quality evidence is recorded below and in their completion reports. S11 was Owner-authorized on 2026-09-29 and is COMPLETE for development/local staging; see S11_COMPLETION_REPORT.md. S12 and later remain unauthorized.
+Architecture is approved at checkpoint 2e46805. S01–S12 development/local-staging quality evidence is recorded below and in their completion reports. S12 completed its fresh/upgrade migrations, targeted PostgreSQL and desktop/mobile browser acceptance, and full `pnpm verify`; see S12_COMPLETION_REPORT.md. S13 and later remain unauthorized.
 
 ## S01 commands and verified results
 

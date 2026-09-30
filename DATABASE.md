@@ -1,4 +1,4 @@
-# Database architecture — S01–S11 implemented for development/local staging
+# Database architecture — S01–S11 complete; S12 in progress
 
 ## S11 document persistence
 
@@ -91,3 +91,11 @@ Migration `20260929080000_s10_team_settings` adds versioned per-Team ordinary Wa
 ## S10F recurrence persistence and guards
 
 Migrations `20260929070000_s10_recurrence`, `20260929090000_s10_recurrence_evidence_hardening` and `20260929100000_s10_recurrence_copy_guards` add versioned source recurrence rules, immutable before/after history, unique rule/date occurrences and generated-task links, with consistency guards preventing generated tasks from inheriting recurrence-only state. The source is a persisted `RECURRING` task. Worker transactions serialize duplicate generation and commit task, occurrence, event, audit and outbox evidence atomically. Recurrence dates use the versioned organization timezone; schedule rules do not mutate the source task. See `S10_RECURRENCE_SPEC.md` for the exact policy.
+
+## S12 revision and issue persistence — COMPLETE for development/local staging
+
+Migration `20260929150000_s12_revisions` adds project-scoped `drawing_records`, `document_revisions`, `revision_approval_facts`, `revision_state_changes`, `drawing_transmittals`, `transmittal_items`, `transmittal_recipients` and `drawing_client_review_selections`. Composite project/organization foreign keys, a unique normalized drawing number per project, unique file blob per revision, per-series revision number and shared drawing ordinal constraints preserve identity and ordering. A partial unique index allows at most one current revision per drawing.
+
+Database checks and triggers require new revisions to start WORKING and non-current, consecutive numbering and ordinal allocation, exact project file/blob/checksum matching, and valid state/current transitions. Drawing identity, revision contents, state history, approval facts, transmittal contents and client-review selection evidence are protected against rewrite/deletion under runtime privileges. Deferred guards bind creation, state changes, approvals, issues and acknowledgements to canonical exact-revision audit/domain evidence. The issue guard requires an Active project, exact approved revision(s), named recipients and matching checksums; the HTTP service separately rechecks permissions, approval facts and recipient file access.
+
+Transmittals and issued-file retention rows carry closure, ten-year expiry, Owner notice, hold, backup-expiry and deletion-proof metadata. A project-status evidence trigger anchors issued-drawing and client-approval retention to the earliest effective Completed or Cancelled status change; later archive/closeout does not reset the clock. S12 includes no expiry purge or production legal/backup certification. Fresh migration, S11-upgrade preservation and full acceptance remain pending; do not infer them from this schema description.

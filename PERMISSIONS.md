@@ -1,4 +1,4 @@
-# Approved permission model — identity sessions in S02; business authorization in S03; document authorization in S11
+# Approved permission model — identity in S02, business access in S03, S12 revision rules in progress
 
 ## S11 internal document access
 
@@ -82,3 +82,11 @@ Only the current primary owner may request an extension to an existing commitmen
 Only the Owner changes a Team's ordinary Waiting alert opt-in or the Organization timezone. Opt-in is Team-specific and disabled by default. Recipients are current active Owners and currently authorized scoped managers for the ordinary Waiting task. Delivery rechecks active account/employee, Team setting, task owner/team, exact ordinary Waiting state/version and recipient access; exit Waiting and dependency-completion notices use separate policies.
 
 Recurrence rule configuration, pause and resume are available only to the current primary owner, Owner, or a scoped manager with the required task authority. Backend capabilities control UI actions; all commands use expected task/rule versions and reasons. Generation rechecks the current configuration actor's authority, owner/employee state, collaborators and project eligibility and fails closed after access changes. A task type or title alone grants no recurrence, notification, date or task-view access.
+
+## S12 revision, client-review selection and issue — COMPLETE for development/local staging
+
+Revision reads require current project visibility plus `project.view` and `document.view`; every exact revision stream reuses S11 file authorization, including current project assignment and Confidential ancestor/file grants. Creating R0 or appending R/CR requires an active assigned project context with `project.view` and `document.upload`; the Owner has organization authority. A foreign-project file ID, previously claimed blob or inaccessible revision is rejected server-side.
+
+Only the Owner or an assigned Team Leader who has explicit `document.client_review_select` may make the drawing's one-way, reasoned client-review selection. Creation has no client-review policy switch; the selection command rechecks the drawing version and Active project state and retains immutable actor/reason/time evidence. CR revisions always require exact client approval for issue; selected drawings require it for all their revisions. There is no S12 unselection or client-decision command.
+
+Formal issue requires separate scoped `document.issue`, an Active project, exact current Approved/Issued revision(s), canonical internal review evidence, and canonical exact client evidence where selected/CR requires it. Every named recipient must have current internal project access and access to every exact file in the transmittal. Acknowledgement is restricted to that named internal recipient and rechecks project and exact-file access; another user cannot acknowledge on their behalf. The backend enforces all rules regardless of UI capability visibility. S13/S14 remain prerequisites for producing the required review facts; missing facts fail closed.

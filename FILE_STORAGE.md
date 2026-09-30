@@ -1,4 +1,4 @@
-# NAS and file-control architecture — S11 base implemented for development/local staging
+# NAS and file-control architecture — S11 base complete; S12 in progress
 
 Approved source: R-030, R-034–R-040, R-075, R-079–R-080, R-091–R-092. Primary physical file storage is the existing NAS; PostgreSQL stores metadata and later approval/revision relationships. S11 implements the internal document base against a restricted, absolute `NAS_ROOT` mount. Local acceptance used an isolated filesystem mount fixture; production NAS behavior remains a release gate.
 
@@ -35,3 +35,11 @@ References: MINISFORUM N5 Air Docker capability (https://store.minisforum.com/pr
 ## S08 folder intent boundary
 
 S08 stores configured folder names and file naming convention as immutable template-version JSON and copies that definition into the applied project plan. That S08 step creates no directory or file. S11 now provisions physical folders from the applied intent through the private adapter.
+
+## S12 revision-bound files and issue retention — COMPLETE for development/local staging
+
+S12 `DocumentRevision` binds an existing S11 document/blob ID and its SHA-256 to one project drawing. Each file blob may belong to only one revision. Revision downloads use `/api/v1/revisions/:revisionId/stream`; the backend resolves the exact retained file and repeats S11 project, file and Confidential access checks. The response is `no-store`, identifies the revision label/state, and marks a Superseded file with a warning. Browser/UI code never receives a NAS storage key.
+
+R0/R1/... and CR1/CR2/... are separate automatically allocated series; every append retains a mandatory reason, actor/time and exact checksum. Working revisions do not replace or become the current approved file. S13/S14 producers must supply canonical exact-revision approval evidence before issue; a drawing selected for client review and every CR revision require an exact client fact. Formal issue stores the exact revision/checksum and gate snapshot in immutable transmittal items, names each internal recipient, and records optional acknowledgement. The named recipient's acknowledgement and each read recheck current access. External client viewing/delivery remains outside S12.
+
+At the first Completed or Cancelled project transition, a database trigger records that earliest closure time and `retainUntil = closure time + 10 years` for existing issued transmittals and issued drawing/client-approval retention rows. Later archive or closeout does not restart the clock. Notice, hold, backup-expiry and deletion-proof fields are retained as metadata; S12 does not implement controlled deletion/purge, offsite key custody, production NAS validation or legal certification. Full S12 acceptance is pending.

@@ -1,0 +1,34 @@
+.revision-workspace{--rev-ink:#1b2924;--rev-muted:#63736c;--rev-line:#dce5df;--rev-accent:#246651;box-sizing:border-box;margin:1rem 0;padding:clamp(1rem,2.5vw,1.75rem);border:1px solid var(--rev-line);border-radius:18px;background:#fff;color:var(--rev-ink);box-shadow:0 8px 26px #193b2d0b}
+.revision-workspace *{box-sizing:border-box}
+.revision-workspace button,.revision-workspace input,.revision-workspace select{font:inherit}
+.revision-workspace button{cursor:pointer;padding:.6rem .8rem;border:1px solid var(--rev-line);border-radius:9px;background:#fff;color:var(--rev-ink)}
+.revision-workspace button:hover:not(:disabled){border-color:var(--rev-accent);color:var(--rev-accent)}
+.revision-workspace button:disabled{cursor:not-allowed;opacity:.55}
+.revision-header,.revision-register-heading,.revision-drawing>header{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.revision-header h1{margin:.2rem 0;font-size:1.6rem}
+.revision-header p{margin:.25rem 0;color:var(--rev-muted)}
+.revision-eyebrow{margin:0;color:var(--rev-accent);font-size:.72rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
+.revision-picker{display:flex;align-items:center;gap:.8rem;margin:.9rem 0;max-width:40rem;font-weight:650}
+.revision-picker select,.revision-form input,.revision-form select{width:100%;min-width:0;padding:.65rem .7rem;border:1px solid #cbd8d0;border-radius:8px;background:#fff;color:var(--rev-ink)}
+.revision-picker select:focus-visible,.revision-form input:focus-visible,.revision-form select:focus-visible{outline:3px solid #95cfb2;outline-offset:2px}
+.revision-register-heading{margin:1.25rem 0 .75rem;padding-top:1rem;border-top:1px solid var(--rev-line)}
+.revision-register-heading h2{margin:.2rem 0;font-size:1.2rem}
+.revision-register-heading>span,.revision-muted{color:var(--rev-muted);font-size:.87rem}
+.revision-issue-gate,.revision-client-gate{padding:.65rem .8rem;border:1px solid #e8d5ad;border-radius:9px;background:#fffaf0;color:#74501a;font-size:.86rem}
+.revision-issue-gate{margin:.8rem 0}.revision-issue-gate p{margin:.3rem 0 0}
+.revision-columns{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(17rem,.9fr);gap:1rem;align-items:start}
+.revision-list,.revision-forms{min-width:0}.revision-list>h2{margin:.1rem 0 .8rem;font-size:1.1rem}.revision-forms{display:grid;gap:1rem}
+.revision-panel,.revision-drawing{min-width:0;padding:1rem;border:1px solid var(--rev-line);border-radius:13px;background:#fff}
+.revision-panel h2,.revision-drawing h3{margin:.1rem 0 .65rem;font-size:1rem;overflow-wrap:anywhere}
+.revision-drawing{margin-bottom:.8rem}.revision-drawing>header{align-items:flex-start}.revision-current{flex:0 0 auto;color:var(--rev-accent);font-size:.8rem;font-weight:700}
+.revision-form{display:grid;gap:.7rem;background:#f9fbf9}.revision-form>label{display:grid;gap:.35rem;min-width:0;font-size:.86rem;font-weight:650}.revision-form>.revision-primary{justify-self:start}
+.revision-primary{background:var(--rev-accent)!important;border-color:var(--rev-accent)!important;color:#fff!important;font-weight:700}
+.revision-primary:hover:not(:disabled){background:#194f3e!important}
+.revision-history,.revision-transmittal-list{display:grid;gap:.55rem;margin:.7rem 0 0;padding:0;list-style:none}.revision-history>li,.revision-transmittal-list>li{min-width:0;padding:.75rem;border:1px solid var(--rev-line);border-radius:9px}.revision-history>li.is-current{border-color:#9bcab1;background:#f5fbf6}
+.revision-item-heading{display:flex;align-items:center;justify-content:space-between;gap:.5rem}.revision-history p{margin:.4rem 0;font-size:.83rem;overflow-wrap:anywhere}.revision-checksum{font-family:monospace;word-break:break-all;color:var(--rev-muted)}
+.revision-state,.revision-superseded{font-size:.78rem;font-weight:700}.revision-superseded{color:#9a3429}.revision-download{display:inline-block;margin-top:.35rem;color:var(--rev-accent);font-weight:700}
+.revision-error,.revision-denied{padding:.8rem;border:1px solid #e6bbb7;border-radius:9px;background:#fff3f1;color:#842c24}.revision-notice{padding:.7rem .8rem;border-radius:9px;background:#e9f5ec;color:#17633b}
+.revision-transmittals{margin-top:1rem}.revision-transmittal-list small{display:block;margin-top:.25rem;color:var(--rev-muted);overflow-wrap:anywhere}.revision-transmittal-list ul{padding-left:1.2rem}
+.revision-client-review-form,.revision-acknowledge{display:grid;gap:.55rem;margin:.6rem 0;padding:.7rem;border:1px solid var(--rev-line);border-radius:9px;background:#f9fbf9}.revision-client-review-form label,.revision-acknowledge label,.revision-issue-form>label{display:grid;gap:.3rem;font-size:.84rem;font-weight:650}.revision-client-review-form input,.revision-acknowledge input,.revision-issue-form input:not([type=checkbox]){width:100%;min-width:0;padding:.6rem .65rem;border:1px solid #cbd8d0;border-radius:8px;background:#fff;color:var(--rev-ink)}.revision-client-review-form button{justify-self:start}.revision-issue-form{display:grid;gap:.7rem;margin-top:1rem;background:#fbfcfb}.revision-issue-form h2{margin:.1rem 0}.revision-issue-form fieldset{display:grid;gap:.4rem;min-width:0;margin:0;padding:.7rem;border:1px solid var(--rev-line);border-radius:9px}.revision-issue-form legend{padding:0 .25rem;font-size:.86rem;font-weight:700}.revision-issue-form fieldset label{display:flex;align-items:flex-start;gap:.5rem;font-size:.84rem;overflow-wrap:anywhere}.revision-issue-form fieldset input[type=checkbox]{flex:0 0 auto;margin:.15rem 0 0}.revision-issue-form>label:not(.revision-checkbox) input:focus-visible,.revision-client-review-form input:focus-visible,.revision-acknowledge input:focus-visible{outline:3px solid #95cfb2;outline-offset:2px}.revision-issue-form>.revision-primary{justify-self:start}.revision-secondary{margin:.25rem 0;padding:.45rem .65rem!important;color:var(--rev-accent)!important;font-size:.82rem;font-weight:700}.revision-acknowledge button{justify-self:start}.revision-acknowledge label{overflow-wrap:anywhere}
+@media(max-width:760px){.revision-columns{grid-template-columns:minmax(0,1fr)}.revision-picker{align-items:flex-start;flex-direction:column;gap:.3rem}.revision-picker select{width:100%}}
+@media(max-width:520px){.revision-header,.revision-register-heading,.revision-drawing>header{align-items:flex-start;flex-direction:column}.revision-current{flex:auto}.revision-client-review-form button,.revision-issue-form>.revision-primary,.revision-acknowledge button,.revision-form>.revision-primary{width:100%}}

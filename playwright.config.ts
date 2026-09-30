@@ -38,7 +38,7 @@ export default defineConfig({
       }
     },
     {
-      command: `pnpm --filter @sense/web dev -- --port ${webPort}`,
+      command: `pnpm --filter @sense/web dev --port ${webPort}`,
       url: `http://127.0.0.1:${webPort}`,
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,

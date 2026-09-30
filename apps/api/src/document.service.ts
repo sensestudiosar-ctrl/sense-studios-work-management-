@@ -67,6 +67,14 @@ export class DocumentService {
     await this.folder(tx, access, document.folderId);
     if (document.confidential) await this.grantFor(tx, access, DocumentResourceKind.FILE, document.id);
   }
+  /** DOC public module boundary: fresh scoped access to an immutable file inside the caller transaction. */
+  async authorizeFile(tx: Tx, actor: ProjectActor, fileId: string, permission = "document.view", write = false) {
+    const document = await tx.document.findFirst({ where: { id: fileId, organizationId: actor.organizationId }, include: { blobs: true } });
+    if (!document || !document.blobs[0]) throw new NotFoundException("File not found");
+    const access = await this.access(tx, actor, document.projectId, permission, write);
+    await this.fileAccess(tx, access, document);
+    return { document, blob: document.blobs[0] };
+  }
   async list(actor: ProjectActor, projectId: string) {
     return this.db.$transaction(async (tx) => {
       const access = await this.access(tx, actor, projectId, "document.view");
