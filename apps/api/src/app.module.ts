@@ -33,9 +33,23 @@ import { DocumentController } from "./document.controller.js";
 import { DocumentService } from "./document.service.js";
 import { RevisionController } from "./revision.controller.js";
 import { RevisionService } from "./revision.service.js";
+import { ReviewController } from "./review.controller.js";
+import { ReviewService } from "./review.service.js";
+import { ClientPortalIdentityService } from "./client-portal-identity.service.js";
+import { ClientPortalIdentityController } from "./client-portal-identity.controller.js";
+import { ClientPortalAccessService } from "./client-portal-access.service.js";
+import { ClientPortalAccessController } from "./client-portal-access.controller.js";
+import { ClientPortalScopeService } from "./client-portal-scope.service.js";
+import { ClientPortalFilesService } from "./client-portal-files.service.js";
+import { ClientPortalScopeController } from "./client-portal-scope.controller.js";
+import { ClientReviewService } from "./client-review.service.js";
+import { ClientReviewController } from "./client-review.controller.js";
+import { ClientPortalReviewController } from "./client-portal-review.controller.js";
+import { GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController } from "./gallery.controller.js";
+import { GalleryService } from "./gallery.service.js";
 
 @Module({
-  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController],
+  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
@@ -54,6 +68,13 @@ import { RevisionService } from "./revision.service.js";
     TaskRecurrenceService,
     DocumentService,
     RevisionService,
+    ReviewService,
+    ClientPortalIdentityService,
+    ClientPortalAccessService,
+    ClientPortalScopeService,
+    ClientPortalFilesService,
+    GalleryService,
+    ClientReviewService,
     NotificationsService,
     { provide: BrevoEmailAdapter, useFactory: (config: ReturnType<typeof loadRuntimeConfig>) => new BrevoEmailAdapter({ apiKey: config.brevoApiKey, senderEmail: config.brevoSenderEmail, senderName: config.brevoSenderName }) , inject: [RUNTIME_CONFIG] },
     { provide: VERIFIED_ADDRESS_PREDICATE, useClass: PersistedVerifiedAddressPredicate },

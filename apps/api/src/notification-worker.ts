@@ -62,6 +62,32 @@ export class OperationalRecipientPredicate implements CurrentRecipientAuthorizat
       return new OperationalRecipientPredicate(database, authorization, new TaskService(database, authorization)).isAuthorized(eventId, accountId);
     }
     const event = await this.database.prisma.domainEvent.findUnique({ where: { id: eventId } });
+    if (event?.eventName === "review.escalated") {
+      const payload = event.payload;
+      const auditEventId = payload && typeof payload === "object" && !Array.isArray(payload) ? payload.auditEventId : undefined;
+      if (typeof auditEventId !== "string" || event.subjectType !== "review" || !event.subjectId || !event.organizationId || !event.actorId) return false;
+      const audit = await this.database.prisma.auditEvent.findUnique({ where: { id: auditEventId } });
+      const after = audit?.after;
+      if (!audit || audit.organizationId !== event.organizationId || audit.eventKey !== event.eventName || audit.subjectType !== event.subjectType || audit.subjectId !== event.subjectId || audit.actorId !== event.actorId || audit.correlationId !== event.correlationId || !audit.reason || !after || typeof after !== "object" || Array.isArray(after)) return false;
+      if (typeof after.escalationId !== "string" || typeof after.projectId !== "string" || typeof after.taskId !== "string" || after.roundId !== event.subjectId || after.recipientAccountId !== accountId) return false;
+      const escalation = await this.database.prisma.reviewEscalation.findUnique({ where: { id: after.escalationId } });
+      if (!escalation || escalation.organizationId !== event.organizationId || escalation.projectId !== after.projectId || escalation.roundId !== event.subjectId || escalation.actorId !== event.actorId || escalation.recipientAccountId !== accountId || escalation.reason !== audit.reason) return false;
+      const round = await this.database.prisma.reviewRound.findUnique({ where: { id: event.subjectId } });
+      if (!round || round.organizationId !== event.organizationId || round.projectId !== escalation.projectId || round.taskId !== after.taskId) return false;
+      const project = await this.database.prisma.project.findUnique({ where: { id: escalation.projectId } });
+      if (!project || project.organizationId !== event.organizationId || project.status !== "ACTIVE") return false;
+      const account = await this.database.prisma.account.findUnique({ where: { id: accountId }, include: { employee: true } });
+      if (!account || account.state !== AccountState.ACTIVE) return false;
+      if (account.kind === AccountKind.OWNER) return true;
+      const employee = account.employee;
+      if (account.kind !== AccountKind.STAFF || !employee || employee.state !== EmployeeState.ACTIVE || employee.organizationId !== event.organizationId || employee.id !== project.currentLeadEmployeeId || accountId === escalation.actorId) return false;
+      const assignment = await this.database.prisma.projectAssignment.findFirst({ where: { organizationId: event.organizationId, projectId: project.id, employeeId: employee.id, revokedAt: null } });
+      if (!assignment || employee.homeBranchId !== project.branchId && !assignment.crossBranchAuthorized) return false;
+      try {
+        await this.authorization.assertPermission(accountId, "project.view", { kind: "BRANCH", organizationId: event.organizationId, branchId: project.branchId });
+        return true;
+      } catch (error) { if (error instanceof ForbiddenException) return false; throw error; }
+    }
     if (event?.eventName === "task.waiting") return this.tasks.waitingAlertAuthorized(eventId, accountId);
     if (event?.eventName === "task.dependency_completed") {
       const payload = event.payload;
@@ -189,7 +215,7 @@ export class NotificationWorker {
       let retryAt: Date | undefined;
       for (const notification of pending) {
         if (hasLostLease()) return;
-        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed"].includes(notification.category)) {
+        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed", "review.escalated"].includes(notification.category)) {
           await this.deliverTaskNotice(delivery, notification.id, notification.recipientAccountId);
           continue;
         }
@@ -283,7 +309,10 @@ export class NotificationWorker {
       await tx.$queryRaw`SELECT "id" FROM "notifications" WHERE "id"=${notificationId}::uuid FOR UPDATE`;
       const notice = await tx.notification.findFirst({ where: { id: notificationId, eventId: delivery.eventId, recipientAccountId, channel: NotificationChannel.IN_APP, deliveryState: NotificationDeliveryState.PENDING } });
       if (!notice) return;
-      const authorized = await lockTaskNotificationScope(tx, delivery.eventId, recipientAccountId) && await this.recipientAuthorization.isAuthorized(delivery.eventId, recipientAccountId, tx);
+      const scopeLocked = notice.category === "review.escalated"
+        ? await this.lockReviewEscalationScope(tx, delivery.eventId, recipientAccountId)
+        : await lockTaskNotificationScope(tx, delivery.eventId, recipientAccountId);
+      const authorized = scopeLocked && await this.recipientAuthorization.isAuthorized(delivery.eventId, recipientAccountId, tx);
       const account = authorized ? await tx.account.findFirst({ where: { id: recipientAccountId, state: AccountState.ACTIVE } }) : null;
       let failureCode: string | null = !authorized ? "recipient_not_authorized" : !account ? "recipient_unverified" : null;
       if (!failureCode && !notice.mandatory) {
@@ -294,6 +323,26 @@ export class NotificationWorker {
         ? { deliveryState: NotificationDeliveryState.DEAD, failureCode }
         : { deliveryState: NotificationDeliveryState.DELIVERED, deliveredAt: new Date(), failureCode: null } });
     }, { timeout: 30_000 });
+  }
+
+  private async lockReviewEscalationScope(tx: Prisma.TransactionClient, eventId: string, recipientAccountId: string): Promise<boolean> {
+    const event = await tx.domainEvent.findUnique({ where: { id: eventId } });
+    if (!event || event.eventName !== "review.escalated" || event.subjectType !== "review" || !event.organizationId || !/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(event.subjectId)) return false;
+    const round = await tx.reviewRound.findUnique({ where: { id: event.subjectId } });
+    if (!round || round.organizationId !== event.organizationId) return false;
+    // Keep the Lead, active project, assignment and recipient permissions stable
+    // through the current-recipient check and the DELIVERED write.
+    await tx.$queryRaw`SELECT "id" FROM "projects" WHERE "id"=${round.projectId}::uuid FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "project_assignments" WHERE "projectId"=${round.projectId}::uuid ORDER BY "id" FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid ORDER BY "id" FOR UPDATE`;
+    await tx.$queryRaw`SELECT "id" FROM "accounts" WHERE "id"=${recipientAccountId}::uuid FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "teams" WHERE "id" IN (SELECT "homeTeamId" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid) ORDER BY "id" FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "branches" WHERE "id" IN (SELECT "homeBranchId" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid) ORDER BY "id" FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "employee_job_role_assignments" WHERE "employeeId" IN (SELECT "id" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid) ORDER BY "id" FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "job_roles" WHERE "id" IN (SELECT "jobRoleId" FROM "employee_job_role_assignments" WHERE "employeeId" IN (SELECT "id" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid)) ORDER BY "id" FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "role_permissions" WHERE "roleId" IN (SELECT "jobRoleId" FROM "employee_job_role_assignments" WHERE "employeeId" IN (SELECT "id" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid)) ORDER BY "id" FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "employee_permission_overrides" WHERE "employeeId" IN (SELECT "id" FROM "employees" WHERE "accountId"=${recipientAccountId}::uuid) ORDER BY "id" FOR SHARE`;
+    return true;
   }
 
   private async release(delivery: ClaimedDelivery, state: OutboxDeliveryState, availableAt: Date, failureCode: string | null, attempts?: number): Promise<void> {

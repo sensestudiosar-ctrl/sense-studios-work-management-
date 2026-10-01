@@ -155,6 +155,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const finished = await db.query<{ status: string; version: number; tags: string[] }>('SELECT status::text,version,tags FROM tasks WHERE id=$1', [taskId]);
     expect(finished.rows[0]).toEqual({ status: "COMPLETED", version: 8, tags: ["studio", "brief"] });
     await page.reload();
+    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.locator(".task-state")).toHaveText("Completed");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await workspace.screenshot({ path: testInfo.outputPath("task-completed.png") });

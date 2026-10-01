@@ -1,0 +1,1 @@
+ALTER TYPE "InternalReviewStatus" ADD VALUE 'WITHDRAWN';

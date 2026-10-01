@@ -65,6 +65,8 @@ test("project owner links a predecessor and explicitly acknowledges an early sta
     await links.getByRole("button", { name: "Add dependency" }).click();
     await expect(workspace.getByText("Dependency added.")).toBeVisible();
     await page.reload();
+    await workspace.getByRole("button", { name: new RegExp(dependentTitle) }).click();
+    await expect(workspace.getByRole("heading", { name: dependentTitle })).toBeVisible();
     await expect(links.getByText(/Predecessor .* Not started/)).toBeVisible();
     await expect(links.getByText(/At least one predecessor is unfinished/)).toBeVisible();
     await workspace.getByLabel("Reason for change").fill("Begin work with recorded dependency warning");

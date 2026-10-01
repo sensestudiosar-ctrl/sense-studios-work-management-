@@ -63,14 +63,14 @@ describe("identity authentication shell", () => {
     fireEvent.click(screen.getByRole("button", { name: "Continue with passkey" }));
     expect(await screen.findByRole("heading", { name: "You’re signed in." })).toBeInTheDocument();
     expect(startAuthentication).toHaveBeenCalledWith({ optionsJSON: { challenge: "test" } });
-    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
+    await waitFor(() => expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
       "/api/v1/auth/session",
       "/api/v1/auth/passkey/login/options",
       "/api/v1/auth/passkey/login/verify",
       "/api/v1/auth/session",
       "/api/v1/approvals/attention?limit=30",
       "/api/v1/auth/sessions",
-    ]);
+    ]));
     expect(JSON.parse(fetchMock.mock.calls[1]?.[1]?.body as string)).toEqual({ email: "owner@example.test" });
   });
 

@@ -1,7 +1,7 @@
 import { createHash, createHmac } from "node:crypto";
 import { BadRequestException, UnauthorizedException } from "@nestjs/common";
 import { jest } from "@jest/globals";
-import { AccountState, SecurityEventResult, SecurityEventType, WebAuthnChallengePurpose } from "./generated/prisma/client.js";
+import { AccountKind, AccountState, SecurityEventResult, SecurityEventType, WebAuthnChallengePurpose } from "./generated/prisma/client.js";
 import { IdentityService } from "./identity.service.js";
 import type { DatabaseService } from "./database.service.js";
 import type { RuntimeConfig } from "./config.js";
@@ -53,7 +53,8 @@ describe("identity session security", () => {
     ["unknown", null],
     ["revoked", { ...activeSession().row, revokedAt: new Date() }],
     ["expired", { ...activeSession().row, expiresAt: new Date(Date.now() - 1) }],
-    ["suspended account", { ...activeSession().row, account: { id: accountId, state: AccountState.SUSPENDED } }]
+    ["suspended account", { ...activeSession().row, account: { id: accountId, state: AccountState.SUSPENDED } }],
+    ["client identity in an internal session", { ...activeSession().row, account: { id: accountId, state: AccountState.ACTIVE, kind: AccountKind.CLIENT } }]
   ])("rejects %s sessions", async (_label, row) => {
     const findUnique = jest.fn().mockResolvedValue(row && { ...row, account: row.account ?? { id: accountId, state: AccountState.ACTIVE } });
     const identity = serviceWith({ session: { findUnique } });

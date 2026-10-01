@@ -1,11 +1,11 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S12 are COMPLETE for development/local staging; see the slice completion reports, including S12_COMPLETION_REPORT.md. S13 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S15 are COMPLETE for development/local staging; see the slice completion reports, including S15_COMPLETION_REPORT.md. S16 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
 | FND | Configuration, health, tenancy context, migration/deployment conventions | — |
-| IDN | Internal accounts, passkey credentials, enrollment/recovery, sessions/devices; external portal email codes are deferred to S14 | FND |
+| IDN | Internal accounts, passkey credentials, enrollment/recovery, sessions/devices; S14 adds isolated CLIENT portal OTP/session, passkey enrollment and exact-bound approval step-up | FND |
 | ORG | Organization, branch, team, employee membership/reporting and configurable job roles | FND, IDN; S03 COMPLETE |
 | ACC | Permission grants/overrides, membership, scoped authorization | IDN, ORG; S03 COMPLETE |
 | AUD | Append-only business/security audit and evidence snapshots | IDN, FND; S04 COMPLETE for development/local staging |
@@ -14,16 +14,16 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | CRM | Leads, clients, client contacts; S06 COMPLETE for development/local staging | ORG, ACC, EVT |
 | TMP | Project/task/stage templates and SOP references | ORG, ACC |
 | PRJ | S07 COMPLETE: branch-owned projects, baseline and approved scope changes, accountable lead, explicit assignments, transfer, reasoned lifecycle and cancellation requests. S08 stages/milestones COMPLETE. S09 adds effective Owner cancellation and lead-exit hold within the atomic employee-exit operation; acceptance passed; see S09_COMPLETION_REPORT.md. | CRM, ORG, ACC, TMP, APR, EVT |
-| TSK | S09 COMPLETE for development/local staging: owner/collaborator persistence, scoped assignment and states, internal closeout approval, cancellation stops, atomic exit waits and audit/outbox. S10 is COMPLETE for development/local staging. Implemented S10A–F includes ordinary Waiting/resume, committed dates/extensions, same-project dependencies, configured Team Waiting notices and recurrence rules/generation; see S10_SPEC.md and S10_PROGRESS_REPORT.md for behavior, evidence and whole-slice acceptance. S13/S14 add review execution. | PRJ, ORG, ACC, APR, EVT |
-| DOC | S11–S12 COMPLETE for development/local staging: private NAS adapter, scoped files and Confidential grants; immutable R/CR register, approved-current supersession, exact issue/transmittal and named acknowledgement, ten-year close clock. S13/S14 supply review/client approval producers and portal; galleries remain S15. | PRJ, ACC, AUD, EVT |
-| REV | Internal/client reviews, corrections, approval evidence, classification | TSK, DOC, APR, ACC, EVT |
+| TSK | S09 COMPLETE for development/local staging: owner/collaborator persistence, scoped assignment and states, internal closeout approval, cancellation stops, atomic exit waits and audit/outbox. S10 is COMPLETE for development/local staging. Implemented S10A–F includes ordinary Waiting/resume, committed dates/extensions, same-project dependencies, configured Team Waiting notices and recurrence rules/generation; see S10_SPEC.md and S10_PROGRESS_REPORT.md for behavior, evidence and whole-slice acceptance. S13 implements internal review; S14 adds guarded client-review task transitions, exact correction linkage and resume. | PRJ, ORG, ACC, APR, EVT |
+| DOC | S11–S12 COMPLETE for development/local staging: private NAS adapter, scoped files and Confidential grants; immutable R/CR register, approved-current supersession, exact issue/transmittal and named acknowledgement, ten-year close clock. S13 supplies the internal approval producer; S14 client approval/portal and S15 galleries/publication are COMPLETE for development/local staging. See S15_COMPLETION_REPORT.md. | PRJ, ACC, AUD, EVT |
+| REV | S13 COMPLETE for development/local staging: task-bound internal review submissions/rounds, independent named reviewer, correction task/category/severity, markup evidence, reasoned escalation, interrupted-round recovery, guarded reviewer planning and exact S12 R approval producer. S14 extends exact-file review to independent CR files under their own-review-before-client requirement; client packages/items, decisions, annotations, classifications and corrections are implemented. Primary appointment is Owner-only with reason/audit; correction assignment is Owner, assigned Project Lead or explicitly authorized Team Leader with reason/audit. Acceptance is recorded in S14_COMPLETION_REPORT.md. | TSK, DOC, APR, ACC, EVT |
 | TIM | Timers, time entries/corrections, accounting-ready time data | TSK, ORG, ACC, AUD |
 | WFM | Schedules, attendance, leave, capacity, workload | ORG, TSK, TIM, APR, EVT |
 | SKL | Skill profiles, controlled ratings, skill change requests | ORG, APR, AUD |
 | KNW | SOP versions, knowledge submissions, publication | DOC, ACC, APR |
 | TRN | Training assignments, quizzes/practical assessments, effectiveness | KNW, SKL, TSK, APR |
 | SITE | Site work packages, manpower, progress, daily reports, snags | PRJ, TSK, DOC, WFM, EVT |
-| PORT | Client/consultant/vendor portals and scoped sharing | IDN, ACC, PRJ, DOC, REV, SITE |
+| PORT | S14 client portal COMPLETE for development/local staging: isolated CLIENT sessions/cookies, email OTP, passkey enrollment/approval, Owner-managed Primary Client access, project and exact-item grants, review packages/items, annotations/private references, decisions and Primary final batch, cancellation withdrawal and per-client expiry. Consultant/vendor portals remain later scope. | IDN, ACC, PRJ, DOC, REV, SITE |
 | NTF | In-app/email delivery, preferences, reminders, summaries, escalation; push later | EVT, IDN, ACC; S04 core foundation COMPLETE for development/local staging; reminder/summaries remain S24 |
 | PER | Employee and Team Leader evidence, scoring, review cycles | TSK, REV, TIM, WFM, SKL, TRN |
 | HLT | Project health, schedule/delay attribution, risk evidence | PRJ, TSK, REV, SITE, WFM |

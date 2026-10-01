@@ -1,6 +1,6 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805. S01–S12 are COMPLETE for development/local staging; S12 Owner clarifications and acceptance are recorded in S12_SPEC.md and S12_COMPLETION_REPORT.md. S13 and later remain unauthorized.
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 onward remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -66,23 +66,23 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-021 | TASK FIELDS | TSK | S09/S10 | S09 required/optional task metadata and task views; S10F adds reasoned recurrence rules, pause/resume and generated occurrences. Attachments and later workflow fields remain deferred per owning specs. |
 | R-022 | TASK PRIORITIES | TSK | S09 | S09 priorities persisted and visible; Critical escalation deferred to S24; S09 COMPLETE |
 | R-023 | TASK DATES | TSK | S09/S10 | R-023.a operational target date in S09; R-023.b controlled committed-date setting/change history in S10B; R-023.c current-primary-owner extension request with employee-selected eligible scoped manager/Owner decision and Owner withdrawal implemented in S10D. S10 whole-slice acceptance passed. |
-| R-024 | TASK STATE MACHINE | TSK | S09/S10/S13/S14 | S09 states/history, exit wait, cancellation stop, and fail-closed review gates COMPLETE; later review handlers deferred |
+| R-024 | TASK STATE MACHINE | TSK | S09/S10/S13/S14 | S09/S10 task states and internal S13 review transitions COMPLETE for authorized development/local-staging scope; S14 client-review transitions and correction resume are COMPLETE for development/local staging |
 | R-025 | WAITING / BLOCKED WORK | TSK | S10 | S10A ordinary Waiting/resume R-025.a–b; S10C per-Waiting-task dependency-completion notice R-025.d; S10E Owner-configured per-Team ordinary Waiting notices R-025.c with delivery-time state/access rechecks. Forced-exit notices remain separate. |
 | R-026 | DEPENDENCIES | TSK | S10 | S10C same-project finish-to-start edges, cycle denial, reasoned edits and explicit early-start warning/evidence. Cross-project links remain deferred by Owner decision; see S10_SPEC.md. |
-| R-027 | INTERNAL REVIEWS | REV | S13 | NOT STARTED |
-| R-028 | CORRECTION LOOP | REV | S13 | NOT STARTED |
-| R-029 | CORRECTION SEVERITY | REV | S13 | NOT STARTED |
+| R-027 | INTERNAL REVIEWS | REV | S13 | COMPLETE for development/local staging; scoped task submission, independent authorized reviewer, decision, comment/annotation, escalation and exact R revision evidence; see S13_COMPLETION_REPORT.md |
+| R-028 | CORRECTION LOOP | REV | S13 | COMPLETE for development/local staging; immutable submission/rounds, separately assigned correction tasks, resubmission and exit recovery; see S13_COMPLETION_REPORT.md |
+| R-029 | CORRECTION SEVERITY | REV | S13 | COMPLETE for development/local staging; four severities and Owner-managed categories with retained historical identity; see S13_COMPLETION_REPORT.md |
 | R-030 | REVISION NUMBERING | DOC | S12 | S12 COMPLETE for development/local staging: immutable checksum-bound R0/R1/CR1 series and concurrent numbering; see S12_COMPLETION_REPORT.md |
-| R-031 | CLIENT REVISION CLASSIFICATION | REV/PORT | S14 | NOT STARTED |
-| R-032 | CLIENT PORTAL REVIEW | REV/PORT | S14 | NOT STARTED |
-| R-033 | CLIENT APPROVAL AUTHORITY | REV/PORT | S14 | NOT STARTED |
-| R-034 | CLIENT APPROVAL EVIDENCE | REV/PORT | S14 | NOT STARTED |
+| R-031 | CLIENT REVISION CLASSIFICATION | REV/PORT | S14 | COMPLETE for S14 development/local staging: Owner/explicitly authorized Team Leader records only Preference / New Requirement or Employee Work Error with audited version history. Classification does not itself alter performance scores. Independent CR files require their own internal review; correction assignment is limited to Owner, assigned Project Lead or explicitly authorized Team Leader with reason/audit. |
+| R-032 | CLIENT PORTAL REVIEW | REV/PORT | S14 | COMPLETE for S14 development/local staging: Immutable exact-snapshot packages/items, item grants, explicit review start, comments/annotations, private PDF/image references and item decisions implemented. Client approval does not create an issue fact until Primary final batch approval. |
+| R-033 | CLIENT APPROVAL AUTHORITY | REV/PORT | S14 | COMPLETE for S14 development/local staging: Owner-only Primary appointment/replacement with reason/audit; Additional approval delegation is item-specific. Final exact-batch approval is Primary-only; an item decision alone creates no S12 fact. |
+| R-034 | CLIENT APPROVAL EVIDENCE | REV/PORT | S14 | COMPLETE for S14 development/local staging: Item and Primary final evidence bind exact snapshot/revision, signature consent and passkey credential; exact Primary batch creates canonical client facts for S12. |
 | R-035 | FILE MANAGEMENT | DOC | S11 | S11 base COMPLETE for development/local staging; revisions/issue remain S12 |
 | R-036 | NAS ARCHITECTURE | DOC | S11 | S11 base COMPLETE for development/local staging; production NAS validation remains a gate |
-| R-037 | DOCUMENT STATES | DOC | S12 | S12 COMPLETE for development/local staging: exact internal approval-consumer boundary and atomic current/superseded states; S13/S14 approval producers remain future work |
+| R-037 | DOCUMENT STATES | DOC | S12/S13/S14 | S12 exact internal approval consumer and atomic current/superseded states plus S13 exact-R internal approval producer COMPLETE for development/local staging; S14 Primary final exact-batch client producer is COMPLETE for development/local staging |
 | R-038 | TRANSMITTALS | DOC | S12 | S12 COMPLETE for development/local staging: exact internal issue, named acknowledgement and immutable history; external sending remains S14/S21 |
-| R-039 | FILE SECURITY | DOC/ACC | S11 | S11 internal access and Confidential base COMPLETE for development/local staging; protected client viewer remains S14 |
-| R-040 | PROJECT GALLERIES | DOC | S15 | NOT STARTED |
+| R-039 | FILE SECURITY | DOC/ACC | S11 | S11 internal access/Confidential base COMPLETE; S14 protected PDF/image portal viewing, item grants, private references and cancellation-limited reads COMPLETE for development/local staging; production NAS validation remains a gate |
+| R-040 | PROJECT GALLERIES | DOC | S15 | COMPLETE for development/local staging — R-040.a–c and settled Owner policies implemented; see S15_SPEC.md and S15_COMPLETION_REPORT.md |
 | R-041 | TIME TRACKING | TIM | S16 | NOT STARTED |
 | R-042 | TIME LOG EDITING | TIM | S16 | NOT STARTED |
 | R-043 | ACCOUNTING INTEGRATION | TIM | S16 | NOT STARTED |
@@ -117,8 +117,8 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-072 | DELIVERY STRATEGY | FND/SITE | S22 | NOT STARTED |
 | R-073 | DASHBOARDS | DASH | S24 | NOT STARTED |
 | R-074 | MANAGEMENT ACTION CENTER | DASH | S24 | NOT STARTED |
-| R-075 | EXTERNAL PORTALS | PORT | S14/S21 | NOT STARTED |
-| R-076 | PORTAL AUTHENTICATION: R-076.a external portal email-code authentication, R-076.b client passkey step-up for formal approval | PORT/IDN | S14/S21 | DEFERRED; S02 covers internal passkeys only |
+| R-075 | EXTERNAL PORTALS | PORT | S14/S21 | COMPLETE for S14 development/local staging: client portal identity, scoped review/approval, private PDF/image viewing and handover access implemented; permitted PDF/image gallery viewing and the local Design handover checkpoint are verified. Consultant/vendor portals remain S21 |
+| R-076 | PORTAL AUTHENTICATION: R-076.a external portal email-code authentication, R-076.b client passkey step-up for formal approval | PORT/IDN | S14/S21 | COMPLETE for S14 development/local staging: isolated CLIENT email-code/session and passkey enrollment; formal item and Primary final approval require exact-bound passkey proof. S14 acceptance passed |
 | R-077 | REPORTS | RPT | S24 | NOT STARTED |
 | R-078 | CUSTOM REPORT BUILDER | RPT | S26 | NOT STARTED |
 | R-079 | AUDIT TRAIL | AUD | S04 | COMPLETE for development/local staging — canonical backfill and atomic S03 producer writes verified on PostgreSQL; details in S04_COMPLETION_REPORT.md |
@@ -146,7 +146,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-101 | BUG RULE | GOV | S01 | NOT STARTED |
 | R-102 | DEFINITION OF DONE | GOV | S01 | NOT STARTED |
 | R-103 | IMPLEMENTATION ORDER | GOV | S01–S27 | NOT STARTED |
-| R-104 | FIRST REAL-WORLD PRODUCT CHECKPOINT | GOV/REV | S14 | NOT STARTED |
+| R-104 | FIRST REAL-WORLD PRODUCT CHECKPOINT | GOV/REV | S14 | COMPLETE for S14 development/local staging: local portal/review/approval/issue/handover flows implemented; staff browser/regression and local Design-project checkpoint acceptance passed; production adoption remains a later gate |
 | R-105 | SECOND REAL-WORLD PRODUCT CHECKPOINT | GOV/SITE | S20 | NOT STARTED |
 | R-106 | CONTEXT EFFICIENCY REQUIREMENTS | GOV | S01–S27 | NOT STARTED |
 | R-107 | AI CODING MODEL USAGE | GOV | S01–S27 | NOT STARTED |
@@ -161,7 +161,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 
 ## S06 authorization and initial implementation — 2026-09-27
 
-Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07–S12 are COMPLETE for development/local staging; S13 and later remain unauthorized.
+Owner authorized S06. R-010.a–d and C-017.a–b/C-018.a–b/C-019.a–b are expanded in S06_SPEC.md. Persisted leads and clients, scoped APIs, immutable history, audit/events and responsive UI are implemented and verified. Source management under the Owner-approved separate grant and local-staging acceptance are verified; see S06_COMPLETION_REPORT.md. S07–S13 are COMPLETE for development/local staging; S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 onward remain unauthorized.
 
 ## S07A initial implementation — 2026-09-27
 
@@ -175,4 +175,12 @@ R-011.a, R-012.a–b, R-013.a and the S07 portion of R-016.a–b, C-002 Q2/Q15 a
 
 The authorized S09 portions of R-018.a–b, R-019.a–c, R-020.a, R-021.a–b, R-022.a–b, R-023.a, R-024.a–b, C-010/C-011.a–b/C-016.a/C-023.a–b/C-024.a are verified for development/local staging. S09 delivers task schema, scoped backend/API, responsive own/assigned UI, reasoned state and assignment history, audit/events/outbox, Owner-only cancellation with atomic unfinished-task stops, internal closeout approval/revocation, and atomic employee exit with account/session/grant revocation, task Waiting/reassignment gate, and Active lead project hold/Owner replacement. C-012–C-015 external client/vendor/CAD access effects and C-016.b external closeout grants remain deferred to S14/S21; those grants and links are absent from the current schema. Committed due dates/dependencies/recurrence remain S10; review execution remains S13/S14; Critical escalation remains S24. S09_SPEC.md identifies each implemented and deferred sub-clause.
 
-At S09 acceptance, `pnpm verify` exited 0: 108 API unit, 51 web unit, 91 PostgreSQL/API, and 13 Playwright tests. The final UI increment also passed the 52-test web suite, web typecheck/lint/build, and two task Playwright journeys. Later S10–S12 completion evidence is recorded in their own reports. S13 and later remain unauthorized; production gates remain separate.
+At S09 acceptance, `pnpm verify` exited 0: 108 API unit, 51 web unit, 91 PostgreSQL/API, and 13 Playwright tests. The final UI increment also passed the 52-test web suite, web typecheck/lint/build, and two task Playwright journeys. Later S10–S13 completion evidence is recorded in their own reports. S14 is now authorized and in progress; later slices remain unauthorized. Production gates remain separate.
+
+## S13 completion — 2026-09-30
+
+The Owner-authorized S13 portions of R-024.a, R-027.a–b, R-028.a–b, R-029.a–b and R-037 are COMPLETE for development/local staging. S13 delivers task-bound internal reviews and correction loops, independent reviewer authorization, exact R revision approval evidence, immutable structured annotations/markup references, reasoned escalation/withdrawal, exit-reassignment recovery, and separately authorized reviewer priority/deadline changes. Client review, client approval, portal access and external delivery remain S14 scope and are not yet implemented. See S13_SPEC.md and S13_COMPLETION_REPORT.md for implementation scope, tests and limits.
+
+## S14 completion — 2026-10-01
+
+S14 implements separate CLIENT identity/OTP/session/passkey enrollment and step-up; Owner-only reasoned Primary appointment/replacement; versioned project and explicit item grants; immutable review packages/items; structured annotations/private references; item decisions and Primary final exact-batch approval; classification and reasoned correction assignment; cancellation withdrawal, individual grant expiry and retained scoped reads; and S12 issue/handover integration. Fresh 69-migration deployment and populated S13 upgrade preserved the old-column digest across 86 tables (`99F286FB72C154E6928F95647D2DD7AA5B0D446755A32CDD18D832A7AFC44B31`). Final pnpm verify exited 0: 154 API unit, 82 web unit, 170 integration and 27 serial desktop/mobile cases plus typecheck, lint and builds. Six optional S12 cases were skipped; all S14 acceptance suites ran. The final visual refinement passed lint, web build and four S14 browser cases. The persisted local Design handover checkpoint and Sol security review passed. See S14_COMPLETION_REPORT.md.

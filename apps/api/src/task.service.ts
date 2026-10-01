@@ -306,6 +306,7 @@ export class TaskService {
       const projectAllowsProgress = !project || project.status === (task.type === TaskType.CLOSEOUT ? ProjectStatus.CANCELLED : ProjectStatus.ACTIVE);
       const approvalActive = task.type !== TaskType.CLOSEOUT || !!closeoutApproval && !closeoutApproval.revokedAt;
       const progress = open && projectAllowsProgress && approvalActive && !task.requiresReassignment && (actor.kind === AccountKind.OWNER || account.employee?.id === task.primaryOwnerEmployeeId);
+      const linkedReview = task.type === TaskType.CORRECTION ? await tx.reviewRound.findFirst({ where: { correctionTaskId: task.id, organizationId: actor.organizationId, projectId: task.projectId! }, select: { taskId: true } }) : null;
       const extensions = [];
       for (const row of extensionRows) {
         const context = extensionContext(row.context);
@@ -316,7 +317,7 @@ export class TaskService {
         }
         extensions.push({ id: row.id, previousDate: context.previousDate, proposedDate: context.proposedDate, reason: row.reason, state: row.state, requesterId: row.requesterId, approverId: row.approverId, requestedAt: row.requestedAt, decision: row.decision, canDecide, canWithdraw: row.state === "PENDING" && actor.kind === AccountKind.OWNER });
       }
-      return { task, collaborators: collaborators.map((row) => ({ employeeId: row.employeeId, name: row.employee.account.normalizedEmail, estimatedHours: row.estimatedHours })), history: { statusChanges, ownerChanges, committedDateChanges }, extensions, dependencies: { predecessors, hasUnfinished: dependencyRows.some((edge) => edge.predecessorTask.status !== TaskStatus.COMPLETED), hiddenCount: dependencyRows.length - predecessors.length }, closeoutApproval, capabilities: { edit: progress && task.type !== TaskType.CLOSEOUT, transition: progress, wait: progress && task.status === TaskStatus.IN_PROGRESS, resume: progress && task.status === TaskStatus.WAITING && task.waitingPreviousStatus === TaskStatus.IN_PROGRESS, changeCommittedDate: await this.canChangeCommittedDate(tx, actor, task, project), requestExtension: actor.kind === AccountKind.STAFF && account.employee?.id === task.primaryOwnerEmployeeId && this.extensionOpen(task, project) && !extensionRows.some((row) => row.state === "PENDING"), manageDependencies: await this.canManageDependencies(tx, actor, task, project), reassign: reassign && open && projectAllowsProgress && approvalActive, revokeCloseout: actor.kind === AccountKind.OWNER && !!closeoutApproval && !closeoutApproval.revokedAt } };
+      return { task, linkedReviewTaskId: linkedReview?.taskId ?? null, collaborators: collaborators.map((row) => ({ employeeId: row.employeeId, name: row.employee.account.normalizedEmail, estimatedHours: row.estimatedHours })), history: { statusChanges, ownerChanges, committedDateChanges }, extensions, dependencies: { predecessors, hasUnfinished: dependencyRows.some((edge) => edge.predecessorTask.status !== TaskStatus.COMPLETED), hiddenCount: dependencyRows.length - predecessors.length }, closeoutApproval, capabilities: { edit: progress && task.type !== TaskType.CLOSEOUT && !new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED]).has(task.status), transition: progress, wait: progress && task.status === TaskStatus.IN_PROGRESS, resume: progress && task.status === TaskStatus.WAITING && task.waitingPreviousStatus === TaskStatus.IN_PROGRESS, changeCommittedDate: await this.canChangeCommittedDate(tx, actor, task, project), requestExtension: actor.kind === AccountKind.STAFF && account.employee?.id === task.primaryOwnerEmployeeId && this.extensionOpen(task, project) && !extensionRows.some((row) => row.state === "PENDING"), manageDependencies: await this.canManageDependencies(tx, actor, task, project), reassign: reassign && open && projectAllowsProgress && approvalActive, revokeCloseout: actor.kind === AccountKind.OWNER && !!closeoutApproval && !closeoutApproval.revokedAt } };
     });
   }
 
@@ -822,7 +823,7 @@ export class TaskService {
       const row = await this.task(tx, actor, id, input.expectedVersion);
       const { account, project } = await this.taskAccess(tx, actor, row);
       if (actor.kind !== AccountKind.OWNER && account.employee?.id !== row.primaryOwnerEmployeeId) throw new ForbiddenException("Only the primary owner may edit this task");
-      if (row.status === TaskStatus.COMPLETED || row.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION || row.requiresReassignment) throw new ConflictException("Task cannot be edited in this state");
+      if (new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED, TaskStatus.COMPLETED, TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION]).has(row.status) || row.requiresReassignment) throw new ConflictException("Task cannot be edited in this state");
       if (project && project.status !== (row.type === TaskType.CLOSEOUT ? ProjectStatus.CANCELLED : ProjectStatus.ACTIVE)) throw new ConflictException("Project status does not permit editing");
       if (row.type === TaskType.CLOSEOUT) throw new ConflictException("Approved closeout scope and date cannot be edited");
       if (input.planItemId && (!project || !await tx.projectPlanItem.findFirst({ where: { id: input.planItemId, projectId: project.id, organizationId: actor.organizationId } }))) throw new ConflictException("Plan item must belong to the task project");
@@ -836,7 +837,7 @@ export class TaskService {
     });
   }
 
-  async cancelProject(actor: ProjectActor, projectId: string, input: { expectedVersion: number; reason: string }) {
+  async cancelProject(actor: ProjectActor, projectId: string, input: { expectedVersion: number; reason: string; clientAccessEndTimes?: { grantId: string; expectedVersion: number; expiresAt: string }[] | undefined }) {
     if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required");
     return this.transaction(async (tx) => {
       await this.activeActor(tx, actor);
@@ -844,8 +845,32 @@ export class TaskService {
       const project = await this.project(tx, actor, projectId);
       if (project.version !== input.expectedVersion) throw new ConflictException("Project changed. Refresh and retry");
       if (project.status !== ProjectStatus.DRAFT && project.status !== ProjectStatus.ACTIVE && project.status !== ProjectStatus.ON_HOLD) throw new ConflictException("Project cannot be cancelled from this state");
-      // S14/S21 must extend this transaction before they introduce external
-      // client grants, vendor/consultant grants or native CAD link records.
+      const grants = await tx.clientPortalGrant.findMany({ where: { projectId, organizationId: actor.organizationId, revokedAt: null }, orderBy: { id: "asc" } });
+      const endTimes = input.clientAccessEndTimes ?? [];
+      if (new Set(endTimes.map((row) => row.grantId)).size !== endTimes.length || endTimes.some((row) => !grants.some((grant) => grant.id === row.grantId))) throw new ConflictException("Client access end times must match current project grants");
+      for (const grant of grants) {
+        const end = endTimes.find((row) => row.grantId === grant.id);
+        const expiresAt = end ? new Date(end.expiresAt) : grant.expiresAt;
+        if (end && end.expectedVersion !== grant.version) throw new ConflictException("Client access changed. Refresh and retry");
+        if (!expiresAt || !Number.isFinite(expiresAt.getTime()) || expiresAt <= new Date()) throw new ConflictException("Owner-selected future end time is required for each client grant");
+        if (end) {
+          const updatedGrant = await tx.clientPortalGrant.update({ where: { id: grant.id, version: grant.version }, data: { expiresAt, version: { increment: 1 } } });
+          const beforeAccess = { primary: grant.primary, expiresAt: grant.expiresAt?.toISOString() ?? null, revokedAt: null };
+          const access = { primary: updatedGrant.primary, expiresAt: expiresAt.toISOString(), revokedAt: null };
+          const eventId = await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "client.access_changed", subjectType: "client_access", subjectId: grant.id, reason: input.reason, before: { access: beforeAccess }, after: { projectId, accountId: grant.accountId, version: updatedGrant.version, access } });
+          const event = await tx.domainEvent.findUniqueOrThrow({ where: { id: eventId } });
+          await tx.clientPortalGrantChange.create({ data: { organizationId: actor.organizationId, projectId, grantId: grant.id, grantVersion: updatedGrant.version, actorId: actor.accountId, reason: input.reason, before: beforeAccess, after: access, auditEventId: (event.payload as { auditEventId: string }).auditEventId } });
+        }
+      }
+      const packages = await tx.clientReviewPackage.findMany({ where: { projectId, organizationId: actor.organizationId, status: "OPEN" }, orderBy: { id: "asc" } });
+      for (const item of await tx.clientReviewItem.findMany({ where: { projectId, status: { in: ["PENDING", "IN_REVIEW"] } }, orderBy: { id: "asc" } })) {
+        const withdrawn = await tx.clientReviewItem.update({ where: { id: item.id, version: item.version }, data: { status: "WITHDRAWN", version: { increment: 1 } } });
+        await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "client.review_withdrawn", subjectType: "client_review_item", subjectId: item.id, reason: input.reason, before: { status: item.status, version: item.version }, after: { projectId, itemId: item.id, packageId: item.packageId, status: withdrawn.status, version: withdrawn.version } });
+      }
+      for (const batch of packages) {
+        const withdrawn = await tx.clientReviewPackage.update({ where: { id: batch.id, version: batch.version }, data: { status: "WITHDRAWN", version: { increment: 1 } } });
+        await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "client.review_withdrawn", subjectType: "client_review_package", subjectId: batch.id, reason: input.reason, before: { status: batch.status, version: batch.version }, after: { projectId, packageId: batch.id, status: withdrawn.status, version: withdrawn.version } });
+      }
       const updated = await tx.project.update({ where: { id: projectId, version: project.version }, data: { status: ProjectStatus.CANCELLED, version: { increment: 1 } } });
       const change = await tx.projectStatusChange.create({ data: { projectId, organizationId: actor.organizationId, fromStatus: project.status, toStatus: ProjectStatus.CANCELLED, projectVersion: updated.version, reason: input.reason, actorId: actor.accountId } });
       const stoppedTaskIds = await this.stopForProjectCancellation(tx, actor.organizationId, projectId, change.id, actor.accountId, input.reason);

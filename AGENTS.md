@@ -1,6 +1,6 @@
 # Agent instructions
 
-Architecture is approved by the Owner at checkpoint 2e46805. The Owner approved S01 as COMPLETE for development/local staging on 2026-09-26; subsequent historical authorizations and completions are recorded in the project status documents. Current Owner instruction controls authorization: S01–S12 are COMPLETE for development/local staging. S12 was Owner-authorized on 2026-09-29; implementation, Owner clarifications and verification are recorded in S12_SPEC.md and S12_COMPLETION_REPORT.md. S13 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
+Architecture is approved by the Owner at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; subsequent authorizations, clarifications and completions are recorded in the project status documents. S13 was Owner-authorized on 2026-09-30; implementation and verification are recorded in S13_SPEC.md and S13_COMPLETION_REPORT.md. S14 was Owner-authorized and is COMPLETE for development/local staging; its decisions and acceptance are recorded in S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
 
 ## Source of truth and reading order
 
@@ -23,6 +23,14 @@ For a task, read CURRENT_STATE.md and IMPLEMENTATION_STATUS.md, then its entry i
 - Classify failing checks before changes. Record unrelated confirmed defects separately.
 
 ## Model routing
+
+### Context input and token rule — Owner instruction, 2026-10-01
+
+- Always route project-context intake and interpretation to GPT-6.1 Sol (`gpt-6.1-sol`). This includes understanding Owner instructions, reading requirements/addenda and status documents, resolving conflicts, forming plans, restoring compacted context and preparing implementation handoffs.
+- Read the required context in the documented order, then only the relevant sections and source/callers. Avoid repeatedly loading full documents or passing the entire conversation to routine implementation agents. Preserve requirement IDs, approved decisions, scope boundaries, permissions, acceptance criteria and unresolved questions in compact handoffs; never omit necessary context merely to save tokens.
+- Keep the approximately 70% Luna / 30% Sol allocation target for bounded implementation work. Context intake always belongs to GPT-6.1 Sol even when the resulting implementation is delegated to Luna; Luna may read the focused files needed to execute its settled brief and must escalate new interpretation or material ambiguity.
+- Use the exact `gpt-6.1-sol` model when creating a context-intake agent through a tool that supports model selection. Do not silently substitute another model. If unavailable, report the limitation and leave model-dependent routing unresolved until the Owner directs otherwise.
+- This repository rule records the required routing; it does not change the model of an already-running chat or configure the app's model selector. Report actual models used and do not claim GPT-6.1 Sol was used unless it actually ran.
 
 Use Sol-level reasoning for architecture, schema, authentication, authorization, branch isolation, state machines, calculations, offline sync, difficult debugging and security review. Use Luna for routine, well-specified implementation after design. Escalate by reasoning risk, not task size. Model choice does not waive verification.
 
@@ -48,7 +56,7 @@ Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, per
 - Compose recovery rehearsal: set S01_DB_USER, S01_DB_NAME, S01_DB_PASSWORD, S01_DB_PORT and S01_DATABASE_URL in an untracked environment file, start infra/compose.yaml, then run node scripts/rehearse-backup.mjs.
 - Do not claim Compose startup or hosted CI is verified until those environments have actually run successfully.
 
-S01–S12 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S13 and later remain unauthorized. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
+S01–S13 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S14 was Owner-authorized and is COMPLETE for development/local staging; its decisions and acceptance are recorded in S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 and later remain unauthorized. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
 
 ## Current Owner routing preference
 

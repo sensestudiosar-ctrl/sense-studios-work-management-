@@ -63,6 +63,8 @@ test("primary owner extension, Owner Team settings and recurring schedule persis
     await extensions.getByRole("button", { name: "Approve extension" }).click();
     await expect(extensions.getByText("Approved", { exact: true })).toBeVisible();
     await page.reload();
+    await workspace.getByRole("button", { name: new RegExp(`^${title} `) }).click();
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.getByText("Committed due date", { exact: true }).first().locator("..")).toContainText("2026-12-05");
     const history = await db.query('SELECT "newDate"::text AS date,"extensionApprovalId" AS approval FROM task_committed_date_changes WHERE "taskId"=$1 AND "extensionApprovalId" IS NOT NULL', [task.id]);
     expect(history.rows).toEqual([{ date: "2026-12-05", approval: expect.any(String) }]);

@@ -7,6 +7,73 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PortfolioPublicationState {
+  DRAFT
+  PUBLISHED
+  WITHDRAWN
+}
+
+enum PublicationGrantAction {
+  PUBLISHED
+  WITHDRAWN
+}
+
+model GalleryEntry {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  itemId String @db.Uuid
+  label String @db.VarChar(160)
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([projectId, itemId])
+  @@index([organizationId, projectId, createdAt])
+  @@map("gallery_entries")
+}
+
+model PortfolioPublication {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  sourceFileId String @db.Uuid
+  sourceBlobId String @db.Uuid
+  title String @db.VarChar(160)
+  altText String @db.VarChar(500)
+  storageKey String @unique @db.Uuid
+  sha256 String @db.Char(64)
+  mime String @db.VarChar(160)
+  size Int
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  state PortfolioPublicationState @default(DRAFT)
+  version Int @default(1)
+  publishedAt DateTime? @db.Timestamptz(3)
+  withdrawnAt DateTime? @db.Timestamptz(3)
+  @@unique([id, organizationId, projectId])
+  @@index([state, publishedAt, id])
+  @@index([organizationId, projectId, createdAt])
+  @@map("portfolio_publications")
+}
+
+model PublicationGrant {
+  id String @id @default(uuid()) @db.Uuid
+  publicationId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  actorId String @db.Uuid
+  action PublicationGrantAction
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  fromVersion Int
+  toVersion Int
+  eventId String @unique @db.Uuid
+  @@unique([publicationId, toVersion])
+  @@index([organizationId, projectId, occurredAt])
+  @@map("publication_grants")
+}
+
 
 model Task {
   id String @id @default(uuid()) @db.Uuid
@@ -54,6 +121,402 @@ model Task {
   @@index([organizationId, primaryOwnerEmployeeId, status, targetDate, id])
   @@index([organizationId, projectId, status, targetDate, id])
   @@map("tasks")
+}
+
+enum ClientReviewPackageStatus {
+  OPEN
+  APPROVED
+  WITHDRAWN
+}
+
+enum ClientReviewItemStatus {
+  PENDING
+  IN_REVIEW
+  APPROVED
+  REVISION_REQUIRED
+  REJECTED
+  WITHDRAWN
+}
+
+enum ClientItemDecisionKind {
+  APPROVED
+  REVISION_REQUIRED
+  REJECTED
+}
+
+enum ClientRevisionCategory {
+  PREFERENCE_NEW_REQUIREMENT
+  EMPLOYEE_WORK_ERROR
+}
+
+model ClientReviewPackage {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  title String @db.VarChar(160)
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  version Int @default(1)
+  status ClientReviewPackageStatus @default(OPEN)
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, projectId, status, createdAt])
+  @@map("client_review_packages")
+}
+
+model ClientReviewItem {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  packageId String @db.Uuid
+  taskId String @db.Uuid
+  revisionId String? @db.Uuid
+  snapshot Json
+  label String @db.VarChar(160)
+  status ClientReviewItemStatus @default(PENDING)
+  version Int @default(1)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId, projectId])
+  @@unique([packageId, taskId])
+  @@index([organizationId, projectId, taskId, createdAt])
+  @@map("client_review_items")
+}
+
+model ClientItemDecision {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  itemId String @unique @db.Uuid
+  accountId String @db.Uuid
+  kind ClientItemDecisionKind
+  signatureName String? @db.VarChar(160)
+  consent Boolean?
+  comment String @default("") @db.VarChar(2000)
+  credentialId String? @db.Uuid
+  ipAddress String? @db.VarChar(64)
+  userAgent String? @db.VarChar(512)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  auditEventId String @unique @db.Uuid
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, projectId, accountId, createdAt])
+  @@map("client_item_decisions")
+}
+
+model ClientReviewComment {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  itemId String @db.Uuid
+  authorId String @db.Uuid
+  text String @db.VarChar(2000)
+  annotations Json @default("[]")
+  referenceId String? @db.Uuid
+  auditEventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, projectId, itemId, createdAt])
+  @@map("client_review_comments")
+}
+
+model ClientReference {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  itemId String @db.Uuid
+  accountId String @db.Uuid
+  name String @db.VarChar(240)
+  mime String @db.VarChar(120)
+  size Int
+  sha256 String @db.Char(64)
+  storageKey String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, projectId, itemId, createdAt])
+  @@map("client_references")
+}
+
+model ClientItemGrant {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  portalGrantId String @db.Uuid
+  itemId String @db.Uuid
+  view Boolean @default(false)
+  comment Boolean @default(false)
+  review Boolean @default(false)
+  approve Boolean @default(false)
+  download Boolean @default(false)
+  version Int @default(1)
+  changedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  @@unique([id, organizationId, projectId])
+  @@unique([portalGrantId, itemId])
+  @@index([organizationId, projectId, itemId])
+  @@map("client_item_grants")
+}
+
+model ClientItemGrantChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  grantId String @db.Uuid
+  grantVersion Int
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  before Json
+  after Json
+  auditEventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([grantId, grantVersion])
+  @@map("client_item_grant_changes")
+}
+
+model ClientReviewClassification {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  itemId String @db.Uuid
+  category ClientRevisionCategory
+  version Int
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  auditEventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([itemId, version])
+  @@map("client_review_classifications")
+}
+
+model ClientCorrection {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  itemId String @unique @db.Uuid
+  correctionTaskId String @unique @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  auditEventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@map("client_corrections")
+}
+
+model ClientFinalApproval {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  packageId String @unique @db.Uuid
+  accountId String @db.Uuid
+  signatureName String @db.VarChar(160)
+  consent Boolean
+  credentialId String @db.Uuid
+  ipAddress String? @db.VarChar(64)
+  userAgent String? @db.VarChar(512)
+  itemSnapshot Json
+  auditEventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  closedAt DateTime? @db.Timestamptz(3)
+  retainUntil DateTime? @db.Timestamptz(3)
+  @@index([organizationId, projectId, accountId, createdAt])
+  @@map("client_final_approvals")
+}
+
+model ClientPortalGrant {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  accountId String @db.Uuid
+  primary Boolean @default(false)
+  invitedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt DateTime? @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  version Int @default(1)
+  @@unique([projectId, accountId])
+  @@unique([id, organizationId, projectId])
+  @@index([accountId, revokedAt, expiresAt])
+  @@map("client_portal_grants")
+}
+
+model ClientPortalGrantChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  grantId String @db.Uuid
+  grantVersion Int
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  auditEventId String @unique @db.Uuid
+  before Json
+  after Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([grantId, grantVersion])
+  @@map("client_portal_grant_changes")
+}
+
+model ClientPortalSession {
+  id String @id @default(uuid()) @db.Uuid
+  accountId String @db.Uuid
+  tokenHash String @unique @db.Char(64)
+  csrfTokenHash String @db.Char(64)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  lastUsedAt DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  userAgent String? @db.VarChar(512)
+  ipAddress String? @db.VarChar(64)
+  @@index([accountId, revokedAt, expiresAt])
+  @@map("client_portal_sessions")
+}
+
+model ClientPortalCode {
+  accountId String @id @db.Uuid
+  codeHash String @db.Char(64)
+  attempts Int @default(0)
+  sendWindowStartedAt DateTime @db.Timestamptz(3)
+  sendsInWindow Int @default(1)
+  lastSentAt DateTime @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  consumedAt DateTime? @db.Timestamptz(3)
+  @@index([expiresAt])
+  @@map("client_portal_codes")
+}
+
+model ClientPortalCeremony {
+  id String @id @default(uuid()) @db.Uuid
+  accountId String @db.Uuid
+  sessionId String @db.Uuid
+  purpose String @db.VarChar(20)
+  challenge String @unique @db.VarChar(512)
+  binding Json
+  expiresAt DateTime @db.Timestamptz(3)
+  consumedAt DateTime? @db.Timestamptz(3)
+  @@index([accountId, sessionId, expiresAt])
+  @@map("client_portal_ceremonies")
+}
+
+enum InternalReviewStatus {
+  SUBMITTED
+  IN_REVIEW
+  APPROVED
+  CORRECTIONS_REQUIRED
+  WITHDRAWN
+}
+
+enum InternalReviewSeverity {
+  MINOR
+  MODERATE
+  MAJOR
+  CRITICAL
+}
+
+model ReviewCategory {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  name String @db.VarChar(120)
+  normalizedName String @db.VarChar(120)
+  active Boolean @default(true)
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([organizationId, normalizedName])
+  @@unique([id, organizationId])
+  @@map("review_categories")
+}
+
+model ReviewCategoryChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  categoryId String @db.Uuid
+  actorId String @db.Uuid
+  action String @db.VarChar(20)
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, categoryId, occurredAt])
+  @@map("review_category_changes")
+}
+
+model ReviewAssignment {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  taskId String @unique @db.Uuid
+  reviewerEmployeeId String @db.Uuid
+  assignedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  assignedAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([taskId, organizationId, projectId])
+  @@map("review_assignments")
+}
+
+model ReviewAssignmentChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  taskId String @db.Uuid
+  oldReviewerEmployeeId String? @db.Uuid
+  newReviewerEmployeeId String @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, taskId, occurredAt])
+  @@map("review_assignment_changes")
+}
+
+model ReviewSubmission {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  taskId String @db.Uuid
+  revisionId String? @db.Uuid
+  taskVersion Int
+  taskSnapshot Json
+  roundNumber Int
+  submittedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  submittedAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([taskId, roundNumber])
+  @@unique([revisionId])
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, taskId, submittedAt])
+  @@map("review_submissions")
+}
+
+model ReviewRound {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  taskId String @db.Uuid
+  submissionId String @unique @db.Uuid
+  reviewerEmployeeId String @db.Uuid
+  status InternalReviewStatus @default(SUBMITTED)
+  startedAt DateTime? @db.Timestamptz(3)
+  decidedAt DateTime? @db.Timestamptz(3)
+  decidedById String? @db.Uuid
+  decisionComment String? @db.VarChar(2000)
+  severity InternalReviewSeverity?
+  categoryId String? @db.Uuid
+  categoryName String? @db.VarChar(120)
+  correctionTaskId String? @unique @db.Uuid
+  withdrawnAt DateTime? @db.Timestamptz(3)
+  withdrawnById String? @db.Uuid
+  withdrawalReason String? @db.VarChar(1000)
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, reviewerEmployeeId, status])
+  @@map("review_rounds")
+}
+
+model ReviewComment {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  roundId String @db.Uuid
+  authorId String @db.Uuid
+  comment String @db.VarChar(2000)
+  annotations Json @default("[]")
+  markupFileId String? @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, roundId, createdAt])
+  @@map("review_comments")
 }
 enum TaskRecurrenceFrequency {
   DAILY
@@ -632,6 +1095,7 @@ model ProjectCancellationRequest {
 enum AccountKind {
   OWNER
   STAFF
+  CLIENT
 }
 
 enum AccountState {
@@ -1654,6 +2118,19 @@ model FileRetentionRecord {
 enum RevisionSeries {
   R
   CR
+}
+
+model ReviewEscalation {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  roundId String @db.Uuid
+  actorId String @db.Uuid
+  recipientAccountId String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, roundId, createdAt])
+  @@map("review_escalations")
 }
 enum RevisionState {
   WORKING

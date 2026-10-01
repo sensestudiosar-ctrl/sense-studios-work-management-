@@ -179,10 +179,12 @@ databaseDescribe("S12 revision persistence and downstream-evidence boundary", ()
     await fixture.revisions.selectClientReview(fixture.owner, created.id, { expectedVersion: (await database.prisma.drawingRecord.findUniqueOrThrow({ where: { id: created.id } })).version, reason: "Management requires client review" });
     const selectedIssue = { ...issueInput, revisionIds: [r1.id] };
     await expect(fixture.revisions.issue(fixture.owner, fixture.projectId, selectedIssue)).rejects.toThrow(/S14/);
-    await fixture.approveWithDownstreamEvidence(r1, RevisionApprovalKind.CLIENT);
-    await fixture.revisions.issue(fixture.owner, fixture.projectId, selectedIssue);
+    // S14 now requires a real Primary Client final batch. The historical S12
+    // synthetic Owner audit cannot stand in for that downstream producer.
+    await expect(fixture.approveWithDownstreamEvidence(r1, RevisionApprovalKind.CLIENT)).rejects.toThrow(/Primary final overall batch/);
+    await expect(fixture.revisions.issue(fixture.owner, fixture.projectId, selectedIssue)).rejects.toThrow(/S14/);
     const final = await fixture.revisions.list(fixture.owner, fixture.projectId);
-    expect(final.transmittals).toHaveLength(3);
+    expect(final.transmittals).toHaveLength(2);
     expect(final.transmittals.find((row) => row.id === issued.id)?.recipients[0]?.acknowledgedAt).toBeTruthy();
   });
 

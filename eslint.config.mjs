@@ -25,5 +25,47 @@ export default tseslint.config(
         vi: "readonly"
       }
     }
+  },
+  {
+    files: ["docs/ui/v1/mockup-interactions.js"],
+    languageOptions: {
+      sourceType: "script",
+      globals: {
+        ...globals.browser,
+        $: "readonly",
+        activeFilter: "writable",
+        applyDensity: "readonly",
+        body: "readonly",
+        content: "readonly",
+        currentScreenLabel: "readonly",
+        density: "writable",
+        docSearch: "writable",
+        docStatus: "writable",
+        documents: "readonly",
+        escapeHtml: "readonly",
+        globalDocs: "writable",
+        go: "readonly",
+        icon: "readonly",
+        overview: "readonly",
+        preview: "readonly",
+        previewRole: "writable",
+        projectHeader: "readonly",
+        projectTaskFilter: "writable",
+        projectTaskRows: "readonly",
+        projectTaskSearch: "writable",
+        projectTasks: "readonly",
+        reviewDetail: "readonly",
+        reviews: "readonly",
+        screen: "writable",
+        searchText: "writable",
+        selectedTaskId: "writable",
+        state: "writable",
+        tag: "readonly",
+        taskData: "readonly",
+        taskRows: "readonly",
+        taskView: "writable",
+        work: "readonly"
+      }
+    },
   }
 );

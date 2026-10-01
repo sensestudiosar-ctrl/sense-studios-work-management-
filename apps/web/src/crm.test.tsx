@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { StrictMode } from "react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { CrmWorkspace } from "./crm.js";
 
 afterEach(() => vi.unstubAllGlobals());
@@ -65,6 +66,49 @@ describe("CRM workspace", () => {
     const init = calls.find(([url]) => url === "/api/v1/crm/leads")?.[1];
     expect(init?.headers).toMatchObject({ "X-CSRF-Token": "csrf-new" });
     expect(JSON.parse(String(init?.body))).toEqual({ branchId: "branch-1", title: "Campaign launch", contactName: "Dev Shah", sourceId: "source-1", reason: "Inbound enquiry from the website" });
+  });
+
+  it("keeps a successful lead visible when an older setup response arrives during the list refresh", async () => {
+    const branch = { id: "branch-1", name: "Mumbai", capabilities: { view: true, create: true, edit: false, activityCreate: false, stageChange: false } };
+    const lead = { id: "lead-created", title: "Campaign launch", contactName: "Dev Shah", stage: "NEW", version: 1, createdAt: "2026-10-01T10:00:00Z" };
+    const setupResponses: Array<(value: Response) => void> = [];
+    let releaseMutationList: (value: Response) => void = () => undefined;
+    let listCalls = 0;
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/v1/crm/setup") return new Promise<Response>(resolve => setupResponses.push(resolve));
+      if (url.startsWith("/api/v1/crm/leads?") && init?.method !== "POST") {
+        listCalls += 1;
+        if (listCalls === 1) return response({ items: [], total: 0 });
+        if (listCalls === 2) return new Promise<Response>(resolve => { releaseMutationList = resolve; });
+        return response({ items: [], total: 0 });
+      }
+      if (url === "/api/v1/crm/clients?branchId=branch-1") return response({ items: [] });
+      if (url === "/api/v1/crm/leads" && init?.method === "POST") return response(lead, 201);
+      return response({}, 404);
+    }));
+    render(<StrictMode><CrmWorkspace csrfToken="csrf-race" owner={false} /></StrictMode>);
+    await waitFor(() => expect(setupResponses).toHaveLength(2));
+
+    setupResponses[1]!(response({ branches: [branch], sources: [{ id: "source-1", name: "Manual", active: true, builtIn: true }] }));
+    fireEvent.click(await screen.findByRole("button", { name: "New lead" }));
+    fireEvent.change(screen.getByLabelText("Title"), { target: { value: lead.title } });
+    fireEvent.change(screen.getByLabelText("Contact name"), { target: { value: lead.contactName } });
+    fireEvent.change(screen.getByLabelText("Source"), { target: { value: "source-1" } });
+    fireEvent.change(screen.getByLabelText("Creation reason"), { target: { value: "Inbound enquiry from the website" } });
+    fireEvent.click(screen.getByRole("button", { name: "Create lead" }));
+    await waitFor(() => expect(listCalls).toBe(2));
+
+    await act(async () => {
+      setupResponses[0]!(response({ branches: [branch], sources: [{ id: "source-1", name: "Manual", active: true, builtIn: true }] }));
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+    expect(listCalls).toBe(2);
+    releaseMutationList(response({ items: [lead], total: 1 }));
+
+    expect(await screen.findByRole("button", { name: /Campaign launch/ })).toBeInTheDocument();
+    expect(screen.getByText("1 total")).toBeInTheDocument();
   });
 
   it("hides stage mutation controls for a terminal Won lead", async () => {

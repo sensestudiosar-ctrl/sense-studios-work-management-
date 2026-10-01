@@ -14,6 +14,7 @@ const reason = z.string().trim().min(3).max(1000);
 const version = z.number().int().min(1);
 const assignment = z.object({ employeeId: uuid, expectedVersion: version, reason }).strict();
 const versionedReason = z.object({ expectedVersion: version, reason }).strict();
+const cancelInput = versionedReason.extend({ clientAccessEndTimes: z.array(z.object({ grantId: uuid, expectedVersion: version, expiresAt: z.iso.datetime({ offset: true }) }).strict()).max(200).optional() }).strict();
 const statusChange = versionedReason.extend({ toStatus: z.enum(["ACTIVE", "ON_HOLD", "COMPLETED", "ARCHIVED"]), overrideMilestones: z.boolean().optional() }).strict();
 const transfer = versionedReason.extend({ toBranchId: uuid }).strict();
 const scopeApprover = versionedReason.extend({ accountId: uuid }).strict();
@@ -57,5 +58,5 @@ export class ProjectController {
   @Post(":id/scope-requests/:approvalId/decision") async scopeDecision(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("approvalId") approvalId: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.decideScope(actor, parse(uuid, id), parse(uuid, approvalId), parse(scopeDecision, body)); }
   @Post(":id/scope-requests/:approvalId/withdraw") async scopeWithdraw(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("approvalId") approvalId: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.withdrawScope(actor, parse(uuid, id), parse(uuid, approvalId), parse(cancellationRequest, body).reason); }
   @Post(":id/cancellation-requests") async cancellationRequest(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.workflows.requestCancellation(actor, parse(uuid, id), parse(cancellationRequest, body).reason); }
-  @Post(":id/cancel") async cancel(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.tasks.cancelProject(actor, parse(uuid, id), parse(versionedReason, body)); }
+  @Post(":id/cancel") async cancel(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { const actor = await this.mutate(request, csrf); return this.tasks.cancelProject(actor, parse(uuid, id), parse(cancelInput, body)); }
 }

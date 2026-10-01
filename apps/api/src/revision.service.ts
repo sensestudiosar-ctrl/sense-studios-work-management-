@@ -59,6 +59,22 @@ export class RevisionService {
     if (await tx.documentRevision.findUnique({ where: { blobId: file.blob.id } })) throw new ConflictException("This file already belongs to a revision");
     return file;
   }
+  private async clientRecipient(tx: Tx, projectId: string, accountId: string, revisionId: string) {
+    await tx.$queryRaw`SELECT "id" FROM "accounts" WHERE "id"=${accountId}::uuid FOR SHARE`;
+    await tx.$queryRaw`SELECT "id" FROM "client_portal_grants" WHERE "projectId"=${projectId}::uuid AND "accountId"=${accountId}::uuid FOR SHARE`;
+    const account = await tx.account.findFirst({ where: { id: accountId, kind: AccountKind.CLIENT, state: AccountState.ACTIVE } });
+    const grant = await tx.clientPortalGrant.findUnique({ where: { projectId_accountId: { projectId, accountId } } });
+    if (!account || !grant || grant.revokedAt || grant.expiresAt && grant.expiresAt <= new Date()) throw new ForbiddenException("Client recipient access ended");
+    const items = await tx.clientReviewItem.findMany({ where: { projectId, revisionId, organizationId: grant.organizationId } });
+    let visible = grant.primary && items.length > 0;
+    if (!grant.primary) for (const item of items) {
+      await tx.$queryRaw`SELECT "id" FROM "client_item_grants" WHERE "portalGrantId"=${grant.id}::uuid AND "itemId"=${item.id}::uuid FOR SHARE`;
+      if (await tx.clientItemGrant.findFirst({ where: { portalGrantId: grant.id, itemId: item.id, view: true } })) visible = true;
+    }
+    const revision = await tx.documentRevision.findUniqueOrThrow({ where: { id: revisionId } });
+    const blob = await tx.fileBlobMetadata.findUnique({ where: { id: revision.blobId } });
+    if (!visible || !blob || !["application/pdf", "image/png", "image/jpeg", "image/gif", "image/webp"].includes(blob.mimeType)) throw new ForbiddenException("Client recipient requires exact shared PDF/image access");
+  }
   private async viewDrawing(tx: Tx, actor: ProjectActor, id: string) {
     const row = await tx.drawingRecord.findUniqueOrThrow({ where: { id }, include: { revisions: { orderBy: { ordinal: "desc" } } } });
     const revisions = [];
@@ -98,11 +114,12 @@ export class RevisionService {
       if (project.status === ProjectStatus.ACTIVE) try { await this.project(tx, actor, projectId, "document.client_review_select"); selectClientReview = true; } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
       const issuable = drawings.flatMap((drawing) => drawing.revisions.filter((revision) => revision.issueEligible));
       const eligibleRecipients = [];
-      if (authorizedIssue && issuable.length) for (const account of await tx.account.findMany({ where: { state: AccountState.ACTIVE, kind: { in: [AccountKind.OWNER, AccountKind.STAFF] } }, orderBy: { normalizedEmail: "asc" } })) {
+      if (authorizedIssue && issuable.length) for (const account of await tx.account.findMany({ where: { state: AccountState.ACTIVE, kind: { in: [AccountKind.OWNER, AccountKind.STAFF, AccountKind.CLIENT] } }, orderBy: { normalizedEmail: "asc" } })) {
         const recipient = { accountId: account.id, organizationId: actor.organizationId, kind: account.kind };
         try {
-          await this.project(tx, recipient, projectId); const revisionIds = [];
-          for (const revision of issuable) { try { await this.documents.authorizeFile(tx, recipient, revision.fileId); revisionIds.push(revision.id); } catch (error) { if (!(error instanceof ForbiddenException)) throw error; } }
+          if (account.kind !== AccountKind.CLIENT) await this.project(tx, recipient, projectId);
+          const revisionIds = [];
+          for (const revision of issuable) { try { if (account.kind === AccountKind.CLIENT) await this.clientRecipient(tx, projectId, account.id, revision.id); else await this.documents.authorizeFile(tx, recipient, revision.fileId); revisionIds.push(revision.id); } catch (error) { if (!(error instanceof ForbiddenException)) throw error; } }
           if (revisionIds.length) eligibleRecipients.push({ accountId: account.id, name: account.normalizedEmail, revisionIds });
         } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
       }
@@ -214,6 +231,10 @@ export class RevisionService {
       }
       for (const accountId of input.recipientAccountIds) {
         const account = await tx.account.findUnique({ where: { id: accountId } });
+        if (account?.kind === AccountKind.CLIENT) {
+          for (const revision of revisions) await this.clientRecipient(tx, projectId, accountId, revision.id);
+          continue;
+        }
         if (!account || ![AccountKind.OWNER, AccountKind.STAFF].includes(account.kind as "OWNER" | "STAFF")) throw new ForbiddenException("Recipient has no internal project access");
         const recipient = { accountId, kind: account.kind, organizationId: actor.organizationId };
         await this.project(tx, recipient, projectId);

@@ -19,7 +19,9 @@ export class DatabaseService implements DatabaseProbe, OnModuleDestroy {
 
   constructor(@Inject(RUNTIME_CONFIG) config: RuntimeConfig) {
     this.client = new PrismaClient({
-      adapter: new PrismaPg({ connectionString: config.databaseUrl })
+      // The adapter serializes DateTime without an offset and normalizes returned
+      // timestamptz values as UTC. Set every connection's timezone explicitly.
+      adapter: new PrismaPg({ connectionString: config.databaseUrl, options: "-c timezone=UTC" })
     });
   }
 

@@ -9,13 +9,14 @@ const ids = {
   account: "638bd1e2-6d91-4f45-8945-e3ddb9dd1d85", team: "09c02e64-acbf-44a0-a980-10fed66c8784"
 };
 
-function harness(authorized: boolean, leaseOwned = true) {
+function harness(authorized: boolean, leaseOwned = true, category = "task.waiting") {
   const notice = { id: ids.notice, eventId: ids.event, recipientAccountId: ids.account, channel: NotificationChannel.IN_APP,
-    category: "task.waiting", title: "Task is waiting", body: "Review the task", internalRoute: `/?taskId=${ids.task}`, mandatory: false, critical: false, attempts: 0 };
+    category, title: "Task is waiting", body: "Review the task", internalRoute: `/?taskId=${ids.task}`, mandatory: false, critical: false, attempts: 0 };
   const tx = {
     $queryRaw: jest.fn(async (sql: TemplateStringsArray) => sql.join("").includes("leaseToken") && !leaseOwned ? [] : [{ id: ids.employee }]),
     outboxDelivery: { update: jest.fn(async () => ({})) },
-    domainEvent: { findUnique: jest.fn(async () => ({ id: ids.event, eventName: "task.waiting", subjectId: ids.task, organizationId: ids.organization })) },
+    domainEvent: { findUnique: jest.fn(async () => ({ id: ids.event, eventName: category, subjectType: category === "review.escalated" ? "review" : "task", subjectId: ids.task, organizationId: ids.organization })) },
+    reviewRound: { findUnique: jest.fn(async () => ({ id: ids.task, organizationId: ids.organization, projectId: ids.task })) },
     task: { findFirst: jest.fn(async () => ({ id: ids.task, organizationId: ids.organization, primaryOwnerEmployeeId: ids.employee, projectId: null })) },
     employee: { findUnique: jest.fn(async () => ({ id: ids.employee, accountId: ids.account, homeTeamId: ids.team })) },
     account: { findFirst: jest.fn(async () => ({ id: ids.account })) },
@@ -65,6 +66,39 @@ describe("atomic S10 in-app delivery", () => {
 
   it("does not check or deliver when the worker no longer owns the durable lease", async () => {
     const { worker, tx, predicate } = harness(true, false);
+    await worker.runBatch();
+    expect(predicate.isAuthorized).not.toHaveBeenCalled();
+    expect(tx.notification.updateMany).not.toHaveBeenCalled();
+  });
+});
+
+describe("atomic S13 escalation delivery", () => {
+  it("fences Lead and permission changes before checking authorization in the delivery transaction", async () => {
+    const { worker, tx, prisma, predicate } = harness(false, true, "review.escalated");
+    await worker.runBatch();
+    expect(predicate.isAuthorized).toHaveBeenCalledTimes(1);
+    expect(predicate.isAuthorized).toHaveBeenCalledWith(ids.event, ids.account, tx);
+    const locks = tx.$queryRaw.mock.calls.map(([sql]) => sql.join(""));
+    expect(locks.some((sql) => sql.includes('FROM "projects"') && sql.includes("FOR SHARE"))).toBe(true);
+    expect(locks.some((sql) => sql.includes('FROM "employees"') && sql.includes("FOR UPDATE"))).toBe(true);
+    expect(locks.some((sql) => sql.includes('FROM "employee_permission_overrides"') && sql.includes("FOR SHARE"))).toBe(true);
+    expect(tx.notification.updateMany).toHaveBeenCalledWith(expect.objectContaining({ data: {
+      deliveryState: NotificationDeliveryState.DEAD, failureCode: "recipient_not_authorized"
+    } }));
+    expect(prisma.notification.updateMany).not.toHaveBeenCalled();
+  });
+
+  it("marks an authorized escalation delivered under the same lease and transaction", async () => {
+    const { worker, tx, predicate } = harness(true, true, "review.escalated");
+    await worker.runBatch();
+    expect(predicate.isAuthorized).toHaveBeenCalledWith(ids.event, ids.account, tx);
+    expect(tx.notification.updateMany).toHaveBeenCalledWith(expect.objectContaining({ data: {
+      deliveryState: NotificationDeliveryState.DELIVERED, deliveredAt: expect.any(Date), failureCode: null
+    } }));
+  });
+
+  it("does not deliver an escalation after losing the durable lease", async () => {
+    const { worker, tx, predicate } = harness(true, false, "review.escalated");
     await worker.runBatch();
     expect(predicate.isAuthorized).not.toHaveBeenCalled();
     expect(tx.notification.updateMany).not.toHaveBeenCalled();

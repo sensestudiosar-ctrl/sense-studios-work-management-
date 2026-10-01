@@ -51,8 +51,25 @@ describe("TaskWorkspace", () => {
     expect(screen.queryByText("Assign to an employee")).not.toBeInTheDocument();
     expect(screen.getByText("Asha")).toBeInTheDocument();
     expect(screen.getByText("Linked plan item: Concept")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Open internal review" })).toHaveAttribute("href", "/reviews?taskId=task-1");
     expect(screen.getByText("Design", { selector: ".task-tags li" })).toBeInTheDocument();
     expect(screen.getByRole("checkbox", { name: "Confirm brief" })).toBeChecked();
+  });
+
+  it("opens correction instructions on the originating review round", async () => {
+    const correctionTask: Task = { ...task, id: "correction-task", title: "Correct: Prepare concept", type: "CORRECTION" };
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/setup")) return response(setup);
+      if (url.includes("?scope=")) return response({ total: 1, items: [correctionTask] });
+      if (url.endsWith("/correction-task")) return response({ ...detail, task: correctionTask, linkedReviewTaskId: "original-task" });
+      return response({});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TaskWorkspace csrfToken="csrf" owner={false} />);
+    await screen.findByRole("heading", { name: "Correct: Prepare concept" });
+    expect(screen.getByRole("link", { name: "Open correction instructions in internal review" })).toHaveAttribute("href", "/reviews?taskId=original-task");
+    expect(screen.queryByRole("link", { name: "Open internal review" })).not.toBeInTheDocument();
   });
 
   it("reports a stale task conflict and reloads authoritative details", async () => {

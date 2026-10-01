@@ -256,10 +256,11 @@ export class DocumentService {
   async reconciliation(actor: ProjectActor) {
     if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required");
     const inventory = await (await this.storage()).inventory();
-    const [stored, active] = await Promise.all([this.db.fileBlobMetadata.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.documentUpload.findMany({ where: { organizationId: actor.organizationId, state: DocumentUploadState.STAGING }, select: { id: true, expiresAt: true } })]);
-    const known = new Set(stored.map((row) => row.storageKey));
+    const [stored, references, publications, active] = await Promise.all([this.db.fileBlobMetadata.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.clientReference.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.portfolioPublication.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.documentUpload.findMany({ where: { organizationId: actor.organizationId, state: DocumentUploadState.STAGING }, select: { id: true, expiresAt: true } })]);
+    const retained = [...stored, ...references, ...publications];
+    const known = new Set(retained.map((row) => row.storageKey));
     const activeKeys = new Set(active.map((row) => row.id));
-    return { orphanBlobKeys: inventory.blobKeys.filter((key) => !known.has(key)), missingBlobKeys: stored.map((row) => row.storageKey).filter((key) => !inventory.blobKeys.includes(key)), orphanStageIds: inventory.stagedUploadIds.filter((key) => !activeKeys.has(key)), expiredUploadIds: active.filter((row) => row.expiresAt <= new Date()).map((row) => row.id), assemblingKeys: inventory.assemblingKeys };
+    return { orphanBlobKeys: inventory.blobKeys.filter((key) => !known.has(key)), missingBlobKeys: retained.map((row) => row.storageKey).filter((key) => !inventory.blobKeys.includes(key)), orphanStageIds: inventory.stagedUploadIds.filter((key) => !activeKeys.has(key)), expiredUploadIds: active.filter((row) => row.expiresAt <= new Date()).map((row) => row.id), assemblingKeys: inventory.assemblingKeys };
   }
   async reconcile(actor: ProjectActor) {
     if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required");
