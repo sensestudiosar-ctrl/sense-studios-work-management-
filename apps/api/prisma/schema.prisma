@@ -7,6 +7,71 @@ datasource db {
   provider = "postgresql"
 }
 
+model TurnkeyRelease {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  version Int @default(1)
+  state String @default("DRAFT") @db.VarChar(40)
+  designs Json
+  lines Json
+  materials Json @default("[]")
+  currency String @db.Char(3)
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  replacesReleaseId String? @db.Uuid
+  replacedById String? @unique @db.Uuid
+  changeReason String? @db.VarChar(1000)
+  costApproverId String? @db.Uuid
+  costApprovalId String? @unique @db.Uuid
+  procurementApproverId String? @db.Uuid
+  procurementApprovalId String? @unique @db.Uuid
+  procurementStatus String @default("NOT_STARTED") @db.VarChar(30)
+  factoryStatus String @default("NOT_STARTED") @db.VarChar(30)
+  @@unique([id, organizationId, projectId])
+  @@index([organizationId, projectId, createdAt])
+  @@map("turnkey_releases")
+}
+
+model TurnkeyPrice {
+  releaseId String @id @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  prices Json
+  @@map("turnkey_prices")
+}
+
+model TurnkeyHistory {
+  id String @id @default(uuid()) @db.Uuid
+  releaseId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  eventName String @db.VarChar(120)
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  eventId String @unique @db.Uuid
+  releaseVersion Int
+  @@unique([releaseId, releaseVersion])
+  @@index([organizationId, projectId, occurredAt])
+  @@map("turnkey_history")
+}
+
+model TurnkeyCostShare {
+  id String @id @default(uuid()) @db.Uuid
+  releaseId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  accountId String @db.Uuid
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  @@unique([releaseId, accountId])
+  @@map("turnkey_cost_shares")
+}
+
 enum PortfolioPublicationState {
   DRAFT
   PUBLISHED

@@ -9,6 +9,7 @@ export default tseslint.config(
       "**/dist/**",
       "**/coverage/**",
       "**/generated/**",
+      "**/.env.*/**",
       "playwright-report/**",
       "test-results/**"
     ]
@@ -18,6 +19,7 @@ export default tseslint.config(
   {
     files: ["**/*.{ts,tsx,mjs,cjs}"],
     languageOptions: {
+      parserOptions: { tsconfigRootDir: import.meta.dirname },
       globals: {
         ...globals.node,
         ...globals.browser,

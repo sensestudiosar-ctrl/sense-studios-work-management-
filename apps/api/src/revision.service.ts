@@ -126,6 +126,33 @@ export class RevisionService {
       return { drawings, transmittals, eligibleRecipients, capabilities: { createRevision, selectClientReview, issue: authorizedIssue && issuable.length > 0 }, issueBlocker: issuable.length ? null : drawings.some((drawing) => drawing.revisions.some((revision) => revision.issueBlocker === CLIENT_BLOCKER)) ? CLIENT_BLOCKER : INTERNAL_BLOCKER };
     });
   }
+  /** DOC boundary for S19; the caller retains the command transaction. */
+  async validateProductionInputs(tx: Tx, actor: ProjectActor, projectId: string, revisionIds: string[]) {
+    if (!revisionIds.length || revisionIds.length > 50 || new Set(revisionIds).size !== revisionIds.length) throw new BadRequestException("Select distinct approved design revisions");
+    const snapshots = [];
+    const drawingIds = new Set<string>();
+    for (const id of [...revisionIds].sort()) {
+      const revision = await tx.documentRevision.findFirst({ where: { id, projectId, organizationId: actor.organizationId } });
+      if (!revision) throw new NotFoundException("Design revision not found in this project");
+      await tx.$queryRaw`SELECT "id" FROM "drawing_records" WHERE "id"=${revision.drawingId}::uuid FOR SHARE`;
+      const current = await tx.documentRevision.findUniqueOrThrow({ where: { id }, include: { drawing: true } });
+      await this.documents.authorizeFile(tx, actor, current.fileId);
+      const facts = await tx.revisionApprovalFact.findMany({ where: { revisionId: id } });
+      if (drawingIds.has(current.drawingId) || !current.isCurrent || !["APPROVED", "ISSUED"].includes(current.state) || !facts.some((fact) => fact.kind === "INTERNAL") || (current.drawing.clientApprovalRequired || current.series === "CR") && !facts.some((fact) => fact.kind === "CLIENT")) throw new ConflictException("Production requires the current approved exact design inputs");
+      drawingIds.add(current.drawingId);
+      snapshots.push({ revisionId: current.id, drawingId: current.drawingId, label: `${current.drawing.documentNumber} · ${label(current)}`, sha256: current.sha256 });
+    }
+    return snapshots;
+  }
+  async productionCandidates(tx: Tx, actor: ProjectActor, projectId: string) {
+    const rows = await tx.documentRevision.findMany({ where: { projectId, organizationId: actor.organizationId, isCurrent: true, state: { in: ["APPROVED", "ISSUED"] } }, orderBy: [{ drawingId: "asc" }, { id: "asc" }] });
+    const result = [];
+    for (const row of rows) {
+      try { result.push(...await this.validateProductionInputs(tx, actor, projectId, [row.id])); }
+      catch (error) { if (!(error instanceof ForbiddenException || error instanceof ConflictException)) throw error; }
+    }
+    return result;
+  }
   async createDrawing(actor: ProjectActor, projectId: string, input: { documentNumber: string; title: string; fileId: string; reason: string }) {
     return this.transaction(async (tx) => {
       await this.project(tx, actor, projectId, "document.upload", true);

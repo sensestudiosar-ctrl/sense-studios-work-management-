@@ -1,4 +1,13 @@
 export const DOMAIN_EVENT_CATALOGUE = {
+  "turnkey.release_created": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.release_replaced": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.cost_requested": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.cost_decided": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.materials_selected": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.procurement_requested": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.procurement_decided": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.progress_changed": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
+  "turnkey.cost_shared": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
   "gallery.entry_added": { producer: "S15 galleries", subjectType: "gallery_entry", schemaVersion: 1 },
   "portfolio.prepared": { producer: "S15 portfolio", subjectType: "portfolio_publication", schemaVersion: 1 },
   "portfolio.published": { producer: "S15 portfolio", subjectType: "portfolio_publication", schemaVersion: 1 },

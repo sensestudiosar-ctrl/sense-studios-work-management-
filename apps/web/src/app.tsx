@@ -11,6 +11,7 @@ import { DocumentWorkspace } from "./document.js";
 import { RevisionWorkspace } from "./revision.js";
 import { ReviewWorkspace } from "./review.js";
 import { StaffClientReviewWorkspace } from "./client-review.js";
+import { TurnkeyWorkspace } from "./turnkey.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -377,7 +378,7 @@ function Identity({ session, onLogout, busy, error }: {
           {busy ? "Signing out…" : "Sign out"}
         </button>
       </section>
-      <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link></nav>
+      <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/turnkey">Turnkey operations</Link></nav>
       {error && <p className="auth-error" role="alert">{error}</p>}
       {!ownerNeedsSetup && <ApprovalQueue />}
       {!ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
@@ -1136,6 +1137,21 @@ function ClientReviewsRoute(): React.JSX.Element {
   return <main className="identity-content"><div className="document-route-heading"><div><Link to="/">← Workspace</Link><nav className="document-navigation" aria-label="Project records"><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link></nav></div><span>{session.account.email}</span></div><StaffClientReviewWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main>;
 }
 
+function TurnkeyRoute(): React.JSX.Element {
+  const [session, setSession] = useState<Session | null>();
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    let active = true;
+    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
+    return () => { active = false; };
+  }, []);
+  if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
+  if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
+  if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view Turnkey operations</h1><Link to="/">Return to sign in</Link></section></main>;
+  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
+  return <main className="identity-content"><div className="document-route-heading"><div><Link to="/">← Workspace</Link><nav className="document-navigation" aria-label="Project records"><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/turnkey">Turnkey operations</Link></nav></div><span>{session.account.email}</span></div><TurnkeyWorkspace csrfToken={session.csrfToken} /></main>;
+}
+
 export function App(): React.JSX.Element {
   return (
     <div className="app-shell">
@@ -1155,6 +1171,7 @@ export function App(): React.JSX.Element {
         <Route path="/revisions" element={<RevisionsRoute />} />
         <Route path="/reviews" element={<ReviewsRoute />} />
         <Route path="/client-reviews" element={<ClientReviewsRoute />} />
+        <Route path="/turnkey" element={<TurnkeyRoute />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <footer className="site-footer">Sense Studios · Secure workspace</footer>

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, vi } from "vitest";
 import { ClientPortalAuth } from "./client-portal-auth.js";
 
@@ -140,5 +140,83 @@ describe("client portal identity and security", () => {
     fireEvent.click(screen.getByRole("button", { name: "Register a passkey" }));
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
     expect(await screen.findByText("We couldn’t register a passkey. Try again.")).toHaveAttribute("role", "alert");
+  });
+
+  it("shows only the explicitly shared approved cost snapshot returned for the selected project", async () => {
+    const fetchMock = vi.fn((url: string, init?: RequestInit) => {
+      void init;
+      if (url === "/api/v1/client-portal/auth/session") return Promise.resolve(response(session));
+      if (url === "/api/v1/client-portal/auth/sessions") return Promise.resolve(response([]));
+      if (url === "/api/v1/client-portal/projects") return Promise.resolve(response({ projects: [{ id: "project-1", title: "Residence", status: "ACTIVE" }] }));
+      if (url === "/api/v1/client-portal/projects/project-1/costs") return Promise.resolve(response({ items: [{
+        id: "snapshot-1", currency: "INR", lines: [{ key: "design", description: "Design services", quantity: "1.00", unit: "package" }],
+        costs: { prices: [{ key: "design", unitPrice: "125000.00" }], total: "125000.00" }, createdAt: "2026-10-03T10:00:00.000Z"
+      }] }));
+      return Promise.resolve(response({}, 404));
+    });
+    stubFetch(fetchMock);
+    render(<ClientPortalAuth />);
+
+    fireEvent.click(await screen.findByRole("button", { name: "View approved cost snapshots" }));
+
+    expect(await screen.findByText("Design services: 1.00 package")).toBeInTheDocument();
+    expect(screen.getByText("125000.00 INR per package")).toBeInTheDocument();
+    expect(screen.getByText("Total: 125000.00 INR")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /approve cost/i })).not.toBeInTheDocument();
+    const costsCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith("/projects/project-1/costs"));
+    expect(costsCall?.[1]).toMatchObject({ credentials: "include", cache: "no-store" });
+    expect(fetchMock.mock.calls.some(([url]) => String(url).includes("/auth/") && String(url).includes("cost"))).toBe(false);
+  });
+
+  it("shows an empty state when no costs are shared and clears a snapshot after access revocation", async () => {
+    let mode: "empty" | "shared" | "revoked" = "empty";
+    const fetchMock = vi.fn((url: string, init?: RequestInit) => {
+      void init;
+      if (url === "/api/v1/client-portal/auth/session") return Promise.resolve(response(session));
+      if (url === "/api/v1/client-portal/auth/sessions") return Promise.resolve(response([]));
+      if (url === "/api/v1/client-portal/projects") return Promise.resolve(response({ projects: [{ id: "project-1", title: "Residence", status: "ACTIVE" }] }));
+      if (url === "/api/v1/client-portal/projects/project-1/costs") {
+        if (mode === "revoked") return Promise.resolve(response({}, 403));
+        if (mode === "empty") return Promise.resolve(response({ items: [] }));
+        return Promise.resolve(response({ items: [{
+          id: "snapshot-2", currency: "INR", lines: [{ key: "build", description: "Build services", quantity: "1", unit: "package" }],
+          costs: { prices: [{ key: "build", unitPrice: "900.00" }], total: "900.00" }, createdAt: "2026-10-03T10:00:00.000Z"
+        }] }));
+      }
+      return Promise.resolve(response({}, 404));
+    });
+    stubFetch(fetchMock);
+    render(<ClientPortalAuth />);
+    fireEvent.click(await screen.findByRole("button", { name: "View approved cost snapshots" }));
+    expect(await screen.findByText("No approved cost snapshots have been shared with this account.")).toBeInTheDocument();
+
+    mode = "shared";
+    const costsSection = screen.getByRole("region", { name: "Approved cost snapshots" });
+    fireEvent.click(within(costsSection).getByRole("button", { name: "Refresh" }));
+    expect(await screen.findByText("Build services: 1 package")).toBeInTheDocument();
+
+    mode = "revoked";
+    fireEvent.click(within(costsSection).getByRole("button", { name: "Refresh" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("These cost details are no longer available or were not shared with this account.");
+    expect(screen.queryByText("Build services: 1 package")).not.toBeInTheDocument();
+    expect(screen.queryByText("Total: 900.00 INR")).not.toBeInTheDocument();
+  });
+
+  it("shows a retryable error when the approved-cost service is unavailable", async () => {
+    const fetchMock = vi.fn((url: string, init?: RequestInit) => {
+      void init;
+      if (url === "/api/v1/client-portal/auth/session") return Promise.resolve(response(session));
+      if (url === "/api/v1/client-portal/auth/sessions") return Promise.resolve(response([]));
+      if (url === "/api/v1/client-portal/projects") return Promise.resolve(response({ projects: [{ id: "project-1", title: "Residence", status: "ACTIVE" }] }));
+      if (url === "/api/v1/client-portal/projects/project-1/costs") return Promise.resolve(response({}, 503));
+      return Promise.resolve(response({}, 404));
+    });
+    stubFetch(fetchMock);
+    render(<ClientPortalAuth />);
+    fireEvent.click(await screen.findByRole("button", { name: "View approved cost snapshots" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Approved cost snapshots could not be loaded. Try again.");
+    expect(screen.getByRole("button", { name: "Try again" })).toBeEnabled();
+    expect(screen.queryByText(/Total:/)).not.toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 # Implementation status
 
-Architecture approved at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; their completion reports record evidence and limits. S13 whole-slice gates passed; see S13_SPEC.md and S13_COMPLETION_REPORT.md. S14 was Owner-authorized on 2026-09-30 and is COMPLETE for development/local staging. S15 was Owner-authorized on 2026-10-01 and is COMPLETE for development/local staging; see S15_COMPLETION_REPORT.md; S16–S27 remain unauthorized.
+Architecture approved at checkpoint 2e46805. S01–S15 are COMPLETE for development/local staging; their completion reports record evidence and limits. S19 was Owner-authorized on 2026-10-03 and is COMPLETE for development/local staging; see S19_SPEC.md and S19_COMPLETION_REPORT.md. S20 is Owner-authorized but WAITING on S17 before implementation; see S20_SPEC.md. S16/S17 were Owner-authorized and accepted for development/local staging on the separate codex/s17-workforce branch at 6bfd14e; they are not integrated into this checkout. S20 waits for S17 integration and combined acceptance. S18 authorization conflicts with its separate-branch completion record and remains unresolved; do not start or integrate S18. S21–S27 remain unauthorized.
 
 ## Slice status
 
@@ -21,7 +21,11 @@ Architecture approved at checkpoint 2e46805. S01–S13 are COMPLETE for developm
 | S13 Internal review and correction | COMPLETE — development/local staging | Task-bound independent review, immutable correction rounds, markup, escalation, exit recovery, guarded reviewer planning and exact R approval verified. See S13_COMPLETION_REPORT.md. |
 | S14 Client portal and exact approval | COMPLETE — development/local staging | All Owner choices implemented: isolated identity, explicit item grants, immutable review/approval, corrections, exact issue/handover and individual cancellation expiry. All 69 fresh/upgrade migrations pass; 86 prior-table snapshots preserved. Final pnpm verify exited 0: 154 API unit, 82 web unit, 170 integration and 27 serial browser cases plus typecheck/lint/build. Six optional S12 cases skipped; all S14 suites ran. Final contrast refinement passed lint/web build/four S14 browser journeys. See S14_COMPLETION_REPORT.md. |
 | S15 Galleries and publication | COMPLETE — development/local staging | R-040.a–c implementation and acceptance are verified; see S15_COMPLETION_REPORT.md. Owner-only public publication requires recorded reason and audit; private galleries curate existing granted exact S14 PDF/image items; Confidential sources and ancestors are blocked; public derivatives persist cancellation until Owner withdrawal. Aggregate gates passed: type/lint/build, 160 API unit, 87 web unit, 177 integration and 29 browser tests; see the completion report for exact command outcomes. |
-| S16–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
+| S16–S17 | COMPLETE on separate branch / NOT INTEGRATED HERE | Owner authorization and local acceptance are recorded in S16_COMPLETION_REPORT.md and S17_COMPLETION_REPORT.md at codex/s17-workforce commit 6bfd14e. Combined acceptance with this checkout remains pending. |
+| S18 | AUTHORIZATION CONFLICT / NOT INTEGRATED HERE | Latest Owner instructions here say unauthorized; workforce branch e9df56e records completion under C-025–C-027. Reconcile scope before starting or integrating S18. |
+| S19 Turnkey BOQ/procurement/factory | COMPLETE — development/local staging | Immutable exact-design/BOQ releases, independent cost/procurement approval, materials/progress, controlled cost/client snapshots and canonical evidence verified. All 73 migrations passed; 104 original tables preserved through upgrade. Final sequential pnpm verify exited 0: typecheck/lint/build, 160 API unit, 94 web unit, 182 integration and 31 desktop/mobile browser cases, without skips. See S19_COMPLETION_REPORT.md. |
+| S20 Site progress, reports and snags | AUTHORIZED / WAITING ON S17 INTEGRATION | Owner chose to wait for S17 on 2026-10-03. Responsible-person appointment and separate site handover authority/gates are settled in S20_SPEC.md; no S20 business implementation or completion is claimed. S17 is accepted on the separate workforce branch but absent here; integration and combined acceptance remain pending. |
+| S21–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
 
 ## Release status
 
@@ -30,8 +34,8 @@ Architecture approved at checkpoint 2e46805. S01–S13 are COMPLETE for developm
 | Release 0 foundation | S01–S05 | S01–S05 COMPLETE for development/local staging | See S05_COMPLETION_REPORT.md for acceptance evidence and S05_SPEC.md for the approved slice boundary. |
 | Release 1 work core | S06–S10 | S06–S10 COMPLETE for development/local staging | S09 and S10 acceptance is recorded in their completion reports. |
 | Release 2 design control | S11–S15 | S11–S15 COMPLETE for development/local staging | S11–S15 acceptance is recorded in their completion reports. See S15_COMPLETION_REPORT.md. |
-| Release 3 workforce | S16–S18 | NOT STARTED | Depends on earlier slices. |
-| Release 4 Turnkey/site/portals | S19–S22 | NOT STARTED | Depends on earlier slices. |
+| Release 3 workforce | S16–S18 | S16/S17 accepted separately; integration pending; S18 scope conflict | Branch acceptance does not verify integration with current S19 work. |
+| Release 4 Turnkey/site/portals | S19–S22 | S19 COMPLETE; S20 authorized / WAITING on S17; S21–S22 unauthorized | S19 operational acceptance passed. Owner requires S17 before S20 implementation; external portals/offline remain later work. |
 | Release 5 intelligence | S23–S24 | NOT STARTED | Depends on earlier slices. |
 | Release 6 integration/automation | S25–S26 | NOT STARTED | Depends on earlier slices. |
 | Later AI | S27 | NOT STARTED | Depends on earlier slices. |
@@ -42,8 +46,12 @@ The Windows Codex runner can hang during cleanup after Playwright reports all ca
 
 ## S02 acceptance notes
 
-Owner decisions and implementation limits are recorded in the slice specifications and completion reports. S01–S14 are COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; see S15_COMPLETION_REPORT.md; S16 onward remain unauthorized. Production NAS, encrypted offsite backup/key custody and restore remain release gates. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md.
+Owner decisions and implementation limits are recorded in the slice specifications and completion reports. S01–S15 and S19 are COMPLETE for development/local staging; S20 is Owner-authorized but WAITING on S17 before implementation; see S20_SPEC.md. S16/S17 were Owner-authorized and accepted for development/local staging on the separate codex/s17-workforce branch at 6bfd14e; they are not integrated into this checkout. S20 waits for S17 integration and combined acceptance. S18 authorization conflicts with its separate-branch completion record and remains unresolved; do not start or integrate S18. S21–S27 remain unauthorized. Production NAS, encrypted offsite backup/key custody and restore remain release gates. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md.
 
 ## S10 final acceptance — 2026-09-29
 
 The latest full local pnpm verify passed after dependency updates on a fresh PostgreSQL18.6 test database, with121 API unit,64 web unit,115 API/PostgreSQL,17 desktop/mobile browser cases, typecheck, lint and builds. pnpm audit --prod found no known vulnerabilities; 60 prior tables/435 rows were preserved through S10 upgrades. Real S10D/E/F races passed and Sol final review found no blocking issue. S10 is COMPLETE for development/local staging; hosted CI and production NAS validation are not claimed.
+
+## S19 Owner authorization and final acceptance — 2026-10-03
+
+S19 is explicitly Owner-authorized and COMPLETE for development/local staging. Dependencies S05/S07/S11–S14 are complete. Owner approved distinct-requester named Owner/assigned authorized Team Leader cost/procurement decisions, explicit approved cost viewing for clients without approval authority, and fixed production inputs with change request/full reapproval for replacement. S19_SPEC.md records implemented boundaries. Additive migrations, 104-table retained-data preservation, focused five-case S19 PostgreSQL acceptance and final sequential aggregate/browser gates passed. Sol final permission/schema/security and desktop/mobile visual review found no remaining blocker. S19_COMPLETION_REPORT.md records exact command results and earlier environment failures. No production/hosted/NAS deployment claim is made.

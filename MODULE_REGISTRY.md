@@ -1,6 +1,6 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S15 are COMPLETE for development/local staging; see the slice completion reports, including S15_COMPLETION_REPORT.md. S16 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S15 are COMPLETE for development/local staging; see the slice completion reports, including S15_COMPLETION_REPORT.md. S19 is COMPLETE for development/local staging. S20 is Owner-authorized but WAITING on S17 before implementation; S16/S17 were Owner-authorized and accepted for development/local staging on the separate codex/s17-workforce branch at 6bfd14e; they are not integrated into this checkout. S20 waits for S17 integration and combined acceptance. S18 authorization conflicts with its separate-branch completion record and remains unresolved; do not start or integrate S18. S21–S27 remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
@@ -22,7 +22,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | SKL | Skill profiles, controlled ratings, skill change requests | ORG, APR, AUD |
 | KNW | SOP versions, knowledge submissions, publication | DOC, ACC, APR |
 | TRN | Training assignments, quizzes/practical assessments, effectiveness | KNW, SKL, TSK, APR |
-| SITE | Site work packages, manpower, progress, daily reports, snags | PRJ, TSK, DOC, WFM, EVT |
+| SITE | S20 authorized / WAITING on S17, with no business implementation. Planned site work packages, manpower, progress, daily reports, snags and separate site handover; Owner decisions and boundaries: S20_SPEC.md. | PRJ, TSK, DOC, WFM (S17 prerequisite), EVT |
 | PORT | S14 client portal COMPLETE for development/local staging: isolated CLIENT sessions/cookies, email OTP, passkey enrollment/approval, Owner-managed Primary Client access, project and exact-item grants, review packages/items, annotations/private references, decisions and Primary final batch, cancellation withdrawal and per-client expiry. Consultant/vendor portals remain later scope. | IDN, ACC, PRJ, DOC, REV, SITE |
 | NTF | In-app/email delivery, preferences, reminders, summaries, escalation; push later | EVT, IDN, ACC; S04 core foundation COMPLETE for development/local staging; reminder/summaries remain S24 |
 | PER | Employee and Team Leader evidence, scoring, review cycles | TSK, REV, TIM, WFM, SKL, TRN |
@@ -34,3 +34,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | AI | Provider-independent, permission-filtered recommendations and summaries | ACC, AUD, approved read models, APR |
 
 Governance (GOV) means source rules for architecture, testing, releases, and agent conduct rather than a runtime module. Cross-cutting concerns belong to FND/ACC/AUD/EVT and must not become one giant business service.
+
+## S19 owning module — 2026-10-03
+
+TURNKEY owns BOQ/design releases, protected immutable prices, material selection, typed cost/procurement approval bindings, procurement/factory progress, retained operational history and explicit approved client cost shares. Dependencies: PRJ/ACC/AUD/EVT/APR/DOC/PORT. Cross-module production eligibility is supplied by RevisionService; approval policy uses S05 handlers and client reads use S14 project/session authority. S19 is Owner-authorized and COMPLETE for development/local staging; site work/external vendor portals remain later slices. Owned implementation: turnkey.service.ts/controller.ts, the four Turnkey Prisma models and additive S19 migration, staff turnkey.tsx and the client portal cost surface. Acceptance: S19_COMPLETION_REPORT.md.

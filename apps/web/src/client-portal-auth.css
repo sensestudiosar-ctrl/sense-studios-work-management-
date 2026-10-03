@@ -122,6 +122,8 @@
 .client-portal-session-list > li { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: .9rem; border: 1px solid #e2e8df; border-radius: .65rem; background: #fbfcf8; }
 .client-portal-session-copy { display: grid; gap: .28rem; min-width: 0; color: #62756b; font-size: .84rem; overflow-wrap: anywhere; }
 .client-portal-session-copy strong { color: #29463d; font-size: .9rem; }
+.client-portal-cost-lines { display: grid; gap: .35rem; margin: .4rem 0; padding: 0; list-style: none; }
+.client-portal-cost-lines li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .25rem 1rem; padding-top: .3rem; border-top: 1px solid #e8ede6; }
 .client-portal-revoked { color: #963d35; }
 .client-portal-error-block { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; }
 

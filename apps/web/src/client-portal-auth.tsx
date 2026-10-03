@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { startRegistration } from "@simplewebauthn/browser";
 import "./client-portal-auth.css";
 import { ClientReviewPortal } from "./client-review.js";
 
 const portalAuthPath = "/api/v1/client-portal/auth";
+const portalPath = "/api/v1/client-portal";
 
 export type PortalSession = {
   account: { id: string; email: string; kind: "CLIENT" };
@@ -19,6 +20,15 @@ type PortalDeviceSession = {
   revokedAt: string | null;
   userAgent: string | null;
   current?: boolean;
+};
+
+type SharedCostProject = { id: string; title: string; status: string };
+type SharedCostSnapshot = {
+  id: string;
+  currency: string;
+  lines: Array<{ key: string; description: string; quantity: string; unit: string }>;
+  costs: { prices: Array<{ key: string; unitPrice: string }>; total: string };
+  createdAt: string;
 };
 
 type Ceremony = {
@@ -45,6 +55,12 @@ async function portalRequest<T>(path: string, init: { method?: string; body?: un
   });
   if (!response.ok) throw new PortalRequestError(response.status);
   if (response.status === 204) return undefined as T;
+  return await response.json() as T;
+}
+
+async function portalDataRequest<T>(path: string): Promise<T> {
+  const response = await fetch(`${portalPath}${path}`, { credentials: "include", cache: "no-store" });
+  if (!response.ok) throw new PortalRequestError(response.status);
   return await response.json() as T;
 }
 
@@ -77,6 +93,7 @@ export function ClientPortalAuth(): React.JSX.Element {
   const [revokingId, setRevokingId] = useState("");
   const [logoutBusy, setLogoutBusy] = useState(false);
   const [businessOpen, setBusinessOpen] = useState(false);
+  const [costsOpen, setCostsOpen] = useState(false);
 
   const restoreSession = useCallback(async (): Promise<PortalSession | null> => {
     try {
@@ -182,6 +199,7 @@ export function ClientPortalAuth(): React.JSX.Element {
       await portalRequest("/logout", { method: "POST", csrfToken: session.csrfToken });
       setSession(null);
       setDeviceSessions(null);
+      setCostsOpen(false);
       setCodeRequested(false);
       setAuthStatus("You’ve signed out.");
       setSessionNotice("");
@@ -289,10 +307,12 @@ export function ClientPortalAuth(): React.JSX.Element {
           <button className="client-portal-secondary" type="button" onClick={() => void signOut()} disabled={logoutBusy}>{logoutBusy ? "Signing out…" : "Sign out"}</button>
         </header>
         <p className="client-portal-intro">Manage sign-in security and active sessions for this client account.</p>
-        <section className="client-portal-business-nav" aria-label="Client project workspace">
-          <button type="button" className="client-portal-secondary" aria-expanded={businessOpen} onClick={() => setBusinessOpen((open) => !open)}>{businessOpen ? "Hide project reviews" : "Open project reviews"}</button>
-        </section>
-        {businessOpen && <ClientReviewPortal session={session} />}
+      <section className="client-portal-business-nav" aria-label="Client project workspace">
+        <button type="button" className="client-portal-secondary" aria-expanded={businessOpen} onClick={() => setBusinessOpen((open) => !open)}>{businessOpen ? "Hide project reviews" : "Open project reviews"}</button>
+        <button type="button" className="client-portal-secondary" aria-expanded={costsOpen} onClick={() => setCostsOpen((open) => !open)}>{costsOpen ? "Hide approved cost snapshots" : "View approved cost snapshots"}</button>
+      </section>
+      {businessOpen && <ClientReviewPortal session={session} />}
+      {costsOpen && <ClientApprovedCostSnapshots />}
         {authStatus && <p className="client-portal-success" role="status">{authStatus}</p>}
         {authError && <p className="client-portal-error" role="alert">{authError}</p>}
 
@@ -332,5 +352,89 @@ export function ClientPortalAuth(): React.JSX.Element {
         </section>
       </section>
     </main>
+  );
+}
+
+function ClientApprovedCostSnapshots(): React.JSX.Element {
+  const [projects, setProjects] = useState<SharedCostProject[]>([]);
+  const [projectId, setProjectId] = useState("");
+  const [snapshots, setSnapshots] = useState<SharedCostSnapshot[] | null>(null);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingCosts, setLoadingCosts] = useState(false);
+  const [error, setError] = useState("");
+  const requestSequence = useRef(0);
+
+  const loadSnapshots = useCallback(async (id: string): Promise<void> => {
+    const sequence = ++requestSequence.current;
+    if (!id) { setSnapshots([]); return; }
+    setLoadingCosts(true);
+    setError("");
+    setSnapshots(null);
+    try {
+      const result = await portalDataRequest<{ items: SharedCostSnapshot[] }>(`/projects/${encodeURIComponent(id)}/costs`);
+      if (sequence === requestSequence.current) setSnapshots(result.items);
+    } catch (cause) {
+      if (sequence === requestSequence.current) {
+        setSnapshots(null);
+        setError(cause instanceof PortalRequestError && cause.status === 403
+          ? "These cost details are no longer available or were not shared with this account."
+          : "Approved cost snapshots could not be loaded. Try again.");
+      }
+    } finally { if (sequence === requestSequence.current) setLoadingCosts(false); }
+  }, []);
+
+  useEffect(() => {
+    let live = true;
+    void portalDataRequest<{ projects: SharedCostProject[] }>("/projects")
+      .then((result) => {
+        if (!live) return;
+        setProjects(result.projects);
+        const firstId = result.projects[0]?.id ?? "";
+        setProjectId(firstId);
+        if (firstId) void loadSnapshots(firstId);
+        else setSnapshots([]);
+      })
+      .catch(() => { if (live) { setProjects([]); setSnapshots(null); setError("Approved cost snapshots could not be loaded. Try again."); } })
+      .finally(() => { if (live) setLoadingProjects(false); });
+    return () => { live = false; };
+  }, [loadSnapshots]);
+
+  return (
+    <section className="client-portal-sessions" aria-labelledby="client-costs-title">
+      <div className="client-portal-section-heading">
+        <div><h2 id="client-costs-title">Approved cost snapshots</h2><p>Only approved costs explicitly shared with your account appear here.</p></div>
+        <button className="client-portal-secondary" type="button" onClick={() => void loadSnapshots(projectId)} disabled={loadingProjects || loadingCosts || !projectId}>{loadingCosts ? "Refreshing…" : "Refresh"}</button>
+      </div>
+      {loadingProjects && <p className="client-portal-muted" role="status">Loading projects…</p>}
+      {!loadingProjects && projects.length === 0 && !error && <p className="client-portal-empty" role="status">No projects are available.</p>}
+      {!loadingProjects && projects.length > 0 && (
+        <div className="client-portal-form">
+          <label htmlFor="client-cost-project">Project</label>
+          <select id="client-cost-project" value={projectId} onChange={(event) => { const id = event.target.value; setProjectId(id); void loadSnapshots(id); }}>
+            {projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}
+          </select>
+        </div>
+      )}
+      {loadingCosts && <p className="client-portal-muted" role="status">Loading approved cost snapshots…</p>}
+      {error && <div className="client-portal-error-block"><p className="client-portal-error" role="alert">{error}</p><button className="client-portal-secondary" type="button" onClick={() => void loadSnapshots(projectId)} disabled={loadingCosts || !projectId}>Try again</button></div>}
+      {!loadingProjects && !loadingCosts && !error && snapshots?.length === 0 && <p className="client-portal-empty" role="status">No approved cost snapshots have been shared with this account.</p>}
+      {!loadingCosts && !error && snapshots && snapshots.length > 0 && (
+        <ul className="client-portal-session-list">
+          {snapshots.map((snapshot) => (
+            <li key={snapshot.id}>
+              <div className="client-portal-session-copy">
+                <strong>Approved cost snapshot · {snapshot.currency}</strong>
+                <span>Snapshot recorded {dateLabel(snapshot.createdAt)}</span>
+                <ul className="client-portal-cost-lines">{snapshot.lines.map((line) => {
+                  const price = snapshot.costs.prices.find((entry) => entry.key === line.key);
+                  return <li key={line.key}><span>{line.description}: {line.quantity} {line.unit}</span>{price && <span>{price.unitPrice} {snapshot.currency} per {line.unit}</span>}</li>;
+                })}</ul>
+                <strong>Total: {snapshot.costs.total} {snapshot.currency}</strong>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
