@@ -30,7 +30,8 @@ const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 
 async function json<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    const error = new Error(`Request failed (${response.status})`) as Error & { status: number };
+    const body = await response.clone().json().catch(() => ({})) as { message?: string; error?: { message?: string } };
+    const error = new Error(body.error?.message ?? body.message ?? `Request failed (${response.status})`) as Error & { status: number };
     error.status = response.status;
     throw error;
   }
@@ -51,6 +52,7 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+  const [overloadPrompt, setOverloadPrompt] = useState<{ kind: "create" | "reassign"; body: Record<string, unknown>; message: string }>();
   const [showForm, setShowForm] = useState(false);
   const [showCloseoutForm, setShowCloseoutForm] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -156,7 +158,7 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
     event.preventDefault();
     if (busy || reason.trim().length < 3) return;
     setBusy(true); setError(""); setNotice("");
-    const body = {
+    const body: Record<string, unknown> = {
       title: title.trim(), type, priority, targetDate,
       ...(description.trim() ? { description: description.trim() } : {}),
       ...(startDate ? { startDate } : {}),
@@ -173,7 +175,21 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
       await fetch(ROOT, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken }, body: JSON.stringify(body) }).then((response) => json(response));
       setTitle(""); setDescription(""); setReason(""); setTargetDate(""); setStartDate(""); setEstimatedHours(""); setProjectId(""); setPlanItemId(""); setTagsText(""); setChecklistText(""); setAssignTo(false); setShowForm(false); setCollaboratorIds([]); setCollaboratorHours({});
       setNotice("Task created."); await load("");
-    } catch (cause) { setError(statusOf(cause) === 403 ? "You do not have permission to create this task." : statusOf(cause) === 409 ? "The task changed. Refresh and review the latest details." : "Task could not be created. Check the fields and try again."); }
+    } catch (cause) { const message = cause instanceof Error ? cause.message : ""; if (statusOf(cause) === 409 && message.includes("Overload warning")) setOverloadPrompt({ kind: "create", body, message }); else setError(statusOf(cause) === 403 ? "You do not have permission to create this task." : statusOf(cause) === 409 ? "The task changed. Refresh and review the latest details." : "Task could not be created. Check the fields and try again."); }
+    finally { setBusy(false); }
+  };
+  const acknowledgeOverload = async (): Promise<void> => {
+    if (!overloadPrompt || busy) return;
+    const pending = overloadPrompt; setBusy(true); setError(""); setNotice("");
+    try {
+      if (pending.kind === "create") {
+        await fetch(ROOT, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken }, body: JSON.stringify({ ...pending.body, acknowledgeOverload: true }) }).then(response => json(response));
+        setTitle(""); setDescription(""); setReason(""); setTargetDate(""); setStartDate(""); setEstimatedHours(""); setProjectId(""); setPlanItemId(""); setTagsText(""); setChecklistText(""); setAssignTo(false); setShowForm(false); setCollaboratorIds([]); setCollaboratorHours({}); setNotice("Task created after overload acknowledgement."); setOverloadPrompt(undefined); await load("");
+      } else if (detail) {
+        await fetch(`${ROOT}/${encodeURIComponent(detail.task.id)}/reassign`, { method: "POST", credentials: "include", headers: { "Content-Type": "application/json", "X-CSRF-Token": csrfToken }, body: JSON.stringify({ ...pending.body, acknowledgeOverload: true }) }).then(response => json(response));
+        setReason(""); setReassignId(""); setOverloadPrompt(undefined); setNotice("Task owner reassigned after overload acknowledgement."); await load(detail.task.id);
+      }
+    } catch (cause) { setError(statusOf(cause) === 403 ? "You do not have permission to make this assignment." : statusOf(cause) === 409 ? "Capacity or task state changed. Review the latest details and retry." : "The task could not be assigned."); if (statusOf(cause) === 409) setOverloadPrompt(undefined); }
     finally { setBusy(false); }
   };
   const editTask = async (event: FormEvent<HTMLFormElement>) => {
@@ -211,7 +227,9 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
       if (path === "/wait" || path === "/resume") clearWaitingForm();
       setNotice(success); await load(detail.task.id);
     } catch (cause) {
-      if (statusOf(cause) === 409) { await load(detail.task.id); setError("This task changed elsewhere. The latest details are now loaded."); }
+      const message = cause instanceof Error ? cause.message : "";
+      if (path === "/reassign" && statusOf(cause) === 409 && message.includes("Overload warning")) setOverloadPrompt({ kind: "reassign", body: body as Record<string, unknown>, message });
+      else if (statusOf(cause) === 409) { await load(detail.task.id); setError("This task changed elsewhere. The latest details are now loaded."); }
       else setError(statusOf(cause) === 403 ? "You do not have permission to make this change." : "The task could not be updated. Try again.");
     } finally { setBusy(false); }
   };
@@ -248,6 +266,7 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
     <header className="task-header"><div><p className="task-eyebrow">Work management</p><h2 id="task-workspace-title">Tasks</h2><p>Track your work, collaborators and progress.</p></div><div className="task-header-actions">{setup?.projects.some((project) => project.status === "CANCELLED" && project.canApproveCloseout) && <button type="button" onClick={() => { setShowCloseoutForm((open) => !open); setShowForm(false); }}>{showCloseoutForm ? "Close closeout form" : "Approve closeout task"}</button>}<button type="button" className="task-primary" onClick={() => setShowForm((open) => !open)} disabled={!canCreate}>{showForm ? "Close form" : "Create task"}</button></div></header>
     <div className="task-toolbar"><div role="group" aria-label="Task list scope" className="task-tabs"><button type="button" aria-pressed={scope === "mine"} onClick={() => { clearWaitingForm(); setScope("mine"); }}>My tasks</button><button type="button" aria-pressed={scope === "assigned"} onClick={() => { clearWaitingForm(); setScope("assigned"); }}>Assigned tasks</button></div><button type="button" onClick={refresh}>Refresh</button></div>
     {notice && <p className="task-notice" role="status">{notice}</p>}{error && <p className="task-error" role="alert">{error} <button type="button" onClick={refresh}>Reload</button></p>}
+    {overloadPrompt && <section className="task-overload-warning" role="alert" aria-label="Capacity warning"><h3>Capacity warning</h3><p>{overloadPrompt.message}</p><p>Assignment remains unchanged unless you acknowledge this warning.</p><button type="button" className="task-primary" disabled={busy} onClick={() => void acknowledgeOverload()}>Acknowledge and {overloadPrompt.kind === "create" ? "create task" : "reassign owner"}</button><button type="button" disabled={busy} onClick={() => setOverloadPrompt(undefined)}>Cancel assignment</button></section>}
     {showForm && <form className="task-form" onSubmit={(event) => void submit(event)} aria-label="Create task"><h3>Create a task</h3><p>Self-task creation keeps you as the owner. Authorized managers can choose an owner explicitly.</p>
       <label>Task name<input value={title} onChange={(event) => setTitle(event.target.value)} minLength={2} maxLength={160} required /></label>
       <div className="task-form-grid"><label>Type<select value={type} onChange={(event) => setType(event.target.value)}>{TYPES.map((item) => <option key={item} value={item}>{stateLabel(item)}</option>)}</select></label><label>Priority<select value={priority} onChange={(event) => setPriority(event.target.value)}>{PRIORITIES.map((item) => <option key={item} value={item}>{stateLabel(item)}</option>)}</select></label><label>Target date<input aria-label="Target date" type="date" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} required /></label></div>

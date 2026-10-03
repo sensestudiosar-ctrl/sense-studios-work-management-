@@ -103,6 +103,20 @@ Only the task's current primary owner may submit work, and every drawing review 
 
 An assigned reviewer may change task priority only with existing `project.manage` and `task.assign` authority, using expected task version and reason. Changing committed due date additionally requires `task.deadline_change`. The review grant alone authorizes no planning changes. Structured annotations and markup files remain subject to exact project, document and Confidential-file authorization; access is checked on each operation.
 
+## S16 time authority — acceptance in progress
+
+Only active internal OWNER/STAFF identities may use time endpoints; CLIENT is excluded. Own unlocked time can be corrected. Owner or explicitly granted `time.manage` staff may manage/approve/correct within current project management or reporting-team scope. Project scope also requires current assignment, applicable cross-branch authorization and `project.view`; management title alone grants nothing. Locked correction requires management and appends a new unapproved version. Owner alone requests accounting export/retry of approved time. Current permission/session is rechecked after relevant lock waits and on command replay. Evidence references use DOC access, with denied references redacted from read history; corrections adding/replacing evidence reauthorize the file. Stop may retain already accrued work following lifecycle interruption; new work/resume requires current eligibility. See S16_SPEC.md.
+
+
+## S17 implementation checkpoint — 2026-10-02
+
+S17 employees read/submit their own workforce records. Management requires Owner or current explicit workforce.manage Team scope plus applicable reporting relationship/current Branch membership; titles alone do not grant authority. Approval and cancellation enforce original configured management levels. Task/site/project access and cross-Branch assignment remain explicit. Receipt replay rechecks current authority; private selfie access enforces subject scope and expiry/hold. Configuration/retention controls require current Owner authority; worker requires the database singleton and exactly one active Owner.
+
+
+## S17 final local acceptance — 2026-10-02
+
+S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.
+
 ## S19 staff and client cost authority — 2026-10-03
 
 Internal Turnkey reads require current assigned project access, project.view and turnkey.view. Operational commands require turnkey.manage on an Active Turnkey project. Staff cost access requires current project assignment, explicit effective project.manage and employee.manage (permission-defined Team Leader authority) plus turnkey.cost_view. Decisions additionally require turnkey.cost_approve or turnkey.procurement_approve, exact named request authority and requester/decider separation. An action grant or role title alone grants no financial access. Owner retains organization authority. Ordinary staff receive quantities/materials/progress and no price/currency/cost-decision bindings or financial notes; queue cards require cost view and redact price fields.

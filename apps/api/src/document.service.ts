@@ -211,6 +211,12 @@ export class DocumentService {
     if (!blob) throw new NotFoundException("File not found");
     return { id: blob.documentId, folderId: blob.document.folderId, fileName: blob.fileName, mimeType: blob.mimeType, sizeBytes: Number(blob.sizeBytes), sha256: blob.sha256, confidential: blob.document.confidential, viewOnly: blob.document.viewOnly, createdAt: blob.createdAt };
   }
+  async assertTimeEvidence(tx: Tx, actor: ProjectActor, documentId: string, projectId: string | null) {
+    const document = await tx.document.findFirst({ where: { id: documentId, organizationId: actor.organizationId } });
+    if (!document || document.projectId !== projectId) throw new NotFoundException("Time evidence unavailable");
+    const access = await this.access(tx, actor, document.projectId, "document.view");
+    await this.fileAccess(tx, access, document);
+  }
   async stream(actor: ProjectActor, documentId: string) {
     const row = await this.db.$transaction(async (tx) => {
       const document = await tx.document.findFirst({ where: { id: documentId, organizationId: actor.organizationId }, include: { blobs: { orderBy: { createdAt: "asc" }, take: 1 } } });

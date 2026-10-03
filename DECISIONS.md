@@ -1,5 +1,11 @@
 # Decisions and proposals
 
+## S16 Owner policies and accounting boundary — 2026-10-01
+
+The Owner authorized S16 and approved continuation after the proposed authority and interruption policies were presented. Owner or explicitly granted `time.manage` staff may manage time within current project management/reporting-team scope; title alone grants no authority. Own edits are permitted before lock. Manager approval locks the entry; management correction thereafter preserves the original version and appends a new unapproved version requiring reapproval. Accounting export is Owner-only and preserves a stable record ID across revisions. Effective project hold/cancellation or employee exit pauses running timers atomically while preserving elapsed work; stop records that elapsed work and resume requires current eligibility.
+
+The approved development receiver is an HTTP JSON contract using PUT `/time-records/{recordId}`, immutable positive revisions and stable delivery UUID idempotency keys. Durable database snapshots, lease ownership and append-only attempts recover retries and remote-success/local-failure without duplicate records. Network calls occur outside transactions. Production accounting-provider binding remains pending and is not a local acceptance claim. S17 onward remain unauthorized.
+
 ## S15 Owner policies and publication boundary — 2026-10-01
 
 The Owner authorized R-040.a–c and settled private curation as existing exact S14 PDF/image items under current grants only. Gallery records introduce no new sharing authority. Confidential source documents and every Confidential ancestor folder are prohibited for preparation/publication. Independent explicitly published derivatives persist project cancellation until reasoned Owner withdrawal.
@@ -202,6 +208,14 @@ Correction submissions create a new exact item/package rather than mutating the 
 The final batch SQL boundary retains sorted exact drawing/revision/task tuples and checks every frozen task field against its currently Client Approved task. Live grant expiry is sampled after lock waits and again before the final write. Canonical review delivery also requires the actual transition actor's current item or management authority; an audit/event/outbox tuple cannot confer a missing capability. A client correction can resume only its latest published item, ordered by immutable submitted task version, so completed historical corrections cannot satisfy a later client request. Existing applied migration definitions remain unchanged; these protections are additive migrations 20261001150000, 20261001170000, 20261001180000 and 20261001190000.
 
 Formal issue may name an Active CLIENT recipient only when its current project grant and Primary or exact-item view scope covers every issued PDF/image revision. The portal keeps the S12 named-recipient, immutable exact issue and own-recipient canonical acknowledgement evidence; it does not expose the internal document/project APIs. Client acknowledgement requires an Active project and current access. Cancellation retains scoped earlier issued files and own approval history while rejecting new acknowledgements. Migration 20261001160000 adds this CLIENT-only database boundary without weakening existing internal recipient guards.
+# S17 calculation decision — 2026-10-02
+
+The Owner subsequently approved consuming expiring carry-forward before the current year's annual allowance. Exact rational snapshots decide eligibility; decimal summaries do not introduce business rounding. Prior carry expires at the end of its credited year and is never carried a second year.
+
+The Owner approved restricting S17 cancellation to future calendar dates. Current-day/past leave remains consumed/recorded; hourly same-day cancellation without timed portions is excluded. This applies independently of pending cancellation and retains original approval/handovers.
+
+The Owner approved schedule-derived minute calculations: full-day leave consumes that day's capacity, half-day consumes half, hourly leave uses entered minutes; task effort is explicitly allocated per person/date; overnight shifts belong to their start date. C-004 entitlement remains policy days, with schedule-relative consumption and explainable historical policy/calendar-day proration. No arbitrary eight-hour day or equal collaborative split is assumed. Versioned Owner configuration gates numeric allowances, routing, workload thresholds and site validation. S17_SPEC.md records remaining setup/design and acceptance.
+
 
 ## S19 Owner authorization and operational release design — 2026-10-03
 

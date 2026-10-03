@@ -173,6 +173,18 @@ export class NasStorage {
   }
 
   /** Internal reconciliation inventory; compare keys with upload/blob metadata, never return paths to the API. */
+  async purgeBlob(key: string, expectedChecksum: string): Promise<void> {
+    this.ready(); await directory(this.blobs, this.root);
+    const path = join(this.blobs, id(key));
+    let info; try { info = await lstat(path); } catch (error) { if ((error as NodeJS.ErrnoException).code === "ENOENT") return; throw error; }
+    if (!info.isFile() || info.isSymbolicLink()) throw new Error("Unsafe storage blob");
+    const opened = await this.openBlob(key), digest = createHash("sha256");
+    for await (const chunk of opened.stream) digest.update(chunk);
+    if (digest.digest("hex") !== sha(expectedChecksum)) throw new Error("Purge checksum mismatch");
+    await unlink(path);
+  }
+
+  /** Internal reconciliation inventory; compare keys with upload/blob metadata, never return paths to the API. */
   async inventory(): Promise<{ stagedUploadIds: string[]; blobKeys: string[]; assemblingKeys: string[] }> {
     this.ready();
     await directory(this.staging, this.root);

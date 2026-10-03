@@ -62,6 +62,17 @@ export class OperationalRecipientPredicate implements CurrentRecipientAuthorizat
       return new OperationalRecipientPredicate(database, authorization, new TaskService(database, authorization)).isAuthorized(eventId, accountId);
     }
     const event = await this.database.prisma.domainEvent.findUnique({ where: { id: eventId } });
+    if(event?.eventName==="workforce.changed"&&event.organizationId&&event.subjectId) {
+      const record=await this.database.prisma.workforceRecord.findFirst({where:{id:event.subjectId,organizationId:event.organizationId}}),account=await this.database.prisma.account.findUnique({where:{id:accountId},include:{employee:true}});
+      if(!record||!account||account.state!==AccountState.ACTIVE)return false;
+      if(account.kind===AccountKind.OWNER)return true;
+      if(!record.employeeId||account.kind!==AccountKind.STAFF||!account.employee||account.employee.state!==EmployeeState.ACTIVE||account.employee.organizationId!==event.organizationId)return false;
+      if(account.employee.id===record.employeeId)return true;
+      const target=await this.database.prisma.employee.findUnique({where:{id:record.employeeId}});if(!target||target.homeBranchId!==account.employee.homeBranchId||target.homeTeamId!==account.employee.homeTeamId)return false;
+      try {await this.authorization.assertPermission(accountId,"workforce.manage",{kind:"TEAM",organizationId:event.organizationId,branchId:target.homeBranchId,teamId:target.homeTeamId});}catch(error){if(error instanceof ForbiddenException)return false;throw error;}
+      const rows=await this.database.prisma.employee.findMany({where:{organizationId:event.organizationId,homeTeamId:target.homeTeamId},select:{id:true,reportsToId:true}}),parents=new Map(rows.map(r=>[r.id,r.reportsToId])),seen=new Set<string>();let current=target.reportsToId;
+      while(current&&!seen.has(current)){if(current===account.employee.id)return true;seen.add(current);current=parents.get(current)??null;}return false;
+    }
     if (event?.eventName === "review.escalated") {
       const payload = event.payload;
       const auditEventId = payload && typeof payload === "object" && !Array.isArray(payload) ? payload.auditEventId : undefined;

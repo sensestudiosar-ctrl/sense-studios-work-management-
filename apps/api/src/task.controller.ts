@@ -12,6 +12,7 @@ const version = z.number().int().min(1);
 const page = z.preprocess((value) => typeof value === "string" && /^\d+$/.test(value) ? Number(value) : value, z.number().int().min(0).max(100_000));
 const create = z.object({
   title: z.string().trim().min(2).max(160),
+  acknowledgeOverload: z.boolean().optional(),
   type: z.enum(["PROJECT", "NON_PROJECT", "RECURRING", "CORRECTION", "SITE", "TRAINING_PRACTICAL"]),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]),
   targetDate: z.iso.date(),
@@ -35,7 +36,7 @@ const extensionRequest = z.object({ expectedVersion: version, proposedDate: z.is
 const extensionDecision = z.object({ outcome: z.enum(["APPROVED", "REJECTED"]), reason }).strict();
 const addDependency = z.object({ predecessorTaskId: uuid, expectedVersion: version, reason }).strict();
 const removeDependency = z.object({ expectedVersion: version, reason }).strict();
-const reassign = z.object({ newOwnerEmployeeId: uuid, expectedVersion: version, reason }).strict();
+const reassign = z.object({ newOwnerEmployeeId: uuid, expectedVersion: version, reason, acknowledgeOverload: z.boolean().optional() }).strict();
 const edit = z.object({ expectedVersion: version, reason, title: z.string().trim().min(2).max(160), description: z.string().trim().max(2000).optional(), targetDate: z.iso.date(), startDate: z.iso.date().optional(), estimatedHours: z.number().min(0).max(100_000).optional(), priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]), planItemId: uuid.nullable().optional(), tags: z.array(z.string().trim().min(1).max(30)).max(10).optional(), checklist: z.array(z.object({ label: z.string().trim().min(1).max(120), checked: z.boolean() }).strict()).max(10).optional() }).strict();
 const closeout = z.object({ projectId: uuid, ownerEmployeeId: uuid, title: z.string().trim().min(2).max(160), workScope: z.string().trim().min(3).max(2000), targetDate: z.iso.date(), priority: z.enum(["LOW", "MEDIUM", "HIGH", "CRITICAL"]), reason }).strict();
 function parse<T>(schema: z.ZodType<T>, value: unknown): T { const result = schema.safeParse(value); if (!result.success) throw new BadRequestException("Invalid request"); return result.data; }

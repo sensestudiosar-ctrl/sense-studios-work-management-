@@ -1,3 +1,4 @@
+import { pauseTimeTimers } from "./time-lifecycle.js";
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { AccountKind, AccountState, EmployeeState, Prisma, ProjectStatus, type ApprovalRequest } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
@@ -215,6 +216,7 @@ export class ProjectWorkflowService {
         await tx.projectGateOverride.create({ data: { organizationId: actor.organizationId, projectId: id, actorId: actor.accountId, reason: input.reason, projectVersion: project.version + 1, milestoneIds: missing.map((item) => item.id) } });
         await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.gate_overridden", subjectType: "project", subjectId: id, reason: input.reason, after: { milestoneIds: missing.map((item) => item.id), projectVersion: project.version + 1 } });
       }
+      if (input.toStatus !== ProjectStatus.ACTIVE) await pauseTimeTimers(tx, { organizationId: actor.organizationId, projectId: id, actorId: actor.accountId, reason: input.reason });
       const row = await this.bump(tx, project, { status: input.toStatus });
       await tx.projectStatusChange.create({ data: { projectId: id, organizationId: actor.organizationId, fromStatus: project.status, toStatus: input.toStatus, projectVersion: row.version, reason: input.reason, actorId: actor.accountId } });
       const eventName = input.toStatus === ProjectStatus.ACTIVE ? "project.activated" : input.toStatus === ProjectStatus.ON_HOLD ? "project.on_hold" : input.toStatus === ProjectStatus.COMPLETED ? "project.completed" : "project.archived";
@@ -250,6 +252,7 @@ export class ProjectWorkflowService {
       });
       await tx.projectBranchTransfer.create({ data: { projectId: id, organizationId: actor.organizationId, fromBranchId: project.branchId, toBranchId: input.toBranchId, projectVersion: row.version, actorId: actor.accountId, reason: input.reason } });
       if (lostLead) await tx.projectLeadChange.create({ data: { projectId: id, organizationId: actor.organizationId, oldEmployeeId: project.currentLeadEmployeeId, projectVersion: row.version, actorId: actor.accountId, reason: "Project Lead access revoked by Branch transfer" } });
+      if (hold) await pauseTimeTimers(tx, { organizationId: actor.organizationId, projectId: id, actorId: actor.accountId, reason: "Project hold pauses timer" });
       if (hold) await tx.projectStatusChange.create({ data: { projectId: id, organizationId: actor.organizationId, fromStatus: project.status, toStatus: ProjectStatus.ON_HOLD, projectVersion: row.version, reason: "Project Lead access revoked by Branch transfer", actorId: actor.accountId } });
       if (hold) await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.on_hold", subjectType: "project", subjectId: id, reason: "Project Lead access revoked by Branch transfer", before: { status: project.status }, after: { status: ProjectStatus.ON_HOLD, version: row.version } });
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.transferred", subjectType: "project", subjectId: id, reason: input.reason, before: { branchId: project.branchId, status: project.status, leadEmployeeId: project.currentLeadEmployeeId }, after: { branchId: input.toBranchId, status: row.status, leadEmployeeId: row.currentLeadEmployeeId, revokedEmployeeIds: revokedIds, version: row.version } });
@@ -340,6 +343,7 @@ export class ProjectWorkflowService {
     for (const id of ids) {
       const project = await this.project(tx, { accountId: actorId, organizationId, kind: AccountKind.OWNER }, id);
       if (project.status !== ProjectStatus.ACTIVE || project.currentLeadEmployeeId !== employeeId) continue;
+      await pauseTimeTimers(tx, { organizationId, projectId: id, actorId, reason: "Project Lead exit hold pauses timers" });
       const row = await this.bump(tx, project, { status: ProjectStatus.ON_HOLD, currentLeadEmployeeId: null });
       const reason = "Current Project Lead exited; Owner replacement required";
       await tx.projectLeadChange.create({ data: { projectId: id, organizationId, oldEmployeeId: employeeId, projectVersion: row.version, actorId, reason } });

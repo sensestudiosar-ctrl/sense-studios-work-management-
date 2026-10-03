@@ -53,3 +53,17 @@ The Owner permits independent CR files after their own exact internal review. Ea
 ## S15 implemented storage boundary — development/local staging verified
 
 Private gallery entries reference existing exact S14 review items and reuse current client project/item grants, snapshots, supersession and cancelled-project issued-only/expiry rules. Public preparation accepts a separately supplied single-frame raster image, sanitizes it into an independent PNG under bounded input/pixel/output limits and stores a distinct NAS blob. Public reads require a current persistent publication grant and verify derivative bytes/checksum; internal source paths and storage keys are not exposed. Confidential source documents or ancestor folders block preparation/publication and public reads. Explicit publication persists project cancellation until reasoned Owner withdrawal. Reconciliation accounts for retained publication blobs, including withdrawn evidence. Whole-slice local acceptance passed; production NAS remains unverified.
+
+## S16 optional time evidence
+
+Time evidence references an existing S11 document in the same project. Attaching/replacing a reference requires current DOC project/file/Confidential-ancestor access. History retains the original reference without granting file access; current unauthorized evidence IDs are redacted from time reads, and ordinary document streams continue to reauthorize independently. Accounting payloads contain operational time fields and never evidence bytes, storage paths or NAS credentials.
+
+
+## S17 implementation checkpoint — 2026-10-02
+
+S17 site selfies are bounded JPEG/PNG inputs sanitized to private JPEG bytes without metadata; raw QR/base64/location are not put in attendance audit snapshots. Access is no-store, scoped and expires ninety days after capture unless held. Explicit Owner notice configuration gates retained capture. Worker advance notices precede eligible expiry deletion, with hold checks. Durable purge intent commits before checksum-bound physical deletion, followed by completion proof; reconciliation recovers failures without deleting attendance history. Production legal/contract/backup expiry remains unverified.
+
+
+## S17 final local acceptance — 2026-10-02
+
+S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.

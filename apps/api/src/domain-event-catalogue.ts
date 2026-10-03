@@ -1,4 +1,14 @@
 export const DOMAIN_EVENT_CATALOGUE = {
+  "workforce.changed": { producer: "S17 workforce", subjectType: "workforce_record", schemaVersion: 1 },
+  "workforce.credited": { producer: "S17 workforce", subjectType: "workforce_ledger", schemaVersion: 1 },
+  "time.logged": { producer: "S16 time", subjectType: "time_entry", schemaVersion: 1 },
+  "time.changed": { producer: "S16 time", subjectType: "time_entry", schemaVersion: 1 },
+  "time.started": { producer: "S16 time", subjectType: "time_timer", schemaVersion: 1 },
+  "time.timer_changed": { producer: "S16 time", subjectType: "time_timer", schemaVersion: 1 },
+
+
+  "time.approved": { producer: "S16 time", subjectType: "time_entry", schemaVersion: 1 },
+  "time.export_requested": { producer: "S16 time", subjectType: "time_delivery", schemaVersion: 1 },
   "turnkey.release_created": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
   "turnkey.release_replaced": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
   "turnkey.cost_requested": { producer: "S19 Turnkey", subjectType: "turnkey_release", schemaVersion: 1 },
@@ -102,9 +112,9 @@ export const DOMAIN_EVENT_CATALOGUE = {
   "document.approved": { producer: "S13 review", subjectType: "document", schemaVersion: 1 },
   "document.issued": { producer: "S12 issue", subjectType: "document_revision", schemaVersion: 1 },
   "document.superseded": { producer: "S12 issue", subjectType: "document_revision", schemaVersion: 1 },
-  "time.started": { producer: "S16 time", subjectType: "time_entry", schemaVersion: 1 },
-  "time.logged": { producer: "S16 time", subjectType: "time_entry", schemaVersion: 1 },
-  "time.changed": { producer: "S16 time", subjectType: "time_entry", schemaVersion: 1 },
+
+
+
   "leave.requested": { producer: "S17 workforce", subjectType: "leave_request", schemaVersion: 1 },
   "leave.approved": { producer: "S17 workforce", subjectType: "leave_request", schemaVersion: 1 },
   "attendance.checked_in": { producer: "S17 workforce", subjectType: "attendance", schemaVersion: 1 },

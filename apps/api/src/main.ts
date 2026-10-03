@@ -12,6 +12,7 @@ async function bootstrap(): Promise<void> {
   app.enableCors({ origin: config.webOrigin, credentials: true });
   // Only the bounded image-derivative JSON route receives the larger body limit.
   app.use("/api/v1/portfolio/projects", express.json({ limit: "12mb" }));
+  app.use("/api/v1/workforce/attendance/check-in", express.json({ limit: "6mb" }));
   app.use(express.json({ limit: "1mb" }));
   app.use((request: { path: string }, response: { setHeader: (name: string, value: string) => void }, next: () => void) => {
     response.setHeader("X-Content-Type-Options", "nosniff");

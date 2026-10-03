@@ -1,3 +1,120 @@
+model TimeTimer {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  employeeId String @db.Uuid
+  projectId String? @db.Uuid
+  taskId String? @db.Uuid
+  state String @db.VarChar(20)
+  version Int @default(1)
+  data Json
+  elapsedMs BigInt @default(0)
+  runningSince DateTime? @db.Timestamptz(3)
+  startedAt DateTime @db.Timestamptz(3)
+  stoppedAt DateTime? @db.Timestamptz(3)
+  @@index([organizationId, employeeId])
+  @@map("time_timers")
+}
+
+model TimeEntry {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  employeeId String @db.Uuid
+  projectId String? @db.Uuid
+  taskId String? @db.Uuid
+  timerId String? @unique @db.Uuid
+  version Int @default(1)
+  locked Boolean @default(false)
+  approvedVersion Int?
+  approvedAt DateTime? @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, employeeId, createdAt])
+  @@map("time_entries")
+}
+
+model TimeEntryVersion {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  entryId String @db.Uuid
+  version Int
+  data Json
+  reason String @db.VarChar(1000)
+  editorId String @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  eventId String @db.Uuid
+  @@unique([entryId, version])
+  @@map("time_entry_versions")
+}
+
+model TimeApproval {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  entryId String @db.Uuid
+  version Int
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  eventId String @db.Uuid
+  @@unique([entryId, version])
+  @@map("time_approvals")
+}
+
+model TimeTransition {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  timerId String @db.Uuid
+  version Int
+  fromState String? @db.VarChar(20)
+  toState String @db.VarChar(20)
+  elapsedMs BigInt
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  eventId String @db.Uuid
+  @@unique([timerId, version])
+  @@map("time_transitions")
+}
+
+model TimeCommandReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  commandId String @db.Uuid
+  payloadHash String @db.VarChar(64)
+  result Json
+  @@unique([actorId, commandId])
+  @@map("time_command_receipts")
+}
+
+model TimeAccountingDelivery {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  entryId String @db.Uuid
+  revision Int
+  payload Json
+  payloadHash String @db.VarChar(64)
+  state String @default("PENDING") @db.VarChar(20)
+  leaseToken String? @db.Uuid
+  leaseUntil DateTime? @db.Timestamptz(3)
+  attempts Int @default(0)
+  lastError String? @db.VarChar(300)
+  deliveredAt DateTime? @db.Timestamptz(3)
+  requestedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  eventId String @db.Uuid
+  @@unique([entryId, revision])
+  @@index([state, leaseUntil])
+  @@map("time_accounting_deliveries")
+}
+
+model TimeAccountingAttempt {
+  id String @id @default(uuid()) @db.Uuid
+  deliveryId String @db.Uuid
+  leaseToken String @db.Uuid
+  outcome String @db.VarChar(20)
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@map("time_accounting_attempts")
+}
+
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -2333,4 +2450,78 @@ model DrawingClientReviewSelection {
   selectedAt DateTime @default(now()) @db.Timestamptz(3)
   drawing DrawingRecord @relation(fields: [drawingId, organizationId, projectId], references: [id, organizationId, projectId], onDelete: Restrict)
   @@map("drawing_client_review_selections")
+}
+model WorkforceRecord {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  kind String @db.VarChar(20)
+  employeeId String? @db.Uuid
+  branchId String? @db.Uuid
+  taskId String? @db.Uuid
+  version Int @default(1)
+  state String @db.VarChar(30)
+  data Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@index([organizationId, kind, employeeId])
+  @@map("workforce_records")
+}
+
+model WorkforceVersion {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  recordId String @db.Uuid
+  version Int
+  state String @db.VarChar(30)
+  data Json
+  reason String @db.VarChar(1000)
+  actorId String @db.Uuid
+  eventId String @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([recordId, version])
+  @@map("workforce_versions")
+}
+
+model WorkforceReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  commandId String @db.Uuid
+  payloadHash String @db.Char(64)
+  result Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([actorId, commandId])
+  @@map("workforce_receipts")
+}
+
+model WorkforceLedger {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  employeeId String @db.Uuid
+  year Int
+  kind String @db.VarChar(25)
+  sourceKey String @db.VarChar(180)
+  days Decimal @db.Decimal(18, 9)
+  data Json
+  eventId String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([employeeId, sourceKey])
+  @@index([organizationId, employeeId, year])
+  @@map("workforce_ledger")
+}
+
+model WorkforceSelfie {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  attendanceId String @unique @db.Uuid
+  storageKey String @db.VarChar(255)
+  checksum String @db.Char(64)
+  mime String @db.VarChar(30)
+  capturedAt DateTime @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  noticeAt DateTime? @db.Timestamptz(3)
+  holdReason String? @db.VarChar(1000)
+  purgedAt DateTime? @db.Timestamptz(3)
+  purgeRequestedAt DateTime? @db.Timestamptz(3)
+  noticeDays Int?
+  @@map("workforce_selfies")
 }

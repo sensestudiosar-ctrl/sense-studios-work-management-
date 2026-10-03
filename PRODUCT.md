@@ -1,6 +1,6 @@
 # Product context — approved requirements and current delivery boundary
 
-The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805; S01–S13 are complete for development/local staging. S11 provides internal project document folders, uploads/register/downloads and exact Confidential grants; S12 adds immutable R/CR revision history and exact internal issue/transmittals; S13 adds task-bound internal review, correction and exact R-revision approval. S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 and later remain unauthorized. See S13_SPEC.md and S13_COMPLETION_REPORT.md.
+The verbatim source is requirements/APPROVED_REQUIREMENTS.md, sections 1–115. REQUIREMENTS_TRACE.md assigns stable R-### IDs. This summary does not replace the source. Architecture is approved at checkpoint 2e46805; S01–S13 are complete for development/local staging. S11 provides internal project document folders, uploads/register/downloads and exact Confidential grants; S12 adds immutable R/CR revision history and exact internal issue/transmittals; S13 adds task-bound internal review, correction and exact R-revision approval. S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 and later remain unauthorized. See S13_SPEC.md and S13_COMPLETION_REPORT.md.
 
 ## Purpose and boundary
 
@@ -54,6 +54,22 @@ S10A adds ordinary task Waiting with reason, delay cause, optional known party a
 ## S14 complete — development/local staging
 
 The Owner authorized S14 and selected Owner-only Primary Client appointment/replacement with a reason and audit history. Independent CR files must pass their own internal review before client approval. Additional clients may receive approval authority for specified items; the Primary Client retains final overall authority (C-002 Q5).
+
+S14 provides isolated client sign-in, passkey enrollment/approval and Owner-managed Primary identity/access; immutable scoped review items, explicit Additional grants, comments/annotations/private references and partial decisions; Primary-only final exact approval; classified correction tasks and normal correction completion/resume; exact client issue/handover; cancellation withdrawal and individual expiry with previously issued PDF/image and own-history reads. Correction assignment is Owner, current assigned Project Lead or explicitly authorized Team Leader. All local acceptance gates passed; see S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 is COMPLETE for development/local staging; S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 and later remain unauthorized.
+
+## Current S16 time capability — acceptance in progress
+
+S16 is Owner-authorized and COMPLETE for development/local staging; historical S16-unauthorized statements above are superseded for S16 only. The implemented workspace records persistent timers and manual project/non-project work, preserves reasoned corrections and manager approvals, and exposes Owner accounting transfer status/retry. Approval locks exact versions; management corrections require reapproval. Effective hold/cancellation/exit pauses running timers while preserving prior elapsed work. Final local acceptance passed on 2026-10-02; see S16_COMPLETION_REPORT.md; S17 is COMPLETE for development/local staging; S18 onward remain unauthorized and production accounting binding is pending.
+
+
+## S17 implementation checkpoint — 2026-10-02
+
+S17 implements effective full/part-time schedules and overrides, holidays, explicit dated effort allocation and configurable workload views; configured leave/routing, exact annual/prorated/carry balances and preserved cancellation; scoped critical-work impact suggestions; WFH expected location and office/site attendance with provisional review. Numeric policies need explicit Owner setup. Selfie expiry is ninety days with configured advance notice, documented holds and scheduled guarded deletion. S17 is COMPLETE for development/local staging; production acceptance is not claimed.
+
+
+## S17 final local acceptance — 2026-10-02
+
+S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.
 
 S14 provides isolated client sign-in, passkey enrollment/approval and Owner-managed Primary identity/access; immutable scoped review items, explicit Additional grants, comments/annotations/private references and partial decisions; Primary-only final exact approval; classified correction tasks and normal correction completion/resume; exact client issue/handover; cancellation withdrawal and individual expiry with previously issued PDF/image and own-history reads. Correction assignment is Owner, current assigned Project Lead or explicitly authorized Team Leader. All local acceptance gates passed; see S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 is COMPLETE for development/local staging; S16 and later remain unauthorized.
 

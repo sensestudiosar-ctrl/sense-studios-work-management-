@@ -1,5 +1,7 @@
 # S20 Site progress, daily reports and snags — authorized scope
 
+Current execution status: **IN PROGRESS — S16/S17 integration and combined S19 dependency acceptance passed on 2026-10-03.** The Owner's dependency wait is satisfied; S20 may proceed. CURRENT_STATE.md records exact separate command outcomes. S20_API_CONTRACT.md records the settled Sol service/UI boundaries. Earlier wait descriptions below are historical planning checkpoints. No S20 acceptance or completion is yet claimed.
+
 Status: **AUTHORIZED / WAITING ON S17 INTEGRATION — 2026-10-03.** S20 is not implemented or complete. The Owner initially instructed S20 to start and finish using GPT-6.1 Sol and GPT-6 Luna, then explicitly chose to wait for S17 before implementing S20. This later instruction controls execution. S16/S17 are separately authorized and accepted at 6bfd14e but absent here. The wait is for S17 integration and combined acceptance. S18 authorization remains disputed; S21–S27 remain unauthorized.
 
 Approved sources: the current Owner decisions, requirements/APPROVED_REQUIREMENTS.md, approved addenda C-001–C-024, architecture checkpoint 2e46805, and IMPLEMENTATION_PLAN.md. Existing S19 business/source/documentation changes are preserved.
