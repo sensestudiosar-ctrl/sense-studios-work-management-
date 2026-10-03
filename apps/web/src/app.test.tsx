@@ -378,6 +378,31 @@ describe("identity authentication shell", () => {
     await waitFor(() => expect(employeeOverrides).toHaveLength(0));
   });
 
+  it("restores an authenticated session before loading the Learning route and shows its navigation entry", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/session") return response(session);
+      if (url === "/api/v1/training/setup") return response({ employees: [], modules: [], modulesByEmployee: [], reviewers: [], practicalTasks: [], assignments: [], capabilities: { currentAccountId: account.id, manageableEmployeeIds: [], canManage: false, canSubmit: false } });
+      if (url === "/api/v1/skills/setup") return response({ skills: [], employees: [{ id: "employee-1", employeeCode: "E-1", label: "E-1", homeBranchId: "branch-1", homeTeamId: "team-1" }], eligibleApprovers: [] });
+      if (url === "/api/v1/skills/employees/employee-1") return response({ ratings: [], changes: [], requests: [], capabilities: { currentAccountId: account.id, canRequest: true, canManage: false, canDirectRate: false } });
+      return response({ items: [], nextCursor: null });
+    });
+    stubFetchWithCrmSetup(fetchMock);
+    renderApp("/learning");
+    expect(screen.getByRole("status")).toHaveTextContent(/Checking your session/);
+    expect(await screen.findByRole("heading", { name: "Skills" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Workspace navigation" })).toHaveTextContent("Learning");
+    expect(fetchMock.mock.calls.some(([url]) => String(url) === "/api/v1/skills/setup")).toBe(true);
+  });
+
+  it("uses the Learning sign-in state when no authenticated session exists", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response({}, 401) : response({}));
+    stubFetchWithCrmSetup(fetchMock);
+    renderApp("/learning");
+    expect(await screen.findByRole("heading", { name: "Sign in to view Learning" })).toBeInTheDocument();
+    expect(fetchMock.mock.calls.some(([url]) => String(url) === "/api/v1/skills/setup")).toBe(false);
+  });
+
   it("persists Owner waiting-alert opt-in and timezone changes with reasons and versions", async () => {
     const ownerSession = { ...session, ownerSetupRequired: false, activePasskeyCount: 2 };
     const org = { id: "org-s10e", name: "Sense Studios", timezone: "Asia/Kolkata", settingsVersion: 3 };

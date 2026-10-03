@@ -88,3 +88,8 @@ WorkforceService owns S17 state transitions and append-only evidence. WorkforceR
 ## S17 final local acceptance — 2026-10-02
 
 S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.
+
+
+## S18 local acceptance — 2026-10-03
+
+SKL owns catalogue/rating/request/change/receipt through SkillsService; KNW owns audience-bound version/publication/media/ack/reference through LibraryService/LibraryStorage; TRN owns exact assignments/state/attempt/effectiveness through TrainingService. Shared approvals/audit/events and existing TaskService authority preserve module boundaries. Skills/Training frontend panels load independently. S18 is COMPLETE for development/local staging; approved C-025–C-027 and exact scope/contracts/evidence are recorded in S18_SPEC.md, S18_API_CONTRACT.md and S18_COMPLETION_REPORT.md. Historical unauthorized wording is superseded for S18 only; S19 onward and production gates remain excluded.

@@ -133,3 +133,8 @@ S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 AP
 ## S17 shipping verification — 2026-10-03
 
 S17 remains COMPLETE for development/local staging. Carry13 full verification passed 172 API unit, 99 web unit, 203 integration and 33 browser tests. The later narrow carry-adjustment correction and deterministic date/reload fixture repair passed fresh exact-staged 172 API unit, 99 web unit, 18 workforce core and 3 worker PostgreSQL tests, typecheck, lint and API/web builds. These fresh affected gates are separate from the preceding whole run. Exact-HEAD documentation corruption repairs preserve intentional additions and unrelated working changes; applied migrations remain unchanged. Final Sol acceptance and exact evidence are in S17_COMPLETION_REPORT.md. S18 onward and production gates remain excluded.
+
+
+## S18 local acceptance — 2026-10-03
+
+S18 final3 complete pnpm verify passed186 API unit/115 web/233 real PostgreSQL integration/39 desktop-mobile browser cases, including29 focused S18 real authorization/state/evidence/NAS rollback cases and six S18 journeys. All six refreshed screenshots were independently inspected. Use a pristine dedicated primary for the complete chain, preserve existing slice-specific prefixes/explicit browser opt-in and separate migration/admin from runtime URLs. Windows checks used prestarted services; hosted CI/Compose are not claimed. S18 is COMPLETE for development/local staging; approved C-025–C-027 and exact scope/contracts/evidence are recorded in S18_SPEC.md, S18_API_CONTRACT.md and S18_COMPLETION_REPORT.md. Historical unauthorized wording is superseded for S18 only; S19 onward and production gates remain excluded.

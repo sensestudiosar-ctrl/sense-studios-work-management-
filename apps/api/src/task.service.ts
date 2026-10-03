@@ -378,6 +378,25 @@ export class TaskService {
     return task;
   }
 
+  /** S18 sidecar SOP references require current task ownership or assignment management. */
+  /** Exact training evidence retains the normal task/project access boundary. */
+  async assertTrainingPracticalAccess(tx: Tx, actor: ProjectActor, taskId: string, employeeId: string) {
+    const task = await tx.task.findFirst({ where: { id: taskId, organizationId: actor.organizationId } });
+    if (!task || task.type !== TaskType.TRAINING_PRACTICAL || task.primaryOwnerEmployeeId !== employeeId) throw new NotFoundException("Training practical task unavailable");
+    await this.taskAccess(tx, actor, task);
+    if (task.requiresReassignment || task.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION) throw new ConflictException("Training practical task is unavailable");
+    return task;
+  }
+  async assertSopReferenceAuthority(tx: Tx, actor: ProjectActor, taskId: string) {
+    const task = await this.task(tx, actor, taskId);
+    const project = task.projectId ? await this.project(tx, actor, task.projectId) : null;
+    const { account } = await this.taskAccess(tx, actor, task);
+    if (task.status === TaskStatus.COMPLETED || task.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION || task.requiresReassignment || project && project.status !== ProjectStatus.ACTIVE && !(project.status === ProjectStatus.CANCELLED && task.type === TaskType.CLOSEOUT)) throw new ConflictException("Task state does not permit a new SOP reference");
+    const owner = await this.employee(tx, actor, task.primaryOwnerEmployeeId);
+    if (actor.kind !== AccountKind.OWNER && account.employee?.id !== owner.id) await this.managedEmployee(tx, actor, owner, project ?? undefined);
+    return task;
+  }
+
   private async waitingAlertRecipient(tx: Tx, organizationId: string, task: TaskRow, accountId: string): Promise<boolean> {
     const owner = await tx.employee.findUnique({ where: { id: task.primaryOwnerEmployeeId }, include: { homeTeam: true, account: true } });
     if (!owner || owner.organizationId !== organizationId || owner.state !== EmployeeState.ACTIVE || owner.account.state !== AccountState.ACTIVE || !owner.homeTeam.active || !owner.homeTeam.waitingAlertsEnabled || task.status !== TaskStatus.WAITING || task.requiresReassignment || !task.waitingDelayCause) return false;

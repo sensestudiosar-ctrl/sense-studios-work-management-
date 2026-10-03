@@ -1,5 +1,9 @@
 # Planned module registry
 
+## Current S18 authorization — 2026-10-03
+
+S18 is COMPLETE for development/local staging on 2026-10-03 under the Owner start-and-complete instruction and C-025–C-027. Historical S18-unauthorized wording is superseded for S18 only; S19 onward remains unauthorized. Final3 complete pnpm verify exited0:186 API unit,115 web,233 real PostgreSQL integration and39 desktop/mobile browser tests; typecheck, lint and builds passed. All six refreshed S18 screenshots were independently inspected by GPT-6.1 Sol. All91 migrations are current; final migration-only preservation passed117 prior tables/84 populated/2153 old-column row digests; eight unrelated original-file hashes are unchanged. See S18_SPEC.md, S18_API_CONTRACT.md, S18_ACCEPTANCE_REVIEW.md and S18_COMPLETION_REPORT.md. Actual models: GPT-6.1 Sol and GPT-6 Luna. Production gates are not claimed.
+
 IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S16 are COMPLETE for development/local staging; see the slice completion reports, including S15_COMPLETION_REPORT.md. S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |

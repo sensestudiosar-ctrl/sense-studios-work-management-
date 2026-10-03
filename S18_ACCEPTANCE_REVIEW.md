@@ -1,0 +1,21 @@
+# S18 Sol acceptance review — COMPLETE for development/local staging
+
+GPT-6.1 Sol reviewed R-044.a–d/R-045.a–b/R-055.a–d/R-056.a–b/R-057.a–c and Owner-approved C-025–C-027 against the implemented schema, authorization, immutable evidence and state transitions. Final acceptance is supported by final3 pnpm verify exit0, preservation and six refreshed screenshots; see S18_COMPLETION_REPORT.md. S19 onward and production gates remain outside the authorization.
+
+## Settled controls reviewed
+
+Skills use exact official levels, own requests and current same-Branch/Team report-tree management with explicit grants; a named independent approver controls immutable official changes. Owner direct rating has explicit reasons. Training completion alone does not update ratings; an exact same-employee completed assignment can be cited only through the separate recommendation and approval path. Request receipt replays recheck live authority. The employee self-request resolver defect was traced and corrected without permitting self-approval.
+
+Library organization authority requires explicit library grants; it confers no employee/report/project/task access. Fixed organization/Branch/Team audiences, immutable content versions/publications and retained exact acknowledgements/references are backend rules. C-027 uses independent named current publishers for employee/Team Leader submissions, with reasoned Owner direct publication. Record locks and greatest published version comparisons prevent pointer regression. Historical authorship remains evidence; no continued-employment prerequisite was invented for a valid submission.
+
+Private Library NAS bytes are isolated in `.sense-library`, checked against actual signatures/MIME and checksums, and streamed only after current session/audience/exact-version checks. File metadata omits storage keys. Large NAS operations run outside DB transactions with authorization on both sides. Stable upload-derived keys permit metadata rollback retry without overwriting immutable blobs; shared generic callers retain collision denial. Retained unpublished media history remains available only to current valid authors/managers. Read-only MODULE content, search and canonical audit exclude quiz answer keys; authored private immutable evidence retains keys.
+
+Training assignments freeze exact activated module/SOP evidence and the named independent reviewer. Existing assignments retain prior exact activated content after later activation, with live audience access still required. Authored criteria/quiz thresholds supply policy; no numeric default is invented. Submit/review transitions serialize on the assignment and bind exact state/version/attempt history. Current reviewers must retain scoped authority; dated effectiveness uses the organization date. Practical evidence uses existing TaskService project/task permissions, not an implicit Training grant. Completed practical evidence and quiz threshold are rechecked before passing.
+
+## Final evidence and acceptance
+
+Final3 complete pnpm verify exited0: typecheck/lint/build,186 API unit (35 suites),115 web (17 files),233 real PostgreSQL integration (42 suites) and all39 desktop/mobile browser cases passed. Six S18 persisted journeys and prior regressions passed. GPT-6.1 Sol independently inspected all six refreshed learning/library/training screenshots: readable states, fitting controls and wrapped navigation verified.
+
+Final migration-only preservation passed117 original tables/84 populated/2153 old-column row digests through91 migrations. Applied87–91 are immutable; failed draft88/90 destinations/logs remain retained. Eight unrelated original-file hashes are unchanged. The29 focused real cases include immutable template/task references, injected audit/evidence rollback, finalized-NAS retry, scope/revocation/concurrency/evidence denial and separate training recommendations without automatic ratings.
+
+Source review accepted success-only Library form cleanup and independent Skills/Training composition, with meaningful failure/empty regressions. No unresolved S18 policy or local acceptance tasks remain. S18 is COMPLETE for development/local staging; see S18_COMPLETION_REPORT.md for exact evidence, classified failures, models and limits. Production NAS/deployment/hosted CI/offsite/key custody/production restore and S19+ are not claimed.

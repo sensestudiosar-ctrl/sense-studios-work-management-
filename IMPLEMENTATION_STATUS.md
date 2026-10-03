@@ -1,5 +1,9 @@
 # Implementation status
 
+## S18 authorization — 2026-10-03
+
+S18 is COMPLETE for development/local staging on 2026-10-03 under the Owner start-and-complete instruction and C-025–C-027. Historical S18-unauthorized wording is superseded for S18 only; S19 onward remains unauthorized. Final3 complete pnpm verify exited0:186 API unit,115 web,233 real PostgreSQL integration and39 desktop/mobile browser tests; typecheck, lint and builds passed. All six refreshed S18 screenshots were independently inspected by GPT-6.1 Sol. All91 migrations are current; final migration-only preservation passed117 prior tables/84 populated/2153 old-column row digests; eight unrelated original-file hashes are unchanged. See S18_SPEC.md, S18_API_CONTRACT.md, S18_ACCEPTANCE_REVIEW.md and S18_COMPLETION_REPORT.md. Actual models: GPT-6.1 Sol and GPT-6 Luna. Production gates are not claimed.
+
 ## S16 completion — 2026-10-02
 
 S16 is COMPLETE for development/local staging on 2026-10-02 under the Owner's start-and-finish authorization. R-041.a–d, R-042.a–c, R-043.a and C-002 Q9 deliver persistent timers/manual work, immutable reasoned corrections and exact approvals, scoped management, lifecycle pauses and Owner-only durable accounting transfer. Final pinned pnpm verify exited 0: typecheck, lint, 167 API unit tests, 91 web tests, 37 PostgreSQL suites/183 integration tests and production builds passed; all 31 desktop/mobile browser cases passed without skips or retries. All 77 migrations deployed fresh and to the populated S15 clone; all 104 prior-table old-column hashes matched. Desktop/mobile screenshots were inspected; R-043.b–c procurement and full accounting/payroll duplication remain excluded. See S16_COMPLETION_REPORT.md. S17 is COMPLETE for development/local staging; S18 onward remain unauthorized. Production accounting binding, hosted CI/deployment and production NAS/backup/key custody/restore remain unverified production gates. Actual models: GPT-6.1 Sol and GPT-6 Luna.
@@ -27,7 +31,8 @@ Architecture approved at checkpoint 2e46805. S01–S16 are COMPLETE for developm
 | S15 Galleries and publication | COMPLETE — development/local staging | R-040.a–c implementation and acceptance are verified; see S15_COMPLETION_REPORT.md. Owner-only public publication requires recorded reason and audit; private galleries curate existing granted exact S14 PDF/image items; Confidential sources and ancestors are blocked; public derivatives persist cancellation until Owner withdrawal. Aggregate gates passed: type/lint/build, 160 API unit, 87 web unit, 177 integration and 29 browser tests; see the completion report for exact command outcomes. |
 | S16 Time and accounting-ready export | COMPLETE — development/local staging | Final pnpm verify exited 0; 77 migrations and retained-data preservation, 183 integration and 31 browser cases verified. See S16_COMPLETION_REPORT.md. |
 | S17 Workforce | COMPLETE — development/local staging | Final9 pnpm verify exited0 (172 API unit,99 web,202 integration,33 browser), post-CSS affected web/browser checks passed and four final10 screenshots were inspected. All86 migrations and112/104 preservation snapshots verified; see S17_COMPLETION_REPORT.md. |
-| S18–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
+| S18 Skills, SOP, knowledge and training | IN PROGRESS — Owner-authorized2026-10-03 | S18_SPEC.md/S18_PROGRESS_REPORT.md; Skill focused persistence/security checks pass; approved C-025–C-027 policies; whole-slice acceptance outstanding. |
+| S19–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
 
 ## Release status
 
@@ -36,7 +41,7 @@ Architecture approved at checkpoint 2e46805. S01–S16 are COMPLETE for developm
 | Release 0 foundation | S01–S05 | S01–S05 COMPLETE for development/local staging | See S05_COMPLETION_REPORT.md for acceptance evidence and S05_SPEC.md for the approved slice boundary. |
 | Release 1 work core | S06–S10 | S06–S10 COMPLETE for development/local staging | S09 and S10 acceptance is recorded in their completion reports. |
 | Release 2 design control | S11–S15 | S11–S15 COMPLETE for development/local staging | S11–S15 acceptance is recorded in their completion reports. See S15_COMPLETION_REPORT.md. |
-| Release 3 workforce | S16–S18 | PARTIAL — S16/S17 COMPLETE for development/local staging; S18 unauthorized | See S16_COMPLETION_REPORT.md and S17_PROGRESS_REPORT.md. |
+| Release 3 workforce | S16–S18 | PARTIAL — S16/S17 COMPLETE for development/local staging; S18 IN PROGRESS | See S16_COMPLETION_REPORT.md/S17_COMPLETION_REPORT.md/S18_PROGRESS_REPORT.md. |
 | Release 4 Turnkey/site/portals | S19–S22 | NOT STARTED | Depends on earlier slices. |
 | Release 5 intelligence | S23–S24 | NOT STARTED | Depends on earlier slices. |
 | Release 6 integration/automation | S25–S26 | NOT STARTED | Depends on earlier slices. |

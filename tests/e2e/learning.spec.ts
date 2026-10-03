@@ -1,0 +1,153 @@
+import { test, expect } from "@playwright/test";
+import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
+import { createRequire } from "node:module";
+import { mkdir } from "node:fs/promises";
+import { resolve } from "node:path";
+
+const fixtureUrl = process.env.DATABASE_URL;
+const suffix = randomUUID();
+const digest = (value: string) => createHash("sha256").update(value).digest("hex");
+const screenshotDirectory = resolve(".env.s18-tools", "screenshots");
+type PgClient = {
+  connect(): Promise<void>;
+  query<T = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<{ rows: T[]; rowCount: number | null }>;
+  end(): Promise<void>;
+};
+
+test("Skills catalogue, Owner rating, employee request and named manager approval persist on desktop and mobile", async ({ page, context, baseURL }, testInfo) => {
+  test.setTimeout(120_000);
+  page.setDefaultTimeout(10_000);
+  if (!fixtureUrl) throw new Error("DATABASE_URL must point to the same dedicated local test database used by the API; Skills browser acceptance never skips silently");
+  const parsed = new URL(fixtureUrl);
+  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "56433" || !parsed.pathname.endsWith("_test")) throw new Error("Skills browser acceptance requires a dedicated local PostgreSQL _test database on port 56433");
+  const require = createRequire(resolve("apps/api/package.json"));
+  const { Client } = require("pg") as { Client: new (options: { connectionString: string }) => PgClient };
+  const db = new Client({ connectionString: fixtureUrl });
+
+  const ownerSecret = randomBytes(32).toString("base64url"), managerSecret = randomBytes(32).toString("base64url"), employeeSecret = randomBytes(32).toString("base64url");
+  const ownerCsrf = createHmac("sha256", ownerSecret).update("csrf").digest("base64url"), managerCsrf = createHmac("sha256", managerSecret).update("csrf").digest("base64url"), employeeCsrf = createHmac("sha256", employeeSecret).update("csrf").digest("base64url");
+  const ownerSessionId = randomUUID(), managerSessionId = randomUUID(), employeeSessionId = randomUUID();
+  const branchId = randomUUID(), teamId = randomUUID(), managerEmployeeId = randomUUID(), employeeId = randomUUID();
+  const managerAccountId = randomUUID(), employeeAccountId = randomUUID();
+  let ownerAccountId: string, organizationId: string;
+  let catalogueId: string, ratingId: string, changeRequestId: string;
+  await db.connect();
+  try {
+    await db.query("BEGIN");
+    await db.query("SELECT pg_advisory_xact_lock(61001804)");
+    const org = await db.query<{ id: string }>("SELECT id FROM organizations LIMIT 1");
+    organizationId = org.rows[0]?.id ?? randomUUID();
+    if (!org.rows[0]) await db.query('INSERT INTO organizations(id,name,"updatedAt") VALUES($1,$2,CURRENT_TIMESTAMP)', [organizationId, `S18 learning ${suffix}`]);
+    const existingOwner = await db.query<{ id: string }>("SELECT id FROM accounts WHERE kind='OWNER' AND state='ACTIVE' LIMIT 1");
+    ownerAccountId = existingOwner.rows[0]?.id ?? randomUUID();
+    if (!existingOwner.rows[0]) await db.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES($1,$2,\'OWNER\',\'ACTIVE\',CURRENT_TIMESTAMP)', [ownerAccountId, `s18-learning-owner-${suffix}@example.test`]);
+    await db.query('INSERT INTO branches(id,"organizationId",name,"updatedAt") VALUES($1,$2,$3,CURRENT_TIMESTAMP)', [branchId, organizationId, `S18 learning branch ${suffix}`]);
+    await db.query('INSERT INTO teams(id,"organizationId","branchId",name,"updatedAt") VALUES($1,$2,$3,$4,CURRENT_TIMESTAMP)', [teamId, organizationId, branchId, `S18 learning team ${suffix}`]);
+    await db.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES($1,$2,\'STAFF\',\'ACTIVE\',CURRENT_TIMESTAMP),($3,$4,\'STAFF\',\'ACTIVE\',CURRENT_TIMESTAMP)', [managerAccountId, `s18-learning-manager-${suffix}@example.test`, employeeAccountId, `s18-learning-employee-${suffix}@example.test`]);
+    await db.query('INSERT INTO employees(id,"organizationId","accountId","homeBranchId","homeTeamId","hiredAt","updatedAt") VALUES($1,$2,$3,$4,$5,CURRENT_DATE,CURRENT_TIMESTAMP),($6,$2,$7,$4,$5,CURRENT_DATE,CURRENT_TIMESTAMP)', [managerEmployeeId, organizationId, managerAccountId, branchId, teamId, employeeId, employeeAccountId]);
+    await db.query('UPDATE employees SET "reportsToId"=$1 WHERE id=$2', [managerEmployeeId, employeeId]);
+    await db.query('INSERT INTO employee_permission_overrides(id,"organizationId","employeeId","permissionKey",effect,"scopeKind","branchId","teamId",reason) VALUES($1,$2,$3,\'skills.view\',\'ALLOW\',\'TEAM\',$4,$5,$6),($7,$2,$3,\'skills.manage\',\'ALLOW\',\'TEAM\',$4,$5,$8)', [randomUUID(), organizationId, managerEmployeeId, branchId, teamId, "S18 scoped Skills profile review", randomUUID(), "S18 scoped Skills approval authority"]);
+    await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'2 hours\'),($5,$6,$7,$8,CURRENT_TIMESTAMP+interval \'2 hours\'),($9,$10,$11,$12,CURRENT_TIMESTAMP+interval \'2 hours\')', [ownerSessionId, ownerAccountId, digest(ownerSecret), digest(ownerCsrf), managerSessionId, managerAccountId, digest(managerSecret), digest(managerCsrf), employeeSessionId, employeeAccountId, digest(employeeSecret), digest(employeeCsrf)]);
+    const keys = await db.query<{ count: string }>('SELECT count(*)::text AS count FROM passkey_credentials WHERE "accountId"=$1 AND "revokedAt" IS NULL', [ownerAccountId]);
+    for (let i = Number(keys.rows[0]?.count ?? 0); i < 2; i += 1) await db.query('INSERT INTO passkey_credentials(id,"credentialId","accountId","publicKey") VALUES($1,$2,$3,$4)', [randomUUID(), randomUUID(), ownerAccountId, randomBytes(32)]);
+    const recovery = await db.query('SELECT id FROM owner_recovery_codes WHERE "accountId"=$1 AND "usedAt" IS NULL AND "replacedAt" IS NULL AND "acknowledgedAt" IS NOT NULL LIMIT 1', [ownerAccountId]);
+    if (!recovery.rowCount) await db.query('INSERT INTO owner_recovery_codes(id,"accountId","codeHash","acknowledgedAt") VALUES($1,$2,$3,CURRENT_TIMESTAMP)', [randomUUID(), ownerAccountId, digest(randomUUID())]);
+    await db.query("COMMIT");
+
+    await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
+    const ownerSession = await page.request.get("/api/v1/auth/session", { headers: { Cookie: `sense_sid=${ownerSecret}` } });
+    expect(ownerSession.status(), await ownerSession.text()).toBe(200);
+    await page.goto("/learning");
+    const workspace = page.locator(".learning-workspace");
+    await expect(workspace.getByRole("heading", { name: "Skills", exact: true })).toBeVisible();
+    await expect(workspace.getByRole("heading", { name: "Owner catalogue" })).toBeVisible();
+    await expect(workspace.getByRole("heading", { name: "Owner direct rating" })).toBeVisible();
+    await workspace.getByLabel("Employee profile").selectOption(employeeId);
+
+    const catalogue = workspace.locator(".learning-panel").filter({ has: page.getByRole("heading", { name: "Owner catalogue" }) });
+    await catalogue.getByLabel("New skill name").fill(`Lighting ${suffix.slice(0, 8)}`);
+    await catalogue.getByLabel("Reason").fill("Add a verified official skill to the catalogue");
+    const catalogueResponse = page.waitForResponse(response => response.url().endsWith("/api/v1/skills/catalogue") && response.request().method() === "POST");
+    await catalogue.getByRole("button", { name: "Add skill" }).click();
+    const catalogueResult = await catalogueResponse;
+    expect(catalogueResult.ok(), await catalogueResult.text()).toBe(true);
+    const catalogueBody = await catalogueResult.json() as { id: string; name: string };
+    catalogueId = catalogueBody.id;
+    await expect(workspace.getByText(/Skill added to the catalogue/)).toBeVisible();
+
+    const direct = workspace.locator(".learning-panel").filter({ has: page.getByRole("heading", { name: "Owner direct rating" }) });
+    await direct.getByLabel("Skill").selectOption(catalogueId);
+    await direct.getByLabel("Official level").selectOption("BEGINNER");
+    await direct.getByLabel("Reason").fill("Record the verified beginner level");
+    const directResponse = page.waitForResponse(response => response.url().endsWith("/api/v1/skills/ratings") && response.request().method() === "POST");
+    await direct.getByRole("button", { name: "Save official rating" }).click();
+    const directResult = await directResponse;
+    expect(directResult.ok(), await directResult.text()).toBe(true);
+    await expect(workspace.getByText("Beginner · Version 1")).toBeVisible();
+    const persistedInitial = await db.query<{ id: string; level: string; version: number; fromLevel: string | null; toLevel: string }>(`SELECT r.id,r.level::text,r.version,c."fromLevel"::text AS "fromLevel",c."toLevel"::text AS "toLevel" FROM skill_ratings r JOIN skill_rating_changes c ON c."ratingId"=r.id AND c.version=1 WHERE r."employeeId"=$1 AND r."skillId"=$2`, [employeeId, catalogueId]);
+    expect(persistedInitial.rows).toEqual([{ id: expect.any(String), level: "BEGINNER", version: 1, fromLevel: null, toLevel: "BEGINNER" }]);
+    ratingId = persistedInitial.rows[0]!.id;
+
+    await context.clearCookies();
+    await context.addCookies([{ name: "sense_sid", value: employeeSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
+    await page.goto("/learning");
+    await expect(workspace.getByRole("heading", { name: "Skills", exact: true })).toBeVisible();
+    await expect(workspace.getByText("Beginner · Version 1")).toBeVisible();
+    await expect(workspace.getByRole("heading", { name: "Owner direct rating" })).toHaveCount(0);
+    await expect(workspace.getByRole("heading", { name: "Owner catalogue" })).toHaveCount(0);
+    await expect(workspace.getByRole("button", { name: "Approve" })).toHaveCount(0);
+    const requestPanel = workspace.locator(".learning-panel").filter({ has: page.getByRole("heading", { name: "Request a skill rating" }) });
+    await requestPanel.getByLabel("Skill").selectOption(catalogueId);
+    await requestPanel.getByLabel("Requested level").selectOption("ADVANCED");
+    await requestPanel.getByLabel("Approver").selectOption(managerAccountId);
+    await requestPanel.getByLabel("Reason").fill("Request advanced level after reviewed studio work");
+    const requestResponse = page.waitForResponse(response => response.url().endsWith("/api/v1/skills/requests") && response.request().method() === "POST");
+    await requestPanel.getByRole("button", { name: "Submit request" }).click();
+    const requestResult = await requestResponse;
+    expect(requestResult.ok(), await requestResult.text()).toBe(true);
+    changeRequestId = (await requestResult.json() as { id: string }).id;
+    await expect(workspace.getByText(/PENDING · Approver:/)).toBeVisible();
+    await expect(workspace.getByText("Beginner · Version 1")).toBeVisible();
+    const stillInitial = await db.query<{ level: string; version: number }>('SELECT level::text,version FROM skill_ratings WHERE id=$1', [ratingId]);
+    expect(stillInitial.rows).toEqual([{ level: "BEGINNER", version: 1 }]);
+
+    await context.clearCookies();
+    await context.addCookies([{ name: "sense_sid", value: managerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
+    await page.goto("/learning");
+    await expect(workspace.getByRole("heading", { name: "Skills", exact: true })).toBeVisible();
+    await workspace.getByLabel("Employee profile").selectOption(employeeId);
+    await expect(workspace.getByText(/PENDING · Approver:/)).toBeVisible();
+    await expect(workspace.getByRole("button", { name: "Approve" })).toBeVisible();
+    const decision = workspace.locator(".learning-card").filter({ hasText: `Expected rating version: 1` });
+    await decision.getByLabel(`Decision reason for Lighting ${suffix.slice(0, 8)}`).fill("Evidence supports the advanced rating");
+    const decisionResponse = page.waitForResponse(response => response.url().endsWith(`/api/v1/skills/requests/${changeRequestId}/decision`) && response.request().method() === "POST");
+    await decision.getByRole("button", { name: "Approve" }).click();
+    const decisionResult = await decisionResponse;
+    expect(decisionResult.ok(), await decisionResult.text()).toBe(true);
+    await expect(workspace.getByText(/APPROVED · Approver:/)).toBeVisible();
+    await expect(workspace.locator(".learning-list .learning-card").filter({ hasText: `Expected rating version: 1` }).getByText("Evidence supports the advanced rating")).toBeVisible();
+    const approved = await db.query<{ level: string; version: number }>('SELECT level::text,version FROM skill_ratings WHERE id=$1', [ratingId]);
+    expect(approved.rows).toEqual([{ level: "ADVANCED", version: 2 }]);
+    const history = await db.query<{ version: number; fromLevel: string | null; toLevel: string; approvalRequestId: string | null }>('SELECT version,"fromLevel"::text AS "fromLevel","toLevel"::text AS "toLevel","approvalRequestId" FROM skill_rating_changes WHERE "ratingId"=$1 ORDER BY version', [ratingId]);
+    expect(history.rows).toEqual([{ version: 1, fromLevel: null, toLevel: "BEGINNER", approvalRequestId: null }, { version: 2, fromLevel: "BEGINNER", toLevel: "ADVANCED", approvalRequestId: expect.any(String) }]);
+
+    await context.clearCookies();
+    await context.addCookies([{ name: "sense_sid", value: employeeSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
+    await page.goto("/learning");
+    await expect(workspace.getByText("Advanced · Version 2")).toBeVisible();
+    await expect(workspace.getByText(/APPROVED · Approver:/)).toBeVisible();
+    await expect(workspace.locator(".learning-list .learning-card").filter({ hasText: `Expected rating version: 1` }).getByText("Evidence supports the advanced rating")).toBeVisible();
+    const historyPanel = workspace.locator(".learning-panel").filter({ has: page.getByRole("heading", { name: "Immutable rating history" }) });
+    await expect(historyPanel.locator(".learning-history").filter({ hasText: "Version 1" })).toBeVisible();
+    await expect(historyPanel.locator(".learning-history").filter({ hasText: "Version 2" })).toBeVisible();
+    await expect(workspace.getByRole("button", { name: "Approve" })).toHaveCount(0);
+    const overflow = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, width: window.innerWidth }));
+    expect(overflow.scroll).toBeLessThanOrEqual(overflow.width);
+    await mkdir(screenshotDirectory, { recursive: true });
+    await page.screenshot({ path: resolve(screenshotDirectory, `learning-${testInfo.project.name}.png`), fullPage: true });
+    const persistedRequest = await db.query<{ state: string; requesterId: string; approverId: string }>(`SELECT a.state::text AS state,a."requesterId",a."approverId" FROM skill_change_requests r JOIN approval_requests a ON a.id=r."approvalRequestId" WHERE r.id=$1`, [changeRequestId]);
+    expect(persistedRequest.rows).toEqual([{ state: "APPROVED", requesterId: employeeAccountId, approverId: managerAccountId }]);
+  } finally {
+    await db.end();
+  }
+});

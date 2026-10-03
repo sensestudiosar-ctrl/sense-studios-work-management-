@@ -106,6 +106,17 @@ export const DOMAIN_EVENT_CATALOGUE = {
 
 
 
+  "skill.catalogue_created": { producer: "S18 skills", subjectType: "skill_catalogue", schemaVersion: 1 },
+  "skill.change_requested": { producer: "S18 skills", subjectType: "skill_change_request", schemaVersion: 1 },
+  "skill.rating_changed": { producer: "S18 skills", subjectType: "skill_rating", schemaVersion: 1 },
+  "library.version_created": { producer: "S18 library", subjectType: "library_record", schemaVersion: 1 },
+  "library.published": { producer: "S18 library", subjectType: "library_record", schemaVersion: 1 },
+  "library.publish_requested": { producer: "S18 library", subjectType: "library_version", schemaVersion: 1 },
+  "library.file_uploaded": { producer: "S18 library", subjectType: "library_file", schemaVersion: 1 },
+  "library.acknowledged": { producer: "S18 library", subjectType: "library_version", schemaVersion: 1 },
+  "library.referenced": { producer: "S18 library", subjectType: "library_reference", schemaVersion: 1 },
+  "training.changed": { producer: "S18 training", subjectType: "training_assignment", schemaVersion: 1 },
+  "training.attempt_recorded": { producer: "S18 training", subjectType: "training_assignment", schemaVersion: 1 },
   "leave.requested": { producer: "S17 workforce", subjectType: "leave_request", schemaVersion: 1 },
   "leave.approved": { producer: "S17 workforce", subjectType: "leave_request", schemaVersion: 1 },
   "attendance.checked_in": { producer: "S17 workforce", subjectType: "attendance", schemaVersion: 1 },

@@ -67,3 +67,8 @@ S17 site selfies are bounded JPEG/PNG inputs sanitized to private JPEG bytes wit
 ## S17 final local acceptance — 2026-10-02
 
 S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.
+
+
+## S18 local acceptance — 2026-10-03
+
+LibraryStorage isolates private Library bytes under .sense-library and omits storage keys from public DTOs. Signature/MIME/checksum validation and current exact-version/audience/session checks govern upload/finalize/stream. NAS I/O runs outside DB transactions with before/after live authorization. Stable upload-derived finalize keys allow metadata retry without overwrite; generic NAS callers retain collision denial. S18 is COMPLETE for development/local staging; approved C-025–C-027 and exact scope/contracts/evidence are recorded in S18_SPEC.md, S18_API_CONTRACT.md and S18_COMPLETION_REPORT.md. Historical unauthorized wording is superseded for S18 only; S19 onward and production gates remain excluded.

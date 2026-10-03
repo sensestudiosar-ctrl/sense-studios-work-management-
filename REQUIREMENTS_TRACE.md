@@ -1,5 +1,9 @@
 # Approved requirement traceability
 
+## S18 Owner-authorized trace — 2026-10-03
+
+S18 is COMPLETE for development/local staging on 2026-10-03 under the Owner start-and-complete instruction and C-025–C-027. Historical S18-unauthorized wording is superseded for S18 only; S19 onward remains unauthorized. Final3 complete pnpm verify exited0:186 API unit,115 web,233 real PostgreSQL integration and39 desktop/mobile browser tests; typecheck, lint and builds passed. All six refreshed S18 screenshots were independently inspected by GPT-6.1 Sol. All91 migrations are current; final migration-only preservation passed117 prior tables/84 populated/2153 old-column row digests; eight unrelated original-file hashes are unchanged. See S18_SPEC.md, S18_API_CONTRACT.md, S18_ACCEPTANCE_REVIEW.md and S18_COMPLETION_REPORT.md. Actual models: GPT-6.1 Sol and GPT-6 Luna. Production gates are not claimed.
+
 Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 onward remain unauthorized.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
@@ -86,8 +90,8 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-041 | TIME TRACKING | TIM | S16 | COMPLETE — development/local staging |
 | R-042 | TIME LOG EDITING | TIM | S16 | COMPLETE — development/local staging |
 | R-043 | ACCOUNTING INTEGRATION | TIM | S16 | S16 local HTTP time transfer COMPLETE; later procurement/production binding pending |
-| R-044 | SKILLS | SKL | S18 | NOT STARTED |
-| R-045 | TRAINING AND SKILL CHANGES | SKL | S18 | NOT STARTED |
+| R-044 | SKILLS | SKL | S18 | COMPLETE for development/local staging — expanded subclauses and C-025–C-027 verified; see S18_COMPLETION_REPORT.md |
+| R-045 | TRAINING AND SKILL CHANGES | SKL | S18 | COMPLETE for development/local staging — expanded subclauses and C-025–C-027 verified; see S18_COMPLETION_REPORT.md |
 | R-046 | WORK SCHEDULE & CAPACITY | WFM | S17 | COMPLETE — development/local staging |
 | R-047 | TASK EFFORT ALLOCATION | WFM | S17 | COMPLETE — development/local staging |
 | R-048 | WORKLOAD | WFM | S17 | COMPLETE — development/local staging |
@@ -97,9 +101,9 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-052 | AUTOMATIC ASSIGNMENT / RECOMMENDATIONS | AI/TSK | S27 | NOT STARTED |
 | R-053 | ASSIGNMENT OUTPUT | AI/TSK | S27 | NOT STARTED |
 | R-054 | ASSIGNMENT SAFETY | AI/TSK | S27 | NOT STARTED |
-| R-055 | SOP MANAGEMENT | KNW/TRN | S18 | NOT STARTED |
-| R-056 | KNOWLEDGE BASE | KNW/TRN | S18 | NOT STARTED |
-| R-057 | TRAINING | KNW/TRN | S18 | NOT STARTED |
+| R-055 | SOP MANAGEMENT | KNW/TRN | S18 | COMPLETE for development/local staging — expanded subclauses and C-025–C-027 verified; see S18_COMPLETION_REPORT.md |
+| R-056 | KNOWLEDGE BASE | KNW/TRN | S18 | COMPLETE for development/local staging — expanded subclauses and C-025–C-027 verified; see S18_COMPLETION_REPORT.md |
+| R-057 | TRAINING | KNW/TRN | S18 | COMPLETE for development/local staging — expanded subclauses and C-025–C-027 verified; see S18_COMPLETION_REPORT.md |
 | R-058 | NOTIFICATIONS | NTF | S04/S24 | S04 core in-app/email, verified-mailbox, preference, quiet-hours and delivery foundation COMPLETE for development/local staging; S03 events remain notification-neutral pending later event recipient/template definitions; push later |
 | R-059 | REMINDERS & ESCALATION | NTF | S04/S24 | S04 shared event/delivery foundation COMPLETE; reminder schedules and escalation behavior remain S24, NOT STARTED |
 | R-060 | SCHEDULED SUMMARIES | NTF | S04/S24 | S24 delivery behavior NOT STARTED; S04 establishes shared event/delivery foundation |

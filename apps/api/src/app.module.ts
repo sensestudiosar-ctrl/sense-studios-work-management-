@@ -52,11 +52,20 @@ import { ClientReviewController } from "./client-review.controller.js";
 import { ClientPortalReviewController } from "./client-portal-review.controller.js";
 import { GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController } from "./gallery.controller.js";
 import { GalleryService } from "./gallery.service.js";
+import { SkillsController } from "./skills.controller.js";
+import { SkillsService } from "./skills.service.js";
+import { LibraryController } from "./library.controller.js";
+import { LibraryService } from "./library.service.js";
+import { TrainingController } from "./training.controller.js";
+import { TrainingService } from "./training.service.js";
 
 @Module({
-  controllers: [WorkforceController, TimeController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
+  controllers: [WorkforceController, TimeController, SkillsController, LibraryController, TrainingController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
     WorkforceService,
+    SkillsService,
+    LibraryService,
+    TrainingService,
     TimeService,
     TimeWorker,
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },

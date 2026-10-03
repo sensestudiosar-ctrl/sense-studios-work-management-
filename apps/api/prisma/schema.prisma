@@ -2460,3 +2460,231 @@ model WorkforceSelfie {
   noticeDays Int?
   @@map("workforce_selfies")
 }
+
+enum SkillLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+model SkillCatalogue {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  name String @db.VarChar(120)
+  normalizedName String @db.VarChar(120)
+  createdById String @db.Uuid
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@unique([organizationId, normalizedName])
+  @@map("skill_catalogue")
+}
+
+model SkillRating {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  employeeId String @db.Uuid
+  skillId String @db.Uuid
+  level SkillLevel
+  version Int @default(1)
+  currentChangeId String @unique @db.Uuid
+  @@unique([id, organizationId])
+  @@unique([employeeId, skillId])
+  @@map("skill_ratings")
+}
+
+model SkillRatingChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  ratingId String @db.Uuid
+  version Int
+  fromLevel SkillLevel?
+  toLevel SkillLevel
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  approvalRequestId String? @unique @db.Uuid
+  trainingSourceId String? @db.Uuid
+  eventId String @unique @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([ratingId, version])
+  @@unique([id, organizationId])
+  @@map("skill_rating_changes")
+}
+
+model SkillChangeRequest {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  employeeId String @db.Uuid
+  skillId String? @db.Uuid
+  proposedSkillName String? @db.VarChar(120)
+  requestedLevel SkillLevel
+  expectedRatingVersion Int
+  requestedById String @db.Uuid
+  approvalRequestId String @unique @db.Uuid
+  trainingSourceId String? @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@index([organizationId, employeeId])
+  @@map("skill_change_requests")
+}
+
+model SkillReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  commandId String @db.Uuid
+  payloadHash String @db.Char(64)
+  result Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([actorId, commandId])
+  @@map("skill_receipts")
+}
+
+model LibraryRecord {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  kind String @db.VarChar(20)
+  audience String @db.VarChar(20)
+  branchId String? @db.Uuid
+  teamId String? @db.Uuid
+  createdById String @db.Uuid
+  title String @db.VarChar(160)
+  category String @db.VarChar(80)
+  version Int @default(1)
+  publishedVersionId String? @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@index([organizationId, kind, audience, branchId, teamId])
+  @@map("library_records")
+}
+
+model LibraryVersion {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  recordId String @db.Uuid
+  version Int
+  content Json
+  acknowledgementRequired Boolean @default(false)
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@unique([recordId, version])
+  @@map("library_versions")
+}
+
+model LibraryPublication {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  recordId String @db.Uuid
+  versionId String @unique @db.Uuid
+  approvalRequestId String? @unique @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  eventId String @unique @db.Uuid
+  publishedAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@map("library_publications")
+}
+
+model LibraryFile {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  recordId String @db.Uuid
+  uploadedById String @db.Uuid
+  name String @db.VarChar(160)
+  mime String @db.VarChar(100)
+  bytes BigInt
+  checksum String @db.Char(64)
+  storageKey String @unique @db.VarChar(255)
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@index([recordId])
+  @@map("library_files")
+}
+
+model LibraryAcknowledgement {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  versionId String @db.Uuid
+  employeeId String @db.Uuid
+  eventId String @unique @db.Uuid
+  acknowledgedAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([versionId, employeeId])
+  @@map("library_acknowledgements")
+}
+
+model LibraryReference {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  versionId String @db.Uuid
+  taskId String? @db.Uuid
+  templateVersionId String? @db.Uuid
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@map("library_references")
+}
+
+model LearningReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  commandId String @db.Uuid
+  payloadHash String @db.Char(64)
+  result Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([actorId, commandId])
+  @@map("learning_receipts")
+}
+
+model TrainingAssignment {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  employeeId String @db.Uuid
+  moduleVersionId String @db.Uuid
+  assignedById String @db.Uuid
+  reviewerAccountId String? @db.Uuid
+  state String @db.VarChar(30)
+  version Int @default(1)
+  data Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@index([organizationId, employeeId, state])
+  @@map("training_assignments")
+}
+
+model TrainingAssignmentChange {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  assignmentId String @db.Uuid
+  version Int
+  state String @db.VarChar(30)
+  data Json
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  eventId String @unique @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([assignmentId, version])
+  @@map("training_assignment_changes")
+}
+
+model TrainingAttempt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  assignmentId String @db.Uuid
+  kind String @db.VarChar(25)
+  sequence Int
+  payload Json
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  eventId String @unique @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([assignmentId, sequence])
+  @@map("training_attempts")
+}

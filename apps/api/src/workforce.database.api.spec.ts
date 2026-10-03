@@ -459,9 +459,13 @@ databaseDescribe("S17 workforce PostgreSQL acceptance", () => {
         const lateApproved = await f.workforce.decide(f.manager.actor, lateRequest.id, { ...command("Approve prior-year leave after carry finalization"), expectedVersion: lateRequest.version, outcome: "APPROVED" });
         expect(lateApproved.state).toBe("APPROVED");
         const carryRows = (await f.database.prisma.workforceLedger.findMany({ where: { employeeId: f.employee.employeeId, year: 2026, kind: { in: ["CARRY", "ADJUSTMENT"] } }, orderBy: { createdAt: "asc" } })).filter((row) => row.kind === "CARRY" || (row.data as { carryAdjustment?: boolean }).carryAdjustment === true);
-        expect(carryRows.map((row) => Number(row.days))).toEqual([5, -3]);
-        expect(carryRows[1]?.kind).toBe("ADJUSTMENT");
-        expect(carryRows[1]?.data).toMatchObject({ carryAdjustment: true, sourceYear: 2025, reconciliation: true, previousCarry: { numerator: "5", denominator: "1" }, targetCarry: { numerator: "2", denominator: "1" } });
+        expect(carryRows).toHaveLength(2);
+        const baseCarry = carryRows.find((row) => row.kind === "CARRY");
+        const carryCorrection = carryRows.find((row) => row.kind === "ADJUSTMENT" && (row.data as { carryAdjustment?: boolean }).carryAdjustment === true);
+        expect(Number(baseCarry?.days)).toBe(5);
+        expect(Number(carryCorrection?.days)).toBe(-3);
+        expect(carryCorrection?.kind).toBe("ADJUSTMENT");
+        expect(carryCorrection?.data).toMatchObject({ carryAdjustment: true, sourceYear: 2025, reconciliation: true, previousCarry: { numerator: "5", denominator: "1" }, targetCarry: { numerator: "2", denominator: "1" } });
 
         const balance = (await f.workforce.syncEntitlements(f.owner, 2026)).balances.find((row) => row.employeeId === f.employee.employeeId)!;
         expect(balance.remainingDays).toBe("-3");

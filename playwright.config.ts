@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import { randomBytes } from "node:crypto";
+import { mkdirSync } from "node:fs";
+import { resolve } from "node:path";
 
 const workersValue = process.env.PLAYWRIGHT_WORKERS;
 if (workersValue !== undefined && (!/^[1-9]\d*$/.test(workersValue) || !Number.isSafeInteger(Number(workersValue)))) {
@@ -12,6 +14,8 @@ process.env.S02_E2E_BOOTSTRAP_SECRET = e2eBootstrapSecret;
 const apiPort = Number(process.env.E2E_API_PORT ?? "4000");
 const webPort = Number(process.env.E2E_WEB_PORT ?? "5173");
 const webOrigin = `http://localhost:${webPort}`;
+const e2eNasRoot = resolve(".env.s18-tools", "nas");
+mkdirSync(e2eNasRoot, { recursive: true });
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -34,7 +38,8 @@ export default defineConfig({
         PORT: String(apiPort),
         WEB_ORIGIN: webOrigin,
         OWNER_BOOTSTRAP_EMAIL: "s02-e2e-owner@example.test",
-        OWNER_BOOTSTRAP_SECRET: e2eBootstrapSecret
+        OWNER_BOOTSTRAP_SECRET: e2eBootstrapSecret,
+        NAS_ROOT: e2eNasRoot
       }
     },
     {

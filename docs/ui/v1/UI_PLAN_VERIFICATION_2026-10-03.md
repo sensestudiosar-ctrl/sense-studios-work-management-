@@ -1,0 +1,43 @@
+# UI/UX plan verification — 2026-10-03
+
+Verdict: coherent core design plan, suitable for completing design review; not ready for Owner freeze or broad UI implementation. This is a read-only assessment of the existing package, not a new approved plan or implementation authorization.
+
+## Scope and source
+
+Reviewed UX_WORKFLOW_PLAN.md as the behavioral entry point, with UI_SPECIFICATION_V1.md, SCREEN_CONTRACTS.md, UI_DELIVERY_PLAN.md, DESIGN_REVIEW_WORKSHEET.md, REVIEW_AND_VERIFICATION.md and the prior UI_PLAN_REVIEW_2026-10-02.md. Read repository instructions, current status, module boundaries and relevant architecture/domain/permission/workflow/storage/testing guidance; inspected current App.tsx navigation/routes for compatibility. Applied the seven design-review criteria from the installed plan-design-review skill as a verification checklist; did not execute its interactive redesign, logging or approval workflow. Its referenced sections/review-sections.md was absent; the seven passes are present directly in the installed SKILL.md and were read there.
+
+Current authority: S18 is COMPLETE for development/local staging under C-025–C-027; S19 onward remains unauthorized. The reviewed core design package intentionally covers the S01–S13 internal journey, with S14 portal reference journeys and separate later presentation contracts. Later module redesign is not a missing deliverable in this bounded package. Requirements include R-004–009, R-011–039, R-058, R-071–072, R-079–080, R-092, R-096–097 and R-099–102, with C-001/002/010/011/016/023/024 as mapped by UI-D01–D05. These broad design mappings still need applicable subclauses expanded before each authorized implementation increment.
+
+## Findings
+
+1. **Freeze blocker: four Owner choices are still unresolved.** DESIGN_REVIEW_WORKSHEET.md:9–12 records density, list/board, document entry and palette/typeface as pending; UI_SPECIFICATION_V1.md:105 requires recorded Owner choices and aligned mockups/contracts. Recommendations are not approval. Close these against the actual screens before freeze.
+
+2. **Freeze blocker: comprehension and accessibility acceptance are unperformed.** Every worksheet comprehension fixture remains Not reviewed (DESIGN_REVIEW_WORKSHEET.md:20–28); its line 34 lists manual keyboard/focus, screen-reader, mobile touch/zoom and semantic color review still needed. Automated fictional presentation checks cannot establish that people correctly identify ownership, committed dates, usable revisions and decision targets. Record observations, corrections and retests before accepting the concrete package.
+
+3. **Plan compatibility risk: explicitly preserve the now-live destinations during shell migration.** UI_SPECIFICATION_V1.md:33 enumerates the proposed sidebar and line 37 expressly preserves only /documents, /revisions and /reviews; SCREEN_CONTRACTS.md:34 has the same limited compatibility acceptance. App.tsx:384 already exposes Time, Workforce, Learning and Client reviews; App.tsx:1160–1163 defines /client-reviews, /time, /workforce and /learning. The general requirement to keep existing routes usable is sound, but the concrete shell handoff does not map these destinations or their permitted mobile entry/return. Add a preservation bridge without expanding their redesign scope. This is a plan gap, not a demonstrated application regression.
+
+4. **Current-facing evidence/status wording needs consolidation.** UI_PLAN_REVIEW_2026-10-02.md:19/30 still asks to create the canvas, while SCREEN_CONTRACTS.md:167/169 and REVIEW_AND_VERIFICATION.md:49–65 record the separate canvas and later inline point/rectangle experiment. The prior review's line 22 says S17+ unauthorized, superseded by CURRENT_STATE.md:7–9. UI_DELIVERY_PLAN.md:68 says the next mockup must apply the canvas, immediately followed by the existing experiment at line 70; its state table at lines 61–64 still requests fixtures now recorded at line 79. Keep historical evidence dated and put the latest readiness summary first. UI_SPECIFICATION_V1.md:11 lists approved addenda only through C-024: identify this as its dated core baseline or link the current approved source through C-027. These are handoff maintenance inconsistencies, not evidence that the core product rules changed.
+
+5. **Affected build increments retain explicit engineering dependencies.** UI_DELIVERY_PLAN.md:39–51 and UI_SPECIFICATION_V1.md:98 identify unresolved complete personal/project task filtering and paging, project review register, attention-source composition/counts and real viewer/stream behavior. Resolve each selected screen's read/capability contract before building it; a filter over one page cannot claim a complete list, a personal review inbox cannot represent every project review, and a fictional SVG cannot establish PDF access/rendering. The project-picker Documents fallback is already documented. These dependencies are not a requirement to finish later product slices before core design freeze.
+
+## Seven-criterion assessment
+
+| Criterion | Verified strengths | Remaining closure |
+| --- | --- | --- |
+| Information architecture | Attention-first My Work; personal vs management scope; stable project header; connected task/review flow and return context. | Add explicit preservation mapping for live destinations outside core redesign. |
+| Interaction states | Shared loading/empty/error/read-only/access-loss/conflict rules; healthy sections survive sibling errors; upload transfer vs finalization and historical review distinguished. | Real connected form pending/validation/failure/conflict/draft recovery and affected read-model contracts remain implementation acceptance. |
+| User journey | UX01–15 define actor, path, primary action, guard and return; correction completion is distinct from parent approval; list filters/scroll are retained. | Human fixture answers and observed navigation friction remain unrecorded. |
+| Intentional app design | Specific studio palette, attention rows, stage gates, labelled dates/revisions and exact evidence replace generic dashboard metrics; graphics supplement text. | No new visual score or rejection is justified without fresh rendered inspection; mobile density remains a review choice. |
+| Design system alignment | Reusable components, tokens, spacing, semantic controls, touch targets and reduced motion are specified. | Palette/typeface Owner choice and all rendered semantic/focus contrast pairings remain pending. A separate DESIGN.md is not necessary to duplicate this bounded component specification. |
+| Responsive/accessibility | Five target widths; intentional sidebar/rail/mobile navigation; labelled fields/icons, keyboard alternatives, focus return and text/list equivalents. | Manual assistive-technology, touch/zoom and human review remain unverified. |
+| Unresolved decisions | Four concrete aesthetic/navigation choices are named; API gaps and conditional capabilities are separated from business authority. | Record the four choices and explicit corrected-package acceptance; do not silently invent answers. |
+
+No new contradiction was identified in the core ownership, branch access, date, review independence, correction, revision/issue or immutable-evidence safeguards. SC08-C:158–169 correctly distinguishes point-only existing annotation persistence from fictional rectangle geometry requiring separate reviewed implementation. S18 C-025–C-027 governs Learning/Library/Training audiences, private storage, independent publication and assessment/effectiveness; it does not authorize this core UI package to redesign those workflows or expand their access.
+
+## Verification limits and routing
+
+No application/browser tests, fresh screenshots, build, typecheck, lint, migration, database or production checks ran in this verification. Earlier 630 main-prototype, 477 storyboard, 105 canvas and 87 inline-comment checks are recorded historical presentation evidence, not newly reproduced results or usability/application acceptance. No application code, approved plan, schema or data changed. Only this separate verification report was added.
+
+Actual models: GPT-6.1 Sol for context intake, interpretation and final assessment; GPT-6 Luna for a bounded cross-document evidence/status consistency check, reviewed against the source by Sol. The Windows sandbox ACL failure was bypassed through automatically approved, read-only escalated shell reads.
+
+Unresolved: four Owner design choices; recorded human/accessibility acceptance; explicit Owner freeze; affected engineering contracts before each authorized build increment. This review does not authorize S19 or later work.

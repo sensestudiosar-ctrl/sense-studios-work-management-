@@ -1,5 +1,17 @@
 # Approved clarifications and addenda
 
+## C-025 — S18 library audience and private storage (approved2026-10-03)
+
+In the current S18 session, the Owner chose explicit organization, Branch or Team audiences selected by the Owner or appropriately scoped Team Leader. Library files use a private library-owned NAS area, separate from project-only document ownership, and current authorization is checked on every request. A SOP/module/task/template link does not grant audience or underlying file access. External portals/public visitors receive no new library access. This refines R-055–R-057 without changing the preserved approved requirements. Training completion criteria and publication author/approver independence are separate questions still pending and are not approved by C-025.
+
+## C-026 — S18 training assessment and effectiveness (approved2026-10-03)
+
+The Owner selected requiring a named reviewer pass against authored module criteria, plus dated effectiveness observations. Completion does not change official skill. A completed-training recommendation still requires a separate authorized skill decision. No default numeric quiz score or passing threshold is approved; criteria are authored module data. This settles the previously pending R-057 completion/assessment policy.
+
+## C-027 — S18 independent publication (approved2026-10-03)
+
+The Owner selected requiring a different authorized publisher for employee/Team Leader submissions, with Owner direct publication allowed with a reason. The publisher's current explicit library grant and selected audience are rechecked. A title or Team grant does not authorize organization publication; an explicit organization library grant concerns shared library content only and grants no other-Team employee/project/file access. This settles SOP/knowledge publication independence under R-055/R-056; training MODULE activation stays scoped management rather than a new SOP approval rule.
+
 The original 115-section requirements remain unchanged at APPROVED_REQUIREMENTS.md. This file records newer owner instructions without erasing source history. In conflicts, the newer explicit clarification takes precedence.
 
 ## C-001 — Branch-only organizational model (approved 2026-09-25)
