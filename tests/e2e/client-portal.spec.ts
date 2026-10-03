@@ -162,7 +162,7 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
       }
     });
     await page.getByRole("button", { name: "Register a passkey" }).click();
-    await expect(page.getByRole("status")).toContainText("Passkey registered.");
+    await expect(page.getByRole("status").filter({ hasText: "Passkey registered." })).toHaveText("Passkey registered.");
     await expect(page.getByText("1 registered passkey")).toBeVisible();
     await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await page.getByRole("button", { name: /Design approval brief/ }).click();

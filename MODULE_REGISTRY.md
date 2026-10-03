@@ -1,6 +1,6 @@
 # Planned module registry
 
-IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S15 are COMPLETE for development/local staging; see the slice completion reports, including S15_COMPLETION_REPORT.md. S16 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
+IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTATION_PLAN.md. FND through S16 are COMPLETE for development/local staging; see the slice completion reports, including S15_COMPLETION_REPORT.md. S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 and later remain unauthorized. Keep business writes in the owning module; other modules use its public service/events rather than its tables directly.
 
 | ID | Boundary and owned concepts | Direct dependencies |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | TSK | S09 COMPLETE for development/local staging: owner/collaborator persistence, scoped assignment and states, internal closeout approval, cancellation stops, atomic exit waits and audit/outbox. S10 is COMPLETE for development/local staging. Implemented S10A–F includes ordinary Waiting/resume, committed dates/extensions, same-project dependencies, configured Team Waiting notices and recurrence rules/generation; see S10_SPEC.md and S10_PROGRESS_REPORT.md for behavior, evidence and whole-slice acceptance. S13 implements internal review; S14 adds guarded client-review task transitions, exact correction linkage and resume. | PRJ, ORG, ACC, APR, EVT |
 | DOC | S11–S12 COMPLETE for development/local staging: private NAS adapter, scoped files and Confidential grants; immutable R/CR register, approved-current supersession, exact issue/transmittal and named acknowledgement, ten-year close clock. S13 supplies the internal approval producer; S14 client approval/portal and S15 galleries/publication are COMPLETE for development/local staging. See S15_COMPLETION_REPORT.md. | PRJ, ACC, AUD, EVT |
 | REV | S13 COMPLETE for development/local staging: task-bound internal review submissions/rounds, independent named reviewer, correction task/category/severity, markup evidence, reasoned escalation, interrupted-round recovery, guarded reviewer planning and exact S12 R approval producer. S14 extends exact-file review to independent CR files under their own-review-before-client requirement; client packages/items, decisions, annotations, classifications and corrections are implemented. Primary appointment is Owner-only with reason/audit; correction assignment is Owner, assigned Project Lead or explicitly authorized Team Leader with reason/audit. Acceptance is recorded in S14_COMPLETION_REPORT.md. | TSK, DOC, APR, ACC, EVT |
-| TIM | Timers, time entries/corrections, accounting-ready time data | TSK, ORG, ACC, AUD |
+| TIM | S16 COMPLETE for development/local staging: persistent timers/manual time, immutable correction/approval history and durable Owner accounting delivery. See S16_COMPLETION_REPORT.md. | TSK, ORG, ACC, AUD |
 | WFM | Schedules, attendance, leave, capacity, workload | ORG, TSK, TIM, APR, EVT |
 | SKL | Skill profiles, controlled ratings, skill change requests | ORG, APR, AUD |
 | KNW | SOP versions, knowledge submissions, publication | DOC, ACC, APR |
@@ -34,3 +34,17 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | AI | Provider-independent, permission-filtered recommendations and summaries | ACC, AUD, approved read models, APR |
 
 Governance (GOV) means source rules for architecture, testing, releases, and agent conduct rather than a runtime module. Cross-cutting concerns belong to FND/ACC/AUD/EVT and must not become one giant business service.
+
+## Current TIM / S16 authorization
+
+S16 is Owner-authorized and COMPLETE for development/local staging; historical S16-unauthorized wording above is superseded for S16 only. TIM owns timer commands/transitions, time entry/correction/approval persistence and accounting-ready durable delivery. Public boundaries are TimeService/TimeController and the lifecycle pause helper consumed transactionally by project/task/organization services. DOC retains evidence-file authorization. Final gates passed on 2026-10-02; see S16_SPEC.md and S16_COMPLETION_REPORT.md. S17 is COMPLETE for development/local staging; S18 onward remain unauthorized.
+
+
+## S17 implementation checkpoint — 2026-10-02
+
+WFM owns S17 WorkforceRecord/Version/Receipt/Ledger/Selfie persistence and WorkforceService/Controller. TaskService consumes its overload warning helper; the shared approval module owns approval requests/decisions, the notification module owns delivery, and private file storage owns selfie bytes. S17 is COMPLETE for development/local staging; exact scope/contracts and acceptance are in S17_SPEC.md/S17_API_CONTRACT.md/S17_ACCEPTANCE_REVIEW.md. No S18 behavior is authorized.
+
+
+## S17 final local acceptance — 2026-10-02
+
+S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.

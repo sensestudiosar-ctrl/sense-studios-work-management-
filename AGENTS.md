@@ -1,6 +1,6 @@
 # Agent instructions
 
-Architecture is approved by the Owner at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; subsequent authorizations, clarifications and completions are recorded in the project status documents. S13 was Owner-authorized on 2026-09-30; implementation and verification are recorded in S13_SPEC.md and S13_COMPLETION_REPORT.md. S14 was Owner-authorized and is COMPLETE for development/local staging; its decisions and acceptance are recorded in S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
+Architecture is approved by the Owner at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; subsequent authorizations, clarifications and completions are recorded in the project status documents. S13 was Owner-authorized on 2026-09-30; implementation and verification are recorded in S13_SPEC.md and S13_COMPLETION_REPORT.md. S14 was Owner-authorized and is COMPLETE for development/local staging; its decisions and acceptance are recorded in S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 and S16 are COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 and later remain unauthorized. The source of truth is requirements/APPROVED_REQUIREMENTS.md plus approved addenda C-001 through C-024. The hierarchy is Organization → Branch → Team → Employee with no separate Brand or Department organizational tier. Each project has one owning branch; employees may work across branches only through explicit assignment.
 
 ## Source of truth and reading order
 
@@ -56,8 +56,18 @@ Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, per
 - Compose recovery rehearsal: set S01_DB_USER, S01_DB_NAME, S01_DB_PASSWORD, S01_DB_PORT and S01_DATABASE_URL in an untracked environment file, start infra/compose.yaml, then run node scripts/rehearse-backup.mjs.
 - Do not claim Compose startup or hosted CI is verified until those environments have actually run successfully.
 
-S01–S13 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S14 was Owner-authorized and is COMPLETE for development/local staging; its decisions and acceptance are recorded in S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 and later remain unauthorized. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
+S01–S13 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S14 was Owner-authorized and is COMPLETE for development/local staging; its decisions and acceptance are recorded in S14_SPEC.md and S14_COMPLETION_REPORT.md. S15 and S16 are COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 and later remain unauthorized. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
 
 ## Current Owner routing preference
 
 Aim for approximately 70% Luna and 30% Sol task allocation. Sol handles important decisions, schema/permissions, difficult debugging and final review. Luna handles general work within settled boundaries. This is a task allocation target; report actual models used and do not substitute the ratio for verification.
+
+
+## S17 implementation checkpoint — 2026-10-02
+
+The current Owner instruction supersedes historical S17-unauthorized wording: S17 is COMPLETE for development/local staging. Approved calculations use schedule-derived full/half/hourly minutes, explicit dated person allocations, overnight start dates, expiring carry-first consumption and future-date-only cancellation. No numeric Owner policy defaults are invented. Final completion is supported by actual full gates/preservation/browser evidence and Sol acceptance; see S17_COMPLETION_REPORT.md. S18 and later remain unauthorized.
+
+
+## S17 final local acceptance — 2026-10-02
+
+S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 API unit,99 web unit,202 real PostgreSQL integration and33 desktop/mobile browser tests; typecheck, lint and builds passed. After the final CSS-only mobile Period correction, affected web gates and both Workforce browser journeys passed; all four refreshed final10 screenshots were independently inspected. All86 migrations are current;112 prior-table and104 legacy snapshots remain unchanged. S16 local completion is confirmed by its original report and the current full regression. See S17_COMPLETION_REPORT.md for exact scope, evidence and limitations. S18 onward remains unauthorized; production NAS/legal/contract/offsite/backup/restore/accounting-provider/hosted CI/deployment gates are not claimed. Actual routing used GPT-6.1 Sol and GPT-6 Luna.

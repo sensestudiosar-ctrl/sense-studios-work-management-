@@ -1,0 +1,39 @@
+.workforce { width: 100%; }
+.workforce-route .document-navigation { display:flex; flex-wrap:wrap; gap:.5rem 1rem; line-height:1.5; }
+.workforce-route .document-navigation a { overflow-wrap:anywhere; }
+.wf-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.wf-heading h2,.wf-heading h3 { margin:.35rem 0; color:#29463d; font:500 1.45rem Georgia,serif; }
+.wf-heading p,.wf-panel>p { margin:.3rem 0; color:#61736b; font-size:.86rem; line-height:1.5; }
+.wf-toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.8rem; margin:1rem 0; padding:.8rem 1rem; border-radius:.7rem; background:#f2f3eb; color:#61736b; font-size:.84rem; }
+.wf-toolbar label,.wf-grid label,.wf-date,.wf-reason,.wf-heading>label { display:grid; gap:.4rem; color:#334d44; font-size:.82rem; font-weight:700; }
+.wf-panel { min-width:0; margin-top:1rem; padding:1.1rem; border:1px solid #e2e1d8; border-radius:.8rem; background:#fbfaf5; }
+.wf-panel h3 { margin:0 0 .65rem; color:#29463d; font:500 1.22rem Georgia,serif; }
+.wf-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.75rem; margin:.75rem 0; }
+.wf-grid input,.wf-grid select,.wf-toolbar select,.wf-heading select,.wf-date input,.wf-reason input { width:100%; min-width:0; min-height:2.7rem; padding:.6rem .7rem; border:1px solid #aeb9ad; border-radius:.5rem; background:white; color:#182c29; font:inherit; font-weight:400; }
+.wf-grid .wf-check { display:flex; align-items:center; gap:.55rem; min-height:2.7rem; }
+.wf-grid .wf-check input { width:1.1rem; min-height:1.1rem; accent-color:#35594b; }
+.wf-panel>.wf-check { display:flex; align-items:center; gap:.55rem; margin:.75rem 0; color:#334d44; font-size:.82rem; font-weight:700; }
+.wf-panel>.wf-check input { width:1.1rem; min-height:1.1rem; accent-color:#35594b; }
+.wf-panel button { margin-top:.35rem; }
+.wf-columns { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+.wf-note { display:block; margin:.65rem 0 0; color:#61736b; font-size:.8rem; line-height:1.5; }
+.wf-setup-notice { margin-top:1rem; padding:1rem; border-left:4px solid #b8792b; border-radius:.5rem; background:#fff5e6; color:#543c20; }
+.wf-setup-notice p { margin:.35rem 0 0; font-size:.86rem; }
+.wf-overload { margin-top:.8rem; padding:.8rem; border-left:4px solid #b43e2c; border-radius:.45rem; background:#fceae6; color:#63291f; }
+.wf-overload p { margin:.4rem 0; font-size:.84rem; }
+.wf-actions { display:flex; flex-wrap:wrap; align-items:center; gap:.55rem; }
+.wf-list { display:grid; gap:.6rem; }
+.wf-list article,.wf-row { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; padding:.85rem; border:1px solid #e2e1d8; border-radius:.65rem; background:white; color:#29463d; font-size:.87rem; }
+.wf-list article p { margin:.35rem 0 0; color:#61736b; font-size:.8rem; }
+.wf-table-wrap { width:100%; overflow-x:auto; margin-top:.65rem; }
+.wf-table-wrap table { width:100%; border-collapse:collapse; min-width:590px; font-size:.82rem; }
+.wf-table-wrap th,.wf-table-wrap td { padding:.65rem .55rem; border-bottom:1px solid #e2e1d8; text-align:left; vertical-align:top; }
+.wf-table-wrap th { color:#61736b; font-size:.74rem; }
+.wf-badge { display:inline-block; padding:.22rem .5rem; border-radius:999px; background:#e8eee5; color:#315947; font-size:.7rem; font-weight:700; }
+.wf-badge.danger { background:#fce4df; color:#8f3123; }
+.wf-date { max-width:15rem; margin:.65rem 0; }
+.wf-reason { margin-top:1rem; }
+.wf-heading>.wf-period-control { flex:0 0 7.5rem; min-width:7.5rem; }
+.wf-period-control select { width:100%; min-width:0; min-height:2.7rem; padding:.6rem .7rem; border:1px solid #aeb9ad; border-radius:.5rem; background:white; color:#182c29; font:inherit; font-weight:400; }
+@media(max-width:700px) { .wf-columns { grid-template-columns:1fr; } .wf-list article,.wf-row { display:grid; } }
+@media(max-width:430px) { .wf-grid { grid-template-columns:1fr; } .wf-toolbar { align-items:stretch; flex-direction:column; } .wf-heading { align-items:flex-start; } .wf-heading>label:not(.wf-period-control) { min-width:5.5rem; } }

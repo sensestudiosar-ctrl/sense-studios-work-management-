@@ -1,0 +1,41 @@
+# S16 progress and completion — 2026-10-02
+
+Status: COMPLETE for development/local staging as of 2026-10-02. The checkpoints below are historical and superseded by S16_COMPLETION_REPORT.md. S17 onward remain unauthorized.
+
+## Final acceptance — 2026-10-02
+
+S16 is COMPLETE for development/local staging on 2026-10-02 under the Owner's start-and-finish authorization. R-041.a–d, R-042.a–c, R-043.a and C-002 Q9 deliver persistent timers/manual work, immutable reasoned corrections and exact approvals, scoped management, lifecycle pauses and Owner-only durable accounting transfer. Final pinned pnpm verify exited 0: typecheck, lint, 167 API unit tests, 91 web tests, 37 PostgreSQL suites/183 integration tests and production builds passed; all 31 desktop/mobile browser cases passed without skips or retries. All 77 migrations deployed fresh and to the populated S15 clone; all 104 prior-table old-column hashes matched. Desktop/mobile screenshots were inspected; R-043.b–c procurement and full accounting/payroll duplication remain excluded. See S16_COMPLETION_REPORT.md. S17 onward remain unauthorized. Production accounting binding, hosted CI/deployment and production NAS/backup/key custody/restore remain unverified production gates. Actual models: GPT-6.1 Sol and GPT-6 Luna.
+
+## Historical scope and policy
+
+### Current continuation — supersedes historical checkpoints below
+
+The Owner approved the proposed policies and instructed continuation to completion. Management commands require Owner authority or explicit `time.manage` within current project management or reporting-team scope; accounting export remains Owner-only. Own unlocked edits are permitted. Management correction of a locked entry appends a new unapproved version requiring reapproval and retains the accounting record ID. Effective project hold/cancellation and employee exit automatically pause running timers in the owning lifecycle transaction. Stop records prior elapsed work; resume requires current eligibility.
+
+Implemented persistence includes timers with append-only transitions, manual/non-project entries, immutable correction snapshots, exact-version approvals, command receipts, accounting deliveries and attempts. Current UI supports timer/manual/correction/history/approval/export/retry states. The accounting worker recovers queued or expired leased deliveries with bounded automatic retries; authorized operational retry remains available. External calls occur outside database transactions and identical immutable deliveries reuse the same receiver key.
+
+Independent GPT-6.1 Sol review identified and corrected setup visibility, approval replay, correction evidence authorization, session expiry during lock waits, SQL head/snapshot binding, timer state/elapsed integrity and polymorphic trigger field-resolution defects. GPT-6 Luna corrected UI employee payload and evidence/start/end preservation, exposed old/new history values, and owns focused database/browser regression coverage. The coordinator reports additive S16 migrations 73–76 deployed on dedicated fresh/upgrade/compatible acceptance databases. Migration 76's initial SQL parse failure was corrected before any successful application; successfully deployed migration files remain unchanged.
+
+Final pinned verification and expanded runtime regressions are running. Exact final checks, retained-data comparison and screenshot inspection must be recorded before COMPLETE. Production accounting binding, hosted CI/deployment, NAS, backup/key custody and restore remain outside verified S16 scope. Historical descriptions below record earlier checkpoints and do not describe current implementation.
+
+S16_SPEC.md expands R-041.a–d, R-042.a–c, R-043.a–c and C-002 Q9 and records scope, dependencies, acceptance and deferred production binding. IMPLEMENTATION_PLAN.md records the current authorization above historical unauthorized wording.
+
+The Owner approved an HTTP JSON accounting receiver contract with a real local receiver demonstrating idempotent transfer. Connecting the actual production accounting application remains pending. Two material Owner choices remain unanswered: management correction/approval/export authority and correction/reapproval rules after locking; timer interruption when task/project lifecycle or employee access changes. These decisions affect access, approvals and duration calculations, so policy-dependent persistence/API/UI implementation is pending rather than guessed.
+
+## Work and verification so far
+
+GPT-6.1 Sol performed required ordered context intake, exact requirement/addendum interpretation, scope/schema/dispatch blueprint and final adapter security review. GPT-6 Luna implemented a bounded HTTP accounting client. Following Sol review, the adapter rejects redirects to protect personal/work metadata and validates basic runtime identity/version/duration fields before network access. Final focused acceptance passed seven unit/real-loopback-HTTP tests, API typecheck and focused ESLint for the adapter/test files. Real HTTP receiver tests prove identical retry/concurrent replay deduplication, conflicting payload rejection, higher-revision upsert and older replay without regression, plus redirect rejection without contacting its destination. This verifies the isolated client/receiver contract; durable worker and full application time-entry acceptance remain unimplemented. Final diff check reported existing line-ending warnings only.
+
+The root coordinator reports the existing baseline checks passed with Node 24.19.0 and pnpm 11.19.0: pnpm typecheck, pnpm lint, pnpm test and pnpm build. Baseline tests passed 160 API unit and 87 web tests; integration ran 17 suites/91 tests while 19 database suites/86 tests skipped because the required database environment was unset. This is not full S16 verification. Existing PostgreSQL concurrent-query/MaxListeners and Vite chunk-size/mixed-import warnings are baseline observations; no new defect classification is claimed.
+
+A fresh dedicated sense_s16_fresh_20261001_test database applied the existing 72 migrations successfully. A populated S15 database was restored into the separate sense_s16_upgrade_20261001_test database without resetting or changing the source. Fixed-old-column SHA-256 snapshots for 104 existing tables, digest SQL and pre-upgrade results are retained under the untracked .env.s16-tools directory for comparison after reviewed S16 migrations. Local PostgreSQL uses port 56433, with separate migration administration and sense_app_runtime identities. No S16 migration has been applied yet.
+
+The adapter's basic date/instant validation does not replace owning-service real-calendar/timezone, task/project/stage identity, authority or lifecycle validation. The local receiver is a contract fixture, not a production deployment. S16 has no durable accounting dispatcher, timer/manual-entry persistence, approval/correction implementation or UI acceptance yet.
+
+## Remaining acceptance
+
+After the Owner settles the two policies: implement reviewed schema and guarded persistent commands, shared approvals where applicable, atomic audit/event evidence, lifecycle integration, durable accounting dispatch, responsive UI and regression coverage. Verify fresh and retained-data migration preservation, runtime tamper/access/concurrency/rollback tests, real receiver replay safety and complete pinned pnpm verify with desktop/mobile journeys. Record exact checks, models and limits before marking COMPLETE. Hosted CI, production deployment/NAS/backup/key custody/restore and production accounting binding are not verified by this progress report.
+
+## Final delivery receipt hardening — 2026-10-01
+
+Additive migration77 binds initial PENDING delivery, claims, lease ownership, retry increments and FAILED/DELIVERED outcomes to immutable per-lease attempt evidence. Runtime direct delivery success without a claimed lease is denied. The coordinator reports77 successfully deployed on all seven dedicated final acceptance databases. Final retained old-column comparison and aggregate verification remain pending recording. Backend source is frozen for acceptance unless a concrete failing regression identifies another defect. S16_COMPLETION_REPORT.md is an IN PROGRESS draft, not a completion claim.

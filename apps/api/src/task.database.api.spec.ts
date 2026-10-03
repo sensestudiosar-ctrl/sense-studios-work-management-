@@ -471,7 +471,7 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       expect(cancelled.project.status).toBe("CANCELLED");
       expect(await tx.task.findUniqueOrThrow({ where: { id: unfinished.id } })).toMatchObject({ status: TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION, waitingDelayCause: null, version: 4 });
       expect(await tx.task.findUniqueOrThrow({ where: { id: completed.id } })).toMatchObject({ status: TaskStatus.COMPLETED, version: 3 });
-      expect(await tx.taskStatusChange.count({ where: { projectStatusChangeId: { not: null } } })).toBe(1);
+      expect(await tx.taskStatusChange.count({ where: { taskId: unfinished.id, projectStatusChangeId: { not: null } } })).toBe(1);
       await expect(tasks.resume(ownerActor, unfinished.id, { expectedVersion: 4, reason: "Try to resume stopped delivery" })).rejects.toThrow();
 
       const closeout = await tasks.createCloseout(managerActor, { projectId: project.id, ownerEmployeeId: managerEmployeeId, title: "Secure the handover", workScope: "Return keys and archive site notes", targetDate: "2026-10-20", priority: TaskPriority.MEDIUM, reason: "Approved closeout scope" });
@@ -580,7 +580,7 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       expect(await tx.task.findUniqueOrThrow({ where: { id: startedTask.id } })).toMatchObject({ primaryOwnerEmployeeId: employeeId, status: TaskStatus.IN_PROGRESS, requiresReassignment: false, version: 4 });
       expect(await tx.task.findUniqueOrThrow({ where: { id: completedTask.id } })).toMatchObject({ primaryOwnerEmployeeId: managerEmployeeId, status: TaskStatus.COMPLETED, version: 3 });
       await expect(workflow.status(ownerActor, project.id, { toStatus: "ACTIVE", expectedVersion: 5, reason: "Attempt without replacement" })).rejects.toThrow();
-      expect(await tx.notification.count({ where: { category: "employee.exit" } })).toBe(1);
+      expect(await tx.notification.count({ where: { category: "employee.exit", event: { organizationId, subjectId: managerEmployeeId } } })).toBe(1);
       await tx.$executeRaw`SET CONSTRAINTS ALL IMMEDIATE`;
     });
   });

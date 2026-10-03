@@ -1,3 +1,4 @@
+import { pauseTimeTimers } from "./time-lifecycle.js";
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { AccountKind, AccountState, EmployeeState, NotificationChannel, OrganizationEventType, PermissionEffect, PermissionScopeKind, Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
@@ -510,6 +511,7 @@ export class OrganizationService {
       const now = new Date();
       if (employee.account.state === AccountState.ACTIVE) await this.identity.suspendStaffWithinTransaction(tx, employee.accountId, actorId, reason);
       else await tx.session.updateMany({ where: { accountId: employee.accountId, revokedAt: null }, data: { revokedAt: now } });
+      await pauseTimeTimers(tx, { organizationId: employee.organizationId, employeeId: employee.id, actorId, reason: "Employee exit pauses timer" });
       const waitingTaskIds = await this.tasks.waitForEmployeeExit(tx, employee.organizationId, employee.id, actorId);
       const heldProjectIds = await this.projects.holdForLeadExit(tx, employee.organizationId, employee.id, actorId);
       await tx.employeePermissionOverride.updateMany({ where: { employeeId, revokedAt: null }, data: { revokedAt: now, revokedById: actorId, revocationReason: reason } });

@@ -1,4 +1,6 @@
-import { ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { pauseTimeTimers } from "./time-lifecycle.js";
+import { ConflictException, ForbiddenException, Injectable, NotFoundException, Optional } from "@nestjs/common";
+import { WorkforceService } from "./workforce.service.js";
 import { AccountKind, AccountState, EmployeeState, NotificationChannel, Prisma, ProjectStatus, TaskPriority, TaskReviewRequirement, TaskStatus, TaskType } from "./generated/prisma/client.js";
 import { AuthorizationService } from "./authorization.service.js";
 import { DatabaseService } from "./database.service.js";
@@ -22,6 +24,7 @@ function extensionContext(value: unknown): ExtensionContext {
 }
 
 export interface CreateTaskInput {
+  acknowledgeOverload?: boolean | undefined;
   title: string; type: TaskType; priority: TaskPriority; targetDate: string; reason: string;
   description?: string | undefined; startDate?: string | undefined; estimatedHours?: number | undefined; projectId?: string | undefined;
   ownerEmployeeId?: string | undefined; reviewRequirement?: TaskReviewRequirement | undefined;
@@ -31,7 +34,7 @@ export interface CreateTaskInput {
 
 @Injectable()
 export class TaskService {
-  constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly approvals: ApprovalService = new ApprovalService(database)) {
+  constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly approvals: ApprovalService = new ApprovalService(database), @Optional() private readonly workforce?: WorkforceService) {
     this.approvals.registerHandler(this.extensionHandler());
   }
   private get db() { return this.database.prisma; }
@@ -348,6 +351,7 @@ export class TaskService {
         if (actor.kind !== AccountKind.OWNER) await this.managedEmployee(tx, actor, await tx.employee.findUniqueOrThrow({ where: { id: collaborator.employeeId } }), project);
       }
       const targetDate = new Date(`${input.targetDate}T00:00:00.000Z`);
+      if (this.workforce && !input.acknowledgeOverload) for (const employeeId of [ownerId,...collaboratorIds]) if (await this.workforce.assignmentWarning(tx,actor,employeeId)) throw new ConflictException("Overload warning: review employee capacity and acknowledge before assigning work");
       const startDate = input.startDate ? new Date(`${input.startDate}T00:00:00.000Z`) : undefined;
       if (Number.isNaN(targetDate.getTime()) || startDate && startDate > targetDate) throw new ConflictException("Task dates are invalid");
       const row = await tx.task.create({ data: { organizationId: actor.organizationId, ...(project ? { projectId: project.id } : {}), ...(input.planItemId ? { planItemId: input.planItemId } : {}), tags: input.tags ?? [], checklist: input.checklist ?? [], title: input.title, ...(input.description === undefined ? {} : { description: input.description }), type: input.type, priority: input.priority, targetDate, ...(startDate ? { startDate } : {}), ...(input.estimatedHours === undefined ? {} : { estimatedHours: input.estimatedHours }), primaryOwnerEmployeeId: ownerId, createdById: actor.accountId, reviewRequirement: input.reviewRequirement ?? TaskReviewRequirement.NONE } });
@@ -498,6 +502,7 @@ export class TaskService {
       await tx.taskStatusChange.create({ data: { organizationId: actor.organizationId, taskId: id, fromStatus: row.status, toStatus: input.toState, actorId: actor.accountId, reason: input.reason, taskVersion: updated.version, ...(transition.previousState ? { previousStatus: transition.previousState } : {}), ...(unfinishedPredecessorIds.length ? { earlyStartAcknowledged: true, unfinishedPredecessorIds } : {}) } });
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: input.toState === TaskStatus.IN_PROGRESS ? "task.started" : "task.completed", subjectType: "task", subjectId: id, reason: input.reason, before: { status: row.status, version: row.version }, after: { status: updated.status, version: updated.version, ...(unfinishedPredecessorIds.length ? { earlyStartAcknowledged: true, unfinishedPredecessorIds } : {}) } });
       if (input.toState === TaskStatus.COMPLETED) {
+        await pauseTimeTimers(tx, { organizationId: actor.organizationId, taskId: id, actorId: actor.accountId, reason: input.reason });
         const dependentEdges = await tx.taskDependency.findMany({ where: { predecessorTaskId: id, removedAt: null, dependentTask: { status: TaskStatus.WAITING, requiresReassignment: false } }, include: { dependentTask: { include: { primaryOwner: { include: { account: true } } } } } });
         const notifications = new NotificationsService(this.database);
         for (const edge of dependentEdges) {
@@ -711,6 +716,7 @@ export class TaskService {
       const responsibleParty = command === "wait" ? input.responsibleParty?.trim() ?? null : row.waitingResponsibleParty;
       if (responsibleParty !== null && (responsibleParty.length < 1 || responsibleParty.length > 160)) throw new ConflictException("Responsible party must be 1 to 160 characters");
       const delayCause = command === "wait" ? input.delayCause!.trim() : row.waitingDelayCause;
+      if (command === "wait") await pauseTimeTimers(tx, { organizationId: actor.organizationId, taskId: id, actorId: actor.accountId, reason: input.reason });
       const updated = await tx.task.update({ where: { id, version: row.version }, data: {
         status: transition.to, waitingPreviousStatus: command === "wait" ? row.status : null,
         waitingReason: command === "wait" ? transition.reason! : null, waitingDelayCause: command === "wait" ? delayCause : null,
@@ -724,13 +730,14 @@ export class TaskService {
     });
   }
 
-  async reassign(actor: ProjectActor, id: string, input: { newOwnerEmployeeId: string; expectedVersion: number; reason: string }) {
+  async reassign(actor: ProjectActor, id: string, input: { newOwnerEmployeeId: string; expectedVersion: number; reason: string; acknowledgeOverload?: boolean | undefined }) {
     return this.transaction(async (tx) => {
       const row = await this.task(tx, actor, id, input.expectedVersion);
       await this.taskAccess(tx, actor, row);
       const project = row.projectId ? await this.project(tx, actor, row.projectId, true) : undefined;
       const target = project ? await this.eligibleForProject(tx, actor, project, input.newOwnerEmployeeId) : await this.employee(tx, actor, input.newOwnerEmployeeId);
       await this.managedEmployee(tx, actor, target, project);
+      if (this.workforce && !input.acknowledgeOverload && await this.workforce.assignmentWarning(tx,actor,target.id)) throw new ConflictException("Overload warning: review employee capacity and acknowledge before reassigning work");
       if (row.primaryOwnerEmployeeId === target.id || row.status === TaskStatus.COMPLETED || row.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION) throw new ConflictException("Task cannot be reassigned");
       if (project && project.status !== (row.type === TaskType.CLOSEOUT ? ProjectStatus.CANCELLED : ProjectStatus.ACTIVE)) throw new ConflictException("Project status does not permit task reassignment");
       if (row.type === TaskType.CLOSEOUT && !(await tx.taskCloseoutApproval.findFirst({ where: { taskId: id, revokedAt: null } }))) throw new ConflictException("Closeout approval is unavailable");
@@ -871,6 +878,7 @@ export class TaskService {
         const withdrawn = await tx.clientReviewPackage.update({ where: { id: batch.id, version: batch.version }, data: { status: "WITHDRAWN", version: { increment: 1 } } });
         await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "client.review_withdrawn", subjectType: "client_review_package", subjectId: batch.id, reason: input.reason, before: { status: batch.status, version: batch.version }, after: { projectId, packageId: batch.id, status: withdrawn.status, version: withdrawn.version } });
       }
+      await pauseTimeTimers(tx, { organizationId: actor.organizationId, projectId, actorId: actor.accountId, reason: input.reason });
       const updated = await tx.project.update({ where: { id: projectId, version: project.version }, data: { status: ProjectStatus.CANCELLED, version: { increment: 1 } } });
       const change = await tx.projectStatusChange.create({ data: { projectId, organizationId: actor.organizationId, fromStatus: project.status, toStatus: ProjectStatus.CANCELLED, projectVersion: updated.version, reason: input.reason, actorId: actor.accountId } });
       const stoppedTaskIds = await this.stopForProjectCancellation(tx, actor.organizationId, projectId, change.id, actor.accountId, input.reason);

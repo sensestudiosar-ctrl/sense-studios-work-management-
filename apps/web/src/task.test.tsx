@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { TaskWorkspace, type Detail, type Task } from "./task.js";
 
 const setup = { actorEmployeeId: "employee-1", projects: [{ id: "project-1", title: "Studio", status: "ACTIVE", branchId: "branch-1" }], planItems: [{ id: "plan-1", projectId: "project-1", kind: "STAGE" as const, label: "Concept" }], employees: [{ id: "employee-1", name: "Asha", homeBranchId: "branch-1" }, { id: "employee-2", name: "Dev", homeBranchId: "branch-1" }], canAssign: true };
@@ -11,6 +11,63 @@ function response(body: unknown, status = 200): Response { return new Response(J
 afterEach(() => vi.unstubAllGlobals());
 
 describe("TaskWorkspace", () => {
+  it("keeps task creation blocked after an overload warning until explicit acknowledgement", async () => {
+    const calls: Array<[string, RequestInit | undefined]> = [];
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); calls.push([url, init]);
+      if (url.endsWith("/setup")) return response(setup);
+      if (url.includes("?scope=")) return response({ total: 0, items: [] });
+      if (url === "/api/v1/tasks" && init?.method === "POST") {
+        const body = JSON.parse(String(init.body)) as { acknowledgeOverload?: boolean };
+        return body.acknowledgeOverload ? response({ task }) : response({ message: "Overload warning: review employee capacity and acknowledge before assigning work" }, 409);
+      }
+      return response({});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TaskWorkspace csrfToken="task-csrf" owner={false} />);
+    await screen.findByText("No tasks assigned to you yet.");
+    fireEvent.click(screen.getByRole("button", { name: "Create task" }));
+    fireEvent.change(screen.getByLabelText("Task name"), { target: { value: "Call supplier" } });
+    fireEvent.change(screen.getByLabelText("Target date"), { target: { value: "2026-10-15" } });
+    fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Needed for project setup" } });
+    fireEvent.click(screen.getAllByRole("button", { name: "Create task" }).at(-1)!);
+    const warning = await screen.findByRole("alert", { name: "Capacity warning" });
+    expect(warning).toHaveTextContent("Overload warning");
+    expect(calls.filter(([url, init]) => url === "/api/v1/tasks" && init?.method === "POST")).toHaveLength(1);
+    fireEvent.click(within(warning).getByRole("button", { name: "Acknowledge and create task" }));
+    await waitFor(() => expect(calls.filter(([url, init]) => url === "/api/v1/tasks" && init?.method === "POST")).toHaveLength(2));
+    expect(JSON.parse(String(calls.filter(([url, init]) => url === "/api/v1/tasks" && init?.method === "POST")[1]?.[1]?.body))).toMatchObject({ acknowledgeOverload: true, title: "Call supplier", reason: "Needed for project setup" });
+    expect(new Headers(calls.filter(([url, init]) => url === "/api/v1/tasks" && init?.method === "POST")[1]?.[1]?.headers).get("X-CSRF-Token")).toBe("task-csrf");
+  });
+
+  it("keeps reassignment unchanged until the manager acknowledges the capacity warning", async () => {
+    const reassignable = { ...detail, capabilities: { ...detail.capabilities, reassign: true } };
+    const calls: Array<[string, RequestInit | undefined]> = [];
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); calls.push([url, init]);
+      if (url.endsWith("/setup")) return response(setup);
+      if (url.includes("?scope=")) return response({ total: 1, items: [task] });
+      if (url.endsWith("/task-1")) return response(reassignable);
+      if (url.endsWith("/task-1/reassign") && init?.method === "POST") {
+        const body = JSON.parse(String(init.body)) as { acknowledgeOverload?: boolean };
+        return body.acknowledgeOverload ? response({ ...task, primaryOwnerEmployeeId: "employee-2" }) : response({ message: "Overload warning: review employee capacity and acknowledge before reassigning work" }, 409);
+      }
+      return response({});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TaskWorkspace csrfToken="task-csrf" owner />);
+    await screen.findByRole("heading", { name: "Prepare concept" });
+    fireEvent.change(screen.getByLabelText("New owner"), { target: { value: "employee-2" } });
+    fireEvent.change(screen.getByLabelText("Reason for change"), { target: { value: "Move work to available teammate" } });
+    fireEvent.click(screen.getByRole("button", { name: "Reassign" }));
+    const warning = await screen.findByRole("alert", { name: "Capacity warning" });
+    expect(calls.filter(([url]) => url.endsWith("/task-1/reassign"))).toHaveLength(1);
+    expect(warning).toHaveTextContent("Assignment remains unchanged");
+    fireEvent.click(within(warning).getByRole("button", { name: "Acknowledge and reassign owner" }));
+    await waitFor(() => expect(calls.filter(([url]) => url.endsWith("/task-1/reassign"))).toHaveLength(2));
+    expect(JSON.parse(String(calls.filter(([url]) => url.endsWith("/task-1/reassign"))[1]?.[1]?.body))).toMatchObject({ newOwnerEmployeeId: "employee-2", expectedVersion: 1, reason: "Move work to available teammate", acknowledgeOverload: true });
+  });
+
   it("creates a self-task without sending an owner override and includes the CSRF token", async () => {
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       void init;

@@ -6,6 +6,7 @@ import { IdentityService } from "./identity.service.js";
 import { NotificationWorker } from "./notification-worker.js";
 import { AuditRetentionService } from "./audit-retention.service.js";
 import { TaskRecurrenceService } from "./task-recurrence.service.js";
+import { WorkforceService } from "./workforce.service.js";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap(): Promise<void> {
   const notificationWorker = app.get(NotificationWorker);
   const auditRetention = app.get(AuditRetentionService);
   const recurrence = app.get(TaskRecurrenceService);
+  const workforce=app.get(WorkforceService);
   await database.check();
   console.info("Workspace worker process ready.");
 
@@ -47,6 +49,8 @@ async function bootstrap(): Promise<void> {
   };
   void runRecurrence();
   const recurrenceProcessing = setInterval(() => void runRecurrence(), 60_000);
+  const runWorkforceRetention=()=>{void workforce.scheduleSelfieNotices().then(()=>workforce.purgeExpiredSelfies()).catch(()=>console.error("Workforce retention notice processing failed."));void workforce.runScheduledEntitlements().catch(()=>console.error("Workforce entitlement processing failed."));};
+  runWorkforceRetention();const workforceRetentionProcessing=setInterval(runWorkforceRetention,60*60_000);
 
   const shutdown = async (): Promise<void> => {
     clearInterval(interval);
@@ -54,6 +58,7 @@ async function bootstrap(): Promise<void> {
     clearInterval(notificationDelivery);
     clearInterval(auditRetentionProcessing);
     clearInterval(recurrenceProcessing);
+    clearInterval(workforceRetentionProcessing);
     await app.close();
   };
   process.once("SIGINT", () => void shutdown());

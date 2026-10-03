@@ -1,4 +1,9 @@
 import { Module } from "@nestjs/common";
+import { TimeController } from "./time.controller.js";
+import { TimeService } from "./time.service.js";
+import { TimeWorker } from "./time-worker.js";
+import { WorkforceController } from "./workforce.controller.js";
+import { WorkforceService } from "./workforce.service.js";
 import { APP_GUARD } from "@nestjs/core";
 import { loadRuntimeConfig, RUNTIME_CONFIG } from "./config.js";
 import { DATABASE_PROBE, DatabaseService } from "./database.service.js";
@@ -49,8 +54,11 @@ import { GalleryController, PortfolioController, ClientGalleryController, Public
 import { GalleryService } from "./gallery.service.js";
 
 @Module({
-  controllers: [HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
+  controllers: [WorkforceController, TimeController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
+    WorkforceService,
+    TimeService,
+    TimeWorker,
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
     { provide: DATABASE_PROBE, useExisting: DatabaseService },
