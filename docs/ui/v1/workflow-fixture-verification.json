@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-01T06:30:13.906Z",
+  "checks": 477,
+  "failures": [],
+  "browserErrors": [],
+  "colourPairs": [
+    {
+      "label": "Ink on cream",
+      "ratio": 12.32
+    },
+    {
+      "label": "Ink on white",
+      "ratio": 13.54
+    },
+    {
+      "label": "Muted on white",
+      "ratio": 6.08
+    },
+    {
+      "label": "White on forest",
+      "ratio": 8.2
+    },
+    {
+      "label": "Forest link on white",
+      "ratio": 8.2
+    }
+  ],
+  "note": "Fictional storyboard presentation only; no real commands, form validation, permissions, persistence, assistive-technology or human comprehension acceptance."
+}

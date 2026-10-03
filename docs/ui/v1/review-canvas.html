@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<title>Review canvas · WH-215 · illustrative mockup</title>
+<style>
+:root{font:15px/1.45 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#24352d;background:#f5f3ed;--green:#285b48;--line:#d9ded7;--muted:#64736b;--cream:#fbfaf6}*{box-sizing:border-box}body{margin:0;min-width:320px}button,input,select,textarea{font:inherit;color:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid #65a987;outline-offset:2px}button:disabled{opacity:.5;cursor:not-allowed}.lab{background:#24352d;color:white;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.lab strong{font-size:13px}.lab-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.lab label{font-size:12px;color:#d7e3da}.lab select{min-height:38px;border-radius:8px;padding:5px 8px;border:1px solid #abb9af;background:white}.lab-note{font-size:11px;color:#ced9d1}.wrap{max-width:1560px;margin:auto;padding:18px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}.crumb{font-size:12px;color:var(--muted)}h1{font-size:clamp(21px,3vw,29px);margin:3px 0 2px;letter-spacing:-.03em}.subtitle{color:var(--muted);font-size:13px}.chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.chip{background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 10px;font-size:12px}.chip.exact{font-weight:700;color:#245640}.banner{background:#fff5df;border:1px solid #ecd9ad;color:#604916;border-radius:10px;padding:10px 13px;font-size:12px;margin-bottom:14px}.grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.8fr);gap:14px;align-items:stretch}.card{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;min-width:0}.viewer-head,.feedback-head{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.viewer-head b,.feedback-head b{font-size:14px}.controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.button{min-height:44px;border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 12px;font-weight:650}.button:hover{background:#f5f7f4}.button.primary{background:var(--green);color:white;border-color:var(--green)}.button.small{min-height:38px;padding:5px 10px;font-size:12px}.viewer{padding:16px;background:#e9e9e2;min-height:590px;display:grid;place-items:center;position:relative;overflow:hidden}.sheet-wrap{position:relative;width:min(100%,760px);aspect-ratio:1.38;background:#fff;box-shadow:0 8px 28px #24352d20;transform-origin:center;transition:transform .18s}.sheet{width:100%;height:100%;display:block}.sheet-title{font:700 15px ui-sans-serif,system-ui;fill:#24352d}.sheet-label{font:11px ui-sans-serif,system-ui;fill:#35453c}.pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border:2px solid white;border-radius:50%;background:#285b48;color:white;box-shadow:0 2px 9px #18291e66;font-weight:800;display:grid;place-items:center}.pin[aria-current=true]{background:#b56535}.pin:disabled{display:none}.viewer.state-loading .sheet-wrap,.viewer.state-error .sheet-wrap,.viewer.state-lost .sheet-wrap{visibility:hidden}.viewer-state{display:none;position:absolute;text-align:center;max-width:360px;padding:22px;background:white;border:1px solid var(--line);border-radius:12px}.state-loading .viewer-state.loading,.state-error .viewer-state.error,.state-lost .viewer-state.lost{display:block}.viewer-foot{background:#fff;padding:10px 14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.side{display:flex;flex-direction:column;min-height:0}.feedback-head{align-items:flex-start}.feedback-head p{margin:3px 0 0;color:var(--muted);font-size:12px}.list{padding:10px 12px;display:grid;gap:8px;overflow:auto;max-height:310px}.message{border:1px solid var(--line);background:var(--cream);border-radius:10px;padding:10px;display:grid;grid-template-columns:34px minmax(0,1fr);gap:9px}.message.active{border-color:#70a487;box-shadow:0 0 0 2px #70a48722}.msgpin{width:32px;height:32px;border:0;border-radius:50%;background:#e1ece4;color:#245640;font-weight:800}.msgmeta{display:flex;justify-content:space-between;gap:8px;font-size:11px}.msgmeta b{font-size:12px}.message p{font-size:13px;margin:5px 0}.loc{font-size:11px;color:var(--muted)}.readonly{background:#eff3ef;border:1px solid #d9e4dc;border-radius:9px;margin:10px 12px;padding:10px;font-size:12px;color:#40594a}.composer{padding:12px;border-top:1px solid var(--line);display:grid;gap:8px;margin-top:auto}.composer label,.fieldlabel{font-size:12px;font-weight:700;display:block;margin-bottom:4px}.composer textarea,.composer input,.field{width:100%;border:1px solid #cbd4cd;border-radius:8px;padding:9px 10px;background:white;min-height:44px}.composer textarea{resize:vertical;min-height:72px}.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.location-box{border:1px solid var(--line);border-radius:9px;padding:9px}.location-box summary{cursor:pointer;font-size:12px;font-weight:700}.point-row{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:end;margin-top:8px}.feedback-actions{display:flex;gap:8px;flex-wrap:wrap}.decision{border-top:1px solid var(--line);padding:12px;display:flex;gap:8px;flex-wrap:wrap}.decision .button{flex:1}.status{min-height:24px;padding:4px 13px;font-size:12px;color:var(--muted)}.mobile-switch{display:none}.off{display:none!important}dialog{border:0;border-radius:14px;padding:0;width:min(500px,calc(100% - 24px));box-shadow:0 18px 60px #17251f55}dialog::backdrop{background:#17251f88}.dialog-inner{padding:20px}.dialog-inner h2{margin:0 0 6px;font-size:20px}.dialog-inner p{color:var(--muted);font-size:13px}.formgrid{display:grid;gap:12px;margin-top:16px}.formgrid textarea{min-height:90px}.dialog-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:17px}.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.viewer{min-height:0;aspect-ratio:auto;padding:12px}.sheet-wrap{width:min(100%,800px)}.viewer-card{display:block}.list{max-height:none}.side{min-height:0}.desktop-only{display:none}.mobile-switch{display:flex;gap:8px;margin:0 0 10px}.mobile-switch button{flex:1}.feedback-card[hidden]{display:none}.viewer-card[hidden]{display:none}}
+@media(max-width:520px){.wrap{padding:12px 9px 24px}.top{display:block}.chips{justify-content:flex-start;margin-top:9px}.lab{padding:9px}.lab-note{width:100%}.viewer{padding:8px;min-height:260px}.viewer-foot{font-size:11px}.viewer-head{align-items:flex-start;flex-direction:column}.point-row{grid-template-columns:1fr 1fr}.point-row button{grid-column:1/-1}.decision{display:grid;grid-template-columns:1fr 1fr}.decision button{min-width:0}.message{padding:8px}}
+.lab select{color:#24352d} .pin{width:44px;height:44px} @media(prefers-reduced-motion:reduce){.sheet-wrap{transition:none}} .message{display:block;overflow-wrap:anywhere}.message .meta{display:block;font-size:12px;color:#56665d;margin-bottom:8px}.message p{margin:8px 0}.message small{display:block;font-size:12px;color:#56665d;margin-bottom:10px}.message button{min-height:44px} body{overflow-wrap:anywhere}.lab-controls{max-width:100%;min-width:0}.lab select{max-width:100%;min-width:0}.row,.point-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.row>div,.point-row>div{min-width:0}input,textarea,select{max-width:100%;min-width:0}.controls{min-width:0;max-width:100%} @media(max-width:600px){.row{grid-template-columns:1fr}.feedback-actions,.decision,.dialog-actions{flex-wrap:wrap}} </style><style id="inline-review-styles">/* SC08-C inline point and rectangle controls for the review canvas experiment. */
+:root {
+  --review-forest: #285b48;
+  --review-forest-dark: #214a3b;
+  --review-cream: #fbfaf6;
+  --review-line: #d9ded7;
+  --review-muted: #64736b;
+  --review-focus: #65a987;
+}
+
+#inline-comment {
+  position: fixed;
+  z-index: 100;
+  inset: 12px auto auto 12px;
+  width: min(380px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 16px;
+  color: #24352d;
+  background: var(--review-cream, #fbfaf6);
+  border: 1px solid var(--review-line, #d9ded7);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px #17251f38;
+  overscroll-behavior: contain;
+}
+
+#inline-comment[hidden],
+#annotation-tools[hidden],
+.region-mark[hidden],
+.region-draft[hidden] {
+  display: none !important;
+}
+
+#inline-comment :where(label, .fieldlabel) {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#inline-comment :where(input, textarea, select, button) {
+  font: inherit;
+}
+
+#inline-comment :where(input, textarea, select) {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #24352d;
+  background: #fff;
+  border: 1px solid #cbd4cd;
+  border-radius: 9px;
+}
+
+#inline-text {
+  min-height: 96px;
+  resize: vertical;
+}
+
+#inline-reason[readonly],
+#inline-comment :where(input[readonly], textarea[readonly]) {
+  color: #40594a;
+  background: #eff3ef;
+}
+
+#inline-comment :where(input, textarea, select, button):focus-visible,
+#annotation-tools button:focus-visible {
+  outline: 3px solid var(--review-focus, #65a987);
+  outline-offset: 2px;
+}
+
+.inline-meta {
+  margin: 10px 0;
+  padding: 9px 10px;
+  color: #40594a;
+  background: #eff3ef;
+  border: 1px solid #d9e4dc;
+  border-radius: 9px;
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.inline-actions button,
+#annotation-tools button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  color: #24352d;
+  background: #fff;
+  border: 1px solid var(--review-line, #d9ded7);
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.inline-actions button.primary,
+#annotation-tools button[aria-pressed="true"] {
+  color: #fff;
+  background: var(--review-forest, #285b48);
+  border-color: var(--review-forest, #285b48);
+}
+
+#annotation-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  color: #24352d;
+  background: var(--review-cream, #fbfaf6);
+  border: 1px solid var(--review-line, #d9ded7);
+  border-radius: 12px;
+}
+
+.region-mark,
+.region-draft {
+  position: absolute;
+  z-index: 4;
+  box-sizing: border-box;
+  border: 2px solid var(--review-forest, #285b48);
+  border-radius: 3px;
+  background: #285b4814;
+  pointer-events: none;
+}
+
+.region-draft {
+  border-style: dashed;
+  background: #285b480d;
+}
+
+@media (max-width: 600px) {
+  #inline-comment {
+    inset: auto 12px 12px;
+    width: auto;
+    max-height: min(62dvh, 520px);
+    padding: 14px;
+  }
+
+  #annotation-tools {
+    gap: 6px;
+    padding: 7px;
+  }
+
+  #annotation-tools button,
+  .inline-actions button {
+    flex: 1 1 auto;
+    padding-inline: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #inline-comment,
+  #annotation-tools button,
+  .inline-actions button {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}
+</style></head>
+<body>
+<header class="lab"><strong>Review canvas · interaction study</strong><div class="lab-controls"><label for="role">View as</label><select id="role" aria-label="Prototype role"><option value="noah">Noah Patel · named reviewer</option><option value="avery">Avery Morgan · submitter / task owner</option></select><label for="round">Round</label><select id="round" aria-label="Review round"><option value="r2">Round 2 · current</option><option value="r1">Round 1 · historical</option></select><label for="evidence">Evidence</label><select id="evidence" aria-label="Illustrative evidence state"><option value="ready">Ready</option><option value="loading">Loading</option><option value="error">Viewer error</option><option value="readonly">Read-only</option><option value="lost">Access lost</option></select><span class="lab-note">Fictional, local-only presentation · selectors are not permission checks</span></div></header>
+<main class="wrap"><div class="top"><div><div class="crumb">Projects / Willow House / Reviews / WH-215</div><h1>Coordinate reception lighting plan</h1><div class="subtitle">Internal drawing review · illustrative architectural scene</div></div><div class="chips"><span class="chip exact">Task WH-215</span><span class="chip exact" id="round-chip">Round 2 · R2</span><span class="chip">Reception lighting · R2.pdf</span><span class="chip">Reviewer Noah Patel</span></div></div>
+<div class="banner"><b>Illustrative renderer:</b> this schematic reception lighting drawing is fictional, not a real PDF or project record. Comments and decision previews stay in this browser and are never persisted.</div>
+<div class="mobile-switch" role="group" aria-label="Mobile review view"><button class="button" id="show-canvas">Canvas</button><button class="button" id="show-feedback">Feedback <span id="mobile-count">2</span></button></div>
+<div class="grid"><section class="card viewer-card" id="canvas-card" aria-label="Drawing evidence canvas"><div class="viewer-head"><b>Reception lighting plan <span class="muted">· <span id="revision-label">R2.pdf</span></span></b><div class="controls"><label class="sr" for="page">Page</label><select id="page" class="button small" aria-label="Drawing page"><option value="1">Page 1 of 2</option><option value="2">Page 2 of 2</option></select><button id="zoom" class="button small" aria-label="Toggle zoom">Fit · 100%</button><button id="overlay" class="button small" aria-pressed="true">Pins shown</button></div></div>
+<div class="viewer" id="canvas" tabindex="0" role="application" aria-label="Illustrative drawing canvas. Click or press Enter to select a feedback location."><div class="sheet-wrap" id="sheet-wrap"><svg class="sheet" viewBox="0 0 1000 720" role="img" aria-labelledby="drawing-title drawing-desc"><title id="drawing-title">Fictional reception lighting plan</title><desc id="drawing-desc">Illustrative top-down architectural plan of a reception desk, waiting seats, entry, and ceiling light symbols. It is not project evidence.</desc><rect x="18" y="18" width="964" height="684" fill="#fff" stroke="#34473d" stroke-width="3"/><text x="48" y="55" class="sheet-title">WILLOW HOUSE · RECEPTION LIGHTING PLAN · SCHEMATIC</text><text x="48" y="76" class="sheet-label">ILLUSTRATIVE DRAWING — NOT FOR CONSTRUCTION · LEVEL 01</text><path d="M100 125H880V590H100Z" fill="#fbfaf6" stroke="#4b5b51" stroke-width="4"/><path d="M100 485H880M690 125V485" fill="none" stroke="#839087" stroke-width="3"/><path d="M101 485h90m0 0a90 90 0 0 0-90-90" fill="none" stroke="#839087" stroke-width="2"/><text x="125" y="552" class="sheet-label">ENTRY · VESTIBULE</text><rect x="735" y="210" width="105" height="205" rx="8" fill="#e8eee8" stroke="#52665a" stroke-width="3"/><text x="750" y="300" class="sheet-label">RECEPTION</text><text x="750" y="318" class="sheet-label">DESK</text><rect x="250" y="232" width="130" height="54" rx="18" fill="#f0eee8" stroke="#89938a" stroke-width="2"/><rect x="440" y="232" width="130" height="54" rx="18" fill="#f0eee8" stroke="#89938a" stroke-width="2"/><rect x="250" y="350" width="130" height="54" rx="18" fill="#f0eee8" stroke="#89938a" stroke-width="2"/><rect x="440" y="350" width="130" height="54" rx="18" fill="#f0eee8" stroke="#89938a" stroke-width="2"/><text x="274" y="218" class="sheet-label">WAITING LOUNGE</text><g fill="#fff1cb" stroke="#ad7825" stroke-width="3"><circle cx="240" cy="160" r="15"/><circle cx="430" cy="160" r="15"/><circle cx="620" cy="160" r="15"/><circle cx="240" cy="455" r="15"/><circle cx="430" cy="455" r="15"/><circle cx="620" cy="455" r="15"/><circle cx="820" cy="455" r="15"/></g><g stroke="#ad7825" stroke-width="2"><path d="M232 160h16m-8-8v16M422 160h16m-8-8v16M612 160h16m-8-8v16M232 455h16m-8-8v16M422 455h16m-8-8v16M612 455h16m-8-8v16M812 455h16m-8-8v16"/></g><path d="M150 615H850" stroke="#4b5b51"/><text x="150" y="646" class="sheet-label">LIGHTING LEGEND · ○ recessed downlight · spacing shown schematically</text><text x="790" y="674" class="sheet-label">SHEET A-01 · REV R2</text></svg><button class="pin" data-pin="p1" data-page="1" style="left:62%;top:23%" aria-label="Feedback pin 1, page 1">1</button><button class="pin" data-pin="p2" data-page="1" style="left:44%;top:63%" aria-label="Feedback pin 2, page 1">2</button></div>
+<div class="viewer-state loading"><b>Loading exact evidence…</b><p class="tiny">Location capture and formal decisions are unavailable until the selected evidence can be inspected.</p></div><div class="viewer-state error"><b>Evidence could not be displayed</b><p class="tiny">Retry the exact submitted revision. Decisions remain unavailable.</p><button class="button small" id="retry">Retry evidence</button></div><div class="viewer-state lost"><b>Access is no longer available</b><p class="tiny">Protected drawing and review content were cleared from this preview.</p></div></div>
+<div class="viewer-foot"><span id="selection-note">No location selected · general feedback is available</span><span>Click a drawing point or use the page and location description fields</span></div></section>
+<aside class="card side feedback-card" id="feedback-card" aria-label="Human review feedback"><div class="feedback-head"><div><b>Feedback on this submission</b><p>Comments and numbered pins stay linked to this exact round.</p></div><span class="chip" id="comment-count">2 comments</span></div><div class="readonly off" id="readonly-note">Read-only view · feedback is visible, and new feedback or decisions are unavailable.</div><div class="list" id="feedback-list" aria-live="polite"></div><form class="composer" id="composer"><div><label for="feedback-text">Add review feedback</label><textarea id="feedback-text" maxlength="2000" placeholder="Describe the requested change…" required></textarea></div><div class="row"><div><label class="fieldlabel" for="feedback-reason">Reason (required)</label><input id="feedback-reason" maxlength="1000" minlength="3" value="Clarify the submitted lighting coordination" required></div><div><label class="fieldlabel" for="location-description">Location description (optional)</label><input id="location-description" maxlength="200" placeholder="For example, near reception desk"></div></div><details class="location-box"><summary>Enter location without clicking the drawing</summary><div class="point-row"><div><label class="fieldlabel" for="point-x">Horizontal position (0–1)</label><input id="point-x" type="number" min="0" max="1" step="0.01" placeholder="0.62"></div><div><label class="fieldlabel" for="point-y">Vertical position (0–1)</label><input id="point-y" type="number" min="0" max="1" step="0.01" placeholder="0.23"></div><button id="set-point" type="button" class="button small">Set location</button></div></details><div class="feedback-actions"><button id="send-feedback" class="button primary" type="submit">Post feedback</button><span class="tiny muted">Enter posts feedback; it never approves.</span></div></form><div class="decision"><button class="button" id="approve" type="button">Approve</button><button class="button" id="request-corrections" type="button">Request corrections</button></div></aside></div><div class="status" id="status" role="status" aria-live="polite">Local-only preview. No changes are saved.</div></main>
+<dialog id="decision-dialog" aria-labelledby="dialog-title"><form id="decision-form" method="dialog" class="dialog-inner"><h2 id="dialog-title">Preview review decision</h2><p>This is a presentation-only form. Nothing is persisted; an actual decision requires current permission and exact evidence access.</p><div id="correction-fields" class="formgrid"><div><label for="category">Correction category (required)</label><select id="category" class="field"><option value="">Choose a category</option><option>Drawing coordination</option><option>Design quality</option><option>Documentation</option><option>Other</option></select></div><div><label for="severity">Severity (required)</label><select id="severity" class="field"><option value="">Choose severity</option><option>Minor</option><option>Moderate</option><option>Major</option><option>Critical</option></select></div><div><label for="decision-reason">Reason (required)</label><textarea id="decision-reason" class="field" minlength="3" maxlength="1000" placeholder="Explain the decision" required></textarea></div></div><div class="dialog-actions"><button type="button" class="button" id="cancel-dialog">Cancel</button><button type="submit" class="button primary" id="preview-decision">Preview only</button></div></form></dialog>
+<script>
+const q=selector=>document.querySelector(selector);
+const initialSheet=q('#sheet-wrap').innerHTML.replace(/<button class="pin"[\s\S]*?<\/button>/g,'');
+const initialIdentity=q('.top').innerHTML;
+let activeRound='r2', point=null, zoomed=false, pinsShown=true, serial=3;
+let records={r2:[{id:'p1',page:1,x:.62,y:.23,text:'Move this downlight clear of the joinery centreline.',reason:'Coordinate lighting with joinery.'},{id:'p2',page:1,x:.44,y:.63,text:'Confirm spacing of the lounge downlights.',reason:'Check the revised coordination.'}],r1:[{id:'r1p1',page:1,x:.62,y:.23,text:'Shift two downlights clear of the reception joinery.',reason:'Retained Round 1 correction feedback.'}]};
+let drafts={};
+const allowed=()=>q('#role').value==='noah'&&activeRound==='r2'&&q('#evidence').value==='ready';
+const say=text=>q('#status').textContent=text;
+const escape=text=>text.replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+function saveDraft(){if(q('#evidence').value!=='lost')drafts[activeRound]={text:q('#feedback-text').value,reason:q('#feedback-reason').value,location:q('#location-description').value};}
+function clearPoint(){point=null;q('#point-x').value='';q('#point-y').value='';q('#selection-note').textContent='No location selected · general feedback';q('#feedback-text').maxLength=2000;}
+function restoreDraft(){const draft=drafts[activeRound]??{text:'',reason:'Clarify the submitted lighting coordination',location:''};q('#feedback-text').value=draft.text;q('#feedback-reason').value=draft.reason;q('#location-description').value=draft.location;}
+function focusRecord(id){const record=(records[activeRound]??[]).find(item=>item.id===id);if(!record)return;q('#page').value=String(record.page);clearPoint();renderPins();const message=q(`[data-feedback-id="${id}"]`);message?.focus();message?.scrollIntoView({block:'nearest'});}
+function renderPins(){q('#sheet-wrap').querySelectorAll('[data-pin]').forEach(pin=>pin.remove());if(!pinsShown||['lost','loading','error'].includes(q('#evidence').value))return;const page=Number(q('#page').value);(records[activeRound]??[]).forEach((record,index)=>{if(record.x===undefined||record.page!==page)return;const pin=document.createElement('button');pin.className='pin';pin.dataset.pin=record.id;pin.type='button';pin.textContent=String(index+1);pin.setAttribute('aria-label',`Feedback pin ${index+1}, page ${record.page}`);pin.style.left=record.x*100+'%';pin.style.top=record.y*100+'%';pin.onclick=()=>focusRecord(record.id);q('#sheet-wrap').append(pin);});}
+function renderFeedback(){const list=q('#feedback-list');list.replaceChildren();(records[activeRound]??[]).forEach((record,index)=>{const article=document.createElement('article');article.className='message';article.tabIndex=-1;article.dataset.feedbackId=record.id;article.innerHTML=`<div class="meta">Noah Patel · named reviewer · ${record.time??(activeRound==='r1'?'30 Sep 2026 · 15:42 IST':'1 Oct 2026 · 11:20 IST')} · ${activeRound==='r2'?'Round 2 · R2':'Round 1 · R1'} · ${record.x===undefined?'General feedback':`Page ${record.page} · pin ${index+1}`}</div><p>${escape(record.text)}</p><small>Reason: ${escape(record.reason)}</small>${record.location?`<small>Location: ${escape(record.location)}</small>`:''}`;if(record.x!==undefined){const button=document.createElement('button');button.className='button small';button.dataset.messagePin=record.id;button.type='button';button.textContent=`Show pin ${index+1}`;button.onclick=()=>{q('#page').value=String(record.page);clearPoint();renderPins();q(`[data-pin="${record.id}"]`)?.focus();q('#canvas-card').scrollIntoView({block:'start'});};article.append(button);}list.append(article);});q('#comment-count').textContent=`${(records[activeRound]??[]).length} comments`;q('#mobile-count').textContent=String((records[activeRound]??[]).length);}
+function render(){const state=q('#evidence').value;q('#canvas').className=`viewer state-${state}`;q('#decision-dialog').close();clearPoint();if(state==='lost'){records={r1:[],r2:[]};drafts={};q('.top').innerHTML='<h1>Review access unavailable</h1>';q('#sheet-wrap').replaceChildren();q('#feedback-list').replaceChildren();q('#feedback-text').value='';q('#feedback-reason').value='';q('#location-description').value='';q('#revision-label').textContent='Unavailable';q('#comment-count').textContent='Unavailable';q('#mobile-count').textContent='';}else{q('.top').innerHTML=initialIdentity;const revision=activeRound==='r2'?'R2':'R1';q('.top .crumb').textContent=`Projects / Willow House / Reviews / WH-215 / ${revision}`;q('#round-chip').textContent=`Round ${activeRound==='r2'?2:1} · ${revision}${activeRound==='r1'?' · historical':''}`;q('.top .chips span:nth-child(3)').textContent=`WH-215_${revision}.pdf`;q('#revision-label').textContent=`WH-215_${revision}.pdf`;q('#sheet-wrap').innerHTML=initialSheet.replace('REV R2',`REV ${revision}`).replace('SHEET A-01',`SHEET A-0${q('#page').value}`);restoreDraft();renderFeedback();renderPins();}const enabled=allowed();q('#composer').querySelectorAll('input,textarea,button').forEach(control=>control.disabled=!enabled);q('#approve').disabled=!enabled;q('#request-corrections').disabled=!enabled;q('#readonly-note').classList.toggle('off',enabled);q('#canvas').setAttribute('aria-label',state==='lost'?'Drawing access unavailable':'Illustrative drawing. Select point or use location fields.');say(state==='lost'?'Protected content and local drafts cleared.':activeRound==='r1'?'Historical R1 · read-only. Current decisions still belong to Round 2.':'Local-only preview. No changes are saved.');}
+q('#round').onchange=()=>{saveDraft();activeRound=q('#round').value;render();};
+q('#role').onchange=()=>{saveDraft();render();};q('#evidence').onchange=()=>{if(q('#evidence').value!=='lost')saveDraft();render();};
+q('#page').onchange=()=>{clearPoint();q('#sheet-wrap').querySelector('.sheet-label:last-child')?.replaceChildren(document.createTextNode(`SHEET A-0${q('#page').value} · REV ${activeRound==='r2'?'R2':'R1'}`));renderPins();say('Page changed; previous point cleared.');};
+function setPoint(x,y){if(!allowed())return;if(!Number.isFinite(x)||!Number.isFinite(y)||x<0||x>1||y<0||y>1){say('Enter positions between 0 and 1.');return;}point={x,y,page:Number(q('#page').value)};q('#feedback-text').maxLength=1000;q('#selection-note').textContent=`Page ${point.page} · selected (${x.toFixed(2)}, ${y.toFixed(2)}) · annotation text maximum 1000 characters`;}
+q('#set-point').onclick=()=>{if(q('#point-x').value===''||q('#point-y').value===''){say('Enter both location coordinates.');return;}setPoint(Number(q('#point-x').value),Number(q('#point-y').value));};
+q('#sheet-wrap').onclick=event=>{if(event.target.closest('[data-pin]'))return;const box=q('#sheet-wrap').getBoundingClientRect();setPoint((event.clientX-box.left)/box.width,(event.clientY-box.top)/box.height);};
+q('#canvas').onkeydown=event=>{if(event.key==='Enter'&&event.target===q('#canvas')){event.preventDefault();setPoint(.5,.5);}};
+q('#feedback-text').onkeydown=event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing){event.preventDefault();q('#composer').requestSubmit();}};
+q('#composer').onsubmit=event=>{event.preventDefault();if(!allowed())return;const text=q('#feedback-text').value.trim(),reason=q('#feedback-reason').value.trim();if(!text||reason.length<3||text.length>(point?1000:2000)){say('Feedback text and a reason of at least three characters are required; annotation text limit is 1000.');return;}records[activeRound].push({id:`local${serial++}`,text,reason,location:q('#location-description').value.trim(),time:new Intl.DateTimeFormat('en-IN',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Kolkata'}).format(new Date())+' IST · local preview',...(point??{page:Number(q('#page').value)})});q('#feedback-text').value='';saveDraft();clearPoint();renderFeedback();renderPins();say('Feedback added locally · no decision recorded or saved.');};
+q('#zoom').onclick=()=>{zoomed=!zoomed;q('#sheet-wrap').style.transform=zoomed?'scale(1.3)':'none';q('#canvas').style.overflow=zoomed?'auto':'hidden';q('#zoom').textContent=zoomed?'Zoom · 130%':'Fit · 100%';};q('#overlay').onclick=()=>{pinsShown=!pinsShown;q('#overlay').textContent=pinsShown?'Pins shown':'Pins hidden';q('#overlay').setAttribute('aria-pressed',String(pinsShown));renderPins();};q('#retry').onclick=()=>{q('#evidence').value='ready';render();};
+const reasonField=q('#decision-reason').parentElement;q('#correction-fields').after(reasonField);
+const commentField=document.createElement('div');commentField.innerHTML='<label for="decision-comment">Correction comment (required)</label><textarea id="decision-comment" class="field" maxlength="2000"></textarea>';q('#correction-fields').append(commentField);
+const exact=document.createElement('p');exact.id='decision-target';q('#dialog-title').after(exact);
+let decisionKind='approve';function openDecision(kind){if(!allowed())return;decisionKind=kind;q('#dialog-title').textContent=kind==='approve'?'Preview approval':'Preview correction request';q('#decision-target').textContent='Task WH-215 · Round 2 · exact WH-215_R2.pdf';q('#correction-fields').hidden=kind==='approve';q('#category').required=kind!=='approve';q('#severity').required=kind!=='approve';q('#decision-comment').required=kind!=='approve';q('#decision-reason').required=true;q('#decision-form').reset();q('#decision-dialog').showModal();q('#decision-reason').focus();}
+q('#approve').onclick=()=>openDecision('approve');q('#request-corrections').onclick=()=>openDecision('correction');q('#cancel-dialog').onclick=()=>q('#decision-dialog').close();q('#decision-form').onsubmit=event=>{event.preventDefault();if(!allowed()||!q('#decision-form').reportValidity())return;if(q('#decision-reason').value.trim().length<3||(decisionKind==='correction'&&!q('#decision-comment').value.trim())){q('#decision-target').textContent='Task WH-215 · Round 2 · exact WH-215_R2.pdf · Enter a meaningful reason (3+ characters) and correction comment.';return;}say(`Preview only: ${decisionKind} for Round 2 / R2. No decision saved; correction assignment is a separate authorized step.`);q('#decision-dialog').close();};
+q('#decision-dialog').onclose=()=>q(decisionKind==='approve'?'#approve':'#request-corrections').focus();
+q('#show-canvas').onclick=()=>q('#canvas-card').scrollIntoView({block:'start'});q('#show-feedback').onclick=()=>q('#feedback-card').scrollIntoView({block:'start'});
+q('#canvas').removeAttribute('role');render();
+
+/* global q, allowed, activeRound, records, point, pinsShown, say, saveDraft, clearPoint:writable, renderPins:writable, setPoint:writable, focusRecord:writable */
+let annotationTool='point', dragOrigin=null, pointerMoved=false;
+const tools=document.createElement('div');tools.id='annotation-tools';tools.innerHTML='<button type="button" class="button" id="tool-point" aria-pressed="true">Point comment</button><button type="button" class="button" id="tool-rectangle" aria-pressed="false">Rectangle comment</button><small>Rectangle areas are local prototype geometry; no drawing is edited.</small>';
+q('.viewer-head').after(tools);
+const popup=document.createElement('section');popup.id='inline-comment';popup.hidden=true;popup.setAttribute('aria-label','Comment at selected drawing location');popup.innerHTML='<strong id="inline-title">Comment here</strong><p id="inline-context" class="inline-meta"></p><form id="inline-form"><label for="inline-text">Requested change</label><textarea id="inline-text" maxlength="1000" required placeholder="Add a comment…"></textarea><label for="inline-reason">Reason</label><input id="inline-reason" minlength="3" maxlength="1000" required><div class="inline-actions"><button id="inline-cancel" type="button" class="button">Cancel</button><button id="inline-post" type="submit" class="button primary">Post feedback</button></div></form>';document.body.append(popup);
+const geometryFields=document.createElement('div');geometryFields.id='rectangle-fields';geometryFields.hidden=true;geometryFields.innerHTML='<label for="rect-x2">Rectangle right edge (0–1)</label><input id="rect-x2" type="number" min="0" max="1" step="0.01"><label for="rect-y2">Rectangle bottom edge (0–1)</label><input id="rect-y2" type="number" min="0" max="1" step="0.01">';q('.location-box').append(geometryFields);
+function positionPopup(x,y){const margin=12;popup.style.bottom='auto';popup.style.right='auto';popup.style.width='min(380px, calc(100vw - 24px))';popup.style.left=margin+'px';popup.style.top=margin+'px';const box=popup.getBoundingClientRect();popup.style.left=Math.max(margin,Math.min(x+12,innerWidth-box.width-margin))+'px';popup.style.top=Math.max(margin,Math.min(y+12,innerHeight-box.height-margin))+'px';}
+function openInline(record,readOnly=false){if(['error','loading','lost'].includes(q('#evidence').value))return;popup.hidden=false;q('#inline-title').textContent=readOnly?'Drawing feedback':'Comment on this '+(record.bounds?'area':'point');q('#inline-context').textContent=`WH-215 · ${activeRound.toUpperCase()} · page ${record.page}${record.bounds?' · rectangle (prototype)':''}`;q('#inline-text').value=readOnly?record.text:q('#feedback-text').value;q('#inline-reason').value=readOnly?record.reason:q('#feedback-reason').value;q('#inline-text').readOnly=readOnly;q('#inline-reason').readOnly=readOnly;q('#inline-post').hidden=readOnly||!allowed();q('#inline-cancel').textContent=readOnly?'Close':'Cancel';const sheet=q('#sheet-wrap').getBoundingClientRect();positionPopup(sheet.left+record.x*sheet.width,sheet.top+record.y*sheet.height);q('#inline-text').focus({preventScroll:true});}
+function addRegion(bounds,id,draft=false){const region=document.createElement('div');region.className='region-mark'+(draft?' region-draft':'');region.dataset.region=id;region.style.left=bounds.left*100+'%';region.style.top=bounds.top*100+'%';region.style.width=(bounds.right-bounds.left)*100+'%';region.style.height=(bounds.bottom-bounds.top)*100+'%';region.setAttribute('aria-label',draft?'Selected rectangle area':'Commented rectangle area');q('#sheet-wrap').append(region);}
+const baseClearPoint=clearPoint;clearPoint=function(){baseClearPoint();popup.hidden=true;dragOrigin=null;q('#sheet-wrap').querySelectorAll('.region-draft').forEach(node=>node.remove());};
+const baseRenderPins=renderPins;renderPins=function(){baseRenderPins();q('#sheet-wrap').querySelectorAll('.region-mark').forEach(node=>node.remove());if(pinsShown&&!['error','loading','lost'].includes(q('#evidence').value))(records[activeRound]??[]).forEach(record=>{if(record.bounds&&record.page===Number(q('#page').value))addRegion(record.bounds,record.id);});};
+const baseSetPoint=setPoint;setPoint=function(x,y){baseSetPoint(x,y);if(point&&allowed())openInline(point);};
+const baseFocusRecord=focusRecord;focusRecord=function(id){baseFocusRecord(id);const record=(records[activeRound]??[]).find(item=>item.id===id);if(record?.x!==undefined)openInline(record,true);};
+function setRectangle(a,b){if(!allowed())return;const bounds={left:Math.min(a.x,b.x),top:Math.min(a.y,b.y),right:Math.max(a.x,b.x),bottom:Math.max(a.y,b.y)};if(bounds.right-bounds.left<.015||bounds.bottom-bounds.top<.015){clearPoint();say('Mark a larger rectangle, or use Point comment.');return;}baseSetPoint(bounds.left,bounds.top);point.bounds=bounds;q('#selection-note').textContent=`Page ${point.page} · rectangle selected · local prototype area`;q('#sheet-wrap').querySelectorAll('.region-draft').forEach(node=>node.remove());addRegion(bounds,'draft',true);openInline(point);}
+function coords(event){const box=q('#sheet-wrap').getBoundingClientRect();return {x:Math.max(0,Math.min(1,(event.clientX-box.left)/box.width)),y:Math.max(0,Math.min(1,(event.clientY-box.top)/box.height))};}
+function selectTool(tool){clearPoint();pointerMoved=false;annotationTool=tool;q('#tool-point').setAttribute('aria-pressed',String(tool==='point'));q('#tool-rectangle').setAttribute('aria-pressed',String(tool==='rectangle'));geometryFields.hidden=tool!=='rectangle';q('#sheet-wrap').style.touchAction=tool==='rectangle'?'none':'auto';say(tool==='rectangle'?'Drag an area, or enter both corners in location fields.':'Click a point to comment directly beside it.');}
+q('#tool-point').onclick=()=>selectTool('point');q('#tool-rectangle').onclick=()=>selectTool('rectangle');
+q('#sheet-wrap').onclick=event=>{if(!allowed()||event.target.closest('button'))return;if(annotationTool==='point'&&!pointerMoved){const p=coords(event);setPoint(p.x,p.y);}pointerMoved=false;};
+q('#sheet-wrap').onpointerdown=event=>{if(!allowed()||annotationTool!=='rectangle'||event.target.closest('button'))return;event.preventDefault();clearPoint();dragOrigin=coords(event);pointerMoved=false;q('#sheet-wrap').setPointerCapture(event.pointerId);};
+q('#sheet-wrap').onpointermove=event=>{if(!dragOrigin)return;pointerMoved=true;const b=coords(event);q('#sheet-wrap').querySelectorAll('.region-draft').forEach(node=>node.remove());addRegion({left:Math.min(dragOrigin.x,b.x),top:Math.min(dragOrigin.y,b.y),right:Math.max(dragOrigin.x,b.x),bottom:Math.max(dragOrigin.y,b.y)},'draft',true);};
+q('#sheet-wrap').onpointerup=event=>{if(!dragOrigin)return;const a=dragOrigin,b=coords(event);dragOrigin=null;if(q('#sheet-wrap').hasPointerCapture(event.pointerId))q('#sheet-wrap').releasePointerCapture(event.pointerId);setRectangle(a,b);};q('#sheet-wrap').onpointercancel=()=>clearPoint();
+q('#set-point').onclick=()=>{const values=[q('#point-x').value,q('#point-y').value];if(values.some(value=>value==='')){say('Enter both coordinates.');return;}const a={x:Number(values[0]),y:Number(values[1])};if(annotationTool==='rectangle'){const x=q('#rect-x2').value,y=q('#rect-y2').value;if(x===''||y===''||[a.x,a.y,Number(x),Number(y)].some(v=>v<0||v>1)){say('Enter two corners between 0 and 1.');return;}setRectangle(a,{x:Number(x),y:Number(y)});}else setPoint(a.x,a.y);};
+q('#inline-text').oninput=()=>{if(!q('#inline-text').readOnly){q('#feedback-text').value=q('#inline-text').value;saveDraft();}};q('#inline-reason').oninput=()=>{if(!q('#inline-reason').readOnly){q('#feedback-reason').value=q('#inline-reason').value;saveDraft();}};
+q('#inline-form').onsubmit=event=>{event.preventDefault();if(!allowed()||!point)return;q('#feedback-text').value=q('#inline-text').value;q('#feedback-reason').value=q('#inline-reason').value;const before=(records[activeRound]??[]).length;q('#composer').requestSubmit();if((records[activeRound]??[]).length>before){popup.hidden=true;say('Comment added beside the marked location · local only.');}};
+q('#inline-text').onkeydown=event=>{if(event.key==='Enter'&&!event.shiftKey&&!event.isComposing&&!q('#inline-text').readOnly){event.preventDefault();q('#inline-form').requestSubmit();}if(event.key==='Escape'){event.preventDefault();clearPoint();}};q('#inline-cancel').onclick=()=>{clearPoint();q('#canvas').focus({preventScroll:true});};
+for(const id of ['role','round','evidence','page']){const control=q('#'+id),handler=control.onchange;control.onchange=event=>{popup.hidden=true;dragOrigin=null;handler?.(event);if(id==='evidence'&&q('#evidence').value==='lost'){q('#inline-text').value='';q('#inline-reason').value='';q('#inline-context').textContent='';q('#rect-x2').value='';q('#rect-y2').value='';}q('#tool-point').disabled=!allowed();q('#tool-rectangle').disabled=!allowed();};}
+const baseZoom=q('#zoom').onclick;q('#zoom').onclick=()=>{baseZoom();if(!popup.hidden&&point){const sheet=q('#sheet-wrap').getBoundingClientRect();positionPopup(sheet.left+point.x*sheet.width,sheet.top+point.y*sheet.height);}};
+window.addEventListener('resize',()=>{if(!popup.hidden){const box=popup.getBoundingClientRect();positionPopup(box.left,box.top);}});
+selectTool('point');
+
+</script></body></html>

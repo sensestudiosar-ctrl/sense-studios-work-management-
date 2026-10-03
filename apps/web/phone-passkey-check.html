@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="en">
+  <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Phone passkey check</title></head>
+  <body style="font: 16px system-ui; max-width: 40rem; margin: 3rem auto; padding: 1rem">
+    <h1>Phone passkey check</h1>
+    <p>Open this page in Safari on your iPhone. This check does not require signing in.</p>
+    <p>It will ask Apple Passwords to create a diagnostic passkey for this private site. The diagnostic passkey cannot sign you in. If creation succeeds, delete the entry named <strong>Phone diagnostic only</strong> from Apple Passwords afterward.</p>
+    <button id="test" style="font: inherit; padding: .7rem 1rem">Check passkey creation on this iPhone</button>
+    <pre id="status" role="status" style="white-space: pre-wrap; padding: 1rem; background: #eee">Loading…</pre>
+    <script type="module" src="/src/phone-passkey-check.ts"></script>
+  </body>
+</html>

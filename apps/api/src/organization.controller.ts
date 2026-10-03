@@ -1,5 +1,5 @@
-import { BadRequestException, Body, Controller, ForbiddenException, Get, Headers, Inject, Param, Post, Put, Query, Req } from "@nestjs/common";
-import type { Request } from "express";
+import { BadRequestException, Body, Controller, ForbiddenException, Get, Headers, Inject, Param, Post, Put, Query, Req, Res } from "@nestjs/common";
+import type { Request, Response } from "express";
 import { z } from "zod";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { IdentityService } from "./identity.service.js";
@@ -8,7 +8,7 @@ import { OrganizationService } from "./organization.service.js";
 const id = z.uuid();
 const name = z.string().trim().min(2).max(160);
 const reason = z.string().trim().min(10).max(1000);
-const organizationBody = z.object({ name, reason }).strict();
+const organizationBody = z.object({ name, reason: reason.optional() }).strict();
 const branchBody = z.object({ organizationId: id, name: z.string().trim().min(2).max(120), reason }).strict();
 const teamBody = z.object({ organizationId: id, branchId: id, name: z.string().trim().min(2).max(120), reason }).strict();
 const roleBody = z.object({ organizationId: id, name: z.string().trim().min(2).max(120), description: z.string().trim().max(1000).optional(), reason }).strict();
@@ -93,16 +93,16 @@ export class OrganizationController {
   }
 
   @Get()
-  async getOrganization(@Req() request: Request) {
+  async getOrganization(@Req() request: Request, @Res() response: Response) {
     await this.owner(request);
-    return this.organization.getOrganization();
+    return response.json(await this.organization.getOrganization());
   }
 
   @Post()
   async createOrganization(@Req() request: Request, @Headers("x-csrf-token") csrfToken: string | undefined, @Body() body: unknown) {
     const active = await this.mutation(request, csrfToken);
     const input = parse(organizationBody, body);
-    return this.organization.createOrganization(active.row.accountId, input.name, input.reason);
+    return this.organization.createOrganization(active.row.accountId, input.name, input.reason ?? "Initial organization setup");
   }
 
   @Get("branches")

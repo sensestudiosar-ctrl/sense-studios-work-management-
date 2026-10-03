@@ -1,0 +1,168 @@
+/* SC08-C inline point and rectangle controls for the review canvas experiment. */
+:root {
+  --review-forest: #285b48;
+  --review-forest-dark: #214a3b;
+  --review-cream: #fbfaf6;
+  --review-line: #d9ded7;
+  --review-muted: #64736b;
+  --review-focus: #65a987;
+}
+
+#inline-comment {
+  position: fixed;
+  z-index: 100;
+  inset: 12px auto auto 12px;
+  width: min(380px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 16px;
+  color: #24352d;
+  background: var(--review-cream, #fbfaf6);
+  border: 1px solid var(--review-line, #d9ded7);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px #17251f38;
+  overscroll-behavior: contain;
+}
+
+#inline-comment[hidden],
+#annotation-tools[hidden],
+.region-mark[hidden],
+.region-draft[hidden] {
+  display: none !important;
+}
+
+#inline-comment :where(label, .fieldlabel) {
+  display: block;
+  margin: 10px 0 5px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+#inline-comment :where(input, textarea, select, button) {
+  font: inherit;
+}
+
+#inline-comment :where(input, textarea, select) {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  color: #24352d;
+  background: #fff;
+  border: 1px solid #cbd4cd;
+  border-radius: 9px;
+}
+
+#inline-text {
+  min-height: 96px;
+  resize: vertical;
+}
+
+#inline-reason[readonly],
+#inline-comment :where(input[readonly], textarea[readonly]) {
+  color: #40594a;
+  background: #eff3ef;
+}
+
+#inline-comment :where(input, textarea, select, button):focus-visible,
+#annotation-tools button:focus-visible {
+  outline: 3px solid var(--review-focus, #65a987);
+  outline-offset: 2px;
+}
+
+.inline-meta {
+  margin: 10px 0;
+  padding: 9px 10px;
+  color: #40594a;
+  background: #eff3ef;
+  border: 1px solid #d9e4dc;
+  border-radius: 9px;
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.inline-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.inline-actions button,
+#annotation-tools button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  color: #24352d;
+  background: #fff;
+  border: 1px solid var(--review-line, #d9ded7);
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.inline-actions button.primary,
+#annotation-tools button[aria-pressed="true"] {
+  color: #fff;
+  background: var(--review-forest, #285b48);
+  border-color: var(--review-forest, #285b48);
+}
+
+#annotation-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  color: #24352d;
+  background: var(--review-cream, #fbfaf6);
+  border: 1px solid var(--review-line, #d9ded7);
+  border-radius: 12px;
+}
+
+.region-mark,
+.region-draft {
+  position: absolute;
+  z-index: 4;
+  box-sizing: border-box;
+  border: 2px solid var(--review-forest, #285b48);
+  border-radius: 3px;
+  background: #285b4814;
+  pointer-events: none;
+}
+
+.region-draft {
+  border-style: dashed;
+  background: #285b480d;
+}
+
+@media (max-width: 600px) {
+  #inline-comment {
+    inset: auto 12px 12px;
+    width: auto;
+    max-height: min(62dvh, 520px);
+    padding: 14px;
+  }
+
+  #annotation-tools {
+    gap: 6px;
+    padding: 7px;
+  }
+
+  #annotation-tools button,
+  .inline-actions button {
+    flex: 1 1 auto;
+    padding-inline: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #inline-comment,
+  #annotation-tools button,
+  .inline-actions button {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}

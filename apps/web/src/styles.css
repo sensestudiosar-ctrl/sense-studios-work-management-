@@ -29,7 +29,7 @@ h1 { max-width: 740px; margin: 1rem 0 1.2rem; font: 500 clamp(2.35rem, 6vw, 3.8r
 .auth-card input:focus-visible { outline: 3px solid #b98f49; outline-offset: 2px; border-color: #446257; }
 button, .home-link { border: 1px solid #446257; border-radius: .55rem; background: #182c29; color: white; padding: .75rem 1rem; cursor: pointer; text-decoration: none; font-weight: 650; }
 button:hover, .home-link:hover { background: #35534a; }
-button:disabled { cursor: wait; opacity: .7; }
+button:disabled { cursor: not-allowed; opacity: .7; }
 button:focus-visible, a:focus-visible { outline: 3px solid #b98f49; outline-offset: 3px; }
 .primary-action { margin-top: .65rem; min-height: 3.1rem; }
 .auth-error, .notice, .support-note { margin: 1rem 0; padding: .85rem 1rem; border-radius: .6rem; font-size: .9rem; line-height: 1.5; }
