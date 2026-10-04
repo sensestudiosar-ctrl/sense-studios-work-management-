@@ -13,7 +13,8 @@ import { ReviewWorkspace } from "./review.js";
 import { StaffClientReviewWorkspace } from "./client-review.js";
 import { TurnkeyWorkspace } from "./turnkey.js";
 import { TimeWorkspace } from "./time.js";
-import { WorkforceWorkspace } from "./workforce.js"
+import { WorkforceWorkspace } from "./workforce.js";
+import { SiteWorkspace } from "./site.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -380,7 +381,7 @@ function Identity({ session, onLogout, busy, error }: {
           {busy ? "Signing out…" : "Sign out"}
         </button>
       </section>
-      <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/turnkey">Turnkey operations</Link></nav>
+      <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/turnkey">Turnkey operations</Link></nav>
       {error && <p className="auth-error" role="alert">{error}</p>}
       {!ownerNeedsSetup && <ApprovalQueue />}
       {!ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
@@ -1176,6 +1177,7 @@ export function App(): React.JSX.Element {
         <Route path="/turnkey" element={<TurnkeyRoute />} />
         <Route path="/time" element={<TimeRoute />} />
         <Route path="/workforce" element={<WorkforceRoute />} />
+        <Route path="/site" element={<SiteRoute />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <footer className="site-footer">Sense Studios · Secure workspace</footer>
@@ -1211,4 +1213,19 @@ function WorkforceRoute(): React.JSX.Element {
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view workforce records</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
   return <main className="identity-content workforce-route"><div className="document-route-heading"><div><Link to="/">← Workspace</Link><nav className="document-navigation" aria-label="Workspace navigation"><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link></nav></div><span>{session.account.email}</span></div><WorkforceWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main>;
+}
+
+function SiteRoute(): React.JSX.Element {
+  const [session, setSession] = useState<Session | null>();
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    let active = true;
+    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
+    return () => { active = false; };
+  }, []);
+  if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
+  if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
+  if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view site delivery</h1><Link to="/">Return to sign in</Link></section></main>;
+  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
+  return <main className="identity-content"><div className="document-route-heading"><div><Link to="/">← Workspace</Link><nav className="document-navigation" aria-label="Workspace navigation"><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/turnkey">Turnkey operations</Link></nav></div><span>{session.account.email}</span></div><SiteWorkspace csrfToken={session.csrfToken} /></main>;
 }

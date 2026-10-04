@@ -1,6 +1,6 @@
 # S20 settled staff API/UI handoff — 2026-10-03
 
-Implementation starts only after combined S16/S17/S19 dependency acceptance. Approved IDs and Owner decisions: S20_SPEC.md. The typed contract below is the Sol implementation design, not a claim of implemented endpoints. No S18/S21+ scope is included.
+Implementation started after combined S16/S17/S19 dependency acceptance. The routes and service below are implemented in `apps/api/src/site.controller.ts` and `apps/api/src/site.service.ts`; this file remains the settled API reference. S20 is COMPLETE for development/local staging: full `pnpm verify`, focused API tests, desktop/mobile journeys, retained-data preservation, and Sol source/security/visual review passed. Actual-project R-105 and production gates remain separate. Approved IDs and Owner decisions: S20_SPEC.md. No S18/S21+ scope is included.
 
 Base `/api/v1/site`; staff route `/site`. Internal session authentication, no-store reads, same-origin CSRF writes, strict input validation, reason 3–1000 characters. Mutation input `expectedVersion` is the current project site workspace version (0 when absent), serialized under a workspace/project lock. Every successful mutation advances that workspace version. Refresh detail after success or HTTP409; do not silently replay stale edits.
 
@@ -27,6 +27,8 @@ Current explicit project assignment/cross-branch authority plus `project.view` a
 
 Photo evidence is `{documentId,blobId,sha256,name,mimeType}` for currently authorized immutable DOC files. Inaccessible references retain safe hidden-evidence indication but no file identity/name/hash/stream capability. Use existing authorized document streams; never raw NAS paths/URLs. New evidence selections must be scoped and reauthorized in backend.
 
+The implemented detail serializer converts database `Date` values to ISO-8601 strings and rechecks each evidence reference through the current DocumentService file/folder grant boundary, including Confidential ancestry. Evidence selection and reveal serialize against concurrent revocation by locking the relevant file/folder and grant rows inside the site transaction. Site progress completion/status and factual quality are separate: managers explicitly complete packages, and later operator progress may still record actual percentage/quantity, quality, materials and blockers without rewriting the completion decision.
+
 ## Commands
 
 Every command includes `expectedVersion,reason`; dates must be valid calendar dates. Decimal percentages/quantities are explicit strings, bounded in backend (percent 0–100; quantity nonnegative, at most twelve integer/four fractional digits). Planned/actual percentages and quantities are independently reported facts; no automatic conversion/financial calculation is introduced.
@@ -49,7 +51,7 @@ Every command includes `expectedVersion,reason`; dates must be valid calendar da
 
 ## Persistence/security handoff
 
-Proposed five additive models: SiteWorkspace (one/project, responsible and aggregate version), SiteRecord (scoped PACKAGE/MANPOWER/REPORT/SNAG/HANDOVER head), SiteHistory (append-only exact snapshots tied to canonical event), SiteVerificationAttempt (append-only exact repair/outcome/person/evidence), SiteReceipt if needed for online command replay. Final schema may use separate tables where constraints are simpler; do not weaken typed controller/data validation or SQL identity/state/evidence guards for convenience. Historical confirmation, attempts and handovers remain immutable. Composite project/organization references, version guards, immutable identity, allowed states, current passed verification binding, fixer/verifier inequality and canonical audit/outbox evidence must be exercised by SQL tamper tests. Tests must prove rollbacks and real concurrent decisions.
+Implemented additive models are `SiteWorkspace` (one/project, responsible person and aggregate version), `SiteRecord` (scoped PACKAGE/MANPOWER/REPORT/SNAG/HANDOVER head), `SiteHistory` (append-only exact snapshots tied to canonical event), and `SiteVerificationAttempt` (append-only exact repair/outcome/person/evidence). There is no online command-replay receipt. Composite project/organization references, version guards, immutable identity, allowed states, current passed verification binding, fixer/verifier inequality and canonical audit/outbox evidence are enforced by the migration chain. The final history insertion constraint validates scoped subject/version identity, exact snapshot, event actor/subject/name, matching audit evidence and `NTF` outbox delivery; canonical audit `after` may contain the exact snapshot or its SHA-256 with project/version. Migrations are `20261005000000_s20_site`, `20261005010000_s20_evidence_and_quality`, and `20261005020000_s20_canonical_history`; applied definitions were not rewritten.
 
 ## Bounded Luna UI/testing scope
 

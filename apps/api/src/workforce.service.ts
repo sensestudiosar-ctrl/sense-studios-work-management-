@@ -342,6 +342,27 @@ export class WorkforceService {
       result.push({taskId:task.id,title:task.title,date,critical:task.priority==="CRITICAL",minutes,suggestions});
     } return result;
   }
+  /** SITE public boundary: project-bound attendance status, excluding personal leave, location and evidence. */
+  async siteAttendance(tx: Tx, actor: ProjectActor, projectId: string, date: string) {
+    const project = await this.projectAccess(tx, actor, projectId);
+    if (actor.kind !== "OWNER") await this.authorization.assertPermission(actor.accountId, "site.view", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx);
+    const sites = await tx.workforceRecord.findMany({ where: { organizationId: actor.organizationId, kind: "SITE", branchId: project.branchId } });
+    const siteIds = new Set(sites.filter(row => object(row.data).projectId === projectId).map(row => row.id));
+    const assigned = await tx.projectAssignment.findMany({ where: { organizationId: actor.organizationId, projectId, revokedAt: null } });
+    const people = await tx.employee.findMany({ where: { organizationId: actor.organizationId, state: "ACTIVE", id: { in: assigned.map(row => row.employeeId) }, account: { state: "ACTIVE" } }, include: { account: true } });
+    const eligible = people.filter(person => person.homeBranchId === project.branchId || assigned.some(row => row.employeeId === person.id && row.crossBranchAuthorized));
+    const rows = await tx.workforceRecord.findMany({ where: { organizationId: actor.organizationId, kind: "ATTENDANCE", employeeId: { in: eligible.map(person => person.id) } } });
+    const attendance = [];
+    for (const row of rows) {
+      const data = object(row.data), person = eligible.find(person => person.id === row.employeeId)!;
+      // Office attendance does not prove presence at this project. Only its configured site counts.
+      if (data.date !== date || data.mode !== "SITE" || !siteIds.has(String(data.siteId))) continue;
+      try { await this.authorization.assertPermission(person.accountId, "site.view", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx); await this.authorization.assertPermission(person.accountId, "project.view", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx); }
+      catch (error) { if (error instanceof ForbiddenException) continue; throw error; }
+      attendance.push({ accountId: person.accountId, label: person.account.normalizedEmail, state: row.state, mode: "SITE" as const, provisional: data.provisional === true });
+    }
+    await this.active(tx, actor); return { attendance, count: attendance.length };
+  }
   async site(actor: ProjectActor, input: Command & { projectId: string; label: string; latitude: number; longitude: number; radiusMetres: number; qrCode: string }) {
     return this.command(actor, input, "site", { ...input, qrCode: hash(input.qrCode) }, async tx => { await this.owner(tx, actor); const project = await this.projectAccess(tx, actor, input.projectId); const data = { projectId: project.id, label: input.label, latitude: input.latitude, longitude: input.longitude, radiusMetres: input.radiusMetres, qrHash: hash(input.qrCode) }; const result = await this.append(tx, actor, "SITE", data, input.reason, { branchId: project.branchId }); return { id: result.row.id, label: input.label, projectId: project.id }; });
   }

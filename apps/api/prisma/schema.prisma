@@ -2525,3 +2525,67 @@ model WorkforceSelfie {
   noticeDays Int?
   @@map("workforce_selfies")
 }
+
+model SiteWorkspace {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @unique @db.Uuid
+  version Int @default(1)
+  responsibleAccountId String? @db.Uuid
+  @@unique([id, organizationId, projectId])
+  @@map("site_workspaces")
+}
+
+model SiteRecord {
+  id String @id @default(uuid()) @db.Uuid
+  workspaceId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  kind String @db.VarChar(20)
+  version Int @default(1)
+  state String @db.VarChar(30)
+  data Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId, projectId])
+  @@index([workspaceId, kind, createdAt, id])
+  @@map("site_records")
+}
+
+model SiteHistory {
+  id String @id @default(uuid()) @db.Uuid
+  workspaceId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  subjectType String @db.VarChar(30)
+  subjectId String @db.Uuid
+  subjectVersion Int
+  actorId String @db.Uuid
+  eventName String @db.VarChar(100)
+  reason String @db.VarChar(1000)
+  snapshot Json
+  eventId String @unique @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([subjectId, subjectVersion])
+  @@index([workspaceId, occurredAt, id])
+  @@map("site_history")
+}
+
+model SiteVerificationAttempt {
+  id String @id @default(uuid()) @db.Uuid
+  workspaceId String @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  snagId String @db.Uuid
+  repairGeneration Int
+  fixerAccountId String @db.Uuid
+  verifierAccountId String @db.Uuid
+  outcome String @db.VarChar(10)
+  note String @db.VarChar(2000)
+  photoEvidence Json
+  eventId String? @unique @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([snagId, repairGeneration])
+  @@unique([id, organizationId, projectId])
+  @@index([workspaceId, snagId, occurredAt])
+  @@map("site_verification_attempts")
+}

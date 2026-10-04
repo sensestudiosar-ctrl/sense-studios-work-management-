@@ -1,3 +1,5 @@
+import { SiteService } from "./site.service.js";
+import { SiteController } from "./site.controller.js";
 import { Module } from "@nestjs/common";
 import { TimeController } from "./time.controller.js";
 import { TimeService } from "./time.service.js";
@@ -56,8 +58,9 @@ import { TurnkeyService } from "./turnkey.service.js";
 import { TurnkeyController, ClientTurnkeyController } from "./turnkey.controller.js";
 
 @Module({
-  controllers: [WorkforceController, TimeController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
+  controllers: [SiteController, WorkforceController, TimeController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
+    SiteService,
     WorkforceService,
     TimeService,
     TimeWorker,

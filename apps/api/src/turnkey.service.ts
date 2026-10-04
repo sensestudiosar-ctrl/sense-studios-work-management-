@@ -109,6 +109,19 @@ export class TurnkeyService {
     const total = lines.reduce((sum, line) => sum + units(line.quantity) * units(prices.find((price) => price.key === line.key)!.unitPrice), 0n);
     return { prices, total: format(total, 8) };
   }
+  /** SITE public boundary: scoped operational inputs only; financial fields never enter site responses. */
+  async siteMaterials(tx: Tx, actor: Actor, projectId: string) {
+    const project = await tx.project.findFirst({ where: { id: projectId, organizationId: actor.organizationId, deliveryType: "TURNKEY" } });
+    if (!project) throw new NotFoundException("Turnkey project not found");
+    await this.access(tx, actor, project, "site.view");
+    return tx.turnkeyRelease.findMany({ where: { projectId, organizationId: actor.organizationId, state: "RELEASED", replacedById: null }, select: { id: true, state: true, lines: true, materials: true, procurementStatus: true, factoryStatus: true }, orderBy: [{ createdAt: "desc" }, { id: "asc" }] }).then(rows => rows.map(({ id, ...row }) => ({ releaseId: id, ...row })));
+  }
+  async siteRelease(tx: Tx, actor: Actor, projectId: string, releaseId: string) {
+    const releases = await this.siteMaterials(tx, actor, projectId);
+    const release = releases.find(row => row.releaseId === releaseId);
+    if (!release) throw new ConflictException("Choose a current released production input for this project");
+    return release;
+  }
   async projects(actor: Actor) {
     return this.transaction(async (tx) => {
       await this.actor(tx, actor);

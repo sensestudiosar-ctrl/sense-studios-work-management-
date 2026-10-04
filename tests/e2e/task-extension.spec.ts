@@ -37,6 +37,13 @@ test("primary owner extension, Owner Team settings and recurring schedule persis
     for (const [account, secret] of [[ownerId, ownerSecret], [accountId, staffSecret]]) await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [randomUUID(), account, hash(secret), hash(csrf(secret))]);
     await db.query("COMMIT");
     const ownerHeaders = { Cookie: `sense_sid=${ownerSecret}`, Origin: baseURL!, "X-CSRF-Token": csrf(ownerSecret) };
+    // Prior aborted journeys may have left the singleton in UTC. Establish an audited fixture baseline.
+    const settings = (await db.query<{ timezone: string; settingsVersion: number }>('SELECT timezone,"settingsVersion" FROM organizations WHERE id=$1', [organizationId])).rows[0]!;
+    if (settings.timezone !== "Asia/Kolkata") {
+      const baseline = await page.request.put(`/api/v1/org/${organizationId}/timezone`, { headers: ownerHeaders, data: { timezone: "Asia/Kolkata", expectedVersion: settings.settingsVersion, reason: "Establish approved organization browser fixture timezone" } });
+      expect(baseline.status(), await baseline.text()).toBe(200);
+      expect((await db.query<{ timezone: string }>('SELECT timezone FROM organizations WHERE id=$1', [organizationId])).rows[0]!.timezone).toBe("Asia/Kolkata");
+    }
     const title = `Extension ${suffix.slice(0, 8)}`;
     const created = await page.request.post("/api/v1/tasks", { headers: ownerHeaders, data: { title, type: "NON_PROJECT", ownerEmployeeId: employeeId, priority: "HIGH", targetDate: "2026-12-01", reason: "Create extension browser task" } });
     expect(created.status()).toBe(201);
@@ -74,16 +81,23 @@ test("primary owner extension, Owner Team settings and recurring schedule persis
     await admin.getByRole("button", { name: `Enable Waiting alerts for S10 extension team ${suffix}`, exact: true }).click();
     await expect(admin.getByRole("button", { name: `Disable Waiting alerts for S10 extension team ${suffix}`, exact: true })).toBeVisible();
     await admin.getByLabel("IANA timezone").fill("UTC");
+    const timezoneSave = page.waitForResponse((response) => response.url().endsWith(`/api/v1/org/${organizationId}/timezone`) && response.request().method() === "PUT");
     await admin.getByRole("button", { name: "Change timezone", exact: true }).click();
     await expect(admin.getByLabel("IANA timezone")).toHaveValue("UTC");
+    expect((await timezoneSave).status()).toBe(200);
+    await expect(admin.getByText("Organization settings saved.", { exact: true })).toBeVisible();
+    expect(await db.query('SELECT timezone FROM organizations WHERE id=$1', [organizationId]).then((result) => result.rows[0].timezone)).toBe("UTC");
     await page.reload();
     await page.getByRole("button", { name: "Manage organization" }).click();
     await expect(admin.getByRole("button", { name: `Disable Waiting alerts for S10 extension team ${suffix}`, exact: true })).toBeVisible();
     await expect(admin.getByLabel("IANA timezone")).toHaveValue("UTC");
     await admin.locator("#org-reason-branch").fill("Restore approved organization scheduling zone");
     await admin.getByLabel("IANA timezone").fill("Asia/Kolkata");
+    const timezoneRestore = page.waitForResponse((response) => response.url().endsWith(`/api/v1/org/${organizationId}/timezone`) && response.request().method() === "PUT");
     await admin.getByRole("button", { name: "Change timezone", exact: true }).click();
-    await expect(admin.getByText("Organization settings saved.")).toBeVisible();
+    expect((await timezoneRestore).status()).toBe(200);
+    await expect(admin.getByText("Organization settings saved.", { exact: true })).toBeVisible();
+    expect(await db.query('SELECT timezone FROM organizations WHERE id=$1', [organizationId]).then((result) => result.rows[0].timezone)).toBe("Asia/Kolkata");
     const recurringTitle = `Recurring ${suffix.slice(0, 8)}`;
     const createdRecurring = await page.request.post("/api/v1/tasks", { headers: ownerHeaders, data: { title: recurringTitle, type: "RECURRING", ownerEmployeeId: employeeId, priority: "MEDIUM", targetDate: "2026-12-01", reason: "Create recurring browser source" } });
     expect(createdRecurring.status()).toBe(201);
