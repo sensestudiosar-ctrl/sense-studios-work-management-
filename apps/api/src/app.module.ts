@@ -56,10 +56,17 @@ import { GalleryController, PortfolioController, ClientGalleryController, Public
 import { GalleryService } from "./gallery.service.js";
 import { TurnkeyService } from "./turnkey.service.js";
 import { TurnkeyController, ClientTurnkeyController } from "./turnkey.controller.js";
+import { ExternalPortalService } from "./external-portal.service.js";
+import { ExternalPortalIdentityService } from "./external-portal-identity.service.js";
+import { ExternalPortalIdentityController } from "./external-portal-identity.controller.js";
+import { ExternalPortalController } from "./external-portal.controller.js";
+import { ExternalAccessController } from "./external-access.controller.js";
 
 @Module({
-  controllers: [SiteController, WorkforceController, TimeController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
+  controllers: [ExternalPortalIdentityController, ExternalPortalController, ExternalAccessController, SiteController, WorkforceController, TimeController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
+    ExternalPortalService,
+    ExternalPortalIdentityService,
     SiteService,
     WorkforceService,
     TimeService,

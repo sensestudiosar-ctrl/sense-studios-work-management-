@@ -1,4 +1,5 @@
 import { pauseTimeTimers } from "./time-lifecycle.js";
+import { cancelExternalGrants, externalCancellationBlockers, externalRevocationNotices } from "./external-portal-policy.js";
 import { ConflictException, ForbiddenException, Injectable, NotFoundException, Optional } from "@nestjs/common";
 import { WorkforceService } from "./workforce.service.js";
 import { AccountKind, AccountState, EmployeeState, NotificationChannel, Prisma, ProjectStatus, TaskPriority, TaskReviewRequirement, TaskStatus, TaskType } from "./generated/prisma/client.js";
@@ -502,6 +503,7 @@ export class TaskService {
       await tx.taskStatusChange.create({ data: { organizationId: actor.organizationId, taskId: id, fromStatus: row.status, toStatus: input.toState, actorId: actor.accountId, reason: input.reason, taskVersion: updated.version, ...(transition.previousState ? { previousStatus: transition.previousState } : {}), ...(unfinishedPredecessorIds.length ? { earlyStartAcknowledged: true, unfinishedPredecessorIds } : {}) } });
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: input.toState === TaskStatus.IN_PROGRESS ? "task.started" : "task.completed", subjectType: "task", subjectId: id, reason: input.reason, before: { status: row.status, version: row.version }, after: { status: updated.status, version: updated.version, ...(unfinishedPredecessorIds.length ? { earlyStartAcknowledged: true, unfinishedPredecessorIds } : {}) } });
       if (input.toState === TaskStatus.COMPLETED) {
+        if (row.type === TaskType.CLOSEOUT && row.projectId) await externalRevocationNotices(tx, row.projectId);
         await pauseTimeTimers(tx, { organizationId: actor.organizationId, taskId: id, actorId: actor.accountId, reason: input.reason });
         const dependentEdges = await tx.taskDependency.findMany({ where: { predecessorTaskId: id, removedAt: null, dependentTask: { status: TaskStatus.WAITING, requiresReassignment: false } }, include: { dependentTask: { include: { primaryOwner: { include: { account: true } } } } } });
         const notifications = new NotificationsService(this.database);
@@ -820,7 +822,8 @@ export class TaskService {
       const approval = await tx.taskCloseoutApproval.findUnique({ where: { taskId: id } });
       if (!approval || approval.revokedAt) throw new ConflictException("Closeout approval is unavailable");
       await tx.taskCloseoutApproval.update({ where: { id: approval.id }, data: { revokedAt: new Date(), revokedById: actor.accountId, revocationReason: reason } });
-      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.updated", subjectType: "task", subjectId: id, reason, before: { closeoutApprovalRevoked: false }, after: { closeoutApprovalRevoked: true } });
+        await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.updated", subjectType: "task", subjectId: id, reason, before: { closeoutApprovalRevoked: false }, after: { closeoutApprovalRevoked: true } });
+        if (task.projectId) await externalRevocationNotices(tx, task.projectId);
       return { revoked: true };
     });
   }
@@ -846,12 +849,32 @@ export class TaskService {
 
   async cancelProject(actor: ProjectActor, projectId: string, input: { expectedVersion: number; reason: string; clientAccessEndTimes?: { grantId: string; expectedVersion: number; expiresAt: string }[] | undefined }) {
     if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required");
+    // Native NAS revocation is a human action outside PostgreSQL. Preserve the
+    // pending request in its own transaction before rejecting finalization.
+    const preflight = () => this.transaction(async tx => {
+      await this.activeActor(tx, actor);
+      await tx.$queryRaw`SELECT id FROM projects WHERE id=${projectId}::uuid AND "organizationId"=${actor.organizationId}::uuid FOR UPDATE`;
+      const project = await this.project(tx, actor, projectId);
+      if (project.version !== input.expectedVersion) throw new ConflictException("Project changed. Refresh and retry");
+      const links = await externalCancellationBlockers(tx, projectId);
+      if (links.length && [ProjectStatus.DRAFT, ProjectStatus.ACTIVE, ProjectStatus.ON_HOLD].includes(project.status as "DRAFT" | "ACTIVE" | "ON_HOLD")) {
+        const pending = await tx.projectCancellationRequest.findFirst({ where: { projectId, reason: input.reason } });
+        if (!pending) {
+          const request = await tx.projectCancellationRequest.create({ data: { organizationId: actor.organizationId, projectId, requesterId: actor.accountId, reason: input.reason } });
+          await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.cancellation_requested", subjectType: "project", subjectId: projectId, reason: input.reason, after: { requestId: request.id, status: project.status, nativeLinkBlockerIds: links.map(link => link.id) } });
+        }
+      }
+      return links;
+    });
+    const blockers = await preflight();
+    if (blockers.length) throw new ConflictException({ message: "Confirm native CAD link cancellation before finalizing project cancellation", nativeLinkBlockers: blockers });
     return this.transaction(async (tx) => {
       await this.activeActor(tx, actor);
       await tx.$queryRaw`SELECT "id" FROM "projects" WHERE "id" = ${projectId}::uuid AND "organizationId" = ${actor.organizationId}::uuid FOR UPDATE`;
       const project = await this.project(tx, actor, projectId);
       if (project.version !== input.expectedVersion) throw new ConflictException("Project changed. Refresh and retry");
-      if (project.status !== ProjectStatus.DRAFT && project.status !== ProjectStatus.ACTIVE && project.status !== ProjectStatus.ON_HOLD) throw new ConflictException("Project cannot be cancelled from this state");
+        if (project.status !== ProjectStatus.DRAFT && project.status !== ProjectStatus.ACTIVE && project.status !== ProjectStatus.ON_HOLD) throw new ConflictException("Project cannot be cancelled from this state");
+        await cancelExternalGrants(tx, actor.accountId, projectId, input.reason);
       const grants = await tx.clientPortalGrant.findMany({ where: { projectId, organizationId: actor.organizationId, revokedAt: null }, orderBy: { id: "asc" } });
       const endTimes = input.clientAccessEndTimes ?? [];
       if (new Set(endTimes.map((row) => row.grantId)).size !== endTimes.length || endTimes.some((row) => !grants.some((grant) => grant.id === row.grantId))) throw new ConflictException("Client access end times must match current project grants");
@@ -883,7 +906,11 @@ export class TaskService {
       const change = await tx.projectStatusChange.create({ data: { projectId, organizationId: actor.organizationId, fromStatus: project.status, toStatus: ProjectStatus.CANCELLED, projectVersion: updated.version, reason: input.reason, actorId: actor.accountId } });
       const stoppedTaskIds = await this.stopForProjectCancellation(tx, actor.organizationId, projectId, change.id, actor.accountId, input.reason);
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "project.cancelled", subjectType: "project", subjectId: projectId, reason: input.reason, before: { status: project.status, version: project.version }, after: { status: updated.status, version: updated.version, stoppedTaskCount: stoppedTaskIds.length } });
-      return { project: updated, stoppedTaskIds };
-    });
+        return { project: updated, stoppedTaskIds };
+      }).catch(async (error: unknown) => {
+        const response = error instanceof ConflictException ? error.getResponse() : null;
+        if (response && typeof response === "object" && "nativeLinkBlockers" in response) await preflight();
+        throw error;
+      });
   }
 }

@@ -16,7 +16,7 @@ export class ProjectService {
   async actor(accountId: string): Promise<ProjectActor> {
     const row = await this.db.account.findUnique({ where: { id: accountId }, select: { kind: true, employee: { select: { organizationId: true } } } });
     const organizationId = row?.employee?.organizationId ?? (await this.db.organization.findFirst({ select: { id: true } }))?.id;
-    if (!row || row.kind === AccountKind.CLIENT || !organizationId) throw new ForbiddenException("Permission denied");
+    if (!row || ![AccountKind.OWNER, AccountKind.STAFF].includes(row.kind as "OWNER" | "STAFF") || !organizationId) throw new ForbiddenException("Permission denied");
     return { accountId, kind: row.kind, organizationId };
   }
   private owner(actor: ProjectActor) { if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required"); }

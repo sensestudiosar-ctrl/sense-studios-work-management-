@@ -1278,6 +1278,7 @@ enum AccountKind {
   OWNER
   STAFF
   CLIENT
+  EXTERNAL
 }
 
 enum AccountState {
@@ -2588,4 +2589,144 @@ model SiteVerificationAttempt {
   @@unique([id, organizationId, projectId])
   @@index([workspaceId, snagId, occurredAt])
   @@map("site_verification_attempts")
+}
+
+model ExternalPortalGrant {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  accountId String @db.Uuid
+  portalType String @db.VarChar(20)
+  revisionIds String[] @db.Uuid
+  releaseIds String[] @db.Uuid
+  packageIds String[] @db.Uuid
+  expiresAt DateTime? @db.Timestamptz(3)
+  closeoutTaskId String? @db.Uuid
+  revokedAt DateTime? @db.Timestamptz(3)
+  version Int @default(1)
+  invitedById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([id, organizationId, projectId])
+  @@index([accountId, revokedAt, expiresAt])
+  @@map("external_portal_grants")
+}
+
+model ExternalPortalSession {
+  id String @id @default(uuid()) @db.Uuid
+  accountId String @db.Uuid
+  tokenHash String @unique @db.Char(64)
+  csrfTokenHash String @db.Char(64)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  lastUsedAt DateTime @default(now()) @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  revokedAt DateTime? @db.Timestamptz(3)
+  userAgent String? @db.VarChar(512)
+  ipAddress String? @db.VarChar(64)
+  @@index([accountId, revokedAt, expiresAt])
+  @@map("external_portal_sessions")
+}
+
+model ExternalPortalCode {
+  accountId String @id @db.Uuid
+  codeHash String @db.Char(64)
+  attempts Int @default(0)
+  sendWindowStartedAt DateTime @db.Timestamptz(3)
+  sendsInWindow Int @default(1)
+  lastSentAt DateTime @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  consumedAt DateTime? @db.Timestamptz(3)
+  @@index([expiresAt])
+  @@map("external_portal_codes")
+}
+
+model ExternalPortalHistory {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  subjectType String @db.VarChar(30)
+  subjectId String @db.Uuid
+  subjectVersion Int
+  actorId String @db.Uuid
+  reason String @db.VarChar(1000)
+  snapshot Json
+  eventId String @unique @db.Uuid
+  occurredAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([subjectId, subjectVersion])
+  @@index([projectId, occurredAt, id])
+  @@map("external_portal_history")
+}
+
+model ExternalPortalRecord {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  grantId String @db.Uuid
+  actorId String @db.Uuid
+  kind String @db.VarChar(25)
+  title String @db.VarChar(160)
+  body String @db.VarChar(2000)
+  revisionId String? @db.Uuid
+  releaseId String? @db.Uuid
+  packageId String? @db.Uuid
+  dueDate DateTime? @db.Timestamptz(3)
+  idempotencyKey String? @db.Uuid
+  payloadHash String? @db.Char(64)
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([actorId, idempotencyKey])
+  @@index([projectId, grantId, createdAt, id])
+  @@map("external_portal_records")
+}
+
+model ExternalPortalUpload {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  grantId String @db.Uuid
+  actorId String @db.Uuid
+  fileName String @db.VarChar(240)
+  mimeType String @db.VarChar(160)
+  sizeBytes BigInt
+  chunkSize Int
+  chunkCount Int
+  state String @default("STAGING") @db.VarChar(20)
+  storageKey String? @db.VarChar(255)
+  sha256 String? @db.Char(64)
+  reason String @db.VarChar(1000)
+  expiresAt DateTime @db.Timestamptz(3)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  finalizedAt DateTime? @db.Timestamptz(3)
+  @@index([projectId, grantId, createdAt, id])
+  @@map("external_portal_uploads")
+}
+
+model ExternalPortalUploadChunk {
+  id String @id @default(uuid()) @db.Uuid
+  uploadId String @db.Uuid
+  index Int
+  sizeBytes Int
+  sha256 String @db.Char(64)
+  @@unique([uploadId, index])
+  @@map("external_portal_upload_chunks")
+}
+
+model ExternalCadShare {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  grantId String @db.Uuid
+  revisionId String @db.Uuid
+  nativeLinkId String @db.VarChar(160)
+  encryptedSecret String @db.Text
+  issuedById String @db.Uuid
+  issuedAt DateTime @db.Timestamptz(3)
+  expiresAt DateTime @db.Timestamptz(3)
+  version Int @default(1)
+  revokedAt DateTime? @db.Timestamptz(3)
+  revokedById String? @db.Uuid
+  confirmation String? @db.VarChar(1000)
+  reason String @db.VarChar(1000)
+  @@index([projectId, grantId, revokedAt, expiresAt])
+  @@map("external_cad_shares")
 }

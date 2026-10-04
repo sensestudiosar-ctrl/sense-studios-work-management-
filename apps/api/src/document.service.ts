@@ -211,6 +211,31 @@ export class DocumentService {
     if (!blob) throw new NotFoundException("File not found");
     return { id: blob.documentId, folderId: blob.document.folderId, fileName: blob.fileName, mimeType: blob.mimeType, sizeBytes: Number(blob.sizeBytes), sha256: blob.sha256, confidential: blob.document.confidential, viewOnly: blob.document.viewOnly, createdAt: blob.createdAt };
   }
+  /** PORT public boundary: exact non-Confidential metadata; caller holds fresh external grant locks. */
+  async externalRevision(tx: Tx, projectId: string, revisionId: string) {
+    const revision = await tx.documentRevision.findFirst({ where: { id: revisionId, projectId }, include: { drawing: true } });
+    if (!revision) throw new NotFoundException("Revision not found");
+    const allowed = (await tx.$queryRaw<Array<{ allowed: boolean }>>`SELECT s21_nonconfidential_revision(${revisionId}::uuid) AS allowed`)[0]!.allowed;
+    if (!allowed) throw new ForbiddenException("This file is unavailable to external portals");
+    const blob = await tx.fileBlobMetadata.findFirst({ where: { id: revision.blobId, organizationId: revision.organizationId, documentId: revision.fileId } });
+    if (!blob || blob.sha256 !== revision.sha256) throw new ConflictException("Exact revision content is unavailable");
+    return { revision, blob, public: { id: revision.id, title: revision.drawing.title, documentNumber: revision.drawing.documentNumber, series: revision.series, number: revision.number, fileName: blob.fileName, state: revision.state, isCurrent: revision.isCurrent, cad: /\.(dwg|skp|rvt)$/i.test(blob.fileName) } };
+  }
+  async externalOptions(tx: Tx, actor: ProjectActor, projectId: string) {
+    await this.access(tx, actor, projectId, "document.view");
+    const options = [];
+    for (const revision of await tx.documentRevision.findMany({ where: { projectId }, orderBy: { createdAt: "desc" }, take: 200 })) {
+      try { options.push((await this.externalRevision(tx, projectId, revision.id)).public); }
+      catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+    }
+    return options;
+  }
+  async openExternalBlob(blob: { storageKey: string; fileName: string; mimeType: string }) {
+    const opened = await (await this.storage()).openBlob(blob.storageKey);
+    return { stream: opened.stream, sizeBytes: opened.size, fileName: blob.fileName, mimeType: blob.mimeType };
+  }
+  async writeExternalChunk(uploadId: string, index: number, bytes: Buffer, checksum: string) { return (await this.storage()).writeChunk(uploadId, index, bytes, checksum); }
+  async finalizeExternalUpload(uploadId: string, chunkCount: number, sizeBytes: number) { return (await this.storage()).finalize(uploadId, chunkCount, sizeBytes); }
   async assertTimeEvidence(tx: Tx, actor: ProjectActor, documentId: string, projectId: string | null) {
     const document = await tx.document.findFirst({ where: { id: documentId, organizationId: actor.organizationId } });
     if (!document || document.projectId !== projectId) throw new NotFoundException("Time evidence unavailable");
@@ -262,10 +287,11 @@ export class DocumentService {
   async reconciliation(actor: ProjectActor) {
     if (actor.kind !== AccountKind.OWNER) throw new ForbiddenException("Owner access is required");
     const inventory = await (await this.storage()).inventory();
-    const [stored, references, publications, active] = await Promise.all([this.db.fileBlobMetadata.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.clientReference.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.portfolioPublication.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.documentUpload.findMany({ where: { organizationId: actor.organizationId, state: DocumentUploadState.STAGING }, select: { id: true, expiresAt: true } })]);
-    const retained = [...stored, ...references, ...publications];
+    const [stored, references, publications, active, external] = await Promise.all([this.db.fileBlobMetadata.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.clientReference.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.portfolioPublication.findMany({ where: { organizationId: actor.organizationId }, select: { storageKey: true } }), this.db.documentUpload.findMany({ where: { organizationId: actor.organizationId, state: DocumentUploadState.STAGING }, select: { id: true, expiresAt: true } }), this.db.externalPortalUpload.findMany({ where: { organizationId: actor.organizationId }, select: { id: true, state: true, storageKey: true, expiresAt: true } })]);
+    // Shared physical storage reconciliation includes retained PORT upload references.
+    const retained = [...stored, ...references, ...publications, ...external.flatMap(row => row.storageKey ? [{ storageKey: row.storageKey }] : [])];
     const known = new Set(retained.map((row) => row.storageKey));
-    const activeKeys = new Set(active.map((row) => row.id));
+    const activeKeys = new Set([...active.map((row) => row.id), ...external.filter(row => row.state === "STAGING" && row.expiresAt > new Date()).map(row => row.id)]);
     return { orphanBlobKeys: inventory.blobKeys.filter((key) => !known.has(key)), missingBlobKeys: retained.map((row) => row.storageKey).filter((key) => !inventory.blobKeys.includes(key)), orphanStageIds: inventory.stagedUploadIds.filter((key) => !activeKeys.has(key)), expiredUploadIds: active.filter((row) => row.expiresAt <= new Date()).map((row) => row.id), assemblingKeys: inventory.assemblingKeys };
   }
   async reconcile(actor: ProjectActor) {

@@ -185,7 +185,7 @@ export class IdentityService {
     const options = await generateAuthenticationOptions({ rpID: this.rpID, userVerification: "required" });
     const challenge = await this.db.webAuthnChallenge.create({
       data: {
-        accountId: account?.state === AccountState.ACTIVE && account.kind !== AccountKind.CLIENT ? account.id : null,
+        accountId: account?.state === AccountState.ACTIVE && [AccountKind.OWNER, AccountKind.STAFF].includes(account.kind as "OWNER" | "STAFF") ? account.id : null,
         purpose: WebAuthnChallengePurpose.AUTHENTICATION,
         challenge: options.challenge,
         expiresAt: new Date(Date.now() + challengeLifetimeMs)
@@ -197,7 +197,7 @@ export class IdentityService {
   async loginVerify(ceremonyId: string, response: AuthenticationResponseJSON, userAgent?: string, ipAddress?: string) {
     const challenge = await this.consumeChallenge(ceremonyId, WebAuthnChallengePurpose.AUTHENTICATION);
     const credential = await this.db.passkeyCredential.findUnique({ where: { credentialId: response.id }, include: { account: true } });
-    if (!challenge.accountId || !credential || credential.revokedAt || credential.accountId !== challenge.accountId || credential.account.state !== AccountState.ACTIVE || credential.account.kind === AccountKind.CLIENT) {
+    if (!challenge.accountId || !credential || credential.revokedAt || credential.accountId !== challenge.accountId || credential.account.state !== AccountState.ACTIVE || ![AccountKind.OWNER, AccountKind.STAFF].includes(credential.account.kind as "OWNER" | "STAFF")) {
       await this.event(SecurityEventType.LOGIN, SecurityEventResult.FAILURE, undefined, challenge.accountId ?? undefined);
       throw new UnauthorizedException("Authentication failed");
     }
@@ -249,7 +249,7 @@ export class IdentityService {
   async session(secret: string | undefined) {
     if (!secret || secret.length > 128) throw new UnauthorizedException("Authentication required");
     const row = await this.db.session.findUnique({ where: { tokenHash: digest(secret) }, include: { account: true } });
-    if (!row || row.revokedAt || row.expiresAt <= new Date() || row.lastUsedAt.getTime() + sessionIdleLifetimeMs <= Date.now() || row.account.state !== AccountState.ACTIVE || row.account.kind === AccountKind.CLIENT) {
+    if (!row || row.revokedAt || row.expiresAt <= new Date() || row.lastUsedAt.getTime() + sessionIdleLifetimeMs <= Date.now() || row.account.state !== AccountState.ACTIVE || ![AccountKind.OWNER, AccountKind.STAFF].includes(row.account.kind as "OWNER" | "STAFF")) {
       throw new UnauthorizedException("Authentication required");
     }
     if (row.lastUsedAt.getTime() + 60_000 < Date.now()) {

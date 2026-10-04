@@ -33,6 +33,16 @@ function date(value: string) { if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || !Number
 export class SiteService {
   constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly documents: DocumentService, private readonly turnkey: TurnkeyService, private readonly workforce: WorkforceService) {}
   private transaction<T>(work: (tx: Tx) => Promise<T>) { return this.database.prisma.$transaction(work, { timeout: 30_000 }); }
+  /** PORT public boundary: only named package facts; no staff, reports, attendance or finance. */
+  async externalPackages(tx: Tx, projectId: string, packageIds: string[]) {
+    return tx.siteRecord.findMany({ where: { projectId, id: { in: packageIds }, kind: "PACKAGE" }, orderBy: { createdAt: "asc" } }).then(rows => rows.map(row => ({ id: row.id, title: string(object(row.data), "title"), date: string(object(row.data), "date"), state: row.state })));
+  }
+  async externalOptions(tx: Tx, actor: Actor, projectId: string) {
+    const project = await tx.project.findFirst({ where: { id: projectId, organizationId: actor.organizationId } });
+    if (!project || project.deliveryType !== "TURNKEY") return [];
+    await this.access(tx, actor, project, "site.view");
+    return tx.siteRecord.findMany({ where: { projectId, kind: "PACKAGE" }, orderBy: { createdAt: "asc" } }).then(rows => rows.map(row => ({ id: row.id, title: string(object(row.data), "title") })));
+  }
   private scope(project: Project) { return { kind: "BRANCH" as const, organizationId: project.organizationId, branchId: project.branchId }; }
   private async actor(tx: Tx, actor: Actor) {
     await tx.$queryRaw`SELECT id FROM accounts WHERE id=${actor.accountId}::uuid FOR SHARE`;

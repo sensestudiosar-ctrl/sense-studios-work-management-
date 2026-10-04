@@ -7,6 +7,7 @@ import { NotificationWorker } from "./notification-worker.js";
 import { AuditRetentionService } from "./audit-retention.service.js";
 import { TaskRecurrenceService } from "./task-recurrence.service.js";
 import { WorkforceService } from "./workforce.service.js";
+import { ExternalPortalService } from "./external-portal.service.js";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -17,6 +18,7 @@ async function bootstrap(): Promise<void> {
   const auditRetention = app.get(AuditRetentionService);
   const recurrence = app.get(TaskRecurrenceService);
   const workforce=app.get(WorkforceService);
+  const externalPortal = app.get(ExternalPortalService);
   await database.check();
   console.info("Workspace worker process ready.");
 
@@ -51,6 +53,16 @@ async function bootstrap(): Promise<void> {
   const recurrenceProcessing = setInterval(() => void runRecurrence(), 60_000);
   const runWorkforceRetention=()=>{void workforce.scheduleSelfieNotices().then(()=>workforce.purgeExpiredSelfies()).catch(()=>console.error("Workforce retention notice processing failed."));void workforce.runScheduledEntitlements().catch(()=>console.error("Workforce entitlement processing failed."));};
   runWorkforceRetention();const workforceRetentionProcessing=setInterval(runWorkforceRetention,60*60_000);
+  let nativeRevocationRunning = false;
+  const runNativeRevocationNotices = async (): Promise<void> => {
+    if (nativeRevocationRunning) return;
+    nativeRevocationRunning = true;
+    try { await externalPortal.scheduleNativeRevocationNotices(); }
+    catch { console.error("External native revocation notice processing failed."); }
+    finally { nativeRevocationRunning = false; }
+  };
+  void runNativeRevocationNotices();
+  const nativeRevocationProcessing = setInterval(() => void runNativeRevocationNotices(), 60_000);
 
   const shutdown = async (): Promise<void> => {
     clearInterval(interval);
@@ -59,6 +71,7 @@ async function bootstrap(): Promise<void> {
     clearInterval(auditRetentionProcessing);
     clearInterval(recurrenceProcessing);
     clearInterval(workforceRetentionProcessing);
+    clearInterval(nativeRevocationProcessing);
     await app.close();
   };
   process.once("SIGINT", () => void shutdown());

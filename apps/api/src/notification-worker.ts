@@ -62,6 +62,15 @@ export class OperationalRecipientPredicate implements CurrentRecipientAuthorizat
       return new OperationalRecipientPredicate(database, authorization, new TaskService(database, authorization)).isAuthorized(eventId, accountId);
     }
     const event = await this.database.prisma.domainEvent.findUnique({ where: { id: eventId } });
+    if (event?.eventName === "external.changed" && event.subjectType === "external_native_revocation" && event.subjectId && event.organizationId) {
+      const account = await this.database.prisma.account.findFirst({ where: { id: accountId, kind: AccountKind.OWNER, state: AccountState.ACTIVE } });
+      if (!account) return false;
+      const share = await this.database.prisma.externalCadShare.findFirst({ where: { id: event.subjectId, organizationId: event.organizationId, revokedAt: null, expiresAt: { gt: new Date() } } });
+      if (!share) return false;
+      const grant = await this.database.prisma.externalPortalGrant.findUniqueOrThrow({ where: { id: share.grantId } });
+      const rows = await this.database.prisma.$queryRaw<Array<{ usable: boolean; allowed: boolean }>>`SELECT s21_grant_usable(${grant.id}::uuid) AS usable, s21_nonconfidential_revision(${share.revisionId}::uuid) AS allowed`;
+      return !rows[0]!.usable || !rows[0]!.allowed || !grant.revisionIds.includes(share.revisionId);
+    }
     if(event?.eventName==="workforce.changed"&&event.organizationId&&event.subjectId) {
       const record=await this.database.prisma.workforceRecord.findFirst({where:{id:event.subjectId,organizationId:event.organizationId}}),account=await this.database.prisma.account.findUnique({where:{id:accountId},include:{employee:true}});
       if(!record||!account||account.state!==AccountState.ACTIVE)return false;
@@ -226,7 +235,7 @@ export class NotificationWorker {
       let retryAt: Date | undefined;
       for (const notification of pending) {
         if (hasLostLease()) return;
-        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed", "review.escalated"].includes(notification.category)) {
+        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed", "review.escalated", "external.native_revocation"].includes(notification.category)) {
           await this.deliverTaskNotice(delivery, notification.id, notification.recipientAccountId);
           continue;
         }
@@ -320,9 +329,11 @@ export class NotificationWorker {
       await tx.$queryRaw`SELECT "id" FROM "notifications" WHERE "id"=${notificationId}::uuid FOR UPDATE`;
       const notice = await tx.notification.findFirst({ where: { id: notificationId, eventId: delivery.eventId, recipientAccountId, channel: NotificationChannel.IN_APP, deliveryState: NotificationDeliveryState.PENDING } });
       if (!notice) return;
-      const scopeLocked = notice.category === "review.escalated"
-        ? await this.lockReviewEscalationScope(tx, delivery.eventId, recipientAccountId)
-        : await lockTaskNotificationScope(tx, delivery.eventId, recipientAccountId);
+      const scopeLocked = notice.category === "external.native_revocation"
+        ? await this.lockExternalNativeScope(tx, delivery.eventId, recipientAccountId)
+        : notice.category === "review.escalated"
+          ? await this.lockReviewEscalationScope(tx, delivery.eventId, recipientAccountId)
+          : await lockTaskNotificationScope(tx, delivery.eventId, recipientAccountId);
       const authorized = scopeLocked && await this.recipientAuthorization.isAuthorized(delivery.eventId, recipientAccountId, tx);
       const account = authorized ? await tx.account.findFirst({ where: { id: recipientAccountId, state: AccountState.ACTIVE } }) : null;
       let failureCode: string | null = !authorized ? "recipient_not_authorized" : !account ? "recipient_unverified" : null;
@@ -334,6 +345,23 @@ export class NotificationWorker {
         ? { deliveryState: NotificationDeliveryState.DEAD, failureCode }
         : { deliveryState: NotificationDeliveryState.DELIVERED, deliveredAt: new Date(), failureCode: null } });
     }, { timeout: 30_000 });
+  }
+
+  private async lockExternalNativeScope(tx: Prisma.TransactionClient, eventId: string, recipientAccountId: string): Promise<boolean> {
+    const event = await tx.domainEvent.findUnique({ where: { id: eventId } });
+    if (!event || event.eventName !== "external.changed" || event.subjectType !== "external_native_revocation" || !event.organizationId || !/^[0-9a-f-]{36}$/i.test(event.subjectId)) return false;
+    const preview = await tx.externalCadShare.findFirst({ where: { id: event.subjectId, organizationId: event.organizationId } });
+    if (!preview) return false;
+    await tx.$queryRaw`SELECT id FROM projects WHERE id=${preview.projectId}::uuid FOR SHARE`;
+    await tx.$queryRaw`SELECT id FROM external_cad_shares WHERE id=${preview.id}::uuid FOR SHARE`;
+    await tx.$queryRaw`SELECT id FROM external_portal_grants WHERE id=${preview.grantId}::uuid FOR SHARE`;
+    const grant = await tx.externalPortalGrant.findUniqueOrThrow({ where: { id: preview.grantId } });
+    await tx.$queryRaw`SELECT id FROM accounts WHERE id=${recipientAccountId}::uuid OR id=${grant.accountId}::uuid ORDER BY id FOR SHARE`;
+    if (grant.closeoutTaskId) {
+      await tx.$queryRaw`SELECT id FROM tasks WHERE id=${grant.closeoutTaskId}::uuid FOR SHARE`;
+      await tx.$queryRaw`SELECT id FROM task_closeout_approvals WHERE "taskId"=${grant.closeoutTaskId}::uuid FOR SHARE`;
+    }
+    return true;
   }
 
   private async lockReviewEscalationScope(tx: Prisma.TransactionClient, eventId: string, recipientAccountId: string): Promise<boolean> {

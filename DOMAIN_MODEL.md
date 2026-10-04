@@ -155,3 +155,7 @@ S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 AP
 ## S20 persisted site records — COMPLETE for development/local staging
 
 `SiteWorkspace` is the project-scoped aggregate version and current responsible-person pointer. Versioned `SiteRecord` heads represent PACKAGE, MANPOWER, REPORT, SNAG and HANDOVER, with canonical append-only `SiteHistory`; `SiteVerificationAttempt` preserves each immutable repair-generation outcome and exact fixer/verifier. Report confirmation snapshots package progress; handover snapshots packages, quality and closure references. Four additive tables preserve organization/project identity. Full browser and aggregate acceptance remain pending.
+
+## S21 external portal entities — COMPLETE for development/local staging
+
+S21 defines EXTERNAL account identity, separate code/session/device records, exact persona grants, retained advisory submissions and private upload metadata, native CAD-share records, and scoped extension of recipient transmittal/acknowledgement evidence. Grants carry explicit revision/release/package UUID allowlists, expected versions, reason, expiry/revocation and optional separate closeout-task linkage. Native URL/code secrets require authenticated encryption; safe identity and confirmation proof remain separately queryable. Canonical transactional audit/domain-event/outbox evidence binds grant changes, submissions, transmittals, CAD issuance/revocation and cancellation/closeout. S21 development/local-staging acceptance passed; see S21_COMPLETION_REPORT.md.

@@ -110,6 +110,17 @@ export class TurnkeyService {
     return { prices, total: format(total, 8) };
   }
   /** SITE public boundary: scoped operational inputs only; financial fields never enter site responses. */
+  async externalProduction(tx: Tx, projectId: string, releaseIds: string[]) {
+    for (const id of [...releaseIds].sort()) await tx.$queryRaw`SELECT id FROM turnkey_releases WHERE id=${id}::uuid AND "projectId"=${projectId}::uuid FOR SHARE`;
+    const rows = await tx.turnkeyRelease.findMany({ where: { projectId, id: { in: releaseIds }, state: "RELEASED", replacedById: null }, select: { id: true, state: true, lines: true, materials: true, procurementStatus: true, factoryStatus: true }, orderBy: { createdAt: "desc" } });
+    return rows.map(row => ({ id: row.id, label: `Production ${row.id.slice(0, 8)}`, requirements: { lines: (row.lines as unknown as Line[]).map(({ key, description, quantity, unit }) => ({ key, description, quantity, unit })), materials: (row.materials as unknown as Array<{ lineKey: string; material: string }>).map(({ lineKey, material }) => ({ lineKey, material })) }, deadline: null, status: row.factoryStatus }));
+  }
+  async externalOptions(tx: Tx, actor: Actor, projectId: string) {
+    const project = await tx.project.findFirst({ where: { id: projectId, organizationId: actor.organizationId } });
+    if (!project || project.deliveryType !== "TURNKEY") return [];
+    await this.access(tx, actor, project, "turnkey.view");
+    return tx.turnkeyRelease.findMany({ where: { projectId, state: "RELEASED", replacedById: null }, select: { id: true }, orderBy: { createdAt: "desc" } }).then(rows => rows.map(row => ({ id: row.id, label: `Production ${row.id.slice(0, 8)}` })));
+  }
   async siteMaterials(tx: Tx, actor: Actor, projectId: string) {
     const project = await tx.project.findFirst({ where: { id: projectId, organizationId: actor.organizationId, deliveryType: "TURNKEY" } });
     if (!project) throw new NotFoundException("Turnkey project not found");

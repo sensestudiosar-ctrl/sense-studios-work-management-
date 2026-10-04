@@ -33,7 +33,7 @@ function activeSession() {
     lastUsedAt: new Date(),
     expiresAt: new Date(Date.now() + 60_000),
     revokedAt: null as Date | null,
-    account: { id: accountId, state: AccountState.ACTIVE }
+    account: { id: accountId, kind: AccountKind.STAFF, state: AccountState.ACTIVE }
   };
   return { row, csrfToken };
 }
@@ -53,7 +53,7 @@ describe("identity session security", () => {
     ["unknown", null],
     ["revoked", { ...activeSession().row, revokedAt: new Date() }],
     ["expired", { ...activeSession().row, expiresAt: new Date(Date.now() - 1) }],
-    ["suspended account", { ...activeSession().row, account: { id: accountId, state: AccountState.SUSPENDED } }],
+    ["suspended account", { ...activeSession().row, account: { id: accountId, kind: AccountKind.STAFF, state: AccountState.SUSPENDED } }],
     ["client identity in an internal session", { ...activeSession().row, account: { id: accountId, state: AccountState.ACTIVE, kind: AccountKind.CLIENT } }]
   ])("rejects %s sessions", async (_label, row) => {
     const findUnique = jest.fn().mockResolvedValue(row && { ...row, account: row.account ?? { id: accountId, state: AccountState.ACTIVE } });
@@ -79,7 +79,7 @@ describe("identity session security", () => {
   it("revokes the current session on logout and emits a success event", async () => {
     const { row } = activeSession();
     const updateMany = jest.fn(async ({ data }: { data: { revokedAt: Date } }) => { row.revokedAt = data.revokedAt; return { count: 1 }; });
-    const findUnique = jest.fn(async () => ({ ...row, account: { id: accountId, state: AccountState.ACTIVE } }));
+    const findUnique = jest.fn(async () => ({ ...row, account: { id: accountId, kind: AccountKind.STAFF, state: AccountState.ACTIVE } }));
     const securityEventCreate = jest.fn();
     const transaction = { session: { findUnique, updateMany }, securityEvent: { create: securityEventCreate } };
     const identity = serviceWith({ ...transaction, $transaction: async (run: (tx: typeof transaction) => Promise<void>) => run(transaction) });
@@ -123,7 +123,7 @@ describe("identity session security", () => {
 
 describe("generic unknown-account authentication", () => {
   it("returns the same public login-options shape for known and unknown emails", async () => {
-    let account: { id: string; state: string } | null = null;
+    let account: { id: string; kind: AccountKind; state: AccountState } | null = null;
     const created: Array<{ accountId: string | null; purpose: string }> = [];
     const prisma = {
       account: { findUnique: jest.fn(async () => account) },
@@ -137,7 +137,7 @@ describe("generic unknown-account authentication", () => {
     const identity = serviceWith(prisma);
 
     const unknown = await identity.loginOptions(" Nobody@Example.Test ");
-    account = { id: accountId, state: AccountState.ACTIVE };
+    account = { id: accountId, kind: AccountKind.OWNER, state: AccountState.ACTIVE };
     const known = await identity.loginOptions("owner@example.test");
 
     expect(Object.keys(unknown).sort()).toEqual(Object.keys(known).sort());

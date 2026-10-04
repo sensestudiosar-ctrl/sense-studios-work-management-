@@ -1,4 +1,5 @@
 export const DOMAIN_EVENT_CATALOGUE = {
+  "external.changed": { producer: "S21 external portals", subjectType: "external_record", schemaVersion: 1 },
   "site.changed": { producer: "S20 Site", subjectType: "site_record", schemaVersion: 1 },
   "site.workspace_changed": { producer: "S20 Site", subjectType: "site_workspace", schemaVersion: 1 },
   "workforce.changed": { producer: "S17 workforce", subjectType: "workforce_record", schemaVersion: 1 },

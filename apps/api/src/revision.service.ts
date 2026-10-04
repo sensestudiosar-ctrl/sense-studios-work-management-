@@ -5,6 +5,7 @@ import { AuthorizationService } from "./authorization.service.js";
 import { DocumentService } from "./document.service.js";
 import { recordProjectEvent } from "./project-events.js";
 import type { ProjectActor } from "./project.service.js";
+import { externalRevisionRecipient } from "./external-portal-policy.js";
 
 type Tx = Prisma.TransactionClient;
 type Revision = NonNullable<Awaited<ReturnType<Tx["documentRevision"]["findUnique"]>>>;
@@ -114,12 +115,12 @@ export class RevisionService {
       if (project.status === ProjectStatus.ACTIVE) try { await this.project(tx, actor, projectId, "document.client_review_select"); selectClientReview = true; } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
       const issuable = drawings.flatMap((drawing) => drawing.revisions.filter((revision) => revision.issueEligible));
       const eligibleRecipients = [];
-      if (authorizedIssue && issuable.length) for (const account of await tx.account.findMany({ where: { state: AccountState.ACTIVE, kind: { in: [AccountKind.OWNER, AccountKind.STAFF, AccountKind.CLIENT] } }, orderBy: { normalizedEmail: "asc" } })) {
+      if (authorizedIssue && issuable.length) for (const account of await tx.account.findMany({ where: { state: AccountState.ACTIVE, kind: { in: [AccountKind.OWNER, AccountKind.STAFF, AccountKind.CLIENT, AccountKind.EXTERNAL] } }, orderBy: { normalizedEmail: "asc" } })) {
         const recipient = { accountId: account.id, organizationId: actor.organizationId, kind: account.kind };
         try {
-          if (account.kind !== AccountKind.CLIENT) await this.project(tx, recipient, projectId);
+          if (account.kind !== AccountKind.CLIENT && account.kind !== AccountKind.EXTERNAL) await this.project(tx, recipient, projectId);
           const revisionIds = [];
-          for (const revision of issuable) { try { if (account.kind === AccountKind.CLIENT) await this.clientRecipient(tx, projectId, account.id, revision.id); else await this.documents.authorizeFile(tx, recipient, revision.fileId); revisionIds.push(revision.id); } catch (error) { if (!(error instanceof ForbiddenException)) throw error; } }
+          for (const revision of issuable) { try { if (account.kind === AccountKind.CLIENT) await this.clientRecipient(tx, projectId, account.id, revision.id); else if (account.kind === AccountKind.EXTERNAL) await externalRevisionRecipient(tx, account.id, projectId, revision.id); else await this.documents.authorizeFile(tx, recipient, revision.fileId); revisionIds.push(revision.id); } catch (error) { if (!(error instanceof ForbiddenException)) throw error; } }
           if (revisionIds.length) eligibleRecipients.push({ accountId: account.id, name: account.normalizedEmail, revisionIds });
         } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
       }
@@ -260,6 +261,10 @@ export class RevisionService {
         const account = await tx.account.findUnique({ where: { id: accountId } });
         if (account?.kind === AccountKind.CLIENT) {
           for (const revision of revisions) await this.clientRecipient(tx, projectId, accountId, revision.id);
+          continue;
+        }
+        if (account?.kind === AccountKind.EXTERNAL) {
+          for (const revision of revisions) await externalRevisionRecipient(tx, accountId, projectId, revision.id);
           continue;
         }
         if (!account || ![AccountKind.OWNER, AccountKind.STAFF].includes(account.kind as "OWNER" | "STAFF")) throw new ForbiddenException("Recipient has no internal project access");

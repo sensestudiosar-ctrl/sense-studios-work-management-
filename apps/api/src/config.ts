@@ -18,6 +18,7 @@ const environment = z.object({
   BREVO_SENDER_EMAIL: z.preprocess((value) => value === "" ? undefined : value, z.email().max(320).optional()),
   BREVO_SENDER_NAME: z.preprocess((value) => value === "" ? undefined : value, z.string().trim().min(1).max(100).optional()),
   EMAIL_VERIFICATION_SECRET: z.preprocess((value) => value === "" ? undefined : value, z.string().min(32).max(512).optional()),
+  EXTERNAL_SHARE_SECRET: z.preprocess((value) => value === "" ? undefined : value, z.string().min(32).max(512).optional()),
   NAS_ROOT: z.preprocess((value) => value === "" ? undefined : value, z.string().max(1000).refine(isAbsolute, "must be an absolute path").optional()),
   DOCUMENT_MAX_FILE_BYTES: z.coerce.number().int().min(1).max(1_099_511_627_776).default(20 * 1024 * 1024 * 1024)
 }).superRefine((value, context) => {
@@ -47,6 +48,7 @@ export interface RuntimeConfig {
   brevoSenderEmail?: string | undefined;
   brevoSenderName?: string | undefined;
   emailVerificationSecret?: string | undefined;
+  externalShareSecret?: string | undefined;
   nasRoot?: string | undefined;
   documentMaxFileBytes?: number | undefined;
 }
@@ -70,6 +72,7 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
     brevoSenderEmail: result.data.BREVO_SENDER_EMAIL?.trim().toLowerCase(),
     brevoSenderName: result.data.BREVO_SENDER_NAME?.trim(),
     emailVerificationSecret: result.data.EMAIL_VERIFICATION_SECRET,
+    externalShareSecret: result.data.EXTERNAL_SHARE_SECRET,
     nasRoot: result.data.NAS_ROOT,
     documentMaxFileBytes: result.data.DOCUMENT_MAX_FILE_BYTES
   };
