@@ -35,7 +35,7 @@ Architecture approved at checkpoint 2e46805. S01–S15 are COMPLETE for developm
 | Release 0 foundation | S01–S05 | S01–S05 COMPLETE for development/local staging | See S05_COMPLETION_REPORT.md for acceptance evidence and S05_SPEC.md for the approved slice boundary. |
 | Release 1 work core | S06–S10 | S06–S10 COMPLETE for development/local staging | S09 and S10 acceptance is recorded in their completion reports. |
 | Release 2 design control | S11–S15 | S11–S15 COMPLETE for development/local staging | S11–S15 acceptance is recorded in their completion reports. See S15_COMPLETION_REPORT.md. |
-| Release 3 workforce | S16–S18 | S16/S17 accepted source integrated; combined acceptance pending; S18 scope conflict | Branch acceptance does not verify integration with current S19 work. |
+| Release 3 workforce | S16–S18 | S16/S17 COMPLETE for integrated development/local staging; S18 scope conflict remains unresolved/excluded | Combined S16/S17/S19 dependency acceptance passed before S20 implementation; subsequent S20/S21 aggregate gates passed. See CURRENT_STATE.md and S20_COMPLETION_REPORT.md. |
 | Release 4 Turnkey/site/portals | S19–S22 | S19/S20/S21 COMPLETE for development/local staging; S22 unauthorized | Turnkey/site operational acceptance passed, including integrated S17 dependencies. External portal aggregate acceptance passed; offline remains unauthorized later work. |
 | Release 5 intelligence | S23–S24 | NOT STARTED | Depends on earlier slices. |
 | Release 6 integration/automation | S25–S26 | NOT STARTED | Depends on earlier slices. |
