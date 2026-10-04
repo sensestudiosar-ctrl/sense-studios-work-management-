@@ -37,6 +37,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #b98f49; outline-offs
 .notice { border: 1px solid #c6d4c7; background: #f1f7ef; color: #315947; }
 .support-note { border: 1px solid #d9d8cd; color: #61736b; }
 .identity-content > h1 { margin-top: 1rem; }
+.identity-content > .document-navigation { display: flex; flex-wrap: wrap; gap: .4rem 1rem; }
 .identity-card { display: flex; align-items: center; gap: 1.2rem; padding: 1.5rem; background: #fffdf7; border: 1px solid #d9d8cd; border-radius: 1rem; box-shadow: 0 10px 35px #192c2810; }
 .identity-avatar { display: grid; flex: none; place-items: center; width: 3.4rem; height: 3.4rem; border-radius: 50%; background: #e8eadf; color: #35534a; font: 1.5rem Georgia, serif; }
 .identity-details { flex: 1; min-width: 0; }
