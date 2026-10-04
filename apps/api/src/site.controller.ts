@@ -71,5 +71,3 @@ export class SiteController {
   @Post("snags/:id/close") async closeSnag(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { return this.site.closeSnag(await this.actor(request, true, csrf), parse(uuid, id), parse(common, body)); }
   @Post("projects/:id/handover") async handover(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { return this.site.handover(await this.actor(request, true, csrf), parse(uuid, id), parse(handoverInput, body)); }
 }
-
-

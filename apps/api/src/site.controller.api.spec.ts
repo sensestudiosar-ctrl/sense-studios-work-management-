@@ -122,5 +122,3 @@ describe("S20 site HTTP boundary draft", () => {
     expect(cases).toHaveLength(15);
   });
 });
-
-

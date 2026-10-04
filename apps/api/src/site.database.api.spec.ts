@@ -291,4 +291,3 @@ databaseDescribe("S20 site workflow and authority PostgreSQL acceptance scratch"
     expect(JSON.stringify((await f.db.siteRecord.findUniqueOrThrow({ where: { id: report.id } })).data)).toContain(photo.sha256);
   });
 });
-

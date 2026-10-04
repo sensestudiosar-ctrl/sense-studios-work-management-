@@ -147,4 +147,3 @@ describe("SiteWorkspace draft contract", () => {
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });
-
