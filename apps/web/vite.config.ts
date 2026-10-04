@@ -25,6 +25,7 @@ export default defineConfig({
     })
   ],
   server: {
+    allowedHosts: process.env.SENSE_DEV_ALLOWED_HOST ? [process.env.SENSE_DEV_ALLOWED_HOST] : [],
     proxy: {
       "/api": {
         target: process.env.API_PROXY_TARGET ?? "http://localhost:4000",
