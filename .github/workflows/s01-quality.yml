@@ -10,8 +10,8 @@ jobs:
     timeout-minutes: 35
     env:
       CI: "true"
-      DATABASE_URL: postgresql://sense_app_runtime:ci-only-app-password@127.0.0.1:5432/sense_s01_test
-      MIGRATION_DATABASE_URL: postgresql://sense_s01:ci-only-password@127.0.0.1:5432/sense_s01_test
+      DATABASE_URL: postgresql://sense_app_runtime:ci-only-app-password@127.0.0.1:56433/sense_s13_ci_test
+      MIGRATION_DATABASE_URL: postgresql://sense_s01:ci-only-password@127.0.0.1:56433/sense_s13_ci_test
       S01_DB_USER: sense_s01
       S01_DB_NAME: sense_s01_test
       S01_DB_PASSWORD: ci-only-password
@@ -25,11 +25,11 @@ jobs:
         env:
           POSTGRES_USER: sense_s01
           POSTGRES_PASSWORD: ci-only-password
-          POSTGRES_DB: sense_s01_test
+          POSTGRES_DB: sense_s13_ci_test
         ports:
-          - 5432:5432
+          - 56433:5432
         options: >-
-          --health-cmd "pg_isready -U sense_s01 -d sense_s01_test"
+          --health-cmd "pg_isready -U sense_s01 -d sense_s13_ci_test"
           --health-interval 5s
           --health-timeout 3s
           --health-retries 12
