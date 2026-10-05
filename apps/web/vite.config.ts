@@ -2,6 +2,13 @@ import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
+const workerSetting = process.env.VITEST_WORKERS;
+const requestedWorkers = workerSetting === undefined ? undefined : Number(workerSetting);
+if (workerSetting !== undefined && (requestedWorkers === undefined || !/^\d+$/.test(workerSetting) || !Number.isSafeInteger(requestedWorkers) || requestedWorkers < 1)) {
+  throw new Error("VITEST_WORKERS must be a positive integer.");
+}
+const boundedWorkers = requestedWorkers;
+
 export default defineConfig({
   plugins: [
     react(),
@@ -20,6 +27,7 @@ export default defineConfig({
       },
       workbox: {
         navigateFallback: "/index.html",
+        navigateFallbackDenylist: [/^\/api\//],
         globPatterns: ["**/*.{js,css,html,svg}"]
       }
     })
@@ -37,6 +45,7 @@ export default defineConfig({
     globals: true,
     environment: "jsdom",
     setupFiles: ["./src/setup-tests.ts"],
-    include: ["src/**/*.test.tsx"]
+    include: ["src/**/*.test.tsx"],
+    ...(boundedWorkers === undefined ? {} : { maxWorkers: boundedWorkers })
   }
 });

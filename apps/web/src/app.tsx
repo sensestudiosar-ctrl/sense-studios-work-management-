@@ -15,6 +15,8 @@ import { TurnkeyWorkspace } from "./turnkey.js";
 import { TimeWorkspace } from "./time.js";
 import { WorkforceWorkspace } from "./workforce.js";
 import { SiteWorkspace } from "./site.js";
+import { SiteOfflineCaptureRoute } from "./site-offline-capture.js";
+import { clearOfflinePointer, purgeOfflineAccount, purgeOtherOfflineAccounts, readOfflinePointer } from "./site-offline.js";
 import { StaffExternalAccessWorkspace } from "./external-portal.js";
 
 const AUTH_PATH = "/api/v1/auth";
@@ -69,9 +71,23 @@ async function readSession(): Promise<Session | null> {
     credentials: "include",
     cache: "no-store",
   });
-  if (response.status === 401) return null;
+  if (response.status === 401) {
+    const pointer = readOfflinePointer();
+    clearOfflinePointer();
+    window.dispatchEvent(new Event("sense-session-ended"));
+    if (pointer) await purgeOfflineAccount(pointer.accountId).catch(() => undefined);
+    return null;
+  }
   if (!response.ok) throw new Error("session-unavailable");
-  return (await response.json()) as Session;
+  const session = (await response.json()) as Session;
+  const offlinePointer = readOfflinePointer();
+  if (offlinePointer && offlinePointer.accountId !== session.account.id) {
+    clearOfflinePointer(offlinePointer.accountId);
+    window.dispatchEvent(new Event("sense-session-ended"));
+    await purgeOfflineAccount(offlinePointer.accountId).catch(() => undefined);
+  }
+  await purgeOtherOfflineAccounts(session.account.id).catch(() => undefined);
+  return session;
 }
 
 function errorMessage(error: LoginError): string {
@@ -142,6 +158,11 @@ function Login({ onSignedIn, notice }: { onSignedIn: (session: Session) => void;
       if (verifyResponse.status === 429) throw new Error("throttled");
       if (!verifyResponse.ok) throw new Error(verifyResponse.status >= 500 ? "unavailable" : "invalid");
       const session = await readSession();
+      if (session) {
+        const pointer = readOfflinePointer();
+        if (pointer && pointer.accountId !== session.account.id) { void purgeOfflineAccount(pointer.accountId).catch(() => undefined); clearOfflinePointer(pointer.accountId); }
+        void purgeOtherOfflineAccounts(session.account.id).catch(() => undefined);
+      }
       if (!session) throw new Error("invalid");
       onSignedIn(session);
     } catch (cause) {
@@ -1023,6 +1044,7 @@ function AuthHome(): React.JSX.Element {
             kind: "signed-out",
             ...(previous.kind === "signed-in" ? { notice: "Your session ended. Sign in again to continue." } : {}),
           });
+      if (!session) { const pointer = readOfflinePointer(); if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined); clearOfflinePointer(); window.dispatchEvent(new Event("sense-session-ended")); }
     } catch {
       setView({ kind: "session-error", message: "We couldn’t check your session. Try again." });
     }
@@ -1056,10 +1078,14 @@ function AuthHome(): React.JSX.Element {
         headers: { "X-CSRF-Token": view.session.csrfToken },
       });
       if (response.status === 401) {
+        const pointer = readOfflinePointer(); if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined); clearOfflinePointer();
+        window.dispatchEvent(new Event("sense-session-ended"));
         setView({ kind: "signed-out", notice: "Your session ended. Sign in again to continue." });
       } else if (!response.ok) {
         setLogoutError("We couldn’t sign you out. Try again.");
       } else {
+        const pointer = readOfflinePointer(); if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined); clearOfflinePointer();
+        window.dispatchEvent(new Event("sense-session-ended"));
         setView({ kind: "signed-out", notice: "You’ve signed out." });
       }
     } catch {
@@ -1241,8 +1267,8 @@ function SiteRoute(): React.JSX.Element {
     return () => { active = false; };
   }, []);
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
-  if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
-  if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view site delivery</h1><Link to="/">Return to sign in</Link></section></main>;
+  if (failed) return <SiteOfflineCaptureRoute />;
+  if (!session) { const pointer = readOfflinePointer(); if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined); if (pointer) window.dispatchEvent(new Event("sense-session-ended")); clearOfflinePointer(); return <main className="identity-content"><section className="identity-section"><h1>Sign in to view site delivery</h1><Link to="/">Return to sign in</Link></section></main>; }
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <main className="identity-content"><div className="document-route-heading"><div><Link to="/">← Workspace</Link><nav className="document-navigation" aria-label="Workspace navigation"><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/external-access">External access</Link><Link to="/turnkey">Turnkey operations</Link></nav></div><span>{session.account.email}</span></div><SiteWorkspace csrfToken={session.csrfToken} /></main>;
+  return <main className="identity-content"><div className="document-route-heading"><div><Link to="/">← Workspace</Link><nav className="document-navigation" aria-label="Workspace navigation"><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/external-access">External access</Link><Link to="/turnkey">Turnkey operations</Link></nav></div><span>{session.account.email}</span></div><SiteWorkspace csrfToken={session.csrfToken} accountId={session.account.id} /></main>;
 }

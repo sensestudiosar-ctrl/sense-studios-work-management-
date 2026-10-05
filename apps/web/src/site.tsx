@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./site.css";
+import { SiteOfflineCapture } from "./site-offline-capture.js";
+import { clearOfflinePointer, purgeOfflineAccount, purgeOfflineProject, purgeOfflineProjectPhotos, readOfflinePointer } from "./site-offline.js";
 
 const API = "/api/v1/site";
 const DOCS = "/api/v1/documents";
@@ -10,9 +12,9 @@ type Manpower = { id: string; version: number; state: "RECORDED"; data: { date: 
 type Report = { id: string; version: number; state: "DRAFT" | "CONFIRMED"; data: { date: string; workCompleted: string; manpower: Array<{ trade: string; count: number }>; materialsReceived: string; photoEvidence: Evidence[]; issues: string; delayCauses: string; tomorrowPlan: string; supersedesReportId?: string; confirmedBy?: string; confirmedAt?: string } };
 type SnagState = "OPEN" | "ASSIGNED" | "IN_PROGRESS" | "READY_FOR_VERIFICATION" | "VERIFIED" | "CLOSED";
 type Snag = { id: string; version: number; state: SnagState; data: { title: string; description: string; packageId?: string; fixerAccountId?: string; verifierAccountId?: string; repairGeneration: number; repairNote?: string; photoEvidence: Evidence[]; latestVerificationId?: string; closedBy?: string; closedAt?: string }; capabilities: { assign: boolean; start: boolean; ready: boolean; appointVerifier: boolean; verify: boolean; close: boolean }; attempts: Array<{ id: string; outcome: "PASSED" | "FAILED"; repairGeneration: number; fixerAccountId: string; verifierAccountId: string; note: string; photoEvidence: Evidence[]; occurredAt: string }>; history: unknown[] };
-type Detail = { project: { id: string; title: string; status: string }; version: number; today: string; tomorrow: string; responsible: { accountId: string; label: string } | null; people: Array<{ accountId: string; label: string; canWork: boolean }>; capabilities: { manage: boolean; work: boolean; confirm: boolean; handover: boolean }; packages: Package[]; manpower: Manpower[]; reports: Report[]; snags: Snag[]; handovers: Array<{ id: string; data: { note: string; decidedBy: string; decidedAt: string; packages: Array<{ id: string; version: number }>; snags: Array<{ id: string; version: number; verificationId: string }>; reportIds: string[] } }>; history: Array<{ eventName: string; actorId: string; reason: string; occurredAt: string; beforeVersion?: number; afterVersion?: number; safeLabel?: string }>; materials: Array<{ releaseId: string; state: string; lines: unknown[]; materials: unknown[]; procurementStatus: string; factoryStatus: string }>; workforce: { attendance: Array<{ accountId: string; label: string; state: "OPEN" | "CLOSED"; mode: "SITE" | "OFFICE" | "REMOTE"; provisional: boolean }>; count: number } };
+type Detail = { project: { id: string; title: string; status: string }; version: number; today: string; tomorrow: string; responsible: { accountId: string; label: string } | null; people: Array<{ accountId: string; label: string; canWork: boolean }>; capabilities: { manage: boolean; work: boolean; confirm: boolean; handover: boolean }; packages: Package[]; manpower: Manpower[]; reports: Report[]; notes?: Array<{ id: string; version: number; state: string; data: { note: string; photoEvidence: Evidence[] } }>; snags: Snag[]; handovers: Array<{ id: string; data: { note: string; decidedBy: string; decidedAt: string; packages: Array<{ id: string; version: number }>; snags: Array<{ id: string; version: number; verificationId: string }>; reportIds: string[] } }>; history: Array<{ eventName: string; actorId: string; reason: string; occurredAt: string; beforeVersion?: number; afterVersion?: number; safeLabel?: string }>; materials: Array<{ releaseId: string; state: string; lines: unknown[]; materials: unknown[]; procurementStatus: string; factoryStatus: string }>; workforce: { attendance: Array<{ accountId: string; label: string; state: "OPEN" | "CLOSED"; mode: "SITE" | "OFFICE" | "REMOTE"; provisional: boolean }>; count: number } };
 type List = { items: Project[] };
-type Documents = { files: Array<{ id: string; fileName: string; mimeType: string; sha256: string }> };
+type Documents = { files: Array<{ id: string; fileName: string; mimeType: string; sha256: string }>; folders: Array<{ id: string; name: string; offlineUploadAllowed?: boolean }>; capabilities?: { upload: boolean } };
 type DraftReport = { workCompleted: string; manpowerTrade: string; manpowerCount: string; materialsReceived: string; issues: string; delayCauses: string; tomorrowPlan: string; photoIds: string[] };
 
 function statusOf(error: unknown): number { return error instanceof Error ? (error as Error & { status?: number }).status ?? 0 : 0; }
@@ -27,12 +29,15 @@ function message(error: unknown): string {
 const blankReport = (): DraftReport => ({ workCompleted: "", manpowerTrade: "", manpowerCount: "", materialsReceived: "", issues: "", delayCauses: "", tomorrowPlan: "", photoIds: [] });
 const evidenceLabel = (item: Evidence): string => item.hidden ? item.indication ?? "Evidence is retained but unavailable to this account." : item.name ?? "Authorized photo evidence";
 
-export function SiteWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+export function SiteWorkspace({ csrfToken, accountId }: { csrfToken: string; accountId: string }): React.JSX.Element {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
   const [detail, setDetail] = useState<Detail>();
   const [documents, setDocuments] = useState<Array<{ documentId: string; name: string; mimeType: string; sha256: string }>>([]);
   const [documentsError, setDocumentsError] = useState("");
+  const [offlineFolders, setOfflineFolders] = useState<Array<{ id: string; name: string; offlineUploadAllowed?: boolean }>>([]);
+  const [canUploadOfflinePhotos, setCanUploadOfflinePhotos] = useState(false);
+  const [clearingOfflinePhotos, setClearingOfflinePhotos] = useState(false);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -51,7 +56,9 @@ export function SiteWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.E
   const projectIdRef = useRef("");
 
   const loadDetail = useCallback(async (id: string, request: number): Promise<void> => {
-    const next = await json<Detail>(await fetch(`${API}/projects/${encodeURIComponent(id)}`, { credentials: "include", cache: "no-store" }));
+    let next: Detail;
+    try { next = await json<Detail>(await fetch(`${API}/projects/${encodeURIComponent(id)}`, { credentials: "include", cache: "no-store" })); }
+    catch (cause) { const status = statusOf(cause); if (status === 401 || status === 403 || status === 404) { const pointer = readOfflinePointer(); if (pointer?.accountId === accountId && pointer.projectId === id) clearOfflinePointer(accountId); await purgeOfflineProject(accountId, id).catch(() => undefined); } throw cause; }
     if (request !== epoch.current) return;
     current.current = next; setDetail(next);
     setDocumentsError("");
@@ -59,12 +66,28 @@ export function SiteWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.E
       const fileResult = await json<Documents>(await fetch(`${DOCS}/projects/${encodeURIComponent(id)}`, { credentials: "include", cache: "no-store" }));
       if (request !== epoch.current) return;
       setDocuments(fileResult.files.filter((file) => file.mimeType.startsWith("image/")).map((file) => ({ documentId: file.id, sha256: file.sha256, name: file.fileName, mimeType: file.mimeType })));
-    } catch {
+      setOfflineFolders((fileResult.folders ?? []).filter((folder) => folder.offlineUploadAllowed === true));
+      setCanUploadOfflinePhotos(fileResult.capabilities?.upload === true);
+      if (fileResult.capabilities?.upload === false) {
+        setClearingOfflinePhotos(true);
+        await purgeOfflineProjectPhotos(accountId, id).catch(() => undefined);
+        setClearingOfflinePhotos(false);
+      }
+    } catch (cause) {
       if (request !== epoch.current) return;
+      const documentStatus = statusOf(cause);
+      if (documentStatus === 401 || documentStatus === 403 || documentStatus === 404) {
+        setClearingOfflinePhotos(true);
+        await purgeOfflineProjectPhotos(accountId, id).catch(() => undefined);
+        setClearingOfflinePhotos(false);
+      }
       setDocuments([]);
-      setDocumentsError("Authorized evidence files could not be loaded. Site records remain available; photo selection is unavailable until document access is restored.");
+      setOfflineFolders([]); setCanUploadOfflinePhotos(false);
+      setDocumentsError(documentStatus === 401 || documentStatus === 403 || documentStatus === 404
+        ? "Document access is unavailable. Offline commands containing photos were discarded; photo selection is unavailable until document access is restored."
+        : "Authorized evidence files could not be loaded. Site records remain available; photo selection is unavailable until document access is restored.");
     }
-  }, []);
+  }, [accountId]);
 
   const loadProjects = useCallback(async (): Promise<void> => {
     const request = ++epoch.current; setLoading(true); setError("");
@@ -72,20 +95,25 @@ export function SiteWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.E
       const result = await json<List>(await fetch(`${API}/projects`, { credentials: "include", cache: "no-store" }));
       if (request !== epoch.current) return;
       const active = result.items.filter((item) => item.status === "ACTIVE");
+      const pointer = readOfflinePointer();
+      if (pointer?.accountId === accountId && !active.some((item) => item.id === pointer.projectId)) {
+        await purgeOfflineProject(accountId, pointer.projectId).catch(() => undefined);
+        clearOfflinePointer(accountId);
+      }
       setProjects(active);
       const selectedId = projectIdRef.current;
       const nextId = active.some((item) => item.id === selectedId) ? selectedId : "";
       projectIdRef.current = nextId;
       setProjectId(nextId);
-      if (nextId) await loadDetail(nextId, request); else { current.current = undefined; setDetail(undefined); setDocuments([]); setDocumentsError(""); }
-    } catch (cause) { if (request === epoch.current) { current.current = undefined; setProjects([]); setDetail(undefined); setError(message(cause)); } }
+      if (nextId) await loadDetail(nextId, request); else { current.current = undefined; setDetail(undefined); setDocuments([]); setOfflineFolders([]); setCanUploadOfflinePhotos(false); setDocumentsError(""); }
+    } catch (cause) { if (request === epoch.current) { current.current = undefined; setProjects([]); setDetail(undefined); setError(message(cause)); const status = statusOf(cause); if (status === 401 || status === 403 || status === 404) { clearOfflinePointer(accountId); window.dispatchEvent(new Event("sense-session-ended")); await purgeOfflineAccount(accountId).catch(() => undefined); } } }
     finally { if (request === epoch.current) setLoading(false); }
   }, [loadDetail]);
 
   useEffect(() => { void loadProjects(); return () => { epoch.current++; }; }, [loadProjects]);
 
   const selectProject = async (id: string): Promise<void> => {
-    const request = ++epoch.current; projectIdRef.current = id; setProjectId(id); setDetail(undefined); current.current = undefined; setDocuments([]); setDocumentsError(""); setError(""); setNotice("");
+    const request = ++epoch.current; projectIdRef.current = id; setProjectId(id); setDetail(undefined); current.current = undefined; setDocuments([]); setOfflineFolders([]); setCanUploadOfflinePhotos(false); setDocumentsError(""); setError(""); setNotice("");
     if (!id) return;
     setLoading(true);
     try { await loadDetail(id, request); } catch (cause) { if (request === epoch.current) setError(message(cause)); }
@@ -141,6 +169,13 @@ export function SiteWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.E
           <article className="site-critical"><h3>Critical activities</h3><p>{detail.packages.filter((item) => item.data.critical).map((item) => item.data.title).join(", ") || "No critical work package is flagged."}</p></article>
         </div>
       </section>
+
+      {!clearingOfflinePhotos && <SiteOfflineCapture key={projectId} accountId={accountId} projectId={projectId} projectTitle={detail.project.title} csrfToken={csrfToken} today={detail.today}
+        canWork={detail.capabilities.work} canUpload={canUploadOfflinePhotos} packages={detail.packages} folders={offlineFolders}
+        onAccessLost={() => { current.current = undefined; setDetail(undefined); setDocuments([]); setError("Current site access could not be confirmed. Offline project content was removed; refresh after reviewing access."); }}
+        onSynced={() => { void refresh(); }} />}
+
+      {detail.notes && <section className="site-panel"><h2>Site notes</h2>{detail.notes.length === 0 ? <p role="status">No site notes have synchronized for this project.</p> : detail.notes.map((item) => <article className="site-record" key={item.id}><p>{item.data.note}</p>{item.data.photoEvidence.length > 0 && <p>Photos: {item.data.photoEvidence.map(evidenceLabel).join(", ")}</p>}</article>)}</section>}
 
       {detail.capabilities.manage && <section className="site-panel"><h2>Plan a work package</h2><form className="site-form" onSubmit={(event) => { event.preventDefault(); void mutate(`/projects/${encodeURIComponent(projectId)}/packages`, detail.version, { ...packageDraft, plannedPercent: packageDraft.plannedPercent.trim(), plannedQuantity: packageDraft.plannedQuantity.trim() }, "Work package saved."); }}>
         <label>Package title<input required maxLength={160} value={packageDraft.title} onChange={(e) => setPackageDraft({ ...packageDraft, title: e.target.value })}/></label><label>Work date<input type="date" required value={packageDraft.date} onChange={(e) => setPackageDraft({ ...packageDraft, date: e.target.value })}/></label><label>Planned progress (%)<input type="number" min="0" max="100" step="0.01" required value={packageDraft.plannedPercent} onChange={(e) => setPackageDraft({ ...packageDraft, plannedPercent: e.target.value })}/></label><label>Planned quantity<input inputMode="decimal" required value={packageDraft.plannedQuantity} onChange={(e) => setPackageDraft({ ...packageDraft, plannedQuantity: e.target.value })}/></label><label>Quantity unit<input required maxLength={40} value={packageDraft.unit} onChange={(e) => setPackageDraft({ ...packageDraft, unit: e.target.value })}/></label><label>Plan for tomorrow<textarea maxLength={2000} value={packageDraft.tomorrowPlan} onChange={(e) => setPackageDraft({ ...packageDraft, tomorrowPlan: e.target.value })}/></label><label className="site-check"><input type="checkbox" checked={packageDraft.critical} onChange={(e) => setPackageDraft({ ...packageDraft, critical: e.target.checked })}/>Critical activity</label><button disabled={busy || reason.trim().length < 3 || !packageDraft.title.trim() || !packageDraft.date || !packageDraft.plannedPercent || !packageDraft.plannedQuantity || !packageDraft.unit.trim()}>Create package</button></form></section>}

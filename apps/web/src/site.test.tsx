@@ -21,7 +21,7 @@ describe("SiteWorkspace draft contract", () => {
       if (url === `/api/v1/documents/projects/${project.id}`) return response({ files: [{ id: "doc-1", fileName: "slab.jpg", mimeType: "image/jpeg", sha256: "a".repeat(64) }] });
       return response({}, 404);
     }));
-    render(<SiteWorkspace csrfToken="csrf-site"/>);
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
     fireEvent.change(await screen.findByLabelText("Active Turnkey project"), { target: { value: project.id } });
     expect(await screen.findByRole("heading", { name: "Riverside Residence" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Today’s work" })).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("SiteWorkspace draft contract", () => {
       if (url.endsWith("/reports") && init?.method === "POST") return response({ id: "report-1" }, 201);
       return response({}, 404);
     }));
-    render(<SiteWorkspace csrfToken="csrf-site"/>);
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
     fireEvent.change(await screen.findByLabelText("Active Turnkey project"), { target: { value: project.id } });
     fireEvent.change(await screen.findByLabelText("Reason for the next site action"), { target: { value: "Daily work recorded by site" } });
     fireEvent.change(screen.getByLabelText("Work completed today"), { target: { value: "Completed slab preparation" } });
@@ -68,7 +68,7 @@ describe("SiteWorkspace draft contract", () => {
       if (url.endsWith("/packages") && init?.method === "POST") { writes.push(init); if (stale) { stale = false; return response({}, 409); } return response({}); }
       return response({}, 404);
     }));
-    render(<SiteWorkspace csrfToken="csrf-site"/>);
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
     fireEvent.change(await screen.findByLabelText("Active Turnkey project"), { target: { value: project.id } });
     fireEvent.change(await screen.findByLabelText("Reason for the next site action"), { target: { value: "Approved weekly plan" } });
     fireEvent.change(screen.getByLabelText("Package title"), { target: { value: "Pour north slab" } });
@@ -94,7 +94,7 @@ describe("SiteWorkspace draft contract", () => {
       if (url.endsWith("/snags/snag-1/close") && init?.method === "POST") { writes.push([url, init]); return response({ id: "snag-1" }); }
       return response({}, 404);
     }));
-    render(<SiteWorkspace csrfToken="csrf-site"/>);
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
     fireEvent.change(await screen.findByLabelText("Active Turnkey project"), { target: { value: project.id } });
     expect(await screen.findByRole("heading", { name: "Uneven tile" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Record independent check" })).not.toBeInTheDocument();
@@ -116,7 +116,7 @@ describe("SiteWorkspace draft contract", () => {
       if (url.endsWith("/packages/package-1/progress") && init?.method === "POST") { writes.push([url, init]); return response({ id: "package-1" }); }
       return response({}, 404);
     }));
-    render(<SiteWorkspace csrfToken="csrf-site"/>);
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
     fireEvent.change(await screen.findByLabelText("Active Turnkey project"), { target: { value: project.id } });
     const packageCard = (await screen.findByRole("heading", { name: "Finished slab" })).closest("article")!;
     expect(within(packageCard).getByRole("button", { name: "Save progress" })).toBeInTheDocument();
@@ -136,7 +136,7 @@ describe("SiteWorkspace draft contract", () => {
       if (url === `/api/v1/documents/projects/${project.id}`) return response({ message: "Forbidden" }, 403);
       return response({}, 404);
     }));
-    render(<SiteWorkspace csrfToken="csrf-site"/>);
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
     fireEvent.change(await screen.findByLabelText("Active Turnkey project"), { target: { value: project.id } });
     expect(await screen.findByRole("heading", { name: "Riverside Residence" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Today’s work" })).toBeInTheDocument();
