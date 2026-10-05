@@ -177,8 +177,13 @@ test("Owner configures test-only policies, publishes source-backed snapshots and
   await editor.getByRole("button", { name: "Save policy draft" }).click();
   await page.getByLabel("Reason for this action (required)").fill("Approve fictional Design health policy");
   const designPolicyCard = page.getByText(new RegExp(`Fictional S23 design policy ${suffix} · DESIGN/DESIGN`)).locator("..");
+  await expect(designPolicyCard).toBeVisible();
+  await expect(designPolicyCard.getByRole("button", { name: "Approve policy" })).toBeEnabled();
+  await page.getByLabel("Reason for this action (required)").fill("Approve fictional Design health policy");
   await designPolicyCard.getByRole("button", { name: "Approve policy" }).click();
+  await expect(designPolicyCard).toContainText("APPROVED");
   }
+  await expect(page.getByRole("button", { name: "Generate project health snapshot" })).toBeEnabled();
   await page.getByLabel("Project", { exact: true }).selectOption(projectId);
   await page.getByLabel("From", { exact: true }).first().fill(today);
   await page.getByLabel("To", { exact: true }).first().fill(today);
