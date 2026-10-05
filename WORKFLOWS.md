@@ -1,5 +1,9 @@
 # Workflows and state machines — S01–S13 complete for development/local staging
 
+## S22 supported offline continuation — COMPLETE for development/local staging
+
+Explicit project preparation → local capture → durable pending command → online image upload/current authorization → atomic SITE record/receipt. New notes/manpower/report drafts/OPEN snags append once. Package progress carries its target-record base version. A stale update stops with local/current-server comparison; keep-server discards the local command, or explicit reasoned amendment submits a new command UUID with the displayed current base version. Another intervening change conflicts again. Duplicate/lost-response replay preserves one result, history and canonical event. Report confirmation, repair verification, closure, assignments, package completion and handover remain separate online workflows; timers/attendance/native wrappers remain deferred. See S22_SPEC.md.
+
 ## S15 implemented gallery/publication workflow
 
 The Owner curates an existing exact S14 PDF/image review item into its project gallery; a client sees or streams it only while current S14 authority permits it. Gallery curation does not share an otherwise ungranted item. Cancellation retains S14 issued-only and individual expiry rules.

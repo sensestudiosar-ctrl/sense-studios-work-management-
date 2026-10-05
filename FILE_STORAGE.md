@@ -1,5 +1,9 @@
 # NAS and file-control architecture — S11–S12 complete for development/local staging
 
+## S22 captured images — COMPLETE for development/local staging
+
+Newly captured PNG/JPEG/GIF/WebP image bytes may remain in an account/project-bound IndexedDB queue until online synchronization. No downloaded project files, Confidential file cache or raw NAS path is added. SITE calls DocumentService.startOfflinePhoto inside its permission transaction, binding a stable caller UUID and exact actor/project/manifest to ordinary DOC staging. READY nonconfidential target and all ancestors are required; current document.upload and site.work remain separate checks. Existing size/signature/chunk-checksum/finalization/retained-blob controls apply, and exact manifest/finalization replay supplies one immutable document. A queued SITE command references finalized document IDs only; physical staging failures cannot create a synchronized site record. See S22_API_CONTRACT.md.
+
 Approved source: R-030, R-034–R-040, R-075, R-079–R-080, R-091–R-092. Primary physical file storage is the existing NAS; PostgreSQL stores metadata and later approval/revision relationships. S11 implements the internal document base against a restricted, absolute `NAS_ROOT` mount. Local acceptance used an isolated filesystem mount fixture; production NAS behavior remains a release gate.
 
 ## Implemented S11 base
