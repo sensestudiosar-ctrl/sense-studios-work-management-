@@ -4,7 +4,7 @@ import { z } from "zod";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { IdentityService } from "./identity.service.js";
 import { ProjectService } from "./project.service.js";
-import { SiteService } from "./site.service.js";
+import { SiteService, type SiteOfflineCommand } from "./site.service.js";
 import type { ProjectActor } from "./project.service.js";
 
 // S20 staff API boundary.
@@ -33,6 +33,15 @@ const verifierInput = common.extend({ verifierAccountId: uuid }).strict();
 const verifyInput = common.extend({ outcome: z.enum(["PASSED", "FAILED"]), note: text(3, 2000), photoIds: photos }).strict();
 const handoverInput = common.extend({ note: text(1, 4000) }).strict();
 const responsibleInput = common.extend({ accountId: uuid }).strict();
+const offlineCommon = { commandId: uuid, localId: uuid, baseRecordVersion: z.number().int().positive().nullable(), reason };
+const offlineInput = z.discriminatedUnion("action", [
+  z.object({ ...offlineCommon, action: z.literal("NOTE"), payload: z.object({ note: text(1, 4000), photoIds: photos }).strict() }).strict(),
+  z.object({ ...offlineCommon, action: z.literal("MANPOWER"), payload: manpowerInput.omit({ expectedVersion: true, reason: true }) }).strict(),
+  z.object({ ...offlineCommon, action: z.literal("REPORT"), payload: reportInput.omit({ expectedVersion: true, reason: true }) }).strict(),
+  z.object({ ...offlineCommon, action: z.literal("SNAG"), payload: snagInput.omit({ expectedVersion: true, reason: true }) }).strict(),
+  z.object({ ...offlineCommon, action: z.literal("PACKAGE_PROGRESS"), payload: progressInput.omit({ expectedVersion: true, reason: true }).extend({ recordId: uuid }).strict() }).strict()
+]);
+const offlinePhotoInput = z.object({ localId: uuid, folderId: uuid, fileName: text(1, 240), mimeType: text(1, 160), sizeBytes: z.number().int().positive(), reason }).strict();
 function parse<T>(schema: z.ZodType<T>, value: unknown): T { const result = schema.safeParse(value); if (!result.success) throw new BadRequestException("Invalid request"); return result.data; }
 function omitUndefined<T extends object>(value: T): { [K in keyof T]: Exclude<T[K], undefined> } {
   return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== undefined)) as { [K in keyof T]: Exclude<T[K], undefined> };
@@ -53,6 +62,8 @@ export class SiteController {
     return { ...actor, sessionId: active.row.id };
   }
   private noStore(response: Response) { response.setHeader("Cache-Control", "no-store"); }
+  @Post("projects/:id/offline-commands") async offlineCommand(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown, @Res({ passthrough: true }) response: Response) { this.noStore(response); return this.site.offlineCommand(await this.actor(request, true, csrf), parse(uuid, id), omitUndefined(parse(offlineInput, body)) as SiteOfflineCommand); }
+  @Post("projects/:id/offline-photos") async offlinePhoto(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown, @Res({ passthrough: true }) response: Response) { this.noStore(response); return this.site.offlinePhoto(await this.actor(request, true, csrf), parse(uuid, id), parse(offlinePhotoInput, body)); }
   @Get("projects") async list(@Req() request: Request, @Res({ passthrough: true }) response: Response) { this.noStore(response); return this.site.projects(await this.actor(request)); }
   @Get("projects/:id") async detail(@Req() request: Request, @Param("id") id: string, @Res({ passthrough: true }) response: Response) { this.noStore(response); return this.site.detail(await this.actor(request), parse(uuid, id)); }
   @Post("projects/:id/responsible") async responsible(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Body() body: unknown) { return this.site.responsible(await this.actor(request, true, csrf), parse(uuid, id), parse(responsibleInput, body)); }

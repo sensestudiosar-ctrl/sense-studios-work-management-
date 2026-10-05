@@ -51,7 +51,7 @@ describe("S20 site HTTP boundary draft", () => {
       ownerReady: jest.fn(async () => ready),
       verifyCsrf: jest.fn((active: { csrfToken: string }, supplied?: string) => { if (supplied !== active.csrfToken) throw new ForbiddenException("Request could not be verified"); })
     };
-    const methods = ["projects", "detail", "responsible", "createPackage", "progress", "completePackage", "manpower", "report", "confirmReport", "snag", "assignFixer", "startRepair", "readyRepair", "appointVerifier", "verify", "closeSnag", "handover"];
+    const methods = ["projects", "detail", "responsible", "createPackage", "progress", "completePackage", "manpower", "report", "confirmReport", "snag", "assignFixer", "startRepair", "readyRepair", "appointVerifier", "verify", "closeSnag", "handover", "offlineCommand", "offlinePhoto"];
     site = Object.fromEntries(methods.map((name) => [name, jest.fn(async () => ({ ok: true }))]));
     const config: RuntimeConfig = { nodeEnv: "test", port: 4000, databaseUrl: "postgresql://test:test@localhost:5432/test", webOrigin: origin, ownerBootstrapEmail: "owner@example.test", ownerBootstrapSecret: "b".repeat(48) };
     const module = await Test.createTestingModule({ controllers: [SiteController], providers: [
@@ -120,5 +120,22 @@ describe("S20 site HTTP boundary draft", () => {
       site[method]!.mockClear();
     }
     expect(cases).toHaveLength(15);
+  });
+  it("strictly parses supported offline command/photo envelopes under ordinary session, CSRF and origin guards", async () => {
+    const offline = { commandId: recordId, localId: projectId, baseRecordVersion: null, reason: "Capture factual site notes", action: "NOTE", payload: { note: "Observed curing", photoIds: [] } };
+    const path = `/projects/${projectId}/offline-commands`;
+    const accepted = await write(path, offline);
+    expect(accepted.status).toBe(201);
+    expect(accepted.headers["cache-control"]).toBe("no-store");
+    expect(site.offlineCommand).toHaveBeenCalledWith(expect.objectContaining({ accountId, sessionId: "session-id" }), projectId, offline);
+    for (const body of [{ ...offline, action: "VERIFY" }, { ...offline, commandId: "guessed" }, { ...offline, payload: { ...offline.payload, approved: true } }, { ...offline, baseRecordVersion: -1 }, { ...offline, expectedVersion: 0 }]) expect((await write(path, body)).status).toBe(400);
+    expect((await request(app.getHttpServer()).post(`/api/v1/site${path}`).set("Cookie", cookie).set("Origin", "https://foreign.test").set("x-csrf-token", token).send(offline)).status).toBe(403);
+    expect((await request(app.getHttpServer()).post(`/api/v1/site${path}`).set("Cookie", cookie).set("Origin", origin).send(offline)).status).toBe(403);
+    const photo = { localId: recordId, folderId: projectId, fileName: "site.png", mimeType: "image/png", sizeBytes: 64, reason: "Capture current site image" };
+    expect((await write(`/projects/${projectId}/offline-photos`, photo)).status).toBe(201);
+    expect(site.offlinePhoto).toHaveBeenCalledWith(expect.objectContaining({ accountId, sessionId: "session-id" }), projectId, photo);
+    expect((await write(`/projects/${projectId}/offline-photos`, { ...photo, confidential: true })).status).toBe(400);
+    validSession = false;
+    expect((await write(path, offline)).status).toBe(401);
   });
 });

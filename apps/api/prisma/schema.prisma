@@ -2527,6 +2527,23 @@ model WorkforceSelfie {
   @@map("workforce_selfies")
 }
 
+model SiteCommandReceipt {
+  commandId String @id @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  actorId String @db.Uuid
+  localId String @db.Uuid
+  action String @db.VarChar(30)
+  fingerprint String @db.Char(64)
+  recordId String @db.Uuid
+  recordVersion Int
+  workspaceVersion Int
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([actorId, projectId, localId])
+  @@map("site_command_receipts")
+}
+
 model SiteWorkspace {
   id String @id @default(uuid()) @db.Uuid
   organizationId String @db.Uuid

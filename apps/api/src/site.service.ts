@@ -8,6 +8,7 @@ import { WorkforceService } from "./workforce.service.js";
 import { recordProjectEvent } from "./project-events.js";
 import { localCalendarDate } from "./task-recurrence-policy.js";
 import type { ProjectActor } from "./project.service.js";
+import { createHash } from "node:crypto";
 
 type Tx = Prisma.TransactionClient;
 type Actor = ProjectActor & { sessionId?: string };
@@ -15,7 +16,20 @@ type Project = NonNullable<Awaited<ReturnType<Tx["project"]["findUnique"]>>>;
 type Workspace = NonNullable<Awaited<ReturnType<Tx["siteWorkspace"]["findUnique"]>>>;
 type RecordRow = NonNullable<Awaited<ReturnType<Tx["siteRecord"]["findUnique"]>>>;
 type Data = Record<string, unknown>;
-export type SiteCommand = { expectedVersion: number; reason: string };
+type OfflineContext = { commandId: string; localId: string; action: string; fingerprint: string; baseRecordVersion: number | null; projectId: string; photoIds: string[] };
+export type SiteCommand = { expectedVersion: number; reason: string; offline?: OfflineContext };
+export type SiteOfflineCommand = { commandId: string; localId: string; baseRecordVersion: number | null; reason: string } & (
+  { action: "NOTE"; payload: { note: string; photoIds: string[] } } |
+  { action: "MANPOWER"; payload: { date: string; trade: string; count: number; employeeAccountIds: string[]; note: string } } |
+  { action: "REPORT"; payload: SiteReportInput } |
+  { action: "SNAG"; payload: { title: string; description: string; packageId?: string; photoIds: string[] } } |
+  { action: "PACKAGE_PROGRESS"; payload: SiteProgressInput & { recordId: string } }
+);
+function canonical(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
+  if (value && typeof value === "object") return `{${Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}`;
+  return JSON.stringify(value);
+}
 export type SitePackageInput = { title: string; date: string; tomorrowPlan: string; plannedPercent: string; plannedQuantity: string; unit: string; critical: boolean; releaseId?: string };
 export type SiteProgressInput = { actualPercent: string; actualQuantity: string; qualityStatus: "PENDING" | "PASSED" | "FAILED"; materialStatus: string; blockers: string; tomorrowPlan: string; photoIds: string[] };
 export type SiteReportInput = { date: string; workCompleted: string; manpower: Array<{ trade: string; count: number }>; materialsReceived: string; photoIds: string[]; issues: string; delayCauses: string; tomorrowPlan: string; supersedesReportId?: string };
@@ -32,6 +46,30 @@ function date(value: string) { if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || !Number
 @Injectable()
 export class SiteService {
   constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly documents: DocumentService, private readonly turnkey: TurnkeyService, private readonly workforce: WorkforceService) {}
+  async offlineCommand(actor: Actor, projectId: string, input: SiteOfflineCommand) {
+    if ((input.action === "PACKAGE_PROGRESS") !== (input.baseRecordVersion !== null) || input.baseRecordVersion !== null && (!Number.isInteger(input.baseRecordVersion) || input.baseRecordVersion < 1)) throw new BadRequestException("Progress requires its base record version; new evidence has no base version");
+    const offline: OfflineContext = { ...input, projectId, photoIds: "photoIds" in input.payload ? input.payload.photoIds : [], fingerprint: createHash("sha256").update(canonical(input)).digest("hex") };
+    const common = { expectedVersion: 0, reason: input.reason, offline };
+    switch (input.action) {
+      case "NOTE": return this.write(actor, projectId, common, async (tx, project, workspace) => {
+        await this.access(tx, actor, project, "site.work", true);
+        return { id: (await this.save(tx, actor, workspace, "NOTE", "RECORDED", { note: input.payload.note, photoEvidence: await this.photos(tx, actor, projectId, input.payload.photoIds) }, input.reason)).row.id };
+      });
+      case "MANPOWER": return this.manpower(actor, projectId, { ...input.payload, ...common });
+      case "REPORT": return this.report(actor, projectId, { ...input.payload, ...common });
+      case "SNAG": return this.snag(actor, projectId, { ...input.payload, ...common });
+      case "PACKAGE_PROGRESS": return this.progress(actor, input.payload.recordId, { ...input.payload, ...common });
+    }
+  }
+  async offlinePhoto(actor: Actor, projectId: string, input: { localId: string; folderId: string; fileName: string; mimeType: string; sizeBytes: number; reason: string }) {
+    return this.transaction(async tx => {
+      const project = await this.project(tx, actor, projectId, true);
+      await this.access(tx, actor, project, "site.work", true);
+      const manifest = await this.documents.startOfflinePhoto(tx, actor, projectId, input);
+      await this.access(tx, actor, project, "site.work", true);
+      return manifest;
+    });
+  }
   private transaction<T>(work: (tx: Tx) => Promise<T>) { return this.database.prisma.$transaction(work, { timeout: 30_000 }); }
   /** PORT public boundary: only named package facts; no staff, reports, attendance or finance. */
   async externalPackages(tx: Tx, projectId: string, packageIds: string[]) {
@@ -149,10 +187,22 @@ export class SiteService {
       await this.actor(tx, actor);
       const project = await this.project(tx, actor, projectId, true);
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${actor.organizationId + ':site:' + projectId},0))`;
+      if (input.offline) await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${"site-command:" + input.offline.commandId},0))`;
       await this.access(tx, actor, project, "site.view", true);
+      if (input.offline) {
+        await this.access(tx, actor, project, "site.work", true);
+        if (input.offline.projectId !== projectId) throw new ForbiddenException("Offline record must belong to this project");
+        const prior = await tx.siteCommandReceipt.findFirst({ where: { OR: [{ commandId: input.offline.commandId }, { actorId: actor.accountId, projectId, localId: input.offline.localId }] } });
+        if (prior) {
+          if (prior.commandId !== input.offline.commandId || prior.actorId !== actor.accountId || prior.organizationId !== actor.organizationId || prior.projectId !== projectId || prior.localId !== input.offline.localId || prior.action !== input.offline.action || prior.fingerprint !== input.offline.fingerprint) throw new ConflictException("Offline identifier already belongs to different content");
+          await this.photos(tx, actor, projectId, input.offline.photoIds);
+          await this.access(tx, actor, project, "site.work", true);
+          return { id: prior.recordId, version: prior.workspaceVersion, recordVersion: prior.recordVersion, replayed: true };
+        }
+      }
       await tx.$queryRaw`SELECT id FROM site_workspaces WHERE "projectId"=${projectId}::uuid FOR UPDATE`;
       let workspace = await tx.siteWorkspace.findUnique({ where: { projectId } });
-      if ((workspace?.version ?? 0) !== input.expectedVersion) throw new ConflictException("Site changed. Refresh and retry");
+      if (!input.offline && (workspace?.version ?? 0) !== input.expectedVersion) throw new ConflictException("Site changed. Refresh and retry");
       if (!workspace) {
         workspace = await tx.siteWorkspace.create({ data: { organizationId: actor.organizationId, projectId } });
         await this.history(tx, actor, workspace, "site_workspace", workspace.id, workspace.version, { projectId, id: workspace.id, version: workspace.version, responsibleAccountId: null }, input.reason);
@@ -161,6 +211,13 @@ export class SiteService {
       const updated = await tx.siteWorkspace.update({ where: { id: workspace.id, version: workspace.version }, data: { version: { increment: 1 }, ...(result.responsibleAccountId ? { responsibleAccountId: result.responsibleAccountId } : {}) } });
       await this.history(tx, actor, updated, "site_workspace", updated.id, updated.version, { projectId, id: updated.id, version: updated.version, responsibleAccountId: updated.responsibleAccountId }, input.reason);
       await this.access(tx, actor, project, "site.view", true);
+      if (input.offline) {
+        await this.access(tx, actor, project, "site.work", true);
+        const record = await tx.siteRecord.findUniqueOrThrow({ where: { id: result.id } });
+        const history = await tx.siteHistory.findUniqueOrThrow({ where: { subjectId_subjectVersion: { subjectId: result.id, subjectVersion: record.version } } });
+        await tx.siteCommandReceipt.create({ data: { commandId: input.offline.commandId, localId: input.offline.localId, action: input.offline.action, fingerprint: input.offline.fingerprint, organizationId: actor.organizationId, projectId, actorId: actor.accountId, recordId: record.id, recordVersion: record.version, workspaceVersion: updated.version, eventId: history.eventId } });
+        return { id: result.id, version: updated.version, recordVersion: record.version, replayed: false };
+      }
       return { id: result.id, version: updated.version };
     });
   }
@@ -170,6 +227,7 @@ export class SiteService {
     return this.write(actor, preview.projectId, input, async (tx, project, workspace) => {
       const row = await tx.siteRecord.findFirst({ where: { id, workspaceId: workspace.id, kind } });
       if (!row) throw new NotFoundException("Site record not found");
+      if (input.offline && row.version !== input.offline.baseRecordVersion) throw new ConflictException({ message: "Site record changed. Compare local and server values", code: "SITE_RECORD_CONFLICT", record: await this.visible(tx, actor, { id: row.id, version: row.version, state: row.state, data: row.data }) });
       return run(tx, project, workspace, row);
     });
   }
@@ -197,7 +255,7 @@ export class SiteService {
         const data = object(row.data), fixer = string(data, "fixerAccountId") === actor.accountId, verifier = string(data, "verifierAccountId") === actor.accountId;
         snags.push({ ...row, capabilities: { assign: active && manage && ["OPEN", "ASSIGNED", "IN_PROGRESS"].includes(row.state), start: active && fixer && work && row.state === "ASSIGNED", ready: active && fixer && work && row.state === "IN_PROGRESS", appointVerifier: active && manage && commonStates.has(row.state), verify: active && verifier && !fixer && row.state === "READY_FOR_VERIFICATION", close: active && manage && row.state === "VERIFIED" }, attempts: await tx.siteVerificationAttempt.findMany({ where: { snagId: row.id }, orderBy: { repairGeneration: "asc" } }), history: history.filter(item => item.subjectId === row.id) });
       }
-      const result = { project: { id: project.id, title: project.title, status: project.status }, version: workspace?.version ?? 0, today, tomorrow, responsible: people.find(person => person.accountId === workspace?.responsibleAccountId) ?? null, people, capabilities: { manage: active && manage, work: active && work, confirm: active && workspace?.responsibleAccountId === actor.accountId, handover: active && manage }, packages: rows.filter(row => row.kind === "PACKAGE"), manpower: rows.filter(row => row.kind === "MANPOWER"), reports: rows.filter(row => row.kind === "REPORT"), snags, handovers: rows.filter(row => row.kind === "HANDOVER"), history, materials: await this.turnkey.siteMaterials(tx, actor, project.id), workforce: active ? await this.workforce.siteAttendance(tx, actor, project.id, today) : { attendance: [], count: 0 } };
+      const result = { project: { id: project.id, title: project.title, status: project.status }, version: workspace?.version ?? 0, today, tomorrow, responsible: people.find(person => person.accountId === workspace?.responsibleAccountId) ?? null, people, capabilities: { manage: active && manage, work: active && work, confirm: active && workspace?.responsibleAccountId === actor.accountId, handover: active && manage }, packages: rows.filter(row => row.kind === "PACKAGE"), manpower: rows.filter(row => row.kind === "MANPOWER"), reports: rows.filter(row => row.kind === "REPORT"), notes: rows.filter(row => row.kind === "NOTE"), snags, handovers: rows.filter(row => row.kind === "HANDOVER"), history, materials: await this.turnkey.siteMaterials(tx, actor, project.id), workforce: active ? await this.workforce.siteAttendance(tx, actor, project.id, today) : { attendance: [], count: 0 } };
       const visible = await this.visible(tx, actor, result); await this.access(tx, actor, project); return visible;
     });
   }

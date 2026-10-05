@@ -81,7 +81,19 @@ export class DocumentService {
       const folders = await tx.documentFolder.findMany({ where: { organizationId: actor.organizationId, projectId }, orderBy: [{ logicalPath: "asc" }, { id: "asc" }] });
       const visible = [];
       for (const row of folders) {
-        try { await this.folder(tx, access, row.id); visible.push({ id: row.id, name: row.name, parentId: row.parentId, confidential: row.confidential, provisionState: row.provisionState, provisionError: row.provisionError }); }
+        try {
+          await this.folder(tx, access, row.id);
+          let ancestor: typeof row | undefined = row;
+          let offlineUploadAllowed = row.provisionState === DocumentProvisionState.READY;
+          let depth = 0;
+          while (ancestor) {
+            if (++depth > 20 || ancestor.confidential) { offlineUploadAllowed = false; break; }
+            const parentId: string | null = ancestor.parentId;
+            ancestor = parentId ? folders.find(item => item.id === parentId) : undefined;
+            if (parentId && !ancestor) offlineUploadAllowed = false;
+          }
+          visible.push({ id: row.id, name: row.name, parentId: row.parentId, confidential: row.confidential, offlineUploadAllowed, provisionState: row.provisionState, provisionError: row.provisionError });
+        }
         catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
       }
       const documents = await tx.document.findMany({ where: { organizationId: actor.organizationId, projectId }, include: { blobs: { orderBy: [{ createdAt: "asc" }, { id: "asc" }] } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }] });
@@ -210,6 +222,33 @@ export class DocumentService {
     const blob = await this.db.fileBlobMetadata.findFirst({ where: { id: blobId, organizationId: actor.organizationId }, include: { document: true } });
     if (!blob) throw new NotFoundException("File not found");
     return { id: blob.documentId, folderId: blob.document.folderId, fileName: blob.fileName, mimeType: blob.mimeType, sizeBytes: Number(blob.sizeBytes), sha256: blob.sha256, confidential: blob.document.confidential, viewOnly: blob.document.viewOnly, createdAt: blob.createdAt };
+  }
+  /** SITE port: create/replay an exact newly captured image manifest inside the caller's authorization transaction. */
+  async startOfflinePhoto(tx: Tx, actor: ProjectActor, projectId: string, input: { localId: string; folderId: string; fileName: string; mimeType: string; sizeBytes: number; reason: string }) {
+    const file = validateDocumentFile(input.fileName, input.mimeType, input.sizeBytes, this.config.documentMaxFileBytes ?? DOCUMENT_MAX_BYTES);
+    if (!["png", "jpg", "jpeg", "gif", "webp"].includes(file.extension)) throw new BadRequestException("Offline capture supports images only");
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${"site-photo:" + input.localId},0))`;
+    const access = await this.access(tx, actor, projectId, "document.upload", true);
+    await tx.$queryRaw`SELECT id FROM document_folders WHERE "projectId"=${projectId}::uuid FOR SHARE`;
+    const folder = await this.folder(tx, access, input.folderId);
+    let ancestor: typeof folder | null = folder;
+    let depth = 0;
+    while (ancestor) {
+      if (++depth > 20) throw new ConflictException("Folder hierarchy is invalid");
+      if (ancestor.confidential) throw new ForbiddenException("Offline photo capture cannot target Confidential folders");
+      const parentId: string | null = ancestor.parentId;
+      ancestor = parentId ? await tx.documentFolder.findFirst({ where: { id: parentId, projectId, organizationId: actor.organizationId } }) : null;
+      if (parentId && !ancestor) throw new ConflictException("Folder hierarchy is invalid");
+    }
+    if (folder.provisionState !== DocumentProvisionState.READY) throw new ConflictException("Folder is not ready on storage");
+    const prior = await tx.documentUpload.findUnique({ where: { id: input.localId } });
+    if (prior) {
+      if (prior.organizationId !== actor.organizationId || prior.actorId !== actor.accountId || prior.projectId !== projectId || prior.folderId !== input.folderId || prior.fileName !== file.fileName || prior.mimeType !== file.mimeType || prior.sizeBytes !== BigInt(input.sizeBytes) || prior.confidential || prior.viewOnly || prior.reason !== input.reason) throw new ConflictException("Photo identifier belongs to different content");
+      if (prior.state === DocumentUploadState.ABORTED || prior.state === DocumentUploadState.STAGING && prior.expiresAt <= new Date()) throw new ConflictException("Photo upload expired; capture again with a new identifier");
+      return { uploadId: prior.id, chunkSize: prior.chunkSize };
+    }
+    const row = await tx.documentUpload.create({ data: { id: input.localId, organizationId: actor.organizationId, projectId, folderId: folder.id, actorId: actor.accountId, fileName: file.fileName, mimeType: file.mimeType, sizeBytes: BigInt(input.sizeBytes), chunkSize: DOCUMENT_CHUNK_SIZE, chunkCount: Math.ceil(input.sizeBytes / DOCUMENT_CHUNK_SIZE), confidential: false, viewOnly: false, reason: input.reason, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) } });
+    return { uploadId: row.id, chunkSize: row.chunkSize };
   }
   /** PORT public boundary: exact non-Confidential metadata; caller holds fresh external grant locks. */
   async externalRevision(tx: Tx, projectId: string, revisionId: string) {
