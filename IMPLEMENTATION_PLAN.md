@@ -1,5 +1,9 @@
 # Approved dependency-based implementation plan — S01–S09 complete for development/local staging; S10 complete for development/local staging
 
+## S23 Owner authorization — 2026-10-05
+
+The Owner instructed starting and completing S23 and approved the configuration/evidence/scope/finalization boundaries in S23_SPEC.md. It expands R-061.a–c/R-062.a–b/R-063.a–d/R-064.a–b/R-065.a–b/R-066.a–b/R-067.a–b/C-005.a–c, dependencies, scope and acceptance/test plan. S23 is AUTHORIZED / IN PROGRESS; no acceptance is yet claimed. The historical S16–S20 dependency range does not authorize S18 integration. Scores require explicit Owner-entered/approved policies. S24–S27 remain unauthorized and retained S22 work/data is preserved.
+
 ## S15 acceptance-discovered S06 CRM correction — 2026-10-01
 
 R-010.a–d/S06 existing persisted lead creation and pipeline presentation: in scope is preventing a superseded CRM setup response from invalidating the current branch-list generation while lead creation refreshes the list. A retained browser trace reproduced successful creation (HTTP 201) and a populated list response (one lead), followed by the UI retaining an empty list because the late duplicate setup response changed the branch generation. Out of scope: CRM permissions, workflow/stage rules, schema, backend writes and other UI refactoring. Dependency: existing S06 CRM setup/list and React lifecycle. Acceptance: only the current setup response updates setup state; created persisted leads appear after refresh; branch/detail isolation guards remain intact. Verify with a deferred duplicate-response UI regression, web unit/type/lint/build checks and final desktop/mobile browser acceptance. This discovered defect is recorded separately from R-040.a–c.

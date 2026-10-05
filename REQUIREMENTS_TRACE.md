@@ -23,7 +23,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-002 | Approved Q1–Q15 answers, further specified by C-003–C-024 | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED; Q1/Q15 implemented in S03; remaining owner policies belong to later slices |
 | C-003 | Q8 category retention durations; C-009 fixes clock and expiry policy; legal/contract validation remains a release gate | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED; S04 audit retention controls COMPLETE for development/local staging; legal/contract/backup validation is a production gate; other categories later |
 | C-004 | Branch leave-year, credit, proration, carry-forward and expiry | WFM | S17 | APPROVED; implemented and verified in S17 for development/local staging. See S17_COMPLETION_REPORT.md. |
-| C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | APPROVED; NOT IMPLEMENTED |
+| C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | AUTHORIZED / IN PROGRESS; implemented configuration/no-score/prospective version gates, acceptance pending in S23_SPEC.md |
 | C-006 | Owner-issued file-specific native CAD links for assigned vendors/consultants | DOC/PORT/ACC | S11/S21 | S21 COMPLETE for development/local staging: Owner-only coded seven-day native links, encrypted details and manual revocation evidence; MinisCloud production validation remains open |
 | C-007 | Nightly encrypted database-and-file backup to separate offsite computer/NAS; one-day loss target | FND/DOC | S01/S11 | APPROVED; NOT IMPLEMENTED |
 | C-008 | Staff passkeys, external email codes, client approval passkey, Brevo and launch channels | IDN/PORT/NTF | S02/S04/S14 | S02 staff passkeys and S14 CLIENT email-code/passkey flows COMPLETE for development/local staging; Brevo delivery, domain authentication, plan limits and outage fallback remain pre-launch validation gates per S14_SPEC.md |
@@ -103,13 +103,13 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-058 | NOTIFICATIONS | NTF | S04/S24 | S04 core in-app/email, verified-mailbox, preference, quiet-hours and delivery foundation COMPLETE for development/local staging; S03 events remain notification-neutral pending later event recipient/template definitions; push later |
 | R-059 | REMINDERS & ESCALATION | NTF | S04/S24 | S04 shared event/delivery foundation COMPLETE; reminder schedules and escalation behavior remain S24, NOT STARTED |
 | R-060 | SCHEDULED SUMMARIES | NTF | S04/S24 | S24 delivery behavior NOT STARTED; S04 establishes shared event/delivery foundation |
-| R-061 | EMPLOYEE PERFORMANCE | PER | S23 | NOT STARTED |
-| R-062 | FAIR PERFORMANCE | PER | S23 | NOT STARTED |
-| R-063 | PERFORMANCE EXPLAINABILITY | PER | S23 | NOT STARTED |
-| R-064 | TEAM LEADER PERFORMANCE | PER | S23 | NOT STARTED |
-| R-065 | PERFORMANCE REVIEW CYCLES | PER | S23 | NOT STARTED |
-| R-066 | PROJECT HEALTH | HLT | S23 | NOT STARTED |
-| R-067 | DELAY ATTRIBUTION | HLT | S23 | NOT STARTED |
+| R-061 | EMPLOYEE PERFORMANCE | PER | S23 | IN PROGRESS; available real-source role-group formulas and quality/low-weight safeguards implemented, acceptance pending |
+| R-062 | FAIR PERFORMANCE | PER | S23 | IN PROGRESS; historical approved deadline and Owner-reviewed residual external-duration exclusions implemented, acceptance pending |
+| R-063 | PERFORMANCE EXPLAINABILITY | PER | S23 | IN PROGRESS; retained exact evidence, changes/trends, goals/actions and scoped own/management views implemented; S18 suggestions explicitly unavailable; acceptance pending |
+| R-064 | TEAM LEADER PERFORMANCE | PER | S23 | IN PROGRESS; separate personally controlled leader evidence and current scopes implemented, acceptance pending |
+| R-065 | PERFORMANCE REVIEW CYCLES | PER | S23 | IN PROGRESS; weekly/monthly/quarterly/annual cycles, comments/goals/actions, own acknowledgement and Owner finalization implemented, acceptance pending |
+| R-066 | PROJECT HEALTH | HLT | S23 | IN PROGRESS; separate Design/Turnkey formulas, status and real-source operational health evidence implemented, acceptance pending |
+| R-067 | DELAY ATTRIBUTION | HLT | S23 | IN PROGRESS; explicit Owner-reviewed exact-source cause/duration and retained corrections implemented, acceptance pending |
 | R-068 | SITE OPERATIONS | SITE | S20 | NOT STARTED |
 | R-069 | DAILY SITE REPORT | SITE | S20 | NOT STARTED |
 | R-070 | SITE PROGRESS | SITE | S20 | NOT STARTED |

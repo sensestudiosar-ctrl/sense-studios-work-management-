@@ -110,6 +110,22 @@ export class WorkforceService {
     const capacity = Math.max(0, scheduled - used); const thresholds = policy ? (policy.data as unknown as Policy).thresholds : undefined;
     return { employeeId, date, policyId:policy?.id??null, scheduledMinutes: scheduled, leaveMinutes: used,wfhMinutes,expectedLocation:wfhMinutes>0?"REMOTE":"SCHEDULED", allocatedMinutes: allocated, availableMinutes: Math.max(0, capacity - allocated), capacityMinutes: capacity, category: workloadCategory(allocated, capacity, thresholds), affectedTasks, thresholds };
   }
+  /** Schedule-derived workload evidence, with the same current workforce subject authority. */
+  async performanceCapacityEvidence(tx: Tx, actor: ProjectActor, employeeId: string, date: string) {
+    dateValue(date);
+    await this.subject(tx, actor, employeeId);
+    const schedule = await this.schedule(tx, actor.organizationId, employeeId, date);
+    if (!schedule) return null;
+    const capacity = await this.capacity(tx, actor.organizationId, employeeId, date);
+    if (!capacity.policyId || !capacity.thresholds) return null;
+    await this.subject(tx, actor, employeeId);
+    return {
+      employeeId, date, policyId: capacity.policyId,
+      scheduledMinutes: capacity.scheduledMinutes, capacityMinutes: capacity.capacityMinutes,
+      allocatedMinutes: capacity.allocatedMinutes, availableMinutes: capacity.availableMinutes,
+      category: capacity.category, thresholds: capacity.thresholds,
+    };
+  }
   async savePolicy(actor: ProjectActor, input: Policy & Command) {
     return this.command(actor, input, "policy", input, async tx => { await this.owner(tx, actor); if (!await tx.branch.findFirst({ where: { id: input.branchId, organizationId: actor.organizationId } })) throw new ForbiddenException("Branch unavailable");
       if (!input.types.length || new Set(input.types.map(t => t.key)).size !== input.types.length || input.types.some(t => !t.approvalLevels.length || t.approvalLevels.length > 2 || new Set(t.approvalLevels).size !== t.approvalLevels.length || t.key === "WFH" && t.consumesBalance)) throw new BadRequestException("Configure distinct leave types and approval levels; WFH never debits leave");

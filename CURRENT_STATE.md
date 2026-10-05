@@ -1,5 +1,9 @@
 # Current state
 
+## S23 Owner authorization — 2026-10-05
+
+S23 is **AUTHORIZED / IN PROGRESS** under the Owner instruction to start and complete S23. S23_SPEC.md expands R-061–R-067/C-005, approved configuration/evidence/authority boundaries and acceptance. Owner explicitly approved configurable role groups/formulas/weights/thresholds with no score before approval, insufficient-evidence handling, Owner-reviewed cause/duration/source delay exclusions, current Team Leader scopes, Owner-only cycle finalization and unavailable S18 metrics. No S23 acceptance is claimed yet. S18 remains unresolved/excluded and S24–S27 remain unauthorized. Retained S22 work/data and its separately disclosed local postgres incident are preserved. Earlier S23-unauthorized wording is superseded only for S23.
+
 ## S22 final local acceptance — 2026-10-05
 
 S22 is **COMPLETE for development/local staging** under the Owner's 2026-10-04 start-and-complete instruction. Final pinned Node 24.19.0/pnpm 11.19.0 `pnpm verify` exited 0: typecheck, lint, 176 API unit, 128 web unit, 247 PostgreSQL integration across 45 suites, production builds and all 41 desktop/mobile browser cases passed without skips or retries. All 97 migrations are current on 13 accepted targets; the genuinely populated retained S21 clone preserved all 133 original-table column/count/digest snapshots, comprising 15,474 rows across 51 populated tables. Sol accepted source/security and six refreshed canonical desktop/mobile captures. S22_SPEC.md/S22_API_CONTRACT.md define supported offline images/notes/manpower/report drafts/OPEN snags/factual progress, stable receipts and explicit conflict resolution; time information/native wrappers remain deferred. S20/S21 and original data remain preserved; S18 unresolved/excluded and S23–S27 unauthorized.

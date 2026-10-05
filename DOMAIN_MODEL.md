@@ -1,5 +1,9 @@
 # Domain model — S01–S13 complete for development/local staging
 
+## S23 implemented entities — acceptance pending
+
+PerformanceRecord owns typed POLICY/ASSIGNMENT/SCORE/HEALTH/DELAY/CYCLE data, organization/subject scope and current version. PerformanceVersion freezes each state/payload/reason/actor with its canonical domain event; PerformanceReceipt retains the original actor/command/fingerprint/result for replay after current authorization. Approved policy, dated group mapping, scores/health and attributions are immutable; changed definitions/mappings/attributions append new evidence. Cycle history retains manager comments/goals/actions, Owner-only finalization and employee-owned append-only acknowledgements. Score snapshots retain raw metric values, explicit normalization/weights, exact policy/source IDs/versions, exclusions, explanation/change/trend evidence and truthful insufficient-evidence states. Training/skills/SOP inputs remain unavailable under the Owner's explicit S18 exclusion. Historical formulas/scores are never silently rewritten; periods crossing approved policy/group changes require separate snapshots. See S23_SPEC.md for pending acceptance.
+
 ## S22 offline entities — COMPLETE for development/local staging
 
 SiteCommandReceipt binds one organization/project/actor/local command identity and immutable fingerprint to one canonical SITE mutation result/version/event. Exact replay returns the original result after current authorization. Independent NOTE SiteRecords retain notes and exact photo references without replacing package/report/snag evidence. The browser stores account-bound OfflineCommand/OfflineContext with stable command/local/photo IDs and package base versions; local pending/uploading/syncing/conflict/error states are presentation evidence, never server approvals. Existing DocumentUpload owns image staging and immutable finalized blobs. S22_SPEC.md and S22_API_CONTRACT.md define the phased scope.

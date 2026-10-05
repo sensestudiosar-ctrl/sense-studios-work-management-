@@ -1,5 +1,9 @@
 # Implementation status
 
+## Current S23 authorization — 2026-10-05
+
+S23 is AUTHORIZED / IN PROGRESS under the Owner start-and-complete instruction. S23_SPEC.md records expanded IDs, scope/dependencies, settled policy/evidence/authority choices and tests. Initial Owner policy setup/approval gates all scores; no S23 acceptance is yet claimed. S18 remains excluded; S24–S27 remain unauthorized. Earlier S23-unauthorized wording is superseded only for this slice.
+
 ## Current S22 acceptance — 2026-10-05
 
 S22 is COMPLETE for development/local staging under the Owner's 2026-10-04 start-and-complete instruction. Final pinned `pnpm verify` exited 0: typecheck/lint/build, 176 API unit, 128 web unit, 247 PostgreSQL integration and 41 desktop/mobile browser cases. All 97 migrations are current on 13 accepted targets; 133 original-table snapshots preserve 15,474 rows across 51 populated tables in the retained S21 upgrade. Source/security and six refreshed captures passed Sol acceptance. S22_COMPLETION_REPORT.md discloses the separately unintended `postgres` admin-database migration and unresolved cleanup; the original S21 source is unchanged. Historical unauthorized wording is superseded only for S22. S18 remains unresolved/excluded, S23–S27 unauthorized and production gates unverified.
@@ -31,7 +35,8 @@ Architecture approved at checkpoint 2e46805. S01–S15 are COMPLETE for developm
 | S20 Site progress, reports and snags | COMPLETE — development/local staging, 2026-10-04 | R-068–R-070/C-020/C-021 implemented with responsible-person reports, versioned site evidence, independent verification, separate management closure and gated site handover. Integrated dependencies accepted first. Final pinned pnpm verify exited 0: 172 API unit, 112 web unit, 220 PostgreSQL integration/42 suites, 37 desktop/mobile browser cases; typecheck/lint/build passed. All 90 migrations current, 108 retained original-table snapshots preserved, Sol security/visual acceptance passed. R-105 actual-project checkpoint and production gates remain unverified; see S20_COMPLETION_REPORT.md. |
 | S21 | COMPLETE — development/local staging, 2026-10-04 | Isolated EXTERNAL identity and exact advisory/transmittal/native-share/cancellation/closeout workflows accepted. Final pinned pnpm verify exited 0: typecheck/lint/build, 176 API unit, 122 web unit, 237 PostgreSQL integration/44 suites and 39 desktop/mobile browser cases. All 95 migrations current; 125 original-table snapshots preserved; six refreshed captures passed Sol security/visual acceptance. See S21_COMPLETION_REPORT.md for evidence and production limits. |
 | S22 | COMPLETE — development/local staging, 2026-10-05 | Phased offline capture, idempotent receipts and explicit conflicts accepted. Final pinned pnpm verify exited 0: 176 API unit, 128 web unit, 247 PostgreSQL integration and 41 desktop/mobile browser cases, typecheck/lint/build. All 97 migrations current on 13 accepted targets; 133 snapshots/15,474 rows preserved and six refreshed captures accepted. See S22_COMPLETION_REPORT.md for the separately unintended local postgres migration and production limits. |
-| S23–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
+| S23 | AUTHORIZED / IN PROGRESS, 2026-10-05 | Owner instructed start and complete; approved boundaries and acceptance plan are in S23_SPEC.md. No acceptance claimed yet. |
+| S24–S27 | NOT STARTED / UNAUTHORIZED | Later slices remain outside current authorization. |
 
 ## Release status
 
@@ -42,7 +47,7 @@ Architecture approved at checkpoint 2e46805. S01–S15 are COMPLETE for developm
 | Release 2 design control | S11–S15 | S11–S15 COMPLETE for development/local staging | S11–S15 acceptance is recorded in their completion reports. See S15_COMPLETION_REPORT.md. |
 | Release 3 workforce | S16–S18 | S16/S17 COMPLETE for integrated development/local staging; S18 scope conflict remains unresolved/excluded | Combined S16/S17/S19 dependency acceptance passed before S20 implementation; subsequent S20/S21 aggregate gates passed. See CURRENT_STATE.md and S20_COMPLETION_REPORT.md. |
 | Release 4 Turnkey/site/portals | S19–S22 | S19–S22 COMPLETE for development/local staging | Turnkey/site, external portals and phased offline aggregate acceptance passed, including integrated S17 dependencies. S22_COMPLETION_REPORT.md records exact acceptance and the separate local verification incident; production gates remain unverified. |
-| Release 5 intelligence | S23–S24 | NOT STARTED | Depends on earlier slices. |
+| Release 5 intelligence | S23–S24 | S23 AUTHORIZED / IN PROGRESS; S24 NOT STARTED | S23_SPEC.md records dependency/policy gates; S18 remains excluded. |
 | Release 6 integration/automation | S25–S26 | NOT STARTED | Depends on earlier slices. |
 | Later AI | S27 | NOT STARTED | Depends on earlier slices. |
 

@@ -38,6 +38,20 @@ export class ApprovalService {
   private readonly handlers = new Map<string, ApprovalHandler>();
   constructor(private readonly database: DatabaseService) {}
 
+  /** Owning-handler visibility for a retained approval reference, without exposing its payload. */
+  async canReadEvidence(tx: Prisma.TransactionClient, actor: ApprovalActor, requestId: string): Promise<boolean> {
+    try {
+      await this.assertActor(tx, actor);
+      const request = await tx.approvalRequest.findFirst({ where: { id: requestId, organizationId: actor.organizationId } });
+      if (!request) return false;
+      const handler = this.handlers.get(request.typeKey);
+      return !!handler && await handler.canView(tx, actor, request);
+    } catch (error) {
+      if (error instanceof ForbiddenException || error instanceof NotFoundException) return false;
+      throw error;
+    }
+  }
+
   registerHandler(handler: ApprovalHandler): void {
     if (!/^[a-z][a-z0-9_.-]{1,119}$/.test(handler.typeKey)) throw new Error("Invalid approval type key");
     if (this.handlers.has(handler.typeKey)) throw new Error(`Approval handler already registered: ${handler.typeKey}`);

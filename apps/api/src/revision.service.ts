@@ -19,6 +19,23 @@ const evidenceFields = (revision: Revision) => ({ projectId: revision.projectId,
 export class RevisionService {
   constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly documents: DocumentService) {}
   private get db() { return this.database.prisma; }
+  /** Read-only exact-revision evidence authorization inside the caller's transaction. */
+  async canReadRevisionEvidence(tx: Tx, actor: ProjectActor, revisionId: string): Promise<boolean> {
+    try {
+      const revision = await tx.documentRevision.findFirst({ where: { id: revisionId, organizationId: actor.organizationId } });
+      if (!revision) return false;
+      await this.project(tx, actor, revision.projectId);
+      const file = await this.documents.authorizeFile(tx, actor, revision.fileId);
+      if (file.document.projectId !== revision.projectId) return false;
+      const blob = await tx.fileBlobMetadata.findFirst({ where: {
+        id: revision.blobId, organizationId: actor.organizationId, documentId: revision.fileId,
+      } });
+      return !!blob && blob.sha256 === revision.sha256;
+    } catch (error) {
+      if (error instanceof ForbiddenException || error instanceof NotFoundException) return false;
+      throw error;
+    }
+  }
   private transaction<T>(callback: (tx: Tx) => Promise<T>): Promise<T> {
     return this.db.$transaction(callback, { timeout: 30_000 }).catch((error: unknown) => {
       if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") throw new ConflictException("Drawing or file revision already exists. Refresh and retry");

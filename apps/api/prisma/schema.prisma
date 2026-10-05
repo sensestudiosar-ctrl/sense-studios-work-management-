@@ -2527,6 +2527,51 @@ model WorkforceSelfie {
   @@map("workforce_selfies")
 }
 
+model PerformanceRecord {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  kind String @db.VarChar(24)
+  state String @db.VarChar(24)
+  version Int @default(1)
+  employeeId String? @db.Uuid
+  projectId String? @db.Uuid
+  data Json
+  createdById String @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  @@unique([id, organizationId])
+  @@index([organizationId, kind, employeeId, createdAt])
+  @@index([organizationId, kind, projectId, createdAt])
+  @@map("performance_records")
+}
+
+model PerformanceVersion {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  recordId String @db.Uuid
+  version Int
+  state String @db.VarChar(24)
+  data Json
+  reason String @db.VarChar(1000)
+  actorId String @db.Uuid
+  eventId String @unique @db.Uuid
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([recordId, version])
+  @@map("performance_versions")
+}
+
+model PerformanceReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  commandId String @db.Uuid
+  payloadHash String @db.Char(64)
+  result Json
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  @@unique([actorId, commandId])
+  @@map("performance_receipts")
+}
+
 model SiteCommandReceipt {
   commandId String @id @db.Uuid
   organizationId String @db.Uuid

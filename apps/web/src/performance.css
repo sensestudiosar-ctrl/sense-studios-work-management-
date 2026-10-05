@@ -1,0 +1,55 @@
+.performance { box-sizing: border-box; width: 100%; max-width: 1280px; min-width: 0; }
+.performance *, .performance *::before, .performance *::after { box-sizing: border-box; }
+.performance input:not([type="checkbox"]), .performance select, .performance textarea { width: 100%; max-width: 100%; min-width: 0; }
+.performance button { max-width: 100%; }
+.performance h1, .performance p, .perf-snapshot, .perf-cycle, .perf-delay, .perf-policy-list article { min-width: 0; overflow-wrap: anywhere; }
+.perf-heading, .perf-heading > div, .perf-tabs, .perf-toolbar, .perf-snapshot > header, .perf-cycle > header { display: flex; align-items: center; gap: 1rem; }
+.perf-heading, .perf-snapshot > header, .perf-cycle > header { justify-content: space-between; }
+.perf-heading { margin-bottom: 1.25rem; }
+.perf-heading h1 { margin: .2rem 0; }
+.perf-heading p, .perf-panel > p, .perf-owner > p { color: #586174; }
+.perf-tabs { border-bottom: 1px solid #d9deea; margin: 1rem 0; }
+.perf-tabs button { background: transparent; color: #344054; border-radius: .5rem .5rem 0 0; }
+.perf-tabs button[aria-selected="true"] { background: #e9efff; color: #163b83; box-shadow: inset 0 -3px #4361bb; }
+.perf-reason, .perf-toolbar > label, .perf-component > label, .perf-inline-form > label { display: grid; gap: .35rem; }
+.perf-reason { margin: .75rem 0 1rem; }
+.perf-toolbar { flex-wrap: wrap; align-items: end; margin: .75rem 0; }
+.perf-toolbar > label { flex: 1 1 12rem; }
+.perf-panel, .perf-empty, .perf-unavailable { border: 1px solid #dfe4ed; border-radius: .75rem; padding: 1rem; margin: 1rem 0; background: #fff; }
+.perf-panel h2, .perf-panel h3 { margin-top: 0; }
+.perf-empty { background: #f7f8fb; color: #485467; }
+.perf-empty p { margin-bottom: 0; }
+.perf-unavailable { background: #f3f1e8; }
+.perf-average { padding: .75rem; background: #eef5ff; border-radius: .5rem; }
+.perf-snapshot, .perf-cycle, .perf-delay { border: 1px solid #e1e5ed; border-radius: .65rem; padding: .85rem; margin: .8rem 0; }
+.perf-snapshot header p { margin: .25rem 0 0; color: #657084; }
+.perf-status { border-radius: 2rem; background: #f0e8db; padding: .3rem .65rem; white-space: nowrap; font-size: .85rem; }
+.perf-status.scored { background: #e5f4eb; color: #20613a; }
+.perf-score { font-size: 1.35rem; font-weight: 700; margin: .7rem 0; }
+.perf-table-wrap { overflow-x: auto; }
+.perf-table-wrap table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.perf-table-wrap th, .perf-table-wrap td { padding: .5rem; text-align: left; border-bottom: 1px solid #e5e8ee; vertical-align: top; }
+.perf-insights { background: #f7f8fb; padding: .4rem .75rem; border-radius: .5rem; }
+.perf-owner { background: #f8faff; }
+.perf-owner summary { cursor: pointer; font-weight: 700; font-size: 1.15rem; }
+.perf-component { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; align-items: end; border: 1px solid #dfe4ed; border-radius: .5rem; padding: .75rem; margin: .75rem 0; }
+.perf-component > label { min-width: 0; }
+.perf-component small { grid-column: 1 / -1; color: #586174; }
+.perf-checkbox { display: flex; align-items: center; gap: .5rem; }
+.perf-checkbox input { width: auto; }
+.perf-policy-list article { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .6rem; border-top: 1px solid #dfe4ed; padding: .75rem 0; }
+.perf-inline-form { display: grid; gap: .6rem; margin-top: .8rem; }
+.perf-inline-form > label textarea { min-width: 100%; }
+.perf-cycle > header span, .perf-delay small { color: #586174; }
+.perf-toolbar > label, .perf-heading > div, .perf-panel, .perf-owner, .perf-snapshot, .perf-cycle { min-width: 0; }
+@media (max-width: 760px) {
+  .perf-heading { flex-direction: column; align-items: stretch; }
+  .perf-heading > div { width: 100%; min-width: 0; align-items: flex-start; flex-direction: column; }
+  .perf-heading button { width: 100%; }
+  .perf-toolbar { align-items: stretch; }
+  .perf-toolbar > label { flex-basis: 100%; }
+  .perf-component { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-width: 0; }
+  .perf-component > label:first-child, .perf-component small { grid-column: 1 / -1; }
+  .perf-snapshot > header { align-items: flex-start; }
+  .perf-table-wrap table { min-width: 650px; }
+}

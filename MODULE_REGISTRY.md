@@ -1,5 +1,9 @@
 # Planned module registry
 
+## S23 authorized ownership — implementation acceptance pending, 2026-10-05
+
+PER/HLT own PerformanceRecord/Version/Receipt policy approval, explicit dated employee/leader groups, immutable score/health/source snapshots, Owner-reviewed source-linked delay allocations/corrections and review cycles. PerformanceService/Controller expose internal scoped context/subject read models and strict idempotent commands. Existing REV/DOC, APR and WFM public read-only ports retain exact revision/Confidential access, typed approval visibility and schedule-derived capacity authority. No active formula values are seeded; Owner approval gates all scores and unavailable required evidence remains unscored. S23_SPEC.md and S23_API_CONTRACT.md record the Owner-approved boundaries; verification/final acceptance remain pending. S18 remains excluded; S24–S27 remain unauthorized. Historical blanket S23-unauthorized wording is superseded only for S23.
+
 ## S22 accepted ownership — COMPLETE for development/local staging, 2026-10-05
 
 Owner authorization includes S22; S18 remains unresolved/excluded and S23–S27 unauthorized. SITE owns SiteCommandReceipt and immutable NOTE observations plus supported offline command execution through SiteService/SiteController, ordinary domain guards and canonical history. DOC supplies transaction-aware stable captured-image upload manifests and existing immutable chunk/finalization/storage ports. FND/web owns the static PWA shell, minimal account/project preparation context and IndexedDB queue/conflict presentation. Full gates, populated preservation and Sol source/visual acceptance passed; see S22_COMPLETION_REPORT.md for exact evidence and the separately unintended local postgres migration.
@@ -29,7 +33,7 @@ IDs are stable planning identifiers used by REQUIREMENTS_TRACE.md and IMPLEMENTA
 | SITE | S20 COMPLETE for development/local staging. Site work packages, manpower, progress, reports, snags, independent verification, closure and separate handover passed aggregate acceptance. See S20_SPEC.md and S20_COMPLETION_REPORT.md. | PRJ, TSK, DOC, WFM, EVT |
 | PORT | S14 client portal COMPLETE for development/local staging: isolated CLIENT sessions/cookies, email OTP, passkey enrollment/approval, Owner-managed Primary Client access, project and exact-item grants, review packages/items, annotations/private references, decisions and Primary final batch, cancellation withdrawal and per-client expiry. S21 COMPLETE for development/local staging: separate EXTERNAL identity/OTP/sessions, exact consultant/vendor/factory grants, retained advisory records/uploads, own-recipient transmittal acknowledgement, protected Owner-recorded native CAD links and distinct bounded closeout grants. Formal DOC/REV/TURNKEY/SITE acceptance remains with existing authorities. See S21_SPEC.md and S21_COMPLETION_REPORT.md. | IDN, ACC, PRJ, DOC, REV, TURNKEY, SITE |
 | NTF | In-app/email delivery, preferences, reminders, summaries, escalation; push later | EVT, IDN, ACC; S04 core foundation COMPLETE for development/local staging; reminder/summaries remain S24 |
-| PER | Employee and Team Leader evidence, scoring, review cycles | TSK, REV, TIM, WFM, SKL, TRN |
+| PER | Employee and Team Leader evidence, scoring, review cycles | TSK, REV, TIM, WFM; SKL/TRN unavailable under unresolved S18 |
 | HLT | Project health, schedule/delay attribution, risk evidence | PRJ, TSK, REV, SITE, WFM |
 | DASH | Role-based dashboards and management action center views | APR, NTF, HLT, PER, TSK |
 | RPT | Operational reports, exports, immutable snapshots, later custom builder | Domain read models, ACC, AUD |
