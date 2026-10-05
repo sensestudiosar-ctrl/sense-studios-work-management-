@@ -10,6 +10,7 @@ jobs:
     timeout-minutes: 35
     env:
       CI: "true"
+      E2E_NAS_ROOT: /tmp/sense-s01-e2e-nas
       DATABASE_URL: postgresql://sense_app_runtime:ci-only-app-password@127.0.0.1:56433/sense_s13_ci_test
       MIGRATION_DATABASE_URL: postgresql://sense_s01:ci-only-password@127.0.0.1:56433/sense_s13_ci_test
       S01_DB_USER: sense_s01

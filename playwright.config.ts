@@ -34,7 +34,10 @@ export default defineConfig({
         PORT: String(apiPort),
         WEB_ORIGIN: webOrigin,
         OWNER_BOOTSTRAP_EMAIL: "s02-e2e-owner@example.test",
-        OWNER_BOOTSTRAP_SECRET: e2eBootstrapSecret
+        OWNER_BOOTSTRAP_SECRET: e2eBootstrapSecret,
+        ...(process.env.E2E_NAS_ROOT || process.env.NAS_ROOT
+          ? { NAS_ROOT: process.env.E2E_NAS_ROOT ?? process.env.NAS_ROOT }
+          : {})
       }
     },
     {
