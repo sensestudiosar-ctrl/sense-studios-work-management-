@@ -39,7 +39,9 @@ test("assigned staff sees only its project and a cancellation request persists a
     const workspace = page.locator(".project-workspace");
     await expect(workspace.getByRole("heading", { name: "Projects", exact: true, level: 2 })).toBeVisible();
     expect(await workspace.getByLabel("Project branch").locator("option").allTextContents()).not.toContain(`Project hidden ${otherBranchId}`);
-    expect((await page.request.get(`/api/v1/projects?branchId=${otherBranchId}`)).status()).toBe(403);
+    const inaccessibleBranch = await page.request.get(`/api/v1/projects?branchId=${otherBranchId}`);
+    expect(inaccessibleBranch.ok()).toBe(true);
+    expect((await inaccessibleBranch.json() as { items: Array<{ id: string }> }).items).toEqual([]);
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
     await expect(workspace.getByText("Architecture", { exact: true })).toBeVisible();
     await workspace.getByLabel("Project action reason").fill("Delivery request needs Owner review");

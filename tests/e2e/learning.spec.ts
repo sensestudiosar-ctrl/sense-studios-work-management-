@@ -18,7 +18,9 @@ test("Skills catalogue, Owner rating, employee request and named manager approva
   page.setDefaultTimeout(10_000);
   if (!fixtureUrl) throw new Error("DATABASE_URL must point to the same dedicated local test database used by the API; Skills browser acceptance never skips silently");
   const parsed = new URL(fixtureUrl);
-  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || !/^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1))) throw new Error("Skills browser acceptance requires a dedicated local PostgreSQL _test database on port 57433");
+  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1));
+  const ciFixture = process.env.CI === "true" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "56433" && /^sense_[a-z0-9_]+_ci_test$/.test(parsed.pathname.slice(1));
+  if (!localFixture && !ciFixture) throw new Error("Skills browser acceptance requires a dedicated local or CI PostgreSQL test database");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as { Client: new (options: { connectionString: string }) => PgClient };
   const db = new Client({ connectionString: fixtureUrl });

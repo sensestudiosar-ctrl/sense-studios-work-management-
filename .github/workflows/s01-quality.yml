@@ -56,6 +56,7 @@ jobs:
       - run: pnpm test
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
+      - run: mkdir -p "$E2E_NAS_ROOT"
       - run: pnpm test:e2e
       - name: Container and recovery rehearsal
         run: |

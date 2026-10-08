@@ -75,7 +75,9 @@ test("Owner applies a versioned template and required milestone gates survive re
     await expect(plan.getByText(`${templateName} · version 1`)).toBeVisible();
     await expect(plan.getByText("Design/Working drawings", { exact: true })).toBeVisible();
     await page.reload();
-    await workspace.getByLabel("Project branch").selectOption(branchId);
+    await expect(workspace.getByLabel("Project branch")).toHaveValue(branchId);
+    await expect(workspace.getByText("Loading projects…", { exact: true })).toBeHidden();
+    await expect(workspace.getByRole("button", { name: new RegExp(projectTitle) })).toBeVisible();
     await workspace.getByRole("button", { name: new RegExp(projectTitle) }).click();
     await expect(plan.getByText(`${templateName} · version 1`)).toBeVisible();
     const reason = workspace.getByLabel("Project action reason");

@@ -13,7 +13,9 @@ test("Training assignment, authored assessment, named review, effectiveness and 
   page.setDefaultTimeout(30_000);
   if (!databaseUrl) throw new Error("DATABASE_URL must point to the dedicated local S18 test database; Training browser acceptance cannot silently skip");
   const parsed = new URL(databaseUrl);
-  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || !/^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1))) throw new Error("Training browser acceptance requires a dedicated local PostgreSQL _test database on port 57433");
+  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1));
+  const ciFixture = process.env.CI === "true" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "56433" && /^sense_[a-z0-9_]+_ci_test$/.test(parsed.pathname.slice(1));
+  if (!localFixture && !ciFixture) throw new Error("Training browser acceptance requires a dedicated local or CI PostgreSQL test database");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as { Client: new (options: { connectionString: string }) => PgClient };
   const db = new Client({ connectionString: databaseUrl });

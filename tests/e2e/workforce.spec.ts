@@ -99,7 +99,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
       await expect(more).toBeVisible();
       await expect(more.getByRole("link", { name: "Workforce", exact: true })).toHaveAttribute("aria-current", "page");
       const destinations = [...await navigation.getByRole("link").allTextContents(), ...await more.getByRole("link").allTextContents()];
-      for (const label of ["My Work", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Time", "Workforce"]) expect(destinations).toContain(label);
+      for (const label of ["My Work & decisions", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Time", "Workforce"]) expect(destinations).toContain(label);
       await page.getByRole("button", { name: "Close navigation" }).click();
       await expect(page.getByRole("button", { name: "More", exact: true })).toBeFocused();
     } else await expect(navigation.getByRole("link", { name: "Workforce", exact: true })).toHaveAttribute("aria-current", "page");
