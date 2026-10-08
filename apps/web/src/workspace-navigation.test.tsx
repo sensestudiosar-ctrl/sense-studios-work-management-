@@ -30,16 +30,19 @@ describe("workspace navigation", () => {
     expect(activeDrawingRegisterLinks.some((link) => link.getAttribute("aria-current") === "page")).toBe(true);
     const destinations = ["Account & settings", "My Work", "Decisions", "Notifications", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Dashboard & reports", "Integrations", "Automation & reports", "Evidence assistance", "Performance", "External access", "Turnkey operations", "Site delivery", "Time", "Workforce", "Learning"];
 
-    expect(screen.queryByRole("link", { name: /^work$/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("link", { name: /^people$/i })).not.toBeInTheDocument();
+    const desktopNav = screen.getByRole("navigation", { name: "Workspace navigation" });
+    expect(within(desktopNav).getByRole("heading", { name: "Work" })).toBeInTheDocument();
+    expect(within(desktopNav).getByRole("heading", { name: "People" })).toBeInTheDocument();
+    expect(within(desktopNav).getByRole("heading", { name: "Insights" })).toBeInTheDocument();
+    expect(within(desktopNav).getByRole("heading", { name: "Manage" })).toBeInTheDocument();
+    expect(new Set(within(desktopNav).getAllByRole("link").map(link => String(link.textContent)))).toEqual(new Set(destinations));
     const mobileMain = screen.getByRole("navigation", { name: "Main workspace destinations" });
     expect(within(mobileMain).getAllByRole("link").map((link) => link.textContent)).toEqual(["My Work", "Tasks", "Project documents"]);
     fireEvent.click(screen.getByRole("button", { name: "More" }));
     const moreLinks = within(screen.getByRole("dialog", { name: "More destinations" })).getAllByRole("link");
-    const moreLabels = moreLinks.map(link => link.textContent);
+    const moreLabels = moreLinks.map(link => String(link.textContent));
     const acceptedMore = destinations.filter(label => !["My Work", "Tasks", "Project documents"].includes(label));
-    expect(acceptedMore.every((label) => moreLabels.includes(label))).toBe(true);
-    expect(moreLabels.filter((label): label is string => acceptedMore.includes(label as never))).toEqual(acceptedMore);
+    expect(new Set(moreLabels)).toEqual(new Set(acceptedMore));
   });
 
   it("opens More as a labelled dialog, traps keyboard focus, and restores focus on Escape", () => {
@@ -53,7 +56,7 @@ describe("workspace navigation", () => {
     const close = screen.getByRole("button", { name: "Close navigation" });
     expect(close).toHaveFocus();
     fireEvent.keyDown(close, { key: "Tab", shiftKey: true });
-    expect(within(dialog).getByRole("link", { name: "Learning" })).toHaveFocus();
+    expect(within(dialog).getByRole("link", { name: "External access" })).toHaveFocus();
     fireEvent.keyDown(document.activeElement as HTMLElement, { key: "Escape" });
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

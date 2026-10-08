@@ -27,6 +27,12 @@ const destinations = [
 ] as const;
 
 const primaryPaths = new Set<string>(["/my-work", "/tasks", "/documents"]);
+const destinationGroups = [
+  { label: "Work", paths: ["/my-work", "/decisions", "/notifications", "/tasks", "/projects", "/documents", "/revisions", "/reviews", "/client-reviews", "/assistance", "/turnkey", "/site"] },
+  { label: "People", paths: ["/time", "/workforce", "/learning"] },
+  { label: "Insights", paths: ["/dashboard", "/performance"] },
+  { label: "Manage", paths: ["/settings", "/integrations", "/automation", "/external-access"] }
+] as const;
 
 function DestinationLinks({ items, onNavigate }: { items: (typeof destinations)[number][]; onNavigate?: () => void }): React.JSX.Element {
   return <>
@@ -35,6 +41,18 @@ function DestinationLinks({ items, onNavigate }: { items: (typeof destinations)[
         {label}
       </NavLink>
     ))}
+  </>;
+}
+
+function DestinationGroups({ onNavigate, includePrimary = true }: { onNavigate?: () => void; includePrimary?: boolean }): React.JSX.Element {
+  return <>
+    {destinationGroups.map(group => {
+      const items = group.paths.flatMap(path => destinations.filter(item => item.to === path && (includePrimary || !primaryPaths.has(item.to))));
+      return items.length ? <section className="workspace-nav-group" key={group.label} aria-labelledby={`workspace-nav-${group.label.toLowerCase()}`}>
+        <h2 id={`workspace-nav-${group.label.toLowerCase()}`} className="workspace-nav-heading">{group.label}</h2>
+        <DestinationLinks items={items} {...(onNavigate ? { onNavigate } : {})} />
+      </section> : null;
+    })}
   </>;
 }
 
@@ -100,7 +118,7 @@ export function WorkspaceNavigation(): React.JSX.Element {
     <aside className="workspace-sidebar">
       <NavLink className="workspace-bell-link" to="/notifications" aria-label="Notifications" title="Notifications"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><span>Notifications</span></NavLink>
       <nav className="workspace-nav" aria-label="Workspace navigation">
-        <DestinationLinks items={[...destinations]} />
+        <DestinationGroups />
       </nav>
     </aside>
     <div className="workspace-mobile-nav">
@@ -113,7 +131,7 @@ export function WorkspaceNavigation(): React.JSX.Element {
     <dialog ref={dialog} className="workspace-more-dialog" aria-modal="true" aria-labelledby="workspace-more-title" onCancel={(event) => { event.preventDefault(); setMoreOpen(false); }} onClick={(event) => { if (event.target === event.currentTarget) setMoreOpen(false); }}>
         <div className="workspace-dialog-heading"><h2 id="workspace-more-title">More destinations</h2><button className="workspace-dialog-close" type="button" aria-label="Close navigation" onClick={() => setMoreOpen(false)}>Close</button></div>
         <nav className="workspace-more-links" aria-label="More workspace destinations">
-          <DestinationLinks items={destinations.filter(({ to }) => !primaryPaths.has(to))} onNavigate={() => setMoreOpen(false)} />
+          <DestinationGroups includePrimary={false} onNavigate={() => setMoreOpen(false)} />
         </nav>
     </dialog>
   </>;
