@@ -108,6 +108,7 @@ describe("ProjectWorkspace", () => {
     expect(await screen.findByText("Mira Shah")).toBeInTheDocument();
     expect(await screen.findByText(/Landscape · PENDING · Client requested it/)).toBeInTheDocument();
     expect(screen.getByText(/requester cannot approve their own request/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Activity" }));
     const approve = await screen.findByRole("button", { name: "Approve" });
     expect(approve).toBeDisabled();
     fireEvent.change(screen.getByLabelText("Project action reason"), { target: { value: "Approved after scope review" } });
@@ -135,6 +136,7 @@ describe("ProjectWorkspace", () => {
     render(<ProjectWorkspace csrfToken="csrf-project" owner />);
     fireEvent.click(await screen.findByRole("button", { name: /Townhouse/ }));
     expect(await screen.findByText(/withdraw the request with a reason, change the approver above/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Activity" }));
     const withdraw = await screen.findByRole("button", { name: "Withdraw" });
     expect(withdraw).toBeDisabled();
     fireEvent.change(screen.getByLabelText("Project action reason"), { target: { value: "Approver is unavailable" } });

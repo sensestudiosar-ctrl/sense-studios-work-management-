@@ -14,6 +14,8 @@ type Project = { id: string; label: string; deliveryType: "DESIGN" | "TURNKEY" }
 type Context = { owner: boolean; employeeId: string | null; employees: Employee[]; projects: Project[]; policies: RecordRow[]; assignments: RecordRow[]; metrics: Metric[]; unavailable: string[] };
 type EmployeeView = { employee: { id: string; label: string }; snapshots: RecordRow[]; cycles: RecordRow[]; groupAssignments: RecordRow[]; teamAverage: number | null; relativeToAverage: number | null; canManage: boolean; unavailable: string[] };
 type ProjectView = { project: { id: string; label: string; deliveryType: string }; snapshots: RecordRow[]; delays: RecordRow[]; delayTotalDays: number; delayByCause: Array<{ cause: string; days: number }>; canManage: boolean; unavailable: string[] };
+type HealthSummary = { id: string; score?: number | null; scoreScale?: { min: number; max: number }; status?: string; snapshotId?: string | null; from?: string | null; to?: string | null; policyId?: string | null; policyVersion?: number | null };
+type HealthDirectory = { readCompletedAt: string; sections: Array<{ key: string; rows: HealthSummary[] }> };
 type ComponentForm = { metric: string; weight: string; min: string; max: string; direction: "HIGHER" | "LOWER"; required: boolean };
 type Thresholds = { criticalBelow: string; delayedBelow: string; atRiskBelow: string };
 type PolicyEditorProps = { busy: boolean; context: Context; policyFamily: Family; setPolicyFamily: (family: Family) => void; groupKey: string; setGroupKey: (value: string) => void; policyLabel: string; setPolicyLabel: (value: string) => void; effectiveFrom: string; setEffectiveFrom: (value: string) => void; components: ComponentForm[]; compatibleMetrics: Metric[]; addMetric: () => void; updateComponent: (index: number, change: Partial<ComponentForm>) => void; removeComponent: (index: number) => void; attendanceCap: string; setAttendanceCap: (value: string) => void; efficiencyCap: string; setEfficiencyCap: (value: string) => void; strengthAt: string; setStrengthAt: (value: string) => void; weaknessBelow: string; setWeaknessBelow: (value: string) => void; thresholds: Thresholds; setThresholds: (value: Thresholds) => void; savePolicy: () => void; mutate: (operation: string, fields: Record<string, unknown>, refresh?: "context" | "employee" | "project") => Promise<void> };
@@ -46,8 +48,15 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
   const [tab, setTab] = useState<"employee" | "project">(initialTab);
   const [employeeId, setEmployeeId] = useState("");
   const [projectId, setProjectId] = useState(() => new URLSearchParams(window.location.search).get("projectId") ?? "");
+  const selectedProjectId = useRef(projectId);
   const [employee, setEmployee] = useState<EmployeeView | null>(null);
   const [project, setProject] = useState<ProjectView | null>(null);
+  const [projectLoading, setProjectLoading] = useState(false);
+  const [projectError, setProjectError] = useState("");
+  const [healthDirectory, setHealthDirectory] = useState<HealthDirectory | null>(null);
+  const [healthLoading, setHealthLoading] = useState(false);
+  const [healthError, setHealthError] = useState("");
+  const healthRequest = useRef(0);
   const [reason, setReason] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -74,7 +83,7 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
     setLoading(true); setError("");
     try {
       const value = await request<Context>(`${API}/context`, csrfToken);
-      setContext(value); setEmployeeId(current => current || value.employeeId || value.employees[0]?.id || ""); setProjectId(current => current || value.projects[0]?.id || "");
+      setContext(value); setEmployeeId(current => current || value.employeeId || value.employees[0]?.id || "");
     } catch (cause) { setError(cause instanceof Error ? cause.message : "Performance data could not be loaded."); }
     finally { setLoading(false); }
   }, [csrfToken]);
@@ -87,14 +96,48 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
   }, [csrfToken, employeeId]);
   const loadProject = useCallback(async () => {
     const requestId = ++projectRequest.current;
-    if (!projectId) { setProject(null); return; }
-    setProject(null);
+    setProject(null); setProjectError("");
+    if (!context || !projectId) { setProjectLoading(false); return; }
+    if (!context.projects.some(row => row.id === projectId)) { setProjectLoading(false); setProjectError("This project is unavailable in your current scope. Choose another project from the list."); return; }
+    setProjectLoading(true);
     try { const value = await request<ProjectView>(`${API}/projects/${encodeURIComponent(projectId)}`, csrfToken); if (requestId === projectRequest.current) setProject(value); }
-    catch (cause) { if (requestId === projectRequest.current) { setProject(null); setError(cause instanceof Error ? cause.message : "Project health could not be loaded."); } }
-  }, [csrfToken, projectId]);
+    catch (cause) { if (requestId === projectRequest.current) { setProject(null); setProjectError(cause instanceof Error ? cause.message : "Project health could not be loaded."); } }
+    finally { if (requestId === projectRequest.current) setProjectLoading(false); }
+  }, [csrfToken, projectId, context]);
+  const loadHealthDirectory = useCallback(async () => {
+    const requestId = ++healthRequest.current;
+    setHealthDirectory(null); setHealthError(""); setHealthLoading(true);
+    try { const value = await request<HealthDirectory>("/api/v1/dashboard/sources/health", csrfToken); if (requestId === healthRequest.current) setHealthDirectory(value); }
+    catch (cause) { if (requestId === healthRequest.current) setHealthError(cause instanceof Error ? cause.message : "Project health summaries could not be loaded."); }
+    finally { if (requestId === healthRequest.current) setHealthLoading(false); }
+  }, [csrfToken]);
   useEffect(() => { void loadContext(); }, [loadContext]);
   useEffect(() => { void loadEmployee(); }, [loadEmployee]);
   useEffect(() => { void loadProject(); }, [loadProject]);
+  useEffect(() => { if (tab === "project" && context) void loadHealthDirectory(); }, [tab, context, loadHealthDirectory]);
+  useEffect(() => {
+    const restore = () => {
+      const nextId = new URLSearchParams(window.location.search).get("projectId") ?? "";
+      if (selectedProjectId.current === nextId) return;
+      setDelay({ cause: "", days: "", sourceKind: "", sourceId: "", employeeId: "", external: false, from: "", to: "", summary: "" });
+      selectedProjectId.current = nextId;
+      projectRequest.current += 1; setProject(null); setProjectError(""); setProjectId(nextId);
+    };
+    window.addEventListener("popstate", restore);
+    return () => { window.removeEventListener("popstate", restore); projectRequest.current += 1; healthRequest.current += 1; };
+  }, []);
+  const selectProject = (id: string) => {
+    if (busy || !context?.projects.some(row => row.id === id)) return;
+    if (selectedProjectId.current === id) return;
+    if (selectedProjectId.current !== id) setDelay({ cause: "", days: "", sourceKind: "", sourceId: "", employeeId: "", external: false, from: "", to: "", summary: "" });
+    selectedProjectId.current = id;
+    const url = new URL(window.location.href); url.searchParams.set("projectId", id);
+    if (window.location.search !== url.search) {
+      window.history.pushState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+      window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
+    }
+    projectRequest.current += 1; setProject(null); setProjectError(""); setNotice(""); setProjectId(id);
+  };
 
   const mutate = async (operation: string, fields: Record<string, unknown>, refresh: "context" | "employee" | "project" = tab) => {
     if (reason.trim().length < 3) { setError("Enter a reason of at least three characters."); return; }
@@ -106,7 +149,7 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
       pendingCommand.current = null;
       if (refresh === "context") await loadContext();
       if (refresh === "employee") await loadEmployee();
-      if (refresh === "project") await loadProject();
+      if (refresh === "project") { await loadProject(); await loadHealthDirectory(); }
       setNotice("Performance record saved."); setReason("");
     } catch (cause) { setError(cause instanceof Error ? cause.message : "The action could not be completed."); }
     finally { setBusy(false); }
@@ -115,7 +158,7 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
   const compatibleMetrics = useMemo(() => context?.metrics.filter(metric => metric.families.includes(policyFamily)) ?? [], [context, policyFamily]);
   const activeEmployee = context?.employees.find(row => row.id === employeeId);
   const canManageEmployee = owner || employee?.canManage === true || activeEmployee?.canManage === true;
-  const canManageProject = owner || project?.canManage === true;
+  const canManageProject = !!project && (owner || project.canManage === true);
   const snapshots = (rows: RecordRow[]) => rows.filter(row => row.kind === "SCORE" || row.kind === "HEALTH");
   const assignedGroup = employee?.groupAssignments.find(row => row.data.family === family)?.data.groupKey ?? "";
   const approvedEmployeePolicy = policyFor(family, assignedGroup);
@@ -155,8 +198,28 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
         </div>}
       </>}
     </> : <>
-      <div className="perf-toolbar"><label>Project<select aria-label="Project" disabled={busy} value={projectId} onChange={event => { projectRequest.current += 1; setProject(null); setProjectId(event.target.value); }}><option value="">Choose project</option>{context.projects.map(row => <option key={row.id} value={row.id}>{row.label} · {row.deliveryType}</option>)}</select></label></div>
-      {!projectId ? <div className="perf-empty" role="status">No Design or Turnkey projects are available in your current project scope.</div> : <>
+      <div className={`perf-health-layout ${projectId ? "has-selection" : ""}`}>
+        <aside className="perf-health-directory" aria-labelledby="health-project-list-heading">
+          <header><h2 id="health-project-list-heading">Projects</h2><p>All projects in your current health scope. Select one to inspect its evidence.</p></header>
+          {healthLoading && <p role="status">Loading health summaries…</p>}
+          {healthError && <div><p role="alert">{healthError}</p><button type="button" className="secondary-action" onClick={() => void loadHealthDirectory()} disabled={healthLoading}>Retry summaries</button></div>}
+          {healthDirectory && <p className="perf-health-read">Read at {new Date(healthDirectory.readCompletedAt).toLocaleString()}. Bars show persisted snapshots, not live predictions.</p>}
+          {context.projects.length === 0 && <p role="status">No Design or Turnkey projects are available in your current project scope.</p>}
+          <ul className="perf-project-list">{context.projects.map(row => {
+            const summary = healthDirectory?.sections.find(section => section.key === "health")?.rows.find(item => item.id === row.id);
+            const numeric = summary?.status === "SCORED" && typeof summary.score === "number" && Number.isFinite(summary.score) && summary.scoreScale?.min === 0 && summary.scoreScale.max === 100 && summary.score >= 0 && summary.score <= 100;
+            return <li key={row.id}><button type="button" className="perf-project-choice" aria-pressed={projectId === row.id} aria-controls="health-project-detail" disabled={busy} onClick={() => selectProject(row.id)}>
+              <strong>{row.label}</strong><span>{row.deliveryType === "TURNKEY" ? "Turnkey" : "Design"}</span>
+              {numeric ? <><span className="perf-project-score">{summary.score!.toFixed(1)} / 100</span><meter min={0} max={100} value={summary.score!} aria-label={`${row.label} persisted health score`} /></> : <span className="perf-project-status">{summary?.status === "INSUFFICIENT_EVIDENCE" ? "Insufficient evidence" : summary ? "No numeric health snapshot" : healthError ? "Health summary unavailable" : "Health not loaded"}</span>}
+              {summary?.snapshotId && <small>Snapshot {summary.from ?? "date unavailable"} – {summary.to ?? "date unavailable"} · policy v{summary.policyVersion ?? "unavailable"}</small>}
+            </button></li>;
+          })}</ul>
+        </aside>
+        <div id="health-project-detail" className="perf-health-detail" aria-busy={projectLoading}>
+      {!projectId ? <div className="perf-empty" role="status">Select a project to inspect its health, snapshot history and delay evidence. The project list stays available while you work.</div> : <>
+        {projectLoading && <p role="status">Loading selected project health…</p>}
+        {projectError && <div className="perf-empty"><p role="alert">{projectError}</p>{context.projects.some(row => row.id === projectId) && <button type="button" className="secondary-action" onClick={() => void loadProject()}>Retry project</button>}</div>}
+        {project && <>
         <div className="perf-panel"><h2>{project?.project.label ?? "Project health"}</h2><p>Health evidence is derived from persisted schedules, milestones, reviews, pending decisions, scope and workload.</p>
           {project?.snapshots.length === 0 && <div className="perf-empty" role="status"><strong>No health snapshot</strong><p>No published snapshot is available. An approved policy and grounded evidence are required before a status is shown.</p></div>}
           {project?.snapshots.map(row => <SnapshotCard key={row.id} row={row} />)}
@@ -166,7 +229,10 @@ export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee"
         {canManageProject && <div className="perf-panel"><h2>Generate health and review delays</h2><div className="perf-toolbar"><label>From<input type="date" value={from} onChange={event => setFrom(event.target.value)} /></label><label>To<input type="date" value={to} onChange={event => setTo(event.target.value)} /></label></div><button disabled={busy || !validDateRange(from, to) || !approvedProjectPolicy} onClick={() => void mutate("PROJECT_SNAPSHOT", { projectId, from, to }, "project")}>Generate project health snapshot</button>
           {owner && <><h3>Owner reviewed delay source</h3><div className="perf-toolbar"><label>Cause<select aria-label="Delay cause" value={delay.cause} onChange={event => setDelay({ ...delay, cause: event.target.value })}><option value="">Choose cause</option>{causes.map(value => <option key={value} value={value}>{value.replaceAll("_", " ")}</option>)}</select></label><label>Allocated delay (days)<input type="number" min="0" step="0.25" value={delay.days} onChange={event => setDelay({ ...delay, days: event.target.value })} /></label><label>Source kind<select aria-label="Delay source kind" value={delay.sourceKind} onChange={event => setDelay({ ...delay, sourceKind: event.target.value })}><option value="">Choose source</option>{sourceKinds.map(value => <option key={value}>{value}</option>)}</select></label><label>Source record ID<input value={delay.sourceId} onChange={event => setDelay({ ...delay, sourceId: event.target.value })} /></label><label>Employee ID (optional)<input value={delay.employeeId} onChange={event => setDelay({ ...delay, employeeId: event.target.value })} /></label><label>From<input type="date" value={delay.from} onChange={event => setDelay({ ...delay, from: event.target.value })} /></label><label>To<input type="date" value={delay.to} onChange={event => setDelay({ ...delay, to: event.target.value })} /></label></div><label>Evidence summary<textarea value={delay.summary} onChange={event => setDelay({ ...delay, summary: event.target.value })} rows={2} /></label><label className="perf-checkbox"><input type="checkbox" checked={delay.external} onChange={event => setDelay({ ...delay, external: event.target.checked })} /> Owner-reviewed external cause</label><button className="secondary-action" disabled={busy || !delay.cause || !delay.days || !delay.sourceKind || !delay.sourceId || !delay.from || !delay.to || !delay.summary.trim()} onClick={() => void mutate("DELAY_RECORD", { projectId, delay: { ...delay, days: Number(delay.days), employeeId: delay.employeeId || null, supersedesId: null } }, "project")}>Record attributed delay</button></>}
         </div>}
+        </>}
       </>}
+        </div>
+      </div>
     </>}
     {owner && <PolicyEditor busy={busy} context={context} policyFamily={policyFamily} setPolicyFamily={changePolicyFamily} groupKey={groupKey} setGroupKey={setGroupKey} policyLabel={policyLabel} setPolicyLabel={setPolicyLabel} effectiveFrom={effectiveFrom} setEffectiveFrom={setEffectiveFrom} components={components} compatibleMetrics={compatibleMetrics} addMetric={addMetric} updateComponent={updateComponent} removeComponent={(index: number) => setComponents(rows => rows.filter((_, i) => i !== index))} attendanceCap={attendanceCap} setAttendanceCap={setAttendanceCap} efficiencyCap={efficiencyCap} setEfficiencyCap={setEfficiencyCap} strengthAt={strengthAt} setStrengthAt={setStrengthAt} weaknessBelow={weaknessBelow} setWeaknessBelow={setWeaknessBelow} thresholds={thresholds} setThresholds={setThresholds} savePolicy={savePolicy} mutate={mutate} />}
   </section>;

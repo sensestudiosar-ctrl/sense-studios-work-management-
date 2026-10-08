@@ -390,7 +390,7 @@ databaseDescribe("S13 review workflow PostgreSQL acceptance", () => {
     const escalationAuditId = (escalationEvent.payload as { auditEventId: string }).auditEventId;
     const escalationAudit = await database.prisma.auditEvent.findUniqueOrThrow({ where: { id: escalationAuditId } });
     expect(escalationAudit).toMatchObject({ organizationId: fixture.organizationId, eventKey: "review.escalated", subjectType: "review", subjectId: escalationRoundId, actorId: fixture.reviewer.accountId, reason: escalationReason });
-    expect(await database.prisma.notification.findFirstOrThrow({ where: { eventId: escalationEvent.id, recipientAccountId: fixture.manager.accountId } })).toMatchObject({ category: "review.escalated", mandatory: true, internalRoute: `/reviews?taskId=${escalationTask.id}` });
+    expect(await database.prisma.notification.findFirstOrThrow({ where: { eventId: escalationEvent.id, recipientAccountId: fixture.manager.accountId } })).toMatchObject({ category: "review.escalated", mandatory: true, internalRoute: `/reviews?taskId=${escalationTask.id}&roundId=${escalationRoundId}` });
     expect(await database.prisma.auditEvent.count({ where: { organizationId: fixture.organizationId } })).toBe(auditCountBeforeEscalation + 1);
     expect(await database.prisma.domainEvent.count({ where: { organizationId: fixture.organizationId } })).toBe(eventCountBeforeEscalation + 1);
     expect(escalation.rounds.find((round) => round.id === escalationRoundId)?.escalations).toHaveLength(1);

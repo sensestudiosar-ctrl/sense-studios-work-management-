@@ -69,6 +69,33 @@ describe("identity authentication shell", () => {
     expect(screen.queryByRole("heading", { name: "Decisions awaiting you" })).not.toBeInTheDocument();
   });
 
+  it.each([
+    { label: "Owner", currentSession: { ...session, ownerSetupRequired: false, activePasskeyCount: 2 }, visibleWorkspaceSection: "Organization administration", hiddenWorkspaceSection: "Team workspace" },
+    { label: "staff", currentSession: { ...session, account: { ...account, kind: "STAFF" as const }, ownerSetupRequired: false }, visibleWorkspaceSection: "Team workspace", hiddenWorkspaceSection: "Organization administration" },
+  ])("opens the direct Notifications settings route with $label section grouping", async ({ currentSession, visibleWorkspaceSection, hiddenWorkspaceSection }) => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/session") return response(currentSession);
+      if (url === "/api/v1/auth/sessions") return response([]);
+      if (url === "/api/v1/notifications") return response({ items: [], nextCursor: null });
+      if (url === "/api/v1/notifications/preferences") return response({ preferences: [], quietHours: null });
+      if (url === "/api/v1/notifications/email-status") return response({ verified: true, available: true, items: [] });
+      return response({}, 404);
+    });
+    stubFetchWithCrmSetup(fetchMock);
+    renderApp("/settings?section=notifications");
+
+    expect(await screen.findByRole("heading", { name: "Settings" })).toBeInTheDocument();
+    expect(await screen.findByText("Your inbox is clear. New authorized updates will appear here.")).toBeInTheDocument();
+    const navigation = screen.getByRole("navigation", { name: "Settings sections" });
+    expect(within(navigation).getByRole("heading", { name: "Personal" })).toBeInTheDocument();
+    expect(within(navigation).getByRole("link", { name: "Account & devices" })).toHaveAttribute("href", "/settings?section=account");
+    expect(within(navigation).getByRole("link", { name: "Notifications" })).toHaveAttribute("aria-current", "page");
+    expect(within(navigation).getByRole("heading", { name: "Organization & administration" })).toBeInTheDocument();
+    expect(within(navigation).getByRole("link", { name: visibleWorkspaceSection })).toBeInTheDocument();
+    expect(within(navigation).queryByRole("link", { name: hiddenWorkspaceSection })).not.toBeInTheDocument();
+  });
+
   it.each(["/my-work", "/tasks", "/projects"])("requires a session before opening %s", async (path) => {
     stubFetchWithCrmSetup(vi.fn(async () => response({}, 401)));
     renderApp(path);

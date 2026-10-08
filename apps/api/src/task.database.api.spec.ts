@@ -592,6 +592,8 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       await workflow.assignment(ownerActor, project.id, { employeeId: managerEmployeeId, expectedVersion: 1, reason: "Assign exiting lead" });
       await workflow.lead(ownerActor, project.id, { employeeId: managerEmployeeId, expectedVersion: 2, reason: "Appoint exiting lead" });
       await workflow.status(ownerActor, project.id, { toStatus: "ACTIVE", expectedVersion: 3, reason: "Activate lead project" });
+      await tx.employeePermissionOverride.create({ data: { organizationId, employeeId, permissionKey: "project.view", effect: PermissionEffect.ALLOW, scopeKind: PermissionScopeKind.BRANCH, branchId, reason: "G08 assigned colleague notification fixture" } });
+      await workflow.assignment(ownerActor, project.id, { employeeId, expectedVersion: 4, reason: "Assign active colleague to lead project" });
       const ownedTask = await tasks.create(ownerActor, taskInput("Task owned by exiting employee", { type: TaskType.PROJECT, projectId: project.id, ownerEmployeeId: managerEmployeeId }));
       const startedTask = await tasks.create(managerActor, taskInput("Started self-task before exit"));
       await tasks.transition(managerActor, startedTask.id, { toState: "IN_PROGRESS", expectedVersion: 1, reason: "Start before exit" });
@@ -618,7 +620,7 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       expect(await tx.employee.findUniqueOrThrow({ where: { id: managerEmployeeId } })).toMatchObject({ state: "ACTIVE" });
       expect(await tx.session.findUniqueOrThrow({ where: { id: session.id } })).toMatchObject({ revokedAt: null });
       expect(await tx.task.findUniqueOrThrow({ where: { id: ownedTask.id } })).toMatchObject({ status: TaskStatus.NOT_STARTED, version: 1 });
-      expect(await tx.project.findUniqueOrThrow({ where: { id: project.id } })).toMatchObject({ status: "ACTIVE", currentLeadEmployeeId: managerEmployeeId, version: 4 });
+      expect(await tx.project.findUniqueOrThrow({ where: { id: project.id } })).toMatchObject({ status: "ACTIVE", currentLeadEmployeeId: managerEmployeeId, version: 5 });
 
       const result = await organization.finalizeEmployeeExit(ownerId, managerEmployeeId, "Employee left the organization");
       expect((await tasks.attention(ownerActor, "reassignment", 0, 50)).items.map(item => item.id)).toContain(startedTask.id);
@@ -629,15 +631,18 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       expect(await tx.employee.findUniqueOrThrow({ where: { id: managerEmployeeId } })).toMatchObject({ state: "EXITED" });
       expect(await tx.session.findUniqueOrThrow({ where: { id: session.id } })).toMatchObject({ revokedAt: expect.any(Date) });
       expect(await tx.task.findUniqueOrThrow({ where: { id: ownedTask.id } })).toMatchObject({ status: TaskStatus.WAITING, requiresReassignment: true, waitingPreviousStatus: TaskStatus.NOT_STARTED, version: 2 });
-      expect(await tx.project.findUniqueOrThrow({ where: { id: project.id } })).toMatchObject({ status: "ON_HOLD", currentLeadEmployeeId: null, version: 5 });
+      expect(await tx.project.findUniqueOrThrow({ where: { id: project.id } })).toMatchObject({ status: "ON_HOLD", currentLeadEmployeeId: null, version: 6 });
       expect(await tx.projectStatusChange.count({ where: { projectId: project.id, toStatus: "ON_HOLD" } })).toBe(1);
       expect(await tx.taskStatusChange.count({ where: { taskId: ownedTask.id, toStatus: TaskStatus.WAITING } })).toBe(1);
       await expect(tasks.transition(ownerActor, startedTask.id, { toState: "COMPLETED", expectedVersion: 3, reason: "Try before reassignment" })).rejects.toThrow("reassign");
       await tasks.reassign(ownerActor, startedTask.id, { newOwnerEmployeeId: employeeId, expectedVersion: 3, reason: "Explicit individual handover" });
       expect(await tx.task.findUniqueOrThrow({ where: { id: startedTask.id } })).toMatchObject({ primaryOwnerEmployeeId: employeeId, status: TaskStatus.IN_PROGRESS, requiresReassignment: false, version: 4 });
       expect(await tx.task.findUniqueOrThrow({ where: { id: completedTask.id } })).toMatchObject({ primaryOwnerEmployeeId: managerEmployeeId, status: TaskStatus.COMPLETED, version: 3 });
-      await expect(workflow.status(ownerActor, project.id, { toStatus: "ACTIVE", expectedVersion: 5, reason: "Attempt without replacement" })).rejects.toThrow();
+      await expect(workflow.status(ownerActor, project.id, { toStatus: "ACTIVE", expectedVersion: 6, reason: "Attempt without replacement" })).rejects.toThrow();
       expect(await tx.notification.count({ where: { category: "employee.exit", event: { organizationId, subjectId: managerEmployeeId } } })).toBe(1);
+      const holdEvent = await tx.domainEvent.findFirstOrThrow({ where: { organizationId, eventName: "project.on_hold", subjectId: project.id, actorId: ownerId } });
+      const assignedEmployee = await tx.employee.findUniqueOrThrow({ where: { id: employeeId } });
+      await expect(tx.notification.findFirstOrThrow({ where: { eventId: holdEvent.id, recipientAccountId: assignedEmployee.accountId } })).resolves.toMatchObject({ category: "project.lead_exit_hold", mandatory: true, internalRoute: `/projects?projectId=${project.id}` });
       await tx.$executeRaw`SET CONSTRAINTS ALL IMMEDIATE`;
     });
   });

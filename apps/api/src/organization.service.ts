@@ -527,7 +527,7 @@ export class OrganizationService {
           const holdEvent = await tx.domainEvent.findFirstOrThrow({ where: { organizationId: employee.organizationId, eventName: "project.on_hold", subjectId: projectId, actorId, occurredAt: { gte: now } }, orderBy: { occurredAt: "desc" } });
           const assignments = await tx.projectAssignment.findMany({ where: { organizationId: employee.organizationId, projectId, revokedAt: null }, select: { employeeId: true } });
           const assignedEmployees = await tx.employee.findMany({ where: { id: { in: assignments.map((row) => row.employeeId) }, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE } }, select: { accountId: true } });
-          for (const recipientAccountId of new Set(assignedEmployees.map((row) => row.accountId))) await this.notifications.createForEvent(tx, { eventId: holdEvent.id, recipientAccountId, channel: NotificationChannel.IN_APP, category: "project.lead_exit_hold", title: "Project on hold", body: "A Project Lead exit has put an assigned project on hold until the Owner appoints a replacement.", internalRoute: "/", critical: true, mandatory: true });
+          for (const recipientAccountId of new Set(assignedEmployees.map((row) => row.accountId))) await this.notifications.createForEvent(tx, { eventId: holdEvent.id, recipientAccountId, channel: NotificationChannel.IN_APP, category: "project.lead_exit_hold", title: "Project on hold", body: "A Project Lead exit has put an assigned project on hold until the Owner appoints a replacement.", internalRoute: `/projects?projectId=${projectId}`, critical: true, mandatory: true });
         }
       }
       return { exited: true, waitingTaskIds, heldProjectIds };

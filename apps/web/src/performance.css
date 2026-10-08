@@ -42,7 +42,23 @@
 .perf-inline-form > label textarea { min-width: 100%; }
 .perf-cycle > header span, .perf-delay small { color: #586174; }
 .perf-toolbar > label, .perf-heading > div, .perf-panel, .perf-owner, .perf-snapshot, .perf-cycle { min-width: 0; }
+.perf-health-layout { display: grid; gap: 1.25rem; min-width: 0; }
+.perf-health-layout.has-selection { grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr); align-items: start; }
+.perf-health-directory, .perf-health-detail { min-width: 0; }
+.perf-health-directory header h2 { margin: .4rem 0; }
+.perf-health-directory header p, .perf-health-read { color: #61736b; font-size: .88rem; }
+.perf-project-list { list-style: none; padding: 0; margin: .8rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .6rem; }
+.has-selection .perf-project-list { grid-template-columns: minmax(0, 1fr); }
+.performance .perf-project-choice { display: grid; gap: .4rem; width: 100%; min-height: 8rem; padding: .9rem; text-align: left; border: 1px solid #d9d8cd; border-radius: .5rem; background: #fffdf7; color: #182c29; box-shadow: none; overflow-wrap: anywhere; }
+.performance .perf-project-choice[aria-pressed="true"] { border-color: #29463d; background: #e3eadf; box-shadow: inset 3px 0 #29463d; }
+.perf-project-choice > span, .perf-project-choice small { color: #61736b; }
+.perf-project-choice .perf-project-score { color: #182c29; font-weight: 600; }
+.perf-project-choice meter { width: 100%; height: .6rem; accent-color: #29463d; }
+.perf-project-choice:focus-visible { outline: 3px solid #b98f49; outline-offset: 3px; }
+.perf-health-detail > .perf-panel:first-child { margin-top: 0; }
 @media (max-width: 760px) {
+  .perf-health-layout.has-selection { grid-template-columns: minmax(0, 1fr); }
+  .has-selection .perf-project-list { max-height: 16rem; overflow-y: auto; padding: .25rem; }
   .perf-heading { flex-direction: column; align-items: stretch; }
   .perf-heading > div { width: 100%; min-width: 0; align-items: flex-start; flex-direction: column; }
   .perf-heading button { width: 100%; }

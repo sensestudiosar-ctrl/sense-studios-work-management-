@@ -425,7 +425,7 @@ export class ReviewService {
       }
       const escalation = await tx.reviewEscalation.create({ data: { organizationId: actor.organizationId, projectId: project.id, roundId, actorId: actor.accountId, recipientAccountId, reason } });
       const eventId = await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "review.escalated", subjectType: "review", subjectId: roundId, reason, after: { escalationId: escalation.id, recipientAccountId, taskId: row.id, projectId: project.id, roundId } });
-      await this.notifications.createForEvent(tx, { eventId, recipientAccountId, channel: NotificationChannel.IN_APP, category: "review.escalated", title: "Internal review needs attention", body: "An assigned internal review was escalated. Open it to check current access and details.", internalRoute: `/reviews?taskId=${row.id}`, mandatory: true });
+      await this.notifications.createForEvent(tx, { eventId, recipientAccountId, channel: NotificationChannel.IN_APP, category: "review.escalated", title: "Internal review needs attention", body: "An assigned internal review was escalated. Open it to check current access and details.", internalRoute: `/reviews?taskId=${row.id}&roundId=${roundId}`, mandatory: true });
       return row.id;
     });
     return this.detail(actor, taskId);

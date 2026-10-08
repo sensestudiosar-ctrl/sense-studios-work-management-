@@ -28,9 +28,10 @@ describe("WorkforceWorkspace", () => {
   it("saves an explicit Owner selfie notice interval and leaves it unset until configured", async () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => { calls.push([String(input), init]); return String(input).endsWith("/setup") ? response({ ...setup, owner: true, policies: [] }) : response(data); }));
+    window.history.replaceState(null, "", "#wf-leave");
     render(<WorkforceWorkspace csrfToken="csrf" owner />);
-    await screen.findByRole("heading", { name: "Owner policy setup" });
-    const panel = screen.getByRole("heading", { name: "Owner policy setup" }).closest("section")!;
+    await screen.findByRole("heading", { name: "Leave setup · Owner" });
+    const panel = screen.getByRole("heading", { name: "Leave setup · Owner" }).closest("section")!;
     expect(within(panel).getByRole("spinbutton", { name: /Automatic selfie expiry notice/ })).toHaveValue(null);
     expect(within(panel).getByLabelText(/Policy effective from/)).toHaveValue("");
     fireEvent.change(within(panel).getByLabelText(/Policy effective from/), { target: { value: "2026-01-01" } });
@@ -111,10 +112,13 @@ describe("WorkforceWorkspace", () => {
 
   it("shows setup-required state and hides management allocation for employees without grants", async () => {
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).endsWith("/setup") ? response({ ...setup, policies: [], employees: [] }) : response(data)));
+    window.history.replaceState(null, "", "#wf-leave");
     render(<WorkforceWorkspace csrfToken="csrf" owner={false} />);
     await screen.findByText("Workforce setup required");
     expect(screen.getByText(/No leave policy or workload thresholds are active/)).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "Explicit task allocation" })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("link", { name: "Attendance" }));
+    await waitFor(() => expect(screen.getByRole("link", { name: "Attendance" })).toHaveAttribute("aria-current", "page"));
     expect(screen.getAllByRole("heading", { name: "Attendance" })).toHaveLength(2);
   });
 });

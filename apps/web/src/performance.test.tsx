@@ -17,6 +17,7 @@ const setupFetch = (options: { owner?: boolean; context?: TestContext; employee?
   vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input); calls.push({ url, init });
     if (url.endsWith("/context")) return json(options.context ?? context(options.owner));
+    if (url.endsWith("/dashboard/sources/health")) return json({ readCompletedAt: "2026-10-08T00:00:00.000Z", sections: [{ key: "health", rows: [] }] });
     if (url.includes("/employees/")) return json(options.employee ?? emptyEmployee());
     if (url.includes("/projects/")) return json(options.project ?? { project: { id: "project-1", label: "Studio", deliveryType: "DESIGN" }, snapshots: [], delays: [], delayTotalDays: 0, delayByCause: [], canManage: false, unavailable: [] });
     if (url.endsWith("/commands")) { const body = JSON.parse(String(init?.body)) as TestCommand; options.onCommand?.(body); return json(row("record-1", body.operation.startsWith("PROJECT") ? "HEALTH" : "POLICY", "DRAFT", body.policy ?? {})); }
@@ -123,6 +124,27 @@ describe("PerformanceWorkspace", () => {
     render(<PerformanceWorkspace csrfToken="csrf-1" owner={false} />);
     expect(await screen.findByRole("alert")).toHaveTextContent("Performance service unavailable");
     expect(screen.getByRole("button", { name: "Try again" })).toBeEnabled();
+  });
+
+  it("retains loaded project detail on same-project history navigation and reselection", async () => {
+    const previousUrl = window.location.href;
+    try {
+    window.history.replaceState(null, "", "/project-health?projectId=project-1");
+    const calls = setupFetch({
+      context: { ...context(false), projects: [{ id: "project-1", label: "Studio", deliveryType: "DESIGN" }] },
+      project: { project: { id: "project-1", label: "Studio", deliveryType: "DESIGN" }, snapshots: [], delays: [], delayTotalDays: 0, delayByCause: [], canManage: false, unavailable: [] },
+    });
+    render(<PerformanceWorkspace csrfToken="csrf-1" owner={false} initialTab="project" focused />);
+
+    expect(await screen.findByRole("heading", { name: "Studio" })).toBeInTheDocument();
+    expect(calls.filter(call => call.url.endsWith("/projects/project-1"))).toHaveLength(1);
+
+    window.dispatchEvent(new PopStateEvent("popstate", { state: window.history.state }));
+    fireEvent.click(screen.getByRole("button", { name: /Studio.*Design/ }));
+
+    expect(screen.getByRole("heading", { name: "Studio" })).toBeInTheDocument();
+    expect(calls.filter(call => call.url.endsWith("/projects/project-1"))).toHaveLength(1);
+    } finally { window.history.replaceState(null, "", previousUrl); }
   });
 
   it("preloads saved cycle goals and development actions before editing", async () => {

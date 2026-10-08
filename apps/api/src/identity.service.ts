@@ -78,6 +78,7 @@ export class IdentityService {
       rpName: "Sense Studios",
       rpID: this.rpID,
       userName: account.normalizedEmail,
+      userDisplayName: account.normalizedEmail,
       userID: Buffer.from(account.id.replaceAll("-", ""), "hex"),
       attestationType: "none",
       authenticatorSelection: { residentKey: "required", userVerification: "required" },

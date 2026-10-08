@@ -30,7 +30,8 @@ import { SkillsTrainingWorkspace, SkillsWorkspace } from "./learning.js";
 import { TrainingWorkspace } from "./learning-training.js";
 import { LibraryWorkspace } from "./library-workspace.js";
 import { InsightsNavigation } from "./insights-navigation.js";
-import { DecisionsHome, SettingsHome } from "./settings-homes.js";
+import { DecisionsHome, SettingsSectionNavigation, type SettingsSection } from "./settings-homes.js";
+import { passkeyRegistrationError } from "./passkey-registration-error.js";
 
 const AUTH_PATH = "/api/v1/auth";
 const ORG_PATH = "/api/v1/org";
@@ -227,12 +228,15 @@ function Login({ onSignedIn, notice }: { onSignedIn: (session: Session) => void;
   );
 }
 
-function Identity({ session, onLogout, busy, error }: {
+function Identity({ session, onLogout, busy, error, settingsSection, onSessionUpdate }: {
   session: Session;
   onLogout: () => void;
   busy: boolean;
   error: string | undefined;
+  settingsSection?: SettingsSection;
+  onSessionUpdate?: (session: Session) => void;
 }): React.JSX.Element {
+  const identityActive = useRef(true);
   const [currentSession, setCurrentSession] = useState(session);
   const [refreshing, setRefreshing] = useState(false);
   const [actionError, setActionError] = useState<string>();
@@ -252,8 +256,11 @@ function Identity({ session, onLogout, busy, error }: {
   const [revokingSessionId, setRevokingSessionId] = useState<string>();
   const [organizationSettingsOpen, setOrganizationSettingsOpen] = useState(false);
   const [teamWorkspaceOpen, setTeamWorkspaceOpen] = useState(false);
+  const [notificationsVisited, setNotificationsVisited] = useState(settingsSection === "notifications");
 
   useEffect(() => setCurrentSession(session), [session]);
+  useEffect(() => { identityActive.current = true; return () => { identityActive.current = false; }; }, []);
+  useEffect(() => { if (settingsSection === "notifications") setNotificationsVisited(true); }, [settingsSection]);
 
   const loadDeviceSessions = useCallback(async (): Promise<void> => {
     setSessionsLoading(true);
@@ -298,10 +305,15 @@ function Identity({ session, onLogout, busy, error }: {
       browserRegistration = false;
       await apiPost(`${AUTH_PATH}/passkey/register/verify`, { ceremonyId: options.ceremonyId, response }, currentSession.csrfToken);
       const updated = await readSession();
-      if (updated) setCurrentSession(updated);
+      if (!identityActive.current) return;
+      if (!updated) { onLogout(); return; }
+      if (updated.account.id !== currentSession.account.id) return;
+      setCurrentSession(updated); onSessionUpdate?.(updated);
       setActionSuccess("Passkey added to this account.");
     } catch (cause) {
-      setActionError(browserRegistration ? passkeyRegistrationError(cause) : publicFlowError(cause));
+      setActionError(browserRegistration
+        ? passkeyRegistrationError(cause, { diagnostics: import.meta.env.DEV, browserSupported: Boolean(window.PublicKeyCredential) })
+        : publicFlowError(cause));
     } finally { setPending(false); }
   };
 
@@ -325,7 +337,10 @@ function Identity({ session, onLogout, busy, error }: {
     try {
       await apiPost(`${AUTH_PATH}/owner/recovery-code/ack`, { confirmedStoredOffline: true }, currentSession.csrfToken);
       const updated = await readSession();
-      if (updated) setCurrentSession(updated);
+      if (!identityActive.current) return;
+      if (!updated) { onLogout(); return; }
+      if (updated.account.id !== currentSession.account.id) return;
+      setCurrentSession(updated); onSessionUpdate?.(updated);
       setToken(undefined);
       setActionSuccess("Owner setup is complete. Keep the recovery code offline and use it only once.");
     } catch (cause) { setActionError(publicFlowError(cause)); }
@@ -388,12 +403,20 @@ function Identity({ session, onLogout, busy, error }: {
 
   const refreshIdentity = async (): Promise<void> => {
     setRefreshing(true);
-    try { const updated = await readSession(); if (updated) setCurrentSession(updated); else onLogout(); }
-    catch { setActionError("We couldn’t refresh your session. Try again."); }
+    try { const updated = await readSession(); if (!identityActive.current) return; if (updated && updated.account.id === currentSession.account.id) { setCurrentSession(updated); onSessionUpdate?.(updated); } else if (!updated) onLogout(); }
+    catch { if (identityActive.current) setActionError("We couldn’t refresh your session. Try again."); }
     finally { setRefreshing(false); }
   };
 
   const ownerNeedsSetup = currentSession.account.kind === "OWNER" && currentSession.ownerSetupRequired === true;
+  const settingsMode = settingsSection !== undefined;
+  const owner = currentSession.account.kind === "OWNER";
+  const staff = currentSession.account.kind === "STAFF";
+  const effectiveSettingsSection = settingsSection === "setup" && !ownerNeedsSetup ? "account" : settingsSection;
+  const showAccount = !settingsMode || effectiveSettingsSection === "account" || ownerNeedsSetup;
+  const showNotifications = !settingsMode || effectiveSettingsSection === "notifications";
+  const showOrganization = !settingsMode || effectiveSettingsSection === "organization";
+  const showTeam = !settingsMode || effectiveSettingsSection === "team";
   const copyToken = async (): Promise<void> => {
     if (!token) return;
     try { await navigator.clipboard.writeText(token); setActionError(undefined); setActionSuccess("Copied. Store or hand off this one-time secret securely."); }
@@ -401,10 +424,13 @@ function Identity({ session, onLogout, busy, error }: {
   };
 
   return (
-    <main className="identity-content">
-      <div className="eyebrow">IDENTITY</div>
-      <h1>You’re signed in.</h1>
-      <p className="auth-intro">Your account is authenticated. Workspace access will appear as approved capabilities are added.</p>
+    <main className={`identity-content${settingsMode ? " settings-shell" : ""}`}>
+      {settingsMode && <header className="settings-shell-heading"><p className="settings-homes-eyebrow">WORKSPACE</p><h1>Settings</h1><p>Manage your account and workspace preferences.</p></header>}
+      {settingsMode && !ownerNeedsSetup && <SettingsSectionNavigation active={effectiveSettingsSection!} owner={owner} staff={staff} />}
+      {settingsMode && !ownerNeedsSetup && <h2 className="settings-section-heading">{effectiveSettingsSection === "account" ? "Account & devices" : effectiveSettingsSection === "notifications" ? "Notifications" : effectiveSettingsSection === "organization" ? "Organization administration" : "Team workspace"}</h2>}
+      {(!settingsMode || effectiveSettingsSection === "account" || ownerNeedsSetup) && <div className="eyebrow">IDENTITY</div>}
+      {!settingsMode && <><h1>You’re signed in.</h1><p className="auth-intro">Your account is authenticated. Workspace access will appear as approved capabilities are added.</p></>}
+      {showAccount && <>
       <section className="identity-card" aria-labelledby="identity-heading">
         <div className="identity-avatar" aria-hidden="true">{currentSession.account.email.slice(0, 1).toUpperCase()}</div>
         <div className="identity-details">
@@ -416,12 +442,14 @@ function Identity({ session, onLogout, busy, error }: {
           {busy ? "Signing out…" : "Sign out"}
         </button>
       </section>
-      <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/dashboard">Dashboard &amp; reports</Link><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/learning">Learning</Link><Link to="/performance">Performance</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/external-access">External access</Link><Link to="/turnkey">Turnkey operations</Link></nav>
+      </>}
+      {!settingsMode && <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/dashboard">Dashboard &amp; reports</Link><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/learning">Learning</Link><Link to="/performance">Performance</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/external-access">External access</Link><Link to="/turnkey">Turnkey operations</Link></nav>}
       {error && <p className="auth-error" role="alert">{error}</p>}
-      {!ownerNeedsSetup && <ApprovalQueue />}
-      {!ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
-      {!ownerNeedsSetup && <ProjectWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
-      {!ownerNeedsSetup && <TaskWorkspace csrfToken={currentSession.csrfToken} owner={currentSession.account.kind === "OWNER"} />}
+      {!settingsMode && !ownerNeedsSetup && <ApprovalQueue />}
+      {!settingsMode && !ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={owner} />}
+      {!settingsMode && !ownerNeedsSetup && <ProjectWorkspace csrfToken={currentSession.csrfToken} owner={owner} />}
+      {!settingsMode && !ownerNeedsSetup && <TaskWorkspace csrfToken={currentSession.csrfToken} owner={owner} />}
+      {showAccount && <>
       <section className="identity-section sessions-section" aria-labelledby="sessions-heading">
         <div className="sessions-heading-row">
           <div><div className="eyebrow">DEVICES</div><h2 id="sessions-heading">Active sessions</h2></div>
@@ -447,8 +475,8 @@ function Identity({ session, onLogout, busy, error }: {
           </ul>
         )}
       </section>
-      <NotificationCenter csrfToken={currentSession.csrfToken} />
-      {currentSession.account.kind === "OWNER" && currentSession.ownerSetupRequired === false && <AuditRetentionCenter csrfToken={currentSession.csrfToken} />}
+      </>}
+      {settingsMode ? notificationsVisited && <div hidden={!showNotifications}><NotificationCenter csrfToken={currentSession.csrfToken} initiallyOpen /></div> : <NotificationCenter csrfToken={currentSession.csrfToken} />}
       {ownerNeedsSetup && (
         <section className="identity-section" aria-labelledby="owner-setup-heading">
           <div className="eyebrow">OWNER SETUP</div><h2 id="owner-setup-heading">Secure your Owner account</h2>
@@ -465,7 +493,8 @@ function Identity({ session, onLogout, busy, error }: {
           </div>}
         </section>
       )}
-      {currentSession.account.kind === "OWNER" && currentSession.ownerSetupRequired === false && (
+      {owner && currentSession.ownerSetupRequired === false && (showOrganization || settingsMode) && <div hidden={settingsMode && !showOrganization}>
+        <AuditRetentionCenter csrfToken={currentSession.csrfToken} />
         <section className="identity-section" aria-labelledby="organization-settings-toggle">
           <div className="sessions-heading-row">
             <div><div className="eyebrow">ORGANIZATION</div><h2 id="organization-settings-toggle">Organization settings</h2></div>
@@ -475,8 +504,9 @@ function Identity({ session, onLogout, busy, error }: {
           </div>
           {organizationSettingsOpen && <OrganizationAdmin session={currentSession} />}
         </section>
-      )}
-      {currentSession.account.kind === "STAFF" && (
+      </div>}
+      {staff && (showTeam || settingsMode) && (
+        <div hidden={settingsMode && !showTeam}>
         <section className="identity-section" aria-labelledby="team-workspace-heading">
           <div className="sessions-heading-row">
             <div><div className="eyebrow">TEAM</div><h2 id="team-workspace-heading">Team workspace</h2></div>
@@ -486,8 +516,9 @@ function Identity({ session, onLogout, busy, error }: {
           </div>
           {teamWorkspaceOpen && <TeamWorkspace session={currentSession} />}
         </section>
+        </div>
       )}
-      {currentSession.account.kind === "OWNER" && currentSession.ownerSetupRequired === false && (
+      {owner && currentSession.ownerSetupRequired === false && (!settingsMode || settingsSection === "organization") && (
         <section className="identity-section" aria-labelledby="staff-identity-heading">
           <div className="eyebrow">IDENTITY ADMINISTRATION</div><h2 id="staff-identity-heading">Staff identity access</h2>
           <form className="identity-form" onSubmit={(event) => void createInvitation(event)}>
@@ -510,24 +541,14 @@ function Identity({ session, onLogout, busy, error }: {
           {token && <div className="secret-handoff"><label htmlFor="handoff-token">One-time enrollment token for secure handoff</label><textarea id="handoff-token" readOnly value={token} rows={2} />{tokenExpiresIn !== undefined && <p className="identity-note">Expires in {Math.ceil(tokenExpiresIn / 3600)} hours.</p>}<button type="button" onClick={() => void copyToken()}>Copy token</button><button type="button" className="secondary-action" onClick={() => { setToken(undefined); setTokenExpiresIn(undefined); }}>Hide token</button></div>}
         </section>
       )}
-      {actionError && <p className="auth-error" role="alert">{actionError}</p>}
-      {actionSuccess && <p className="notice" role="status">{actionSuccess}</p>}
-      <div className="identity-bottom-actions">
+      {(showAccount || effectiveSettingsSection === "organization" || ownerNeedsSetup) && actionError && <p className="auth-error" role="alert">{actionError}</p>}
+      {(showAccount || effectiveSettingsSection === "organization" || ownerNeedsSetup) && actionSuccess && <p className="notice" role="status">{actionSuccess}</p>}
+      {showAccount && <div className="identity-bottom-actions">
         <button className="secondary-action" type="button" onClick={() => void refreshIdentity()} disabled={refreshing}>{refreshing ? "Refreshing…" : "Refresh session"}</button>
         <p className="identity-note" role="status">Your sign-in is checked again when you return to this page.</p>
-      </div>
+      </div>}
     </main>
   );
-}
-
-function passkeyRegistrationError(error: unknown): string {
-  const code = typeof error === "object" && error !== null && "code" in error ? String(error.code) : "";
-  const name = error instanceof Error ? error.name : "UnknownError";
-  const detail = import.meta.env.DEV ? ` (browser detail: ${name}${code ? ` / ${code}` : ""})` : "";
-  if (code === "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED") return `That passkey is already registered. Choose a different passkey method, such as your phone or a security key.${detail}`;
-  if (isCancellation(error)) return `The passkey request was cancelled or declined by the browser. You can try again when ready.${detail}`;
-  if (isUnsupportedPasskeyBrowser(error)) return `This browser does not support passkeys. Open this page in a supported browser or device.${detail}`;
-  return `The browser could not create another passkey with that method. Choose a different device or security key and try again.${detail}`;
 }
 
 function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element {
@@ -1117,7 +1138,7 @@ function AuthHome({ legacyWorkspace = false }: { legacyWorkspace?: boolean }): R
     const linkedTaskId = new URLSearchParams(window.location.search).get("taskId");
     return <Navigate replace to={linkedTaskId ? `/tasks?taskId=${encodeURIComponent(linkedTaskId)}` : "/my-work"} />;
   }
-  return <WorkspaceLayout><Identity session={view.session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} /></WorkspaceLayout>;
+  return <WorkspaceLayout><Identity key={view.session.account.id} session={view.session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} /></WorkspaceLayout>;
 }
 
 function NotFound(): React.JSX.Element {
@@ -1170,20 +1191,46 @@ function NotificationsRoute(): React.JSX.Element {
 function SettingsRoute(): React.JSX.Element {
   const [session, setSession] = useState<Session | null>();
   const [failed, setFailed] = useState(false);
+  const [logoutBusy, setLogoutBusy] = useState(false);
+  const [logoutError, setLogoutError] = useState<string>();
+  const settingsActive = useRef(false);
+  const location = useLocation();
+  const navigate = useNavigate();
   useEffect(() => {
     let active = true;
     let generation = 0;
+    settingsActive.current = true;
     const restore = (): void => { const token = ++generation; void readSession().then(value => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
     const ended = (): void => { generation += 1; if (active) setSession(null); };
     const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
     restore(); window.addEventListener("sense-session-ended", ended); window.addEventListener("focus", recheck); document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
+    return () => { active = false; settingsActive.current = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
   }, []);
+  const logout = async (): Promise<void> => {
+    if (!session || logoutBusy) return;
+    setLogoutBusy(true);
+    setLogoutError(undefined);
+    try {
+      const response = await fetch(`${AUTH_PATH}/logout`, { method: "POST", credentials: "include", headers: { "X-CSRF-Token": session.csrfToken } });
+      if (!response.ok && response.status !== 401) throw new Error("logout-failed");
+      const pointer = readOfflinePointer();
+      if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined);
+      clearOfflinePointer();
+      window.dispatchEvent(new Event("sense-session-ended"));
+      setSession(null);
+      navigate("/", { replace: true });
+    } catch {
+      setLogoutError("We couldn’t sign you out. Try again.");
+    } finally { setLogoutBusy(false); }
+  };
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/workspace">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view settings</h1><Link to="/">Return to sign in</Link></section></main>;
-  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/workspace">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Settings</span><span>{session.account.email}</span></div><SettingsHome owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  const owner = session.account.kind === "OWNER";
+  const requestedSection = new URLSearchParams(location.search).get("section");
+  const validSections: SettingsSection[] = ["account", "notifications", ...(owner ? ["organization" as const] : ["team" as const])];
+  const section: SettingsSection = owner && session.ownerSetupRequired ? "setup" : validSections.includes(requestedSection as SettingsSection) ? requestedSection as SettingsSection : "account";
+  return <WorkspaceLayout><Identity key={session.account.id} session={session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} settingsSection={section} onSessionUpdate={(updated) => { if (settingsActive.current) setSession((current) => current?.account.id === updated.account.id ? updated : current); }} /></WorkspaceLayout>;
 }
 
 function DecisionsRoute(): React.JSX.Element {
