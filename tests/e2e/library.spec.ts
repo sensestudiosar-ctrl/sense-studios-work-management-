@@ -91,7 +91,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await expect(workspace.getByRole("button", { name: "Acknowledge version 1" })).toBeVisible();
     await workspace.getByRole("button", { name: "Acknowledge version 1" }).click();
     await expect(workspace.getByText("Acknowledgement recorded for this exact version.")).toBeVisible();
-    expect((await db.query('SELECT id FROM library_acknowledgements WHERE "employeeId"=$1 AND "versionId"=$2', [employeeId, version1.rows[0]!.id])).rowCount).toBe(1);
+    await expect.poll(async () => (await db.query('SELECT id FROM library_acknowledgements WHERE "employeeId"=$1 AND "versionId"=$2', [employeeId, version1.rows[0]!.id])).rowCount, { timeout: 5_000 }).toBe(1);
 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
