@@ -1,5 +1,9 @@
 # Approved dependency-based implementation plan — S01–S09 complete for development/local staging; S10 complete for development/local staging
 
+## S01 local PostgreSQL verification recovery — COMPLETE for local preflight (2026-10-08)
+
+Owner requested rectifying the reported PostgreSQL issue. FND/S01-B/C/I and R-099.e–f/R-100/R-101/R-102 anchor configuration, real database readiness and accurate operational evidence. Scope: identify the accepted dedicated cluster/environment, verify SQL and migration status on the host, compare retained snapshots, and provide a repeatable read-only preflight. Dependencies: existing accepted S27 environment and preservation baseline; host loopback permission; pinned Node 24.19.0. No schema, source-data, production-service or application behavior changes. Do not infer outage from sandbox socket permission denial or from an unloaded shell variable. Acceptance: real host SQL on both accepted ports, 22 isolated targets at115 plus source109, all154 retained snapshots unchanged, preflight execution and Sol review. Full UX integration/browser acceptance remains a separate gate.
+
 ## UX gap closure — Review inbox and exact review navigation — AUTHORIZED / IN PROGRESS (2026-10-08)
 
 Historical initial boundary below is superseded by the Owner's subsequent authorization “UX prototype contract gap closure — backend/API expanded scope.” The original Review/Task implementation remains included; task/project/review API additions and the current full G01–G12/F-G01–F-G07 scope are defined in that expanded entry. No prior exclusion in these initial entries limits the newer authorization.
