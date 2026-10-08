@@ -132,7 +132,7 @@ test("linked project task is submitted, reviewed from inbox, and assigned correc
     const notification = await db.query<{ recipientAccountId: string; channel: string; category: string; mandatory: boolean; internalRoute: string }>(
       'SELECT n."recipientAccountId", n.channel::text, n.category, n.mandatory, n."internalRoute" FROM notifications n JOIN domain_events e ON e.id=n."eventId" WHERE e."eventName"=\'review.escalated\' AND e."subjectId"=$1', [escalation.rows[0]!.roundId]
     );
-    expect(notification.rows).toEqual([{ recipientAccountId: managerAccountId, channel: "IN_APP", category: "review.escalated", mandatory: true, internalRoute: `/reviews?taskId=${task.id}` }]);
+    expect(notification.rows).toEqual([{ recipientAccountId: managerAccountId, channel: "IN_APP", category: "review.escalated", mandatory: true, internalRoute: `/reviews?taskId=${task.id}&roundId=${escalation.rows[0]!.roundId}` }]);
     await page.goto(`/reviews?taskId=${task.id}`);
     await expect(reviewerWorkspace.getByRole("heading", { name: taskTitle })).toBeVisible();
     await page.reload();
