@@ -74,9 +74,9 @@ databaseDescribe("S09 task persistence and authorization database integration", 
   const taskInput = (reason: string, extras: Record<string, unknown> = {}) => ({ title: "Prepare studio brief", type: TaskType.NON_PROJECT, priority: TaskPriority.HIGH, targetDate: "2026-10-15", reason, ...extras });
 
   it("does not list standalone tasks owned by a same-team non-report peer", async () => {
-    await fixture(async ({ tx, organizationId, managerActor, outsiderActor, tasks }) => {
+    await fixture(async ({ tx, organizationId, managerActor, outsiderActor, ownerActor, tasks }) => {
       const peer = await tx.employee.findFirstOrThrow({ where: { accountId: outsiderActor.accountId, organizationId } });
-      const task = await tasks.create(managerActor, taskInput("Keep peer standalone work private", { ownerEmployeeId: peer.id }));
+      const task = await tasks.create(ownerActor, taskInput("Keep peer standalone work private", { ownerEmployeeId: peer.id }));
       await expect(tasks.detail(managerActor, task.id)).rejects.toMatchObject({ status: 403 });
       const list = await tasks.list(managerActor, "all", 0, 50);
       expect(list.items.some((item) => item.id === task.id)).toBe(false);
