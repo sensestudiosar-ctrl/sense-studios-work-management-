@@ -7,7 +7,7 @@ on:
 jobs:
   foundation:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 90
     env:
       CI: "true"
       E2E_NAS_ROOT: /tmp/sense-s01-e2e-nas
@@ -52,13 +52,24 @@ jobs:
           psql "$MIGRATION_DATABASE_URL" --set=app_password="$S04_APP_DB_PASSWORD" <<'SQL'
           ALTER ROLE sense_app_runtime PASSWORD :'app_password';
           SQL
+      - name: Provision isolated PostgreSQL fixtures for every guarded suite
+        run: node scripts/ci/prepare-disposable-postgres.mjs
       - run: pnpm typecheck
       - run: pnpm lint
-      - run: pnpm test
+      - name: Run API, PostgreSQL, and web suites with no-skips acceptance
+        run: node scripts/ci/run-api-web-tests.mjs
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
       - run: mkdir -p "$E2E_NAS_ROOT"
-      - run: pnpm test:e2e
+      - name: Run browser suites with loopback accounting receiver and no-skips acceptance
+        run: node scripts/ci/run-e2e.mjs
+      - name: Upload structured test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .artifacts/ci/${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: warn
       - name: Container and recovery rehearsal
         run: |
           docker compose -f infra/compose.yaml config --quiet
@@ -72,3 +83,6 @@ jobs:
       - name: Stop test containers
         if: always()
         run: docker compose -f infra/compose.yaml down --volumes --remove-orphans
+      - name: Stop disposable PostgreSQL fixtures
+        if: always()
+        run: node scripts/ci/cleanup-disposable-postgres.mjs
