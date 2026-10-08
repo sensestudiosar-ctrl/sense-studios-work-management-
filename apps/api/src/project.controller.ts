@@ -36,13 +36,16 @@ export class ProjectController {
   private async mutate(request: Request, csrf?: string) { if (request.headers.origin !== this.config.webOrigin) throw new ForbiddenException("Request origin is not allowed"); const result = await this.actor(request); this.identity.verifyCsrf(result.active, csrf); return result.actor; }
   private noStore(response: Response) { response.setHeader("Cache-Control", "no-store"); }
   @Get("setup") async setup(@Req() request: Request, @Res({ passthrough: true }) response: Response) { this.noStore(response); const { actor } = await this.actor(request); return this.workflows.setup(actor); }
-  @Get() async list(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("branchId") branchId?: string, @Query("offset") offset?: string, @Query("limit") limit?: string) {
+  @Get() async list(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("branchId") branchId?: string, @Query("offset") offset?: string, @Query("limit") limit?: string, @Query("q") q?: string, @Query("stageKey") stageKey?: string, @Query("sort") sort?: string, @Query("direction") direction?: string) {
     this.noStore(response);
     const { actor } = await this.actor(request);
-    if (!uuid.safeParse(branchId).success) throw new BadRequestException("Invalid branch");
+    if (branchId !== undefined && !uuid.safeParse(branchId).success) throw new BadRequestException("Invalid branch");
     const parsedOffset = page.safeParse(offset ?? "0"); const parsedLimit = page.safeParse(limit ?? "50");
     if (!parsedOffset.success || !parsedLimit.success || parsedLimit.data < 1 || parsedLimit.data > 100) throw new BadRequestException("Invalid pagination");
-    return this.workflows.list(actor, branchId!, parsedOffset.data, parsedLimit.data);
+    const parsedQ = q === undefined ? undefined : z.string().trim().max(160).safeParse(q);
+    const parsedStage = stageKey === undefined ? undefined : z.string().trim().min(1).max(80).safeParse(stageKey);
+    if (parsedQ && !parsedQ.success || parsedStage && !parsedStage.success || sort !== undefined && !["created", "name", "milestone"].includes(sort) || direction !== undefined && !["asc", "desc"].includes(direction)) throw new BadRequestException("Invalid project list filters");
+    return this.workflows.list(actor, branchId, parsedOffset.data, parsedLimit.data, { ...(parsedQ?.success && parsedQ.data ? { q: parsedQ.data } : {}), ...(parsedStage?.success ? { stageKey: parsedStage.data } : {}), ...(sort ? { sort: sort as "created" | "name" | "milestone" } : {}), ...(direction ? { direction: direction as "asc" | "desc" } : {}) });
   }
   @Get(":id") async detail(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("id") id: string) { this.noStore(response); const { actor } = await this.actor(request); if (!uuid.safeParse(id).success) throw new BadRequestException("Invalid project"); return this.workflows.detail(actor, id); }
   @Get(":id/plan") async plan(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("id") id: string) { this.noStore(response); const { actor } = await this.actor(request); return this.workflows.plan(actor, parse(uuid, id)); }

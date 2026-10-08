@@ -75,6 +75,7 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     const mobilePage = await mobile.newPage();
     await virtualPasskey(mobilePage);
     await mobilePage.goto("/");
+    await expect(mobilePage).toHaveURL(/\/$/);
     await expect(mobilePage.getByRole("heading", { name: "Secure your Owner account" })).toBeVisible();
     await mobilePage.getByRole("button", { name: "Add second passkey" }).click();
     await expect(mobilePage.getByRole("button", { name: "Create offline recovery code" })).toBeVisible();
@@ -83,23 +84,30 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     await mobilePage.getByLabel("I stored this recovery code offline where only I can access it.").check();
     await mobilePage.getByRole("button", { name: "Confirm offline storage" }).click();
     await mobilePage.reload();
-    await expect(mobilePage.getByRole("heading", { name: "You’re signed in." })).toBeVisible();
-    await expect(mobilePage.getByRole("heading", { name: "Needs your attention" })).toBeVisible();
-    await expect(mobilePage.getByText(/You’re all caught up/)).toBeVisible();
-    await expect(mobilePage.getByRole("heading", { name: "Needs your attention" })).toBeVisible();
-    await expect(mobilePage.getByText(/You’re all caught up/)).toBeVisible();
+    await expect(mobilePage).toHaveURL(/\/my-work$/);
+    await expect(mobilePage.getByRole("heading", { name: "Decisions awaiting you" })).toBeVisible();
+    await expect(mobilePage.getByText("No pending decisions in this list.", { exact: true })).toBeVisible();
+    await expect(mobilePage.getByText("No personal tasks are available because this Owner account has no active employee identity.", { exact: true })).toBeVisible();
     await expect(mobilePage.getByRole("heading", { name: "Secure your Owner account" })).toHaveCount(0);
 
+    await mobilePage.goto("/workspace");
     await mobilePage.getByRole("button", { name: "Sign out" }).click();
     await expect(mobilePage.getByRole("heading", { name: "Sign in with your passkey" })).toBeVisible();
+    await mobilePage.goto("/");
     await mobilePage.getByLabel("Work email", { exact: true }).fill(ownerEmail);
     await mobilePage.getByRole("button", { name: "Continue with passkey" }).click();
-    await expect(mobilePage.getByRole("heading", { name: "You’re signed in." })).toBeVisible();
+    await expect(mobilePage).toHaveURL(/\/my-work$/);
+    await expect(mobilePage.getByRole("heading", { name: "Decisions awaiting you" })).toBeVisible();
 
+    await desktop.addCookies(await mobile.cookies());
+    await desktopPage.goto("/workspace");
     await desktopPage.getByRole("button", { name: "Sign out" }).click();
+    await expect(desktopPage.getByRole("heading", { name: "Sign in with your passkey" })).toBeVisible();
+    await desktopPage.goto("/");
     await desktopPage.getByLabel("Work email", { exact: true }).fill(ownerEmail);
     await desktopPage.getByRole("button", { name: "Continue with passkey" }).click();
-    await expect(desktopPage.getByRole("heading", { name: "You’re signed in." })).toBeVisible();
+    await expect(desktopPage).toHaveURL(/\/my-work$/);
+    await expect(desktopPage.getByRole("heading", { name: "Decisions awaiting you" })).toBeVisible();
   } finally {
     await desktop.close();
     await mobile.close();

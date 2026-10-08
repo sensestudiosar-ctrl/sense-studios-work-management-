@@ -109,18 +109,34 @@ export class ProjectWorkflowService {
     const employees = actor.kind === AccountKind.OWNER ? await this.db.employee.findMany({ where: { organizationId: actor.organizationId, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE } }, include: { account: { select: { normalizedEmail: true } } }, orderBy: { createdAt: "asc" } }) : [];
     return { owner: actor.kind === AccountKind.OWNER, ownerAccountId: actor.kind === AccountKind.OWNER ? actor.accountId : undefined, branches, employees: employees.map((row) => ({ id: row.id, accountId: row.accountId, name: row.account.normalizedEmail, homeBranchId: row.homeBranchId })) };
   }
-  async list(actor: ProjectActor, branchId: string, offset: number, limit: number) {
-    const branch = await this.db.branch.findFirst({ where: { id: branchId, organizationId: actor.organizationId } });
-    if (!branch) throw new NotFoundException("Branch not found");
-    const where: Prisma.ProjectWhereInput = { organizationId: actor.organizationId, branchId };
-    if (actor.kind === AccountKind.STAFF) {
-      const employee = await this.db.employee.findUnique({ where: { accountId: actor.accountId } });
-      if (!employee || employee.state !== EmployeeState.ACTIVE) throw new ForbiddenException("Permission denied");
-      await this.authorization.assertPermission(actor.accountId, "project.view", { kind: "BRANCH", organizationId: actor.organizationId, branchId });
-      where.assignments = { some: { employeeId: employee.id, revokedAt: null, ...(employee.homeBranchId === branchId ? {} : { crossBranchAuthorized: true }) } };
-    }
-    const [total, items] = await Promise.all([this.db.project.count({ where }), this.db.project.findMany({ where, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: offset, take: limit, include: { scopes: true, branch: { select: { id: true, name: true } }, client: { select: { id: true, name: true } } } })]);
-    return { total, items };
+  async list(actor: ProjectActor, branchId: string | undefined, offset: number, limit: number, filters: { q?: string; stageKey?: string; sort?: "created" | "name" | "milestone"; direction?: "asc" | "desc" } = {}) {
+    return this.db.$transaction(async (tx) => {
+      const projects = await tx.project.findMany({ where: { organizationId: actor.organizationId, ...(branchId ? { branchId } : {}) }, orderBy: [{ id: "asc" }], include: { scopes: { orderBy: [{ createdAt: "asc" }, { id: "asc" }] }, branch: { select: { id: true, name: true } }, client: { select: { id: true, name: true } }, currentLead: { select: { account: { select: { normalizedEmail: true } } } } } });
+      const authorized: Array<{ project: typeof projects[number]; currentLeadName: string | null; appliedStageKeys: string[]; nextMilestone: { key: string; label: string; targetAt: Date } | null }> = [];
+      for (const project of projects) {
+        try {
+          await this.access(tx, actor, project, "project.view");
+          const planItems = await tx.projectPlanItem.findMany({ where: { organizationId: actor.organizationId, projectId: project.id }, orderBy: [{ targetAt: "asc" }, { id: "asc" }], select: { kind: true, key: true, label: true, stageKey: true, targetAt: true, completedAt: true } });
+          const milestones = planItems.filter((item) => item.kind === "MILESTONE" && item.completedAt === null && item.targetAt !== null);
+          const next = milestones[0];
+          authorized.push({ project, currentLeadName: project.currentLead?.account.normalizedEmail ?? null, appliedStageKeys: [...new Set(planItems.flatMap((item) => item.kind === "STAGE" ? [item.key] : item.stageKey ? [item.stageKey] : []))].sort((a, b) => a.localeCompare(b, "en-US")), nextMilestone: next?.targetAt ? { key: next.key, label: next.label, targetAt: next.targetAt } : null });
+        } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+      }
+      const query = filters.q?.trim().toLocaleLowerCase("en-US");
+      const filtered = authorized.filter(({ project, currentLeadName, appliedStageKeys }) => (!filters.stageKey || appliedStageKeys.includes(filters.stageKey)) && (!query || [project.title, project.deliveryType, currentLeadName ?? ""].some((value) => value.toLocaleLowerCase("en-US").includes(query))));
+      const direction = filters.direction === "asc" ? 1 : -1;
+      filtered.sort((a, b) => {
+        const comparison = filters.sort === "name"
+          ? a.project.title.localeCompare(b.project.title, "en-US", { sensitivity: "base" })
+          : filters.sort === "milestone"
+            ? a.nextMilestone && b.nextMilestone ? a.nextMilestone.targetAt.getTime() - b.nextMilestone.targetAt.getTime() : !a.nextMilestone && b.nextMilestone ? 1 : a.nextMilestone && !b.nextMilestone ? -1 : 0
+            : a.project.createdAt.getTime() - b.project.createdAt.getTime();
+        if (comparison) return comparison * direction;
+        return a.project.id.localeCompare(b.project.id);
+      });
+      const stageKeys = [...new Set(authorized.flatMap(({ appliedStageKeys }) => appliedStageKeys))].sort((a, b) => a.localeCompare(b, "en-US"));
+      return { total: filtered.length, stageKeys, items: filtered.slice(offset, offset + limit).map(({ project, currentLeadName, appliedStageKeys, nextMilestone }) => ({ ...project, currentLeadName, appliedStageKeys, nextMilestone })) };
+    });
   }
   async detail(actor: ProjectActor, id: string) {
     const project = await this.db.project.findFirst({ where: { id, organizationId: actor.organizationId }, include: {

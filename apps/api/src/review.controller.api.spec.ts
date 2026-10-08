@@ -105,6 +105,37 @@ describe("S13 review HTTP boundary", () => {
     expect(reviews.decision).toHaveBeenCalledWith(expect.objectContaining({ accountId }), taskId, expect.objectContaining({ severity: "MAJOR" }));
   });
 
+  it("validates counted inbox pagination without bypassing authentication", async () => {
+    reviews.inbox!.mockClear();
+    const valid = await request(app.getHttpServer()).get("/api/v1/reviews/inbox?offset=50&limit=25").set("Cookie", cookie);
+    expect(valid.status).toBe(200);
+    expect(reviews.inbox).toHaveBeenCalledWith(expect.objectContaining({ accountId }), 50, 25, false, {});
+    expect((await request(app.getHttpServer()).get("/api/v1/reviews/inbox?personal=true").set("Cookie", cookie)).status).toBe(200);
+    expect(reviews.inbox).toHaveBeenCalledWith(expect.objectContaining({ accountId }), 0, 50, true, {});
+    reviews.inbox!.mockClear();
+    const bad = await request(app.getHttpServer()).get("/api/v1/reviews/inbox?offset=-1&limit=101").set("Cookie", cookie);
+    expect(bad.status).toBe(400);
+    expect(reviews.inbox).not.toHaveBeenCalled();
+  });
+  it("forwards additive inbox filters and rejects an invalid queue before service calls", async () => {
+    const filtered = await request(app.getHttpServer())
+      .get(`/api/v1/reviews/inbox?historical=true&projectId=${taskId}&scope=mine&queue=corrections&q=%20drawing%20&sort=due`)
+      .set("Cookie", cookie);
+    expect(filtered.status).toBe(200);
+    expect(reviews.inbox).toHaveBeenCalledWith(expect.objectContaining({ accountId }), 0, 50, false, {
+      historical: true,
+      projectId: taskId,
+      scope: "mine",
+      queue: "corrections",
+      q: "drawing",
+      sort: "due"
+    });
+
+    reviews.inbox!.mockClear();
+    const invalidQueue = await request(app.getHttpServer()).get("/api/v1/reviews/inbox?queue=unknown").set("Cookie", cookie);
+    expect(invalidQueue.status).toBe(400);
+    expect(reviews.inbox).not.toHaveBeenCalled();
+  });
   it("validates reasoned escalation, withdrawal, priority and deadline commands strictly", async () => {
     const escalation = { reason: "Escalate this blocked review" };
     const withdrawal = { reason: "Withdraw a superseded review" };

@@ -176,7 +176,11 @@ databaseDescribe("S21 external portal PostgreSQL/API acceptance", () => {
     if (!databaseUrl) throw new Error("S21_DATABASE_URL must be configured for the dedicated external portal database");
     const parsed = new URL(databaseUrl);
     const dbName = decodeURIComponent(parsed.pathname.slice(1));
-    if (!/^sense_s21_[a-z0-9_]*_test$/.test(dbName) || !["127.0.0.1", "localhost"].includes(parsed.hostname) || parsed.port !== "56433") throw new Error("S21 integration requires an isolated loopback database named sense_s21_*_test on port 56433");
+    const s21 = /^sense_s21_[a-z0-9_]*_test$/.test(dbName) && parsed.port === "56433";
+    const s25 = process.env.S25_E2E_ENABLED === "1" && /^sense_s21_s25_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    const s26 = process.env.S26_E2E_ENABLED === "1" && /^sense_s21_s26_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    const s27 = process.env.S27_E2E_ENABLED === "1" && /^sense_s21_s27_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    if ((!s21 && !s25 && !s26 && !s27) || !["127.0.0.1", "localhost"].includes(parsed.hostname)) throw new Error("External portal integration requires an isolated S21 or explicitly enabled exact S21/S25/S26/S27 loopback database");
     nasRoot = await mkdtemp(join(tmpdir(), "sense-s21-external-"));
     database = new DatabaseService({ ...config, databaseUrl, nasRoot });
     await database.check();

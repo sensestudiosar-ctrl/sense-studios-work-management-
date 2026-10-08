@@ -45,14 +45,16 @@ export class CrmService {
     await this.db.crmSource.createMany({ data: DEFAULT_SOURCES.map((name) => ({ organizationId, name, builtIn: true })), skipDuplicates: true });
     const sourceManage = await this.canManageSources(actor);
     const branches = await this.db.branch.findMany({ where: { organizationId, active: true }, orderBy: [{ name: "asc" }, { id: "asc" }] });
-    const [sources, capabilities] = await Promise.all([
+    const keys = ["lead.view", "lead.create", "lead.edit", "lead.activity_create", "lead.stage_change"] as const;
+    const checks = branches.flatMap((branch) => keys.map((permissionKey) => ({
+      permissionKey,
+      scope: { kind: "BRANCH" as const, organizationId, branchId: branch.id },
+    })));
+    const [sources, allowed] = await Promise.all([
       this.db.crmSource.findMany({ where: { organizationId, ...(sourceManage ? {} : { active: true }) }, orderBy: [{ name: "asc" }, { id: "asc" }], select: { id: true, name: true, active: true, builtIn: true, updatedAt: true } }),
-      Promise.all(branches.map(async (branch) => {
-        const keys = ["lead.view", "lead.create", "lead.edit", "lead.activity_create", "lead.stage_change"];
-        const allowed = await Promise.all(keys.map(async (key) => { try { await this.permit(actor, branch.id, key); return true; } catch (error) { if (error instanceof ForbiddenException) return false; throw error; } }));
-        return { branch, allowed };
-      }))
+      this.authorization.evaluatePermissions(actor.accountId, checks),
     ]);
+    const capabilities = branches.map((branch, index) => ({ branch, allowed: allowed.slice(index * keys.length, (index + 1) * keys.length) }));
     return { branches: capabilities.filter((x) => x.allowed[0] || x.allowed[1] || x.allowed[2] || x.allowed[3] || x.allowed[4]).map(({ branch, allowed }) => ({ id: branch.id, name: branch.name, capabilities: { view: allowed[0], create: allowed[1], edit: allowed[2], activityCreate: allowed[3], stageChange: allowed[4] } })), sources, sourceManage, owner: actor.kind === AccountKind.OWNER };
   }
   private async canManageSources(actor: CrmActor, tx?: Tx): Promise<boolean> {
@@ -110,7 +112,19 @@ export class CrmService {
   }
   private async can(actor: CrmActor, branchId: string, key: string) { try { await this.permit(actor, branchId, key); return true; } catch (error) { if (error instanceof ForbiddenException) return false; throw error; } }
   async createLead(actor: CrmActor, input: { branchId: string; title: string; contactName: string; email?: string | undefined; phone?: string | undefined; sourceId: string; clientId?: string | undefined; priorLostLeadId?: string | undefined; reason: string }) {
-    return this.db.$transaction(async (tx) => {
+    return this.db.$transaction(tx => this.createLeadInTransaction(actor, tx, input));
+  }
+  /** INT boundary: identical CRM creation guards and evidence in the caller's transaction. */
+  async websiteContext(actor: CrmActor, tx: Tx, branchId: string, sourceId: string) {
+    await this.lockedActor(tx, actor); await this.permit(actor, branchId, "lead.create", tx);
+    await tx.$queryRaw`SELECT id FROM branches WHERE id=${branchId}::uuid FOR SHARE`;
+    await tx.$queryRaw`SELECT id FROM crm_sources WHERE id=${sourceId}::uuid FOR SHARE`;
+    const branch=await tx.branch.findFirst({where:{id:branchId,organizationId:actor.organizationId,active:true}});
+    const source=await tx.crmSource.findFirst({where:{id:sourceId,organizationId:actor.organizationId,active:true,builtIn:true,name:"Website"}});
+    if(!branch||!source)throw new ForbiddenException("Current Website routing required");
+    return {branch,source};
+  }
+  async createLeadInTransaction(actor: CrmActor, tx: Tx, input: { branchId: string; title: string; contactName: string; email?: string | undefined; phone?: string | undefined; sourceId: string; clientId?: string | undefined; priorLostLeadId?: string | undefined; reason: string }) {
       await this.lockedActor(tx, actor); await this.permit(actor, input.branchId, "lead.create", tx);
       const branchRows = await tx.$queryRaw<Array<{ id: string }>>`SELECT "id" FROM "branches" WHERE "id" = ${input.branchId}::uuid AND "organizationId" = ${actor.organizationId}::uuid AND "active" = true FOR SHARE`;
       if (!branchRows[0]) throw new NotFoundException("Branch not found");
@@ -127,7 +141,6 @@ export class CrmService {
       const history = await tx.leadStageChange.create({ data: { organizationId: actor.organizationId, leadId: row.id, toStage: "NEW", direction: "CREATED", skippedStages: [], actorId: actor.accountId, leadVersion: 1 } });
       await recordCrmEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "crm.lead.created", subjectType: "lead", subjectId: row.id, reason: input.reason, after: { leadId: row.id, branchId: row.branchId, stage: row.stage, stageChangeId: history.id } });
       return row;
-    });
   }
   async updateLead(actor: CrmActor, id: string, input: { expectedVersion: number; title: string; contactName: string; email?: string | null | undefined; phone?: string | null | undefined; reason: string }) {
     return this.db.$transaction(async (tx) => {

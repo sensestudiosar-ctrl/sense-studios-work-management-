@@ -1,6 +1,6 @@
-# S23 Sol acceptance review — IN PROGRESS
+# S23 Sol acceptance review — ACCEPTED for development/local staging
 
-Exact gpt-6.1-sol owns source interpretation, schema/calculation/permission design and this acceptance review. The Owner's approved S23 choices are recorded in S23_SPEC.md. No final acceptance is claimed until actual applicable gates and canonical desktop/mobile visual review are complete.
+Exact gpt-6.1-sol owns source interpretation, schema/calculation/permission design and this acceptance review. The Owner's approved S23 choices are recorded in S23_SPEC.md. Final acceptance passed on 2026-10-05 after actual whole verification and canonical desktop/mobile visual review.
 
 ## Source and integrity review
 
@@ -14,12 +14,12 @@ Canonical transaction history/outbox/receipt is atomic; replay checks current au
 
 Exact assigned independent reviewers may read their own decided review evidence under existing current project, review.decide and REV/DOC boundaries. Ordinary task or other employee management authority is not widened; self-generation remains forbidden. Leader snapshots contain only personally controlled leader sources, and actual decider identity excludes withdrawn extension requests without a decision. Evidence-change comparison is canonical for source-reference sets and JSONB object keys; stable command/receipt fingerprint semantics remain unchanged.
 
-## Required remaining verification
+## Verified final acceptance
 
-- Actual focused PostgreSQL/API outcomes for initial no-policy gate, real-source numeric results and insufficient inputs, exact external residual/revised deadline, all four families, cycle authority/history, current scope/revocation/source redaction, SQL tamper, rollback, independent concurrent replay and session expiry after lock wait.
-- Fresh and retained populated upgrade status/preservation after the final migration, with exact-target guards and the S22 source untouched.
-- Final whole pinned Node 24.19.0/pnpm 11.19.0 verification, including all unit/integration/browser cases without unjustified skips and production builds.
-- Sol canonical desktop/mobile screenshot review for setup/no-score, numeric explanation/trend, scoped management/project health/delay and review-cycle states.
-- Final source/docs match, exact failed-attempt classification, concrete remaining production/S18/actual-project limits and actual model reporting.
+- `.env.s23-tools/verify-s23-final4.log` exited 0 with typecheck/lint, 186 API unit, 133 web unit, 261 PostgreSQL integration across 48 suites and 43 desktop/mobile browser tests, production builds and all 43 serial browser cases without skips or retries. Unit suite counts are 31 API/20 web; PostgreSQL suite count is 48.
+- Final focused PostgreSQL/API acceptance passed 14 cases across three suites, including real sources for all four families, historical/revised residual delay, actual independent reviewer parity, withdrawn-versus-decided leader credit, Confidential revocation, SQL-forged policy rejection, session expiry after a real lock wait, independent concurrent replay and rollback.
+- All 99 migrations are current on 13 dedicated targets; all 134 original-table column/count/digest snapshots preserve 15,474 rows across 51 populated tables. Applied migrations 98/99 are immutable and original S22 source remains unchanged.
+- All ten canonical `.env.s23-tools/screenshots-final4` desktop/mobile captures were actually inspected. No-policy/setup, exact arithmetic/retained stable trend, project health/cause-duration evidence, finalized goals/actions and own acknowledgement are clear. Mobile page-width assertions passed, heading/control overflow was corrected and the table scroll stays within its container. Read-only crop previews aided detailed mobile inspection without changing originals.
+- Final source and documentation match the approved scope. Prior failures remain separately disclosed in S23_COMPLETION_REPORT.md. No source/security/calculation/local acceptance issue remains open.
 
 Production NAS/MinisCloud/Brevo/backup/key custody/restore and hosted deployment/CI are not implied by local acceptance. Actual-project R-105 remains separately unverified. S18 remains unresolved/excluded; S24–S27 remain unauthorized.

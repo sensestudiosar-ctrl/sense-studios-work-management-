@@ -22,11 +22,14 @@ type RecurrenceRule = { id: string; sourceTaskId: string; frequency: RecurrenceF
 type RecurrenceHistory = { id: string; ruleVersion: number; action: "configured" | "paused" | "resumed"; actorId: string; reason: string; before: unknown; after: unknown; occurredAt: string };
 type RecurrenceData = { rule: RecurrenceRule | null; history: RecurrenceHistory[]; capabilities: { configure: boolean; pause: boolean; resume: boolean }; timezone: string };
 export type Detail = { task: Task; linkedReviewTaskId?: string | null; collaborators: Array<{ employeeId: string; name: string; estimatedHours?: number }>; history: { statusChanges: HistoryEntry[]; ownerChanges: HistoryEntry[]; committedDateChanges?: CommittedDateChange[] }; extensions?: Extension[]; dependencies?: { predecessors: DependencySummary[]; hasUnfinished: boolean; hiddenCount: number }; closeoutApproval?: { approverId: string; reason: string; workScope: string; approvedAt: string; revokedAt: string | null; revocationReason: string | null } | null; capabilities: { edit: boolean; transition: boolean; reassign: boolean; wait?: boolean; resume?: boolean; changeCommittedDate?: boolean; requestExtension?: boolean; manageDependencies?: boolean; revokeCloseout?: boolean } };
-type Props = { csrfToken: string; owner: boolean };
+type Props = { csrfToken: string; owner: boolean; listFirst?: boolean; personalOnly?: boolean };
+type TaskFilters = { projectId: string; planItemId: string; ownerEmployeeId: string; q: string; status: string; phase: string; dateBasis: string; dateFrom: string; dateTo: string; sort: "created_desc" | "target_asc" | "title_asc" | "owner_asc" };
+type Scope = "mine" | "assigned" | "personal" | "all" | "owned" | "created" | "collaborating";
 
 const ROOT = "/api/v1/tasks";
 const TYPES = ["PROJECT", "NON_PROJECT", "RECURRING", "CORRECTION", "SITE", "TRAINING_PRACTICAL"];
 const PRIORITIES = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+const TASK_STATUSES = ["NOT_STARTED", "IN_PROGRESS", "WAITING", "SUBMITTED_INTERNAL_REVIEW", "IN_INTERNAL_REVIEW", "CORRECTIONS_REQUIRED", "INTERNAL_APPROVED", "SUBMITTED_CLIENT_REVIEW", "IN_CLIENT_REVIEW", "CLIENT_REVISION_REQUIRED", "CLIENT_APPROVED", "COMPLETED", "STOPPED_DUE_TO_PROJECT_CANCELLATION"];
 
 async function json<T>(response: Response): Promise<T> {
   if (!response.ok) {
@@ -39,11 +42,48 @@ async function json<T>(response: Response): Promise<T> {
 }
 function statusOf(error: unknown): number | undefined { return error instanceof Error ? (error as Error & { status?: number }).status : undefined; }
 function stateLabel(value: string): string { return value.toLowerCase().replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase()); }
+type TaskView = "list" | "board" | "timeline";
+const FILTER_KEYS: Array<keyof TaskFilters> = ["projectId", "planItemId", "ownerEmployeeId", "q", "status", "phase", "dateBasis", "dateFrom", "dateTo"];
+function readTaskUrlState(personalOnly: boolean, owner: boolean): { taskId: string; scope: Scope; filters: TaskFilters; offset: number; view: TaskView } {
+  const params = new URLSearchParams(window.location.search);
+  const rawOffset = Number(params.get("offset"));
+  const sortValue = params.get("sort");
+  const sort: TaskFilters["sort"] = sortValue === "target_asc" || sortValue === "title_asc" || sortValue === "owner_asc" ? sortValue : "created_desc";
+  const filters: TaskFilters = { ...Object.fromEntries(FILTER_KEYS.map((key) => [key, params.get(key) ?? (key === "phase" && personalOnly ? "active" : "")])) as Omit<TaskFilters, "sort">, sort };
+  const scopeValue = params.get("scope");
+  return {
+    taskId: params.get("taskId") ?? "",
+    scope: personalOnly ? "personal" : owner ? "all" : scopeValue === "all" || scopeValue === "owned" || scopeValue === "created" || scopeValue === "collaborating" || scopeValue === "assigned" || scopeValue === "mine" ? scopeValue : "mine",
+    filters,
+    offset: Number.isSafeInteger(rawOffset) && rawOffset > 0 ? rawOffset : 0,
+     view: params.get("view") === "board" ? "board" : params.get("view") === "timeline" ? "timeline" : "list"
+  };
+}
+function writeTaskUrlState(state: { taskId: string; scope: Scope; filters: TaskFilters; offset: number; view: TaskView }): void {
+  const url = new URL(window.location.href);
+  const values: Record<string, string> = { scope: state.scope, offset: state.offset ? String(state.offset) : "", view: state.view === "list" ? "" : state.view, taskId: state.taskId, sort: state.filters.sort === "created_desc" ? "" : state.filters.sort };
+  for (const key of FILTER_KEYS) values[key] = key === "dateBasis" && !state.filters.dateFrom && !state.filters.dateTo ? "" : state.filters[key];
+  for (const [key, value] of Object.entries(values)) {
+    if (value) url.searchParams.set(key, value);
+    else url.searchParams.delete(key);
+  }
+  window.history.replaceState(window.history.state, "", url);
+}
 
-export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
-  const initialTaskId = useRef(new URLSearchParams(window.location.search).get("taskId") ?? "");
+export function TaskWorkspace({ csrfToken, owner, listFirst = false, personalOnly = false }: Props): React.JSX.Element {
+  const initialUrlState = useRef(readTaskUrlState(personalOnly, owner)).current;
+  const deepLinkInitialized = useRef(false);
+  const requestId = useRef(0);
   const [setup, setSetup] = useState<Setup>();
-  const [scope, setScope] = useState<"mine" | "assigned">("mine");
+  const [scope, setScope] = useState<Scope>(initialUrlState.scope);
+  const defaultFilters: TaskFilters = { ...initialUrlState.filters, projectId: "", planItemId: "", ownerEmployeeId: "", q: "", status: "", phase: personalOnly ? "active" : "", dateBasis: "", dateFrom: "", dateTo: "", sort: "created_desc" };
+  const [draftFilters, setDraftFilters] = useState<TaskFilters>(initialUrlState.filters);
+  const [filters, setFilters] = useState<TaskFilters>(initialUrlState.filters);
+  const [offset, setOffset] = useState(initialUrlState.offset);
+  const [view, setView] = useState<TaskView>(initialUrlState.view);
+  const [urlTaskId, setUrlTaskId] = useState(initialUrlState.taskId);
+  const [compact, setCompact] = useState(false);
+  const [desktop, setDesktop] = useState(() => typeof window.matchMedia === "function" && window.matchMedia("(min-width: 1024px)").matches);
   const [page, setPage] = useState<TaskPage>();
   const [detail, setDetail] = useState<Detail>();
   const [selectedId, setSelectedId] = useState("");
@@ -102,28 +142,63 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
   const [recurrenceReason, setRecurrenceReason] = useState("");
   const [recurrenceActionReason, setRecurrenceActionReason] = useState("");
 
-  const load = useCallback(async (preferredId = "") => {
+  const load = useCallback(async (preferredId = "", requestedOffset = offset) => {
+    const request = ++requestId.current;
+    let readingDetail = false;
     setLoading(true); setError(""); setDenied(false);
+    if (listFirst) { setDetail(undefined); if (!preferredId) setSelectedId(""); }
     try {
+      const query = new URLSearchParams({ scope, offset: String(requestedOffset), limit: "50" });
+      for (const [key, value] of Object.entries(filters)) {
+        if (key === "dateBasis" && !filters.dateFrom && !filters.dateTo) continue;
+        if (value.trim()) query.set(key, value.trim());
+      }
       const [nextSetup, nextPage] = await Promise.all([
         fetch(`${ROOT}/setup`, { credentials: "include", cache: "no-store" }).then((response) => json<Setup>(response)),
-        fetch(`${ROOT}?scope=${scope}&offset=0&limit=50`, { credentials: "include", cache: "no-store" }).then((response) => json<TaskPage>(response))
+        fetch(`${ROOT}?${query.toString()}`, { credentials: "include", cache: "no-store" }).then((response) => json<TaskPage>(response))
       ]);
+      if (request !== requestId.current) return;
       setSetup(nextSetup); setPage(nextPage);
-      const id = preferredId || nextPage.items[0]?.id || "";
+      const id = preferredId || (listFirst ? "" : nextPage.items[0]?.id || "");
       setSelectedId(id);
       if (id) {
+        readingDetail = true;
         const value = await fetch(`${ROOT}/${encodeURIComponent(id)}`, { credentials: "include", cache: "no-store" }).then((response) => json<Detail>(response));
-        setDetail(value);
-      } else setDetail(undefined);
+        if (request === requestId.current) setDetail(value);
+      } else if (request === requestId.current) setDetail(undefined);
     } catch (cause) {
-      setDetail(undefined);
-      if (statusOf(cause) === 403) setDenied(true);
-      else setError("Tasks could not be loaded. Try again.");
-    } finally { setLoading(false); }
-  }, [scope]);
+      if (request === requestId.current) {
+        setDetail(undefined); setSelectedId("");
+        const status = statusOf(cause);
+        if (status === 401 || status === 403 || readingDetail && status === 404) {
+          setSetup(undefined); setPage(undefined); setDenied(true);
+        } else setError("Tasks could not be loaded. Try again.");
+      }
+    } finally { if (request === requestId.current) { setLoading(false); deepLinkInitialized.current = true; } }
+  }, [scope, filters, offset, listFirst]);
 
-  useEffect(() => { const id = initialTaskId.current; initialTaskId.current = ""; void load(id); }, [load]);
+  useEffect(() => { void load(listFirst ? urlTaskId : deepLinkInitialized.current ? "" : initialUrlState.taskId); return () => { requestId.current += 1; }; }, [load, urlTaskId, listFirst, initialUrlState.taskId]);
+  useEffect(() => {
+    if (listFirst) writeTaskUrlState({ taskId: urlTaskId, scope, filters, offset, view });
+  }, [listFirst, urlTaskId, scope, filters, offset, view]);
+  useEffect(() => {
+    if (!listFirst) return;
+    const onPopState = (): void => {
+      const next = readTaskUrlState(personalOnly, owner);
+      setScope(next.scope); setFilters(next.filters); setDraftFilters(next.filters); setOffset(next.offset); setView(next.view); setUrlTaskId(next.taskId);
+      setWaitReason(""); setDelayCause(""); setResponsibleParty(""); setResumeReason("");
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [listFirst, personalOnly, owner]);
+  useEffect(() => {
+    const update = (): void => {
+      const nextDesktop = window.matchMedia?.("(min-width: 1024px)").matches ?? window.innerWidth >= 1024;
+      setDesktop(nextDesktop);
+      if (!nextDesktop) setCompact(false);
+    };
+    update(); window.addEventListener("resize", update); return () => window.removeEventListener("resize", update);
+  }, []);
   useEffect(() => {
     if (!detail?.capabilities.manageDependencies) { setDependencyCandidates([]); return; }
     let active = true;
@@ -254,17 +329,57 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
     } finally { setBusy(false); }
   };
   const clearWaitingForm = () => { setWaitReason(""); setDelayCause(""); setResponsibleParty(""); setResumeReason(""); };
-  const canCreate = !!setup && (setup.canAssign || !!setup.actorEmployeeId);
+  const employeeLessOwnerPersonal = personalOnly && owner && setup?.actorEmployeeId == null;
+  const canCreate = !!setup && !employeeLessOwnerPersonal && (setup.canAssign || !!setup.actorEmployeeId);
   const selected = detail?.task;
+  const taskListTitle = personalOnly ? "My tasks" : owner ? "Organization tasks" : !listFirst ? scope === "mine" ? "My tasks" : "Assigned tasks" : scope === "mine" ? "My primary tasks" : scope === "assigned" ? "Collaborating or managed tasks" : scope === "owned" ? "Owned by me" : scope === "created" ? "Created by me" : scope === "collaborating" ? "Collaborating" : "All visible tasks";
+  const scopeOptions: Array<{ scope: Scope; label: string }> = [
+    { scope: "mine", label: "My primary tasks" }, { scope: "assigned", label: "Collaborating or managed tasks" },
+    { scope: "all", label: "All visible tasks" }, { scope: "owned", label: "Owned by me" },
+    { scope: "created", label: "Created by me" }, { scope: "collaborating", label: "Collaborating" }
+  ];
+  const filterError = (draftFilters.dateFrom || draftFilters.dateTo) && !draftFilters.dateBasis
+    ? "Choose Target date or Committed date before filtering by date."
+    : draftFilters.dateFrom && draftFilters.dateTo && draftFilters.dateFrom > draftFilters.dateTo
+      ? "The start date must be on or before the end date."
+      : "";
+  const pageRange = loading ? "Loading current page…" : !page ? "Current page unavailable" : page.total === 0 ? "0 filtered tasks" : `${offset + 1}–${Math.min(offset + page.items.length, page.total)} of ${page.total}`;
+  const applyFilters = (event: FormEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    if (filterError) return;
+    setDetail(undefined); setOffset(0); setFilters({ ...draftFilters, q: draftFilters.q.trim() });
+  };
+  const resetFilters = (): void => {
+    const reset = { ...defaultFilters };
+    setDetail(undefined); setDraftFilters(reset); setFilters(reset); setOffset(0);
+  };
+  const renderTaskButton = (task: Task, extraClass = ""): React.JSX.Element => <button type="button" key={task.id} className={`task-list-item${extraClass}${task.id === selectedId ? " is-selected" : ""}`} aria-current={task.id === selectedId ? "true" : undefined} onClick={() => { if (task.id !== selectedId) clearWaitingForm(); if (listFirst) { const url = new URL(window.location.href); url.searchParams.set("taskId", task.id); window.history.pushState({ taskWorkspaceSelection: true, taskWorkspaceView: view }, "", url); setUrlTaskId(task.id); setDetail(undefined); } else void load(task.id); }}><strong>{task.title}</strong><span>{setup?.projects.find((project) => project.id === task.projectId)?.title ?? "No project"} · {setup?.employees.find((employee) => employee.id === task.primaryOwnerEmployeeId)?.name ?? (task.primaryOwnerEmployeeId === setup?.actorEmployeeId ? "You" : "Task owner")}</span><span>{stateLabel(task.status)} · {stateLabel(task.priority)}</span>{task.requiresReassignment && <span className="task-reassignment-alert">Needs reassignment after employee exit</span>}<small>Target date: {task.targetDate.slice(0, 10)}</small><small>Committed date: {task.committedDueDate?.slice(0, 10) ?? "Not committed"}</small></button>;
   useEffect(() => {
     setCommittedDate(selected?.committedDueDate?.slice(0, 10) ?? "");
     setCommittedDateReason("");
     setConfirmEarlyStart(false);
   }, [selectedId, selected?.committedDueDate]);
 
-  return <section className="task-workspace" aria-labelledby="task-workspace-title">
-    <header className="task-header"><div><p className="task-eyebrow">Work management</p><h2 id="task-workspace-title">Tasks</h2><p>Track your work, collaborators and progress.</p></div><div className="task-header-actions">{setup?.projects.some((project) => project.status === "CANCELLED" && project.canApproveCloseout) && <button type="button" onClick={() => { setShowCloseoutForm((open) => !open); setShowForm(false); }}>{showCloseoutForm ? "Close closeout form" : "Approve closeout task"}</button>}<button type="button" className="task-primary" onClick={() => setShowForm((open) => !open)} disabled={!canCreate}>{showForm ? "Close form" : "Create task"}</button></div></header>
-    <div className="task-toolbar"><div role="group" aria-label="Task list scope" className="task-tabs"><button type="button" aria-pressed={scope === "mine"} onClick={() => { clearWaitingForm(); setScope("mine"); }}>My tasks</button><button type="button" aria-pressed={scope === "assigned"} onClick={() => { clearWaitingForm(); setScope("assigned"); }}>Assigned tasks</button></div><button type="button" onClick={refresh}>Refresh</button></div>
+  return <section className={`task-workspace${listFirst ? " task-workspace-list-first" : ""}${listFirst && selectedId ? " task-workspace-detail-active" : ""}${listFirst && selectedId && view !== "list" ? " task-workspace-detail-with-view" : ""}${compact && desktop ? " is-compact" : ""}`} aria-labelledby="task-workspace-title">
+    <header className="task-header"><div><p className="task-eyebrow">Work management</p><h2 id="task-workspace-title">{personalOnly ? "My work" : "Tasks"}</h2><p>{personalOnly ? "Tasks you own or where you are explicitly listed as a collaborator." : "Track your work, collaborators and progress."}</p>{employeeLessOwnerPersonal && <p>This Owner account has no active employee identity, so personal tasks are empty. <a href="/tasks">Open Tasks</a>.</p>}</div><div className="task-header-actions">{setup?.projects.some((project) => project.status === "CANCELLED" && project.canApproveCloseout) && <button type="button" onClick={() => { setShowCloseoutForm((open) => !open); setShowForm(false); }}>{showCloseoutForm ? "Close closeout form" : "Approve closeout task"}</button>}{!employeeLessOwnerPersonal && <button type="button" className="task-primary" onClick={() => setShowForm((open) => !open)} disabled={!canCreate}>{showForm ? "Close form" : "Create task"}</button>}</div></header>
+    <div className="task-toolbar">{!personalOnly && <div role="group" aria-label="Task list scope" className="task-tabs">{owner ? <span>Organization tasks</span> : listFirst ? scopeOptions.map((option) => <button key={option.scope} type="button" aria-pressed={scope === option.scope} onClick={() => { clearWaitingForm(); setOffset(0); setScope(option.scope); }}>{option.label}</button>) : <><button type="button" aria-pressed={scope === "mine"} onClick={() => { clearWaitingForm(); setOffset(0); setScope("mine"); }}>My tasks</button><button type="button" aria-pressed={scope === "assigned"} onClick={() => { clearWaitingForm(); setOffset(0); setScope("assigned"); }}>Assigned tasks</button></>}</div>}{listFirst && <div role="group" aria-label="Task display" className="task-tabs"><button type="button" aria-pressed={view === "board"} onClick={() => setView("board")}>Board</button><button type="button" aria-pressed={view === "timeline"} onClick={() => setView("timeline")}>Timeline</button><button type="button" aria-pressed={view === "list"} onClick={() => setView("list")}>List</button></div>}{listFirst && desktop && <label className="task-compact-toggle"><input type="checkbox" checked={compact} onChange={(event) => setCompact(event.target.checked)} /> Compact</label>}<button type="button" onClick={refresh}>Refresh</button></div>
+    {listFirst && view === "list" && <>
+      <form className="task-list-filters" aria-label="Task filters" onSubmit={applyFilters}>
+        <label>Project<select aria-label="Filter by project" value={draftFilters.projectId} onChange={(event) => setDraftFilters({ ...draftFilters, projectId: event.target.value, planItemId: "" })}><option value="">All projects</option>{setup?.projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label>
+        <label>Stage or milestone<select aria-label="Filter by stage or milestone" value={draftFilters.planItemId} onChange={(event) => setDraftFilters({ ...draftFilters, planItemId: event.target.value })}><option value="">All plan items</option>{(setup?.planItems ?? []).filter((item) => !draftFilters.projectId || item.projectId === draftFilters.projectId).map((item) => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
+        <label>Primary owner<select aria-label="Filter by primary owner" value={draftFilters.ownerEmployeeId} onChange={(event) => setDraftFilters({ ...draftFilters, ownerEmployeeId: event.target.value })}><option value="">All owners</option>{setup?.employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.name}</option>)}</select></label>
+        <label>Search tasks<input aria-label="Search tasks" value={draftFilters.q} onChange={(event) => setDraftFilters({ ...draftFilters, q: event.target.value })} maxLength={160} /></label>
+        <label>Status<select aria-label="Filter by status" value={draftFilters.status} onChange={(event) => setDraftFilters({ ...draftFilters, status: event.target.value })}><option value="">All statuses</option>{TASK_STATUSES.map((status) => <option key={status} value={status}>{stateLabel(status)}</option>)}</select></label>
+        <label>Phase<select aria-label="Filter by phase" value={draftFilters.phase} onChange={(event) => setDraftFilters({ ...draftFilters, phase: event.target.value })}><option value="">All phases</option><option value="active">Active</option><option value="waiting">Waiting</option><option value="review">Review</option><option value="completed">Completed</option></select></label>
+        <label>Sort by<select aria-label="Sort tasks" value={draftFilters.sort} onChange={(event) => setDraftFilters({ ...draftFilters, sort: event.target.value as TaskFilters["sort"] })}><option value="created_desc">Recently created</option><option value="target_asc">Target date · earliest first</option><option value="title_asc">Title · A to Z</option><option value="owner_asc">Primary owner · A to Z</option></select></label>
+        <label>Date basis<select aria-label="Filter date basis" value={draftFilters.dateBasis} onChange={(event) => setDraftFilters({ ...draftFilters, dateBasis: event.target.value })}><option value="">Choose date basis</option><option value="target">Target date</option><option value="committed">Committed date</option></select></label>
+        <label>Date from<input aria-label="Filter date from" type="date" value={draftFilters.dateFrom} onChange={(event) => setDraftFilters({ ...draftFilters, dateFrom: event.target.value })} /></label>
+        <label>Date through<input aria-label="Filter date through" type="date" value={draftFilters.dateTo} onChange={(event) => setDraftFilters({ ...draftFilters, dateTo: event.target.value })} /></label>
+        {filterError && <p className="task-filter-error" role="alert">{filterError}</p>}
+        <div className="task-filter-actions"><button type="submit" className="task-primary" disabled={!!filterError || loading}>Apply filters</button><button type="button" onClick={resetFilters} disabled={loading}>Reset filters</button></div>
+      </form>
+      <div className="task-list-paging"><span>{loading || !page || page.total === 0 ? pageRange : <>Showing <span>{pageRange}</span> filtered tasks</>}</span><div><button type="button" onClick={() => setOffset(Math.max(0, offset - 50))} disabled={loading || offset === 0}>Previous</button><button type="button" onClick={() => setOffset(offset + 50)} disabled={loading || !page || offset + page.items.length >= page.total}>Next</button></div></div>
+    </>}
     {notice && <p className="task-notice" role="status">{notice}</p>}{error && <p className="task-error" role="alert">{error} <button type="button" onClick={refresh}>Reload</button></p>}
     {overloadPrompt && <section className="task-overload-warning" role="alert" aria-label="Capacity warning"><h3>Capacity warning</h3><p>{overloadPrompt.message}</p><p>Assignment remains unchanged unless you acknowledge this warning.</p><button type="button" className="task-primary" disabled={busy} onClick={() => void acknowledgeOverload()}>Acknowledge and {overloadPrompt.kind === "create" ? "create task" : "reassign owner"}</button><button type="button" disabled={busy} onClick={() => setOverloadPrompt(undefined)}>Cancel assignment</button></section>}
     {showForm && <form className="task-form" onSubmit={(event) => void submit(event)} aria-label="Create task"><h3>Create a task</h3><p>Self-task creation keeps you as the owner. Authorized managers can choose an owner explicitly.</p>
@@ -281,9 +396,11 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
       <label>Reason<input value={reason} onChange={(event) => setReason(event.target.value)} minLength={3} maxLength={1000} required /></label><button type="submit" className="task-primary" disabled={busy || reason.trim().length < 3 || (assignTo && !ownerId)}>{busy ? "Creating…" : "Create task"}</button>
     </form>}
     {showCloseoutForm && <form className="task-form task-closeout-form" onSubmit={(event) => void createCloseout(event)} aria-label="Approve closeout task"><h3>Approve closeout task</h3><p>This creates separately identified work on a cancelled project and records your approval.</p><label>Cancelled project<select value={projectId} onChange={(event) => setProjectId(event.target.value)} required><option value="">Choose an eligible project</option>{setup?.projects.filter((project) => project.status === "CANCELLED" && project.canApproveCloseout).map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label><label>Task name<input value={title} onChange={(event) => setTitle(event.target.value)} minLength={2} maxLength={160} required /></label><label>Approved work scope<textarea value={workScope} onChange={(event) => setWorkScope(event.target.value)} minLength={3} maxLength={2000} required rows={3} /></label><div className="task-form-grid"><label>Primary owner<select value={ownerId} onChange={(event) => setOwnerId(event.target.value)} required><option value="">Choose an eligible employee</option>{setup?.employees.map((employee) => <option key={employee.id} value={employee.id}>{employee.name}</option>)}</select></label><label>Priority<select value={priority} onChange={(event) => setPriority(event.target.value)}>{PRIORITIES.map((item) => <option key={item} value={item}>{stateLabel(item)}</option>)}</select></label><label>Target date<input type="date" value={targetDate} onChange={(event) => setTargetDate(event.target.value)} required /></label></div><label>Reason for approval<input value={reason} onChange={(event) => setReason(event.target.value)} minLength={3} maxLength={1000} required /></label><button type="submit" className="task-primary" disabled={busy || !projectId || !ownerId || workScope.trim().length < 3 || reason.trim().length < 3}>Create approved closeout task</button></form>}
-    {loading ? <p role="status">Loading tasks…</p> : denied ? <p role="alert">You do not have access to these tasks.</p> : !page ? null : <div className="task-columns">
-      <nav className="task-list" aria-label={scope === "mine" ? "My tasks" : "Assigned tasks"}><h3>{scope === "mine" ? "My tasks" : "Assigned tasks"}<span>{page.total}</span></h3>{page.items.length === 0 ? <p className="task-empty">No {scope === "mine" ? "tasks assigned to you" : "tasks assigned by you"} yet.</p> : page.items.map((task) => <button type="button" key={task.id} className={`task-list-item${task.id === selectedId ? " is-selected" : ""}`} aria-current={task.id === selectedId ? "true" : undefined} onClick={() => { if (task.id !== selectedId) clearWaitingForm(); setSelectedId(task.id); void load(task.id); }}><strong>{task.title}</strong><span>{stateLabel(task.status)} · {stateLabel(task.priority)}</span>{task.requiresReassignment && <span className="task-reassignment-alert">Needs reassignment after employee exit</span>}<small>Target {task.targetDate.slice(0, 10)}</small></button>)}</nav>
-      <article className="task-detail" aria-label="Task details">{selected ? <><div className="task-detail-heading"><div><p className="task-eyebrow">{stateLabel(selected.type)}{selected.projectId ? " · Project task" : " · No project"}</p><h3>{selected.title}</h3></div><span className={`task-state task-state-${selected.status.toLowerCase()}`}>{stateLabel(selected.status)}</span></div>
+    {loading ? <p role="status">Loading tasks…</p> : denied ? <p role="alert">You do not have access to these tasks.</p> : !page ? null : <>
+    {listFirst && view === "board" && <section className="task-board" aria-label="Tasks grouped by status"><h3>Board <span>Counts show tasks on this page only.</span></h3><div className="task-board-columns">{TASK_STATUSES.map((status) => { const tasks = page.items.filter((task) => task.status === status); return <section className="task-board-column" key={status}><h4>{stateLabel(status)} <span>{tasks.length}</span></h4>{tasks.length ? tasks.map((task) => renderTaskButton(task, " task-board-card")) : <p className="task-empty">No tasks on this page.</p>}</section>; })}</div></section>}
+    {listFirst && view === "timeline" && <section className="task-timeline" aria-label="Task dates timeline"><h3>Timeline <span>Recorded dates are shown separately; duration is not calculated.</span></h3>{page.items.length === 0 ? <p className="task-empty">No tasks on this page.</p> : <ol>{page.items.map((task) => <li key={task.id}>{renderTaskButton(task, " task-timeline-task")}<dl><div><dt>Start date</dt><dd>{task.startDate?.slice(0, 10) ?? "Not set"}</dd></div><div><dt>Target date</dt><dd>{task.targetDate.slice(0, 10)}</dd></div><div><dt>Committed date</dt><dd>{task.committedDueDate?.slice(0, 10) ?? "Not committed"}</dd></div></dl></li>)}</ol>}</section>}
+    {(!listFirst || view === "list" || !!selected) && <div className="task-columns"><nav className="task-list" aria-label={taskListTitle}><h3>{taskListTitle}<span>{page.total}</span></h3>{page.items.length === 0 ? <p className="task-empty">{personalOnly ? employeeLessOwnerPersonal ? "No personal tasks are available because this Owner account has no active employee identity." : "No tasks are assigned to you or include you as a collaborator." : owner ? "No organization tasks match these filters." : scope === "mine" ? "No primary tasks match these filters." : scope === "owned" ? "No tasks are owned by you." : scope === "created" ? "No tasks were created by you that match these filters." : scope === "collaborating" ? "No tasks include you as a collaborator." : scope === "assigned" ? "No collaborating or managed tasks match these filters." : "No visible tasks match these filters."}</p> : page.items.map((task) => renderTaskButton(task))}</nav>
+      {(!listFirst || selected) && <article className="task-detail" aria-label="Task details">{selected ? <><div className="task-detail-heading"><div>{listFirst && <button type="button" className="task-back" onClick={() => { clearWaitingForm(); if (window.history.state?.taskWorkspaceSelection) window.history.back(); else { const url = new URL(window.location.href); url.searchParams.delete("taskId"); window.history.replaceState(null, "", url); setUrlTaskId(""); } }}>Back to task list</button>}<p className="task-eyebrow">{stateLabel(selected.type)}{selected.projectId ? " · Project task" : " · No project"}</p><h3>{selected.title}</h3></div><span className={`task-state task-state-${selected.status.toLowerCase()}`}>{stateLabel(selected.status)}</span></div>
       {selected.projectId && detail.linkedReviewTaskId && <p><a className="task-review-link" href={`/reviews?taskId=${encodeURIComponent(detail.linkedReviewTaskId)}`}>Open correction instructions in internal review</a></p>}
       {selected.projectId && !detail.linkedReviewTaskId && <p><a className="task-review-link" href={`/reviews?taskId=${encodeURIComponent(selected.id)}`}>Open internal review</a></p>}
         {selected.requiresReassignment && <p className="task-reassignment-alert" role="status">Needs reassignment after employee exit. A manager must reassign this task before it can resume.</p>}
@@ -318,7 +435,8 @@ export function TaskWorkspace({ csrfToken }: Props): React.JSX.Element {
         {detail.capabilities.reassign && setup?.canAssign && <div className="task-change-owner"><h4>Reassign owner</h4><label>New owner<select aria-label="New owner" value={reassignId} onChange={(event) => setReassignId(event.target.value)}><option value="">Choose an employee</option>{setup.employees.filter((employee) => employee.id !== selected.primaryOwnerEmployeeId).map((employee) => <option key={employee.id} value={employee.id}>{employee.name}</option>)}</select></label><button type="button" disabled={!reassignId || busy || reason.trim().length < 3} onClick={() => void mutate("/reassign", { newOwnerEmployeeId: reassignId, expectedVersion: selected.version, reason: reason.trim() }, "Task owner reassigned.")}>Reassign</button></div>}
         {detail.capabilities.transition && !selected.requiresReassignment && <div className="task-actions">{selected.status === "NOT_STARTED" && (detail.dependencies?.hasUnfinished ? <>{!confirmEarlyStart ? <button type="button" disabled={busy || reason.trim().length < 3} onClick={() => setConfirmEarlyStart(true)}>Review early start</button> : <><p className="task-dependency-warning">Linked predecessor work is unfinished. Your start will be recorded as an early start.</p><button type="button" disabled={busy || reason.trim().length < 3} onClick={() => transition("IN_PROGRESS", true)}>Start anyway</button><button type="button" onClick={() => setConfirmEarlyStart(false)}>Cancel</button></>}</> : <button type="button" disabled={busy || reason.trim().length < 3} onClick={() => transition("IN_PROGRESS")}>Start task</button>)}{selected.status === "IN_PROGRESS" && <button type="button" disabled={busy || reason.trim().length < 3 || selected.reviewRequirement !== "NONE"} title={selected.reviewRequirement !== "NONE" ? "Required review workflow is not available yet." : undefined} onClick={() => transition("COMPLETED")}>Complete task</button>}</div>}
         {(detail.history.statusChanges.length > 0 || detail.history.ownerChanges.length > 0 || (detail.history.committedDateChanges?.length ?? 0) > 0) && <><h4>Task history</h4><ol className="task-history">{[...detail.history.statusChanges.map((event) => ({ ...event, kind: "status" as const })), ...detail.history.ownerChanges.map((event) => ({ ...event, kind: "owner" as const })), ...(detail.history.committedDateChanges ?? []).map((event) => ({ ...event, kind: "committed-date" as const }))].sort((a, b) => (a.occurredAt ?? "").localeCompare(b.occurredAt ?? "")).map((event, index) => <li key={event.id ?? index}><span>{event.kind === "committed-date" ? `Committed due date ${event.oldDate ? `changed from ${event.oldDate.slice(0, 10)}` : "set"} to ${event.newDate.slice(0, 10)}: ${event.reason}` : event.reason ?? (event.toStatus ? `${stateLabel(event.fromStatus ?? "Created")} → ${stateLabel(event.toStatus)}` : event.kind === "owner" ? `Owner reassigned: ${setup?.employees.find((employee) => employee.id === event.oldOwnerEmployeeId)?.name ?? "Previous owner"} → ${setup?.employees.find((employee) => employee.id === event.newOwnerEmployeeId)?.name ?? "New owner"}` : event.action ?? "Task updated")}{event.occurredAt ? ` · ${new Date(event.occurredAt).toLocaleString()}` : ""}</span>{"delayCause" in event && event.delayCause && <span className="task-history-waiting">Delay cause: {event.delayCause}{event.responsibleParty ? ` · Responsible party: ${event.responsibleParty}` : ""}</span>}</li>)}</ol></>}
-      </> : <p className="task-empty">Select a task to see its details.</p>}</article>
+      </> : <p className="task-empty">Select a task to see its details.</p>}</article>}
     </div>}
+    </>}
   </section>;
 }

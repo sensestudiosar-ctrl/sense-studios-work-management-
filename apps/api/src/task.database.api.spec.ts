@@ -73,6 +73,15 @@ databaseDescribe("S09 task persistence and authorization database integration", 
 
   const taskInput = (reason: string, extras: Record<string, unknown> = {}) => ({ title: "Prepare studio brief", type: TaskType.NON_PROJECT, priority: TaskPriority.HIGH, targetDate: "2026-10-15", reason, ...extras });
 
+  it("does not list standalone tasks owned by a same-team non-report peer", async () => {
+    await fixture(async ({ tx, organizationId, managerActor, outsiderActor, tasks }) => {
+      const peer = await tx.employee.findFirstOrThrow({ where: { accountId: outsiderActor.accountId, organizationId } });
+      const task = await tasks.create(managerActor, taskInput("Keep peer standalone work private", { ownerEmployeeId: peer.id }));
+      await expect(tasks.detail(managerActor, task.id)).rejects.toMatchObject({ status: 403 });
+      const list = await tasks.list(managerActor, "all", 0, 50);
+      expect(list.items.some((item) => item.id === task.id)).toBe(false);
+    });
+  });
   it("queues opt-in Waiting alerts only to current scoped managers and suppresses stale recipients", async () => {
     await fixture(async ({ tx, organizationId, teamId, employeeId, managerActor, outsiderActor, ownerActor, tasks, organization }) => {
       const employee = await tx.employee.findUniqueOrThrow({ where: { id: employeeId } });
@@ -243,6 +252,51 @@ databaseDescribe("S09 task persistence and authorization database integration", 
     });
   });
 
+  it("separates personal ownership and collaboration from management and an employee-less Owner", async () => {
+    await fixture(async ({ managerActor, managerEmployeeId, employeeId, ownerActor, tasks }) => {
+      const owned = await tasks.create(managerActor, taskInput("Own personal work"));
+      const collaboration = await tasks.create(ownerActor, taskInput("Collaborative personal work", { ownerEmployeeId: employeeId, collaborators: [{ employeeId: managerEmployeeId }] }));
+      const managedOnly = await tasks.create(ownerActor, taskInput("Managed work only", { ownerEmployeeId: employeeId }));
+      const personal = await tasks.list(managerActor, "personal", 0, 50);
+      expect(new Set(personal.items.map(row => row.id))).toEqual(new Set([owned.id, collaboration.id]));
+      expect(personal.total).toBe(2);
+      expect(personal.items.map(row => row.id)).not.toContain(managedOnly.id);
+      await expect(tasks.list(ownerActor, "personal", 0, 50)).resolves.toMatchObject({ total: 0, items: [] });
+      await expect(tasks.list(managerActor, "personal", 0, 50, { ownerEmployeeId: employeeId })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: collaboration.id })] });
+    });
+  });
+  it("applies explicit phase and date basis before scoped count/pagination", async () => {
+    await fixture(async ({ managerActor, ownerActor, tasks }) => {
+      const active = await tasks.create(managerActor, taskInput("Active with explicit dates", { targetDate: "2026-10-10" }));
+      const completed = await tasks.create(managerActor, taskInput("Completed fixture", { targetDate: "2026-10-10" }));
+      await tasks.changeCommittedDate(ownerActor, active.id, { committedDueDate: "2026-11-10", expectedVersion: 1, reason: "Choose explicit committed date basis" });
+      await tasks.transition(managerActor, completed.id, { toState: "IN_PROGRESS", expectedVersion: 1, reason: "Start completed filter fixture" });
+      await tasks.transition(managerActor, completed.id, { toState: "COMPLETED", expectedVersion: 2, reason: "Finish completed filter fixture" });
+      await expect(tasks.list(managerActor, "personal", 0, 1, { phase: "active" })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: active.id })] });
+      await expect(tasks.list(managerActor, "personal", 0, 50, { phase: "completed" })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: completed.id })] });
+      await expect(tasks.list(managerActor, "personal", 0, 50, { dateBasis: "committed", dateFrom: "2026-11-10", dateTo: "2026-11-10" })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: active.id })] });
+      await expect(tasks.list(managerActor, "personal", 0, 50, { dateBasis: "target", dateFrom: "2026-11-10" })).resolves.toMatchObject({ total: 0, items: [] });
+    });
+  });
+
+  it("filters the authorized task set before counting and paginating without widening staff scope", async () => {
+    await fixture(async ({ managerActor, managerEmployeeId, employeeId, outsiderActor, ownerActor, tasks }) => {
+      await tasks.create(ownerActor, taskInput("Other owner work", { ownerEmployeeId: employeeId }));
+      const first = await tasks.create(managerActor, taskInput("Create matching first", { title: "Matching design first" }));
+      const second = await tasks.create(managerActor, taskInput("Create matching second", { title: "Matching design second" }));
+      await tasks.transition(managerActor, second.id, { toState: "IN_PROGRESS", expectedVersion: 1, reason: "Begin filtered work" });
+      const filters = { q: "MATCHING DESIGN", ownerEmployeeId: managerEmployeeId };
+      const page1 = await tasks.list(ownerActor, "mine", 0, 1, filters);
+      const page2 = await tasks.list(ownerActor, "mine", 1, 1, filters);
+      expect(page1.total).toBe(2); expect(page2.total).toBe(2);
+      expect(new Set([...page1.items, ...page2.items].map(row => row.id))).toEqual(new Set([first.id, second.id]));
+      await expect(tasks.list(managerActor, "mine", 0, 20, { ...filters, status: TaskStatus.IN_PROGRESS })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: second.id })] });
+      await expect(tasks.list(managerActor, "mine", 0, 20, { ownerEmployeeId: employeeId })).resolves.toMatchObject({ total: 0, items: [] });
+      await expect(tasks.list(outsiderActor, "assigned", 0, 20, filters)).resolves.toMatchObject({ total: 0, items: [] });
+      await expect(tasks.list(ownerActor, "mine", 0, 20, { projectId: randomUUID() })).resolves.toMatchObject({ total: 0, items: [] });
+      await expect(tasks.list(ownerActor, "mine", 0, 20, { ownerEmployeeId: randomUUID() })).resolves.toMatchObject({ total: 0, items: [] });
+    });
+  });
   it("persists a self-task, exposes it to its owner, records state history, and rejects guessed IDs and stale versions", async () => {
     await fixture(async ({ tx, managerActor, outsiderActor, tasks }) => {
       const created = await tasks.create(managerActor, taskInput("Self-task integration fixture"));
@@ -468,6 +522,7 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       await expect(tasks.cancelProject(ownerActor, project.id, { expectedVersion: 3, reason: "Stale cancellation attempt" })).rejects.toThrow("Project changed");
       const cancelled = await tasks.cancelProject(ownerActor, project.id, { expectedVersion: 4, reason: "Client ended the delivery" });
       expect(cancelled.stoppedTaskIds).toEqual([unfinished.id]);
+      expect((await tasks.list(ownerActor, "assigned", 0, 50, { phase: "active", projectId: project.id })).items.map(task => task.id)).not.toContain(unfinished.id);
       expect(cancelled.project.status).toBe("CANCELLED");
       expect(await tx.task.findUniqueOrThrow({ where: { id: unfinished.id } })).toMatchObject({ status: TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION, waitingDelayCause: null, version: 4 });
       expect(await tx.task.findUniqueOrThrow({ where: { id: completed.id } })).toMatchObject({ status: TaskStatus.COMPLETED, version: 3 });
@@ -566,6 +621,8 @@ databaseDescribe("S09 task persistence and authorization database integration", 
       expect(await tx.project.findUniqueOrThrow({ where: { id: project.id } })).toMatchObject({ status: "ACTIVE", currentLeadEmployeeId: managerEmployeeId, version: 4 });
 
       const result = await organization.finalizeEmployeeExit(ownerId, managerEmployeeId, "Employee left the organization");
+      expect((await tasks.attention(ownerActor, "reassignment", 0, 50)).items.map(item => item.id)).toContain(startedTask.id);
+      await expect(tasks.attention(ownerActor, "corrections", 0, 50)).resolves.toMatchObject({ total: 0, items: [] });
       expect(result).toMatchObject({ exited: true, waitingTaskIds: expect.arrayContaining([ownedTask.id, startedTask.id]), heldProjectIds: [project.id] });
       expect(result.waitingTaskIds).toHaveLength(2);
       expect(await tx.account.findUniqueOrThrow({ where: { id: managerActor.accountId } })).toMatchObject({ state: AccountState.SUSPENDED });

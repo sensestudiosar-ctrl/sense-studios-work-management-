@@ -1,0 +1,22 @@
+{
+  "U01": "passed",
+  "U02": "passed",
+  "U03": "passed",
+  "U04": "passed",
+  "U05": "passed",
+  "U06": "passed",
+  "U07": "passed",
+  "U08": "both candidates passed connected journeys; participant comparison pending",
+  "reviewHistoryConsistency": "submission and previous-round comments discoverable; approved task completion remains separate",
+  "measurements": {
+    "dashboardHeight": 1615,
+    "firstAttentionActionY": 406.53125,
+    "firstTaskY": 459.515625
+  },
+  "capabilities": {
+    "workflowVisits": 37,
+    "actionControlsPreserved": 375,
+    "newS18S27": "Checked separately in UX_GAP_WALKTHROUGH_2026-10-08.cjs; not counted as generic catalog controls"
+  },
+  "pageErrors": []
+}

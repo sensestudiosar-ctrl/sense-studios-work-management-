@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./document.css";
 
 const API = "/api/v1";
@@ -6,7 +6,7 @@ type Branch = { id: string; name: string };
 type Project = { id: string; title: string; status?: string; branchId?: string };
 type Employee = { id: string; name: string; homeBranchId: string };
 type Setup = { branches: Branch[]; employees?: Employee[] };
-type ProjectPage = { items: Project[] };
+type ProjectPage = { branches: Branch[]; total: number; items: Project[] };
 type Folder = { id: string; name: string; parentId: string | null; confidential: boolean; provisionState?: "READY" | "FAILED" | "PENDING"; provisionError?: string | null };
 type FileEntry = { id: string; folderId: string; fileName: string; mimeType: string; sizeBytes: number; sha256: string; confidential: boolean; viewOnly: boolean; createdAt: string };
 type Register = { project: { id: string; title: string }; folders: Folder[]; files: FileEntry[]; capabilities: { createFolder: boolean; upload: boolean; grant: boolean } };
@@ -36,10 +36,16 @@ function errorText(error: unknown): string {
   return "The document service could not complete the request. Try again.";
 }
 
-export function DocumentWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+export function DocumentWorkspace({ csrfToken, owner = true }: { csrfToken: string; owner?: boolean }): React.JSX.Element {
+  const initialProjectId = useRef(new URLSearchParams(window.location.search).get("projectId") ?? "");
   const [setup, setSetup] = useState<Setup>();
   const [branchId, setBranchId] = useState("");
   const [projects, setProjects] = useState<Project[]>([]);
+  const [projectTotal, setProjectTotal] = useState(0);
+  const [projectOffset, setProjectOffset] = useState(0);
+  const [projectQuery, setProjectQuery] = useState("");
+  const [appliedProjectQuery, setAppliedProjectQuery] = useState("");
+  const [pickerReady, setPickerReady] = useState(false);
   const [projectId, setProjectId] = useState("");
   const [register, setRegister] = useState<Register>();
   const [folders, setFolders] = useState<Folder[]>([]);
@@ -67,68 +73,139 @@ export function DocumentWorkspace({ csrfToken }: { csrfToken: string }): React.J
   const [grantResourceId, setGrantResourceId] = useState("");
   const [grantEmployeeId, setGrantEmployeeId] = useState("");
   const [grantReason, setGrantReason] = useState("");
+  const generation = useRef(0);
+  const pageSize = 50;
 
-  const loadSetup = useCallback(async (preferProject = ""): Promise<void> => {
-    setLoading(true); setError(""); setDenied(false);
-    try {
-      const result = await json<Setup>(await fetch(`${API}/projects/setup`, { credentials: "include", cache: "no-store" }));
-      setEmployees(result.employees ?? []);
-      const nextBranch = result.branches.some((branch) => branch.id === branchId) ? branchId : result.branches[0]?.id ?? "";
-      setSetup(result); setBranchId(nextBranch);
-      if (!nextBranch) { setProjects([]); setProjectId(""); setRegister(undefined); return; }
-      const page = await json<ProjectPage>(await fetch(`${API}/projects?branchId=${encodeURIComponent(nextBranch)}&offset=0&limit=50`, { credentials: "include", cache: "no-store" }));
-      setProjects(page.items);
-      const nextProject = page.items.some((project) => project.id === preferProject) ? preferProject : page.items.some((project) => project.id === projectId) ? projectId : "";
-      setProjectId(nextProject);
-      if (nextProject) await loadRegister(nextProject);
-      else { setRegister(undefined); setFolders([]); setFiles([]); }
-    } catch (cause) {
-      setRegister(undefined); setFolders([]); setFiles([]);
-      if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true);
-      else setError(errorText(cause));
-    } finally { setLoading(false); }
-  }, [branchId, projectId]);
+  const clearRegister = (): void => {
+    setRegister(undefined); setFolders([]); setFiles([]); setGrants([]); setGrantsError(""); setGrantsLoading(false); setFolderId("");
+  };
 
-  const loadRegister = useCallback(async (id: string): Promise<void> => {
+  const pickerUrl = (offset: number, selectedBranch = branchId, query = appliedProjectQuery): string => {
+    const params = new URLSearchParams({ offset: String(offset), limit: String(pageSize) });
+    if (selectedBranch) params.set("branchId", selectedBranch);
+    if (query) params.set("q", query);
+    return `${API}/documents/project-picker?${params.toString()}`;
+  };
+
+  const loadProjectPage = useCallback(async (offset: number, selectedBranch = "", query = "", token = generation.current): Promise<void> => {
+    const result = await json<ProjectPage>(await fetch(pickerUrl(offset, selectedBranch, query), { credentials: "include", cache: "no-store" }));
+    if (token !== generation.current) return;
+    setSetup({ branches: result.branches });
+    setPickerReady(true);
+    setProjects(result.items); setProjectTotal(result.total); setProjectOffset(offset);
+    setBranchId(selectedBranch && result.branches.some((branch) => branch.id === selectedBranch) ? selectedBranch : "");
+    setProjectId(""); clearRegister();
+  }, [branchId, appliedProjectQuery]);
+
+  const loadRegister = useCallback(async (id: string, token = generation.current): Promise<string> => {
     const value = await json<Register>(await fetch(`${API}/documents/projects/${encodeURIComponent(id)}`, { credentials: "include", cache: "no-store" }));
+    if (token !== generation.current) return "";
     setRegister(value); setFolders(value.folders); setFiles(value.files);
     setFolderId((current) => value.folders.some((folder) => folder.id === current) ? current : value.folders[0]?.id ?? "");
     if (value.capabilities.grant) {
       setGrantsLoading(true); setGrantsError("");
       try {
         const grantPage = await json<{ items: Grant[] }>(await fetch(`${API}/documents/projects/${encodeURIComponent(id)}/grants`, { credentials: "include", cache: "no-store" }));
+        if (token !== generation.current) return "";
         setGrants(grantPage.items);
-      } catch (cause) { setGrants([]); setGrantsError(errorText(cause)); }
-      finally { setGrantsLoading(false); }
+      } catch (cause) { if (token === generation.current) { setGrants([]); setGrantsError(errorText(cause)); } }
+      finally { if (token === generation.current) setGrantsLoading(false); }
     } else { setGrants([]); setGrantsError(""); setGrantsLoading(false); }
+    return value.project.id;
   }, []);
 
-  useEffect(() => { void loadSetup(); }, []);
+  const loadSetup = useCallback(async (): Promise<void> => {
+    const token = ++generation.current;
+    setLoading(true); setError(""); setDenied(false); clearRegister();
+    try {
+      if (owner) {
+        const result = await json<Setup>(await fetch(`${API}/projects/setup`, { credentials: "include", cache: "no-store" }));
+        if (token !== generation.current) return;
+        setEmployees(result.employees ?? []);
+      } else setEmployees([]);
+      await loadProjectPage(0, "", appliedProjectQuery, token);
+      const deepLinkedProjectId = initialProjectId.current;
+      if (deepLinkedProjectId) {
+        try {
+          const authorizedProjectId = await loadRegister(deepLinkedProjectId, token);
+          if (token === generation.current) {
+            setProjectId(authorizedProjectId);
+            initialProjectId.current = "";
+          }
+        } catch (cause) {
+          if (token === generation.current) {
+            if (statusOf(cause) === 403 || statusOf(cause) === 404) initialProjectId.current = "";
+            setProjectId(""); clearRegister();
+          }
+          throw cause;
+        }
+      }
+    } catch (cause) {
+      if (token !== generation.current) return;
+      clearRegister(); setProjectId(""); setProjects([]); setProjectTotal(0);
+      if (initialProjectId.current && (statusOf(cause) === 403 || statusOf(cause) === 404)) initialProjectId.current = "";
+      if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true);
+      else setError(errorText(cause));
+    } finally { if (token === generation.current) setLoading(false); }
+  }, [owner, appliedProjectQuery, loadProjectPage, loadRegister]);
+
+  useEffect(() => { void loadSetup(); return () => { generation.current += 1; }; }, []);
 
   const refresh = async (): Promise<void> => {
     if (busy) return;
+    if (initialProjectId.current) { await loadSetup(); return; }
+    const token = ++generation.current;
     setLoading(true); setError(""); setDenied(false);
     try {
-      if (projectId) await loadRegister(projectId);
-      else await loadSetup();
+      if (projectId) await loadRegister(projectId, token);
+      else await loadProjectPage(projectOffset, branchId, appliedProjectQuery, token);
     } catch (cause) {
+      if (token !== generation.current) return;
+      clearRegister();
       if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause));
-    } finally { setLoading(false); }
+    } finally { if (token === generation.current) setLoading(false); }
   };
 
   const selectBranch = async (id: string): Promise<void> => {
-    setBranchId(id); setProjectId(""); setRegister(undefined); setFolders([]); setFiles([]); setLoading(true); setError(""); setDenied(false);
+    if (busy || activeUpload) return;
+    initialProjectId.current = "";
+    const token = ++generation.current;
+    setBranchId(id); setProjectId(""); clearRegister(); setProjects([]); setProjectTotal(0); setProjectOffset(0); setLoading(true); setError(""); setDenied(false);
     try {
-      const page = await json<ProjectPage>(await fetch(`${API}/projects?branchId=${encodeURIComponent(id)}&offset=0&limit=50`, { credentials: "include", cache: "no-store" }));
-      setProjects(page.items); setLoading(false);
-    } catch (cause) { setProjects([]); setLoading(false); if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); }
+      await loadProjectPage(0, id, appliedProjectQuery, token);
+    } catch (cause) { if (token === generation.current) { setProjects([]); setProjectTotal(0); clearRegister(); if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); } }
+    finally { if (token === generation.current) setLoading(false); }
   };
 
   const selectProject = async (id: string): Promise<void> => {
-    setProjectId(id); setRegister(undefined); setFolders([]); setFiles([]); setLoading(true); setError(""); setDenied(false);
-    try { await loadRegister(id); }
-    catch (cause) { if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); }
-    finally { setLoading(false); }
+    if (busy || activeUpload) return;
+    initialProjectId.current = "";
+    const token = ++generation.current;
+    setProjectId(id); clearRegister(); setLoading(true); setError(""); setDenied(false);
+    try { if (id) await loadRegister(id, token); }
+    catch (cause) { if (token === generation.current) { clearRegister(); if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); } }
+    finally { if (token === generation.current) setLoading(false); }
+  };
+
+  const applyProjectSearch = async (): Promise<void> => {
+    if (busy || activeUpload) return;
+    initialProjectId.current = "";
+    const query = projectQuery.trim().slice(0, 160);
+    const token = ++generation.current;
+    setAppliedProjectQuery(query); setProjectId(""); clearRegister(); setProjects([]); setProjectTotal(0); setProjectOffset(0); setLoading(true); setError(""); setDenied(false);
+    try { await loadProjectPage(0, branchId, query, token); }
+    catch (cause) { if (token === generation.current) { clearRegister(); setProjects([]); setProjectTotal(0); if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); } }
+    finally { if (token === generation.current) setLoading(false); }
+  };
+
+  const changeProjectPage = async (offset: number): Promise<void> => {
+    if (busy || activeUpload || offset < 0 || offset >= projectTotal) return;
+    initialProjectId.current = "";
+    const token = ++generation.current;
+    setProjectId(""); clearRegister(); setLoading(true); setError(""); setDenied(false);
+    try { await loadProjectPage(offset, branchId, appliedProjectQuery, token); }
+    catch (cause) { if (token === generation.current) { clearRegister(); setProjects([]); setProjectTotal(0); if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); } }
+    finally { if (token === generation.current) setLoading(false); }
   };
 
   const post = async <T,>(url: string, body: unknown): Promise<T> => json<T>(await fetch(url, {
@@ -163,6 +240,18 @@ export function DocumentWorkspace({ csrfToken }: { csrfToken: string }): React.J
       setGrantReason(""); setNotice("Document access revoked."); await loadRegister(projectId);
     } catch (cause) { setGrantsError(errorText(cause)); }
     finally { setBusy(false); }
+  };
+
+  const clearProjectSearch = (): void => {
+    if (busy || activeUpload) return;
+    setProjectQuery("");
+    const token = ++generation.current;
+    setAppliedProjectQuery(""); setProjectId(""); clearRegister(); setProjects([]); setProjectTotal(0); setProjectOffset(0); setLoading(true); setError(""); setDenied(false);
+    void loadProjectPage(0, branchId, "", token).catch((cause: unknown) => {
+      if (token !== generation.current) return;
+      clearRegister(); setProjects([]); setProjectTotal(0);
+      if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause));
+    }).finally(() => { if (token === generation.current) setLoading(false); });
   };
 
   const provisionTemplateFolders = async (): Promise<void> => {
@@ -225,6 +314,8 @@ export function DocumentWorkspace({ csrfToken }: { csrfToken: string }): React.J
   const grantResources = grantKind === "FOLDER" ? folders.map((folder) => ({ id: folder.id, label: `${folder.name}${folder.confidential ? " · Confidential folder" : ""}` })) : files.map((entry) => ({ id: entry.id, label: `${entry.fileName}${entry.confidential ? " · Confidential file" : ""}` }));
   const resourceLabel = (grant: Grant): string => grant.resourceKind === "FOLDER" ? folders.find((folder) => folder.id === grant.resourceId)?.name ?? "Unavailable folder" : files.find((entry) => entry.id === grant.resourceId)?.fileName ?? "Unavailable file";
   const employeeLabel = (id: string): string => employees.find((employee) => employee.id === id)?.name ?? "Former or unavailable employee";
+  const contextLocked = busy || !!activeUpload;
+  const pickerProjects = register && !projects.some((project) => project.id === register.project.id) ? [...projects, register.project] : projects;
 
   return <section className="document-workspace" aria-labelledby="documents-heading">
     <header className="document-header"><div><p className="document-eyebrow">PROJECT RECORDS</p><h2 id="documents-heading">Documents</h2><p>Project files are stored and served through the authorized document service.</p></div><button type="button" onClick={() => void refresh()} disabled={loading || busy}>Refresh</button></header>
@@ -232,10 +323,15 @@ export function DocumentWorkspace({ csrfToken }: { csrfToken: string }): React.J
     {denied && <p className="document-denied" role="alert">You are not authorized to view this document register. Ask the Owner to review your project assignment and document grants.</p>}
     {notice && <p className="document-notice" role="status">{notice}</p>}
     {loading && <p role="status" className="document-muted">Loading project document access…</p>}
-    {!loading && !denied && !error && <>
-      {setup?.branches.length ? <label className="document-picker">Owning branch<select aria-label="Document project branch" value={branchId} onChange={(event) => void selectBranch(event.target.value)}>{setup.branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label> : <p className="document-muted">No active branches are available.</p>}
-      {branchId && <label className="document-picker">Project<select aria-label="Document project" value={projectId} onChange={(event) => void selectProject(event.target.value)}><option value="">Choose a project</option>{projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label>}
-      {!projectId && !loading && projects.length === 0 && branchId && <p role="status" className="document-muted">No projects are available for this branch.</p>}
+    {pickerReady && !error && <>
+      {setup?.branches.length ? <label className="document-picker">Owning branch<select aria-label="Document project branch" value={branchId} onChange={(event) => void selectBranch(event.target.value)} disabled={contextLocked}><option value="">All authorized branches</option>{setup.branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label> : <p className="document-muted">No project branches are available to you.</p>}
+      {setup?.branches.length ? <form className="document-project-search" onSubmit={(event) => { event.preventDefault(); void applyProjectSearch(); }}>
+        <label htmlFor="document-project-search">Search project titles</label>
+        <div><input id="document-project-search" value={projectQuery} maxLength={160} onChange={(event) => setProjectQuery(event.target.value.slice(0, 160))} placeholder="Search projects" disabled={contextLocked} /><button type="submit" disabled={loading || contextLocked}>Search</button>{appliedProjectQuery && <button type="button" onClick={clearProjectSearch} disabled={loading || contextLocked}>Clear search</button>}</div>
+      </form> : null}
+      {setup?.branches.length ? <label className="document-picker">Project<select aria-label="Document project" value={projectId} onChange={(event) => void selectProject(event.target.value)} disabled={contextLocked}><option value="">Choose a project</option>{pickerProjects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label> : null}
+      {setup?.branches.length ? <nav className="document-project-pagination" aria-label="Project picker pages"><span>{projectTotal ? `Showing ${projectOffset + 1}–${Math.min(projectOffset + projects.length, projectTotal)} of ${projectTotal} projects` : "No matching projects"}</span><div><button type="button" onClick={() => void changeProjectPage(projectOffset - pageSize)} disabled={loading || contextLocked || projectOffset === 0}>Previous</button><button type="button" onClick={() => void changeProjectPage(projectOffset + pageSize)} disabled={loading || contextLocked || projectOffset + pageSize >= projectTotal}>Next</button></div></nav> : null}
+      {!projectId && !loading && projects.length === 0 && setup?.branches.length ? <p role="status" className="document-muted">No projects match this branch and search.</p> : null}
       {register && <>
         <div className="document-register-heading"><div><span className="document-eyebrow">REGISTER</span><h3>{register.project.title}</h3></div><span>{files.length} {files.length === 1 ? "file" : "files"}</span></div>
         {register.capabilities.createFolder && <div className="document-provision-toolbar"><p className="document-muted">Set up physical folders from the project’s applied template. Failed folder operations can be retried below.</p><button type="button" onClick={() => void provisionTemplateFolders()} disabled={busy}>{busy ? "Setting up…" : "Set up template folders"}</button></div>}

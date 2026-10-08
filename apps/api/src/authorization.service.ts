@@ -1,13 +1,23 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { AccountKind, AccountState, Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
-import { hasPermission, type AuthorizationScope } from "./authorization.js";
+import { hasPermission, type AuthorizationScope, type AuthorizationContext } from "./authorization.js";
 
 @Injectable()
 export class AuthorizationService {
   constructor(private readonly database: DatabaseService) {}
 
   async assertPermission(accountId: string, permissionKey: string, scope: AuthorizationScope, tx?: Prisma.TransactionClient): Promise<void> {
+    const [allowed] = await this.evaluatePermissions(accountId, [{ permissionKey, scope }], tx);
+    if (!allowed) throw new ForbiddenException("Permission denied");
+  }
+
+  async evaluatePermissions(
+    accountId: string,
+    checks: readonly { permissionKey: string; scope: AuthorizationScope }[],
+    tx?: Prisma.TransactionClient,
+  ): Promise<boolean[]> {
+    if (checks.length === 0) return [];
     const client = tx ?? this.database.prisma;
     const account = await client.account.findUnique({
       where: { id: accountId },
@@ -22,12 +32,12 @@ export class AuthorizationService {
         }
       }
     });
-    if (!account || account.state !== AccountState.ACTIVE) throw new ForbiddenException("Permission denied");
+    if (!account || account.state !== AccountState.ACTIVE) return checks.map(() => false);
     const organization = await client.organization.findFirst({ select: { id: true } });
     const organizationId = account.employee?.organizationId ?? organization?.id;
-    if (!organizationId) throw new ForbiddenException("Permission denied");
+    if (!organizationId) return checks.map(() => false);
     const employee = account.employee;
-    const allowed = hasPermission({
+    const context: AuthorizationContext = {
       owner: account.kind === AccountKind.OWNER,
       organizationId,
       employee: employee ? {
@@ -47,7 +57,8 @@ export class AuthorizationService {
         scopeKind: row.scopeKind, ...(row.branchId ? { branchId: row.branchId } : {}),
         ...(row.teamId ? { teamId: row.teamId } : {}), expiresAt: row.expiresAt
       })) ?? []
-    }, permissionKey, scope);
-    if (!allowed) throw new ForbiddenException("Permission denied");
+    };
+    const now = new Date();
+    return checks.map(({ permissionKey, scope }) => hasPermission(context, permissionKey, scope, now));
   }
 }

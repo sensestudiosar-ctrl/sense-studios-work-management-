@@ -2,6 +2,22 @@
 
 The original 115-section requirements remain unchanged at APPROVED_REQUIREMENTS.md. This file records newer owner instructions without erasing source history. In conflicts, the newer explicit clarification takes precedence.
 
+## C-025 — S18 library audience and private storage (approved 2026-10-03)
+
+In the current S18 session, the Owner chose explicit organization, Branch or Team audiences selected by the Owner or appropriately scoped Team Leader. Library files use a private library-owned NAS area, separate from project-only document ownership, and current authorization is checked on every request. A SOP/module/task/template link does not grant audience or underlying file access. External portals/public visitors receive no new library access. This refines R-055–R-057 without changing the preserved approved requirements. Training completion criteria and publication author/approver independence are separate questions still pending and are not approved by C-025.
+
+## C-026 — S18 training assessment and effectiveness (approved 2026-10-03)
+
+The Owner selected requiring a named reviewer pass against authored module criteria, plus dated effectiveness observations. Completion does not change official skill. A completed-training recommendation still requires a separate authorized skill decision. No default numeric quiz score or passing threshold is approved; criteria are authored module data. This settles the previously pending R-057 completion/assessment policy.
+
+## C-027 — S18 independent publication (approved 2026-10-03)
+
+The Owner selected requiring a different authorized publisher for employee/Team Leader submissions, with Owner direct publication allowed with a reason. The publisher's current explicit library grant and selected audience are rechecked. A title or Team grant does not authorize organization publication; an explicit organization library grant concerns shared library content only and grants no other-Team employee/project/file access. This settles SOP/knowledge publication independence under R-055/R-056; training MODULE activation stays scoped management rather than a new SOP approval rule.
+
+## S18 integration authorization — 2026-10-07
+
+The Owner authorized integrating the accepted S18 slice into the current tree. C-025–C-027 above retain their original approved wording and dates. Integration does not change their business decisions; current-tree acceptance remains pending verification.
+
 ## C-001 — Branch-only organizational model (approved 2026-09-25)
 
 The organizational hierarchy is **Organization → Branch → Team → Employee**. One organization may have multiple branches. Each project has exactly one owning branch. Employees belong to the appropriate organizational/branch structure; explicitly authorized project assignments may permit cross-branch work.

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ClientProjectGallery, PublicPortfolioPage, StaffProjectGallery } from "./gallery.js";
 import type { PortalSession } from "./client-portal-auth.js";
@@ -13,6 +13,7 @@ type Portfolio = { projectId: string; sourceFiles: Array<{ id: string; fileName:
 const gallery: Gallery = { projectId, entries: [], eligibleItems: [{ id: "item-1", label: "R0 approved elevation", mime: "application/pdf", grants: [{ portalGrantId: "grant-1", primary: true, expiresAt: null }] }] };
 const portfolio: Portfolio = { projectId, sourceFiles: [{ id: "file-1", fileName: "internal.pdf", mimeType: "application/pdf", sizeBytes: 12, sha256: "a".repeat(64) }], publications: [] };
 function reply(body: unknown, status = 200): Response { return { ok: status >= 200 && status < 300, status, json: async () => body } as Response; }
+function deferred<T>() { let resolve!: (value: T) => void; const promise = new Promise<T>((done) => { resolve = done; }); return { promise, resolve }; }
 function mockFetch(handler: (url: string, init?: RequestInit) => Response | Promise<Response>): ReturnType<typeof vi.fn> {
   const fetchMock = vi.fn((input: RequestInfo | URL, init?: RequestInit) => Promise.resolve(handler(String(input), init)));
   vi.stubGlobal("fetch", fetchMock);
@@ -21,6 +22,83 @@ function mockFetch(handler: (url: string, init?: RequestInit) => Response | Prom
 beforeEach(() => vi.restoreAllMocks());
 
 describe("S15 project galleries and portfolio", () => {
+  it("keeps the selected project and loading state when an older project response finishes after a newer refresh", async () => {
+    const projectA = "project-gallery-a";
+    const projectB = "project-gallery-b";
+    const aGallery = deferred<Response>(), aPortfolio = deferred<Response>();
+    const bGallery = deferred<Response>(), bPortfolio = deferred<Response>();
+    const bRefreshGallery = deferred<Response>(), bRefreshPortfolio = deferred<Response>();
+    const queues = new Map<string, Array<ReturnType<typeof deferred<Response>>>>([
+      [`${projectA}:gallery`, [aGallery]], [`${projectA}:portfolio`, [aPortfolio]],
+      [`${projectB}:gallery`, [bGallery, bRefreshGallery]], [`${projectB}:portfolio`, [bPortfolio, bRefreshPortfolio]],
+    ]);
+    const fetchMock = mockFetch((url) => {
+      const project = url.includes(projectA) ? projectA : projectB;
+      const kind = url.includes("/galleries/") ? "gallery" : "portfolio";
+      const request = queues.get(`${project}:${kind}`)?.shift();
+      if (!request) throw new Error(`Unexpected gallery request: ${url}`);
+      return request.promise;
+    });
+    const view = render(<StaffProjectGallery projectId={projectA} csrfToken={csrf} owner />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    view.rerender(<StaffProjectGallery projectId={projectB} csrfToken={csrf} owner />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+    await act(async () => {
+      bGallery.resolve(reply({ ...gallery, projectId: projectB, eligibleItems: [{ ...gallery.eligibleItems[0]!, label: "B approved R0" }] }));
+      bPortfolio.resolve(reply({ ...portfolio, projectId: projectB }));
+    });
+    expect(await screen.findByText(/B approved R0/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(6));
+    await act(async () => {
+      aGallery.resolve(reply({ ...gallery, projectId: projectA, eligibleItems: [{ ...gallery.eligibleItems[0]!, label: "A stale item" }] }));
+      aPortfolio.resolve(reply({ ...portfolio, projectId: projectA }));
+    });
+    expect(screen.getByText("Loading gallery and publication records…")).toBeInTheDocument();
+
+    await act(async () => {
+      bRefreshGallery.resolve(reply({}, 503));
+      bRefreshPortfolio.resolve(reply({ ...portfolio, projectId: projectB }));
+    });
+    expect(await screen.findByText("The gallery service could not complete the request. Try again.")).toBeInTheDocument();
+    expect(screen.queryByText("A stale item")).not.toBeInTheDocument();
+  });
+
+  it("ignores an older project's error while the current project's load is pending", async () => {
+    const projectA = "project-gallery-error-a";
+    const projectB = "project-gallery-error-b";
+    const aGallery = deferred<Response>(), aPortfolio = deferred<Response>();
+    const bGallery = deferred<Response>(), bPortfolio = deferred<Response>();
+    const queues = new Map<string, Array<ReturnType<typeof deferred<Response>>>>([
+      [`${projectA}:gallery`, [aGallery]], [`${projectA}:portfolio`, [aPortfolio]],
+      [`${projectB}:gallery`, [bGallery]], [`${projectB}:portfolio`, [bPortfolio]],
+    ]);
+    const fetchMock = mockFetch((url) => {
+      const project = url.includes(projectA) ? projectA : projectB;
+      const kind = url.includes("/galleries/") ? "gallery" : "portfolio";
+      const request = queues.get(`${project}:${kind}`)?.shift();
+      if (!request) throw new Error(`Unexpected gallery request: ${url}`);
+      return request.promise;
+    });
+    const view = render(<StaffProjectGallery projectId={projectA} csrfToken={csrf} owner />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    view.rerender(<StaffProjectGallery projectId={projectB} csrfToken={csrf} owner />);
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+    await act(async () => {
+      aGallery.resolve(reply({}, 403));
+      aPortfolio.resolve(reply({ ...portfolio, projectId: projectA }));
+    });
+    expect(screen.getByText("Loading gallery and publication records…")).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    await act(async () => {
+      bGallery.resolve(reply({ ...gallery, projectId: projectB }));
+      bPortfolio.resolve(reply({ ...portfolio, projectId: projectB }));
+    });
+    expect(await screen.findByText(/R0 approved elevation/)).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
   it("curates an existing current-grant item and saves a separate derivative before Owner publication", async () => {
     let entries: Entry[] = gallery.entries;
     let publications: Publication[] = portfolio.publications;

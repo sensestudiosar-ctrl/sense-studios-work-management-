@@ -50,7 +50,7 @@ test("primary owner extension, Owner Team settings and recurring schedule persis
     const task = await created.json() as { id: string };
     expect((await page.request.post(`/api/v1/tasks/${task.id}/committed-date`, { headers: ownerHeaders, data: { expectedVersion: 1, committedDueDate: "2026-12-02", reason: "Set original commitment" } })).status()).toBe(201);
     await context.addCookies([{ name: "sense_sid", value: staffSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.goto(`/?taskId=${task.id}`);
+    await page.goto(`/workspace?taskId=${task.id}`);
     const workspace = page.locator(".task-workspace");
     const extensions = workspace.getByRole("region", { name: "Deadline extensions" });
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
@@ -63,14 +63,14 @@ test("primary owner extension, Owner Team settings and recurring schedule persis
     await expect(extensions.getByText("Pending", { exact: true })).toBeVisible();
     expect(await db.query('SELECT "committedDueDate"::text AS date FROM tasks WHERE id=$1', [task.id]).then((result) => result.rows[0].date)).toBe("2026-12-02");
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(`^${title} `) }).click();
+    await page.goto(`/workspace?taskId=${task.id}`);
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await extensions.getByLabel("Decision reason").fill("Revised supplier commitment approved");
     await workspace.screenshot({ path: testInfo.outputPath("task-extension-approval.png") });
     await extensions.getByRole("button", { name: "Approve extension" }).click();
     await expect(extensions.getByText("Approved", { exact: true })).toBeVisible();
-    await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(`^${title} `) }).click();
+    await page.goto(`/workspace?taskId=${task.id}`);
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.getByText("Committed due date", { exact: true }).first().locator("..")).toContainText("2026-12-05");
     const history = await db.query('SELECT "newDate"::text AS date,"extensionApprovalId" AS approval FROM task_committed_date_changes WHERE "taskId"=$1 AND "extensionApprovalId" IS NOT NULL', [task.id]);
@@ -103,7 +103,7 @@ test("primary owner extension, Owner Team settings and recurring schedule persis
     expect(createdRecurring.status()).toBe(201);
     const recurring = await createdRecurring.json() as { id: string };
     await context.addCookies([{ name: "sense_sid", value: staffSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.goto(`/?taskId=${recurring.id}`);
+    await page.goto(`/workspace?taskId=${recurring.id}`);
     await expect(workspace.getByRole("heading", { name: recurringTitle })).toBeVisible();
     const recurrence = workspace.locator(".task-recurrence");
     await recurrence.getByRole("combobox", { name: "Frequency", exact: true }).selectOption("MONTHLY");

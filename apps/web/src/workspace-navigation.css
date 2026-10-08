@@ -1,0 +1,41 @@
+.workspace-layout { display: grid; grid-template-columns: minmax(0, 1fr); flex: 1; min-width: 0; }
+.workspace-page { min-width: 0; }
+.workspace-sidebar { display: none; }
+.workspace-nav { display: grid; gap: .35rem; }
+.workspace-bell-link { display: flex; align-items: center; justify-content: center; gap: .55rem; min-width: 2.9rem; min-height: 2.9rem; margin-bottom: .5rem; padding: .55rem .8rem; border: 1px solid #d9d8cd; border-radius: .55rem; color: #29463d; text-decoration: none; font-weight: 700; }
+.workspace-bell-link:hover, .workspace-bell-link[aria-current="page"] { background: #e3eadf; }
+.workspace-bell-link span { font-size: .88rem; }
+.workspace-nav a, .workspace-mobile-main a, .workspace-more-links a { display: flex; align-items: center; min-height: 2.9rem; padding: .7rem .85rem; border-radius: .55rem; color: #334d44; text-decoration: none; font-size: .88rem; font-weight: 650; }
+.workspace-nav a:hover, .workspace-mobile-main a:hover, .workspace-more-links a:hover { background: #edf0e8; }
+.workspace-nav a[aria-current="page"], .workspace-mobile-main a[aria-current="page"], .workspace-more-links a[aria-current="page"] { background: #e3eadf; color: #1e493b; box-shadow: inset 3px 0 #426457; }
+.workspace-mobile-nav { position: sticky; z-index: 5; top: 0; display: flex; align-items: stretch; gap: .25rem; padding: .4rem max(.65rem, env(safe-area-inset-left)) calc(.4rem + env(safe-area-inset-bottom)) max(.65rem, env(safe-area-inset-right)); border-bottom: 1px solid #d9d8cd; background: #faf8f2; }
+.workspace-mobile-nav .workspace-bell-link { align-self: center; flex: none; width: 2.9rem; margin: 0; padding: .35rem; font-size: 1.2rem; }
+.workspace-mobile-main { display: flex; flex: 1; min-width: 0; gap: .15rem; }
+.workspace-mobile-main a { justify-content: center; flex: 1; min-width: 0; min-height: 2.9rem; padding: .45rem .3rem; text-align: center; font-size: .75rem; }
+.workspace-more-button { flex: none; min-width: 3.6rem; min-height: 2.9rem; padding: .45rem .55rem; }
+.workspace-more-dialog { position: fixed; z-index: 20; inset: auto 0 0; width: 100%; max-width: none; max-height: min(85dvh, 42rem); overflow: auto; margin: 0; padding: 1rem max(1rem, env(safe-area-inset-right)) calc(1.1rem + env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); border: 0; border-radius: 1rem 1rem 0 0; background: #faf8f2; color: #182c29; box-shadow: 0 -12px 40px #192c2820; }
+.workspace-more-dialog::backdrop { background: #182c2966; }
+.workspace-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .7rem; }
+.workspace-dialog-heading h2 { margin: 0; color: #29463d; font: 500 1.4rem Georgia, serif; }
+.workspace-dialog-close { min-height: 2.9rem; background: transparent; color: #29463d; }
+.workspace-more-links { display: grid; gap: .2rem; }
+.workspace-account-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; padding-bottom: .75rem; border-bottom: 1px solid #d9d8cd; color: #29463d; font-size: .9rem; font-weight: 700; }
+.workspace-account-heading span:last-child { color: #697b75; font-size: .82rem; font-weight: 500; overflow-wrap: anywhere; text-align: right; }
+.workspace-account-heading + .identity-section { margin-top: 0; }
+.workspace-more-links a { min-height: 3rem; background: #fffdf7; border: 1px solid #e2e1d8; }
+@media (min-width: 768px) and (max-width: 1023px) {
+  .workspace-layout { grid-template-columns: 13rem minmax(0, 1fr); }
+  .workspace-sidebar { display: block; padding: 1.25rem .7rem 1.25rem 1rem; border-right: 1px solid #d9d8cd; background: #faf8f2; }
+  .workspace-mobile-nav { display: none; }
+  .workspace-page { min-width: 0; }
+}
+@media (min-width: 1024px) {
+  .workspace-layout { grid-template-columns: 15.5rem minmax(0, 1fr); }
+  .workspace-sidebar { position: sticky; top: 0; align-self: start; display: block; height: calc(100vh - 4rem); overflow-y: auto; padding: 1.6rem 1rem; border-right: 1px solid #d9d8cd; background: #faf8f2; }
+  .workspace-mobile-nav { display: none; }
+  .workspace-page { min-width: 0; }
+}
+@media (max-width: 640px) {
+  .workspace-page .sessions-heading-row { flex-direction: column; align-items: stretch; }
+  .workspace-page .sessions-heading-row > div { min-width: 0; }
+}

@@ -8,6 +8,8 @@ import { AuditRetentionService } from "./audit-retention.service.js";
 import { TaskRecurrenceService } from "./task-recurrence.service.js";
 import { WorkforceService } from "./workforce.service.js";
 import { ExternalPortalService } from "./external-portal.service.js";
+import { DashboardService } from "./dashboard.service.js";
+import { AutomationService } from "./automation.service.js";
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.createApplicationContext(AppModule);
@@ -19,6 +21,8 @@ async function bootstrap(): Promise<void> {
   const recurrence = app.get(TaskRecurrenceService);
   const workforce=app.get(WorkforceService);
   const externalPortal = app.get(ExternalPortalService);
+  const dashboard=app.get(DashboardService);
+  const automation=app.get(AutomationService);
   await database.check();
   console.info("Workspace worker process ready.");
 
@@ -63,6 +67,14 @@ async function bootstrap(): Promise<void> {
   };
   void runNativeRevocationNotices();
   const nativeRevocationProcessing = setInterval(() => void runNativeRevocationNotices(), 60_000);
+  let dashboardRunning=false;
+  const runDashboard=async()=>{if(dashboardRunning)return;dashboardRunning=true;try{await dashboard.runBatch();}catch{console.error("Dashboard scheduling failed.");}finally{dashboardRunning=false;}};
+  void runDashboard();
+  let automationRunning=false;
+  const runAutomation=async()=>{if(automationRunning)return;automationRunning=true;try{await automation.runBatch();}catch{console.error("Automation processing failed.");}finally{automationRunning=false;}};
+  void runAutomation();
+  const automationProcessing=setInterval(()=>void runAutomation(),60_000);
+  const dashboardProcessing=setInterval(()=>void runDashboard(),60_000);
 
   const shutdown = async (): Promise<void> => {
     clearInterval(interval);
@@ -72,6 +84,8 @@ async function bootstrap(): Promise<void> {
     clearInterval(recurrenceProcessing);
     clearInterval(workforceRetentionProcessing);
     clearInterval(nativeRevocationProcessing);
+    clearInterval(dashboardProcessing);
+    clearInterval(automationProcessing);
     await app.close();
   };
   process.once("SIGINT", () => void shutdown());

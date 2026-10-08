@@ -165,10 +165,10 @@ export class TimeService {
     }
     return { ...row, ...(current.data as object), approved: row.approvedVersion === row.version, canCorrect: management || row.employeeId === self?.id && !row.locked, canApprove: management, versions, deliveries: await tx.timeAccountingDelivery.findMany({ where: { entryId: row.id }, select: { id: true, state: true, revision: true, attempts: true, lastError: true } }) };
   }
-  async list(actor: ProjectActor, scope: string) {
+  async list(actor: ProjectActor, scope: string, reportAll = false) {
     return this.transaction(async tx => {
       const self = await this.active(tx, actor); const entries = [];
-      for (const row of await tx.timeEntry.findMany({ where: { organizationId: actor.organizationId, ...(scope === "mine" ? { employeeId: self?.id ?? "00000000-0000-0000-0000-000000000000" } : {}) }, orderBy: { createdAt: "desc" }, take: 200 })) { try { entries.push(await this.entryView(tx, actor, row)); } catch (error) { if (!(error instanceof ForbiddenException)) throw error; } }
+      for (const row of await tx.timeEntry.findMany({ where: { organizationId: actor.organizationId, ...(scope === "mine" ? { employeeId: self?.id ?? "00000000-0000-0000-0000-000000000000" } : {}) }, orderBy: { createdAt: "desc" }, ...(reportAll ? {} : { take: 200 }) })) { try { entries.push(await this.entryView(tx, actor, row)); } catch (error) { if (!(error instanceof ForbiddenException)) throw error; } }
       const timer = self && await tx.timeTimer.findFirst({ where: { employeeId: self.id, state: { in: ["RUNNING", "PAUSED"] } } });
       if (timer) {
         const data = timer.data as TimeData;

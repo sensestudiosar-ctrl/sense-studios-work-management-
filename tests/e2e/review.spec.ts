@@ -9,7 +9,10 @@ test("linked project task is submitted, reviewed from inbox, and assigned correc
   const url = new URL(process.env.DATABASE_URL!);
   const dedicatedS13Database = /^\/sense_s13_[a-z0-9_]*_test$/.test(url.pathname);
   const explicitlyEnabledS15Database = process.env.S15_E2E_ENABLED === "1" && /^\/sense_s15_[a-z0-9_]*_test$/.test(url.pathname);
-  if (!["localhost", "127.0.0.1"].includes(url.hostname) || url.port !== "56433" || (!dedicatedS13Database && !explicitlyEnabledS15Database)) throw new Error("Review browser fixture requires an isolated local sense_s13_*_test database or an explicitly enabled sense_s15_*_test database on port 56433");
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && ((["56433", "57433"].includes(url.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(url.pathname)) || (url.port === "57433" && /^\/sense_s13_s25_[a-z0-9_]+_test$/i.test(url.pathname)));
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(url.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && url.hostname === "127.0.0.1" && url.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(url.pathname);
+  if (!["localhost", "127.0.0.1"].includes(url.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && url.port !== "56433") || (!dedicatedS13Database && !explicitlyEnabledS15Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) throw new Error("Review browser fixture requires an isolated local S13, explicitly enabled S15, or explicitly enabled exact S25/S26/S27 test database");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as typeof import("pg");
   const db = new Client({ connectionString: process.env.DATABASE_URL });

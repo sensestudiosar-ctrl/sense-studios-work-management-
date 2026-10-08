@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, Headers, Inject, Param, Post, Put, Body, Req, Res, ForbiddenException } from "@nestjs/common";
+import { BadRequestException, Controller, Get, Headers, Inject, Param, Post, Put, Body, Query, Req, Res, ForbiddenException } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
@@ -27,6 +27,11 @@ export class DocumentController {
   private async mutate(request: Request, csrf?: string) { if (request.headers.origin !== this.config.webOrigin) throw new ForbiddenException("Request origin is not allowed"); const result = await this.actor(request); this.identity.verifyCsrf(result.active, csrf); return result.actor; }
   private noStore(response: Response) { response.setHeader("Cache-Control", "no-store"); }
 
+  @Get("project-picker") async projectPicker(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("offset") offset?: string, @Query("limit") limit?: string, @Query("branchId") branchId?: string, @Query("q") q?: string) {
+    this.noStore(response);
+    const input = parse(z.object({ offset: z.coerce.number().int().min(0).max(100000), limit: z.coerce.number().int().min(1).max(100), branchId: uuid.optional(), q: z.string().trim().max(160).optional() }), { offset: offset ?? 0, limit: limit ?? 50, ...(branchId ? { branchId } : {}), ...(q ? { q } : {}) });
+    return this.documents.projectPicker((await this.actor(request)).actor, input.offset, input.limit, { ...(input.branchId ? { branchId: input.branchId } : {}), ...(input.q ? { q: input.q } : {}) });
+  }
   @Get("projects/:projectId") async list(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("projectId") projectId: string) { this.noStore(response); return this.documents.list((await this.actor(request)).actor, parse(uuid, projectId)); }
   @Post("projects/:projectId/folders") async createFolder(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("projectId") projectId: string, @Body() body: unknown) { return this.documents.createFolder(await this.mutate(request, csrf), parse(uuid, projectId), parse(folderInput, body)); }
   @Post("projects/:projectId/provision-template") async provisionTemplate(@Req() request: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("projectId") projectId: string) { return this.documents.provisionTemplate(await this.mutate(request, csrf), parse(uuid, projectId)); }

@@ -48,6 +48,7 @@ describe("S11 document HTTP boundary", () => {
       actor: jest.fn(async () => ({ accountId, kind, organizationId: "44444444-4444-4444-8444-444444444444" }))
     };
     documents = {
+      projectPicker: jest.fn(async () => ({ branches: [], total: 0, items: [] })),
       list: jest.fn(async () => ({ project: { id: projectId, title: "Studio project" }, folders: [], files: [], capabilities: { createFolder: true, upload: true, grant: true } })),
       createFolder: jest.fn(async (_actor: unknown, _projectId: string, input: unknown) => ({ id: folderId, input })),
       startUpload: jest.fn(async (_actor: unknown, _projectId: string, input: unknown) => ({ uploadId, chunkSize: DOCUMENT_CHUNK_SIZE, input })),
@@ -66,6 +67,18 @@ describe("S11 document HTTP boundary", () => {
     app = module.createNestApplication(); app.setGlobalPrefix("api/v1"); await app.init();
   });
   beforeEach(() => { kind = "OWNER"; validSession = true; jest.clearAllMocks(); });
+  it("exposes the authorized project picker with normalized pagination and rejects invalid filters", async () => {
+    const result = await request(app.getHttpServer()).get(`/api/v1/documents/project-picker?offset=1&limit=20&branchId=${projectId}&q=%20Studio%20`).set("Cookie", cookie);
+    expect(result.status).toBe(200);
+    expect(result.headers["cache-control"]).toBe("no-store");
+    expect(documents.projectPicker).toHaveBeenCalledWith(expect.objectContaining({ accountId }), 1, 20, { branchId: projectId, q: "Studio" });
+    documents.projectPicker.mockClear();
+    for (const filter of ["offset=-1", "limit=101", "branchId=bad", `q=${"x".repeat(161)}`]) {
+      const invalid = await request(app.getHttpServer()).get(`/api/v1/documents/project-picker?${filter}`).set("Cookie", cookie);
+      expect(invalid.status).toBe(400);
+    }
+    expect(documents.projectPicker).not.toHaveBeenCalled();
+  });
   afterAll(async () => app.close());
 
   const mutate = (path: string, body: object) => request(app.getHttpServer()).post(`/api/v1/documents/${path}`).set("Cookie", cookie).set("Origin", origin).set("x-csrf-token", csrfToken).send(body);

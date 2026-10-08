@@ -152,22 +152,64 @@ export class ReviewService {
       return updated;
     });
   }
-  async inbox(actor: ProjectActor) {
+  async inbox(actor: ProjectActor, offset = 0, limit = 50, personal = false, filters: { historical?: boolean; projectId?: string; scope?: "mine" | "accessible"; queue?: "waiting" | "corrections" | "resubmitted" | "history"; q?: string; sort?: "project" | "due" } = {}) {
     return this.transaction(async (tx) => {
       const account = await this.account(tx, actor);
-      const rounds = await tx.reviewRound.findMany({ where: { organizationId: actor.organizationId, ...(actor.kind === AccountKind.STAFF ? { reviewerEmployeeId: account.employee!.id } : {}), status: { in: [InternalReviewStatus.SUBMITTED, InternalReviewStatus.IN_REVIEW] } }, orderBy: { id: "desc" }, take: 100 });
-      const items = [];
+      if (personal && (!account.employee || account.employee.state !== EmployeeState.ACTIVE || account.employee.organizationId !== actor.organizationId)) return { total: 0, items: [] };
+      const mine = filters.scope === "mine" || personal;
+      const queue = filters.queue ?? (filters.historical ? "history" : undefined);
+      if (mine && (!account.employee || account.employee.state !== EmployeeState.ACTIVE || account.employee.organizationId !== actor.organizationId)) return { total: 0, items: [] };
+      const status = queue === "waiting" ? { in: [InternalReviewStatus.SUBMITTED, InternalReviewStatus.IN_REVIEW] } : queue === "corrections" ? InternalReviewStatus.CORRECTIONS_REQUIRED : undefined;
+      const reviewerOnly = mine || actor.kind === AccountKind.STAFF && filters.scope !== "accessible";
+      const rounds = await tx.reviewRound.findMany({ where: { organizationId: actor.organizationId, ...(reviewerOnly ? { reviewerEmployeeId: account.employee!.id } : {}), ...(filters.projectId ? { projectId: filters.projectId } : {}), ...(status ? { status } : {}), ...(!queue && !filters.historical ? { status: { in: [InternalReviewStatus.SUBMITTED, InternalReviewStatus.IN_REVIEW] } } : {}) }, orderBy: { id: "desc" } });
+      const items: Array<{ roundId: string; taskId: string; taskTitle: string; projectId: string; projectTitle: string; roundNumber: number; status: InternalReviewStatus; dueDate: Date; reviewerName: string; submitterName: string; revisionLabel?: string }> = [];
+      const search = filters.q?.trim().toLocaleLowerCase("en-US");
       for (const round of rounds) {
         try {
           const { row, project, submission } = await this.round(tx, actor, round.id);
-          if (project.status !== ProjectStatus.ACTIVE || !new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW]).has(row.status)) continue;
-          if (actor.kind === AccountKind.STAFF) await this.candidate(tx, actor, project, round.reviewerEmployeeId, true);
+          if (queue === "corrections" || queue === "resubmitted") {
+            const latest = await tx.reviewSubmission.findFirst({ where: { taskId: row.id, projectId: project.id, organizationId: actor.organizationId }, orderBy: [{ roundNumber: "desc" }, { id: "desc" }], select: { id: true } });
+            if (latest?.id !== submission.id) continue;
+          }
+          const active = project.status === ProjectStatus.ACTIVE && new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW]).has(row.status);
+          if (!queue && !filters.historical && !active) continue;
+          if (queue === "waiting" && !active) continue;
+          if (queue === "corrections" && (project.status !== ProjectStatus.ACTIVE || row.status !== TaskStatus.CORRECTIONS_REQUIRED)) continue;
+          if (queue === "resubmitted" && (!active || submission.roundNumber <= 1)) continue;
+          if (personal && (row.primaryOwnerEmployeeId === round.reviewerEmployeeId || submission.submittedById === actor.accountId)) continue;
+          if (reviewerOnly) await this.candidate(tx, actor, project, round.reviewerEmployeeId, true);
           const revision = submission.revisionId ? await tx.documentRevision.findUniqueOrThrow({ where: { id: submission.revisionId } }) : null;
-          items.push({ roundId: round.id, taskId: row.id, taskTitle: row.title, projectId: project.id, projectTitle: project.title, roundNumber: submission.roundNumber, status: round.status, ...(revision ? { revisionLabel: `${revision.series}${revision.number}` } : {}) });
+          const reviewer = await tx.employee.findUnique({ where: { id: round.reviewerEmployeeId }, include: { account: { select: { normalizedEmail: true } } } });
+          const submitter = await tx.account.findUnique({ where: { id: submission.submittedById }, select: { normalizedEmail: true } });
+          const revisionLabel = revision ? `${revision.series}${revision.number}` : "";
+          const reviewerName = reviewer?.account.normalizedEmail ?? ""; const submitterName = submitter?.normalizedEmail ?? "";
+          if (search && ![row.title, project.title, revisionLabel, reviewerName, submitterName].some((value) => value.toLocaleLowerCase("en-US").includes(search))) continue;
+          items.push({ roundId: round.id, taskId: row.id, taskTitle: row.title, projectId: project.id, projectTitle: project.title, roundNumber: submission.roundNumber, status: round.status, dueDate: row.committedDueDate ?? row.targetDate, reviewerName, submitterName, ...(revision ? { revisionLabel } : {}) });
         } catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException)) throw error; }
       }
-      return { items };
+      if (filters.sort) items.sort((a, b) => { const comparison = filters.sort === "project" ? a.projectTitle.localeCompare(b.projectTitle, "en-US", { sensitivity: "base" }) : a.dueDate.getTime() - b.dueDate.getTime(); return comparison || a.roundId.localeCompare(b.roundId); });
+      return { total: items.length, items: items.slice(offset, offset + limit) };
     });
+  }
+  /** INT public minimal review assignment port; no confidential evidence is exported. */
+  async calendarAssignments(actor:ProjectActor,tx:Tx) {
+    const account=await this.account(tx,actor), result:Array<{id:string;date:Date;version:number;updatedAt:Date}>=[];
+    if(!account.employee)return result;
+    await tx.$queryRaw`SELECT "taskId" FROM review_assignments WHERE "organizationId"=${actor.organizationId}::uuid AND "reviewerEmployeeId"=${account.employee.id}::uuid FOR SHARE`;
+    const assignments=await tx.reviewAssignment.findMany({where:{organizationId:actor.organizationId,reviewerEmployeeId:account.employee.id}});
+    for(const assignment of assignments){
+      try {
+        await tx.$queryRaw`SELECT id FROM tasks WHERE id=${assignment.taskId}::uuid FOR SHARE`;
+        await tx.$queryRaw`SELECT id FROM review_rounds WHERE "taskId"=${assignment.taskId}::uuid ORDER BY id FOR SHARE`;
+        const context=await this.task(tx,actor,assignment.taskId),round=await tx.reviewRound.findFirst({where:{taskId:assignment.taskId,reviewerEmployeeId:account.employee.id,status:{in:["SUBMITTED","IN_REVIEW"]}}});
+        if(!round||context.project.status!=="ACTIVE"||!["SUBMITTED_INTERNAL_REVIEW","IN_INTERNAL_REVIEW"].includes(context.row.status)||context.row.primaryOwnerEmployeeId===account.employee.id)continue;
+        await this.candidate(tx,actor,context.project,account.employee.id,true);
+        const submission=await tx.reviewSubmission.findUniqueOrThrow({where:{id:round.submissionId}});
+        if(submission.revisionId)await this.revisionAccess(tx,actor,submission.revisionId,context.project.id);
+        result.push({id:assignment.taskId,date:context.row.committedDueDate??context.row.targetDate,version:context.row.version,updatedAt:assignment.assignedAt});
+      }catch(error){if(!(error instanceof ForbiddenException||error instanceof NotFoundException))throw error;}
+    }
+    return result;
   }
   async detail(actor: ProjectActor, taskId: string) {
     return this.transaction(async (tx) => {
@@ -181,6 +223,7 @@ export class ReviewService {
         const reviewer = await tx.employee.findUniqueOrThrow({ where: { id: round.reviewerEmployeeId }, include: { account: true } });
         const submitter = await tx.account.findUniqueOrThrow({ where: { id: submission.submittedById } });
         const revision = submission.revisionId ? await tx.documentRevision.findUniqueOrThrow({ where: { id: submission.revisionId } }) : null;
+        const evidence = revision ? await this.documents.authorizeFile(tx, actor, revision.fileId) : null;
         const comments = [];
         for (const item of await tx.reviewComment.findMany({ where: { roundId: round.id }, orderBy: { createdAt: "asc" } })) {
           if (item.markupFileId) await this.markup(tx, actor, project.id, item.markupFileId);
@@ -188,7 +231,7 @@ export class ReviewService {
           comments.push({ id: item.id, authorName: author.normalizedEmail, comment: item.comment, annotations: item.annotations, markupFileId: item.markupFileId, createdAt: item.createdAt });
         }
         const escalations = await tx.reviewEscalation.findMany({ where: { roundId: round.id }, orderBy: { createdAt: "asc" } });
-        rounds.push({ id: round.id, roundNumber: submission.roundNumber, status: round.status, taskVersion: submission.taskVersion, submittedAt: submission.submittedAt, submittedByName: submitter.normalizedEmail, taskSnapshot: submission.taskSnapshot, revisionId: submission.revisionId, revisionFileId: revision?.fileId ?? null, revisionLabel: revision ? `${revision.series}${revision.number}` : null, reviewerName: reviewer.account.normalizedEmail, comments, escalations: escalations.map((item) => ({ id: item.id, recipientAccountId: item.recipientAccountId, reason: item.reason, createdAt: item.createdAt })), correctionTaskId: round.correctionTaskId, decision: round.decidedAt ? { kind: round.status, comment: round.decisionComment, severity: round.severity, categoryName: round.categoryName, decidedAt: round.decidedAt } : null, withdrawal: round.withdrawnAt ? { reason: round.withdrawalReason, at: round.withdrawnAt, actorId: round.withdrawnById } : null });
+        rounds.push({ id: round.id, roundNumber: submission.roundNumber, status: round.status, taskVersion: submission.taskVersion, submittedAt: submission.submittedAt, submittedByName: submitter.normalizedEmail, taskSnapshot: submission.taskSnapshot, revisionId: submission.revisionId, revisionFileId: revision?.fileId ?? null, revisionFileMimeType: evidence?.blob.mimeType ?? null, revisionFileName: evidence?.blob.fileName ?? null, revisionLabel: revision ? `${revision.series}${revision.number}` : null, reviewerName: reviewer.account.normalizedEmail, comments, escalations: escalations.map((item) => ({ id: item.id, recipientAccountId: item.recipientAccountId, reason: item.reason, createdAt: item.createdAt })), correctionTaskId: round.correctionTaskId, decision: round.decidedAt ? { kind: round.status, comment: round.decisionComment, severity: round.severity, categoryName: round.categoryName, decidedAt: round.decidedAt } : null, withdrawal: round.withdrawnAt ? { reason: round.withdrawalReason, at: round.withdrawnAt, actorId: round.withdrawnById } : null });
       }
       let assignReviewer = false;
       try { await this.manager(tx, actor, project); assignReviewer = project.status === ProjectStatus.ACTIVE; } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
@@ -269,6 +312,38 @@ export class ReviewService {
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "review.assigned", subjectType: "review", subjectId: taskId, reason: input.reason, after: { taskId, projectId: project.id, oldReviewerEmployeeId: existing?.reviewerEmployeeId ?? null, reviewerEmployeeId: reviewer.id } });
     });
     return this.detail(actor, taskId);
+  }
+
+  /** S27 read-only candidate source; reuses the ordinary reviewer eligibility and independence guards. */
+  async assistanceReviewerCandidates(actor: ProjectActor, tx: Tx, taskId: string, currentTeamId: string, currentTeamBranchId: string, broaderSearch = false) {
+    const { row, project } = await this.task(tx, actor, taskId);
+    await this.manager(tx, actor, project);
+    if (row.requiresReassignment || !new Set<TaskStatus>([TaskStatus.NOT_STARTED, TaskStatus.IN_PROGRESS, TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.CORRECTIONS_REQUIRED]).has(row.status) || !new Set<TaskReviewRequirement>([TaskReviewRequirement.INTERNAL, TaskReviewRequirement.BOTH]).has(row.reviewRequirement)) throw new ConflictException("Task is not eligible for reviewer suggestions");
+    const latest = await tx.reviewSubmission.findFirst({ where: { taskId, organizationId: actor.organizationId }, orderBy: [{ submittedAt: "desc" }, { id: "desc" }] });
+    const assignments = await tx.projectAssignment.findMany({ where: { projectId: project.id, organizationId: actor.organizationId, revokedAt: null, ...(!broaderSearch ? { employee: { homeTeamId: currentTeamId, homeBranchId: currentTeamBranchId } } : {}) }, select: { employeeId: true }, orderBy: { employeeId: "asc" } });
+    const candidates: Array<{ employeeId: string; label: string; teamId: string; branchId: string }> = [];
+    for (const assignment of assignments) {
+      if (assignment.employeeId === row.primaryOwnerEmployeeId) continue;
+      try {
+        const employee = await this.candidate(tx, actor, project, assignment.employeeId, true);
+        if (latest?.submittedById === employee.accountId) continue;
+        const account = await tx.account.findUnique({ where: { id: employee.accountId }, select: { normalizedEmail: true } });
+        if (account) candidates.push({ employeeId: employee.id, label: employee.employeeCode || account.normalizedEmail, teamId: employee.homeTeamId, branchId: employee.homeBranchId });
+      } catch (error) { if (!(error instanceof ForbiddenException) && !(error instanceof ConflictException)) throw error; }
+    }
+    return { task: { id: row.id, projectId: project.id, ownerEmployeeId: row.primaryOwnerEmployeeId, reviewRequirement: row.reviewRequirement, version: row.version }, candidates };
+  }
+
+  async assistanceOutcome(actor: ProjectActor, tx: Tx, taskId: string, employeeId: string, currentTeamId: string, currentTeamBranchId: string, broaderSearch = false) {
+    const { row, project } = await this.task(tx, actor, taskId);
+    await this.manager(tx, actor, project);
+    if (!new Set<TaskReviewRequirement>([TaskReviewRequirement.INTERNAL, TaskReviewRequirement.BOTH]).has(row.reviewRequirement)) throw new ConflictException("Task no longer requires internal review");
+    const assignment = await tx.reviewAssignment.findFirst({ where: { taskId, organizationId: actor.organizationId } });
+    if (!assignment || assignment.reviewerEmployeeId !== employeeId) throw new ConflictException("Current reviewer assignment does not match the selected employee");
+    const candidates = await this.assistanceReviewerCandidates(actor, tx, taskId, currentTeamId, currentTeamBranchId, broaderSearch);
+    const current = candidates.candidates.find((candidate) => candidate.employeeId === employeeId);
+    if (!current) throw new ConflictException("Current reviewer is no longer eligible");
+    return { taskId, taskVersion: row.version, reviewerEmployeeId: employeeId, projectId: project.id };
   }
   async submit(actor: ProjectActor, taskId: string, input: { expectedVersion: number; reason: string; revisionId?: string | undefined; annotations?: Annotation[] | undefined; markupFileId?: string | undefined }) {
     await this.transaction(async (tx) => {

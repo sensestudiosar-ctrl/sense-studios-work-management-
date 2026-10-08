@@ -46,7 +46,12 @@ databaseDescribe("S14 client review PostgreSQL acceptance", () => {
     config = { nodeEnv: "test", port: 4000, databaseUrl: databaseUrl!, webOrigin: "http://localhost:5173", ownerBootstrapEmail: undefined, ownerBootstrapSecret: undefined, nasRoot, emailVerificationSecret: "s14-client-review-test-hmac-secret" };
     database = new DatabaseService(config);
     const rows = await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`;
-    if (!/^sense_s14_[a-z0-9_]*_test$/.test(rows[0]?.name ?? "") || rows[0]?.port !== 56434) throw new Error("Client review tests require the dedicated local S14 database on port 56434");
+    const s14 = /^sense_s14_[a-z0-9_]*_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56434;
+    const target = new URL(databaseUrl!);
+    const s25 = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s25_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
+    const s26 = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s26_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
+    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s27_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
+    if (!s14 && !s25 && !s26 && !s27) throw new Error("Client review tests require the dedicated local S14 database or explicitly enabled exact S14/S25/S26/S27 target");
   });
 
   afterAll(async () => { await database?.onModuleDestroy(); });

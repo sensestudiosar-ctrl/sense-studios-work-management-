@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-07",
+  "scope": "Low-fidelity People information architecture; no visual style borrowing",
+  "screens": [
+    {
+      "id": "32d53f7b-3188-47dd-85dc-07046179d6f3",
+      "product": "Marathon",
+      "url": "https://refero.design/pages/32d53f7b-3188-47dd-85dc-07046179d6f3",
+      "layout": "The layout comprises two primary columns: a fixed 1-column vertical sidebar on the left for navigation and project selection, and a wide 1-column main content area on the right. The sidebar is visually segregated by a subtle background color and spacing. The main content is divided vertically into three groups: top timer controls (timer, input, tags), a middle group containing a horizontal bar chart with filtering controls and summary stats on the right, and a bottom group listing detailed task entries in a vertical list. The overall structure is a single column layout in the main area stacked vertically, with consistent spacing and margin around groups. The top timer group uses horizontal flex alignment for timer, buttons, and input. The bar chart section uses a large rectangular panel with left vertical axis and bottom horizontal axis, navigation arrows on top left, project dropdown in center, and summary data on the right. The bottom section is a simple vertical list with tags and times aligned horizontally within each row. Padding is uniform within sections and white space ensures clarity. Scrollability is vertical for the main content area. The entire layout is responsive, optimizing for clarity and ease of use with minimal visual clutter.",
+      "functions": "Users can start and stop a timer to track time spent on tasks, using the large timer control with a clearly visible stop button. They can input or select project tags (e.g., 'Cobalt') to categorize time entries and optionally enter details about the task. Users can quickly add predefined time increments (+2m, +5m, +10m) to the timer for flexible time adjustments. The interface supports viewing tracked time data over a date range by navigating through weeks and filtering by project. The bar chart visualizes time spent across days, allowing users to monitor daily work patterns. Below the chart, users can review individual time entries with associated notes or task descriptions for better context management. The sidebar enables switching between different sections like 'My Desk,' 'Inbox,' and tracking different projects. The widget also indicates current plan usage (free plan, number of files used). The broader purpose is to provide users a comprehensive yet easy-to-use environment for managing work time tracking, improving productivity analysis, and recording project-related work hours efficiently."
+    },
+    {
+      "id": "8bb3f47e-e801-4864-a8e9-280512bbadb4",
+      "product": "Wrike",
+      "url": "https://refero.design/pages/8bb3f47e-e801-4864-a8e9-280512bbadb4",
+      "layout": "The layout is organized into a horizontal multi-column timeline grid representing days and weeks across the top. There are three main rows (one per user) arranged vertically with associated avatars and names on the left side as row headers. Above the grid, there is a header row with date labels grouped by weeks, followed by sub-columns for each day. Tasks are displayed as horizontal colored bars spanning across the grid cells matching their scheduled days. The pop-up detail box appears anchored near the relevant task bar, containing a small form and task metadata. On the top right, there is a horizontal bar containing action buttons and filtering dropdowns aligned left to right. A vertical red line runs down the timeline grid marking the current day. Overall, the layout uses a grid system with 3 major rows and about 3 main column groups (week-based) subdivided by days, with a floating pop-up detail panel.",
+      "functions": "Users can interact with the interface by viewing the workload distribution of design team members over specified weeks, assessing which tasks are assigned to whom and their durations. Users can hover or click on task bars to open a detailed pop-up with task information, including the ability to edit the task's duration or enable effort estimation. Filtering options allow users to narrow down tasks by type or user, and toggles like 'Expand all' or 'Collapse all' help manage task visibility. Users can monitor progress, adjust workload allocations, and ensure balanced task assignments among team members. At a higher level, this screen supports project management workflows such as scheduling, task tracking, and effort estimation, enabling team leads or managers to optimize resource allocation and track team productivity. The design facilitates quick understanding of workload distribution and helps prevent resource overloading by providing a clear visual summary and detailed task info accessible without leaving the page."
+    },
+    {
+      "id": "9797b9e9-cfd5-4787-bfe2-f0f5436157d7",
+      "product": "Aboard",
+      "url": "https://refero.design/pages/9797b9e9-cfd5-4787-bfe2-f0f5436157d7",
+      "layout": "The screen layout consists of a main container divided into three vertical columns. The first column is a fixed vertical sidebar occupying approximately 20% of the width on the left, containing navigation links stacked vertically with icons and text labels spaced with ample padding. The central column, about 50% width, is the main content area featuring a modal overlay centered both vertically and horizontally, sized to about 60% of the viewport width and 70% height, with the form content arranged in two main vertical sections (left and right columns) separated by a subtle vertical gap. The left section contains stacked form fields aligned left with consistent vertical spacing and labels above each input. The right section lists the relevant dates vertically aligned with their corresponding day descriptions, aligned right with some text in lighter gray indicating non-working days. The bottom right corner of the modal includes horizontally aligned action buttons. The third column on the right, approximately 30% width, shows employee profile details arranged vertically with grouped metadata blocks and plus icon buttons for notes, documents, and forms. The overall layout uses a flexible grid with generous padding and whitespace for clarity and balanced visual hierarchy.",
+      "functions": "Users can interact with this interface by selecting a leave policy (e.g., Vacation) from a dropdown menu, choosing start and end dates for their requested time off using date input fields, specifying the duration type (such as full day), optionally entering a comment in a text area, and selecting the status of their request (Approved or Pending) with a dropdown. The right side of the modal dynamically lists the specific dates included in the time-off request, highlighting workdays and non-working days, supporting accurate request review. The 'Requesting 5 days.' button visually summarizes the total days requested. Once the user completes the form, they can submit the request by clicking the 'Register' button. Behind the modal, users can also navigate the HR platform using the left sidebar to access various modules like Search, Home, Notifications, and sections such as Time-off, Onboarding, Documents, Analytics, etc. The employee profile details on the right assist in contextualizing the request. The interface streamlines the process of entering, reviewing, and submitting an employee's time-off request while enabling easy navigation within the HR management system."
+    }
+  ],
+  "additional": [
+    {
+      "id": "fb9ae97c-09b6-4e6b-9131-69bacc8578c5",
+      "product": "Aboard",
+      "url": "https://refero.design/pages/fb9ae97c-09b6-4e6b-9131-69bacc8578c5",
+      "use": "Timestamp employee log only; not an attendance capture/evidence match."
+    }
+  ],
+  "flow": {
+    "id": 771,
+    "url": "https://refero.design/flows/771",
+    "use": "Pending requests beside preserved calendar/detail; Sense named staged decision logic authoritative. Reject directly selected Approved status."
+  }
+}

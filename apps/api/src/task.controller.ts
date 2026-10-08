@@ -1,6 +1,7 @@
 import { BadRequestException, Body, Controller, ForbiddenException, Get, Headers, Inject, Param, Post, Put, Query, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { z } from "zod";
+import { TaskStatus, TaskType } from "./generated/prisma/client.js";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { IdentityService } from "./identity.service.js";
 import { ProjectService } from "./project.service.js";
@@ -49,11 +50,23 @@ export class TaskController {
   private async mutate(request: Request, csrf?: string) { if (request.headers.origin !== this.config.webOrigin) throw new ForbiddenException("Request origin is not allowed"); const result = await this.actor(request); this.identity.verifyCsrf(result.active, csrf); return result.actor; }
   private noStore(response: Response) { response.setHeader("Cache-Control", "no-store"); }
   @Get("setup") async setup(@Req() request: Request, @Res({ passthrough: true }) response: Response) { this.noStore(response); const { actor } = await this.actor(request); return this.tasks.setup(actor); }
-  @Get() async list(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("scope") scope?: string, @Query("offset") offset?: string, @Query("limit") limit?: string) {
+  @Get() async list(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("scope") scope?: string, @Query("offset") offset?: string, @Query("limit") limit?: string, @Query("projectId") projectId?: string, @Query("planItemId") planItemId?: string, @Query("ownerEmployeeId") ownerEmployeeId?: string, @Query("q") q?: string, @Query("status") status?: string, @Query("phase") phase?: string, @Query("dateBasis") dateBasis?: string, @Query("dateFrom") dateFrom?: string, @Query("dateTo") dateTo?: string, @Query("type") type?: string, @Query("requiresReassignment") requiresReassignment?: string, @Query("sort") sort?: string) {
     this.noStore(response); const { actor } = await this.actor(request);
     const parsedOffset = page.safeParse(offset ?? "0"); const parsedLimit = page.safeParse(limit ?? "50");
-    if ((scope !== "mine" && scope !== "assigned") || !parsedOffset.success || !parsedLimit.success || parsedLimit.data < 1 || parsedLimit.data > 100) throw new BadRequestException("Invalid task list request");
-    return this.tasks.list(actor, scope, parsedOffset.data, parsedLimit.data);
+    const parsedScope = z.enum(["mine", "assigned", "personal", "all", "owned", "created", "collaborating"]).safeParse(scope);
+    if (!parsedScope.success || !parsedOffset.success || !parsedLimit.success || parsedLimit.data < 1 || parsedLimit.data > 100) throw new BadRequestException("Invalid task list request");
+    const filters = parse(z.object({ projectId: uuid.optional(), planItemId: uuid.optional(), ownerEmployeeId: uuid.optional(), q: z.string().trim().max(160).optional(), status: z.enum(TaskStatus).optional(), phase: z.enum(["active", "waiting", "review", "completed"]).optional(), dateBasis: z.enum(["target", "committed"]).optional(), dateFrom: z.iso.date().optional(), dateTo: z.iso.date().optional(), type: z.enum(TaskType).optional(), requiresReassignment: z.enum(["true", "false"]).optional() }).refine(value => !value.dateFrom || !value.dateTo || value.dateFrom <= value.dateTo).refine(value => !value.dateFrom && !value.dateTo || !!value.dateBasis), {
+      ...(projectId ? { projectId } : {}), ...(planItemId ? { planItemId } : {}), ...(ownerEmployeeId ? { ownerEmployeeId } : {}), ...(q ? { q } : {}), ...(status ? { status } : {}), ...(phase ? { phase } : {}), ...(dateBasis ? { dateBasis } : {}), ...(dateFrom ? { dateFrom } : {}), ...(dateTo ? { dateTo } : {}), ...(type ? { type } : {}), ...(requiresReassignment ? { requiresReassignment } : {})
+    });
+    const parsedSort = parse(z.enum(["created_desc", "target_asc", "title_asc", "owner_asc"]).default("created_desc"), sort);
+    return this.tasks.list(actor, parsedScope.data, parsedOffset.data, parsedLimit.data, {
+      ...(filters.projectId ? { projectId: filters.projectId } : {}), ...(filters.planItemId ? { planItemId: filters.planItemId } : {}), ...(filters.ownerEmployeeId ? { ownerEmployeeId: filters.ownerEmployeeId } : {}), ...(filters.q ? { q: filters.q } : {}), ...(filters.status ? { status: filters.status } : {}), ...(filters.phase ? { phase: filters.phase } : {}), ...(filters.dateBasis ? { dateBasis: filters.dateBasis } : {}), ...(filters.dateFrom ? { dateFrom: filters.dateFrom } : {}), ...(filters.dateTo ? { dateTo: filters.dateTo } : {}), ...(filters.type ? { type: filters.type } : {}), ...(filters.requiresReassignment !== undefined ? { requiresReassignment: filters.requiresReassignment === "true" } : {}), sort: parsedSort
+    });
+  }
+  @Get("attention") async attention(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("kind") kind?: string, @Query("offset") offset?: string, @Query("limit") limit?: string) {
+    this.noStore(response); const { actor } = await this.actor(request);
+    const input = parse(z.object({ kind: z.enum(["corrections", "reassignment"]), offset: z.coerce.number().int().min(0).max(100000).default(0), limit: z.coerce.number().int().min(1).max(100).default(50) }), { kind, offset, limit });
+    return this.tasks.attention(actor, input.kind, input.offset, input.limit);
   }
   @Get(":id") async detail(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("id") id: string) { this.noStore(response); const { actor } = await this.actor(request); return this.tasks.detail(actor, parse(uuid, id)); }
   @Get(":id/dependency-candidates") async dependencyCandidates(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("id") id: string, @Query("q") query?: string) { this.noStore(response); const { actor } = await this.actor(request); return this.tasks.dependencyCandidates(actor, parse(uuid, id), parse(z.string().trim().max(160), query ?? "")); }

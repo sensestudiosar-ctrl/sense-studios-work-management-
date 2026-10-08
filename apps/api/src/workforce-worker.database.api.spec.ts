@@ -37,8 +37,12 @@ databaseDescribe("S17 workforce worker and recovery acceptance", () => {
   let database: DatabaseService;
   beforeAll(async () => {
     const url = new URL(databaseUrl!);
-    if (!/(?:localhost|127\.0\.0\.1)/.test(url.hostname) || url.port !== "56433" || !url.pathname.endsWith("_test")) {
-      throw new Error("S17 API acceptance requires the dedicated local port 56433 _test database");
+    const s17 = url.port === "56433" && url.pathname.endsWith("_test");
+    const s25 = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s17_s25_[a-z0-9_]+_test$/.test(url.pathname);
+    const s26 = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s17_s26_[a-z0-9_]+_test$/.test(url.pathname);
+    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s17_s27_[a-z0-9_]+_test$/.test(url.pathname);
+    if (!/(?:localhost|127\.0\.0\.1)/.test(url.hostname) || (!s17 && !s25 && !s26 && !s27)) {
+      throw new Error("Workforce worker acceptance requires a dedicated local S17 or explicitly enabled exact S17/S25/S26/S27 _test database");
     }
     database = new DatabaseService(config);
     await mkdir(storageRoot, { recursive: true });

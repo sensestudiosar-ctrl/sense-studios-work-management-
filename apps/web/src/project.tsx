@@ -5,18 +5,41 @@ import { ProjectPlan, ProjectTemplatePanel, type TemplateVersion } from "./proje
 const API = "/api/v1/projects";
 type Branch = { id: string; name: string };
 type Scope = { id: string; name: string; normalizedName: string; baseline: boolean };
-type Project = { id: string; title: string; status: string; deliveryType: "DESIGN" | "TURNKEY"; version: number; client?: { id: string; name: string } | null; branch: Branch; scopes: Scope[]; createdAt: string; statusChanges?: Array<{ id: string; fromStatus?: string; toStatus: string; reason: string }> };
+type Project = { id: string; title: string; status: string; deliveryType: "DESIGN" | "TURNKEY"; version: number; client?: { id: string; name: string } | null; branch: Branch; scopes: Scope[]; createdAt: string; currentLeadName?: string | null; appliedStageKeys?: string[]; nextMilestone?: { key: string; label: string; targetAt: string } | null; statusChanges?: Array<{ id: string; fromStatus?: string; toStatus: string; reason: string }> };
 type Employee = { id: string; accountId: string; name: string; homeBranchId: string };
 type ProjectSetup = { branches: Branch[]; employees?: Employee[]; owner?: boolean; ownerAccountId?: string };
-type ProjectPage = { total: number; items: Project[] };
+type ProjectPage = { total: number; stageKeys?: string[]; items: Project[] };
 type ProjectDetail = { project: Project & { currentLeadEmployeeId?: string | null; currentLeadName?: string | null; scopeApproverAccountId?: string | null }; capabilities?: Record<string, boolean>; currentLeadEmployeeId?: string | null; currentLeadName?: string | null; scopeApproverAccountId?: string | null; assignments?: Array<{ employeeId: string; employee?: Employee; name?: string }>; leadChanges?: Array<{ employeeName?: string; reason: string; createdAt?: string }>; transfers?: Array<{ fromBranchName?: string; toBranchName?: string; reason: string; createdAt?: string }>; scopeChanges?: Array<{ approvalId?: string | null; approval?: { state?: string } | null; name: string; status: string; reason: string }>; cancellationRequests?: Array<{ status: string; reason: string }>; wonLeadProvenance?: { leadId: string; stageChangeId: string; occurredAt: string; actorId: string; fromStage: string; toStage: string; leadVersion: number } };
 
 async function json(response: Response): Promise<unknown> { if (!response.ok) throw Object.assign(new Error(response.status === 403 ? "denied" : response.status === 409 ? "conflict" : "request"), { status: response.status }); return response.json() as Promise<unknown>; }
+type ProjectListContext = { branchId: string; q: string; stageKey: string; sort: "created" | "name" | "milestone"; direction: "asc" | "desc"; offset: number; projectId: string };
+function readProjectListContext(): ProjectListContext {
+  const query = new URLSearchParams(window.location.search); const rawOffset = Number(query.get("offset") ?? 0);
+  const sort = query.get("sort"); const direction = query.get("direction");
+  return { branchId: query.get("branchId") ?? "", q: query.get("q") ?? "", stageKey: query.get("stageKey") ?? "", sort: sort === "name" || sort === "milestone" ? sort : "created", direction: direction === "asc" ? "asc" : "desc", offset: Number.isSafeInteger(rawOffset) && rawOffset >= 0 ? rawOffset : 0, projectId: query.get("projectId") ?? "" };
+}
+function writeProjectListContext(changes: Partial<ProjectListContext>): void {
+  const current = readProjectListContext(); const next = { ...current, ...changes }; const query = new URLSearchParams(window.location.search);
+  for (const key of ["branchId", "q", "stageKey", "sort", "direction", "offset", "projectId"]) query.delete(key);
+  if (next.branchId) query.set("branchId", next.branchId); if (next.q) query.set("q", next.q); if (next.stageKey) query.set("stageKey", next.stageKey);
+  if (next.sort !== "created") query.set("sort", next.sort); if (next.direction !== "desc") query.set("direction", next.direction);
+  if (next.offset > 0) query.set("offset", String(next.offset)); if (next.projectId) query.set("projectId", next.projectId);
+  window.history.pushState(null, "", `${window.location.pathname}${query.toString() ? `?${query}` : ""}${window.location.hash}`);
+}
 
-export function ProjectWorkspace({ csrfToken, owner }: { csrfToken: string; owner: boolean }): React.JSX.Element | null {
+export function ProjectWorkspace({ csrfToken, owner, listFirst = false, initialProjectId = "" }: { csrfToken: string; owner: boolean; listFirst?: boolean; initialProjectId?: string }): React.JSX.Element | null {
+  const initialListContext = readProjectListContext();
   const [setup, setSetup] = useState<ProjectSetup>();
-  const [branchId, setBranchId] = useState("");
+  const [branchId, setBranchId] = useState(initialListContext.branchId);
   const [items, setItems] = useState<Project[]>([]);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(initialListContext.offset);
+  const [search, setSearch] = useState(initialListContext.q);
+  const [searchDraft, setSearchDraft] = useState(initialListContext.q);
+  const [stageKey, setStageKey] = useState(initialListContext.stageKey);
+  const [sort, setSort] = useState<ProjectListContext["sort"]>(initialListContext.sort);
+  const [direction, setDirection] = useState<ProjectListContext["direction"]>(initialListContext.direction);
+  const [stageKeys, setStageKeys] = useState<string[]>([]);
   const [selectedId, setSelectedId] = useState("");
   const [detail, setDetail] = useState<ProjectDetail>();
   const [setupLoading, setSetupLoading] = useState(true);
@@ -42,6 +65,7 @@ export function ProjectWorkspace({ csrfToken, owner }: { csrfToken: string; owne
   const [overrideMilestones, setOverrideMilestones] = useState(false);
   const [confirmCancellation, setConfirmCancellation] = useState(false);
   const listRequest = useRef(0);
+  const initialProjectHandled = useRef(false);
   const detailRequest = useRef(0);
   const creationRequest = useRef<{ fingerprint: string; key: string } | undefined>(undefined);
   const applyTemplateVersion = useCallback((version: TemplateVersion | undefined) => {
@@ -52,28 +76,43 @@ export function ProjectWorkspace({ csrfToken, owner }: { csrfToken: string; owne
   const request = useCallback(async (url: string, init?: RequestInit) => json(await fetch(url, { credentials: "include", cache: "no-store", ...init })), []);
   const loadSetup = useCallback(async () => {
     setSetupLoading(true); setError("");
-    try { const result = await request(`${API}/setup`) as ProjectSetup; setSetup(result); setBranchId((current) => result.branches.some((b) => b.id === current) ? current : result.branches[0]?.id ?? ""); }
+    try { const result = await request(`${API}/setup`) as ProjectSetup; setSetup(result); const requestedBranch = readProjectListContext().branchId; setBranchId((current) => result.branches.some((b) => b.id === (current || requestedBranch)) ? current || requestedBranch : ""); }
     catch (cause) { setError(cause instanceof Error && cause.message === "denied" && owner ? "You need Owner access to manage projects." : "Project access could not be loaded. Check your connection and try again."); }
     finally { setSetupLoading(false); }
   }, [request]);
-  const loadList = useCallback(async (currentBranch: string, preserveSelection = false) => {
+  const loadList = useCallback(async (currentBranch: string, preserveSelection = false, pageOffset = 0, context = { q: search, stageKey, sort, direction }) => {
     const requestId = ++listRequest.current;
     ++detailRequest.current;
-    if (!currentBranch) { setItems([]); setSelectedId(""); setDetail(undefined); return; }
     setLoading(true); setError("");
     if (!preserveSelection) { setSelectedId(""); setDetail(undefined); }
-    try { const result = await request(`${API}?branchId=${encodeURIComponent(currentBranch)}&offset=0&limit=50`) as ProjectPage; if (requestId === listRequest.current) setItems(result.items); }
-    catch (cause) { if (requestId === listRequest.current) { setItems([]); setError(cause instanceof Error && cause.message === "denied" ? "You need Owner access to view projects." : "Projects could not be loaded. Try again."); } }
+    try { const query = new URLSearchParams({ offset: String(pageOffset), limit: "50", sort: context.sort, direction: context.direction }); if (currentBranch) query.set("branchId", currentBranch); if (context.q) query.set("q", context.q); if (context.stageKey) query.set("stageKey", context.stageKey); const result = await request(`${API}?${query}`) as ProjectPage; if (requestId === listRequest.current) { setItems(result.items); setTotal(result.total); setOffset(pageOffset); setStageKeys(result.stageKeys ?? []); } }
+    catch (cause) { if (requestId === listRequest.current) { setItems([]); setTotal(0); setOffset(0); setError(cause instanceof Error && cause.message === "denied" ? "You do not have access to these projects." : "Projects could not be loaded. Try again."); } }
     finally { if (requestId === listRequest.current) setLoading(false); }
-  }, [request]);
+  }, [request, search, stageKey, sort, direction]);
   useEffect(() => { void loadSetup(); }, [loadSetup]);
-  useEffect(() => { if (!setupLoading && branchId) void loadList(branchId); }, [branchId, setupLoading, loadList]);
+  useEffect(() => { if (!setupLoading && setup) void loadList(branchId); }, [branchId, setupLoading, setup, loadList]);
   const selectProject = async (id: string) => {
     const requestId = ++detailRequest.current;
     setSelectedId(id); setDetail(undefined); setOverrideMilestones(false); setDetailError(""); setDetailLoading(true);
     try { const result = await request(`${API}/${encodeURIComponent(id)}`) as ProjectDetail; if (requestId === detailRequest.current) setDetail(result); }
     catch (cause) { if (requestId === detailRequest.current) setDetailError(cause instanceof Error && cause.message === "denied" ? "You need Owner access to view this project." : "Project details could not be loaded. Try again."); }
     finally { if (requestId === detailRequest.current) setDetailLoading(false); }
+  };
+  useEffect(() => {
+    const onPopState = (): void => {
+      const context = readProjectListContext();
+      setBranchId(context.branchId); setSearch(context.q); setSearchDraft(context.q); setStageKey(context.stageKey); setSort(context.sort); setDirection(context.direction); setOffset(context.offset);
+      void loadList(context.branchId, true, context.offset, context);
+      if (context.projectId) void selectProject(context.projectId);
+      else { ++detailRequest.current; setSelectedId(""); setDetail(undefined); setDetailError(""); }
+    };
+    window.addEventListener("popstate", onPopState); return () => window.removeEventListener("popstate", onPopState);
+  }, [loadList]);
+  useEffect(() => { if (!setupLoading && !initialProjectHandled.current && initialProjectId) { initialProjectHandled.current = true; void selectProject(initialProjectId); } }, [setupLoading, initialProjectId]);
+  const changePage = (pageOffset: number): void => {
+    if (loading || pageOffset < 0 || pageOffset >= total) return;
+    setSelectedId(""); setDetail(undefined); setDetailError(""); ++detailRequest.current;
+    void loadList(branchId, false, pageOffset);
   };
   const createProject = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); if (pending || !branchId) return;
@@ -144,24 +183,26 @@ export function ProjectWorkspace({ csrfToken, owner }: { csrfToken: string; owne
     finally { setPending(false); }
   };
 
-  return <section className="project-workspace" aria-labelledby="projects-heading">
-    <header className="project-heading"><div><div className="eyebrow">DELIVERY</div><h2 id="projects-heading">Projects</h2><p>Set up a Draft project with its delivery type and initial service scopes.</p></div><span className="project-count">{items.length} shown</span></header>
-    {error && <div className="project-alert" role="alert"><span>{error}</span><button type="button" onClick={() => branchId ? void loadList(branchId) : void loadSetup()}>Try again</button></div>}
+  return <section className={`project-workspace${listFirst ? " project-workspace-list-first" : ""}`} aria-labelledby="projects-heading">
+    <header className="project-heading"><div><div className="eyebrow">DELIVERY</div><h2 id="projects-heading">Projects</h2><p>{owner ? "Create Draft projects and review their delivery scopes and history." : "Review projects available to you, including delivery scopes and history."}</p></div><span className="project-count">{total} total</span></header>
+    {error && <div className="project-alert" role="alert"><span>{error}</span><button type="button" onClick={() => branchId || setup ? void loadList(branchId) : void loadSetup()}>Try again</button></div>}
     {success && <p className="project-success" role="status">{success}</p>}
     {setupLoading ? <p className="project-status" role="status">Loading project setup…</p> : <>
-      {setup?.branches.length ? <label className="project-branch">Owning branch<select aria-label="Project branch" value={branchId} onChange={(event) => { ++listRequest.current; ++detailRequest.current; setBranchId(event.target.value); setSelectedId(""); setDetail(undefined); }}>{setup.branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label> : <p className="project-empty" role="status">No active branches are available for projects.</p>}
+      {setup && <label className="project-branch">Project directory<select aria-label="Project branch" disabled={pending || loading} value={branchId} onChange={(event) => { const nextBranch = event.target.value; ++listRequest.current; ++detailRequest.current; setItems([]); setTotal(0); setOffset(0); setBranchId(nextBranch); setSelectedId(""); setDetail(undefined); setDetailError(""); writeProjectListContext({ branchId: nextBranch, offset: 0, projectId: "" }); }}><option value="">All projects available to me</option>{setup.branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label>}
       <ProjectTemplatePanel owner={owner} csrfToken={csrfToken} onTemplateChange={applyTemplateVersion} resetKey={templateReset} />
-      {!!branchId && <div className="project-columns">
-        <section className="project-panel" aria-labelledby="project-list-heading"><div className="project-panel-heading"><h3 id="project-list-heading">Drafts and projects</h3><button className="project-quiet-button" type="button" onClick={() => void loadList(branchId)} disabled={loading}>Refresh</button></div>
-          {loading ? <p className="project-status" role="status">Loading projects…</p> : items.length === 0 ? <p className="project-empty" role="status">No projects for this branch yet.</p> : <ul className="project-list">{items.map((item) => <li key={item.id}><button type="button" className={`project-list-item${selectedId === item.id ? " is-selected" : ""}`} onClick={() => void selectProject(item.id)} aria-pressed={selectedId === item.id}><span><strong>{item.title}</strong><small>{item.deliveryType === "DESIGN" ? "Design" : "Turnkey"} · {item.scopes.length} baseline {item.scopes.length === 1 ? "scope" : "scopes"}</small></span><span className="project-status-pill">{item.status}</span></button></li>)}</ul>}
+      {setup && <div className="project-columns">
+        <section className="project-panel" aria-labelledby="project-list-heading"><div className="project-panel-heading"><div><h3 id="project-list-heading">Projects</h3><span className="project-count">Showing {total ? `${offset + 1}–${Math.min(offset + items.length, total)} of ${total}` : "0"}</span></div><button className="project-quiet-button" type="button" onClick={() => void loadList(branchId, false, offset)} disabled={loading}>Refresh</button></div>
+          <form className="project-list-filters" onSubmit={(event) => { event.preventDefault(); const q = searchDraft.trim(); setSearch(q); setSearchDraft(q); setOffset(0); writeProjectListContext({ q, stageKey, sort, direction, offset: 0, projectId: "" }); setSelectedId(""); setDetail(undefined); }}><label>Search title, delivery type, or current lead<input aria-label="Search projects" maxLength={160} value={searchDraft} onChange={(event) => setSearchDraft(event.target.value)} /></label><label>Applied stage key<select aria-label="Applied stage key" value={stageKey} onChange={(event) => { setStageKey(event.target.value); setOffset(0); writeProjectListContext({ stageKey: event.target.value, offset: 0, projectId: "" }); setSelectedId(""); setDetail(undefined); }}><option value="">All applied stages</option>{stageKeys.map((key) => <option key={key} value={key}>{key}</option>)}</select></label><label>Sort projects<select aria-label="Sort projects" value={sort} onChange={(event) => { const nextSort = event.target.value as ProjectListContext["sort"]; setSort(nextSort); setOffset(0); writeProjectListContext({ sort: nextSort, offset: 0 }); }}><option value="created">Created</option><option value="name">Name</option><option value="milestone">Next milestone</option></select></label><label>Direction<select aria-label="Sort direction" value={direction} onChange={(event) => { const nextDirection = event.target.value as ProjectListContext["direction"]; setDirection(nextDirection); setOffset(0); writeProjectListContext({ direction: nextDirection, offset: 0 }); }}><option value="desc">Descending</option><option value="asc">Ascending</option></select></label><button type="submit">Search</button></form>
+          {loading ? <p className="project-status" role="status">Loading projects…</p> : items.length === 0 ? <p className="project-empty" role="status">No projects match these filters.</p> : <ul className="project-list">{items.map((item) => { const scopes = item.scopes ?? []; return <li key={item.id}><button type="button" className={`project-list-item${selectedId === item.id ? " is-selected" : ""}`} onClick={() => { writeProjectListContext({ projectId: item.id }); void selectProject(item.id); }} aria-pressed={selectedId === item.id}><span><strong>{item.title}</strong><small>{item.deliveryType === "DESIGN" ? "Design" : "Turnkey"} · Lead: {item.currentLeadName ?? "Unassigned"} · {scopes.length} baseline {scopes.length === 1 ? "scope" : "scopes"}{item.appliedStageKeys?.length ? ` · Applied plan stages ${item.appliedStageKeys.join(", ")}` : " · No applied plan stage keys"}{item.nextMilestone ? ` · Next: ${item.nextMilestone.label} (${new Date(item.nextMilestone.targetAt).toLocaleDateString()})` : " · No dated incomplete milestone"}</small></span><span className="project-status-pill">{item.status}</span></button></li>; })}</ul>}
+          <nav className="project-pagination" aria-label="Project list pages"><button type="button" onClick={() => { const next = offset - 50; writeProjectListContext({ offset: next, projectId: "" }); changePage(next); }} disabled={loading || offset === 0}>Previous</button><span>{total ? `Page ${Math.floor(offset / 50) + 1} of ${Math.ceil(total / 50)}` : "No pages"}</span><button type="button" onClick={() => { const next = offset + 50; writeProjectListContext({ offset: next, projectId: "" }); changePage(next); }} disabled={loading || offset + 50 >= total}>Next</button></nav>
           {detailLoading && <p className="project-status" role="status">Loading project details…</p>}{detailError && <p role="alert" className="project-inline-error">{detailError}</p>}
-          {detail && <article className="project-detail"><div className="project-detail-heading"><div><div className="eyebrow">PROJECT DETAIL</div><h3>{detail.project.title}</h3></div><span className="project-status-pill">{detail.project.status}</span></div><dl><div><dt>Branch</dt><dd>{detail.project.branch.name}</dd></div><div><dt>Delivery type</dt><dd>{detail.project.deliveryType === "DESIGN" ? "Design" : "Turnkey"}</dd></div><div><dt>Client</dt><dd>{detail.project.client?.name ?? "Not linked"}</dd></div></dl><h4>Baseline scopes</h4><ul className="project-scope-list">{detail.project.scopes.map((scope) => <li key={scope.id}>{scope.name}</li>)}</ul>{detail.wonLeadProvenance && <p className="project-provenance">Converted from Won lead · recorded {new Date(detail.wonLeadProvenance.occurredAt).toLocaleString()}</p>}
+          {detail && <article className="project-detail"><div className="project-detail-heading"><div><div className="eyebrow">PROJECT DETAIL</div><h3>{detail.project.title}</h3></div><span className="project-status-pill">{detail.project.status}</span></div><nav className="project-context-nav" aria-label={`${detail.project.title} sections`}><a href="#project-plan">Plan</a><a href={`/tasks?projectId=${encodeURIComponent(detail.project.id)}`}>Tasks</a><a href={`/documents?projectId=${encodeURIComponent(detail.project.id)}`}>Documents</a><a href={`/reviews?projectId=${encodeURIComponent(detail.project.id)}`}>Reviews</a><a href={`/site?projectId=${encodeURIComponent(detail.project.id)}`}>Site delivery</a></nav><dl><div><dt>Branch</dt><dd>{detail.project.branch.name}</dd></div><div><dt>Delivery type</dt><dd>{detail.project.deliveryType === "DESIGN" ? "Design" : "Turnkey"}</dd></div><div><dt>Client</dt><dd>{detail.project.client?.name ?? "Not linked"}</dd></div></dl><h4>Baseline scopes</h4><ul className="project-scope-list">{detail.project.scopes.map((scope) => <li key={scope.id}>{scope.name}</li>)}</ul>{detail.wonLeadProvenance && <p className="project-provenance">Converted from Won lead · recorded {new Date(detail.wonLeadProvenance.occurredAt).toLocaleString()}</p>}
             <h4>History and requests</h4><ul className="project-history">{(detail.project.statusChanges ?? []).map((row) => <li key={row.id}>{row.fromStatus ?? "Created"} → {row.toStatus} · {row.reason}</li>)}{(detail.transfers ?? []).map((row, index) => <li key={`transfer-${index}`}>Branch transfer · {row.reason}. Contributors whose home branch differs from the new owning branch need an explicit Owner regrant.</li>)}{(detail.leadChanges ?? []).map((row, index) => <li key={`lead-${index}`}>Lead change · {row.reason}</li>)}{(detail.scopeChanges ?? []).map((row, index) => <li key={`scope-${index}`}>Scope change: {row.name} · {row.status} · {row.reason}{row.approvalId && (row.approval?.state === "PENDING" || row.status === "PENDING") && <span className="project-scope-decision">{detail.capabilities?.decideScope && <><button type="button" disabled={pending || reason.trim().length < 3} onClick={() => void decideScope(row.approvalId!, "APPROVED")}>Approve</button><button type="button" disabled={pending || reason.trim().length < 3} onClick={() => void decideScope(row.approvalId!, "REJECTED")}>Reject</button></>}{owner && <button type="button" disabled={pending || reason.trim().length < 3} onClick={() => void withdrawScope(row.approvalId!)}>Withdraw</button>}</span>}</li>)}{(detail.cancellationRequests ?? []).map((row, index) => <li key={`cancel-${index}`}>Cancellation request · {row.status} · {row.reason}</li>)}</ul>
             {detail.scopeChanges?.some((row) => detail.capabilities?.decideScope && row.approvalId && (row.approval?.state === "PENDING" || row.status === "PENDING")) && <p className="project-decision-help">Enter a decision reason above before approving or rejecting a pending scope change. The requester cannot approve their own request.</p>}
             {owner && detail.scopeChanges?.some((row) => row.approvalId && (row.approval?.state === "PENDING" || row.status === "PENDING")) && <p className="project-decision-help">If the named approver is unavailable, withdraw the request with a reason, change the approver above, then the requester may submit again.</p>}
             <h4>Project Lead</h4><p>{detail.currentLeadName ?? detail.project.currentLeadName ?? setup?.employees?.find((employee) => employee.id === (detail.currentLeadEmployeeId ?? detail.project.currentLeadEmployeeId))?.name ?? "No Project Lead assigned"}</p>
             <h4>Assigned contributors</h4>{(detail.assignments ?? []).length ? <ul className="project-history">{detail.assignments?.map((row) => <li key={row.employeeId}>{row.employee?.name ?? row.name ?? row.employeeId}{(owner || detail.capabilities?.manageAssignments) && <button type="button" disabled={pending || reason.trim().length < 3} onClick={() => void removeContributor(row.employeeId)}>Remove</button>}</li>)}</ul> : <p>No additional contributors</p>}
-            <ProjectPlan projectId={detail.project.id} projectVersion={detail.project.version} csrfToken={csrfToken} onSaved={() => void selectProject(detail.project.id)} />
+            <div id="project-plan"><ProjectPlan projectId={detail.project.id} projectVersion={detail.project.version} csrfToken={csrfToken} onSaved={() => void selectProject(detail.project.id)} /></div>
             <div className="project-actions"><label>Reason for action<input aria-label="Project action reason" value={reason} onChange={(event) => setReason(event.target.value)} minLength={3} maxLength={1000} /></label>
               {["CANCELLED", "ARCHIVED"].includes(detail.project.status) ? <p>This project is closed. Its delivery history is retained. Approved closeout work is managed in Tasks.</p> : <>
               {((detail.capabilities?.assignLead ?? owner) || detail.capabilities?.manageLead) && <div className="project-action-row"><select aria-label="Project lead" value={actionEmployee} onChange={(event) => setActionEmployee(event.target.value)}><option value="">Choose active employee</option>{setup?.employees?.map((employee) => <option key={employee.id} value={employee.id}>{employee.name}</option>)}</select><button disabled={pending || !actionEmployee || reason.trim().length < 3} onClick={() => void sendAction("/lead", { employeeId: actionEmployee })}>Set lead</button></div>}

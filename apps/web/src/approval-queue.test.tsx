@@ -19,7 +19,7 @@ describe("read-only approval queue", () => {
     vi.stubGlobal("fetch", vi.fn(async () => response({ items: [], nextCursor: null })));
     render(<ApprovalQueue />);
     expect(screen.getByText("Loading pending decisions…")).toBeInTheDocument();
-    expect(await screen.findByText(/You’re all caught up/)).toBeInTheDocument();
+    expect(await screen.findByText(/No pending decisions in this list/)).toBeInTheDocument();
   });
 
   it("keeps request evidence readable and offers no decision controls", async () => {
@@ -51,13 +51,13 @@ describe("read-only approval queue", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent(/couldn’t load pending decisions/i);
     expect(screen.queryByText(/database password leaked/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Try again" }));
-    expect(await screen.findByText(/You’re all caught up/)).toBeInTheDocument();
+    expect(await screen.findByText(/No pending decisions in this list/)).toBeInTheDocument();
   });
 
   it("renders a permission denial without showing any pending items", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => response({}, 403)));
     render(<ApprovalQueue />);
     expect(await screen.findByRole("alert")).toHaveTextContent(/don’t have access to this decision queue/i);
-    expect(screen.queryByText(/You’re all caught up/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/No pending decisions in this list/)).not.toBeInTheDocument();
   });
 });

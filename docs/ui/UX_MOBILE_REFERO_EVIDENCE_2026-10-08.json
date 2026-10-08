@@ -1,0 +1,79 @@
+{
+  "scope": "Mobile UX placement and recovery only; no copied business rules.",
+  "records": [
+    {
+      "id": 2440,
+      "app": "Dropbox",
+      "url": "https://refero.design/flows/2440",
+      "steps": [
+        {
+          "name": "Open document in viewer",
+          "goal": "View the PDF and access document controls",
+          "action": "User views the PDF in the document viewer; top nav shows file name and document controls (back, star, more).",
+          "system_response": "Viewer displays the PDF page content and toolbar. A persistent control (Share and a comments affordance) is available to open comments."
+        },
+        {
+          "name": "Open comments panel",
+          "goal": "Reveal comments area to read or add comments",
+          "action": "User taps the comments affordance / swipe up on the comments handle; a bottom-sheet opens showing '0 comments' and an input area with a page indicator ('Page 1').",
+          "system_response": "Comments panel overlays the document (partial height). It displays the current page indicator, an empty state message when no comments exist, and a text input field for composing a comment."
+        },
+        {
+          "name": "Focus comment input",
+          "goal": "Prepare to write a page-specific comment",
+          "action": "User taps the 'Type a comment' input; the system shows the on-screen keyboard and the input gains focus. User may change the page indicator (e.g., to 'Page 2') before typing.",
+          "system_response": "Keyboard appears and the comments sheet remains visible above it. The input shows an @ icon for mentions, and the send control (up arrow) is present. The UI updates the page label to reflect the selected page for the comment."
+        },
+        {
+          "name": "Compose and submit comment",
+          "goal": "Create and send the comment tied to the selected page",
+          "action": "User types the message (optionally uses @ to mention someone) and taps the send button (up arrow).",
+          "system_response": "The composed comment is sent to the server and the input is cleared. The comments panel updates to show a new entry pending/posted. Any mention handling/notifications are triggered by the backend."
+        },
+        {
+          "name": "View posted comment",
+          "goal": "Confirm the comment was posted and visible in thread",
+          "action": "User views the comment list; the new comment appears with a timestamp, author name, and the page link/label (e.g., 'Page 2'). User can reply or open comment options (ellipsis).",
+          "system_response": "Comment thread displays the new comment (author avatar/initials, author name, page link, timestamp). The comment is persisted and visible to other users with access."
+        }
+      ]
+    },
+    {
+      "id": 6628,
+      "app": "Linear",
+      "url": "https://refero.design/flows/6628",
+      "steps": [
+        {
+          "name": "Search Results (mixed types)",
+          "goal": "See typeahead results for a short query and scan matching items",
+          "action": "User types a short query into the bottom search field (example: \"Bu\") or inspects the pre-populated results; can tap a result to open it.",
+          "system_response": "The list displays matching items of mixed types (Issues, Projects, Documents). Each item shows a small type icon, a reference label (e.g., REF-17), and the title. The search control is anchored at the bottom with a clear button and a close button; results update as the query changes."
+        },
+        {
+          "name": "Open Type Filter Menu",
+          "goal": "Switch or inspect the result scope (All / Issues / Projects / Documents)",
+          "action": "User taps the current scope label/chevron (shown as 'All' with a filter icon) to open the compact filter popover.",
+          "system_response": "A modal-style popover appears centered over the results listing with four selectable options: All (checked), Issues, Projects, Documents. Each option includes a small icon aligned to the right. The background content is dimmed but still visible."
+        },
+        {
+          "name": "Apply Projects Filter and Continue Typing",
+          "goal": "Narrow the result set to Projects while continuing to refine the search text",
+          "action": "User selects 'Projects' from the popover. The popover closes and the search field remains focused; the keyboard is visible so the user can continue editing the query.",
+          "system_response": "Results refresh to show only project-type items (example: 'Orbit', 'Pulse'). The top label updates to reflect the selected scope (e.g., 'Results  Projects'), and the keyboard stays open for further typing. Clear and close controls remain available on the bottom search bar."
+        }
+      ]
+    },
+    {
+      "id": "5fcd6419-6b51-494f-98af-d52d9a5def5e",
+      "app": "Asana",
+      "url": "https://refero.design/screens/5fcd6419-6b51-494f-98af-d52d9a5def5e",
+      "layout": "The layout is structured with a top header area containing the user avatar, title, and a dropdown menu. Below are horizontally aligned filter buttons arranged in a row with spacing between them. The main content area is a two-column table grid: the left column for task names and status, the right column for project names with colored tags. The table columns are separated by a vertical gray divider line. The bottom right corner holds a floating action button for adding new tasks. The bottom navigation bar spans the full width at the screen bottom with five evenly spaced icons and labels. The layout uses vertical stacking for header, filters, and table, with horizontal division in the table section. Padding and margins provide breathing room between elements. The design is responsive and optimized for mobile screens."
+    },
+    {
+      "id": "fef9d82b-7b23-4c92-b6ba-0dd51d57bbc2",
+      "app": "Asana",
+      "url": "https://refero.design/screens/fef9d82b-7b23-4c92-b6ba-0dd51d57bbc2",
+      "layout": "The layout is a single-column vertical scroll with distinct sections separated by spacing and subtle background shading. At the top is a fixed navigation bar with icons aligned horizontally. Below is a full-width notification banner with text and a close icon. The main content area includes the task title and metadata arranged in rows: assigned user and due date side by side, then project info with a dropdown arrow. Following is a card-like container with priority and status badges horizontally aligned. The audio player spans full width with waveform and controls. The description section uses left-aligned text blocks with a label and body. At the bottom is a horizontal input area with icons spaced evenly and user avatars aligned to the right. Padding is consistent around elements, and elements are aligned left for readability. The layout emphasizes clarity and ease of interaction with sufficient white space."
+    }
+  ]
+}

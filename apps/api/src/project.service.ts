@@ -4,6 +4,7 @@ import { DatabaseService } from "./database.service.js";
 import { recordProjectEvent } from "./project-events.js";
 import { createHash } from "node:crypto";
 import { templateDefinitionSchema } from "./template-definition.js";
+import { AuthorizationService } from "./authorization.service.js";
 
 export interface ProjectActor { accountId: string; kind: AccountKind; organizationId: string; }
 type Tx = Prisma.TransactionClient;
@@ -13,6 +14,52 @@ export class ProjectService {
   constructor(private readonly database: DatabaseService) {}
   private get db() { return this.database.prisma; }
 
+  /** RPT public read port; ordinary current project/branch assignment is retained. */
+  async reportContext(actor:ProjectActor,id:string) {
+    return this.db.$transaction(async tx=>{
+      const account=await tx.account.findUnique({where:{id:actor.accountId},include:{employee:true}});
+      const project=await tx.project.findFirst({where:{id,organizationId:actor.organizationId}});
+      if(!project||!account||account.state!=="ACTIVE"||account.kind!==actor.kind||!["OWNER","STAFF"].includes(actor.kind))throw new ForbiddenException("Current project read scope required");
+      if(actor.kind!=="OWNER") {
+        const self=account.employee,assignment=self&&await tx.projectAssignment.findFirst({where:{projectId:id,employeeId:self.id,revokedAt:null}});
+        if(!self||self.state!=="ACTIVE"||self.organizationId!==actor.organizationId||!assignment||self.homeBranchId!==project.branchId&&!assignment.crossBranchAuthorized)throw new ForbiddenException("Explicit project assignment required");
+        await new AuthorizationService(this.database).assertPermission(actor.accountId,"project.view",{kind:"BRANCH",organizationId:actor.organizationId,branchId:project.branchId},tx);
+      }
+      const plan=await tx.projectPlanItem.findMany({where:{projectId:id},select:{id:true,kind:true,label:true,required:true,targetAt:true,completedAt:true}});
+      const scopes=await tx.projectScope.findMany({where:{projectId:id}});
+      const changes=await tx.projectScopeChange.findMany({where:{projectId:id},orderBy:{requestedAt:"asc"}});
+      return {project:{id:project.id,title:project.title,status:project.status,branchId:project.branchId,currentLeadEmployeeId:project.currentLeadEmployeeId,deliveryType:project.deliveryType},plan,scopes,changes};
+    });
+  }
+
+  /** INT owning public port: current project scope and existing management authority. */
+  async integrationContext(actor: ProjectActor, tx: Tx, id: string, manage=false) {
+    await tx.$queryRaw`SELECT id FROM projects WHERE id=${id}::uuid AND "organizationId"=${actor.organizationId}::uuid FOR SHARE`;
+    const project=await tx.project.findFirst({where:{id,organizationId:actor.organizationId}});
+    const account=await tx.account.findUnique({where:{id:actor.accountId},include:{employee:true}});
+    if(!project||!account||account.state!=="ACTIVE"||account.kind!==actor.kind||!["OWNER","STAFF"].includes(actor.kind))throw new ForbiddenException("Current project scope required");
+    if(actor.kind!=="OWNER") {
+      const self=account.employee;
+      if(!self||self.state!=="ACTIVE"||self.organizationId!==actor.organizationId)throw new ForbiddenException("Current project scope required");
+      await tx.$queryRaw`SELECT id FROM project_assignments WHERE "projectId"=${id}::uuid AND "employeeId"=${self.id}::uuid FOR SHARE`;
+      const assignment=await tx.projectAssignment.findFirst({where:{projectId:id,employeeId:self.id,revokedAt:null}});
+      if(!assignment||self.homeBranchId!==project.branchId&&!assignment.crossBranchAuthorized)throw new ForbiddenException("Explicit project assignment required");
+      const auth=new AuthorizationService(this.database);
+      await auth.assertPermission(actor.accountId,"project.view",{kind:"BRANCH",organizationId:actor.organizationId,branchId:project.branchId},tx);
+      if(manage)await auth.assertPermission(actor.accountId,"project.manage",{kind:"BRANCH",organizationId:actor.organizationId,branchId:project.branchId},tx);
+    }
+    return project;
+  }
+  async integrationProjects(actor:ProjectActor,tx:Tx) {
+    const result=[];
+    for(const row of await tx.project.findMany({where:{organizationId:actor.organizationId},orderBy:{id:"asc"}})) {
+      try {const project=await this.integrationContext(actor,tx,row.id);let canManageEvents=false;try{await this.integrationContext(actor,tx,row.id,true);canManageEvents=project.status==="ACTIVE";}catch(error){if(!(error instanceof ForbiddenException))throw error;}
+        const milestones=await tx.projectPlanItem.findMany({where:{projectId:project.id,kind:"MILESTONE",completedAt:null,targetAt:{not:null}}});
+        result.push({id:project.id,title:project.title,status:project.status,version:project.version,canManageEvents,milestones});
+      }catch(error){if(!(error instanceof ForbiddenException))throw error;}
+    }
+    return result;
+  }
   async actor(accountId: string): Promise<ProjectActor> {
     const row = await this.db.account.findUnique({ where: { id: accountId }, select: { kind: true, employee: { select: { organizationId: true } } } });
     const organizationId = row?.employee?.organizationId ?? (await this.db.organization.findFirst({ select: { id: true } }))?.id;

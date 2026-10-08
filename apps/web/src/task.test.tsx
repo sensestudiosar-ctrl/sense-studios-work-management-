@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { TaskWorkspace, type Detail, type Task } from "./task.js";
 
@@ -9,8 +9,50 @@ const detail: Detail = { task, collaborators: [], history: { statusChanges: [], 
 
 function response(body: unknown, status = 200): Response { return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }); }
 afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => window.history.replaceState(null, "", "/"));
 
 describe("TaskWorkspace", () => {
+  it("applies the approved task filters as a resettable backend query", async () => {
+    const requests: string[] = [];
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      requests.push(url);
+      if (url.endsWith("/setup")) return response(setup);
+      return response({ total: 0, items: [] });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TaskWorkspace csrfToken="task-csrf" owner listFirst />);
+    await screen.findByRole("form", { name: "Task filters" });
+
+    fireEvent.change(screen.getByLabelText("Filter by project"), { target: { value: "project-1" } });
+    fireEvent.change(screen.getByLabelText("Filter by primary owner"), { target: { value: "employee-2" } });
+    fireEvent.change(screen.getByLabelText("Search tasks"), { target: { value: "  concept review  " } });
+    fireEvent.change(screen.getByLabelText("Filter by status"), { target: { value: "IN_PROGRESS" } });
+    fireEvent.change(screen.getByLabelText("Filter by phase"), { target: { value: "waiting" } });
+    fireEvent.change(screen.getByLabelText("Filter date basis"), { target: { value: "committed" } });
+    fireEvent.change(screen.getByLabelText("Filter date from"), { target: { value: "2026-10-01" } });
+    fireEvent.change(screen.getByLabelText("Filter date through"), { target: { value: "2026-10-31" } });
+    fireEvent.click(screen.getByRole("button", { name: "Apply filters" }));
+
+    await waitFor(() => expect(requests.some((url) => url.includes("ownerEmployeeId=employee-2"))).toBe(true));
+    const applied = new URL(requests.filter((url) => url.includes("ownerEmployeeId=employee-2")).at(-1)!, "http://localhost");
+    expect(applied.searchParams.get("projectId")).toBe("project-1");
+    expect(applied.searchParams.get("q")).toBe("concept review");
+    expect(applied.searchParams.get("status")).toBe("IN_PROGRESS");
+    expect(applied.searchParams.get("phase")).toBe("waiting");
+    expect(applied.searchParams.get("dateBasis")).toBe("committed");
+    expect(applied.searchParams.get("dateFrom")).toBe("2026-10-01");
+    expect(applied.searchParams.get("dateTo")).toBe("2026-10-31");
+
+    fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
+    await waitFor(() => expect(requests.filter((url) => url.includes("/api/v1/tasks?")).at(-1)).toContain("offset=0"));
+    const reset = new URL(requests.filter((url) => url.includes("/api/v1/tasks?")).at(-1)!, "http://localhost");
+    expect(reset.searchParams.get("projectId")).toBeNull();
+    expect(reset.searchParams.get("ownerEmployeeId")).toBeNull();
+    expect(reset.searchParams.get("q")).toBeNull();
+    expect(reset.searchParams.get("dateBasis")).toBeNull();
+  });
+
   it("keeps task creation blocked after an overload warning until explicit acknowledgement", async () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -25,7 +67,7 @@ describe("TaskWorkspace", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
     render(<TaskWorkspace csrfToken="task-csrf" owner={false} />);
-    await screen.findByText("No tasks assigned to you yet.");
+    await screen.findByText("No primary tasks match these filters.");
     fireEvent.click(screen.getByRole("button", { name: "Create task" }));
     fireEvent.change(screen.getByLabelText("Task name"), { target: { value: "Call supplier" } });
     fireEvent.change(screen.getByLabelText("Target date"), { target: { value: "2026-10-15" } });
@@ -79,7 +121,7 @@ describe("TaskWorkspace", () => {
     });
     vi.stubGlobal("fetch", fetchMock);
     render(<TaskWorkspace csrfToken="csrf-test" owner={false} />);
-    await screen.findByText("No tasks assigned to you yet.");
+    await screen.findByText("No primary tasks match these filters.");
     fireEvent.click(screen.getByRole("button", { name: "Create task" }));
     fireEvent.change(screen.getByLabelText("Task name"), { target: { value: "Call supplier" } });
     fireEvent.change(screen.getByLabelText("Target date"), { target: { value: "2026-10-15" } });

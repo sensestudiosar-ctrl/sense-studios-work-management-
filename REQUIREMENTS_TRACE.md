@@ -1,6 +1,18 @@
 # Approved requirement traceability
 
-Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 remains unresolved/excluded; S21 is COMPLETE for development/local staging; S22 is COMPLETE for development/local staging; S23–S27 remain unauthorized.
+## S26 current trace — COMPLETE for development/local staging (2026-10-06)
+
+R-078.a–f cover bounded saved reports over current S24 sources/columns, scalar filters, retained-row count grouping/charts and immutable versions. R-082.a–d cover versioned task/project events, internal notices, authorized report generation and nonbinding recommendations reviewed through S05. R-083.a–c require only bounded low-risk automatic actions, exclude high-impact business mutations, and require current source/recipient/manager checks, recursion exclusion and duplicate-safe retained runs/receipts. These requirements are COMPLETE for development/local staging under `S26_SPEC.md`; S27 remains unauthorized/excluded. S26 is COMPLETE for development/local staging (2026-10-06). Final3 pinned Node 24.19.0/pnpm 11.19.0 `pnpm verify` exited 0: typecheck/lint/build, API 226/38 suites, web 197/29 files, PostgreSQL/API 330/57 suites, and all 49 desktop/mobile browser cases passed without failures, skips or retries; the browser run took 9.4 minutes. All 19 isolated targets are current at migration 109; the migration 106 source baseline is preserved, and all 150 original-table snapshots are unchanged. Sol accepted source/security and all ten final3 desktop/mobile captures. See `S26_COMPLETION_REPORT.md`, `S26_ACCEPTANCE_REVIEW.md` and `S26_VERIFICATION_LOG.md`. Production and actual-project R-105 remain unverified; S18 and S27 remain excluded.
+
+## S25 current trace — COMPLETE for development/local staging (2026-10-06)
+
+Owner authorization covers R-084.a–f: preserved NAS/DOC access, existing accounting/TIM boundary, one-way calendar and entered events, signed fixed-route Website enquiry intake, current-authority site map links and bounded authenticated ingestion/dedupe/status. These clauses are COMPLETE for development/local staging under `S25_SPEC.md`; final pinned verification, persistence preservation and Sol source/security/visual review passed. See `S25_COMPLETION_REPORT.md`, `S25_ACCEPTANCE_REVIEW.md` and `S25_VERIFICATION_LOG.md`. R-085.a WhatsApp and R-086.a deep CAD/BIM remain future/excluded; broader CRUD/outbound remains deferred. S18 excluded; S26 COMPLETE for development/local staging; S27 unauthorized/excluded.
+
+## S24 current trace — COMPLETE for development/local staging (2026-10-05)
+
+The Owner authorized S24 for R-058 S24 extensions, R-059, R-060, R-073, R-074 and R-077. Implemented scope includes configured task reminders, event notices and factual summaries; internal dashboard and management attention projections; fixed-category reports and exports; permission-checked immutable snapshots; and client dashboard composition over existing client-session services. Identical Time/Workforce manifest reads are reused only within the same authorization transaction, and immutable summary slots skip source regeneration; all source and field authorization checks remain. FINAL3 pinned `pnpm verify` exited 0: API207/34 suites, web142/22 files, PostgreSQL280/51 suites, typecheck/lint/build and all 45 desktop/mobile browsers without skips/retries. All 104 migrations are current on 15 targets; 137 original S23 tables and 15,474 rows remain unchanged; source migration 99 is untouched. Sol accepted current views and all four PDF pages. S18 requirements and metrics are excluded; S25 is COMPLETE for development/local staging; S26 is COMPLETE for development/local staging; S27 remains unauthorized/excluded. See `S24_SPEC.md`, `S24_COMPLETION_REPORT.md` and `S24_ACCEPTANCE_REVIEW.md`.
+
+Source of truth: requirements/APPROVED_REQUIREMENTS.md, exact copy of the Owner source (SHA-256 C46124A2642199014CDF8697EFCB46ABB8C4408A97C83F8D09A1E07F2E0DE1D3). C-001 approves Organization → Branch → Team → Employee, no Brand model, one owning branch per project and explicit cross-branch assignments. C-002 records Q1–Q15 answers; C-003–C-024 record later Owner decisions. The Owner approved the architecture at checkpoint 2e46805. S01–S13 are COMPLETE for development/local staging; S14 is COMPLETE for development/local staging; S15 is COMPLETE for development/local staging; S16 is COMPLETE for development/local staging; S17 is COMPLETE for development/local staging; S18 remains unresolved/excluded; S21 is COMPLETE for development/local staging; S22 is COMPLETE for development/local staging; S23 is COMPLETE for development/local staging on 2026-10-05; see S23_COMPLETION_REPORT.md. Final pinned S23 `pnpm verify` exited 0 with 186 API unit, 133 web unit, 261 PostgreSQL integration across 48 suites and 43 desktop/mobile browser tests; all 99 migrations were current on 13 dedicated targets, all 134 original-table snapshots were preserved and ten refreshed captures passed Sol visual review. S24 is COMPLETE for development/local staging on 2026-10-05; FINAL3 pinned pnpm verify exited 0 with typecheck/lint/build, 207 API unit/34 suites, 142 web unit/22 files, 280 real PostgreSQL/51 suites and all 45 desktop/mobile browsers without skips or retries. All 104 migrations are current on 15 targets; 137 original S23 tables and 15,474 rows are unchanged, source migration 99 untouched, and Sol accepted the current views and all four PDF pages. See S24_COMPLETION_REPORT.md and S24_ACCEPTANCE_REVIEW.md. S25 is COMPLETE for development/local staging; S26 is COMPLETE for development/local staging; S27 remains unauthorized/excluded.
 
 This is a coverage index, not an implementation claim. Each section can contain several clauses. Before implementing a slice, expand its clauses into stable sub-IDs (for example R-024.a), API/backend and UI acceptance criteria, permissions, tests and evidence in that slice's issue/plan. Cross-cutting source sections stay linked to every relevant slice. No source section is dropped.
 
@@ -23,7 +35,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-002 | Approved Q1–Q15 answers, further specified by C-003–C-024 | ORG/ACC/PRJ/DOC/PORT/WFM/PER | S01/S03–S07/S09–S10/S12/S14/S16–S17/S19/S21/S23 | APPROVED; Q1/Q15 implemented in S03; remaining owner policies belong to later slices |
 | C-003 | Q8 category retention durations; C-009 fixes clock and expiry policy; legal/contract validation remains a release gate | ORG/AUD/DOC/WFM/APR | S03–S05/S11/S17 | APPROVED; S04 audit retention controls COMPLETE for development/local staging; legal/contract/backup validation is a production gate; other categories later |
 | C-004 | Branch leave-year, credit, proration, carry-forward and expiry | WFM | S17 | APPROVED; implemented and verified in S17 for development/local staging. See S17_COMPLETION_REPORT.md. |
-| C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | AUTHORIZED / IN PROGRESS; implemented configuration/no-score/prospective version gates, acceptance pending in S23_SPEC.md |
+| C-005 | Role-group employee and Design/Turnkey health formulas; Owner-approved initial weights | PER/HLT | S23 | COMPLETE for development/local staging; implemented configuration/no-score/prospective version gates, acceptance passed in S23_COMPLETION_REPORT.md |
 | C-006 | Owner-issued file-specific native CAD links for assigned vendors/consultants | DOC/PORT/ACC | S11/S21 | S21 COMPLETE for development/local staging: Owner-only coded seven-day native links, encrypted details and manual revocation evidence; MinisCloud production validation remains open |
 | C-007 | Nightly encrypted database-and-file backup to separate offsite computer/NAS; one-day loss target | FND/DOC | S01/S11 | APPROVED; NOT IMPLEMENTED |
 | C-008 | Staff passkeys, external email codes, client approval passkey, Brevo and launch channels | IDN/PORT/NTF | S02/S04/S14 | S02 staff passkeys and S14 CLIENT email-code/passkey flows COMPLETE for development/local staging; Brevo delivery, domain authentication, plan limits and outage fallback remain pre-launch validation gates per S14_SPEC.md |
@@ -45,7 +57,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | C-024 | Exiting Project Lead puts Active project On Hold; Owner names replacement before resume | ORG/PRJ/ACC/AUD/NTF | S03/S07/S09 | S09 atomic employee-exit project hold and Owner replacement gate COMPLETE for development/local staging |
 | R-001 | FIRST INSTRUCTION | GOV | S01 | NOT STARTED |
 | R-002 | PRODUCT VISION | PRJ | S07+ | S07 project ownership foundation COMPLETE; later delivery modules remain planned |
-| R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | NOT STARTED |
+| R-003 | IMPORTANT PRODUCT BOUNDARY | INT | S16/S25 | COMPLETE for accepted development/local-staging scopes; see S16/S25 completion reports |
 | R-004 | ORGANIZATION MODEL | ORG/PRJ | S03/S07 | S03 hierarchy/membership and S07 explicit project assignment COMPLETE |
 | R-005 | USER TYPES: R-005.a Owner identity, R-005.b staff identity, R-005.c external portal identities, R-005.d public visitor | IDN/PORT | S02/S14/S15/S21 | Owner/Staff identity and CLIENT portal identity COMPLETE for their development/local-staging scopes; S15 public visitor access is anonymous and COMPLETE for development/local staging; S21 distinct EXTERNAL Consultant/Vendor/Factory identity is implemented; development/local-staging acceptance passed; see S21_COMPLETION_REPORT.md |
 | R-006 | PERMISSION MODEL | ACC/ORG/PRJ | S03/S07 | S03 scoped grants/evaluator and S07 project assignment plus permission checks COMPLETE |
@@ -100,33 +112,33 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-055 | SOP MANAGEMENT | KNW/TRN | S18 | NOT STARTED |
 | R-056 | KNOWLEDGE BASE | KNW/TRN | S18 | NOT STARTED |
 | R-057 | TRAINING | KNW/TRN | S18 | NOT STARTED |
-| R-058 | NOTIFICATIONS | NTF | S04/S24 | S04 core in-app/email, verified-mailbox, preference, quiet-hours and delivery foundation COMPLETE for development/local staging; S03 events remain notification-neutral pending later event recipient/template definitions; push later |
-| R-059 | REMINDERS & ESCALATION | NTF | S04/S24 | S04 shared event/delivery foundation COMPLETE; reminder schedules and escalation behavior remain S24, NOT STARTED |
-| R-060 | SCHEDULED SUMMARIES | NTF | S04/S24 | S24 delivery behavior NOT STARTED; S04 establishes shared event/delivery foundation |
-| R-061 | EMPLOYEE PERFORMANCE | PER | S23 | IN PROGRESS; available real-source role-group formulas and quality/low-weight safeguards implemented, acceptance pending |
-| R-062 | FAIR PERFORMANCE | PER | S23 | IN PROGRESS; historical approved deadline and Owner-reviewed residual external-duration exclusions implemented, acceptance pending |
-| R-063 | PERFORMANCE EXPLAINABILITY | PER | S23 | IN PROGRESS; retained exact evidence, changes/trends, goals/actions and scoped own/management views implemented; S18 suggestions explicitly unavailable; acceptance pending |
-| R-064 | TEAM LEADER PERFORMANCE | PER | S23 | IN PROGRESS; separate personally controlled leader evidence and current scopes implemented, acceptance pending |
-| R-065 | PERFORMANCE REVIEW CYCLES | PER | S23 | IN PROGRESS; weekly/monthly/quarterly/annual cycles, comments/goals/actions, own acknowledgement and Owner finalization implemented, acceptance pending |
-| R-066 | PROJECT HEALTH | HLT | S23 | IN PROGRESS; separate Design/Turnkey formulas, status and real-source operational health evidence implemented, acceptance pending |
-| R-067 | DELAY ATTRIBUTION | HLT | S23 | IN PROGRESS; explicit Owner-reviewed exact-source cause/duration and retained corrections implemented, acceptance pending |
+| R-058 | NOTIFICATIONS | NTF | S04/S24 | S04 delivery foundation and S24 configured task/event notices with S04-worker integration are COMPLETE for development/local staging; S03 remains notification-neutral outside explicit S24 event sources; push later. |
+| R-059 | REMINDERS & ESCALATION | NTF | S04/S24 | S04 delivery foundation and S24 explicit task reminder schedules and creator-only personal reminders are COMPLETE for development/local staging. |
+| R-060 | SCHEDULED SUMMARIES | NTF | S04/S24 | S24 factual scheduled summary runs and delivery are COMPLETE for development/local staging. |
+| R-061 | EMPLOYEE PERFORMANCE | PER | S23 | COMPLETE for development/local staging; available real-source role-group formulas and quality/low-weight safeguards implemented; acceptance passed in S23_COMPLETION_REPORT.md |
+| R-062 | FAIR PERFORMANCE | PER | S23 | COMPLETE for development/local staging; historical approved deadline and Owner-reviewed residual external-duration exclusions implemented; acceptance passed in S23_COMPLETION_REPORT.md |
+| R-063 | PERFORMANCE EXPLAINABILITY | PER | S23 | COMPLETE for development/local staging; retained exact evidence, changes/trends, goals/actions and scoped own/management views implemented; S18 suggestions explicitly unavailable; acceptance passed in S23_COMPLETION_REPORT.md |
+| R-064 | TEAM LEADER PERFORMANCE | PER | S23 | COMPLETE for development/local staging; separate personally controlled leader evidence and current scopes implemented; acceptance passed in S23_COMPLETION_REPORT.md |
+| R-065 | PERFORMANCE REVIEW CYCLES | PER | S23 | COMPLETE for development/local staging; weekly/monthly/quarterly/annual cycles, comments/goals/actions, own acknowledgement and Owner finalization implemented; acceptance passed in S23_COMPLETION_REPORT.md |
+| R-066 | PROJECT HEALTH | HLT | S23 | COMPLETE for development/local staging; separate Design/Turnkey formulas, status and real-source operational health evidence implemented; acceptance passed in S23_COMPLETION_REPORT.md |
+| R-067 | DELAY ATTRIBUTION | HLT | S23 | COMPLETE for development/local staging; explicit Owner-reviewed exact-source cause/duration and retained corrections implemented; acceptance passed in S23_COMPLETION_REPORT.md |
 | R-068 | SITE OPERATIONS | SITE | S20 | NOT STARTED |
 | R-069 | DAILY SITE REPORT | SITE | S20 | NOT STARTED |
 | R-070 | SITE PROGRESS | SITE | S20 | NOT STARTED |
 | R-071 | MOBILE | FND/SITE | S22 | COMPLETE for development/local staging — offline site subclause R-071/S22.a in S22_SPEC.md; existing mobile flows retain their owning slice |
 | R-072 | DELIVERY STRATEGY | FND/SITE | S22 | COMPLETE for development/local staging — R-072.a installable responsive PWA; R-072.b native wrapper deferred |
-| R-073 | DASHBOARDS | DASH | S24 | NOT STARTED |
-| R-074 | MANAGEMENT ACTION CENTER | DASH | S24 | NOT STARTED |
+| R-073 | DASHBOARDS | DASH | S24 | COMPLETE for development/local staging — source-authorized internal dashboard and separate client-session projection. |
+| R-074 | MANAGEMENT ACTION CENTER | DASH | S24 | COMPLETE for development/local staging — current attention items with existing approval authority. |
 | R-075 | EXTERNAL PORTALS | PORT | S14/S21 | S14 CLIENT portal COMPLETE for development/local staging; consultant/vendor/factory portal subclauses R-075/S21.a–f are COMPLETE for development/local staging |
 | R-076 | PORTAL AUTHENTICATION: R-076.a external portal email-code authentication, R-076.b client passkey step-up for formal approval | PORT/IDN | S14/S21 | S14 CLIENT email-code/session and passkey formal approval COMPLETE; separate EXTERNAL OTP/session and device revocation R-076/S21.a–b are COMPLETE for development/local staging |
-| R-077 | REPORTS | RPT | S24 | NOT STARTED |
-| R-078 | CUSTOM REPORT BUILDER | RPT | S26 | NOT STARTED |
+| R-077 | REPORTS | RPT | S24 | COMPLETE for development/local staging — eight fixed categories, typed rows, exports and Owner-frozen/corrective snapshots with source reauthorization. |
+| R-078 | CUSTOM REPORT BUILDER | RPT | S26 | COMPLETE for development/local staging under S26; see S26_COMPLETION_REPORT.md and S26_ACCEPTANCE_REVIEW.md. |
 | R-079 | AUDIT TRAIL | AUD | S04 | COMPLETE for development/local staging — canonical backfill and atomic S03 producer writes verified on PostgreSQL; details in S04_COMPLETION_REPORT.md |
 | R-080 | IMMUTABILITY | AUD | S04 | COMPLETE for development/local staging — append-only controls, linked corrections, guarded expiry and tombstones verified on PostgreSQL; production legal/backup gates remain |
 | R-081 | DELETION | APR/AUD | S05 | NOT STARTED |
-| R-082 | AUTOMATION | AUT | S26 | NOT STARTED |
-| R-083 | AUTOMATION SAFETY | AUT | S26 | NOT STARTED |
-| R-084 | INTEGRATIONS | INT | S25 | NOT STARTED |
+| R-082 | AUTOMATION | AUT | S26 | COMPLETE for development/local staging under S26; see S26_COMPLETION_REPORT.md and S26_ACCEPTANCE_REVIEW.md. |
+| R-083 | AUTOMATION SAFETY | AUT | S26 | COMPLETE for development/local staging under S26; no automatic business mutation. See S26_COMPLETION_REPORT.md and S26_ACCEPTANCE_REVIEW.md. |
+| R-084 | INTEGRATIONS | INT | S25 | COMPLETE — authorized R-084.a–f scope for development/local staging; see S25_COMPLETION_REPORT.md |
 | R-085 | FUTURE WHATSAPP | INT | S25 | NOT STARTED |
 | R-086 | FUTURE CAD/BIM | INT | S25 | NOT STARTED |
 | R-087 | AI ARCHITECTURE | AI | S27 | NOT STARTED |
@@ -134,7 +146,7 @@ The Owner's source remains verbatim. Requirements for business slices remain app
 | R-089 | AI SAFETY / HUMAN CONTROL | AI | S27 | NOT STARTED |
 | R-090 | AI AUDITABILITY | AI | S27 | NOT STARTED |
 | R-091 | BACKUP | FND | S01 | NOT STARTED |
-| R-092 | CRITICAL DOMAIN INVARIANTS | ACC/AUD/PRJ/TSK/DOC/PER | S03/S09/S12/S14/S23/S26/S27 | S03 identity/membership/permission, S07–S09 project/task scope, state and audit invariants COMPLETE for development/local staging; document/performance/automation/AI invariants remain with their slices |
+| R-092 | CRITICAL DOMAIN INVARIANTS | ACC/AUD/PRJ/TSK/DOC/PER | S03/S09/S12/S14/S23/S26/S27 | S03 identity/membership/permission, S07–S09 project/task scope, state and audit invariants COMPLETE for development/local staging; S11–S14 document, S23 performance evidence/policy and S26 automation invariants COMPLETE for development/local staging; AI invariants remain in unauthorized S27 |
 | R-093 | ARCHITECTURE PRINCIPLES | GOV | S01 | NOT STARTED |
 | R-094 | RECOMMENDED MODULE BOUNDARIES | GOV | S01 | NOT STARTED |
 | R-095 | DOMAIN EVENTS | EVT | S04 | COMPLETE for development/local staging — versioned catalogue, safe payload validation, S03 producer/outbox atomicity, retries and concurrent claims verified on PostgreSQL |

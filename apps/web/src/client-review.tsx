@@ -2,6 +2,7 @@ import { startAuthentication } from "@simplewebauthn/browser";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { PortalSession } from "./client-portal-auth.js";
 import { ClientProjectGallery, StaffProjectGallery } from "./gallery.js";
+import { loadBranchProjects } from "./client-review-project-loader.js";
 import "./client-review.css";
 
 const PORTAL = "/api/v1/client-portal";
@@ -307,19 +308,13 @@ export function StaffClientReviewWorkspace({ csrfToken, owner }: { csrfToken: st
     void (async () => {
       try {
         const setup = await request<{ branches: { id: string }[] }>("/api/v1/projects/setup");
-        const lists = await Promise.all(setup.branches.map(async (branch) => {
-          const items: Project[] = [];
-          for (let offset = 0; offset <= 100_000; offset += 50) {
-            const page = await request<InternalProjectList>(`/api/v1/projects?branchId=${encodeURIComponent(branch.id)}&offset=${offset}&limit=50`);
-            items.push(...page.items);
-            if (page.items.length < 50) break;
-          }
-          return items;
-        }));
-        const list = { items: lists.flat() };
+        const items = await loadBranchProjects<Project>(setup.branches, (branchId, offset, limit) =>
+          request<InternalProjectList>(`/api/v1/projects?branchId=${encodeURIComponent(branchId)}&offset=${offset}&limit=${limit}`),
+          () => live,
+        );
         if (!live) return;
-        setProjects(list.items.filter((project) => project.status === "ACTIVE"));
-        const first = list.items.find((project) => project.status === "ACTIVE")?.id ?? "";
+        setProjects(items.filter((project) => project.status === "ACTIVE"));
+        const first = items.find((project) => project.status === "ACTIVE")?.id ?? "";
         setProjectId(first);
       } catch (cause) { if (live) setError(errorText(cause, "Internal project list could not be loaded.")); }
       finally { if (live) setLoading(false); }

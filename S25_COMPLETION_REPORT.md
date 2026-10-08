@@ -1,0 +1,25 @@
+# S25 completion report — 2026-10-06
+
+S25 is COMPLETE for development/local staging under the Owner start-and-complete instruction and explicit calendar, signed-enquiry/map-link and bounded ancillary Task UI approvals. R-084.a–f is accepted within S25_SPEC.md and S25_API_CONTRACT.md. S18 remains unresolved/excluded; S26/S27 remain unauthorized.
+
+## Implemented scope
+
+Current-authorized deadlines, milestones and review assignments plus entered personal/project meetings/site visits produce minimal-label one-way iCalendar downloads and revocable subscriptions. Capability secrets are random, hash-only, returned once and checked against current identity/session/source authorization on every fetch. Personal events remain creator-only; project events require existing assignment/branch/permission authority. Stable opaque cancellation identities retain generic labels while currently authorized; previously imported external copies cannot be retracted.
+
+Owner-only Website connectors have immutable configured branch, active Website CRM source and authorized internal actor. Timestamp-bound canonical HMAC enquiries create exactly one NEW lead through the CRM owning transaction, with no external branch/client/assignment/stage/project control. Encrypted credentials rotate or disable through versioned audited commands; secrets and contacts are excluded from transport status, command receipts and audit. Exact signed retries dedupe, changed payloads conflict and current actor/source/branch authority is rechecked under locks. Configured WFM SITE coordinates appear only as authorized explicit OpenStreetMap links; no automatic provider request or evidence-location feed is introduced. Broader external CRUD/outbound feeds, WhatsApp R-085 and CAD/BIM R-086 remain outside scope.
+
+Forward immutable migrations105/106 add seven integration tables and enforce organization/state/version, immutable history/receipts/deliveries and canonical audit evidence. Existing CRM/project/workforce public owning ports preserve their rules. Owner-authorized ancillary Task filters/density were completed. Confirmed review/date fixtures were repaired without weakening assertions. A four-worker client-review branch loader preserves all authorized branches, pagination/order, active filtering and fail-closed errors while preventing the observed unbounded network burst; stale effects stop scheduling reads and cannot commit results.
+
+## Final verification and preservation
+
+Pinned Node24.19.0/pnpm11.19.0 dependency installation used pnpm install --frozen-lockfile; Prisma generation succeeded. Final full pnpm verify exited0: typecheck, lint,217 API unit tests/36 suites,190 web unit tests/28 files,318 real PostgreSQL tests/54 suites, production builds and all47 dependency-enabled desktop/mobile browser cases passed in7.4m, without skipped browser cases or retries. Durable run: final3-20261006-130931-8caeb858; exact internal output: .env.s25-tools/verify-s25-1791272375254.log. The explicitly guarded S25 browser runtime tests the built production preview on fixed loopback ports; normal development behavior remains unchanged.
+
+Final environment .env.s25-tools/final3-1791271471580_bb31.test contains16 unique fresh suite targets plus a populated clone. All17 are current106. Post-run .env.s25-tools/postrun-migration-1791271471580_bb31.json proves16 fresh targets current; .env.s25-tools/postrun-preservation-1791271471580_bb31.log confirms clone106, all143 retained original-table counts/digests unchanged and source104 untouched. No old target was reset or deleted; applied105/106 were not rewritten. Historical failed/interrupted attempts and corrections remain in S25_VERIFICATION_LOG.md.
+
+Exact dispatched GPT-6.1 Sol independently reviewed source/security and all nine final built-app captures: desktop13:18 and mobile13:22 initial/revoked/connector-map, with mobile connector/delivery/map panels. Controls and statuses are readable, mobile content wraps without horizontal clipping and no signing/subscription secrets appear. S25_ACCEPTANCE_REVIEW.md records final acceptance. Focused real persistence/security tests additionally cover actual concurrent signed dedupe, post-lock actor revocation, immutable SQL evidence, atomic rollback and current source revocation.
+
+## Routing and limits
+
+Actual explicit dispatches used GPT-6.1 Sol for context, architecture/schema/permissions/security/debugging/final review and GPT-6 Luna for bounded controller/helper/UI/fixture/tooling work. Account usage-limit interruptions were reported and never silently substituted. The approximate70/30 allocation is a target, not measured token telemetry.
+
+This acceptance is development/local staging only. Production NAS/provider/deployment, encrypted offsite backup, key custody, production restore, hosted CI and the separately identified actual-project R-105 checkpoint remain unclaimed. Website operators must implement the approved canonical signing contract; live external-provider interoperability and production credentials were not verified.

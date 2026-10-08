@@ -11,7 +11,7 @@ type FixtureDatabase = {
 
 test("Owner appoints and expires a Primary Client, then publishes an approved task for review", async ({ page, context, baseURL }, testInfo) => {
   test.setTimeout(120_000);
-  test.skip(process.env.S14_E2E_ENABLED !== "1", "Set S14_E2E_ENABLED=1 to run isolated S14 browser acceptance");
+  test.skip(process.env.S14_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1", "Set an approved isolated client review browser acceptance flag");
   test.skip(!process.env.DATABASE_URL, "A dedicated local S14 PostgreSQL database is required");
   test.skip(Boolean(process.env.BREVO_API_KEY || process.env.BREVO_SENDER_EMAIL || process.env.BREVO_SENDER_NAME), "Run without a configured Brevo sender so no email leaves the local test");
 
@@ -19,7 +19,10 @@ test("Owner appoints and expires a Primary Client, then publishes an approved ta
   const parsedUrl = new URL(databaseUrl);
   const designatedVerifyDatabase = /^\/sense_s13_s14_verify_20261001(?:_[a-z0-9]+)?_test$/.test(parsedUrl.pathname);
   const explicitlyEnabledS15Database = process.env.S15_E2E_ENABLED === "1" && /^\/sense_s15_[a-z0-9_]*_test$/.test(parsedUrl.pathname);
-  if (!["localhost", "127.0.0.1"].includes(parsedUrl.hostname) || parsedUrl.port !== "56433" || (!designatedVerifyDatabase && !explicitlyEnabledS15Database)) {
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsedUrl.hostname) && ((["56433", "57433"].includes(parsedUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsedUrl.pathname)) || (parsedUrl.port === "56436" && /^\/sense_s14_s25_[a-z0-9_]+_test$/i.test(parsedUrl.pathname)));
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsedUrl.hostname) && parsedUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsedUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsedUrl.hostname === "127.0.0.1" && parsedUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsedUrl.pathname);
+  if (!["localhost", "127.0.0.1"].includes(parsedUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsedUrl.port !== "56433") || (!designatedVerifyDatabase && !explicitlyEnabledS15Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
     throw new Error("Client review staff browser fixture requires a sense_s13_s14_verify_20261001*_test or explicitly enabled sense_s15_*_test database on local PostgreSQL port 56433");
   }
 

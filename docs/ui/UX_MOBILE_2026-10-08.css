@@ -1,0 +1,163 @@
+@media (max-width: 760px) {
+  .ux-mobile-picker { display: grid; gap: .35rem; width: 100%; min-width: 0; margin-block: .5rem; font-weight: 600; }
+  .ux-mobile-picker-control { display: block; width: 100%; min-width: 0; min-height: 44px; }
+  .ux-mobile-original,
+  .ux-mobile-hidden { display: none !important; }
+  .ux-mobile-control,
+  .ux-mobile-control select { display: block; width: 100%; min-width: 0; min-height: 44px; }
+  .ux-mobile-project-directory,
+  .ux-mobile-saved-directory { margin-block: .5rem; }
+  .ux-mobile-project-directory > summary,
+  .ux-mobile-saved-directory > summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; }
+  .ux-mobile-project-options,
+  .ux-mobile-saved-options { display: grid; gap: .35rem; min-width: 0; padding-block: .5rem; }
+  .ux-mobile-project-options > button,
+  .ux-mobile-saved-options > button { width: 100%; min-width: 0; min-height: 44px; text-align: left; overflow-wrap: anywhere; }
+  .ux-mobile-saved-options ol { padding-inline-start: 1.25rem; }
+  .ux-mobile-saved-options li { min-width: 0; overflow-wrap: anywhere; }
+
+  #content,
+  #content > *,
+  #content .box,
+  #content .row,
+  #content form,
+  #content fieldset,
+  #content .grid,
+  #content .work-toolbar,
+  #content .actions,
+  #content .insights-scope,
+  #content .ir-directory,
+  #content .ir-config-grid,
+  #content .ir-saved-layout,
+  #content .ir-saved-main,
+  #content .ih-health-directory,
+  #content .ih-health-projects,
+  #content .review-layout,
+  #content .review-evidence,
+  #content .review-feedback { min-width: 0; max-width: 100%; }
+  #content label,
+  #content p,
+  #content h1,
+  #content h2,
+  #content h3,
+  #content td,
+  #content th,
+  #content summary { overflow-wrap: anywhere; }
+  #content button,
+  #content input,
+  #content select,
+  #content textarea,
+  #content summary { min-height: 44px; max-width: 100%; }
+  #content input,
+  #content select,
+  #content textarea { width: 100%; min-width: 0; }
+  #content input[type="checkbox"],
+  #content input[type="radio"] { width: 1.25rem; min-height: 1.25rem; }
+  #content .actions,
+  #content .work-toolbar { display: flex; flex-wrap: wrap; align-items: stretch; gap: .4rem; }
+  #content .actions > button,
+  #content .work-toolbar > button { flex: 1 1 9rem; }
+  #content .grid,
+  #content .insights-scope,
+  #content .ir-directory,
+  #content .ir-config-grid,
+  #content .ir-saved-layout { display: grid; grid-template-columns: minmax(0, 1fr); }
+  #content .ir-saved-layout > aside { position: static; border-right: 0; }
+  #content .review-layout { display: flex; flex-direction: column; }
+  #content .ux-mobile-review-identity { order: 0; }
+  #content .ux-mobile-review-evidence { order: 1; }
+  #content .ux-mobile-review-feedback { order: 2; }
+  #content .ux-mobile-current-action { display: block; }
+  #content .table-wrap { max-width: 100%; overflow: visible; }
+  #content table,
+  #content tbody,
+  #content tr { display: block; width: 100%; min-width: 0; }
+  #content thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  #content tbody tr { margin-block: .5rem; border: 1px solid currentColor; padding: .35rem; }
+  #content td[data-label] { display: grid; grid-template-columns: minmax(7rem, 38%) minmax(0, 1fr); gap: .5rem; min-width: 0; overflow-wrap: anywhere; }
+  #content td[data-label]::before { content: attr(data-label); font-weight: 600; }
+  #content td[colspan] { display: block; }
+  dialog,
+  [role="dialog"],
+  #actionDialog,
+  .modal,
+  .dialog-panel { box-sizing: border-box; width: min(100%, 42rem); max-width: calc(100vw - 1rem); max-height: calc(100dvh - 1rem); margin-inline: auto; overflow: auto; }
+  body > header button,
+  #mobile button { min-height: 44px; }
+  body > header .actions { display: flex; flex-wrap: wrap; gap: .35rem; min-width: 0; }
+  body > header .actions > * { min-width: 0; max-width: 100%; }
+  main { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
+  #mobile { min-height: 44px; padding: .25rem .25rem env(safe-area-inset-bottom); }
+  #mobile button { flex: 1 1 3.5rem; min-width: 0; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 760px) {
+  body > header > strong { display: none; }
+  body > header { min-width: 0; flex-wrap: wrap; }
+  body > header > .actions { margin-left: auto; min-width: 0; flex-wrap: wrap; }
+  body > header > .actions button { min-height: 44px; }
+  /* The validation tray remains reachable; avoid duplicating it in the mobile header. */
+  body > header [data-validation-toggle] { display: none !important; }
+  .prototype-note { font-size: .72rem; line-height: 1.2; margin-block: 0 .15rem; }
+  #crumb { white-space: normal; overflow-wrap: anywhere; line-height: 1.25; margin-block: .15rem .3rem; }
+  .validation-tray { min-width: 0; margin-block: .2rem; }
+  .validation-tray > summary { min-height: 44px; display: flex; align-items: center; font-size: .78rem; line-height: 1.2; overflow-wrap: anywhere; }
+
+  .ux-mobile-work-controls { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; min-width: 0; }
+  .ux-mobile-work-controls > label { min-width: 0; max-width: none; margin: .15rem 0; font-size: .9rem; }
+  .ux-mobile-work-controls select { width: 100%; min-width: 0; }
+  .ux-mobile-work-options { min-width: 0; margin-block: .2rem; }
+  .ux-mobile-work-options > summary { min-height: 44px; display: flex; align-items: center; }
+  .ux-mobile-worklist-toolbar,
+  .ux-mobile-native-scope { display: none !important; }
+  .ux-mobile-choice-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .35rem; min-width: 0; }
+  .ux-mobile-choice-row .ux-mobile-control { min-width: 0; max-width: none; margin: .15rem 0; font-size: .9rem; }
+  .ux-mobile-choice-row .ux-mobile-control select { width: 100%; min-width: 0; }
+  .ux-mobile-worklist-details { min-width: 0; margin-block: .2rem; }
+  .ux-mobile-worklist-details > summary { min-height: 44px; display: flex; align-items: center; }
+  .ux-mobile-work-options label { min-width: 0; max-width: none; margin: .15rem 0; }
+  .ux-mobile-work-search { display: block; width: 100%; min-width: 0; max-width: none; margin: .15rem 0 .35rem; }
+  .ux-mobile-work-search input { width: 100%; min-width: 0; }
+
+  #taskDirectoryTable { width: 100%; min-width: 0; }
+  #taskDirectoryTable tbody tr { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; align-items: start; }
+  #taskDirectoryTable tbody td { display: block; min-width: 0; width: 100%; padding: .12rem 0; overflow-wrap: anywhere; }
+  #taskDirectoryTable td[data-label="Task"] { font-weight: 600; font-size: 1rem; }
+  #taskDirectoryTable td[data-label="Task"]::before { content: none; }
+  #taskDirectoryTable td[data-label="State"] { order: 0; }
+  #taskDirectoryTable td[data-label="State"],
+  #taskDirectoryTable td[data-label="Project / Stage"],
+  #taskDirectoryTable td[data-label="Owner"],
+  #taskDirectoryTable td[data-label="Dates"],
+  #taskDirectoryTable td.secondary-cell { display: block; }
+  #taskDirectoryTable td[data-label="Dates"] { font-size: .875rem; }
+  #taskDirectoryTable td[data-label="Action"] button { min-height: 44px; }
+
+  #content .work-row { display: grid; grid-template-columns: minmax(0, 1fr) max-content; gap: .1rem .5rem; align-items: start; min-width: 0; }
+  #content .work-row > strong,
+  #content .work-row > p { grid-column: 1 / -1; min-width: 0; margin-block: .12rem; }
+  #content .work-row > button { grid-column: 2; grid-row: 4; min-height: 44px; max-width: 12rem; }
+  #content .work-row > p { overflow-wrap: anywhere; }
+  #content .task-directory-row { min-width: 0; }
+
+  #content .summary-row,
+  #content .compact-summary { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem .65rem; align-items: start; min-width: 0; }
+  #content .summary-row > div,
+  #content .compact-summary > div { min-width: 0; }
+  #content .summary-row strong,
+  #content .compact-summary strong,
+  #content .summary-row p,
+  #content .compact-summary p { overflow-wrap: anywhere; }
+  #content .summary-row button,
+  #content .compact-summary button { min-width: 7.5rem; max-width: 12rem; min-height: 44px; white-space: normal; flex-shrink: 1; }
+  #content .summary-row > button { justify-self: end; }
+  #content .dashboard-grid > details > summary,
+  #content .dashboard-primary > details > summary { min-height: 44px; display: flex; align-items: center; }
+  #content .ux-mobile-dashboard-primary,
+  #content .ux-mobile-dashboard-secondary { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; min-width: 0; }
+  #content .ux-mobile-dashboard-primary > details,
+  #content .ux-mobile-dashboard-secondary > details { min-width: 0; margin-block: .2rem; }
+
+  #content .kanban { display: flex; flex-wrap: nowrap; overflow-x: auto; overscroll-behavior-x: contain; max-width: 100%; }
+  #content .kanban-column { flex: 0 0 85vw; min-width: 0; scroll-snap-align: start; }
+}

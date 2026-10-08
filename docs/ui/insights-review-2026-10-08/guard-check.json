@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "Filtered-out Palm source denies entire retained manifest after scope loss",
+    "Employee cannot see other creator definitions or runs",
+    "Project employee filter uses permitted project owners",
+    "Palm has no fabricated review source",
+    "Leader review source opens exact canonical review"
+  ],
+  "pageErrors": []
+}

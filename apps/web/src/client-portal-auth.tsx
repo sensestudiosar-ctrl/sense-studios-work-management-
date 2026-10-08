@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { startRegistration } from "@simplewebauthn/browser";
 import "./client-portal-auth.css";
 import { ClientReviewPortal } from "./client-review.js";
+import { ClientDashboard } from "./client-dashboard.js";
 
 const portalAuthPath = "/api/v1/client-portal/auth";
 const portalPath = "/api/v1/client-portal";
@@ -94,6 +95,7 @@ export function ClientPortalAuth(): React.JSX.Element {
   const [logoutBusy, setLogoutBusy] = useState(false);
   const [businessOpen, setBusinessOpen] = useState(false);
   const [costsOpen, setCostsOpen] = useState(false);
+  const [dashboardOpen, setDashboardOpen] = useState(false);
 
   const restoreSession = useCallback(async (): Promise<PortalSession | null> => {
     try {
@@ -308,9 +310,11 @@ export function ClientPortalAuth(): React.JSX.Element {
         </header>
         <p className="client-portal-intro">Manage sign-in security and active sessions for this client account.</p>
       <section className="client-portal-business-nav" aria-label="Client project workspace">
+        <button type="button" className="client-portal-secondary" aria-expanded={dashboardOpen} onClick={() => setDashboardOpen((open) => !open)}>{dashboardOpen ? "Hide project dashboard" : "Open project dashboard"}</button>
         <button type="button" className="client-portal-secondary" aria-expanded={businessOpen} onClick={() => setBusinessOpen((open) => !open)}>{businessOpen ? "Hide project reviews" : "Open project reviews"}</button>
         <button type="button" className="client-portal-secondary" aria-expanded={costsOpen} onClick={() => setCostsOpen((open) => !open)}>{costsOpen ? "Hide approved cost snapshots" : "View approved cost snapshots"}</button>
       </section>
+      {dashboardOpen && <ClientDashboard session={session} />}
       {businessOpen && <ClientReviewPortal session={session} />}
       {costsOpen && <ClientApprovedCostSnapshots />}
         {authStatus && <p className="client-portal-success" role="status">{authStatus}</p>}

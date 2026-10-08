@@ -1,3 +1,5 @@
+import { IntegrationService } from "./integration.service.js";
+import { IntegrationController } from "./integration.controller.js";
 import { SiteService } from "./site.service.js";
 import { SiteController } from "./site.controller.js";
 import { Module } from "@nestjs/common";
@@ -8,6 +10,12 @@ import { WorkforceController } from "./workforce.controller.js";
 import { WorkforceService } from "./workforce.service.js";
 import { PerformanceController } from "./performance.controller.js";
 import { PerformanceService } from "./performance.service.js";
+import { DashboardService } from "./dashboard.service.js";
+import { DashboardController } from "./dashboard.controller.js";
+import { AutomationService } from "./automation.service.js";
+import { AutomationController } from "./automation.controller.js";
+import { AiAssistanceController } from "./ai-assistance.controller.js";
+import { AiAssistanceService } from "./ai-assistance.service.js";
 import { APP_GUARD } from "@nestjs/core";
 import { loadRuntimeConfig, RUNTIME_CONFIG } from "./config.js";
 import { DATABASE_PROBE, DatabaseService } from "./database.service.js";
@@ -56,6 +64,12 @@ import { ClientReviewController } from "./client-review.controller.js";
 import { ClientPortalReviewController } from "./client-portal-review.controller.js";
 import { GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController } from "./gallery.controller.js";
 import { GalleryService } from "./gallery.service.js";
+import { SkillsController } from "./skills.controller.js";
+import { SkillsService } from "./skills.service.js";
+import { LibraryController } from "./library.controller.js";
+import { LibraryService } from "./library.service.js";
+import { TrainingController } from "./training.controller.js";
+import { TrainingService } from "./training.service.js";
 import { TurnkeyService } from "./turnkey.service.js";
 import { TurnkeyController, ClientTurnkeyController } from "./turnkey.controller.js";
 import { ExternalPortalService } from "./external-portal.service.js";
@@ -65,15 +79,22 @@ import { ExternalPortalController } from "./external-portal.controller.js";
 import { ExternalAccessController } from "./external-access.controller.js";
 
 @Module({
-  controllers: [PerformanceController, ExternalPortalIdentityController, ExternalPortalController, ExternalAccessController, SiteController, WorkforceController, TimeController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
+  controllers: [AiAssistanceController, AutomationController, IntegrationController, DashboardController, PerformanceController, ExternalPortalIdentityController, ExternalPortalController, ExternalAccessController, SiteController, WorkforceController, TimeController, SkillsController, LibraryController, TrainingController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
     ExternalPortalService,
     ExternalPortalIdentityService,
     SiteService,
     WorkforceService,
     PerformanceService,
+    DashboardService,
+    AutomationService,
+    AiAssistanceService,
+    IntegrationService,
     TimeService,
     TimeWorker,
+    SkillsService,
+    LibraryService,
+    TrainingService,
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
     DatabaseService,
     { provide: DATABASE_PROBE, useExisting: DatabaseService },

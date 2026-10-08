@@ -43,7 +43,7 @@ test("Owner applies a versioned template and required milestone gates survive re
     await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [sessionId, ownerId, hash(secret), hash(csrf)]);
     await db.query("COMMIT");
     await context.addCookies([{ name: "sense_sid", value: secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.goto("/");
+    await page.goto("/workspace");
     const workspace = page.locator(".project-workspace");
     await workspace.getByLabel("Project branch").selectOption(branchId);
     const templates = workspace.locator(".project-template-panel");

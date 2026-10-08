@@ -42,11 +42,13 @@ describe("PerformanceWorkspace", () => {
     let policies: TestRecord[] = [];
     const calls: Array<{ url: string; init: RequestInit | undefined }> = [];
     let loseFirstCreateResponse = true;
+    let releaseFirstCreate!: () => void;
+    const firstCreateResponse = new Promise<void>(resolve => { releaseFirstCreate = resolve; });
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push({ url, init });
       if (url.endsWith("/context")) return json({ ...context(true), policies });
       if (url.includes("/employees/")) return json(emptyEmployee({ canManage: true }));
-      if (url.endsWith("/commands")) { const body = JSON.parse(String(init?.body)) as TestCommand; if (body.operation === "POLICY_CREATE") { policies = [row("policy-1", "POLICY", "DRAFT", body.policy ?? {})]; if (loseFirstCreateResponse) { loseFirstCreateResponse = false; throw new TypeError("Connection closed after commit"); } } if (body.operation === "POLICY_APPROVE") policies = policies.map(policy => ({ ...policy, state: "APPROVED", version: 2 })); return json(row("policy-1", "POLICY", "DRAFT", body.policy ?? {})); }
+      if (url.endsWith("/commands")) { const body = JSON.parse(String(init?.body)) as TestCommand; if (body.operation === "POLICY_CREATE") { policies = [row("policy-1", "POLICY", "DRAFT", body.policy ?? {})]; if (loseFirstCreateResponse) { loseFirstCreateResponse = false; await firstCreateResponse; throw new TypeError("Connection closed after commit"); } } if (body.operation === "POLICY_APPROVE") policies = policies.map(policy => ({ ...policy, state: "APPROVED", version: 2 })); return json(row("policy-1", "POLICY", "DRAFT", body.policy ?? {})); }
       return json({});
     }));
     render(<PerformanceWorkspace csrfToken="csrf-1" owner />);
@@ -72,7 +74,10 @@ describe("PerformanceWorkspace", () => {
     fireEvent.change(within(editor).getByLabelText("At Risk below"), { target: { value: "75" } });
     fireEvent.change(screen.getByLabelText("Reason for this action (required)"), { target: { value: "Set up fictional test policy" } });
     fireEvent.click(within(editor).getByRole("button", { name: "Save policy draft" }));
+    expect(screen.getByLabelText("Reason for this action (required)")).toBeDisabled();
+    releaseFirstCreate();
     expect(await screen.findByRole("alert")).toHaveTextContent("Connection closed after commit");
+    expect(screen.getByLabelText("Reason for this action (required)")).toBeEnabled();
     fireEvent.click(within(editor).getByRole("button", { name: "Save policy draft" }));
     await screen.findByText(/Fictional test policy · EMPLOYEE\/DESIGNER/);
     const createCalls = calls.filter(call => call.url.endsWith("/commands"));

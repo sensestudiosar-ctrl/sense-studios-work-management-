@@ -1,8 +1,20 @@
 # Testing architecture — S01–S14 local evidence
 
-## S23 acceptance in progress — 2026-10-05
+## S26 verification — COMPLETE for development/local staging (2026-10-06)
 
-S23_SPEC.md defines the required fresh/retained additive migration, exact-target safeguards, real-source formula/external-delay/authority/immutability/concurrency/source-redaction/cycle coverage, desktop/mobile persistence and final pinned verification gates. Focused tests use explicitly fictional Owner-approved policies and owning-domain source workflows; no test number is an actual organizational default or policy approval. Migration 98 was applied before the additive final guard migration 99; applicable current status/preservation and full quality/security/visual results remain pending. No S23 completion is claimed by this provisional entry. Exact failures and passes will be recorded in S23_COMPLETION_REPORT.md only after actual acceptance.
+The focused PostgreSQL/API regression in `apps/api/src/automation.database.api.spec.ts` covers persisted report/rule versions, current-source generation, duplicate replay, and prospective disable/re-enable event cutoffs with retained prior runs. Final3 pinned Node 24.19.0/pnpm 11.19.0 `pnpm verify` exited 0: typecheck/lint/build, API 226/38 suites, web 197/29 files, PostgreSQL/API 330/57 suites, and all 49 desktop/mobile browser cases passed without failures, skips or retries; the browser run took 9.4 minutes. All 19 isolated targets are current at migration 109; the migration 106 source baseline is preserved, and all 150 original-table snapshots are unchanged. Sol accepted source/security and all ten final3 desktop/mobile captures. See `S26_COMPLETION_REPORT.md`, `S26_ACCEPTANCE_REVIEW.md` and `S26_VERIFICATION_LOG.md`. Production and actual-project R-105 remain unverified; S18 and S27 remain excluded.
+
+## S25 verification checkpoint — IN PROGRESS (2026-10-05)
+
+Current focused evidence: PostgreSQL 17/17 across two S25 suites; the integrations UI suite passes 10/10, focused web typecheck and lint pass. Task filter/reset behavior has focused query coverage; review tests pass 7/7. Full pinned `pnpm verify`, expanded current desktop/mobile connector journeys and final visual review remain pending. Migration/source preservation and exact failures are recorded in `S25_VERIFICATION_LOG.md`; no S25 completion is claimed. S18 remains excluded; S26 COMPLETE for development/local staging; S27 unauthorized/excluded.
+
+## S24 verification status — COMPLETE for development/local staging (2026-10-05)
+
+The single pinned FINAL3 `pnpm verify` exited 0: typecheck/lint/build, 207 API unit tests across 34 suites, 142 web unit tests across 22 files, 280 real PostgreSQL integration tests across 51 suites, and all 45 desktop/mobile browser cases passed without skips or retries. All 104 migrations are current on 15 targets; read-only preservation confirmed all 137 original S23 tables and 15,474 rows unchanged, with source migration 99 untouched. Three focused transaction-local read/slot tests passed for same-transaction-only Time/Workforce reuse, retained source and field checks, and source-generation skipping for committed immutable summary slots. Sol accepted current desktop/mobile views and the complete four-page CJK/Hindi/emoji PDF render. See `S24_COMPLETION_REPORT.md` and `S24_ACCEPTANCE_REVIEW.md` for final evidence and limits.
+
+## S23 final local acceptance — 2026-10-05
+
+Final single pinned Node 24.19.0/pnpm 11.19.0 `pnpm verify` exited 0 in `.env.s23-tools/verify-s23-final4.log`: typecheck/lint, 186 API unit tests across 31 suites (ten S23 calculations), 133 web tests across 20 files, 261 real PostgreSQL integration tests across 48 suites, production builds and all 43 serial desktop/mobile browser cases passed without skips or retries. The separate final focused PostgreSQL/API run passed 14 cases across three suites. Reviewed additive migrations 98/99 are current on 13 final dedicated targets; all 134 original-table columns/counts/digests preserve 15,474 rows across 51 populated tables. Sol inspected all ten final4 captures and accepted source/security/calculations/visual behavior. Fictional test policies do not approve real organizational numbers. Earlier lint, environment, fixture and reason-race failures remain recorded in S23_COMPLETION_REPORT.md; no valid test or permission was weakened. S18 and production/actual-project gates remain excluded or unverified.
 
 ## S22 final local evidence — COMPLETE, 2026-10-05
 

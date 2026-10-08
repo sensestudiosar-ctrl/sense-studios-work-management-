@@ -12,6 +12,10 @@ process.env.S02_E2E_BOOTSTRAP_SECRET = e2eBootstrapSecret;
 const apiPort = Number(process.env.E2E_API_PORT ?? "4000");
 const webPort = Number(process.env.E2E_WEB_PORT ?? "5173");
 const webOrigin = `http://localhost:${webPort}`;
+const useS25ProductionPreview = process.env.S25_E2E_ENABLED === "1" && process.env.S25_E2E_PRODUCTION_PREVIEW === "1";
+if (useS25ProductionPreview && (apiPort !== 58430 || webPort !== 58431)) {
+  throw new Error("S25 production preview requires the exact guarded API/web ports 58430/58431");
+}
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -41,7 +45,9 @@ export default defineConfig({
       }
     },
     {
-      command: `pnpm --filter @sense/web dev --port ${webPort}`,
+      command: useS25ProductionPreview
+        ? `pnpm --filter @sense/web preview --host 127.0.0.1 --port ${webPort} --strictPort`
+        : `pnpm --filter @sense/web dev --port ${webPort}`,
       url: `http://127.0.0.1:${webPort}`,
       reuseExistingServer: !process.env.CI,
       timeout: 30_000,

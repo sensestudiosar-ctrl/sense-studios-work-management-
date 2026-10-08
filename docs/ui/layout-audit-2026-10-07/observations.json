@@ -1,0 +1,62 @@
+[
+  {
+    "screen": "settings",
+    "height": 1344,
+    "width": 1440,
+    "buttons": 11,
+    "sidebarHeight": 1242,
+    "aboveFoldPrimary": []
+  },
+  {
+    "screen": "dashboard",
+    "height": 4481,
+    "width": 1440,
+    "buttons": 42,
+    "sidebarHeight": 4379,
+    "aboveFoldPrimary": []
+  },
+  {
+    "screen": "tasks",
+    "height": 1476,
+    "width": 1440,
+    "buttons": 19,
+    "sidebarHeight": 1374,
+    "aboveFoldPrimary": [
+      "Create task"
+    ]
+  },
+  {
+    "screen": "kanban",
+    "height": 1875,
+    "width": 1440,
+    "buttons": 19,
+    "sidebarHeight": 1773,
+    "aboveFoldPrimary": [
+      "Create task"
+    ]
+  },
+  {
+    "screen": "project",
+    "height": 1344,
+    "width": 1440,
+    "buttons": 11,
+    "sidebarHeight": 1242,
+    "aboveFoldPrimary": []
+  },
+  {
+    "screen": "review",
+    "height": 1344,
+    "width": 1440,
+    "buttons": 7,
+    "sidebarHeight": 1242,
+    "aboveFoldPrimary": []
+  },
+  {
+    "screen": "time",
+    "height": 1344,
+    "width": 1440,
+    "buttons": 12,
+    "sidebarHeight": 1242,
+    "aboveFoldPrimary": []
+  }
+]

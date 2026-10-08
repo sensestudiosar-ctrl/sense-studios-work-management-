@@ -379,6 +379,15 @@ export class WorkforceService {
     }
     await this.active(tx, actor); return { attendance, count: attendance.length };
   }
+  /** INT map boundary: configured site coordinates only, after current project authorization. */
+  async integrationLocations(actor: ProjectActor, tx: Tx) {
+    await this.active(tx,actor); const result=[];
+    for(const row of await tx.workforceRecord.findMany({where:{organizationId:actor.organizationId,kind:"SITE",state:"ACTIVE"}})){
+      const data=object(row.data);try{await this.projectAccess(tx,actor,String(data.projectId));}catch(error){if(error instanceof ForbiddenException)continue;throw error;}
+      const latitude=Number(data.latitude),longitude=Number(data.longitude);if(!Number.isFinite(latitude)||!Number.isFinite(longitude)||Math.abs(latitude)>90||Math.abs(longitude)>180)continue;
+      result.push({id:row.id,projectId:String(data.projectId),label:String(data.label),latitude,longitude,mapUrl:`https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}`});
+    }return result;
+  }
   async site(actor: ProjectActor, input: Command & { projectId: string; label: string; latitude: number; longitude: number; radiusMetres: number; qrCode: string }) {
     return this.command(actor, input, "site", { ...input, qrCode: hash(input.qrCode) }, async tx => { await this.owner(tx, actor); const project = await this.projectAccess(tx, actor, input.projectId); const data = { projectId: project.id, label: input.label, latitude: input.latitude, longitude: input.longitude, radiusMetres: input.radiusMetres, qrHash: hash(input.qrCode) }; const result = await this.append(tx, actor, "SITE", data, input.reason, { branchId: project.branchId }); return { id: result.row.id, label: input.label, projectId: project.id }; });
   }

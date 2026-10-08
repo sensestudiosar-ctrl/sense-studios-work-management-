@@ -31,7 +31,7 @@ test("granted staff persists the CRM pipeline and returning Lost enquiry across 
     await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES ($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [randomUUID(), accountId, hash(secret), hash(csrf)]);
     await db.query("COMMIT");
     await context.addCookies([{ name: "sense_sid", value: secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.goto("/");
+    await page.goto("/workspace");
     const crm = page.locator(".crm");
     await expect(crm.getByRole("heading", { name: "Leads and clients" })).toBeVisible();
     await expect(crm.getByRole("button", { name: "New lead", exact: true })).toBeVisible();

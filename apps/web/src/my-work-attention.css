@@ -1,0 +1,16 @@
+.my-work-attention { display: grid; gap: 1rem; }
+.my-work-attention__section { min-width: 0; border: 1px solid var(--line, #d8d4ca); border-radius: 12px; padding: 1rem; background: var(--surface, #fff); }
+.my-work-attention__section > header { display: flex; align-items: baseline; justify-content: space-between; gap: .75rem; flex-wrap: wrap; }
+.my-work-attention__section h2 { margin: 0; font-size: 1.05rem; line-height: 1.35; }
+.my-work-attention__count { color: var(--muted, #5e625f); font-size: .875rem; }
+.my-work-attention__section ul { list-style: none; margin: .75rem 0 0; padding: 0; display: grid; gap: .5rem; }
+.my-work-attention__section li { min-width: 0; }
+.my-work-attention__section li a { min-height: 44px; display: flex; flex-direction: column; justify-content: center; gap: .2rem; padding: .65rem .75rem; border: 1px solid var(--line, #d8d4ca); border-radius: 9px; color: inherit; text-decoration: none; overflow-wrap: anywhere; }
+.my-work-attention__section li a:hover, .my-work-attention__section li a:focus-visible { border-color: var(--accent, #496653); outline: 2px solid transparent; box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent, #496653) 24%, transparent); }
+.my-work-attention__section li a span, .my-work-attention__empty { color: var(--muted, #5e625f); font-size: .875rem; line-height: 1.45; }
+.my-work-attention__pager { display: flex; align-items: center; justify-content: space-between; gap: .5rem; margin-top: .75rem; }
+.my-work-attention__pager span { text-align: center; font-size: .875rem; color: var(--muted, #5e625f); }
+.my-work-attention button { min-height: 44px; padding: .55rem .8rem; }
+.my-work-attention__error { color: var(--danger, #8d332d); }
+.my-work-attention__error p { margin: .5rem 0; }
+@media (max-width: 380px) { .my-work-attention__section { padding: .75rem; } .my-work-attention__pager { flex-wrap: wrap; } .my-work-attention__pager span { order: -1; width: 100%; } }

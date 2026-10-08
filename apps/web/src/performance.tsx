@@ -45,7 +45,7 @@ export function PerformanceWorkspace({ csrfToken, owner }: { csrfToken: string; 
   const projectRequest = useRef(0);
   const [tab, setTab] = useState<"employee" | "project">("employee");
   const [employeeId, setEmployeeId] = useState("");
-  const [projectId, setProjectId] = useState("");
+  const [projectId, setProjectId] = useState(() => new URLSearchParams(window.location.search).get("projectId") ?? "");
   const [employee, setEmployee] = useState<EmployeeView | null>(null);
   const [project, setProject] = useState<ProjectView | null>(null);
   const [reason, setReason] = useState("");
@@ -136,7 +136,7 @@ export function PerformanceWorkspace({ csrfToken, owner }: { csrfToken: string; 
     <header className="perf-heading"><div><div className="eyebrow">PEOPLE & DELIVERY</div><h1 id="performance-heading">Performance and project health</h1><p>Published snapshots retain their source evidence, selected policy and calculation.</p></div><button type="button" className="secondary-action" disabled={busy} onClick={() => { void loadContext(); void loadEmployee(); void loadProject(); }}>Refresh</button></header>
     <div className="perf-tabs" role="tablist" aria-label="Performance views"><button role="tab" aria-selected={tab === "employee"} onClick={() => setTab("employee")}>Employee performance</button><button role="tab" aria-selected={tab === "project"} onClick={() => setTab("project")}>Design / Turnkey health</button></div>
     {error && <p role="alert" className="auth-error">{error}</p>}{notice && <p role="status" className="notice">{notice}</p>}
-    <label className="perf-reason">Reason for this action (required)<input value={reason} maxLength={1000} onChange={event => setReason(event.target.value)} placeholder="Explain why this change or review is needed" /></label>
+    <label className="perf-reason">Reason for this action (required)<input disabled={busy} value={reason} maxLength={1000} onChange={event => setReason(event.target.value)} placeholder="Explain why this change or review is needed" /></label>
     {context.unavailable.length > 0 && <p className="perf-unavailable">Unavailable in this release: {context.unavailable.join(", ")}. No training, skills or SOP evidence is inferred.</p>}
     {tab === "employee" ? <>
       <div className="perf-toolbar"><label>Employee<select aria-label="Employee" disabled={busy} value={employeeId} onChange={event => { employeeRequest.current += 1; setEmployee(null); setEmployeeId(event.target.value); }}><option value="">Choose employee</option>{context.employees.map(row => <option key={row.id} value={row.id}>{row.label}{row.id === context.employeeId ? " (you)" : ""}</option>)}</select></label><label>Score family<select aria-label="Score family" value={family} onChange={event => setFamily(event.target.value as Family)}><option value="EMPLOYEE">Employee score</option><option value="LEADER">Team Leader management score</option></select></label></div>

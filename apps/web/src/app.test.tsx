@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { beforeEach, vi } from "vitest";
 import { App } from "./app.js";
@@ -9,7 +9,7 @@ vi.mock("@simplewebauthn/browser", () => ({ startAuthentication, startRegistrati
 const account = { id: "acct_1", email: "owner@example.test", kind: "OWNER" as const };
 const session = { account, csrfToken: "csrf-test-token" };
 
-function renderApp(path = "/"): void {
+function renderApp(path = "/workspace"): void {
   render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
 }
 
@@ -23,6 +23,7 @@ function stubFetchWithCrmSetup(fetchMock: (input: RequestInfo | URL, init?: Requ
     if (url === "/api/v1/crm/setup") return Promise.resolve(response({ branches: [], sources: [], owner: false }));
     if (url === "/api/v1/project-templates") return Promise.resolve(response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } }));
     if (url === "/api/v1/projects/setup") return Promise.resolve(response({ branches: [] }));
+    if (url.startsWith("/api/v1/projects?")) return Promise.resolve(response({ total: 0, items: [] }));
     if (url === "/api/v1/tasks/setup") return Promise.resolve(response({ actorEmployeeId: null, projects: [], employees: [], canAssign: false }));
     if (url.startsWith("/api/v1/tasks?")) return Promise.resolve(response({ total: 0, items: [] }));
     return fetchMock(input, init);
@@ -37,6 +38,98 @@ beforeEach(() => {
 });
 
 describe("identity authentication shell", () => {
+  it("opens the internal evidence assistance workspace through authenticated navigation", async () => {
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/session") return response(session);
+      if (url === "/api/v1/ai/context") return response({ provider: "deterministic-evidence-v1", providerVersion: "1", requestKinds: ["DAILY", "PROJECT", "MANAGEMENT", "ASSIGNMENT"], capabilities: { DAILY: true, PROJECT: true, MANAGEMENT: true, ASSIGNMENT: true, canDecide: true }, projects: [], tasks: [] });
+      if (url === "/api/v1/ai/runs") return response({ items: [] });
+      return response({});
+    }));
+    renderApp("/assistance");
+    expect(await screen.findByRole("heading", { name: "Evidence assistance" })).toBeInTheDocument();
+    expect(await screen.findByText(/no live inference or external data transmission/i)).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Evidence assistance" }).length).toBeGreaterThan(0);
+  });
+
+  it("lands a ready signed-in account on My Work while retaining the accepted destinations", async () => {
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/session") return response(session);
+      if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
+      return response({ total: 0, items: [] });
+    }));
+    renderApp("/");
+    expect(await screen.findByRole("heading", { name: "Decisions awaiting you" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "You’re signed in." })).not.toBeInTheDocument();
+    for (const name of ["Account & settings", "Dashboard & reports", "Performance", "External access", "Turnkey operations", "Site delivery"]) expect(screen.getAllByRole("link", { name }).length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("link", { name: "Learning" }).length).toBeGreaterThan(0);
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: "Sign in to view My Work" })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Decisions awaiting you" })).not.toBeInTheDocument();
+  });
+
+  it.each(["/my-work", "/tasks", "/projects"])("requires a session before opening %s", async (path) => {
+    stubFetchWithCrmSetup(vi.fn(async () => response({}, 401)));
+    renderApp(path);
+    expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+  });
+
+
+  it.each(["/tasks", "/documents", "/reviews"])("removes the protected route %s on a session-ended signal", async (path) => {
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response(session) : response({ branches: [], total: 0, items: [], categories: [] })));
+    renderApp(path);
+    expect(await screen.findByRole("navigation", { name: "Workspace navigation" })).toBeInTheDocument();
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+  });
+
+  it.each(["/my-work", "/tasks", "/documents", "/reviews", "/projects"])("ignores a late session response after explicit session loss on %s", async (path) => {
+    let resolveRefresh: ((value: Response) => void) | undefined;
+    let authCalls = 0;
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) !== "/api/v1/auth/session") return response({ branches: [], total: 0, items: [], categories: [], nextCursor: null });
+      authCalls += 1;
+      if (authCalls === 1) return response(session);
+      return new Promise<Response>(resolve => { resolveRefresh = resolve; });
+    }));
+    renderApp(path);
+    expect(await screen.findByRole("navigation", { name: "Workspace navigation" })).toBeInTheDocument();
+    fireEvent(window, new Event("focus"));
+    await waitFor(() => expect(resolveRefresh).toBeDefined());
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    await act(async () => { resolveRefresh!(response(session)); });
+    expect(screen.getByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+  });
+
+  it("clears Learning after session loss and ignores a late refresh", async () => {
+    let resolveRefresh: ((value: Response) => void) | undefined;
+    let authCalls = 0;
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) === "/api/v1/auth/session") {
+        authCalls += 1;
+        if (authCalls === 1) return response(session);
+        return new Promise<Response>(resolve => { resolveRefresh = resolve; });
+      }
+      if (String(input) === "/api/v1/skills/setup") return response({ skills: [], employees: [], eligibleApprovers: [] });
+      if (String(input) === "/api/v1/training/setup") return response({ employees: [], modulesByEmployee: [], reviewers: [], practicalTasks: [], assignments: [], capabilities: { currentAccountId: session.account.id, manageableEmployeeIds: [], canManage: false, canSubmit: false } });
+      return response({ items: [], total: 0 });
+    }));
+    renderApp("/learning");
+    expect(await screen.findByRole("heading", { name: "Skills" })).toBeInTheDocument();
+    fireEvent(window, new Event("focus"));
+    await waitFor(() => expect(resolveRefresh).toBeDefined());
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: "Sign in to view Learning" })).toBeInTheDocument();
+    await act(async () => { resolveRefresh!(response(session)); });
+    expect(screen.getByRole("heading", { name: "Sign in to view Learning" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+  });
+
   it("restores the session and shows only the authenticated identity", async () => {
     stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input).startsWith("/api/v1/approvals/attention") ? response({ items: [], nextCursor: null }) : response(session)));
     renderApp();
@@ -187,15 +280,14 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ authenticated: true }))
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
-      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
-      .mockResolvedValueOnce(response([]));
+      .mockImplementation(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }) : response({ total: 0, items: [], nextCursor: null }));
     stubFetchWithCrmSetup(fetchMock);
     startRegistration.mockResolvedValue({ id: "staff-registration" });
     renderApp("/enroll");
     fireEvent.change(screen.getByLabelText("One-time enrollment token"), { target: { value: "t".repeat(44) } });
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
     fireEvent.click(await screen.findByRole("button", { name: "Register staff passkey" }));
-    expect(await screen.findByRole("heading", { name: "You’re signed in." })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Decisions awaiting you" })).toBeInTheDocument();
     expect(fetchMock.mock.calls[0]?.[0]).toBe("/api/v1/auth/staff/invitations/options");
     expect(JSON.parse(fetchMock.mock.calls[1]?.[1]?.body as string)).toMatchObject({ token: "t".repeat(44), ceremonyId: "staff-c" });
   });

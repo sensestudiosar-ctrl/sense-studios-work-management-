@@ -56,7 +56,7 @@ test("project owner links a predecessor and explicitly acknowledges an early sta
     const dependentTitle = `Dependent ${suffix.slice(0, 8)}`;
     const dependent = await createTask(dependentTitle);
     await context.addCookies([{ name: "sense_sid", value: staffSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.goto(`/?taskId=${dependent.id}`);
+    await page.goto(`/workspace?taskId=${dependent.id}`);
     const workspace = page.locator(".task-workspace");
     await expect(workspace.getByRole("heading", { name: dependentTitle })).toBeVisible();
     const links = workspace.getByRole("region", { name: "Task dependencies" });
@@ -65,7 +65,7 @@ test("project owner links a predecessor and explicitly acknowledges an early sta
     await links.getByRole("button", { name: "Add dependency" }).click();
     await expect(workspace.getByText("Dependency added.")).toBeVisible();
     await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(dependentTitle) }).click();
+    await expect(workspace.getByRole("heading", { name: dependentTitle })).toBeVisible();
     await expect(workspace.getByRole("heading", { name: dependentTitle })).toBeVisible();
     await expect(links.getByText(/Predecessor .* Not started/)).toBeVisible();
     await expect(links.getByText(/At least one predecessor is unfinished/)).toBeVisible();

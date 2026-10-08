@@ -58,6 +58,15 @@ databaseDescribe("S11 document persistence and authorization", () => {
         const project = (await projects.create(ownerActor, { branchId: branch.id, title: "S11 file project", deliveryType: "DESIGN", scopes: ["Architecture"], reason: "Create file fixture" })).project;
         const unrelated = (await projects.create(ownerActor, { branchId: branch.id, title: "Other project", deliveryType: "DESIGN", scopes: ["Architecture"], reason: "Create isolation fixture" })).project;
         await workflow.assignment(ownerActor, project.id, { employeeId: employee.id, expectedVersion: 1, reason: "Assign file work" });
+        const staffPicker = await documents.projectPicker(staffActor, 0, 1);
+        expect(staffPicker.total).toBe(1);
+        expect(staffPicker.items.map(item => item.id)).toEqual([project.id]);
+        const ownerFirst = await documents.projectPicker(ownerActor, 0, 1, { branchId: branch.id });
+        const ownerSecond = await documents.projectPicker(ownerActor, 1, 1, { branchId: branch.id });
+        expect(ownerFirst.total).toBe(2); expect(ownerSecond.total).toBe(2);
+        expect(new Set([...ownerFirst.items, ...ownerSecond.items].map(item => item.id))).toEqual(new Set([project.id, unrelated.id]));
+        await expect(documents.projectPicker(staffActor, 0, 50, { q: "Other project" })).resolves.toMatchObject({ total: 0, items: [] });
+        await expect(documents.projectPicker(staffActor, 0, 50, { branchId: randomUUID() })).resolves.toMatchObject({ total: 0, items: [] });
         const folder = await documents.createFolder(ownerActor, project.id, { name: "Drawings", confidential: false, reason: "Create project file folder" });
         expect(folder.provisionState).toBe("READY");
         expect((await documents.list(staffActor, project.id)).folders.map((item) => item.id)).toContain(folder.id);
@@ -95,6 +104,9 @@ databaseDescribe("S11 document persistence and authorization", () => {
         await documents.revokeGrant(ownerActor, grant.id, "Remove exact file access");
         await expect(documents.stream(staffActor, secret.id)).rejects.toThrow("Confidential file access is not granted");
         expect(await tx.auditEvent.count({ where: { eventKey: { in: ["document.folder_created", "document.folder_provisioned", "document.access_granted", "document.access_revoked"] }, organizationId: organization.id } })).toBeGreaterThanOrEqual(6);
+        const currentProject = await tx.project.findUniqueOrThrow({ where: { id: project.id } });
+        await workflow.revokeAssignment(ownerActor, project.id, employee.id, { expectedVersion: currentProject.version, reason: "Revoke picker visibility" });
+        await expect(documents.projectPicker(staffActor, 0, 50)).resolves.toMatchObject({ branches: [], total: 0, items: [] });
         await tx.$executeRaw`SET CONSTRAINTS ALL IMMEDIATE`;
         await tx.$executeRaw`SAVEPOINT s11_forged_file_probe`;
         await tx.$executeRaw`SET CONSTRAINTS ALL DEFERRED`;

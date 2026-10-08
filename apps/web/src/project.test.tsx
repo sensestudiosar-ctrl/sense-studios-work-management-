@@ -19,7 +19,8 @@ describe("ProjectWorkspace", () => {
       return response({}, 404);
     }));
     render(<ProjectWorkspace csrfToken="csrf-project" owner />);
-    await screen.findByText("No projects for this branch yet.");
+    await screen.findByText("No projects match these filters.");
+    fireEvent.change(screen.getByLabelText("Project branch"), { target: { value: branch.id } });
     fireEvent.change(screen.getByLabelText("Project title"), { target: { value: "Studio renovation" } });
     fireEvent.change(screen.getByLabelText("Delivery type"), { target: { value: "TURNKEY" } });
     fireEvent.change(screen.getByLabelText("Initial service scopes"), { target: { value: "Architecture\nInterior design" } });
@@ -149,12 +150,16 @@ describe("ProjectWorkspace", () => {
     let finishFirst: ((value: Response) => void) | undefined;
     vi.stubGlobal("fetch", vi.fn((input: RequestInfo | URL) => {
       const url = String(input);
+      if (url === "/api/v1/project-templates") return Promise.resolve(response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } }));
       if (url === "/api/v1/projects/setup") return Promise.resolve(response({ branches: [first, second] }));
       if (url.includes(`branchId=${first.id}`)) return new Promise<Response>((resolve) => { finishFirst = resolve; });
       if (url.includes(`branchId=${second.id}`)) return Promise.resolve(response({ total: 1, items: [{ id: "new", title: "Pune project", status: "DRAFT", deliveryType: "DESIGN", scopes: [], branch: second }] }));
-      return Promise.resolve(response({}, 404));
+      return Promise.resolve(response({ total: 0, items: [] }));
     }));
     render(<ProjectWorkspace csrfToken="csrf" owner />);
+    await screen.findByLabelText("Project branch");
+    await waitFor(() => expect(screen.getByLabelText("Project branch")).not.toBeDisabled());
+    fireEvent.change(screen.getByLabelText("Project branch"), { target: { value: first.id } });
     await waitFor(() => expect(finishFirst).toBeDefined());
     fireEvent.change(screen.getByLabelText("Project branch"), { target: { value: second.id } });
     expect(await screen.findByText("Pune project")).toBeInTheDocument();

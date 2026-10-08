@@ -27,8 +27,11 @@ type OfflineFixture = {
 
 async function seedOfflineSite(page: import("@playwright/test").Page, context: import("@playwright/test").BrowserContext, baseURL: string | undefined): Promise<OfflineFixture> {
   const databaseUrl = new URL(process.env.DATABASE_URL!);
-  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || databaseUrl.port !== "56433" || !/^\/sense_s15_s19_s17_s20_s22_.*_test$/.test(databaseUrl.pathname)) {
-    throw new Error("S22 browser acceptance requires the guarded dedicated localhost S22 PostgreSQL database on port 56433");
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && ["56433", "57433"].includes(databaseUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && databaseUrl.port !== "56433") || (!/^\/sense_s15_s19_s17_s20_s22_.*_test$/.test(databaseUrl.pathname) && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
+    throw new Error("Offline SITE browser acceptance requires the guarded dedicated localhost S22 or explicitly enabled exact S25 PostgreSQL database on port 56433");
   }
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as { Client: new (config: { connectionString: string }) => FixtureDatabase };
@@ -112,11 +115,13 @@ async function seedOfflineSite(page: import("@playwright/test").Page, context: i
 
 test("offline SITE capture persists locally, replays once, resolves conflicts and reauthorizes access", async ({ page, context, baseURL }, testInfo) => {
   test.setTimeout(180_000);
-  test.skip(!process.env.S22_E2E_ENABLED, "S22 browser acceptance is enabled by its guarded dedicated test environment");
+  test.skip(process.env.S22_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1" && process.env.S27_E2E_ENABLED !== "1", "S22, S25, or S27 browser acceptance must be enabled by its guarded dedicated test environment");
   const preview = process.env.S22_PWA_PREVIEW_URL;
   if (!preview) throw new Error("S22_E2E_ENABLED requires the production PWA preview at S22_PWA_PREVIEW_URL");
   const previewUrl = new URL(preview);
-  if (previewUrl.hostname !== "localhost" || previewUrl.port !== "58223") throw new Error("S22 production PWA browser acceptance requires localhost port 58223");
+  const s22Preview = previewUrl.hostname === "localhost" && previewUrl.port === "58223";
+  const s27Preview = process.env.S27_E2E_ENABLED === "1" && previewUrl.hostname === "localhost" && previewUrl.port === "58323";
+  if (!s22Preview && !s27Preview) throw new Error("S22 requires its localhost:58223 preview; S27 may use only its explicitly enabled localhost:58323 preview");
   const f = await seedOfflineSite(page, context, baseURL);
   const screenshotDirectory = resolve(".env.s22-tools", "screenshots");
   mkdirSync(screenshotDirectory, { recursive: true });

@@ -75,6 +75,22 @@ export class DocumentService {
     await this.fileAccess(tx, access, document);
     return { document, blob: document.blobs[0] };
   }
+  async projectPicker(actor: ProjectActor, offset: number, limit: number, filters: { branchId?: string; q?: string } = {}) {
+    return this.db.$transaction(async (tx) => {
+      const account = await tx.account.findUnique({ where: { id: actor.accountId }, include: { employee: true } });
+      if (!account || account.state !== AccountState.ACTIVE || account.kind !== actor.kind || actor.kind === AccountKind.CLIENT || actor.kind === AccountKind.STAFF && (!account.employee || account.employee.state !== EmployeeState.ACTIVE || account.employee.organizationId !== actor.organizationId)) throw new ForbiddenException("Permission denied");
+      const candidates = await tx.project.findMany({ where: { organizationId: actor.organizationId }, select: { id: true, title: true, status: true, branchId: true, branch: { select: { id: true, name: true } } }, orderBy: [{ title: "asc" }, { id: "asc" }] });
+      const permitted: typeof candidates = [];
+      for (const project of candidates) {
+        try { await this.access(tx, actor, project.id, "document.view"); permitted.push(project); }
+        catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException)) throw error; }
+      }
+      const branches = [...new Map(permitted.map(project => [project.branchId, project.branch])).values()].sort((a, b) => a.name.localeCompare(b.name));
+      const query = filters.q?.toLocaleLowerCase();
+      const filtered = permitted.filter(project => (!filters.branchId || project.branchId === filters.branchId) && (!query || project.title.toLocaleLowerCase().includes(query)));
+      return { branches, total: filtered.length, items: filtered.slice(offset, offset + limit) };
+    });
+  }
   async list(actor: ProjectActor, projectId: string) {
     return this.db.$transaction(async (tx) => {
       const access = await this.access(tx, actor, projectId, "document.view");

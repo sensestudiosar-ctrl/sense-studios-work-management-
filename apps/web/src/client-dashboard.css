@@ -1,0 +1,21 @@
+.client-dashboard { display: grid; gap: 1rem; margin: 1.2rem 0; padding: 1.25rem; border: 1px solid #d8ded8; border-radius: .9rem; background: #fffdf8; }
+.client-dashboard > header { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; }
+.client-dashboard h2 { margin: .35rem 0; color: #29463d; font: 500 clamp(1.5rem, 4vw, 2rem)/1.1 Georgia, serif; }
+.client-dashboard h3 { margin: 0 0 .7rem; color: #29463d; font-size: 1rem; }
+.client-dashboard header p { margin: .3rem 0; color: #65756d; }
+.client-dashboard-kicker { color: #96743e !important; font-size: .7rem; font-weight: 800; letter-spacing: .14em; }
+.client-dashboard-project { display: grid; gap: .35rem; max-width: 32rem; color: #334d44; font-size: .85rem; font-weight: 700; }
+.client-dashboard-project select { min-height: 2.7rem; padding: .6rem .75rem; border: 1px solid #aeb9ad; border-radius: .5rem; background: white; color: #182c29; }
+.client-dashboard-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.client-dashboard-cards article, .client-dashboard-grid > article, .client-dashboard-files { padding: 1rem; border: 1px solid #e1e4dc; border-radius: .65rem; background: #fafaf5; }
+.client-dashboard-cards article { display: grid; gap: .3rem; }
+.client-dashboard-cards span { color: #697b72; font-size: .8rem; }
+.client-dashboard-cards strong { color: #29463d; font-size: 1.25rem; }
+.client-dashboard-cards small, .client-dashboard-muted { color: #718078; font-size: .83rem; }
+.client-dashboard-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
+.client-dashboard ul { display: grid; gap: .45rem; margin: 0; padding: 0; list-style: none; }
+.client-dashboard li { display: flex; align-items: flex-start; justify-content: space-between; gap: .65rem; padding: .65rem 0; border-top: 1px solid #e5e7df; color: #52655c; font-size: .84rem; }
+.client-dashboard li strong { color: #29463d; }
+.client-dashboard-error { padding: .75rem; border-radius: .5rem; background: #fff1ed; color: #853d33; }
+.client-dashboard :is(button, select):focus-visible { outline: 3px solid #b98f49; outline-offset: 2px; }
+@media (max-width: 600px) { .client-dashboard-cards, .client-dashboard-grid { grid-template-columns: 1fr; } }

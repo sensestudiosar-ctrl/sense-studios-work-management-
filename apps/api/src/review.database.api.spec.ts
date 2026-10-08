@@ -162,6 +162,16 @@ databaseDescribe("S13 review workflow PostgreSQL acceptance", () => {
     taskVersion = (await database.prisma.task.findUniqueOrThrow({ where: { id: task.id } })).version;
     const resubmitted = await fixture.reviews.submit(fixture.submitter, task.id, { expectedVersion: taskVersion, revisionId: crRevision.id, reason: "Submit exact CR1 for independent internal review" });
     const round = resubmitted.rounds.find((item) => item.revisionId === crRevision.id)!;
+    expect(round).toMatchObject({ revisionFileId: crFile.id, revisionFileMimeType: "application/pdf" });
+    expect(round.revisionFileName).toBeTruthy();
+    await expect(fixture.reviews.inbox(fixture.owner, 0, 50, true)).resolves.toMatchObject({ total: 0, items: [] });
+    await expect(fixture.reviews.inbox(fixture.submitter, 0, 50, true)).resolves.toMatchObject({ total: 0, items: [] });
+    const inbox = await fixture.reviews.inbox(fixture.reviewer, 0, 1, true);
+    expect(inbox.total).toBeGreaterThanOrEqual(1);
+    expect(inbox.items).toHaveLength(1);
+    const beyond = await fixture.reviews.inbox(fixture.reviewer, inbox.total, 1, true);
+    expect(beyond.total).toBe(inbox.total);
+    expect(beyond.items).toEqual([]);
     expect(round).toMatchObject({ revisionId: crRevision.id, revisionLabel: "CR1", status: "SUBMITTED" });
     const exactSubmission = await database.prisma.reviewSubmission.findUniqueOrThrow({ where: { id: (await database.prisma.reviewRound.findUniqueOrThrow({ where: { id: round.id } })).submissionId } });
     expect(exactSubmission.taskSnapshot).toMatchObject({ revisionId: crRevision.id, sha256: crFile.sha256 });
@@ -170,6 +180,10 @@ databaseDescribe("S13 review workflow PostgreSQL acceptance", () => {
     await fixture.reviews.start(fixture.reviewer, round.id, "Start exact CR1 internal review");
     const approved = await fixture.reviews.decision(fixture.reviewer, round.id, { kind: "APPROVED", comment: "CR1 passes internal review", reason: "Approve exact CR1 internally" });
     expect(approved.rounds.find((item) => item.id === round.id)).toMatchObject({ status: "APPROVED", revisionId: crRevision.id, revisionLabel: "CR1" });
+    const history = await fixture.reviews.inbox(fixture.reviewer, 0, 50, false, { historical: true, projectId: fixture.projectId });
+    expect(history.items.map(item => item.roundId)).toContain(round.id);
+    expect((await fixture.reviews.inbox(fixture.reviewer)).items.map(item => item.roundId)).not.toContain(round.id);
+    await expect(fixture.reviews.inbox(fixture.reviewer, 0, 50, false, { historical: true, projectId: randomUUID() })).resolves.toMatchObject({ total: 0, items: [] });
     expect(await database.prisma.documentRevision.findUniqueOrThrow({ where: { id: crRevision.id } })).toMatchObject({ fileId: crFile.id, sha256: crFile.sha256, state: "APPROVED", isCurrent: true });
     expect(await database.prisma.revisionApprovalFact.findMany({ where: { revisionId: crRevision.id } })).toEqual(expect.arrayContaining([expect.objectContaining({ kind: "INTERNAL" })]));
     await expect(fixture.revisions.issue(fixture.owner, fixture.projectId, { revisionIds: [crRevision.id], recipientAccountIds: [fixture.owner.accountId], purpose: "Client review delivery", reason: "Check mandatory client approval gate for CR", acknowledgementRequired: false })).rejects.toThrow(/client approval/i);

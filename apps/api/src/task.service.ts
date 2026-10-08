@@ -232,12 +232,14 @@ export class TaskService {
     });
   }
 
-  async list(actor: ProjectActor, scope: "mine" | "assigned", offset: number, limit: number) {
+  async list(actor: ProjectActor, scope: "mine" | "assigned" | "personal" | "all" | "owned" | "created" | "collaborating", offset: number, limit: number, filters: { projectId?: string; planItemId?: string; ownerEmployeeId?: string; q?: string; status?: TaskStatus; phase?: "active" | "waiting" | "review" | "completed"; dateBasis?: "target" | "committed"; dateFrom?: string; dateTo?: string; type?: TaskType; requiresReassignment?: boolean; sort?: "created_desc" | "target_asc" | "title_asc" | "owner_asc" } = {}) {
     return this.transaction(async (tx) => {
       const account = await this.activeActor(tx, actor);
       const ids = await this.visibleProjectIds(tx, actor);
+      const employeeId = account.employee?.state === EmployeeState.ACTIVE && account.employee.organizationId === actor.organizationId ? account.employee.id : null;
+      if ((scope === "personal" || scope === "owned" || scope === "collaborating") && !employeeId) return { total: 0, items: [] };
       const managedProjects: string[] = [];
-      if (actor.kind === AccountKind.STAFF && scope === "assigned") {
+      if (actor.kind === AccountKind.STAFF && (scope === "assigned" || scope === "all" || scope === "created")) {
         for (const id of ids ?? []) {
           const project = await this.project(tx, actor, id);
           try {
@@ -247,12 +249,59 @@ export class TaskService {
           } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
         }
       }
-      const reports = actor.kind === AccountKind.STAFF && scope === "assigned" ? await this.managedReportIds(tx, actor) : [];
-      const ownership: Prisma.TaskWhereInput = actor.kind === AccountKind.OWNER ? {} : scope === "mine" ? { primaryOwnerEmployeeId: account.employee!.id } : { OR: [{ collaborators: { some: { employeeId: account.employee!.id } } }, { projectId: null, primaryOwnerEmployeeId: { in: reports } }, { projectId: { in: managedProjects } }] };
-      const where: Prisma.TaskWhereInput = { organizationId: actor.organizationId, AND: [ownership, ...(ids === null ? [] : [{ OR: [{ projectId: null }, { projectId: { in: ids } }] }])] };
-      const [total, items] = await Promise.all([tx.task.count({ where }), tx.task.findMany({ where, include: { primaryOwner: { include: { account: { select: { normalizedEmail: true } } } }, project: { select: { id: true, title: true } } }, orderBy: [{ createdAt: "desc" }, { id: "desc" }], skip: offset, take: limit })]);
+      const reports = actor.kind === AccountKind.STAFF && (scope === "assigned" || scope === "all" || scope === "created") ? await this.managedReportIds(tx, actor) : [];
+      const assignedVisible: Prisma.TaskWhereInput = { OR: [
+        { collaborators: { some: { employeeId: employeeId ?? "" } } },
+        { projectId: null, primaryOwnerEmployeeId: { in: reports } },
+        { projectId: { in: managedProjects } }
+      ] };
+      const allStaffVisible: Prisma.TaskWhereInput = { OR: [
+        { primaryOwnerEmployeeId: employeeId ?? "" },
+        { collaborators: { some: { employeeId: employeeId ?? "" } } },
+        { projectId: null, primaryOwnerEmployeeId: { in: reports } },
+        { projectId: { in: managedProjects } }
+      ] };
+      const ownership: Prisma.TaskWhereInput = scope === "personal" ? { OR: [{ primaryOwnerEmployeeId: employeeId! }, { collaborators: { some: { employeeId: employeeId! } } }] }
+        : scope === "owned" ? { primaryOwnerEmployeeId: employeeId! }
+          : scope === "collaborating" ? { collaborators: { some: { employeeId: employeeId! } } }
+            : scope === "created" ? actor.kind === AccountKind.OWNER ? { createdById: actor.accountId } : { AND: [allStaffVisible, { createdById: actor.accountId }] }
+              : actor.kind === AccountKind.OWNER ? {} : scope === "mine" ? { primaryOwnerEmployeeId: employeeId! } : scope === "assigned" ? assignedVisible : allStaffVisible;
+      const phase: Prisma.TaskWhereInput = filters.phase === "active" ? { status: { notIn: [TaskStatus.COMPLETED, TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION] } } : filters.phase === "waiting" ? { status: TaskStatus.WAITING } : filters.phase === "completed" ? { status: TaskStatus.COMPLETED } : filters.phase === "review" ? { OR: [{ type: TaskType.CORRECTION }, { status: { in: [TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.CORRECTIONS_REQUIRED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED, TaskStatus.CLIENT_REVISION_REQUIRED] } }] } : {};
+      const dateRange = { ...(filters.dateFrom ? { gte: new Date(`${filters.dateFrom}T00:00:00.000Z`) } : {}), ...(filters.dateTo ? { lte: new Date(`${filters.dateTo}T00:00:00.000Z`) } : {}) };
+      const dateFilter: Prisma.TaskWhereInput = filters.dateFrom || filters.dateTo ? filters.dateBasis === "committed" ? { committedDueDate: dateRange } : { targetDate: dateRange } : {};
+      const search: Prisma.TaskWhereInput = filters.q ? { OR: [
+        { title: { contains: filters.q, mode: "insensitive" } },
+        { project: { is: { title: { contains: filters.q, mode: "insensitive" } } } },
+        { primaryOwner: { is: { account: { is: { normalizedEmail: { contains: filters.q, mode: "insensitive" } } } } } },
+        { createdBy: { is: { normalizedEmail: { contains: filters.q, mode: "insensitive" } } } }
+      ] } : {};
+      const where: Prisma.TaskWhereInput = { organizationId: actor.organizationId, AND: [ownership, phase, dateFilter, ...(filters.type ? [{ type: filters.type }] : []), ...(filters.requiresReassignment !== undefined ? [{ requiresReassignment: filters.requiresReassignment }] : []), ...(ids === null ? [] : [{ OR: [{ projectId: null }, { projectId: { in: ids } }] }]), ...(filters.projectId ? [{ projectId: filters.projectId }] : []), ...(filters.planItemId ? [{ planItemId: filters.planItemId }] : []), ...(filters.ownerEmployeeId ? [{ primaryOwnerEmployeeId: filters.ownerEmployeeId }] : []), search, ...(filters.status ? [{ status: filters.status }] : [])] };
+      const orderBy: Prisma.TaskOrderByWithRelationInput[] = filters.sort === "target_asc" ? [{ targetDate: "asc" }, { id: "asc" }]
+        : filters.sort === "title_asc" ? [{ title: "asc" }, { id: "asc" }]
+          : filters.sort === "owner_asc" ? [{ primaryOwner: { account: { normalizedEmail: "asc" } } }, { id: "asc" }]
+            : [{ createdAt: "desc" }, { id: "desc" }];
+      const [total, items] = await Promise.all([tx.task.count({ where }), tx.task.findMany({ where, include: { primaryOwner: { include: { account: { select: { normalizedEmail: true } } } }, project: { select: { id: true, title: true } } }, orderBy, skip: offset, take: limit })]);
       return { total, items };
     });
+  }
+
+  async attention(actor: ProjectActor, kind: "corrections" | "reassignment", offset: number, limit: number) {
+    const permitted: Array<{ id: string; title: string; projectTitle: string | null; reason: string }> = [];
+    let scanned = 0;
+    while (true) {
+      const page = await this.list(actor, kind === "corrections" ? "personal" : "assigned", scanned, 100, { phase: "active", ...(kind === "corrections" ? { type: TaskType.CORRECTION } : { requiresReassignment: true }) });
+      for (const task of page.items) {
+        try {
+          const detail = await this.detail(actor, task.id);
+          if (kind === "reassignment" && (!detail.task.requiresReassignment || !detail.capabilities.reassign)) continue;
+          if (kind === "corrections" && detail.task.type !== TaskType.CORRECTION) continue;
+          permitted.push({ id: task.id, title: task.title, projectTitle: task.project?.title ?? null, reason: kind === "reassignment" ? "Employee exit: a permitted manager must reassign this task before work resumes." : "Correction task assigned to you or including you as a collaborator. Inspect its linked review evidence." });
+        } catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException)) throw error; }
+      }
+      scanned += page.items.length;
+      if (scanned >= page.total || page.items.length === 0) break;
+    }
+    return { total: permitted.length, items: permitted.slice(offset, offset + limit) };
   }
 
   private async task(tx: Tx, actor: ProjectActor, id: string, expectedVersion?: number) {
@@ -376,6 +425,91 @@ export class TaskService {
     const task = await tx.task.findFirst({ where: { id: taskId, organizationId: actor.organizationId } });
     if (!task) throw new NotFoundException("Task not found");
     await this.taskAccess(tx, actor, task);
+    return task;
+  }
+
+  /** S27 current-source port: authorize the task/management scope before loading any candidate identity. */
+  async assistanceCandidates(actor: ProjectActor, tx: Tx, taskId: string, purpose: "PRIMARY_OWNER" | "COLLABORATOR" | "REVIEWER", broaderSearch = false) {
+    const task = await tx.task.findFirst({ where: { id: taskId, organizationId: actor.organizationId } });
+    if (!task) throw new NotFoundException("Task not found");
+    const { account, project } = await this.taskAccess(tx, actor, task);
+    if (task.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION || task.status === TaskStatus.COMPLETED || task.requiresReassignment || project && !new Set<ProjectStatus>([ProjectStatus.DRAFT, ProjectStatus.ACTIVE]).has(project.status)) throw new ConflictException("Task is not eligible for an assignment suggestion");
+    const currentOwner = await tx.employee.findFirst({ where: { id: task.primaryOwnerEmployeeId, organizationId: actor.organizationId, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE } }, select: { id: true, homeTeamId: true, homeBranchId: true } });
+    if (!currentOwner) throw new ConflictException("Current task owner Team is unavailable");
+    if (actor.kind !== AccountKind.OWNER) {
+      if (project) {
+        await this.projectAccess(tx, actor, project);
+        await this.authorization.assertPermission(actor.accountId, "task.assign", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx);
+        if (broaderSearch) {
+          await this.authorization.assertPermission(actor.accountId, "project.manage", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx);
+          await this.authorization.assertPermission(actor.accountId, "employee.manage", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx);
+        } else await this.managedEmployee(tx, actor, currentOwner, project);
+      } else {
+        if (broaderSearch) throw new ForbiddenException("Broader search requires an explicitly managed project scope");
+        await this.managedEmployee(tx, actor, currentOwner);
+      }
+    }
+    const existingCollaborators = purpose === "COLLABORATOR" ? new Set((await tx.taskCollaborator.findMany({ where: { taskId, organizationId: actor.organizationId }, select: { employeeId: true } })).map((row) => row.employeeId)) : new Set<string>();
+    const projectEmployeeIds = project ? new Set((await tx.projectAssignment.findMany({ where: { projectId: project.id, organizationId: actor.organizationId, revokedAt: null }, select: { employeeId: true } })).map((row) => row.employeeId)) : null;
+    const candidates = await tx.employee.findMany({ where: { organizationId: actor.organizationId, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE }, ...(broaderSearch ? {} : { homeTeamId: currentOwner.homeTeamId, homeBranchId: currentOwner.homeBranchId }) }, include: { account: { select: { normalizedEmail: true } } }, orderBy: { id: "asc" } });
+    const eligible: Array<{ employeeId: string; label: string; teamId: string; branchId: string }> = [];
+    for (const candidate of candidates) {
+      try {
+        if (projectEmployeeIds && !projectEmployeeIds.has(candidate.id)) continue;
+        if (project) await this.eligibleForProject(tx, actor, project, candidate.id);
+        if (purpose === "COLLABORATOR" && (candidate.id === task.primaryOwnerEmployeeId || existingCollaborators.has(candidate.id))) continue;
+        if (actor.kind === AccountKind.STAFF && !project) await this.managedEmployee(tx, actor, candidate);
+        eligible.push({ employeeId: candidate.id, label: candidate.employeeCode || candidate.account.normalizedEmail, teamId: candidate.homeTeamId, branchId: candidate.homeBranchId });
+      } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+    }
+    void account;
+    return { task: { id: task.id, projectId: task.projectId, status: task.status, version: task.version, ownerEmployeeId: task.primaryOwnerEmployeeId, reviewRequirement: task.reviewRequirement }, currentTeam: { id: currentOwner.homeTeamId, branchId: currentOwner.homeBranchId }, broaderSearch, candidates: eligible };
+  }
+
+  /** S27 outcome port: verify an already-added collaborator without making them a new suggestion candidate. */
+  async assistanceCollaboratorOutcome(actor: ProjectActor, tx: Tx, taskId: string, employeeId: string, broaderSearch = false) {
+    const scope = await this.assistanceCandidates(actor, tx, taskId, "COLLABORATOR", broaderSearch);
+    const [task, membership, employee] = await Promise.all([
+      tx.task.findFirst({ where: { id: taskId, organizationId: actor.organizationId } }),
+      tx.taskCollaborator.findFirst({ where: { taskId, organizationId: actor.organizationId, employeeId } }),
+      tx.employee.findFirst({ where: { id: employeeId, organizationId: actor.organizationId, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE } }, select: { id: true, homeTeamId: true, homeBranchId: true } })
+    ]);
+    if (!task || !membership || !employee) throw new ConflictException("Current task collaborators do not match the selected employee");
+    if (!broaderSearch && (employee.homeTeamId !== scope.currentTeam.id || employee.homeBranchId !== scope.currentTeam.branchId)) throw new ConflictException("Selected collaborator is outside the current Team scope");
+    if (task.projectId) {
+      const projectMember = await tx.projectAssignment.findFirst({ where: { organizationId: actor.organizationId, projectId: task.projectId, employeeId, revokedAt: null } });
+      if (!projectMember) throw new ConflictException("Selected collaborator is no longer a current project member");
+      const project = await tx.project.findFirst({ where: { id: task.projectId, organizationId: actor.organizationId } });
+      if (!project) throw new ConflictException("Selected collaborator project is unavailable");
+      await this.eligibleForProject(tx, actor, project, employeeId);
+    }
+    return { taskId, employeeId, taskVersion: task.version, currentTeam: scope.currentTeam };
+  }
+
+  /** Exact training practical evidence uses the normal task/project access boundary. */
+  async assertTrainingPracticalAccess(tx: Tx, actor: ProjectActor, taskId: string, employeeId: string) {
+    const task = await tx.task.findFirst({ where: { id: taskId, organizationId: actor.organizationId } });
+    if (!task || task.type !== TaskType.TRAINING_PRACTICAL || task.primaryOwnerEmployeeId !== employeeId) throw new NotFoundException("Training practical task unavailable");
+    await this.taskAccess(tx, actor, task);
+    if (task.requiresReassignment || task.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION) throw new ConflictException("Training practical task is unavailable");
+    return task;
+  }
+
+  /** Existing SOP evidence follows ordinary read access, including authorized planning/closed work. */
+  async assertSopReferenceReadAccess(tx: Tx, actor: ProjectActor, taskId: string) {
+    const task = await this.task(tx, actor, taskId);
+    await this.taskAccess(tx, actor, task);
+    return task;
+  }
+
+  /** An exact SOP reference grants no task access and cannot be added to closed work. */
+  async assertSopReferenceAuthority(tx: Tx, actor: ProjectActor, taskId: string) {
+    const task = await this.task(tx, actor, taskId);
+    const project = task.projectId ? await this.project(tx, actor, task.projectId) : null;
+    const { account } = await this.taskAccess(tx, actor, task);
+    if (task.status === TaskStatus.COMPLETED || task.status === TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION || task.requiresReassignment || project && project.status !== ProjectStatus.ACTIVE && !(project.status === ProjectStatus.CANCELLED && task.type === TaskType.CLOSEOUT)) throw new ConflictException("Task state does not permit a new SOP reference");
+    const owner = await this.employee(tx, actor, task.primaryOwnerEmployeeId);
+    if (actor.kind !== AccountKind.OWNER && account.employee?.id !== owner.id) await this.managedEmployee(tx, actor, owner, project ?? undefined);
     return task;
   }
 

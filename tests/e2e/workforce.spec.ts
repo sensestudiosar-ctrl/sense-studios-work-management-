@@ -14,7 +14,10 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
   page.setDefaultTimeout(10_000);
   if (!fixtureUrl) throw new Error("DATABASE_URL must point to the same dedicated local test database used by the API; this browser acceptance test never skips silently");
   const parsed = new URL(fixtureUrl);
-  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "56433" || !parsed.pathname.endsWith("_test")) throw new Error("S17 workforce browser acceptance requires a dedicated local PostgreSQL _test database on port 56433");
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && ((["56433", "57433"].includes(parsed.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)) || (parsed.port === "57433" && /^\/sense_s17_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)));
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsed.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsed.port !== "56433") || (!parsed.pathname.endsWith("_test") && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) throw new Error("Workforce browser acceptance requires a dedicated local PostgreSQL _test database on a local test port");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as typeof import("pg");
   const db = new Client({ connectionString: fixtureUrl });
@@ -77,18 +80,29 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await page.goto("/workforce");
     const workspace = page.locator(".workforce");
     await expect(workspace.getByRole("heading", { name: "Workforce", exact: true })).toBeVisible();
-    const navigation = page.getByRole("navigation", { name: "Workspace navigation" });
+    const mobileNavigation = await page.evaluate(() => innerWidth < 768);
+    const navigation = page.getByRole("navigation", { name: mobileNavigation ? "Main workspace destinations" : "Workspace navigation" });
     await expect(navigation).toBeVisible();
     const navigationLayout = await navigation.evaluate(element => {
       const rect = element.getBoundingClientRect();
       const links = Array.from(element.querySelectorAll("a"), link => link.getBoundingClientRect());
       const separated = links.every((a, index) => links.slice(index + 1).every(b => a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top));
-      return { display: getComputedStyle(element).display, wrap: getComputedStyle(element).flexWrap, left: rect.left, right: rect.right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, separated };
+      return { left: rect.left, right: rect.right, scrollWidth: element.scrollWidth, clientWidth: element.clientWidth, separated };
     });
-    expect(navigationLayout).toMatchObject({ display: "flex", wrap: "wrap", separated: true });
+    expect(navigationLayout.separated).toBe(true);
     expect(navigationLayout.left).toBeGreaterThanOrEqual(0);
-    expect(navigationLayout.right).toBeLessThanOrEqual(testInfo.project.use.viewportSize?.width ?? 1280);
+    expect(navigationLayout.right).toBeLessThanOrEqual(await page.evaluate(() => innerWidth));
     expect(navigationLayout.scrollWidth).toBeLessThanOrEqual(navigationLayout.clientWidth);
+    if (mobileNavigation) {
+      await page.getByRole("button", { name: "More", exact: true }).click();
+      const more = page.getByRole("dialog", { name: "More destinations" });
+      await expect(more).toBeVisible();
+      await expect(more.getByRole("link", { name: "Workforce", exact: true })).toHaveAttribute("aria-current", "page");
+      const destinations = [...await navigation.getByRole("link").allTextContents(), ...await more.getByRole("link").allTextContents()];
+      for (const label of ["My Work", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Time", "Workforce"]) expect(destinations).toContain(label);
+      await page.getByRole("button", { name: "Close navigation" }).click();
+      await expect(page.getByRole("button", { name: "More", exact: true })).toBeFocused();
+    } else await expect(navigation.getByRole("link", { name: "Workforce", exact: true })).toHaveAttribute("aria-current", "page");
     const periodControl = workspace.locator(".wf-period-control");
     await expect(periodControl.getByRole("combobox", { name: "Period" })).toBeVisible();
     expect(await periodControl.evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThanOrEqual(120);

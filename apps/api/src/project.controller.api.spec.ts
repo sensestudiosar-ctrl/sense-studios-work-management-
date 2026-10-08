@@ -101,7 +101,25 @@ describe("S07A Draft project HTTP boundary", () => {
     expect([list.status, detail.status]).toEqual([200, 200]);
     expect(list.headers["cache-control"]).toBe("no-store");
     expect(detail.headers["cache-control"]).toBe("no-store");
-    expect(workflows.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), branchId, 0, 50);
+    expect(workflows.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), branchId, 0, 50, {});
+  });
+
+  it("forwards normalized project list filters and rejects invalid filter values", async () => {
+    const filtered = await request(app.getHttpServer())
+      .get(`/api/v1/projects?branchId=${branchId}&q=%20Residence%20&stageKey=concept&sort=name&direction=asc`)
+      .set("Cookie", cookie);
+    expect(filtered.status).toBe(200);
+    expect(workflows.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), branchId, 0, 50, {
+      q: "Residence",
+      stageKey: "concept",
+      sort: "name",
+      direction: "asc"
+    });
+
+    workflows.list.mockClear();
+    const invalid = await request(app.getHttpServer()).get(`/api/v1/projects?branchId=${branchId}&stageKey=%20&sort=unknown`).set("Cookie", cookie);
+    expect(invalid.status).toBe(400);
+    expect(workflows.list).not.toHaveBeenCalled();
   });
 
   it("reads the project plan with no-store and denies unauthenticated plan reads", async () => {

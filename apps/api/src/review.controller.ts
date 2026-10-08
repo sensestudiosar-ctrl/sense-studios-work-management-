@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, ForbiddenException, Get, Headers, Inject, Param, Post, Req, Res } from "@nestjs/common";
+import { BadRequestException, Body, Controller, ForbiddenException, Get, Headers, Inject, Param, Post, Query, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
@@ -85,9 +85,19 @@ export class ReviewController {
   private noStore(response: Response) { response.setHeader("Cache-Control", "no-store"); }
 
   @Get("inbox")
-  async inbox(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+  async inbox(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("offset") offset?: string, @Query("limit") limit?: string, @Query("personal") personal?: string, @Query("historical") historical?: string, @Query("projectId") projectId?: string, @Query("scope") scope?: string, @Query("queue") queue?: string, @Query("q") q?: string, @Query("sort") sort?: string) {
     this.noStore(response);
-    return this.reviews.inbox((await this.actor(request)).actor);
+    const page = z.object({ offset: z.coerce.number().int().min(0).max(100000).default(0), limit: z.coerce.number().int().min(1).max(100).default(50) }).safeParse({ offset, limit });
+    if (!page.success) throw new BadRequestException("Invalid inbox pagination");
+    if (personal !== undefined && personal !== "true" && personal !== "false") throw new BadRequestException("Invalid review scope");
+    if (historical !== undefined && historical !== "true" && historical !== "false") throw new BadRequestException("Invalid historical filter");
+    if (scope !== undefined && scope !== "mine" && scope !== "accessible") throw new BadRequestException("Invalid review scope");
+    if (queue !== undefined && !["waiting", "corrections", "resubmitted", "history"].includes(queue)) throw new BadRequestException("Invalid review queue");
+    if (queue !== undefined && !["waiting", "corrections", "resubmitted", "history"].includes(queue)) throw new BadRequestException("Invalid review queue");
+    const parsedQ = q === undefined ? undefined : z.string().trim().max(160).safeParse(q);
+    if ((parsedQ && !parsedQ.success) || (sort !== undefined && sort !== "project" && sort !== "due")) throw new BadRequestException("Invalid review inbox filters");
+    const filters = { ...(historical === "true" ? { historical: true } : {}), ...(projectId ? { projectId: parse(uuid, projectId) } : {}), ...(scope ? { scope: scope as "mine" | "accessible" } : {}), ...(queue ? { queue: queue as "waiting" | "corrections" | "resubmitted" | "history" } : {}), ...(parsedQ?.success && parsedQ.data ? { q: parsedQ.data } : {}), ...(sort ? { sort: sort as "project" | "due" } : {}) };
+    return this.reviews.inbox((await this.actor(request)).actor, page.data.offset, page.data.limit, personal === "true", filters);
   }
 
   @Get("tasks/:taskId")

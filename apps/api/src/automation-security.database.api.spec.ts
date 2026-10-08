@@ -1,0 +1,112 @@
+import "reflect-metadata";
+import { randomUUID } from "node:crypto";
+import { ForbiddenException, NotFoundException } from "@nestjs/common";
+import { DatabaseService } from "./database.service.js";
+import { AuthorizationService } from "./authorization.service.js";
+import { ProjectService, type ProjectActor } from "./project.service.js";
+import { TaskService } from "./task.service.js";
+import { ProjectWorkflowService } from "./project-workflow.service.js";
+import { ApprovalService } from "./approval.service.js";
+import { TimeService } from "./time.service.js";
+import { DocumentService } from "./document.service.js";
+import { RevisionService } from "./revision.service.js";
+import { NotificationsService } from "./notifications.service.js";
+import { ReviewService } from "./review.service.js";
+import { WorkforceService } from "./workforce.service.js";
+import { ClientPortalScopeService } from "./client-portal-scope.service.js";
+import { TurnkeyService } from "./turnkey.service.js";
+import { SiteService } from "./site.service.js";
+import { PerformanceService } from "./performance.service.js";
+import { DashboardService } from "./dashboard.service.js";
+import { AutomationService } from "./automation.service.js";
+import type { RuntimeConfig } from "./config.js";
+
+const url = process.env.S26_SECURITY_DATABASE_URL;
+const suite = url ? describe : describe.skip;
+
+suite("S26 committed PostgreSQL automation authorization and evidence checks", () => {
+  let database: DatabaseService;
+  let automation: AutomationService;
+  let owner: ProjectActor;
+  let recipient: ProjectActor;
+  let outOfBranch: ProjectActor;
+  let foreignOwner: ProjectActor;
+  let projectId: string;
+  let branchId: string;
+  let employeeId: string;
+  let task: TaskService;
+
+  beforeAll(async () => {
+    const parsed = new URL(url!);
+    const s26 = /^\/sense_s26_security_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
+    const s27 = process.env.S27_E2E_ENABLED === "1" && /^\/sense_s26_security_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || (!s26 && !s27)) throw new Error("Refuse anything except the dedicated S26 security target or explicitly enabled S27 suite target");
+    const config = { nodeEnv: "test", port: 4000, databaseUrl: url!, webOrigin: "http://localhost:5173", nasRoot: ".env.s26-tools/nas" } as RuntimeConfig;
+    database = new DatabaseService(config);
+    const names = await database.prisma.$queryRaw<Array<{ name: string }>>`SELECT current_database() AS name`;
+    if (names[0]?.name !== parsed.pathname.slice(1)) throw new Error("S26 security exact database target mismatch");
+    const fixture = await database.prisma.$transaction(async (tx) => {
+        const org = await tx.organization.findFirst() ?? await tx.organization.create({ data: { name: "S26 isolated security organization" } });
+        const branch = await tx.branch.create({ data: { organizationId: org.id, name: `S26 security branch ${randomUUID()}` } });
+        const team = await tx.team.create({ data: { organizationId: org.id, branchId: branch.id, name: `S26 security team ${randomUUID()}` } });
+        const branch2 = await tx.branch.create({ data: { organizationId: org.id, name: `S26 other branch ${randomUUID()}` } });
+        const team2 = await tx.team.create({ data: { organizationId: org.id, branchId: branch2.id, name: `S26 other team ${randomUUID()}` } });
+        const createAccount = async (organizationId: string, kind: "OWNER" | "STAFF", name: string, homeBranchId?: string, homeTeamId?: string) => {
+          const account = await tx.account.create({ data: { normalizedEmail: `${name}-${randomUUID()}@example.test`, kind, state: "ACTIVE" } });
+          const employee = kind === "STAFF" ? await tx.employee.create({ data: { organizationId, accountId: account.id, homeBranchId: homeBranchId!, homeTeamId: homeTeamId!, hiredAt: new Date("2026-01-01") } }) : null;
+          return { account, employee };
+        };
+        const existingOwner = await tx.account.findFirst({ where: { kind: "OWNER", state: "ACTIVE" } });
+        const ownerRow = existingOwner ? { account: existingOwner, employee: null } : await createAccount(org.id, "OWNER", "owner");
+        const recipientRow = await createAccount(org.id, "STAFF", "recipient", branch.id, team.id);
+        const outRow = await createAccount(org.id, "STAFF", "other-branch", branch2.id, team2.id);
+        owner = { accountId: ownerRow.account.id, kind: "OWNER", organizationId: org.id } as ProjectActor;
+        recipient = { accountId: recipientRow.account.id, kind: "STAFF", organizationId: org.id, employeeId: recipientRow.employee!.id } as ProjectActor;
+        outOfBranch = { accountId: outRow.account.id, kind: "STAFF", organizationId: org.id, employeeId: outRow.employee!.id } as ProjectActor;
+        foreignOwner = { accountId: ownerRow.account.id, kind: "OWNER", organizationId: randomUUID() } as ProjectActor;
+        employeeId = recipientRow.employee!.id; branchId = branch.id;
+
+      return { branchId: branch.id, employeeId: recipientRow.employee!.id };
+    }, { timeout: 30000 });
+    branchId = fixture.branchId; employeeId = fixture.employeeId;
+    const authorization = new AuthorizationService(database), projects = new ProjectService(database); task = new TaskService(database, authorization);
+    const approvals = new ApprovalService(database), documents = new DocumentService(database, authorization, config), revisions = new RevisionService(database, authorization, documents), notifications = new NotificationsService(database);
+    const reviews = new ReviewService(database, authorization, documents, revisions, notifications), workforce = new WorkforceService(database, authorization, approvals, notifications, config);
+    const portal = new ClientPortalScopeService(database, authorization), turnkey = new TurnkeyService(database, authorization, approvals, revisions, portal);
+    const site = new SiteService(database, authorization, documents, turnkey, workforce), performance = new PerformanceService(database, authorization, revisions, approvals, workforce);
+    const dashboard = new DashboardService(database, projects, task, approvals, new TimeService(database, authorization, task, documents), workforce, performance, revisions, reviews, documents, site, turnkey);
+    automation = new AutomationService(database, authorization, projects, task, dashboard, approvals, notifications);
+    const created = await projects.create(owner, { branchId, title: `S26 restricted report source ${randomUUID()}`, deliveryType: "DESIGN", scopes: ["Delivery"], reason: "Create isolated S26 security project" });
+    projectId = created.project.id;
+    for (const permissionKey of ["project.view", "project.manage"]) await database.prisma.employeePermissionOverride.create({ data: { organizationId: owner.organizationId, employeeId, permissionKey, effect: "ALLOW", scopeKind: "BRANCH", branchId, reason: "Explicit S26 security source access" } });
+    const workflow = new ProjectWorkflowService(database, authorization, approvals);
+    await workflow.assignment(owner, projectId, { employeeId, expectedVersion: 1, reason: "Assign S26 security recipient" });
+    await workflow.lead(owner, projectId, { employeeId, expectedVersion: 2, reason: "Appoint S26 security lead" });
+    await workflow.status(owner, projectId, { toStatus: "ACTIVE", expectedVersion: 3, reason: "Activate S26 security source" });
+  });
+  afterAll(async () => { await database?.onModuleDestroy(); });
+
+  test("generated report runs enforce ID, branch, and current source access on every read", async () => {
+    const report = await automation.saveReport(owner, { commandId: randomUUID(), reason: "Save S26 security report", title: "Restricted task evidence", category: "project", from: "2026-10-01", to: "2026-10-31", columns: ["label"], filters: [], groupBy: "label", chart: "BAR" });
+    await automation.saveRule(owner, { commandId: randomUUID(), reason: "Save S26 report rule", title: "Generate restricted report", enabled: true, eventNames: ["task.created"], projectId, condition: { subjectType: "task" }, action: { kind: "REPORT", recipientId: recipient.accountId, reportId: report.id } });
+    await automation.saveRule(owner, { commandId: randomUUID(), reason: "Save S26 notice rule", title: "Notify on restricted source", enabled: true, eventNames: ["task.created"], projectId, condition: { subjectType: "task" }, action: { kind: "NOTIFY", recipientId: recipient.accountId } });
+    const sourceTask = await task.create(recipient, { title: "Sensitive S26 project evidence", type: "PROJECT", projectId, ownerEmployeeId: employeeId, priority: "HIGH", targetDate: "2026-10-20", reason: "Create actual report source" });
+    const batches = await Promise.all([automation.runBatch(), automation.runBatch()]);
+    const sourceEvent = await database.prisma.domainEvent.findFirstOrThrow({ where: { organizationId: owner.organizationId, eventName: "task.created", subjectId: sourceTask.id } });
+    const runs = await database.prisma.automationRun.findMany({ where: { organizationId: owner.organizationId, sourceEventId: sourceEvent.id } });
+    expect(batches[0].processed + batches[1].processed).toBe(2);
+    expect(runs.map(({ actionKind }) => actionKind).sort()).toEqual(["NOTIFY", "REPORT"]);
+    const run = runs.find(({ actionKind }) => actionKind === "REPORT")!;
+    const noticeRun = runs.find(({ actionKind }) => actionKind === "NOTIFY")!;
+    const authorized = await automation.runReport(recipient, run.id);
+    expect(authorized.table.rows.find((row) => row.label === "Sensitive S26 project evidence")?.count).toBeGreaterThan(0);
+    expect(await automation.deliveryAuthorized(noticeRun.eventId, recipient.accountId)).toBe(true);
+    await expect(automation.runReport(outOfBranch, run.id)).rejects.toBeInstanceOf(ForbiddenException);
+    await expect(automation.runReport(foreignOwner, run.id)).rejects.toBeInstanceOf(NotFoundException);
+    await database.prisma.employeePermissionOverride.create({ data: { organizationId: owner.organizationId, employeeId, permissionKey: "project.view", effect: "DENY", scopeKind: "BRANCH", branchId, reason: "Revoke current S26 source visibility" } });
+    await expect(automation.runReport(recipient, run.id)).rejects.toBeInstanceOf(ForbiddenException);
+    expect(await automation.deliveryAuthorized(noticeRun.eventId, recipient.accountId)).toBe(false);
+    const retained = await database.prisma.task.findUniqueOrThrow({ where: { id: sourceTask.id } });
+    expect(retained.title).toBe("Sensitive S26 project evidence");
+  });
+});

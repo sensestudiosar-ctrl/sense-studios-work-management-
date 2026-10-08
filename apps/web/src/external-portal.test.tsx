@@ -215,9 +215,10 @@ describe("external portal", () => {
   });
 
   it("keeps native URL and extraction code out of the staff workspace until an Owner asks to reveal them", async () => {
-    const payload = { project: { id: "p1", title: "Studio", status: "CANCELLED", version: 2 }, grants: [], revisionOptions: [], releaseOptions: [], packageOptions: [], closeoutTaskOptions: [], requests: [], submissions: [], uploads: [], cadShares: [{ id: "share1", grantId: "g1", revisionId: "r1", nativeLinkId: "native-1", issuedAt: "2026-10-01T00:00:00.000Z", expiresAt: "2026-10-08T00:00:00.000Z", version: 1, revokedAt: null, revocationRequired: true }], capabilities: { manage: true, issueCad: true } };
+    const activeShareExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const payload = { project: { id: "p1", title: "Studio", status: "CANCELLED", version: 2 }, grants: [], revisionOptions: [], releaseOptions: [], packageOptions: [], closeoutTaskOptions: [], requests: [], submissions: [], uploads: [], cadShares: [{ id: "share1", grantId: "g1", revisionId: "r1", nativeLinkId: "native-1", issuedAt: "2026-10-01T00:00:00.000Z", expiresAt: activeShareExpiry, version: 1, revokedAt: null, revocationRequired: true }], capabilities: { manage: true, issueCad: true } };
     const fetchMock = vi.fn(async (input: RequestInfo | URL) => String(input).endsWith("/cad-shares/share1")
-      ? response({ id: "share1", url: "https://miniscloud.invalid/private", extractionCode: "private-code", expiresAt: "2026-10-08T00:00:00.000Z", warning: "Do not forward the native share." })
+      ? response({ id: "share1", url: "https://miniscloud.invalid/private", extractionCode: "private-code", expiresAt: activeShareExpiry, warning: "Do not forward the native share." })
       : response(payload));
     vi.stubGlobal("fetch", fetchMock);
     window.history.replaceState({}, "", "?projectId=p1");

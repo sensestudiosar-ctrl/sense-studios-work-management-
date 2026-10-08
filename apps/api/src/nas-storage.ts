@@ -108,7 +108,7 @@ export class NasStorage {
     } finally { await rmdir(lock); }
   }
 
-  async finalize(uploadId: string, chunkCount: number, expectedSize: number, expectedChecksum?: string): Promise<{ key: string; size: number; sha256: string }> {
+  async finalize(uploadId: string, chunkCount: number, expectedSize: number, expectedChecksum?: string, stableBlobKey?: string): Promise<{ key: string; size: number; sha256: string }> {
     this.ready();
     const uploadDir = join(this.staging, id(uploadId));
     if (!Number.isSafeInteger(chunkCount) || chunkCount < 1 || chunkCount > 1_000_000 || !Number.isSafeInteger(expectedSize) || expectedSize < 1) throw new Error("Invalid upload manifest");
@@ -116,41 +116,61 @@ export class NasStorage {
     await directory(this.staging, this.root);
     await directory(this.blobs, this.root);
     await directory(uploadDir, this.root);
-    const entries = await readdir(uploadDir);
-    if (entries.length !== chunkCount) throw new Error("Incomplete upload");
-    const assembled = join(this.staging, `${randomUUID()}.assembling`);
-    const handle = await open(assembled, "wx", 0o600);
-    const digest = createHash("sha256");
-    let size = 0;
-    let actual: string;
-    try {
-      for (let index = 0; index < chunkCount; index++) {
-        const chunk = join(uploadDir, String(index));
-        const info = await lstat(chunk);
-        if (!info.isFile() || info.isSymbolicLink()) throw new Error("Unsafe upload chunk");
-        for await (const part of createReadStream(chunk)) {
-          const bytes = Buffer.isBuffer(part) ? part : Buffer.from(part);
-          size += bytes.length;
-          if (size > expectedSize) throw new Error("Upload size mismatch");
-          digest.update(bytes);
-          await handle.writeFile(bytes);
-        }
-      }
-      actual = digest.digest("hex");
-      if (size !== expectedSize || expected && actual !== expected) throw new Error("Upload checksum mismatch");
-      await handle.sync();
-    } catch (error) {
-      await handle.close();
-      await unlink(assembled);
-      throw error;
-    }
-    await handle.close();
-    const key = randomUUID();
+    const uploadKey = id(uploadId);
+    const key = stableBlobKey === undefined ? randomUUID() : id(stableBlobKey);
+    if (stableBlobKey !== undefined && key !== uploadKey) throw new Error("Stable blob key must match its upload ID");
     const target = join(this.blobs, key);
-    try { await lstat(target); throw new Error("Storage key collision"); }
-    catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") { await unlink(assembled); throw error; } }
-    await rename(assembled, target);
-    return { key, size, sha256: actual };
+    const finalizeLock = join(uploadDir, ".finalize.lock");
+    let acquired = false;
+    for (let attempt = 0; attempt < 400; attempt++) {
+      try { await mkdir(finalizeLock, { mode: 0o700 }); acquired = true; break; }
+      catch (error) { if ((error as NodeJS.ErrnoException).code !== "EEXIST") throw error; await pause(25); }
+    }
+    if (!acquired) throw new Error("Upload finalization is busy; retry later");
+    try {
+      const entries = (await readdir(uploadDir)).filter((entry) => entry !== ".finalize.lock");
+      const chunks = new Set(entries);
+      if (entries.length !== chunkCount || entries.some((entry) => !/^\d+$/.test(entry)) || Array.from({ length: chunkCount }, (_, index) => String(index)).some((index) => !chunks.has(index))) throw new Error("Incomplete upload");
+      const assembled = join(this.staging, `${randomUUID()}.assembling`);
+      const handle = await open(assembled, "wx", 0o600);
+      const digest = createHash("sha256");
+      let size = 0;
+      let actual: string;
+      try {
+        for (let index = 0; index < chunkCount; index++) {
+          const chunk = join(uploadDir, String(index));
+          const info = await lstat(chunk);
+          if (!info.isFile() || info.isSymbolicLink()) throw new Error("Unsafe upload chunk");
+          for await (const part of createReadStream(chunk)) {
+            const bytes = Buffer.isBuffer(part) ? part : Buffer.from(part);
+            size += bytes.length;
+            if (size > expectedSize) throw new Error("Upload size mismatch");
+            digest.update(bytes);
+            await handle.writeFile(bytes);
+          }
+        }
+        actual = digest.digest("hex");
+        if (size !== expectedSize || expected && actual !== expected) throw new Error("Upload checksum mismatch");
+        await handle.sync();
+      } catch (error) {
+        await handle.close();
+        await unlink(assembled);
+        throw error;
+      }
+      await handle.close();
+      try {
+        const info = await lstat(target);
+        if (stableBlobKey === undefined) throw new Error("Storage key collision");
+        if (!info.isFile() || info.isSymbolicLink() || info.size !== size) throw new Error("Conflicting finalized blob");
+        const existing = createHash("sha256");
+        for await (const part of createReadStream(target)) existing.update(part);
+        if (existing.digest("hex") !== actual) throw new Error("Conflicting finalized blob");
+        await unlink(assembled);
+        return { key, size, sha256: actual };
+      } catch (error) { if ((error as NodeJS.ErrnoException).code !== "ENOENT") { await unlink(assembled); throw error; } }
+      await rename(assembled, target);
+      return { key, size, sha256: actual };
+    } finally { await rmdir(finalizeLock); }
   }
 
   /** Call after metadata commits; a failed cleanup can be retried by reconciliation. */

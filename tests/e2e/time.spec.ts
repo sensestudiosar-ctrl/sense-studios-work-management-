@@ -11,8 +11,11 @@ test("time workspace persists timer and manual work through correction, approval
   test.setTimeout(120_000);
   test.skip(!fixtureUrl || !receiverUrl || !receiverToken || process.env.S16_E2E_ENABLED !== "1", "Dedicated S16 database and real loopback accounting receiver are required");
   const parsed = new URL(fixtureUrl!);
-  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "56433" || !parsed.pathname.endsWith("_test")) {
-    throw new Error("S16 time browser acceptance requires a dedicated local PostgreSQL _test database on port 56433");
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && ((["56433", "57433"].includes(parsed.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)) || (parsed.port === "57433" && /^\/sense_s16_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)));
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsed.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsed.port !== "56433") || (!parsed.pathname.endsWith("_test") && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
+    throw new Error("Time browser acceptance requires a dedicated local PostgreSQL _test database on an approved S16 or exact S25 target");
   }
   const receiver = new URL(receiverUrl!);
   if (!["localhost", "127.0.0.1", "::1"].includes(receiver.hostname)) throw new Error("S16 E2E accounting receiver must be loopback");

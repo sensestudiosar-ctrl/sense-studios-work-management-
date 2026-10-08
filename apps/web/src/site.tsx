@@ -53,7 +53,7 @@ export function SiteWorkspace({ csrfToken, accountId }: { csrfToken: string; acc
   const [responsibleAccountId, setResponsibleAccountId] = useState("");
   const [snagAction, setSnagAction] = useState<Record<string, { fixer: string; verifier: string; note: string; photoIds: string[]; outcome: "PASSED" | "FAILED" }>>({});
   const current = useRef<Detail | undefined>(undefined);
-  const projectIdRef = useRef("");
+  const projectIdRef = useRef(new URLSearchParams(window.location.search).get("projectId") ?? "");
 
   const loadDetail = useCallback(async (id: string, request: number): Promise<void> => {
     let next: Detail;

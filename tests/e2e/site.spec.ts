@@ -14,7 +14,11 @@ test("site reports, independent snag repair and handover persist across refresh"
   test.setTimeout(120_000);
   test.skip(!process.env.DATABASE_URL || !process.env.NAS_ROOT, "An isolated local PostgreSQL test database and NAS_ROOT are required");
   const databaseUrl = new URL(process.env.DATABASE_URL!);
-  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || databaseUrl.port !== "56433" || !databaseUrl.pathname.endsWith("_test")) {
+  const standardSiteTestTarget = databaseUrl.port === "56433" && databaseUrl.pathname.endsWith("_test");
+  const approvedS25MainTarget = process.env.S25_E2E_ENABLED === "1" && databaseUrl.port === "57433" && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const approvedS26MainTarget = process.env.S26_E2E_ENABLED === "1" && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const approvedS27MainTarget = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || (!standardSiteTestTarget && !approvedS25MainTarget && !approvedS26MainTarget && !approvedS27MainTarget)) {
     throw new Error("S20 browser acceptance requires a dedicated localhost PostgreSQL _test database on port 56433");
   }
   const require = createRequire(resolve("apps/api/package.json"));
@@ -244,6 +248,24 @@ test("site reports, independent snag repair and handover persist across refresh"
     const screenshotDirectory = resolve(".env.s20-tools", "screenshots");
     mkdirSync(screenshotDirectory, { recursive: true });
     writeFileSync(join(screenshotDirectory, `s20-site-${testInfo.project.name}.png`), await page.screenshot({ fullPage: true }));
+
+    await context.clearCookies();
+    await context.addCookies([{ name: "sense_sid", value: ownerAuth.secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
+    const dashboardReady = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard" && response.request().method() === "GET", { timeout: 30_000 });
+    await page.goto("/dashboard");
+    expect((await dashboardReady).status()).toBe(200);
+    await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 30_000 });
+    const siteDashboard = page.locator(".dashboard-panel").filter({ has: page.getByRole("heading", { name: `Site: ${projectTitle}` }) });
+    await expect(siteDashboard).toBeVisible();
+    for (const family of ["today:", "tomorrow:", "packages:", "manpower:", "snags:", "reports:", "handovers:", "materials:"]) await expect(siteDashboard).toContainText(family);
+    for (const fact of ["Marked and cleaned the slab area", "Begin steel fixing", "Masonry", "100", "Uneven tile edge", "north-slab.jpg", "Two cement pallets", "Current package complete, passing quality, and closed snag verified"]) await expect(siteDashboard).toContainText(fact);
+    const s24ScreenshotDirectory = resolve(".env.s24-tools", "screenshots");
+    mkdirSync(s24ScreenshotDirectory, { recursive: true });
+    await siteDashboard.scrollIntoViewIfNeeded();
+    await page.screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-viewport-${testInfo.project.name}.png`), fullPage: false });
+    for (const [name, fact] of [["today", "Marked and cleaned the slab area"], ["tomorrow", "Begin steel fixing"], ["photo", "north-slab.jpg"], ["materials", "Two cement pallets"]] as const) {
+      await siteDashboard.getByText(fact, { exact: true }).first().screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-${name}-${testInfo.project.name}.png`) });
+    }
   } finally {
     if (fixtureCommitted) await db.query('UPDATE sessions SET "revokedAt"=CURRENT_TIMESTAMP WHERE id = ANY($1::uuid[])', [[ownerAuth.id, leadAuth.id, fixerAuth.id, verifierAuth.id]]);
     await db.end();

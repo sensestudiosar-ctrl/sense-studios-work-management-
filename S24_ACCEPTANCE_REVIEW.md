@@ -1,0 +1,40 @@
+# S24 Sol acceptance review
+
+Status: ACCEPTED / COMPLETE for Owner-authorized development/local staging, 2026-10-05. Exact GPT-6.1 Sol performed the requirement, architecture, schema, permission/source, concurrency and independent visual acceptance review. Exact GPT-6 Luna implemented bounded UI/export/security-test/documentation work. The actual final evidence below satisfies the slice definition of done; production gates remain separate.
+
+## Requirement/source review
+
+The current Owner start-and-finish instruction and three explicit approvals supersede historical S24-unauthorized wording. R-058/R-059/R-060/R-073/R-074/R-077 clauses are mapped in `S24_SPEC.md` and `S24_API_CONTRACT.md`. S18 remains excluded, with unavailable Skills/Training/Development displayed. S25–S27 are excluded. Report and summary readers use owning current scope; no dashboard creates approval authority, scoring policy, overtime policy or extra organizational tier.
+
+Sol inspected public ports/callers: tasks, typed pending approvals, real time/workforce, accepted performance/health, project plan/scope, internal/client reviews, exact revisions/transmittals, Site/Turnkey and isolated client portal shares. The internal report table uses typed field/value cells and retains date/period/source identities. Live state at generation and accepted period snapshots are explicit; it does not pretend to reconstruct historical operational state. Missing metrics/policies are explicit unavailable. Current source row/protected-field loss denies a whole frozen report rather than leaking a partial retained snapshot.
+
+## Schema/security review
+
+Six new tables are additive, with SQL immutable and canonical audit/event/hash/outbox guards. Migration100 was not rewritten after deployment. Reproduced catalogue, generic NEW-row field and stable-slot defects were corrected by forward101–104 migrations. Command identity includes target ID and payload; correction history appends same-category/period snapshots. PostgreSQL canonical JSONB hashes bind retained table/manifests. Decimal/Date manifest comparison is canonicalized consistently with stored evidence.
+
+Command and slot advisory locks precede current session/account checks; revocation committed during a wait is checked before writes. Scoped reads reuse caller transactions. Current identity/session, relevant reporting-team/grants, source task/project/assignment and rule-version locks remain through writes. In-app scheduled delivery reuses the notification transaction for source reauthorization; generic notice text avoids stale confidential titles. Actual committed security tests exercise session-after-wait and revoked-source worker delivery. External email remains within the accepted provider at-least-once boundary; no exactly-once provider claim.
+
+Stable slots exclude configuration version: edits invalidate pending version delivery but preserve committed recipient/day/task or event identity. Explicit configured audiences retain current source authority. Personal reminder records/read/delivery belong to creator. Current cancelled/Completed/reassignment-blocked tasks are excluded. Daily/weekly/monthly calendar and DST semantics are explicit and tested; no defaults/cadence are seeded.
+
+## Actual review findings and fixes
+
+- Real SQL fixtures exposed event catalogue registration and generic trigger row-field errors; forward migrations repaired them and subsequent SQL regressions passed.
+- Source review found scheduled-delivery authorization initially opened/released its own transaction; it now composes on the notification delivery transaction.
+- Source review found summary manifest initially covered tasks only; it now includes all derived performance/health/workforce/Site/approval/time families. Weekly/monthly accepted snapshot and factual time/workload periods are explicit.
+- Sol caught a purported event-rule edit test omitting its target ID; it was corrected to update the original rule and verify actual priority exclusion/no replay.
+- Actual browser fixture found client pending-item enum mismatch (`OPEN` versus authoritative `PENDING`); UI now uses `PENDING`/`IN_REVIEW` and excludes already-recorded revision decisions from actionable client pending work.
+- Mobile visual review found raw employee UUID labels, misleading staff empty schedule claim and raw ISO report dates; current labels/text/date presentation were corrected and refreshed final captures show the corrected state.
+- Independent Sol PDF render review rejected the first mixed-script long-cell artifact: all wrapped lines were drawn at one Y coordinate, overlapping into unreadable text. Explicit per-line baselines and page origins corrected the R-077.c defect; a drawing-position regression fails the previous implementation. Sol independently inspected all four unique `mixed-script-final-page-1.png` through `-4.png` renders: each repeats title/category/period/generated metadata and table headers; wrapped rows, page continuations and terminal mixed-script evidence are readable without overlap or clipping. Final PDF visual acceptance passed.
+- Populated browser runs exposed source-read amplification: each retained time/workforce manifest row re-read its entire owning dataset. Identical owning-port reads are now reused only within the caller's authorization transaction, including history lists; every source ID and protected field is still checked. Focused regressions prove bounded reads and denial after a different actor, removed source or protected field loss. The scheduler also skips rebuilding an already committed immutable summary slot; advisory/unique enforcement still protects concurrent first generation. Three focused regressions passed. Schedule/reminder list authorization now remains held through its source reads. No cache crosses requests or actors.
+
+## Final gate and visual acceptance
+
+FINAL1 typecheck/lint/API202/web141/PostgreSQL280/build passed at their checkpoints, but four browser failures made the full run fail; one was client enum, one busy freeze request and two fixed harness-port mismatches. Subsequent source/UI fixes were verified in the final run rather than claimed under earlier checkpoints.
+
+FINAL2 typecheck/lint/API204/web142/PostgreSQL280/build passed;42 of45 browser cases passed and the full run exited1. The remaining cases exposed a history fixture selecting a reason absent from the list contract, missing reload readiness and populated Site/dashboard latency. Exact persisted snapshot/run identity fixtures, transaction-local read reuse and responsive field/action wrapping were verified in refreshed populated checkpoints and the final full run. Owner and summary overflow assertions passed on both devices.
+
+The final single pinned Node24.19.0/pnpm11.19.0 `pnpm verify` exited0 (FINAL3): typecheck/lint,207 API unit tests across34 suites,142 web tests across22 files,280 real PostgreSQL integration tests across51 suites,production builds and all45 desktop/mobile browser tests passed without skips or retries. The actual log ends `VERIFY_EXIT_CODE=0`; earlier failed runs remain recorded above.
+
+Final read-only checks confirm104 migrations current on15 guarded suite/security/retained-clone targets, all137 original S23 business-table column/count/SHA-256 snapshots and15,474 rows unchanged, and the original source99 migrations untouched. Sol independently reviewed16 current core desktop/mobile views (Owner overview, report history, configured schedule, persisted summary, staff reminder, Client pending/approved, Site viewport), supporting exact snapshot/factual Site crops and all four paginated mixed-script PDF pages. Required current scope states, responsive layouts, evidence readability and repeated PDF headers passed. No further source changes followed this accepted checkpoint.
+
+S24 is accepted for development/local staging. S18 remains excluded; S25–S27 remain unauthorized. Production deployment/NAS/offsite key custody/restore/hosted CI and the separately identified actual-project R-105 checkpoint remain separate, unverified gates.

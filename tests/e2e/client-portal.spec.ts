@@ -1,7 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
-import { resolve } from "node:path";
+import { mkdirSync, writeFileSync } from "node:fs";
+import { join, resolve } from "node:path";
 
 type FixtureDatabase = {
   connect(): Promise<void>;
@@ -11,7 +12,7 @@ type FixtureDatabase = {
 
 test("client portal isolated sign-in, passkey item/final approval, persisted review and revocation", async ({ page, context, baseURL }, testInfo) => {
   test.setTimeout(120_000);
-  test.skip(process.env.S14_E2E_ENABLED !== "1", "Set S14_E2E_ENABLED=1 to run the isolated S14 browser acceptance");
+  test.skip(process.env.S14_E2E_ENABLED !== "1" && process.env.S24_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1", "Set an approved isolated client browser acceptance flag");
   test.skip(!process.env.DATABASE_URL, "Dedicated local S14 PostgreSQL database required");
   test.skip(!process.env.EMAIL_VERIFICATION_SECRET, "EMAIL_VERIFICATION_SECRET is required for the local S14 code fixture");
   test.skip(Boolean(process.env.BREVO_API_KEY || process.env.BREVO_SENDER_EMAIL || process.env.BREVO_SENDER_NAME), "Run without a configured Brevo sender so no email leaves the local test");
@@ -21,8 +22,12 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
   const dedicatedS14Database = parsedUrl.port === "56434" && /^\/sense_s14_[a-z0-9_]*_test$/.test(parsedUrl.pathname);
   const designatedVerifyDatabase = parsedUrl.port === "56433" && /^\/sense_s13_s14_verify_20261001(?:_[a-z0-9]+)?_test$/.test(parsedUrl.pathname);
   const explicitlyEnabledS15Database = process.env.S15_E2E_ENABLED === "1" && parsedUrl.port === "56433" && /^\/sense_s15_[a-z0-9_]*_test$/.test(parsedUrl.pathname);
-  if (!["localhost", "127.0.0.1"].includes(parsedUrl.hostname) || (!dedicatedS14Database && !designatedVerifyDatabase && !explicitlyEnabledS15Database)) {
-    throw new Error("Client portal browser fixture requires a local sense_s14_*_test database on port 56434 or an explicitly enabled sense_s13_s14_verify_20261001*_test or sense_s15_*_test database on port 56433");
+  const explicitlyEnabledS24Database = process.env.S24_E2E_ENABLED === "1" && parsedUrl.port === "56433" && /^\/sense_[a-z0-9_]*s24_[a-z0-9_]*_test$/.test(parsedUrl.pathname);
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsedUrl.hostname) && ((["56433", "57433"].includes(parsedUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsedUrl.pathname)) || (parsedUrl.port === "56436" && /^\/sense_s14_s25_[a-z0-9_]+_test$/i.test(parsedUrl.pathname)));
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsedUrl.hostname) && parsedUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsedUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsedUrl.hostname === "127.0.0.1" && parsedUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsedUrl.pathname);
+  if (!["localhost", "127.0.0.1"].includes(parsedUrl.hostname) || (!dedicatedS14Database && !designatedVerifyDatabase && !explicitlyEnabledS15Database && !explicitlyEnabledS24Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
+    throw new Error("Client portal browser fixture requires its dedicated local S14 database, an explicitly enabled approved S13/S15 target, or an explicitly enabled S24 _test target on port 56433");
   }
 
   const require = createRequire(resolve("apps/api/package.json"));
@@ -38,6 +43,7 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
   const projectTitle = `S14 client auth ${suffix.slice(0, 8)}`;
   const sessionName = "sense_client_sid";
   const internalRequests: string[] = [];
+  const clientRequests: string[] = [];
   let cdp: import("@playwright/test").CDPSession | undefined;
 
   await db.connect();
@@ -112,6 +118,7 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
 
     page.on("request", (request) => {
       const path = new URL(request.url()).pathname;
+      if (path.startsWith("/api/v1/client-portal/")) clientRequests.push(path);
       if (["/api/v1/auth/", "/api/v1/org/", "/api/v1/projects", "/api/v1/tasks", "/api/v1/crm", "/api/v1/client-access/"].some((prefix) => path.startsWith(prefix))) {
         internalRequests.push(path);
       }
@@ -164,6 +171,24 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
     await page.getByRole("button", { name: "Register a passkey" }).click();
     await expect(page.getByRole("status").filter({ hasText: "Passkey registered." })).toHaveText("Passkey registered.");
     await expect(page.getByText("1 registered passkey")).toBeVisible();
+    await page.getByRole("button", { name: "Open project dashboard" }).click();
+    const clientDashboard = page.locator(".client-dashboard");
+    await expect(clientDashboard.getByRole("heading", { name: "Project dashboard" })).toBeVisible();
+    await expect(clientDashboard).toContainText("Project status");
+    await expect(clientDashboard).toContainText("ACTIVE");
+    await expect(clientDashboard).toContainText("Shared approvals");
+    await expect(clientDashboard).toContainText("0 / 1");
+    await expect(clientDashboard.getByRole("heading", { name: "Recent submitted packages" })).toBeVisible();
+    await expect(clientDashboard).toContainText("Design brief approval");
+    await expect(clientDashboard.getByRole("heading", { name: "Reviews available to you" })).toBeVisible();
+    await expect(clientDashboard).toContainText("Design approval brief");
+    await expect(clientDashboard.getByRole("heading", { name: "Approved shared items" })).toBeVisible();
+    await expect(clientDashboard).toContainText("There are no current gallery items available to your account.");
+    const clientScreenshotDirectory = resolve(".env.s24-tools", "screenshots");
+    mkdirSync(clientScreenshotDirectory, { recursive: true });
+    const pendingDashboardCapture = await page.screenshot({ path: testInfo.outputPath("s24-client-dashboard-pending.png"), fullPage: true });
+    writeFileSync(join(clientScreenshotDirectory, `s24-client-dashboard-pending-${testInfo.project.name}.png`), pendingDashboardCapture);
+    await page.getByRole("button", { name: "Hide project dashboard" }).click();
     await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await page.getByRole("button", { name: /Design approval brief/ }).click();
     await page.getByLabel("Reason", { exact: true }).last().fill("Approve the exact Design brief");
@@ -180,6 +205,14 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
     await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await page.getByRole("button", { name: /Design approval brief/ }).click();
     await expect(page.getByText("Final overall approval", { exact: true })).not.toBeVisible();
+    await page.getByRole("button", { name: "Open project dashboard" }).click();
+    const approvedDashboard = page.locator(".client-dashboard");
+    await approvedDashboard.getByRole("button", { name: "Refresh" }).click();
+    await expect(approvedDashboard).toContainText("1 / 1");
+    await expect(approvedDashboard).toContainText("Design approval brief");
+    const approvedDashboardCapture = await page.screenshot({ path: testInfo.outputPath("s24-client-dashboard-approved.png"), fullPage: true });
+    writeFileSync(join(clientScreenshotDirectory, `s24-client-dashboard-approved-${testInfo.project.name}.png`), approvedDashboardCapture);
+    await page.getByRole("button", { name: "Hide project dashboard" }).click();
     const selectedContrast = await page.locator('.client-review-item-list button[aria-current="true"]').evaluate((button) => {
       const luminance = (rgb: string): number => {
         const channels = rgb.match(/\d+/g)!.slice(0, 3).map((value) => { const channel = Number(value) / 255; return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4; });
@@ -206,6 +239,10 @@ test("client portal isolated sign-in, passkey item/final approval, persisted rev
     const internalSetup = await page.request.get("/api/v1/projects/setup");
     expect(internalSetup.status()).toBe(401);
     expect(internalRequests).toEqual([]);
+    expect(clientRequests).toContain("/api/v1/client-portal/projects");
+    expect(clientRequests).toContain(`/api/v1/client-portal/reviews/projects/${project.project.id}`);
+    expect(clientRequests).toContain(`/api/v1/client-portal/projects/${project.project.id}/gallery`);
+    expect(clientRequests.some((path) => path.startsWith("/api/v1/dashboard") || path.startsWith("/api/v1/reports"))).toBe(false);
 
     const currentPortalSession = await db.query<{ id: string }>('SELECT id FROM client_portal_sessions WHERE "accountId"=$1 AND "revokedAt" IS NULL ORDER BY "createdAt" DESC LIMIT 1', [clientAccountId]);
     expect(currentPortalSession.rows).toHaveLength(1);

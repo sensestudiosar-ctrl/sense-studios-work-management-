@@ -20,7 +20,7 @@ function dateLabel(value: string): string {
   return Number.isNaN(date.getTime()) ? "Unavailable" : date.toLocaleString();
 }
 
-export function ApprovalQueue(): React.JSX.Element {
+export function ApprovalQueue({ title = "Needs your attention" }: { title?: string }): React.JSX.Element {
   const [items, setItems] = useState<ApprovalItem[]>([]);
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -96,7 +96,7 @@ export function ApprovalQueue(): React.JSX.Element {
   return (
     <section className="identity-section approval-queue" aria-labelledby="approval-queue-heading">
       <div className="sessions-heading-row">
-        <div><div className="eyebrow">MANAGEMENT</div><h2 id="approval-queue-heading">Needs your attention</h2></div>
+        <div><div className="eyebrow">MANAGEMENT</div><h2 id="approval-queue-heading">{title}</h2></div>
         <button className="secondary-action" type="button" onClick={() => void loadQueue()} disabled={loading}>
           {loading ? "Refreshing…" : "Refresh"}
         </button>
@@ -104,7 +104,7 @@ export function ApprovalQueue(): React.JSX.Element {
       <p className="identity-note">Pending actions from your authorized work areas appear here.</p>
       {loading && <p className="identity-note" role="status">Loading pending decisions…</p>}
       {!loading && error && <div className="sessions-error"><p className="auth-error" role="alert">{error}</p><button className="secondary-action" type="button" onClick={() => void loadQueue()}>Try again</button></div>}
-      {!loading && !error && items.length === 0 && <p className="approval-queue-empty" role="status">You’re all caught up. New assigned actions will appear here.</p>}
+      {!loading && !error && items.length === 0 && <p className="approval-queue-empty" role="status">No pending decisions in this list.</p>}
       {!loading && !error && items.length > 0 && (
         <>
           <ul className="approval-queue-list">

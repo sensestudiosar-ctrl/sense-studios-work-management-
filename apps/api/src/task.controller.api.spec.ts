@@ -45,6 +45,7 @@ describe("S09 task HTTP boundary", () => {
     tasks = {
       setup: jest.fn(async () => ({ projects: [], employees: [] })),
       list: jest.fn(async () => ({ total: 0, items: [] })),
+      attention: jest.fn(async () => ({ total: 0, items: [] })),
       detail: jest.fn(async () => ({ task: { id: taskId } })),
       dependencyCandidates: jest.fn(async () => ({ items: [] })),
       create: jest.fn(async () => ({ id: taskId })),
@@ -89,16 +90,65 @@ describe("S09 task HTTP boundary", () => {
     const detail = await request(app.getHttpServer()).get(`/api/v1/tasks/${taskId}`).set("Cookie", cookie);
     expect([setup.status, list.status, detail.status]).toEqual([200, 200, 200]);
     expect([setup.headers["cache-control"], list.headers["cache-control"], detail.headers["cache-control"]]).toEqual(["no-store", "no-store", "no-store"]);
-    expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId, kind: "STAFF" }), "mine", 10, 20);
+    expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId, kind: "STAFF" }), "mine", 10, 20, { sort: "created_desc" });
     expect(tasks.detail).toHaveBeenCalledWith(expect.objectContaining({ accountId }), taskId);
   });
 
-  it("validates list scope, pagination and task UUIDs before service calls", async () => {
-    const badScope = await request(app.getHttpServer()).get("/api/v1/tasks?scope=all").set("Cookie", cookie);
+  it("forwards the explicit personal scope without substituting management", async () => {
+    const result = await request(app.getHttpServer()).get("/api/v1/tasks?scope=personal").set("Cookie", cookie);
+    expect(result.status).toBe(200);
+    expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), "personal", 0, 50, { sort: "created_desc" });
+  });
+  it("normalizes server filters and rejects invalid filters before list execution", async () => {
+    const filtered = await request(app.getHttpServer()).get(`/api/v1/tasks?scope=mine&projectId=${projectId}&ownerEmployeeId=${employeeId}&q=%20Brief%20&status=WAITING`).set("Cookie", cookie);
+    expect(filtered.status).toBe(200);
+    expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), "mine", 0, 50, { projectId, ownerEmployeeId: employeeId, q: "Brief", status: "WAITING", sort: "created_desc" });
+    tasks.list.mockClear();
+    for (const filter of ["projectId=wrong", "ownerEmployeeId=wrong", "status=unknown", `q=${"x".repeat(161)}`]) {
+      const invalid = await request(app.getHttpServer()).get(`/api/v1/tasks?scope=mine&${filter}`).set("Cookie", cookie);
+      expect(invalid.status).toBe(400);
+    }
+    expect(tasks.list).not.toHaveBeenCalled();
+  });
+  it("validates explicit task phase and date bounds", async () => {
+    const valid = await request(app.getHttpServer()).get("/api/v1/tasks?scope=personal&phase=active&dateBasis=committed&dateFrom=2026-10-03&dateTo=2026-10-10").set("Cookie", cookie);
+    expect(valid.status).toBe(200);
+    expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), "personal", 0, 50, { phase: "active", dateBasis: "committed", dateFrom: "2026-10-03", dateTo: "2026-10-10", sort: "created_desc" });
+    tasks.list.mockClear();
+    for (const invalid of ["phase=wrong", "dateBasis=other", "dateFrom=bad", "dateFrom=2026-10-10", "dateBasis=target&dateFrom=2026-10-10&dateTo=2026-10-03", "requiresReassignment=yes"]) {
+      expect((await request(app.getHttpServer()).get(`/api/v1/tasks?scope=personal&${invalid}`).set("Cookie", cookie)).status).toBe(400);
+    }
+    expect(tasks.list).not.toHaveBeenCalled();
+  });
+
+  it("validates independent task attention sources and paging", async () => {
+    const valid = await request(app.getHttpServer()).get("/api/v1/tasks/attention?kind=reassignment&offset=50&limit=20").set("Cookie", cookie);
+    expect(valid.status).toBe(200);
+    expect(tasks.attention).toHaveBeenCalledWith(expect.objectContaining({ accountId }), "reassignment", 50, 20);
+    expect(valid.headers["cache-control"]).toBe("no-store");
+    tasks.attention.mockClear();
+    expect((await request(app.getHttpServer()).get("/api/v1/tasks/attention?kind=all").set("Cookie", cookie)).status).toBe(400);
+    expect(tasks.attention).not.toHaveBeenCalled();
+  });
+
+  it("forwards supported list scopes and defaults sort, while validating pagination and UUIDs", async () => {
+    for (const scope of ["mine", "assigned", "personal", "all", "owned", "created", "collaborating"]) {
+      tasks.list.mockClear();
+      const validScope = await request(app.getHttpServer()).get(`/api/v1/tasks?scope=${scope}`).set("Cookie", cookie);
+      expect(validScope.status).toBe(200);
+      expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), scope, 0, 50, { sort: "created_desc" });
+    }
+    tasks.list.mockClear();
+    const explicitSort = await request(app.getHttpServer()).get("/api/v1/tasks?scope=all&sort=target_asc").set("Cookie", cookie);
+    expect(explicitSort.status).toBe(200);
+    expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), "all", 0, 50, { sort: "target_asc" });
+    tasks.list.mockClear();
+    const badScope = await request(app.getHttpServer()).get("/api/v1/tasks?scope=invalid").set("Cookie", cookie);
     const badOffset = await request(app.getHttpServer()).get("/api/v1/tasks?scope=mine&offset=-1").set("Cookie", cookie);
     const badLimit = await request(app.getHttpServer()).get("/api/v1/tasks?scope=assigned&limit=101").set("Cookie", cookie);
     const badId = await request(app.getHttpServer()).get("/api/v1/tasks/not-a-uuid").set("Cookie", cookie);
-    expect([badScope.status, badOffset.status, badLimit.status, badId.status]).toEqual([400, 400, 400, 400]);
+    const badSort = await request(app.getHttpServer()).get("/api/v1/tasks?scope=mine&sort=unknown").set("Cookie", cookie);
+    expect([badScope.status, badOffset.status, badLimit.status, badId.status, badSort.status]).toEqual([400, 400, 400, 400, 400]);
     expect(tasks.list).not.toHaveBeenCalled();
     expect(tasks.detail).not.toHaveBeenCalled();
   });

@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "Explicit policy draft validation",
+    "Owner exact-version approval",
+    "Immutable prior snapshot",
+    "Prospective named group assignment",
+    "Employee configuration concealment"
+  ],
+  "pageErrors": [],
+  "scope": "Prototype only"
+}

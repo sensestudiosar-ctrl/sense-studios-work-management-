@@ -1,4 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Optional } from "@nestjs/common";
+import { DashboardService } from "./dashboard.service.js";
+import { AutomationService } from "./automation.service.js";
+import { transactionalReadPorts } from "./dashboard-transaction.js";
 import { randomUUID } from "node:crypto";
 import { AccountKind, AccountState, EmployeeState, NotificationChannel, NotificationDeliveryState, OutboxDeliveryState, type Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
@@ -48,8 +51,11 @@ export class UnauthorizedRecipientPredicate implements CurrentRecipientAuthoriza
 /** S09 authorizes only current Owner and assigned project contributors for exit alerts. */
 @Injectable()
 export class OperationalRecipientPredicate implements CurrentRecipientAuthorizationPredicate {
-  constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly tasks: TaskService = new TaskService(database, authorization)) {}
+  constructor(private readonly database: DatabaseService, private readonly authorization: AuthorizationService, private readonly tasks: TaskService = new TaskService(database, authorization), @Optional() private readonly dashboard?: DashboardService, @Optional() private readonly automation?: AutomationService) {}
   async isAuthorized(eventId: string, accountId: string, tx?: Prisma.TransactionClient): Promise<boolean> {
+    const scheduled=await (tx??this.database.prisma).domainEvent.findUnique({where:{id:eventId}});
+    if(scheduled?.eventName==="automation.run_created")return !!this.automation&&(tx?transactionalReadPorts(this.automation,tx):this.automation).deliveryAuthorized(eventId,accountId);
+    if(scheduled?.eventName==="dashboard.delivered")return !!this.dashboard&&(tx?transactionalReadPorts(this.dashboard,tx):this.dashboard).deliveryAuthorized(eventId,accountId);
     if (tx) {
       // TaskService's transaction wrapper must reuse the delivery transaction;
       // a nested independent transaction would release the scope locks early.
@@ -235,7 +241,7 @@ export class NotificationWorker {
       let retryAt: Date | undefined;
       for (const notification of pending) {
         if (hasLostLease()) return;
-        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed", "review.escalated", "external.native_revocation"].includes(notification.category)) {
+        if (notification.channel === NotificationChannel.IN_APP && ["task.waiting", "task.dependency_completed", "review.escalated", "external.native_revocation", "dashboard.scheduled", "automation.internal"].includes(notification.category)) {
           await this.deliverTaskNotice(delivery, notification.id, notification.recipientAccountId);
           continue;
         }
@@ -329,7 +335,7 @@ export class NotificationWorker {
       await tx.$queryRaw`SELECT "id" FROM "notifications" WHERE "id"=${notificationId}::uuid FOR UPDATE`;
       const notice = await tx.notification.findFirst({ where: { id: notificationId, eventId: delivery.eventId, recipientAccountId, channel: NotificationChannel.IN_APP, deliveryState: NotificationDeliveryState.PENDING } });
       if (!notice) return;
-      const scopeLocked = notice.category === "external.native_revocation"
+      const scopeLocked = ["dashboard.scheduled", "automation.internal"].includes(notice.category) ? true : notice.category === "external.native_revocation"
         ? await this.lockExternalNativeScope(tx, delivery.eventId, recipientAccountId)
         : notice.category === "review.escalated"
           ? await this.lockReviewEscalationScope(tx, delivery.eventId, recipientAccountId)

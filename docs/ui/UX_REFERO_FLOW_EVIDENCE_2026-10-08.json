@@ -1,0 +1,724 @@
+{
+  "date": "2026-10-08",
+  "scope": "Refero flow research only; not implementation or production verification",
+  "flows": [
+    {
+      "id": 771,
+      "name": "Time-off Request Approval",
+      "url": "https://refero.design/flows/771",
+      "product": "Aboard",
+      "steps": [
+        {
+          "name": "Calendar overview",
+          "goal": "Scan team time-off across a date range to find a specific user's leave entries.",
+          "action": "View the horizontal timeline and locate a colored time-off bar or avatar representing a user's request; click the bar or user indicator to inspect details.",
+          "response": "The calendar remains visible and interactive. Clicking a time-off item opens a contextual right-hand drawer showing that user's requests (no navigation away from the timeline)."
+        },
+        {
+          "name": "User request drawer (review)",
+          "goal": "Review the selected user's pending requests and previously approved leaves in one place.",
+          "action": "Read request cards under 'Requests' and 'Approved'; examine dates, leave type, and duration. Use the visible action buttons (Approve / Decline) for any pending request.",
+          "response": "The drawer lists pending requests at the top with action controls and lists approved items below. Selecting a pending request reveals its action buttons and details inline in the drawer (no full page navigation)."
+        },
+        {
+          "name": "Decide on request",
+          "goal": "Take an explicit decision on a pending time-off request (approve or decline) and return to the timeline.",
+          "action": "Tap the Approve or Decline button for a pending request; optionally close the drawer when finished.",
+          "response": "The interface registers the decision and updates the request state in the drawer (for example, moving it to Approved or removing it from Requests) and visually updates the timeline to reflect the change. The drawer can be closed to continue interacting with the calendar. (Any backend notifications or logs would be triggered by the decision where implemented.)"
+        }
+      ]
+    },
+    {
+      "id": 4473,
+      "name": "Task filtering and metadata selection",
+      "url": "https://refero.design/flows/4473",
+      "product": "Hello Ivy",
+      "steps": [
+        {
+          "name": "Tasks overview (initial)",
+          "goal": "View the full task board grouped by status (Waiting, To do, In progress, Done).",
+          "action": "Scan the tasks list and open the Filters panel by clicking the Filters button in the top bar.",
+          "response": "Filters overlay opens on the right side showing filter controls (Show completed, Labels, Priority, Due Date, Assignee, Grouping, Sorting, Show on task) without any filters selected."
+        },
+        {
+          "name": "Filters panel visible",
+          "goal": "Choose filter criteria to narrow the task list.",
+          "action": "Focus the Labels field to add or select labels to filter by.",
+          "response": "Labels input appears active in the Filters overlay allowing selection or entry of label chips (panel remains open while selection is available)."
+        },
+        {
+          "name": "Select labels",
+          "goal": "Filter tasks by one or more labels (e.g., office, dev, design).",
+          "action": "Click label chips in the labels dropdown to select them.",
+          "response": "Selected labels appear as chips in the Labels field inside the Filters panel; the task list preview reflects label selection (visually, the panel shows chosen chips)."
+        },
+        {
+          "name": "Refine label selection",
+          "goal": "Adjust which labels are applied (add/remove) to refine results.",
+          "action": "Toggle label chips to remove or add additional labels (example shows only specific labels kept).",
+          "response": "Labels field updates to show the current selection; the active filters count changes and the task list content updates accordingly."
+        },
+        {
+          "name": "Open priority selector",
+          "goal": "Pick task priority level(s) to include in the filtered results.",
+          "action": "Click the Priority field to open the priority options (Low, Medium, High, Urgent).",
+          "response": "Priority dropdown expands showing the four priority choices with icons; selecting one or more will add that priority to the Filters panel."
+        },
+        {
+          "name": "Select due date range",
+          "goal": "Restrict tasks to a due-date category (e.g., Upcoming).",
+          "action": "Open the Due Date selector and choose a date bucket such as Upcoming, Today, Tomorrow, etc.",
+          "response": "Due Date popup displays options and the chosen option is checked; the Filters panel shows the selected due-date filter and it becomes part of the active filter set."
+        },
+        {
+          "name": "Confirm due-date selection",
+          "goal": "Ensure the due-date filter is applied (Upcoming checked).",
+          "action": "Verify the Upcoming checkbox is selected in the Due Date list and leave other controls (Assignee, Grouping, Sorting, Show on task) at desired defaults.",
+          "response": "Due date filter remains selected and is visible in the Filters overlay; other filter controls show their current values (e.g., Assignee: Everyone, Grouping: Status)."
+        },
+        {
+          "name": "Close Filters panel",
+          "goal": "Apply selections and return to full task board view.",
+          "action": "Close the Filters overlay (by clicking outside/close control or the Filters button) after confirming selections.",
+          "response": "Filters panel closes; the Filters button updates to indicate active filters (count shown). The task list is re-rendered to reflect the applied label, priority and due-date constraints."
+        },
+        {
+          "name": "Filtered task list",
+          "goal": "Review the narrowed task list showing only tasks matching the selected filters.",
+          "action": "Inspect the tasks grouped by status and verify visible metadata (labels, priority, due date) matches expectations.",
+          "response": "Main task board shows fewer tasks (only those that satisfy the filters). Group columns update counts, and task rows display the selected metadata (labels and due dates); filter state persists until cleared or changed."
+        }
+      ]
+    },
+    {
+      "id": 4526,
+      "name": "Asset Approval",
+      "url": "https://refero.design/flows/4526",
+      "product": "Hello Ivy",
+      "steps": [
+        {
+          "name": "Open Asset Viewer",
+          "goal": "Inspect the asset and locate review controls and comments area",
+          "action": "User views the loaded image; examines top metadata (filename, version, file type) and notices the right-side comments pane with an input field and a \"Set Status\" control in the top-right area.",
+          "response": "Displays the image preview, file metadata chips (version, type), editable comments area with placeholder \"Start the conversation\" and message input, and a \"Set Status\" control (collapsed) in the top toolbar."
+        },
+        {
+          "name": "Open Status Dropdown",
+          "goal": "See available review statuses to choose from",
+          "action": "User clicks the \"Set Status\" control to open the status menu.",
+          "response": "Dropdown menu opens showing status options (Approved, Changes required, Pending, Declined). Each option is presented with a small color indicator; the menu overlays the top-right of the viewer."
+        },
+        {
+          "name": "Select Approved Status",
+          "goal": "Record an approval decision for the current asset version",
+          "action": "User selects \"Approved\" from the dropdown.",
+          "response": "Dropdown closes and the top-right status area updates to show a green indicator and the \"Approved\" label. The image and comments panel remain visible and unchanged, indicating the status update was applied."
+        }
+      ]
+    },
+    {
+      "id": 6670,
+      "name": "Issue list filtering and operator adjustment",
+      "url": "https://refero.design/flows/6670",
+      "product": "Linear",
+      "steps": [
+        {
+          "name": "Issues list (initial)",
+          "goal": "Start narrowing the issue list using filter controls.",
+          "action": "User clicks the 'Filter' control in the Issues view header.",
+          "response": "A filter menu popover opens (shows available filter categories). The Issues view remains visible behind the popover."
+        },
+        {
+          "name": "Filter menu opened",
+          "goal": "Choose which attributes to filter by (Assignee, Priority, Labels, etc.).",
+          "action": "User inspects the categorized filter menu and selects one or more filter categories (e.g., Assignee, Priority, Labels).",
+          "response": "Selected filters are added as chips across the top of the Issues list. The filter header updates to show active filter chips; the list prepares to apply the filter set."
+        },
+        {
+          "name": "Filters applied (chips visible)",
+          "goal": "See initial filtered results and confirm the applied filters.",
+          "action": "User examines the filter chips in the header and the updated issue list. They notice a message indicating items hidden by the current filters.",
+          "response": "The issue list is live-filtered based on the selected chips. Visible issues update; a notice appears (e.g., '2 issues hidden by filters'). Header shows controls like 'Match all filters', 'Display', 'Clear', and 'Save'."
+        },
+        {
+          "name": "Change filter operator",
+          "goal": "Change filter semantics for a selected attribute (for example, exclude a priority rather than include it).",
+          "action": "User clicks the operator area of a filter chip to open the operator dropdown and selects a different operator (e.g., 'is not').",
+          "response": "An operator popover appears with operator choices; when the user selects a new operator the corresponding chip updates to reflect the new operator and the filter query is re-applied."
+        },
+        {
+          "name": "Filtered results confirmed",
+          "goal": "Confirm the final filtered view and optionally save or clear the filter set.",
+          "action": "User reviews the updated issue list and header controls. They can choose to Save the filter set, Clear filters, toggle Match-all behavior, or change Display settings.",
+          "response": "The Issues list remains filtered according to the final filter set. The header continues to show active filter chips, the count of hidden items, and buttons to 'Match all filters', 'Display', 'Clear', and 'Save'. If Save is invoked the filter set will be persisted (control present)."
+        }
+      ]
+    },
+    {
+      "id": 6673,
+      "name": "Project Update Composer",
+      "url": "https://refero.design/flows/6673",
+      "product": "Linear",
+      "steps": [
+        {
+          "name": "Projects list (summary)",
+          "goal": "Locate the project to update and view its current health and progress at-a-glance.",
+          "action": "Scan the Projects list and click the target project row (Orbit).",
+          "response": "Project row remains selected and the right-side columns show health, priority, load, target date and status. A project details/quick panel becomes available when the project is opened."
+        },
+        {
+          "name": "Project panel / Update entry point",
+          "goal": "Open the project's update area and access the 'New project update' action.",
+          "action": "Click the 'New project update' button displayed in the project panel.",
+          "response": "A composer modal/panel opens on top of the project panel, presenting a status pill, editor area and action buttons (Cancel, Post update)."
+        },
+        {
+          "name": "Compose update (empty)",
+          "goal": "Select/update the health/status pill if needed and start writing the project update.",
+          "action": "Choose the status/health pill (if changing) and type the update content into the text area; optionally use the attachment icon.",
+          "response": "Typed content is displayed in the editor. The Post update button becomes available once content is entered (or when required fields are satisfied)."
+        },
+        {
+          "name": "Compose update (content added)",
+          "goal": "Finish composing the update, structure with bullets/headings and prepare to publish.",
+          "action": "Review the drafted content and click 'Post update'.",
+          "response": "The composer submits the content; the UI indicates submission and then replaces the composer with the posted update content in the project panel."
+        },
+        {
+          "name": "Update visible in project panel",
+          "goal": "Confirm the posted update appears correctly with metadata (date, status, summary, highlights).",
+          "action": "Read the posted update in the project panel (no further action required).",
+          "response": "The new update is shown with timestamp, status and details. The project's health/status display in the project panel updates (e.g., 'On track - now')."
+        },
+        {
+          "name": "Projects list updated",
+          "goal": "Verify the Projects list reflects the new update (health and progress change).",
+          "action": "Return to or observe the Projects list row for the project.",
+          "response": "The Projects list refreshes to show updated project health/status and a changed progress percentage for the project row (Orbit now shows updated health and 29% progress)."
+        }
+      ]
+    },
+    {
+      "id": 6681,
+      "name": "Filter inbox by issue status",
+      "url": "https://refero.design/flows/6681",
+      "product": "Linear",
+      "steps": [
+        {
+          "name": "Inbox with issue open",
+          "goal": "See notifications and the opened issue's details",
+          "action": "User views the three-column layout: left workspace/navigation, center inbox notification list, right issue detail for \"Implement Focus Tracking Timeline UI\".",
+          "response": "The UI displays unread/recent notifications in the center column and the selected issue's details in the right column. No filters are active."
+        },
+        {
+          "name": "Open filter menu",
+          "goal": "Access filtering options for the notifications list",
+          "action": "User clicks the filter icon or filter control at the top of the inbox list to open the \"Filter notifications by...\" menu.",
+          "response": "A dropdown/menu appears listing filter categories (Notification type, Project, Documents, Issue priority, Issue status type). The inbox list remains visible behind the menu and the issue detail stays open."
+        },
+        {
+          "name": "Drill into Issue status type",
+          "goal": "Select a specific issue status to filter by",
+          "action": "User selects the \"Issue status type\" option in the filter menu, which expands or opens a sub-menu showing status choices (Triage, Backlog, Unstarted, Started, Completed, Canceled).",
+          "response": "A nested sub-menu shows available issue status options and counts for some statuses. The selection is ready to be applied (no change to the list until a status is chosen)."
+        },
+        {
+          "name": "Apply Completed filter",
+          "goal": "Restrict the notifications list to only Completed issues",
+          "action": "User selects the \"Completed\" status option from the nested menu.",
+          "response": "The inbox updates to reflect the active filter (a filter pill shows \"Issue status type is: Completed\"). The notification list is updated and a message appears: \"2 notifications hidden by filters\" with an option to clear filters. The issue detail pane remains open and unchanged."
+        }
+      ]
+    },
+    {
+      "id": 11176,
+      "name": "Manage email notifications",
+      "url": "https://refero.design/flows/11176",
+      "product": "Fingerprint",
+      "steps": [
+        {
+          "name": "Notification settings overview",
+          "goal": "See current email notification preferences and schedule for the account/workspaces.",
+          "action": "Review the three notification options (Summary, Status changes, Usage spikes). Inspect or adjust the Summary frequency and scheduled delivery time. Identify which notifications are currently enabled (checked) or disabled (unchecked).",
+          "response": "The page displays current saved settings: checkboxes for each notification type and dropdown controls for Summary frequency (e.g., once, weekly), day selection (e.g., Sunday) and time (e.g., 11:00 PM). A prominent Save button is available to persist changes."
+        },
+        {
+          "name": "Edit notification preference",
+          "goal": "Turn off the \"Status changes\" notification.",
+          "action": "Uncheck the \"Status changes\" checkbox and click the Save button to apply the change.",
+          "response": "The UI accepts the input and sends the updated preferences for persistence. The page remains on the Email notifications panel, showing the updated checkbox state prior to confirmation."
+        },
+        {
+          "name": "Save confirmation",
+          "goal": "Confirm that the updated notification preferences were saved.",
+          "action": "Observe the confirmation message after saving.",
+          "response": "A green success toast appears at the top of the settings content: \"Successfully updated email notification settings.\" The page shows the new persisted state (Status changes unchecked)."
+        }
+      ]
+    },
+    {
+      "id": 13025,
+      "name": "File Upload to Folder",
+      "url": "https://refero.design/flows/13025",
+      "product": "Dropbox",
+      "steps": [
+        {
+          "name": "All Files View",
+          "goal": "Find the upload entry point from the file workspace",
+          "action": "Open the Upload menu from the top toolbar",
+          "response": "A dropdown menu appears with options such as File, Folder, and Import from Google Drive."
+        },
+        {
+          "name": "Upload Menu Open",
+          "goal": "Choose how to upload content",
+          "action": "Select the File option from the upload dropdown",
+          "response": "The interface begins the file upload selection process and opens the destination chooser."
+        },
+        {
+          "name": "Upload Menu Open",
+          "goal": "Choose how to upload content",
+          "action": "Select the File option from the upload dropdown",
+          "response": "The interface begins the file upload selection process and opens the destination chooser."
+        },
+        {
+          "name": "Choose Location Dialog Loading",
+          "goal": "Pick where the uploaded file should go",
+          "action": "Wait for the folder list to load or continue browsing available locations",
+          "response": "A modal dialog loads the destination tree and shows the selected workspace context."
+        },
+        {
+          "name": "Choose Location Dialog Ready",
+          "goal": "Confirm the destination folder",
+          "action": "Select the visible folder or confirm the current folder choice",
+          "response": "The selected folder is highlighted and the action button remains available for confirming the destination."
+        },
+        {
+          "name": "Destination Confirmation",
+          "goal": "Finalize where the file will be uploaded",
+          "action": "Click Choose location",
+          "response": "The dialog confirms the target path and closes, returning to the main workspace."
+        },
+        {
+          "name": "Upload in Progress",
+          "goal": "Track the upload status",
+          "action": "Monitor the uploads panel while the file transfers",
+          "response": "An uploads drawer appears showing the file name, destination folder, and a progress indicator."
+        },
+        {
+          "name": "Upload Complete",
+          "goal": "Verify the upload finished successfully",
+          "action": "Review the completed upload status or open link options",
+          "response": "The upload changes to a completed state and shows a success message, along with actions like Copy link or Add."
+        },
+        {
+          "name": "Upload Success State",
+          "goal": "Confirm the operation is done",
+          "action": "Dismiss or keep the uploads panel open as needed",
+          "response": "The panel remains in a completed state with a success confirmation visible."
+        },
+        {
+          "name": "Upload Success State",
+          "goal": "Confirm the operation is done",
+          "action": "Dismiss or keep the uploads panel open as needed",
+          "response": "The panel remains in a completed state with a success confirmation visible."
+        }
+      ]
+    },
+    {
+      "id": 13434,
+      "name": "Create Project Task",
+      "url": "https://refero.design/flows/13434",
+      "product": "Programa",
+      "steps": [
+        {
+          "name": "Project Board",
+          "goal": "Start creating a task in the Project Management board.",
+          "action": "Click an Add Task control in the To Do column.",
+          "response": "The task editor opens with blank task details and configurable task properties."
+        },
+        {
+          "name": "Empty Task Editor",
+          "goal": "Begin entering the new task information.",
+          "action": "Click the Task Name field and enter the task title.",
+          "response": "The task editor accepts the task title and provides a description field beneath it."
+        },
+        {
+          "name": "Task Details",
+          "goal": "Define the task as “Space planning & layout.”",
+          "action": "Enter the title “Space planning & layout” and the description “Draft initial furniture arrangements and functional zoning options.”",
+          "response": "The title and description appear in the editor; other task properties remain at their defaults."
+        },
+        {
+          "name": "Status Selection",
+          "goal": "Choose the task’s workflow status.",
+          "action": "Open the Status dropdown in the right-side properties panel.",
+          "response": "A menu opens with To Do, In Progress, In Review, and Done options."
+        },
+        {
+          "name": "In Progress Status",
+          "goal": "Move the task into active work.",
+          "action": "Select In Progress from the Status menu.",
+          "response": "The Status field updates to In Progress."
+        },
+        {
+          "name": "Member Selection",
+          "goal": "Assign the task to a team member.",
+          "action": "Open the Members field.",
+          "response": "A member picker opens with a search field and the available member “Liam Basil.”"
+        },
+        {
+          "name": "Assigned Member",
+          "goal": "Assign Liam Basil to the task.",
+          "action": "Select Liam Basil from the member picker.",
+          "response": "The Members field updates to show 1 member."
+        },
+        {
+          "name": "Target Date Calendar",
+          "goal": "Set a deadline for the task.",
+          "action": "Open the Target Date field and use the calendar to navigate to August 2026.",
+          "response": "An August 2026 calendar is displayed for date selection."
+        },
+        {
+          "name": "Selected Target Date",
+          "goal": "Set August 5, 2026 as the target date.",
+          "action": "Select August 5 in the calendar.",
+          "response": "The Target Date field shows 05 Aug, 2026, and the selected date is highlighted."
+        },
+        {
+          "name": "Completed Task Settings",
+          "goal": "Review the configured task before saving.",
+          "action": "Dismiss the calendar if needed and confirm the task details: In Progress status, Liam Basil assigned, and 05 Aug, 2026 target date.",
+          "response": "The task editor shows the completed configuration. The Done button is available to save the task."
+        },
+        {
+          "name": "Saved Task Board",
+          "goal": "Verify that the task was created successfully.",
+          "action": "Click Done in the task editor.",
+          "response": "The editor closes and the task appears in the In Progress column with the title “Space planning & layout,” an Aug 05 date, and an assignee indicator."
+        }
+      ]
+    },
+    {
+      "id": 13441,
+      "name": "Manual Time Entry",
+      "url": "https://refero.design/flows/13441",
+      "product": "Programa",
+      "steps": [
+        {
+          "name": "Empty Time Tracking",
+          "goal": "Begin recording work time from the Time Tracking section.",
+          "action": "Review the current time-tracking list and select \"New entry.\"",
+          "response": "The Time Tracking view shows no results for the selected last-30-days filter. Selecting \"New entry\" opens the New time entry side panel over the current view."
+        },
+        {
+          "name": "Open Entry Form",
+          "goal": "Prepare a new time record.",
+          "action": "Use the New time entry form, which contains Hours, Minutes, Date, and Project fields, with an optional Note field.",
+          "response": "The form opens with empty Hours and Minutes fields, the date set to 4 Aug 2026, and no project selected. The Create button is available at the bottom of the panel."
+        },
+        {
+          "name": "Enter Duration and Date",
+          "goal": "Specify how much time was worked and when.",
+          "action": "Enter 10 hours and 33 minutes, and change the date to 2 Aug 2026.",
+          "response": "The form displays the entered duration and updated date. The Project field remains unselected."
+        },
+        {
+          "name": "Select Project",
+          "goal": "Associate the time entry with the relevant project.",
+          "action": "Select \"Project #254\" from the Project field.",
+          "response": "The Project field displays Project #254, and additional optional Phase and Task fields appear in the form."
+        },
+        {
+          "name": "Select Task",
+          "goal": "Link the time entry to the specific work item.",
+          "action": "Select \"3D visualization\" in the Task field. Leave the optional Phase and Note fields empty.",
+          "response": "The Task field displays \"3D visualization.\" The completed form is ready to submit using the Create button."
+        },
+        {
+          "name": "Confirm Saved Entry",
+          "goal": "Verify that the time record was created successfully.",
+          "action": "Select \"Create\" to save the time entry.",
+          "response": "The side panel closes. The Time Tracking list now shows a 10h 33m entry dated Sunday, 2 Aug 2026, associated with Project #254 and \"3D visualization.\" Studio total and personal total both update to 10h 33m, and a \"Time entry added\" confirmation toast appears."
+        }
+      ]
+    },
+    {
+      "id": 5226,
+      "name": "Export reporting data",
+      "url": "https://refero.design/flows/5226",
+      "product": "TravelPerk ",
+      "steps": [
+        {
+          "name": "Reporting overview",
+          "goal": "Access export functionality for the account's travel reporting data",
+          "action": "User clicks the \"Download report\" button in the top-right of the Reporting screen",
+          "response": "A modal dialog titled \"Download report\" opens on top of the dashboard, revealing export controls (date range, basis, filters) and the \"Select report columns\" area with checkboxes."
+        },
+        {
+          "name": "Download report — initial column selection",
+          "goal": "Review default column selection and report scope before exporting",
+          "action": "User reviews or changes Date range and \"Based on\" options, optionally clicks \"Add filter\", and inspects the pre-checked columns in the Select report columns list",
+          "response": "The UI shows the current selection count (e.g., 80/80 selected). All chosen columns are checked and ready. Download buttons for Excel and CSV are available."
+        },
+        {
+          "name": "Download report — customize columns",
+          "goal": "Reduce or customize which fields will appear in the exported file",
+          "action": "User checks or unchecks individual column group items (traveller info, trip info, service info, expense info). The selected count updates (for example to 64/80).",
+          "response": "Checkbox states update immediately and the selected columns counter reflects the change. Download controls remain enabled so the user can proceed when ready."
+        },
+        {
+          "name": "Download report — start generation",
+          "goal": "Start creating the export file with the chosen settings",
+          "action": "User clicks a download action (Download CSV or Download Excel).",
+          "response": "The modal shows a processing state (controls disabled/greyed and a spinner or progress indicator). The interface indicates report generation is in progress and will provide the file for download when ready."
+        }
+      ]
+    },
+    {
+      "id": 6202,
+      "name": "Enable Authenticator Method",
+      "url": "https://refero.design/flows/6202",
+      "product": " Family",
+      "steps": [
+        {
+          "name": "Security Settings — Setup CTA",
+          "goal": "Start enabling an authenticator-based two-factor method from account security settings.",
+          "action": "Click the 'Setup Authenticator App' call-to-action (or the Authenticator App preference).",
+          "response": "Navigate to the 'Setup Authenticator App' flow (dedicated setup screen) and display QR, instructions, and code input."
+        },
+        {
+          "name": "Setup Authenticator — Scan / Prepare",
+          "goal": "Provide the user with a QR (and option to copy secret) so they can add the account to their authenticator.",
+          "action": "Scan the QR with an authenticator or copy the secret to add the account, then obtain the one-time code from the authenticator.",
+          "response": "Shows a QR image, a one-time code input field, a 'Paste' helper, and a disabled/soft-confirm state until a code is entered."
+        },
+        {
+          "name": "Code Entered — Ready to Confirm",
+          "goal": "Submit the one-time code from the authenticator for verification.",
+          "action": "Enter (or paste) the one-time code and click Confirm.",
+          "response": "Attempts server-side verification of the code and proceeds or returns an error based on validation."
+        },
+        {
+          "name": "Verification Error",
+          "goal": "Inform the user when the submitted one-time code is invalid and allow retry.",
+          "action": "Review the error, re-scan or re-enter a fresh code from the authenticator, then retry Confirm.",
+          "response": "Displays an 'Invalid one-time code' toast/error and keeps the user on the setup screen for another attempt."
+        },
+        {
+          "name": "Backup Code Display",
+          "goal": "Show a single-use backup code that the user must save in case they lose access to their authenticator.",
+          "action": "Copy/save the displayed backup code (with provided 'Copy' affordance) and then click 'I've Saved My Code'.",
+          "response": "Warns that the backup code is viewable only once and, after user acknowledgment, advances the flow back to Security settings with the authenticator method recorded as enabled."
+        },
+        {
+          "name": "Security Settings — Authenticator Enabled",
+          "goal": "Confirm to the user that the authenticator method is enabled and present next steps for recovery codes.",
+          "action": "Review the updated Preferences (Authenticator App toggle is on) and optionally click 'Generate a Recovery Code'.",
+          "response": "Displays the Authenticator App preference as enabled, surfaces a banner to generate recovery codes, and preserves the device list."
+        }
+      ]
+    },
+    {
+      "id": 11055,
+      "name": "Create and save filtered Transactions view",
+      "url": "https://refero.design/flows/11055",
+      "product": "Mercury",
+      "steps": [
+        {
+          "name": "Transactions list (start)",
+          "goal": "View account transactions and access filter controls",
+          "action": "User views the Transactions list and clicks the Filters control (or Data views) to narrow results.",
+          "response": "Transactions table remains visible; Filters panel can be opened. Header shows global controls (Data views, Filters, Date, Keyword, Amount)."
+        },
+        {
+          "name": "Open Filters — Date selector",
+          "goal": "Limit transactions to a specific date range",
+          "action": "User opens the Filters panel and selects Date. They set the From and To range (calendar/month picker).",
+          "response": "Date filter is added to the active filter set and the transaction list updates accordingly. Filter panel stays open for adding more criteria."
+        },
+        {
+          "name": "Filters — Keyword (recipients) selection",
+          "goal": "Narrow results to transactions involving specific recipients/keywords",
+          "action": "User chooses Keyword in the Filters panel and checks multiple recipient names from the list (e.g., Lighthouse Properties, Nutritionist, Jordi O'Donnell).",
+          "response": "Keyword filters are added and applied to the transactions list. UI shows the number of filters active (e.g., Filters (2) and Keywords (4)). The panel remains open for adding more filters."
+        },
+        {
+          "name": "Filters — Status selection",
+          "goal": "Restrict results to transactions with a specific status (Posted)",
+          "action": "User selects Status in the Filters panel and checks the 'Posted' transaction status (and optionally dispute status).",
+          "response": "Status filter is applied; the transactions list updates to reflect only Posted transactions matching previous filters. Filter summary in header reflects all active filters."
+        },
+        {
+          "name": "Open Save Data View modal",
+          "goal": "Begin saving the current filter set as a reusable data view",
+          "action": "User clicks the Create view / Save button (Create view) to save the active filters. A Save Data View modal appears listing the filters applied.",
+          "response": "A modal overlays the page showing the active filters and an input for Data View Name with Cancel and Save actions. The underlying list remains visible but dimmed."
+        },
+        {
+          "name": "Name the Data View and save",
+          "goal": "Provide a meaningful name and persist the view",
+          "action": "User types a name into the Data View Name field (e.g., 'Lestat') and clicks Save.",
+          "response": "Modal validates the input and, on successful save, closes. System persists the named data view (filters + name)."
+        },
+        {
+          "name": "Saved view applied and confirmation",
+          "goal": "Confirm the saved view is active and see filtered results",
+          "action": "User sees the new saved view token (Lestat) in the Transactions header and views the filtered transaction list.",
+          "response": "Transactions list reflects the saved filters. A confirmation toast 'View saved' appears. The saved view is now available in the Data views control for future selection."
+        }
+      ]
+    },
+    {
+      "id": 10847,
+      "name": "Team Files Upload",
+      "url": "https://refero.design/flows/10847",
+      "product": "MonoDesk ",
+      "steps": [
+        {
+          "name": "Files tab — empty state",
+          "goal": "Start the process to add files to the project’s Files area.",
+          "action": "User clicks the prominent Upload File button or drags files into the empty Files area.",
+          "response": "The app presents an Upload Files modal (or activates the file picker) and highlights the drop target for adding files."
+        },
+        {
+          "name": "Upload modal — add files",
+          "goal": "Provide a place to select or drop files to upload.",
+          "action": "User drags files onto the drop area or clicks the drop zone to open the OS file picker.",
+          "response": "Selected files are added to the modal; the modal stays open and shows a list area for chosen files."
+        },
+        {
+          "name": "Upload modal — single file ready",
+          "goal": "Review a single selected file before uploading.",
+          "action": "User reviews the listed file, can remove it (X), add more files, optionally choose a Task from the dropdown, or press Upload 1 File.",
+          "response": "File appears in the modal with name and size; Upload button becomes actionable. If user starts upload, the modal closes and the file is queued in the main Files list for upload (or uploads begin in background)."
+        },
+        {
+          "name": "Upload modal — multiple files ready",
+          "goal": "Prepare multiple files for a single upload action.",
+          "action": "User reviews multiple files, removes any if needed, may add more, optionally select a Task, then clicks Upload 3 Files.",
+          "response": "All selected files are queued and the upload is initiated. The modal closes (or the upload begins) and files are shown in the Files list in an uploading state."
+        },
+        {
+          "name": "Files list — uploading state",
+          "goal": "Monitor upload progress for queued files.",
+          "action": "User waits for uploads to proceed; UI may allow selecting items or cancelling (not shown).",
+          "response": "Each file is rendered as a list item with an uploading indicator and progress (percentage or spinner). The list updates in real time as uploads progress."
+        },
+        {
+          "name": "Files list — partial completion",
+          "goal": "See which files have completed and which are still pending.",
+          "action": "User inspects completed items (check marks) and remaining pending uploads; user can select items in the list.",
+          "response": "Completed files show an Uploaded state (check mark and metadata like size/time). Pending files remain with an uploading indicator. The list order and selection controls reflect current states."
+        },
+        {
+          "name": "Files list — upload success",
+          "goal": "Confirm that all files finished uploading successfully.",
+          "action": "User observes the file thumbnails/icons, timestamps, and the success toast notification.",
+          "response": "All uploaded files show final icons/previews, sizes and 'x minutes ago' timestamps. A success toast appears (e.g., “3 files uploaded successfully”), confirming completion."
+        },
+        {
+          "name": "Files list — stable state",
+          "goal": "Continue working with the newly uploaded files in the Files list.",
+          "action": "User can select, filter, or interact with files (select all, open file details, etc.).",
+          "response": "Files remain in the list with persistent metadata; transient notifications (toast) fade. Files are now available in the project repository for further actions."
+        }
+      ]
+    },
+    {
+      "id": 3044,
+      "name": "Import media into editor",
+      "url": "https://refero.design/flows/3044",
+      "product": "Butter",
+      "steps": [
+        {
+          "name": "Open project — Uploads panel visible",
+          "goal": "Locate and start the process of adding media to the project",
+          "action": "User inspects the left Uploads panel and can either drag & drop files into the large drop zone, click the 'Upload files' button, use the search field for existing uploads, or select 'Browse stock videos'.",
+          "response": "The interface highlights drop zone affordance and exposes upload controls. No upload activity is shown yet — canvas and timeline remain empty placeholders indicating no clip selected. The UI is ready to accept a file selection or drop event."
+        },
+        {
+          "name": "Upload attempt — error feedback",
+          "goal": "Attempt to add a chosen asset to the project and receive status feedback",
+          "action": "User attempts to upload a media asset (via drag/drop or Upload files).",
+          "response": "The editor attempts the upload and then shows an inline error message at the timeline area: 'Sorry, we weren't able to upload that asset. Please try another one.' The asset is not added to the media panel or timeline; the canvas still prompts the user to select something to edit. The UI provides clear failure feedback so the user can retry with a different file or attempt the upload again."
+        }
+      ]
+    },
+    {
+      "id": 7176,
+      "name": "Report an Issue with Screenshots",
+      "url": "https://refero.design/flows/7176",
+      "product": "Train Fitness",
+      "steps": [
+        {
+          "name": "Report form (empty)",
+          "goal": "Start a bug report by adding screenshots and a description, and choose whether to receive follow-up.",
+          "action": "User taps the screenshot placeholder to add images, types into the description field, toggles the follow-up switch, or uses Back/Close to exit.",
+          "response": "Tapping the screenshot area opens the device photo picker. Description accepts multiline input. The follow-up toggle updates local state. Submit is shown but appears visually disabled until required input conditions are met."
+        },
+        {
+          "name": "Photo library / picker",
+          "goal": "Select up to four photos to attach to the report.",
+          "action": "User browses the photo grid, taps photos to select (checkmarks appear), and uses the Add button to confirm or Cancel to abort selection.",
+          "response": "Picker tracks selections (bottom bar shows count and limit). When the user confirms via Add, the picker closes and returns the selected images to the report form. Cancel returns to the form with no change."
+        },
+        {
+          "name": "Report form (with thumbnails)",
+          "goal": "Review attached screenshots, finalize the description and follow-up preference, and submit the report.",
+          "action": "User reviews thumbnails (each has an X to remove), taps X to remove an image, edits the description, toggles follow-up, and taps Submit when ready.",
+          "response": "Removing a thumbnail deletes the attachment from the draft. Toggling updates the follow-up preference. When the form meets the app's required conditions (not visible in screenshots), Submit becomes active and tapping it sends the report payload containing attachments, description text, and follow-up preference; otherwise Submit remains visually disabled."
+        }
+      ]
+    },
+    {
+      "id": 8067,
+      "name": "Canva lesson completion",
+      "url": "https://refero.design/flows/8067",
+      "product": "Canva",
+      "steps": [
+        {
+          "name": "Design School Home",
+          "goal": "Discover relevant lessons and pick the 'Presenting in Canva' lesson.",
+          "action": "Scan featured lessons and click the 'Presenting in Canva' lesson card.",
+          "response": "Navigates to the lesson detail page for 'Presenting in Canva'. The left app navigation remains available."
+        },
+        {
+          "name": "Lesson Overview",
+          "goal": "Review lesson metadata, outline, and start the lesson.",
+          "action": "Read the lesson description and outline; click 'Start lesson' or select the first outline item.",
+          "response": "Opens the in-lesson player and loads the first outline item. Sidebar displays the lesson outline with the selected item highlighted."
+        },
+        {
+          "name": "Item 1 — Play Video",
+          "goal": "Watch the first instructional video (How to save your presentation as a PowerPoint).",
+          "action": "Play or watch the embedded video; optionally use the 'Next' control when ready to continue.",
+          "response": "Embedded video plays in the main content area. The sidebar marks the current item as active and a tooltip helper may appear explaining how to continue. Navigation controls (Next) are available to advance."
+        },
+        {
+          "name": "Item 2 — Cheatsheet",
+          "goal": "Read the cheatsheet content and interact with available resources.",
+          "action": "Scroll and review cheatsheet cards; click any interactive controls (e.g., Present, Expand to whiteboard) or click Next to advance.",
+          "response": "Cheatsheet content is displayed in the main area. Sidebar updates to show the second item as active. Interactive resource actions open their respective tools or overlays; clicking Next advances to the next item."
+        },
+        {
+          "name": "Item 3 — Play Video",
+          "goal": "Watch the final instructional video (How to record yourself).",
+          "action": "Play/watch the video and then click the Finish or Next control to complete the lesson.",
+          "response": "Video plays in the main area and the sidebar highlights the last item. When user selects Finish/Next at the end, the system triggers lesson completion behavior."
+        },
+        {
+          "name": "Completion Confirmation",
+          "goal": "Acknowledge that the lesson is finished.",
+          "action": "Read the 'Lesson Finished!' modal and click 'Back to lesson' (or a similar confirmation button).",
+          "response": "Shows a modal confirming completion. On dismiss/confirm, the modal closes and the system updates item completion states and progress."
+        },
+        {
+          "name": "Completed Lesson Overview",
+          "goal": "See the updated lesson overview with progress and completed items, and decide next action (replay or leave).",
+          "action": "Review the progress bar and green checkmarks; optionally click 'Replay lesson' to rewatch or navigate away.",
+          "response": "Lesson overview displays full progress and checkmarks next to each item. Buttons allow replaying the lesson or returning to other parts of the learning hub."
+        }
+      ]
+    }
+  ]
+}

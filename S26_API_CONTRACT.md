@@ -1,0 +1,13 @@
+# S26 internal API
+
+Base `/api/v1/automation`; internal OWNER/STAFF cookie only, Owner-ready gate, no-store reads, exact origin and CSRF for writes. IDs and command IDs are UUIDs. Current source authorization is checked again on preview/export/run reads and notification delivery.
+
+`GET /context` returns eligible projects/recipients, supported task/project event names, seven existing report categories and six fixed report columns, currently manageable saved reports/rules and currently authorized run metadata.
+
+`POST /reports/preview` takes `{title,category,from,to,columns,filters,groupBy?,chart}`. Filter `{column,operator:equals|contains,value}`. Selected columns preserve order; grouping counts retained rows only, producing labels/counts; BAR/PIE require grouping. `POST /reports` adds `{commandId,reason}`; `PUT /reports/:id` also requires `expectedVersion`. `GET /reports/:id/preview` refreshes all source facts under current caller scope; `GET /reports/:id/export?format=csv|xlsx|pdf|print` exports that authorized preview. Historical generated runs retain values and original full source manifest, checked on `GET /runs/:id/report` and `/runs/:id/report/export`.
+
+`POST /rules` takes `{commandId,reason,title,enabled,eventNames,projectId?,condition:{subjectType?},action:{kind,recipientId,reportId?,recommendation?}}`. Kinds NOTIFY, REPORT, RECOMMENDATION require respectively no extra action field, a saved report ID, or recommendation text. `PUT /rules/:id` adds `expectedVersion`; immutable project scope cannot move to another project. Changing definitions produces a new immutable version and prospective cutoff. Repeated identical command returns `{id,version}`; conflicting payload/key returns409.
+
+Run states DELIVERED (notice created), GENERATED (retained report), PENDING (nonbinding S05 recommendation), SKIPPED (no current required scope). Canonical notice delivery state remains S04 authoritative; DELIVERED does not assert an end-user read. `POST /runs/:id/decision` takes `{commandId,reason,outcome:APPROVED|REJECTED}`. Only the currently named authorized human may decide; decision records recommendation review only. Ordinary task/project/procurement/client/skill/deletion workflow is still required. No high-impact domain command runs here. S05 queue retains immutable decisions; there is no delegated recommendation decision route.
+
+Worker versions process supported events occurring after version creation, ignore self-generated AUT/dashboard/report/APR events, serialize per rule/version/source event, retain each outcome once and fence current rule edits/disable during execution. No staff job title creates authority. No schema/source migration before107 is rewritten.

@@ -12,6 +12,7 @@ allowBuilds:
   prisma: true
   unrs-resolver: false
 minimumReleaseAgeExclude:
+  - 'pdfjs-dist@6.4.299'
   - '@vitest/mocker@5.0.2'
   - '@vitest/spy@5.0.2'
   - vitest@5.0.2

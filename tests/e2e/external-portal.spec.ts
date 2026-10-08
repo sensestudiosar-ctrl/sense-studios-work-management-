@@ -12,14 +12,17 @@ type FixtureDatabase = {
 
 test("external consultant grant, OTP session, advisory upload and review, native CAD reveal and revocation persist", async ({ page, context, baseURL }, testInfo) => {
   test.setTimeout(120_000);
-  test.skip(process.env.S21_E2E_ENABLED !== "1", "Set S21_E2E_ENABLED=1 for the isolated S21 browser journey");
+  test.skip(process.env.S21_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1", "Set an approved isolated external portal browser acceptance flag");
   test.skip(!process.env.DATABASE_URL || !process.env.NAS_ROOT, "Dedicated local PostgreSQL test database and NAS_ROOT are required");
   test.skip(!process.env.EMAIL_VERIFICATION_SECRET, "EMAIL_VERIFICATION_SECRET is required for the local external OTP fixture");
   test.skip(Boolean(process.env.BREVO_API_KEY || process.env.BREVO_SENDER_EMAIL || process.env.BREVO_SENDER_NAME), "Run without a configured Brevo sender so no email leaves the local test");
 
   const databaseUrl = new URL(process.env.DATABASE_URL!);
-  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || databaseUrl.port !== "56433" || !/^\/sense_[a-z0-9_]*_test$/.test(databaseUrl.pathname)) {
-    throw new Error("S21 browser acceptance requires a dedicated localhost PostgreSQL _test database on port 56433");
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && ((["56433", "57433"].includes(databaseUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname)) || (databaseUrl.port === "57433" && /^\/sense_s21_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname)));
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && databaseUrl.port !== "56433") || (!/^\/sense_[a-z0-9_]*_test$/.test(databaseUrl.pathname) && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
+    throw new Error("External portal browser acceptance requires a dedicated local S21 or explicitly enabled exact S25 _test database");
   }
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as { Client: new (config: { connectionString: string }) => FixtureDatabase };

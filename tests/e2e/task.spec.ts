@@ -53,7 +53,7 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const unrelatedTask = await unrelatedResponse.json() as { id: string };
     await context.addCookies([{ name: "sense_sid", value: sessionSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
 
-    await page.goto("/");
+    await page.goto("/workspace");
     const workspace = page.locator(".task-workspace");
     await expect(workspace.getByRole("heading", { name: "Tasks" })).toBeVisible();
     await workspace.getByRole("button", { name: "Create task", exact: true }).first().click();
@@ -110,8 +110,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     // The Owner sets the controlled commitment; the task owner stays responsible
     // for ordinary task edits and operational target dates.
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await page.goto(`/workspace?taskId=${taskId}`);
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     const commitmentForm = workspace.getByRole("form", { name: "Set committed due date" });
     await commitmentForm.getByLabel("Committed due date").fill("2026-11-15");
@@ -120,8 +120,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     await commitmentForm.getByRole("button", { name: "Set committed date" }).click();
     expect((await initialCommitment).status()).toBe(201);
     await expect(workspace.getByText("Committed due date set.", { exact: true })).toBeVisible();
-    await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await page.goto(`/workspace?taskId=${taskId}`);
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.locator(".task-facts").getByText("2026-11-15", { exact: true })).toBeVisible();
     await expect(workspace.locator(".task-facts").getByText("2026-12-31", { exact: true })).toBeVisible();
 
@@ -132,8 +132,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     await changeCommitmentForm.getByRole("button", { name: "Change committed date" }).click();
     expect((await revisedCommitment).status()).toBe(201);
     await expect(workspace.getByText("Committed due date updated.", { exact: true })).toBeVisible();
-    await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await page.goto(`/workspace?taskId=${taskId}`);
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.locator(".task-facts").getByText("2026-11-30", { exact: true })).toBeVisible();
     await expect(workspace.locator(".task-history")).toContainText("Committed due date changed from 2026-11-15 to 2026-11-30: Owner approved the revised client commitment");
 
@@ -154,8 +154,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     await expect(workspace.locator(".task-state")).toHaveText("Completed");
     const finished = await db.query<{ status: string; version: number; tags: string[] }>('SELECT status::text,version,tags FROM tasks WHERE id=$1', [taskId]);
     expect(finished.rows[0]).toEqual({ status: "COMPLETED", version: 8, tags: ["studio", "brief"] });
-    await page.reload();
-    await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await page.goto(`/workspace?taskId=${taskId}`);
+    await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.locator(".task-state")).toHaveText("Completed");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);

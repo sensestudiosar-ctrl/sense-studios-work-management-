@@ -29,8 +29,8 @@ function formatTime(value: string): string {
   return Number.isNaN(date.getTime()) ? "Time unavailable" : date.toLocaleString();
 }
 
-export function NotificationCenter({ csrfToken }: { csrfToken: string }): React.JSX.Element {
-  const [open, setOpen] = useState(false);
+export function NotificationCenter({ csrfToken, initiallyOpen = false }: { csrfToken: string; initiallyOpen?: boolean }): React.JSX.Element {
+  const [open, setOpen] = useState(initiallyOpen);
   const [inbox, setInbox] = useState<Inbox | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
   const [emailStatus, setEmailStatus] = useState<EmailStatus[]>([]);

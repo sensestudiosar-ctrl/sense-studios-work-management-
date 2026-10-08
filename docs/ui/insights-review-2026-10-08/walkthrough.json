@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Performance exact source and Back scope",
+    "Owner finalization and own post-finalization acknowledgement",
+    "Turnkey evidence and explicit append-only delay correction",
+    "Fixed schema, immutable freeze and linked correction",
+    "Cross-page source-access loss concealment",
+    "Immutable definition versions and saved-version retained runs",
+    "Saved report Back retains UI without reverting records",
+    "Creator-scoped definition visibility",
+    "Four mobile page layouts"
+  ],
+  "pageErrors": [],
+  "scope": "Low-fidelity artifact only; no production verification"
+}

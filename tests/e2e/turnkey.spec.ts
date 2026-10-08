@@ -17,7 +17,10 @@ test("Turnkey production release persists exact approved inputs through distinct
   const isolatedS19 = /^\/sense_s19_[a-z0-9_]*_test$/.test(databaseUrl.pathname);
   const combinedS15S19 = /^\/sense_s15_s19_[a-z0-9_]*_test$/.test(databaseUrl.pathname)
     && (process.env.S19_E2E_ENABLED === "1" || process.env.S15_E2E_ENABLED === "1");
-  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || databaseUrl.port !== "56433" || !(isolatedS19 || combinedS15S19)) {
+  const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && ["56433", "57433"].includes(databaseUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
+  const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && databaseUrl.port !== "56433") || !(isolatedS19 || combinedS15S19 || explicitlyEnabledS25Database || explicitlyEnabledS26Database || explicitlyEnabledS27Database)) {
     throw new Error("Turnkey browser acceptance requires localhost port 56433 and an isolated sense_s19_*_test DB or explicitly enabled sense_s15_s19_*_test DB");
   }
   const require = createRequire(resolve("apps/api/package.json"));
