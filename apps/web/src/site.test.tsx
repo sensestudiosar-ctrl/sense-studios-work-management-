@@ -12,6 +12,25 @@ const site = (overrides: Record<string, unknown> = {}) => ({
 });
 
 describe("SiteWorkspace draft contract", () => {
+  it("revalidates a Dashboard site-record deep link through the authorized project detail", async () => {
+    const packageRecord = { id: "package-1", version: 3, state: "OPEN", data: { title: "North slab", date: "2026-10-03", tomorrowPlan: "Pour after checks", plannedPercent: "20", actualPercent: "10", plannedQuantity: "12", actualQuantity: "6", unit: "m3", qualityStatus: "PENDING", materialStatus: "READY", blockers: "", critical: false, photoEvidence: [] } };
+    const calls: string[] = [];
+    window.history.replaceState({}, "", `/site?projectId=${project.id}&recordKind=PACKAGE&recordId=${packageRecord.id}`);
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input); calls.push(url);
+      if (url === "/api/v1/site/projects") return response({ items: [project] });
+      if (url === `/api/v1/site/projects/${project.id}`) return response(site({ packages: [packageRecord] }));
+      if (url === `/api/v1/documents/projects/${project.id}`) return response({ files: [] });
+      return response({}, 404);
+    }));
+    render(<SiteWorkspace csrfToken="csrf-site" accountId="account-1"/>);
+    const selected = await screen.findByRole("heading", { name: "North slab" });
+    expect(selected.closest("article")).toHaveAttribute("id", `site-record-PACKAGE-${packageRecord.id}`);
+    await waitFor(() => expect(document.activeElement).toBe(selected.closest("article")));
+    expect(calls).toContain(`/api/v1/site/projects/${project.id}`);
+    expect(screen.queryByText(/requested site record is unavailable/i)).not.toBeInTheDocument();
+  });
+
   it("loads a no-store aggregate and authorized document metadata for image evidence", async () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {

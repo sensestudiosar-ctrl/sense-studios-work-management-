@@ -1,18 +1,20 @@
 .library-workspace { display: grid; gap: 1rem; width: 100%; color: #18302b; }
 .learning-area-tabs { display: flex; flex-wrap: wrap; gap: .45rem; padding: .35rem; border-radius: .65rem; background: #f1f3ec; }
-.learning-area-tabs button { min-height: 2.45rem; padding: .5rem .8rem; border: 1px solid transparent; border-radius: .45rem; background: transparent; color: #40594c; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
-.learning-area-tabs button[aria-current="page"] { border-color: #294c3e; background: white; color: #234334; box-shadow: 0 1px 3px #203c3020; }
-.learning-area-tabs button:focus-visible { outline: 3px solid #76a994; outline-offset: 2px; }
+.learning-area-tabs a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: .5rem .8rem; border: 1px solid transparent; border-radius: .45rem; background: transparent; color: #40594c; font-size: .85rem; font-weight: 700; text-decoration: none; }
+.learning-area-tabs a[aria-current="page"] { border-color: #294c3e; background: white; color: #234334; box-shadow: 0 1px 3px #203c3020; }
+.learning-area-tabs a:focus-visible { outline: 3px solid #76a994; outline-offset: 2px; }
 .library-heading, .library-section-heading, .library-version-heading, .library-block-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.library-version.is-focused { border-color: #769982; box-shadow: 0 0 0 2px #76998233; }
+.library-version-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: .5rem; text-align: right; }
 .library-heading h2, .library-panel h3 { margin: .2rem 0 .45rem; color: #29463d; font: 500 1.55rem Georgia, serif; }
 .library-heading p, .library-panel > p, .library-section-heading p, .library-version p, .library-publication { color: #61736b; font-size: .86rem; line-height: 1.5; }
 .library-eyebrow { margin: 0; color: #708277; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-.library-workspace button { width: fit-content; max-width: 100%; min-height: 2.6rem; padding: .55rem .85rem; border: 1px solid #294c3e; border-radius: .5rem; background: #294c3e; color: white; font: inherit; font-size: .84rem; font-weight: 700; cursor: pointer; }
+.library-workspace button { width: fit-content; max-width: 100%; min-height: 2.75rem; padding: .55rem .85rem; border: 1px solid #294c3e; border-radius: .5rem; background: #294c3e; color: white; font: inherit; font-size: .84rem; font-weight: 700; cursor: pointer; }
 .library-workspace button:disabled { opacity: .5; cursor: not-allowed; }
 .library-workspace button.library-secondary { border-color: #aeb9ad; background: white; color: #29463d; }
-.library-workspace button.library-text-button { min-height: 1.8rem; padding: .2rem .45rem; border-color: transparent; background: transparent; color: #7b4037; }
+.library-workspace button.library-text-button { min-height: 2.75rem; padding: .35rem .55rem; border-color: transparent; background: transparent; color: #7b4037; }
 .library-workspace label { display: grid; min-width: 0; gap: .32rem; color: #334d44; font-size: .8rem; font-weight: 700; }
-.library-workspace input, .library-workspace select, .library-workspace textarea { width: 100%; min-width: 0; min-height: 2.55rem; padding: .55rem .65rem; border: 1px solid #aeb9ad; border-radius: .45rem; background: #fff; color: #182c29; font: inherit; font-size: .88rem; font-weight: 400; }
+.library-workspace input, .library-workspace select, .library-workspace textarea { width: 100%; min-width: 0; min-height: 2.75rem; padding: .55rem .65rem; border: 1px solid #aeb9ad; border-radius: .45rem; background: #fff; color: #182c29; font: inherit; font-size: .88rem; font-weight: 400; }
 .library-workspace textarea { resize: vertical; }
 .library-workspace input:focus-visible, .library-workspace select:focus-visible, .library-workspace textarea:focus-visible, .library-workspace button:focus-visible { outline: 3px solid #76a994; outline-offset: 2px; }
 .library-toolbar { display: grid; grid-template-columns: minmax(10rem, .35fr) minmax(12rem, 1fr); gap: .8rem; padding: .8rem 1rem; border-radius: .65rem; background: #f1f3ec; }

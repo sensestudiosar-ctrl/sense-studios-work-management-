@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useWindowSearchParams } from "./use-window-search-params.js";
 import "./learning.css";
 import { TrainingWorkspace } from "./learning-training.js";
 
@@ -28,9 +29,13 @@ async function api<T>(url: string, csrf: string, init: RequestInit = {}): Promis
 const labelLevel = (value: Level | null | undefined) => value ? LEVEL_LABELS[value] ?? value : "No previous rating";
 
 export function SkillsWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+  const [searchParams, setSearchParams] = useWindowSearchParams();
+  const queryEmployeeId = searchParams.get("employeeId") ?? "";
+  const queryRatingId = searchParams.get("ratingId") ?? "";
+  const queryChangeId = searchParams.get("changeId") ?? "";
   const [setup, setSetup] = useState<Setup | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [employeeId, setEmployeeId] = useState(() => new URLSearchParams(window.location.search).get("employeeId") ?? "");
+  const [employeeId, setEmployeeId] = useState(queryEmployeeId);
   const [loading, setLoading] = useState(true);
   const [profileLoading, setProfileLoading] = useState(false);
   const [pending, setPending] = useState(false);
@@ -48,6 +53,17 @@ export function SkillsWorkspace({ csrfToken }: { csrfToken: string }): React.JSX
   const [catalogueReason, setCatalogueReason] = useState("");
   const [decisionReasons, setDecisionReasons] = useState<Record<string, string>>({});
   const requestSequence = useRef(0);
+
+  useEffect(() => {
+    if (!profile) return;
+    const id = profile.ratings.some(row => row.id === queryRatingId) ? `skill-rating-${queryRatingId}` : profile.changes.some(row => row.id === queryChangeId) ? `skill-change-${queryChangeId}` : "";
+    if (id) document.getElementById(id)?.focus({ preventScroll: false });
+  }, [profile, queryChangeId, queryRatingId]);
+
+  const updateEmployeeQuery = useCallback((id: string, replace = false) => {
+    setSearchParams(current => { const next = new URLSearchParams(current); if (id) next.set("employeeId", id); else next.delete("employeeId"); return next; }, { replace });
+  }, [setSearchParams]);
+  useEffect(() => { setEmployeeId(queryEmployeeId); }, [queryEmployeeId]);
 
   const loadSetup = useCallback(async () => {
     const result = await api<Setup>(`${API}/setup`, csrfToken);
@@ -121,12 +137,12 @@ export function SkillsWorkspace({ csrfToken }: { csrfToken: string }): React.JSX
 
   return <section className="learning-workspace" aria-busy={pending || profileLoading}>
     <header className="learning-heading"><div><h2>Skills</h2><p>Official levels: Beginner, Intermediate, Advanced and Expert. Requests do not change an official rating until approved.</p></div><button className="learning-secondary" type="button" disabled={pending} onClick={() => void refresh()}>Refresh</button></header>
-    <div className="learning-toolbar"><label htmlFor="learning-employee">Employee profile</label><select id="learning-employee" value={employeeId} onChange={event => setEmployeeId(event.target.value)}><option value="">Choose employee</option>{setup.employees.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></div>
+    <div className="learning-toolbar"><label htmlFor="learning-employee">Employee profile</label><select id="learning-employee" value={employeeId} onChange={event => { setEmployeeId(event.target.value); updateEmployeeQuery(event.target.value); }}><option value="">Choose employee</option>{setup.employees.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select></div>
     {error && <div className="learning-alert" role="alert">{error}</div>}{notice && <div className="learning-notice" role="status">{notice}</div>}
     {profileLoading && <p role="status">Loading profile…</p>}
     {employee && profile && <>
       <section className="learning-panel"><div className="learning-section-heading"><div><h3>Official ratings</h3><p>Current approved level and version for {employee.label}.</p></div></div>
-        {profile.ratings.length === 0 ? <p className="learning-empty" role="status">No official skill ratings yet.</p> : <div className="learning-list">{profile.ratings.map(rating => <article className="learning-card" key={rating.id}><div><strong>{currentSkillName(rating.skillId)}</strong><p>{labelLevel(rating.level)} · Version {rating.version}</p></div></article>)}</div>}
+        {profile.ratings.length === 0 ? <p className="learning-empty" role="status">No official skill ratings yet.</p> : <div className="learning-list">{profile.ratings.map(rating => <article id={`skill-rating-${rating.id}`} tabIndex={queryRatingId === rating.id ? -1 : undefined} className={`learning-card ${queryRatingId === rating.id ? "is-focused" : ""}`} key={rating.id}><div><strong>{currentSkillName(rating.skillId)}</strong><p>{labelLevel(rating.level)} · Version {rating.version}</p></div></article>)}</div>}
       </section>
 
       {profile.capabilities.canRequest && <section className="learning-panel"><h3>Request a skill rating</h3><p>Choose a catalogue skill or propose a new name. A named eligible approver must decide before the official rating changes.</p>
@@ -154,7 +170,7 @@ export function SkillsWorkspace({ csrfToken }: { csrfToken: string }): React.JSX
         {row.canDecide && <div className="learning-decision-actions"><label>Decision reason<textarea aria-label={`Decision reason for ${row.proposedSkillName ?? currentSkillName(row.skillId)}`} value={decisionReasons[row.id] ?? ""} onChange={event => setDecisionReasons(current => ({ ...current, [row.id]: event.target.value }))} minLength={3} maxLength={1000} rows={2} /></label><div><button type="button" disabled={pending || (decisionReasons[row.id]?.trim().length ?? 0) < 3} onClick={() => decide(row, "APPROVED")}>Approve</button><button className="learning-secondary" type="button" disabled={pending || (decisionReasons[row.id]?.trim().length ?? 0) < 3} onClick={() => decide(row, "REJECTED")}>Reject</button></div></div>}
       </article>)}</div>}</section>
 
-      <section className="learning-panel"><h3>Immutable rating history</h3>{profile.changes.length === 0 ? <p className="learning-empty" role="status">No approved rating changes have been recorded.</p> : <div className="learning-list">{profile.changes.map(change => { const rating = profile.ratings.find(item => item.id === change.ratingId); return <article className="learning-card learning-history" key={change.id}><div><strong>{rating ? currentSkillName(rating.skillId) : "Skill"} · Version {change.version}</strong><p>{labelLevel(change.fromLevel)} → {labelLevel(change.toLevel)} · {new Date(change.occurredAt).toLocaleString()}</p><p>{change.reason}</p></div></article>; })}</div>}</section>
+      <section className="learning-panel"><h3>Immutable rating history</h3>{profile.changes.length === 0 ? <p className="learning-empty" role="status">No approved rating changes have been recorded.</p> : <div className="learning-list">{profile.changes.map(change => { const rating = profile.ratings.find(item => item.id === change.ratingId); return <article id={`skill-change-${change.id}`} tabIndex={queryChangeId === change.id ? -1 : undefined} className={`learning-card learning-history ${queryChangeId === change.id ? "is-focused" : ""}`} key={change.id}><div><strong>{rating ? currentSkillName(rating.skillId) : "Skill"} · Version {change.version}</strong><p>{labelLevel(change.fromLevel)} → {labelLevel(change.toLevel)} · {new Date(change.occurredAt).toLocaleString()}</p><p>{change.reason}</p></div></article>; })}</div>}</section>
     </>}
   </section>;
 }

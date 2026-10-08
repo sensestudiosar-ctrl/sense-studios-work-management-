@@ -452,13 +452,13 @@ export class LibraryService {
         where: { organizationId: actor.organizationId, kind: "SOP", publishedVersionId: { not: null } },
         orderBy: [{ title: "asc" }, { id: "asc" }],
       });
-      const output: Array<{ recordId: string; title: string; versions: Array<{ versionId: string; version: number; publishedAt?: Date; acknowledgedAt?: Date }> }> = [];
+      const output: Array<{ recordId: string; title: string; versions: Array<{ publicationId: string; versionId: string; version: number; publishedAt?: Date; acknowledgementId?: string; employeeId?: string; acknowledgedByAccountId?: string; acknowledgedAt?: Date }> }> = [];
       for (const record of records) {
         if (!await this.canView(tx, actor, record)) continue;
         const publications = await tx.libraryPublication.findMany({
           where: { organizationId: actor.organizationId, recordId: record.id },
           orderBy: [{ publishedAt: "asc" }, { id: "asc" }],
-          select: { versionId: true, publishedAt: true },
+          select: { id: true, versionId: true, publishedAt: true },
         });
         const versionIds = publications.map((publication) => publication.versionId);
         if (!versionIds.length) continue;
@@ -467,27 +467,29 @@ export class LibraryService {
           select: { id: true, version: true },
         });
         const versionById = new Map(versions.map((version) => [version.id, version]));
-        const acknowledgements = employee
+        const acknowledgements = employee && employee.accountId === actor.accountId
           ? await tx.libraryAcknowledgement.findMany({
             where: { organizationId: actor.organizationId, employeeId: employee.id, versionId: { in: versionIds } },
-            select: { versionId: true, acknowledgedAt: true },
+            select: { id: true, employeeId: true, versionId: true, acknowledgedAt: true },
           })
           : [];
-        const acknowledgementByVersion = new Map(acknowledgements.map((acknowledgement) => [acknowledgement.versionId, acknowledgement.acknowledgedAt]));
+        const acknowledgementByVersion = new Map(acknowledgements.map((acknowledgement) => [acknowledgement.versionId, acknowledgement]));
         const selected = publications.flatMap((publication) => {
           const version = versionById.get(publication.versionId);
           if (!version) return [];
           const publishedDate = publication.publishedAt.toISOString().slice(0, 10);
-          const acknowledgedAt = acknowledgementByVersion.get(version.id);
+          const acknowledgement = acknowledgementByVersion.get(version.id);
+          const acknowledgedAt = acknowledgement?.acknowledgedAt;
           const acknowledgementDate = acknowledgedAt?.toISOString().slice(0, 10);
           const inPublicationPeriod = publishedDate >= from && publishedDate <= to;
           const inAcknowledgementPeriod = !!acknowledgementDate && acknowledgementDate >= from && acknowledgementDate <= to;
           if (!inPublicationPeriod && !inAcknowledgementPeriod) return [];
           return [{
+            publicationId: publication.id,
             versionId: version.id,
             version: version.version,
             ...(inPublicationPeriod ? { publishedAt: publication.publishedAt } : {}),
-            ...(inAcknowledgementPeriod && acknowledgedAt ? { acknowledgedAt } : {}),
+            ...(inAcknowledgementPeriod && acknowledgedAt && acknowledgement && employee?.accountId === actor.accountId ? { acknowledgementId: acknowledgement.id, employeeId: acknowledgement.employeeId, acknowledgedByAccountId: actor.accountId, acknowledgedAt } : {}),
           }];
         });
         if (selected.length) output.push({ recordId: record.id, title: record.title, versions: selected });
@@ -519,7 +521,7 @@ export class LibraryService {
         if (block.type === "CHECKLIST" && Array.isArray(block.items)) return block.items.filter((item): item is string => typeof item === "string");
         return [];
       }).join(" ").slice(0, 1000);
-      output.push({ referenceId: reference.id, versionId: record.id, version: record.version, title: detail.record.title, text, files: record.files.length });
+      output.push({ referenceId: reference.id, recordId: detail.record.id, versionId: record.id, version: record.version, title: detail.record.title, text, files: record.files.length });
     }
     return output;
   }

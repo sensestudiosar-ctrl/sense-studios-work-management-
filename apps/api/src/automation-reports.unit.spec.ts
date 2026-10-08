@@ -1,5 +1,5 @@
 import { BadRequestException } from "@nestjs/common";
-import { reportDefinitionSchema, transformReport } from "./automation-reports.js";
+import { automationRuleReportAllowed, reportDefinitionSchema, transformReport } from "./automation-reports.js";
 import type { ReportTable } from "./report-exports.js";
 
 const source: ReportTable = {
@@ -13,10 +13,9 @@ const definition = {
 };
 
 describe("automation report definitions", () => {
-  it("accepts bounded strict definitions and rejects invalid periods, duplicate columns, and training reports", () => {
+  it("accepts bounded strict definitions and rejects invalid periods and duplicate columns", () => {
     expect(reportDefinitionSchema.safeParse(definition).success).toBe(true);
     for (const invalid of [
-      { ...definition, category: "skills_training" },
       { ...definition, from: "2026-10-06" },
       { ...definition, to: "2027-10-03" },
       { ...definition, columns: ["employee", "employee"] },
@@ -24,6 +23,14 @@ describe("automation report definitions", () => {
       { ...definition, chart: "PIE", groupBy: undefined },
       { ...definition, arbitraryPath: "rows[0]" },
     ]) expect(reportDefinitionSchema.safeParse(invalid).success).toBe(false);
+  });
+
+  it("allows factual Learning saved reports while excluding them from event automation", () => {
+    const learning = reportDefinitionSchema.safeParse({ ...definition, category: "skills_training" });
+    expect(learning.success).toBe(true);
+    expect(automationRuleReportAllowed("skills_training")).toBe(false);
+    expect(automationRuleReportAllowed("employee")).toBe(true);
+    expect(automationRuleReportAllowed("unknown")).toBe(false);
   });
 
   it("filters before grouping and returns count-only grouped rows and chart points", () => {

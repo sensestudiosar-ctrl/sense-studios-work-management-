@@ -4,7 +4,7 @@ import { AiAssistanceWorkspace } from "./ai-assistance.js";
 
 const context = { capabilities: { DAILY: true, PROJECT: true, ASSIGNMENT: true, canDecide: true }, projects: [{ id: "p1", title: "Studio" }], tasks: [{ id: "t1", title: "Reception" }], provider: "deterministic-evidence-v1", unavailableCapabilities: ["Training evidence unavailable"] };
 const json = (body: unknown, status = 200): Response => ({ ok: status >= 200 && status < 300, status, json: async () => body }) as Response;
-const run = { id: "r1", kind: "ASSIGNMENT", decisionVersion: 0, result: { kind: "ASSIGNMENT", provider: "deterministic-evidence-v1", providerVersion: "1", summary: "Current evidence for task Reception.", candidates: [{ employeeId: "e1", label: "Asha", purpose: "PRIMARY_OWNER", team: "Studio Team", eligible: true, factors: [{ key: "capacity", label: "Available minutes", value: 0 }] }], unavailableFactors: ["Training history is unavailable"], limitations: ["Candidates are unranked."] }, decisions: [] };
+const run = { id: "r1", kind: "ASSIGNMENT", decisionVersion: 0, capabilities: { canDecide: true, canRecordOutcome: false }, result: { kind: "ASSIGNMENT", provider: "deterministic-evidence-v1", providerVersion: "1", summary: "Current evidence for task Reception.", candidates: [{ employeeId: "e1", label: "Asha", purpose: "PRIMARY_OWNER", team: "Studio Team", eligible: true, factors: [{ key: "capacity", label: "Available minutes", value: 0 }] }], unavailableFactors: ["Training history is unavailable"], limitations: ["Candidates are unranked."] }, decisions: [] };
 const list = { items: [{ id: "r1", kind: "ASSIGNMENT", taskId: "t1", createdAt: "2026-10-07T10:00:00Z", decisionVersion: 0 }] };
 beforeEach(() => { vi.restoreAllMocks(); vi.stubGlobal("fetch", vi.fn()); });
 

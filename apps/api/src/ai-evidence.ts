@@ -1,7 +1,7 @@
 export const AI_PROVIDER = "deterministic-evidence-v1" as const;
 export const AI_PROVIDER_VERSION = "1" as const;
 
-export type EvidenceReference = { kind: string; id: string; projectId?: string | undefined; taskId?: string | undefined; employeeId?: string | undefined; purpose?: string | undefined; from?: string | undefined; to?: string | undefined };
+export type EvidenceReference = { kind: string; id: string; projectId?: string | undefined; taskId?: string | undefined; employeeId?: string | undefined; assignmentId?: string | undefined; recordId?: string | undefined; versionId?: string | undefined; purpose?: string | undefined; from?: string | undefined; to?: string | undefined };
 export type AssistanceCandidate = {
   employeeId: string;
   label: string;

@@ -37,8 +37,8 @@ const format = (v: unknown) => v === null || v === undefined || v === "" ? "—"
 const dateLabel = (v: string | undefined) => v && /^\d{4}-\d{2}-\d{2}/.test(v) ? v.slice(0, 10) : v ?? "";
 const dateRangeOkay = (from: string, to: string) => Boolean(from && to && from <= to);
 
-export function DashboardWorkspace({ csrfToken, owner }: { csrfToken: string; owner: boolean }): React.JSX.Element {
-  const [tab, setTab] = useState<"dashboard" | "summaries" | "reports" | "schedules">("dashboard");
+export function DashboardWorkspace({ csrfToken, owner, initialTab = "dashboard", focused = false }: { csrfToken: string; owner: boolean; initialTab?: "dashboard" | "summaries" | "reports" | "schedules"; focused?: boolean }): React.JSX.Element {
+  const [tab, setTab] = useState<"dashboard" | "summaries" | "reports" | "schedules">(initialTab);
   const [dash, setDash] = useState<Dash>({ today: null, role: owner ? "Owner account" : "Staff account" });
   const [sourceData, setSourceData] = useState<Partial<Record<DashboardSource, DashboardSourceState>>>({});
   const [context, setContext] = useState<Context | null>(null);
@@ -161,8 +161,8 @@ export function DashboardWorkspace({ csrfToken, owner }: { csrfToken: string; ow
     && (ruleKind !== "SUMMARY" || summaryKind !== "MONTHLY" || dayOfMonth.trim())
     && (ruleKind !== "EVENT_NOTICE" || eventNames.length > 0 && validEventNames));
   return <section className="identity-section dashboard-workspace" aria-labelledby="dashboard-heading">
-    <div className="dashboard-heading"><div><div className="eyebrow">WORKSPACE OVERVIEW</div><h2 id="dashboard-heading">Dashboard &amp; reports</h2><p>Role-scoped source updates, reminders and frozen reports.</p></div><button type="button" className="secondary-action" onClick={() => void load(true)} disabled={busy}>Refresh</button></div>
-    <nav className="dashboard-tabs" aria-label="Dashboard sections">{([['dashboard', 'Overview'], ['summaries', 'Scheduled summaries'], ['reports', 'Reports'], ['schedules', 'Reminders & schedules']] as const).map(([key, label]) => <button type="button" key={key} aria-pressed={tab === key} onClick={() => setTab(key)}>{label}</button>)}</nav>
+    <div className="dashboard-heading"><div><div className="eyebrow">{initialTab === "reports" ? "INSIGHTS" : "WORKSPACE OVERVIEW"}</div><h2 id="dashboard-heading">{initialTab === "reports" ? "Reports" : "Dashboard & reports"}</h2><p>{initialTab === "reports" ? "Preview current report data or open an immutable retained snapshot." : "Role-scoped source updates, reminders and frozen reports."}</p></div><button type="button" className="secondary-action" onClick={() => void load(true)} disabled={busy}>Refresh</button></div>
+    {!focused && <nav className="dashboard-tabs" aria-label="Dashboard sections">{([['dashboard', 'Overview'], ['summaries', 'Scheduled summaries'], ['reports', 'Reports'], ['schedules', 'Reminders & schedules']] as const).map(([key, label]) => <button type="button" key={key} aria-pressed={tab === key} onClick={() => setTab(key)}>{label}</button>)}</nav>}
     {error && <p className="auth-error" role="alert">{error} <button type="button" className="secondary-action" onClick={() => void load(true)}>Retry supporting data</button></p>}{notice && <p className="notice" role="status">{notice}</p>}
     {loading && tab !== "dashboard" && <p role="status">Loading reports, summaries, reminders, and schedules…</p>}
     {tab === "dashboard" && <>

@@ -1,0 +1,97 @@
+.settings-homes,
+.decisions-home {
+  --settings-ink: #20342e;
+  --settings-muted: #687770;
+  --settings-line: #dce4dc;
+  --settings-accent: #315c4c;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  color: var(--settings-ink);
+}
+
+.settings-homes *,
+.decisions-home * { box-sizing: border-box; }
+
+.settings-homes-heading,
+.decisions-home-heading {
+  max-width: 54rem;
+  margin: 0 0 1.25rem;
+}
+
+.settings-homes-eyebrow {
+  margin: 0 0 .35rem;
+  color: var(--settings-accent);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.settings-homes-heading h1,
+.decisions-home-heading h1 {
+  margin: 0;
+  font-size: clamp(1.55rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+.settings-homes-heading > p:last-child,
+.decisions-home-heading > p:last-child {
+  margin: .55rem 0 0;
+  color: var(--settings-muted);
+  line-height: 1.55;
+}
+
+.settings-home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .85rem;
+  max-width: 70rem;
+}
+
+.settings-home-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: clamp(1rem, 2vw, 1.3rem);
+  border: 1px solid var(--settings-line);
+  border-radius: .85rem;
+  background: #fffdf8;
+}
+
+.settings-home-card h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.settings-home-card p {
+  margin: .5rem 0 1rem;
+  color: var(--settings-muted);
+  font-size: .92rem;
+  line-height: 1.5;
+}
+
+.settings-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  min-height: 2.75rem;
+  margin-top: auto;
+  color: var(--settings-accent);
+  font-weight: 700;
+  text-decoration-thickness: .08em;
+  text-underline-offset: .18em;
+}
+
+.settings-home-link span { font-size: 1.05em; }
+.settings-home-access { margin-top: auto; color: var(--settings-muted); font-size: .88rem; font-weight: 700; }
+.settings-home-link:focus-visible { outline: 3px solid #83b99c; outline-offset: 3px; border-radius: .2rem; }
+
+.decisions-home .approval-queue { margin-top: 1.25rem; }
+
+@media (max-width: 620px) {
+  .settings-home-grid { grid-template-columns: minmax(0, 1fr); }
+  .settings-home-card { padding: 1rem; }
+}

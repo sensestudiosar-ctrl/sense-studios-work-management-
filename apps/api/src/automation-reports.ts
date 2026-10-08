@@ -3,7 +3,10 @@ import { z } from "zod";
 import { reportCategories } from "./dashboard-policy.js";
 import type { ReportTable } from "./report-exports.js";
 
-const categories = reportCategories.filter((category) => category !== "skills_training") as [Exclude<typeof reportCategories[number], "skills_training">, ...Exclude<typeof reportCategories[number], "skills_training">[]];
+const categories = reportCategories;
+export function automationRuleReportAllowed(category: unknown): boolean {
+  return typeof category === "string" && reportCategories.includes(category as typeof reportCategories[number]) && category !== "skills_training";
+}
 const date = z.iso.date();
 const range = z.object({ from: date, to: date }).strict().refine((value) => value.to >= value.from && Date.parse(value.to) - Date.parse(value.from) <= 366 * 86400000, "Period must be ordered and no longer than one year");
 

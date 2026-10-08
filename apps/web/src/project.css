@@ -26,7 +26,9 @@
 .project-empty, .project-status { margin: 0; padding: 1rem; color: #536174; }
 .project-detail { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e6ed; }
 .project-context-nav { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0 1rem; padding: .65rem; border: 1px solid #e0e6ed; border-radius: .65rem; background: #f8fafc; }
-.project-context-nav a { padding: .4rem .65rem; border-radius: .45rem; color: #214f92; font-size: .88rem; font-weight: 650; text-decoration: none; }
+.project-context-nav a, .project-context-nav span { padding: .4rem .65rem; border-radius: .45rem; font-size: .88rem; }
+.project-context-nav a { color: #214f92; font-weight: 650; text-decoration: none; }
+.project-context-nav span[aria-disabled="true"] { color: #657387; cursor: not-allowed; }
 .project-context-nav a:hover, .project-context-nav a:focus-visible { background: #eaf1fb; text-decoration: underline; }
 #project-plan { scroll-margin-top: 1rem; }
 .project-detail h3 { margin: .2rem 0 .8rem; }

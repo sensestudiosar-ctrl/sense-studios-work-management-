@@ -7,7 +7,7 @@
 .learning-workspace input, .learning-workspace select, .learning-workspace textarea { width: 100%; min-width: 0; min-height: 2.7rem; padding: .6rem .7rem; border: 1px solid #aeb9ad; border-radius: .5rem; background: white; color: #182c29; font: inherit; font-weight: 400; }
 .learning-workspace textarea { resize: vertical; }
 .learning-workspace input:focus-visible, .learning-workspace select:focus-visible, .learning-workspace textarea:focus-visible, .learning-workspace button:focus-visible { outline: 3px solid #76a994; outline-offset: 2px; }
-.learning-workspace button { width: fit-content; min-height: 2.65rem; padding: .6rem .9rem; border: 1px solid #294c3e; border-radius: .5rem; background: #294c3e; color: white; font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer; }
+.learning-workspace button { width: fit-content; min-height: 2.75rem; padding: .6rem .9rem; border: 1px solid #294c3e; border-radius: .5rem; background: #294c3e; color: white; font: inherit; font-size: .86rem; font-weight: 700; cursor: pointer; }
 .learning-workspace button:disabled { opacity: .52; cursor: not-allowed; }
 .learning-workspace button.learning-secondary { border-color: #aeb9ad; background: white; color: #29463d; }
 .learning-panel { min-width: 0; padding: 1.1rem; border: 1px solid #e2e1d8; border-radius: .8rem; background: #fbfaf5; }
@@ -16,6 +16,7 @@
 .learning-wide { grid-column: 1 / -1; }
 .learning-list { display: grid; gap: .65rem; margin-top: .8rem; }
 .learning-card { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; min-width: 0; padding: .9rem; border: 1px solid #e2e1d8; border-radius: .65rem; background: white; }
+.learning-card.is-focused { border-color: #769982; box-shadow: 0 0 0 2px #76998233; }
 .learning-card-main { flex: 1; min-width: 0; }
 .learning-card strong { color: #29463d; overflow-wrap: anywhere; }
 .learning-card p { margin: .35rem 0 0; color: #61736b; font-size: .85rem; line-height: 1.5; overflow-wrap: anywhere; }

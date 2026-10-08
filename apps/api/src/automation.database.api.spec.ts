@@ -114,6 +114,14 @@ suite("S26 real PostgreSQL automation records, reports, and runs", () => {
     expect(await automation.saveRule(staff, ruleInput)).toMatchObject({ version: 1 });
   }));
 
+  test("interactive Learning reports can be saved but cannot be selected by REPORT event rules", async () => fixture(async ({ automation, owner, staff, tx, projectId }) => {
+    const session = await tx.session.create({ data: { accountId: owner.accountId, tokenHash: randomUUID(), csrfTokenHash: randomUUID(), expiresAt: new Date(Date.now() + 3_600_000), lastUsedAt: new Date() } });
+    const interactiveOwner = { ...owner, sessionId: session.id };
+    const learningReport = await automation.saveReport(interactiveOwner, { ...definition(), category: "skills_training", ...command() });
+    expect((await automation.context(owner)).ruleReports.map((report: { id: string }) => report.id)).not.toContain(learningReport.id);
+    await expect(automation.saveRule(owner, rule(staff.accountId, { kind: "REPORT", reportId: learningReport.id }, projectId))).rejects.toThrow(/Learning evidence reports cannot run/);
+  }));
+
   test("task events generate report, notice, and review runs once; rejecting a recommendation leaves source work untouched", async () => fixture(async ({ automation, owner, staff, task, tx, projectId, employeeId }) => {
     const sourceReport = await automation.saveReport(owner, { ...definition(), ...command() });
     const reportRule = await automation.saveRule(owner, rule(staff.accountId, { kind: "REPORT", reportId: sourceReport.id }, projectId));

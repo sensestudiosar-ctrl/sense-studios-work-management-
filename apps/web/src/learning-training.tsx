@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useWindowSearchParams } from "./use-window-search-params.js";
 import "./learning-training.css";
 
 type Employee = { id: string; label: string };
@@ -33,7 +34,9 @@ const stateLabel: Record<string, string> = { ASSIGNED: "Assigned", SUBMITTED: "S
 const asText = (value: unknown) => typeof value === "string" ? value : "";
 
 export function TrainingWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
-  const [setup, setSetup] = useState<Setup | null>(null), [selectedEmployeeId, setSelectedEmployeeId] = useState(""), [selectedAssignmentId, setSelectedAssignmentId] = useState(() => new URLSearchParams(window.location.search).get("assignmentId") ?? "");
+  const [searchParams, setSearchParams] = useWindowSearchParams();
+  const queryEmployeeId = searchParams.get("employeeId") ?? "", queryAssignmentId = searchParams.get("assignmentId") ?? "";
+  const [setup, setSetup] = useState<Setup | null>(null), [selectedEmployeeId, setSelectedEmployeeIdState] = useState(queryEmployeeId), [selectedAssignmentId, setSelectedAssignmentIdState] = useState(queryAssignmentId);
   const [detail, setDetail] = useState<Detail | null>(null), [loading, setLoading] = useState(true), [detailLoading, setDetailLoading] = useState(false), [pending, setPending] = useState(false);
   const [error, setError] = useState(""), [notice, setNotice] = useState("");
   const [moduleVersionId, setModuleVersionId] = useState(""), [reviewerAccountId, setReviewerAccountId] = useState(""), [assignReason, setAssignReason] = useState(""), [recommendationReason, setRecommendationReason] = useState(""), [assignPracticalTaskId, setAssignPracticalTaskId] = useState("");
@@ -41,13 +44,25 @@ export function TrainingWorkspace({ csrfToken }: { csrfToken: string }): React.J
   const [assessmentObservation, setAssessmentObservation] = useState(""), [assessmentReason, setAssessmentReason] = useState(""), [effectivenessDate, setEffectivenessDate] = useState(""), [effectivenessObservation, setEffectivenessObservation] = useState(""), [effectivenessReason, setEffectivenessReason] = useState(""), [effectivenessTaskId, setEffectivenessTaskId] = useState("");
   const detailSequence = useRef(0);
 
+  const updateTrainingQuery = useCallback((changes: Partial<Record<"employeeId" | "assignmentId", string>>, replace = false) => {
+    setSearchParams(current => { const next = new URLSearchParams(current); for (const [key, value] of Object.entries(changes)) { if (value) next.set(key, value); else next.delete(key); } return next; }, { replace });
+  }, [setSearchParams]);
+  const setSelectedEmployeeId = useCallback((id: string, replace = false) => { setSelectedEmployeeIdState(id); updateTrainingQuery({ employeeId: id }, replace); }, [updateTrainingQuery]);
+  const setSelectedAssignmentId = useCallback((id: string, replace = false) => { setSelectedAssignmentIdState(id); updateTrainingQuery({ assignmentId: id }, replace); }, [updateTrainingQuery]);
+  useEffect(() => { setSelectedEmployeeIdState(queryEmployeeId); }, [queryEmployeeId]);
+  useEffect(() => { setSelectedAssignmentIdState(queryAssignmentId); }, [queryAssignmentId]);
+
   const loadSetup = useCallback(async (preferredAssignment?: string) => {
     const result = await request<Setup>(`${apiBase}/setup`, csrfToken); setSetup(result);
-    setSelectedEmployeeId(current => result.employees.some(item => item.id === current) ? current : result.employees[0]?.id ?? "");
-    const requestedAssignmentId = new URLSearchParams(window.location.search).get("assignmentId");
-    setSelectedAssignmentId(current => requestedAssignmentId ? (result.assignments.some(item => item.id === requestedAssignmentId) ? requestedAssignmentId : "") : result.assignments.some(item => item.id === current) ? current : preferredAssignment && result.assignments.some(item => item.id === preferredAssignment) ? preferredAssignment : result.assignments[0]?.id ?? "");
+    const params = new URLSearchParams(window.location.search);
+    const requestedEmployeeId = params.get("employeeId"), requestedAssignmentId = params.get("assignmentId");
+    const employeeId = requestedEmployeeId && result.employees.some(item => item.id === requestedEmployeeId) ? requestedEmployeeId : result.employees[0]?.id ?? "";
+    const assignmentId = requestedAssignmentId ? (result.assignments.some(item => item.id === requestedAssignmentId) ? requestedAssignmentId : "") : preferredAssignment && result.assignments.some(item => item.id === preferredAssignment) ? preferredAssignment : result.assignments[0]?.id ?? "";
+    setSelectedEmployeeIdState(employeeId);
+    setSelectedAssignmentIdState(assignmentId);
+    updateTrainingQuery({ employeeId, assignmentId }, true);
     return result;
-  }, [csrfToken]);
+  }, [csrfToken, setSelectedAssignmentId, setSelectedEmployeeId]);
   const loadDetail = useCallback(async (id: string) => {
     const seq = ++detailSequence.current;
     if (!id) { setDetail(null); setDetailLoading(false); return; }
@@ -59,8 +74,8 @@ export function TrainingWorkspace({ csrfToken }: { csrfToken: string }): React.J
   const refresh = useCallback(async (preferred?: string) => {
     const result = await loadSetup(preferred);
     const targetId = preferred && result.assignments.some(item => item.id === preferred) ? preferred : result.assignments.some(item => item.id === selectedAssignmentId) ? selectedAssignmentId : result.assignments[0]?.id ?? "";
-    setSelectedAssignmentId(targetId); await loadDetail(targetId);
-  }, [loadDetail, loadSetup, selectedAssignmentId]);
+    setSelectedAssignmentId(targetId, true); await loadDetail(targetId);
+  }, [loadDetail, loadSetup, selectedAssignmentId, setSelectedAssignmentId]);
   useEffect(() => {
     let current = true; setLoading(true); setError("");
     void loadSetup().catch(cause => { if (current) setError(cause instanceof Error ? cause.message : "Could not load Training."); }).finally(() => { if (current) setLoading(false); });

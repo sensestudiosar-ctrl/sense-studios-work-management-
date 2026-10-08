@@ -3,8 +3,9 @@ import { NavLink, useLocation } from "react-router-dom";
 import "./workspace-navigation.css";
 
 const destinations = [
-  { to: "/workspace", label: "Account & settings", end: true },
-  { to: "/my-work", label: "My Work & decisions" },
+  { to: "/settings", label: "Account & settings" },
+  { to: "/my-work", label: "My Work" },
+  { to: "/decisions", label: "Decisions" },
   { to: "/notifications", label: "Notifications" },
   { to: "/tasks", label: "Tasks" },
   { to: "/projects", label: "Projects" },
@@ -97,13 +98,13 @@ export function WorkspaceNavigation(): React.JSX.Element {
 
   return <>
     <aside className="workspace-sidebar">
-      <NavLink className="workspace-bell-link" to="/notifications" aria-label="Notifications" title="Notifications">🔔 <span>Notifications</span></NavLink>
+      <NavLink className="workspace-bell-link" to="/notifications" aria-label="Notifications" title="Notifications"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg><span>Notifications</span></NavLink>
       <nav className="workspace-nav" aria-label="Workspace navigation">
         <DestinationLinks items={[...destinations]} />
       </nav>
     </aside>
     <div className="workspace-mobile-nav">
-      <NavLink className="workspace-bell-link" to="/notifications" aria-label="Notifications" title="Notifications">🔔</NavLink>
+      <NavLink className="workspace-bell-link" to="/notifications" aria-label="Notifications" title="Notifications"><svg aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg></NavLink>
       <nav className="workspace-mobile-main" aria-label="Main workspace destinations">
         <DestinationLinks items={destinations.filter(({ to }) => primaryPaths.has(to))} />
       </nav>

@@ -28,16 +28,16 @@ describe("workspace navigation", () => {
 
     const activeDrawingRegisterLinks = screen.getAllByRole("link", { name: "Drawing register" });
     expect(activeDrawingRegisterLinks.some((link) => link.getAttribute("aria-current") === "page")).toBe(true);
-    const destinations = ["Account & settings", "My Work & decisions", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Dashboard & reports", "Integrations", "Automation & reports", "Evidence assistance", "Performance", "External access", "Turnkey operations", "Site delivery", "Time", "Workforce", "Learning"];
+    const destinations = ["Account & settings", "My Work", "Decisions", "Notifications", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Dashboard & reports", "Integrations", "Automation & reports", "Evidence assistance", "Performance", "External access", "Turnkey operations", "Site delivery", "Time", "Workforce", "Learning"];
 
     expect(screen.queryByRole("link", { name: /^work$/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /^people$/i })).not.toBeInTheDocument();
     const mobileMain = screen.getByRole("navigation", { name: "Main workspace destinations" });
-    expect(within(mobileMain).getAllByRole("link").map((link) => link.textContent)).toEqual(["My Work & decisions", "Tasks", "Project documents"]);
+    expect(within(mobileMain).getAllByRole("link").map((link) => link.textContent)).toEqual(["My Work", "Tasks", "Project documents"]);
     fireEvent.click(screen.getByRole("button", { name: "More" }));
     const moreLinks = within(screen.getByRole("dialog", { name: "More destinations" })).getAllByRole("link");
     const moreLabels = moreLinks.map(link => link.textContent);
-    const acceptedMore = destinations.filter(label => !["My Work & decisions", "Tasks", "Project documents"].includes(label));
+    const acceptedMore = destinations.filter(label => !["My Work", "Tasks", "Project documents"].includes(label));
     expect(acceptedMore.every((label) => moreLabels.includes(label))).toBe(true);
     expect(moreLabels.filter((label): label is string => acceptedMore.includes(label as never))).toEqual(acceptedMore);
   });

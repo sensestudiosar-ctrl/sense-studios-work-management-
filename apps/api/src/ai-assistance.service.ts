@@ -162,12 +162,12 @@ export class AiAssistanceService {
             candidate.factors.push({ key: "training:moduleTitle", label: "Activated module", value: assignment.moduleTitle, source: ref });
             candidate.factors.push({ key: "training:assessmentName", label: "Named assessment", value: assignment.assessmentName, source: ref });
             for (const outcome of assignment.outcomes) {
-              const outcomeRef: EvidenceReference = { kind: "TRAINING_ASSESSMENT", id: outcome.id, employeeId: item.employeeId, taskId: request.taskId!, ...(base.task.projectId ? { projectId: base.task.projectId } : {}) };
+              const outcomeRef: EvidenceReference = { kind: "TRAINING_ASSESSMENT", id: outcome.id, employeeId: item.employeeId, assignmentId: assignment.assignmentId, taskId: request.taskId!, ...(base.task.projectId ? { projectId: base.task.projectId } : {}) };
               manifest.push(outcomeRef);
               candidate.factors.push({ key: "training:assessmentOutcome", label: assignment.assessmentName, value: outcome.outcome, source: outcomeRef });
             }
             for (const observation of assignment.effectiveness) {
-              const observationRef: EvidenceReference = { kind: "TRAINING_EFFECTIVENESS", id: observation.id, employeeId: item.employeeId, taskId: request.taskId!, ...(base.task.projectId ? { projectId: base.task.projectId } : {}) };
+              const observationRef: EvidenceReference = { kind: "TRAINING_EFFECTIVENESS", id: observation.id, employeeId: item.employeeId, assignmentId: assignment.assignmentId, taskId: request.taskId!, ...(base.task.projectId ? { projectId: base.task.projectId } : {}) };
               manifest.push(observationRef);
               candidate.factors.push({ key: "training:effectivenessDate", label: "Dated effectiveness observation", value: observation.date, source: observationRef });
             }
@@ -189,7 +189,7 @@ export class AiAssistanceService {
       try {
         const sops = await transactionalReadPorts(this.library, tx).assistanceTaskSops(actor, request.taskId!);
         for (const sop of sops) {
-          const ref: EvidenceReference = { kind: "LIBRARY_SOP_VERSION", id: sop.versionId, taskId: request.taskId!, ...(base.task.projectId ? { projectId: base.task.projectId } : {}) };
+          const ref: EvidenceReference = { kind: "LIBRARY_SOP_VERSION", id: sop.versionId, recordId: sop.recordId, taskId: request.taskId!, ...(base.task.projectId ? { projectId: base.task.projectId } : {}) };
           manifest.push(ref);
           facts.push({ source: ref, label: "Published task-referenced SOP version", field: "version", value: sop.version, sourceDate: null });
           facts.push({ source: ref, label: "Published task-referenced SOP", field: "title", value: sop.title.slice(0, 200), sourceDate: null });
@@ -217,7 +217,7 @@ export class AiAssistanceService {
       for (const taskItem of page.items) {
         try {
           for (const sop of await transactionalReadPorts(this.library, tx).assistanceTaskSops(actor, taskItem.id)) {
-            const ref: EvidenceReference = { kind: "LIBRARY_SOP_VERSION", id: sop.versionId, taskId: taskItem.id, projectId: request.projectId! };
+            const ref: EvidenceReference = { kind: "LIBRARY_SOP_VERSION", id: sop.versionId, recordId: sop.recordId, taskId: taskItem.id, projectId: request.projectId! };
             manifest.push(ref);
             facts.push({ source: ref, label: "Published task-referenced SOP version", field: "version", value: sop.version, sourceDate: null });
             facts.push({ source: ref, label: "Published task-referenced SOP", field: "title", value: sop.title.slice(0, 200), sourceDate: null });
@@ -231,11 +231,11 @@ export class AiAssistanceService {
     } else {
       const category = request.kind === "MANAGEMENT" ? "leader" : "employee";
       const report = await dashboard.automationReport(actor, { category, from: request.from, to: request.to });
-      manifest.push(...report.manifest.slice(0, 500).map(({ kind, id, projectId, from, to }) => ({ kind: String(kind), id: String(id), ...(typeof projectId === "string" ? { projectId } : {}), ...(typeof from === "string" ? { from } : {}), ...(typeof to === "string" ? { to } : {}) })));
+      manifest.push(...report.manifest.slice(0, 500).map(({ kind, id, projectId, from, to, parent }) => ({ kind: String(kind), id: String(id), ...(typeof projectId === "string" ? { projectId } : {}), ...(typeof from === "string" ? { from } : {}), ...(typeof to === "string" ? { to } : {}), ...(typeof parent?.employeeId === "string" ? { employeeId: parent.employeeId } : {}), ...(typeof parent?.assignmentId === "string" ? { assignmentId: parent.assignmentId } : {}), ...(typeof parent?.recordId === "string" ? { recordId: parent.recordId } : {}), ...(typeof parent?.versionId === "string" ? { versionId: parent.versionId } : {}) })));
       for (const row of report.table.rows.slice(0, 500)) {
         const sourceKind = String(row.source ?? ""), sourceId = String(row.id ?? ""), source = manifest.find((item) => item.kind === sourceKind && item.id === sourceId);
         if (!sourceKind || !sourceId || !source || typeof row.field !== "string") continue;
-        facts.push({ source: { kind: sourceKind, id: sourceId, ...(source.projectId ? { projectId: source.projectId } : {}) }, label: String(row.label ?? "Authorized report source").slice(0, 200), field: row.field.slice(0, 100), value: row.value ?? null, sourceDate: typeof row.date === "string" && row.date ? row.date : null });
+        facts.push({ source: { kind: sourceKind, id: sourceId, ...(source.projectId ? { projectId: source.projectId } : {}), ...(source.employeeId ? { employeeId: source.employeeId } : {}), ...(source.assignmentId ? { assignmentId: source.assignmentId } : {}), ...(source.recordId ? { recordId: source.recordId } : {}), ...(source.versionId ? { versionId: source.versionId } : {}) }, label: String(row.label ?? "Authorized report source").slice(0, 200), field: row.field.slice(0, 100), value: row.value ?? null, sourceDate: typeof row.date === "string" && row.date ? row.date : null });
       }
       if (report.table.rows.length > 500 || report.manifest.length > 500) unavailableFactors.push("Dashboard evidence is capped at 500 current source entries.");
       unavailableFactors.push(...report.table.unavailable);
@@ -337,13 +337,13 @@ export class AiAssistanceService {
     for (const ref of sourceRefs.filter((item) => ["TRAINING_ASSIGNMENT", "TRAINING_ASSESSMENT", "TRAINING_EFFECTIVENESS"].includes(item.kind))) {
       if (!ref.employeeId) throw new ForbiddenException("Retained training source is invalid");
       const training = await transactionalReadPorts(this.training, tx).assistanceEvidence(actor, ref.employeeId);
-      const currentIds = new Set(training.flatMap((item) => [item.assignmentId, ...item.effectiveness.map((observation) => observation.id), ...item.outcomes.map((outcome) => outcome.id)]));
-      if (!currentIds.has(ref.id)) throw new ForbiddenException("Retained training evidence is no longer available");
+      const current = training.find((item) => ref.kind === "TRAINING_ASSIGNMENT" && item.assignmentId === ref.id || ref.kind === "TRAINING_ASSESSMENT" && (!ref.assignmentId || item.assignmentId === ref.assignmentId) && item.outcomes.some((outcome) => outcome.id === ref.id) || ref.kind === "TRAINING_EFFECTIVENESS" && (!ref.assignmentId || item.assignmentId === ref.assignmentId) && item.effectiveness.some((observation) => observation.id === ref.id));
+      if (!current) throw new ForbiddenException("Retained training evidence is no longer available");
     }
     for (const ref of sourceRefs.filter((item) => item.kind === "LIBRARY_SOP_VERSION")) {
       if (!ref.taskId) throw new ForbiddenException("Retained Library source is invalid");
       const current = await transactionalReadPorts(this.library, tx).assistanceTaskSops(actor, ref.taskId);
-      if (!current.some((item) => item.versionId === ref.id)) throw new ForbiddenException("Retained published SOP is no longer available");
+      if (!current.some((item) => item.versionId === ref.id && (!ref.recordId || item.recordId === ref.recordId))) throw new ForbiddenException("Retained published SOP is no longer available");
     }
     for (const ref of sourceRefs.filter((item) => item.kind === "WORKFORCE_CAPACITY")) {
       if (!ref.employeeId || !ref.from || !ref.to) throw new ForbiddenException("Retained Workforce source is invalid");

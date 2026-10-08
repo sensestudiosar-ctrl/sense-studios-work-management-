@@ -86,8 +86,10 @@ suite("S24 real PostgreSQL command and evidence boundaries", () => {
  }
  const filter={category:"skills_training",from:"2026-09-01",to:"2026-09-30"};
  const command=()=>({commandId:randomUUID(),reason:"Fictional S24 acceptance command"});
- test("unavailable S18 evidence is explicit and no organization schedules are seeded",async()=>fixture(async({service,owner})=>{
-  expect((await service.preview(owner,filter)).unavailable.join(" ")).toMatch(/S18/);
+ test("missing Learning source providers are explicit and no organization schedules are seeded",async()=>fixture(async({service,owner})=>{
+  const report=await service.preview(owner,filter);
+  expect(report.unavailable.join(" ")).toMatch(/Skill evidence source is unavailable/);
+  expect(report.unavailable.join(" ")).not.toMatch(/S18/);
   expect((await service.schedules(owner)).rules).toEqual([]);
  }));
  test("only Owner freezes history; retries return original snapshot and changed payload conflicts",async()=>fixture(async({service,owner,staff,tx})=>{

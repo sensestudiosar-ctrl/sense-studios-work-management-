@@ -61,6 +61,8 @@ export function RevisionWorkspace({ csrfToken }: { csrfToken: string }): React.J
   const [branchId, setBranchId] = useState("");
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
+  const [requestedProjectId, setRequestedProjectId] = useState(() => new URLSearchParams(window.location.search).get("projectId") ?? "");
+  const requestedProjectIdRef = useRef(requestedProjectId);
   const [files, setFiles] = useState<FileEntry[]>([]);
   const [register, setRegister] = useState<Register>();
   const [loading, setLoading] = useState(true);
@@ -97,19 +99,37 @@ export function RevisionWorkspace({ csrfToken }: { csrfToken: string }): React.J
     setSelectedDrawingId((current) => nextRegister.drawings.some((drawing) => drawing.id === current) ? current : nextRegister.drawings[0]?.id ?? "");
   }, []);
 
-  const loadSetup = useCallback(async (): Promise<void> => {
+  const loadSetup = useCallback(async (requestedId = requestedProjectIdRef.current): Promise<void> => {
     const epoch = ++requestEpoch.current;
     setLoading(true); setError(""); setDenied(false);
     try {
       const setup = await json<Setup>(await fetch(`${API}/projects/setup`, { credentials: "include", cache: "no-store" }));
       if (epoch !== requestEpoch.current) return;
-      const nextBranch = setup.branches.some((branch) => branch.id === branchId) ? branchId : setup.branches[0]?.id ?? "";
-      setBranches(setup.branches); setBranchId(nextBranch);
-      if (!nextBranch) { setProjects([]); setProjectId(""); setFiles([]); setRegister(undefined); return; }
-      const page = await json<ProjectPage>(await fetch(`${API}/projects?branchId=${encodeURIComponent(nextBranch)}&offset=0&limit=50`, { credentials: "include", cache: "no-store" }));
+      const preferredBranch = setup.branches.find((branch) => branch.id === branchId) ?? setup.branches[0];
+      if (!preferredBranch) { setBranches([]); setProjects([]); setBranchId(""); setProjectId(""); setFiles([]); setRegister(undefined); return; }
+      let nextBranch = preferredBranch.id;
+      let nextProjects: Project[] = [];
+      if (requestedId) {
+        for (const branch of setup.branches) {
+          const branchProjects: Project[] = [];
+          for (let offset = 0; offset <= 100_000; offset += 50) {
+            const page = await json<ProjectPage>(await fetch(`${API}/projects?branchId=${encodeURIComponent(branch.id)}&offset=${offset}&limit=50`, { credentials: "include", cache: "no-store" }));
+            if (epoch !== requestEpoch.current) return;
+            branchProjects.push(...page.items);
+            if (page.items.length < 50) break;
+          }
+          if (branchProjects.some((project) => project.id === requestedId)) {
+            nextBranch = branch.id; nextProjects = branchProjects; break;
+          }
+          if (branch.id === preferredBranch.id) nextProjects = branchProjects;
+        }
+      } else {
+        const page = await json<ProjectPage>(await fetch(`${API}/projects?branchId=${encodeURIComponent(nextBranch)}&offset=0&limit=50`, { credentials: "include", cache: "no-store" }));
+        nextProjects = page.items;
+      }
       if (epoch !== requestEpoch.current) return;
-      const nextProject = page.items.some((project) => project.id === projectId) ? projectId : "";
-      setProjects(page.items); setProjectId(nextProject);
+      const nextProject = requestedId && nextProjects.some((project) => project.id === requestedId) ? requestedId : "";
+      setBranches(setup.branches); setBranchId(nextBranch); setProjects(nextProjects); setProjectId(nextProject);
       if (nextProject) await loadProject(nextProject, epoch);
       else { setFiles([]); setRegister(undefined); }
     } catch (cause) {
@@ -117,9 +137,20 @@ export function RevisionWorkspace({ csrfToken }: { csrfToken: string }): React.J
       setFiles([]); setRegister(undefined);
       if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause));
     } finally { if (epoch === requestEpoch.current) setLoading(false); }
-  }, [branchId, loadProject, projectId]);
+  }, [branchId, loadProject]);
 
   useEffect(() => { void loadSetup(); }, []);
+
+  useEffect(() => {
+    const onPopState = (): void => {
+      const requested = new URLSearchParams(window.location.search).get("projectId") ?? "";
+      requestedProjectIdRef.current = requested;
+      setRequestedProjectId(requested);
+      void loadSetup(requested);
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [loadSetup]);
 
   const refresh = async (): Promise<void> => {
     if (busy) return;
@@ -132,6 +163,8 @@ export function RevisionWorkspace({ csrfToken }: { csrfToken: string }): React.J
   };
 
   const selectBranch = async (id: string): Promise<void> => {
+    const url = new URL(window.location.href); url.searchParams.delete("projectId"); window.history.pushState(null, "", url);
+    requestedProjectIdRef.current = ""; setRequestedProjectId("");
     const epoch = ++requestEpoch.current;
     setBranchId(id); setProjectId(""); setProjects([]); setFiles([]); setRegister(undefined); setLoading(true); setError(""); setDenied(false);
     try {
@@ -143,9 +176,16 @@ export function RevisionWorkspace({ csrfToken }: { csrfToken: string }): React.J
   };
 
   const selectProject = async (id: string): Promise<void> => {
+    const url = new URL(window.location.href);
+    if (id) url.searchParams.set("projectId", id); else url.searchParams.delete("projectId");
+    window.history.pushState({ revisionProjectSelection: true }, "", url);
+    requestedProjectIdRef.current = id; setRequestedProjectId(id);
     const epoch = ++requestEpoch.current;
     setProjectId(id); setRegister(undefined); setFiles([]); setLoading(true); setError(""); setDenied(false);
-    try { await loadProject(id, epoch); }
+    try {
+      if (!id) return;
+      await loadProject(id, epoch);
+    }
     catch (cause) { if (epoch === requestEpoch.current) { if (statusOf(cause) === 403 || statusOf(cause) === 404) setDenied(true); else setError(errorText(cause)); } }
     finally { if (epoch === requestEpoch.current) setLoading(false); }
   };
@@ -249,7 +289,8 @@ export function RevisionWorkspace({ csrfToken }: { csrfToken: string }): React.J
     {!loading && !denied && !error && <>
       {branches.length ? <label className="revision-picker">Owning branch<select aria-label="Revision project branch" value={branchId} onChange={(event) => void selectBranch(event.target.value)} disabled={busy}><option value="">Choose branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select></label> : <p className="revision-muted">No active branches are available.</p>}
       {branchId && <label className="revision-picker">Project<select aria-label="Revision project" value={projectId} onChange={(event) => void selectProject(event.target.value)} disabled={busy}><option value="">Choose a project</option>{projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label>}
-      {!projectId && !projects.length && branchId && <p className="revision-muted" role="status">No projects are available for this branch.</p>}
+      {!projectId && !projects.length && branchId && !requestedProjectId && <p className="revision-muted" role="status">No projects are available for this branch.</p>}
+      {requestedProjectId && !projectId && !loading && !error && !denied && <p className="revision-unavailable" role="status">The requested project is unavailable or your access has changed. Choose an authorized project.</p>}
       {register && <>
         <div className="revision-register-heading"><div><span className="revision-eyebrow">REGISTER</span><h2>{projects.find((project) => project.id === projectId)?.title ?? "Project drawings"}</h2></div><span>{register.drawings.length} {register.drawings.length === 1 ? "drawing" : "drawings"}</span></div>
         {issueGateText && <aside className="revision-issue-gate" aria-label="Formal issue gate"><strong>Formal issue is gated</strong><p>{issueGateText}</p>{register.drawings.some((drawing) => drawing.clientApprovalRequired || drawing.revisions.some((revision) => revision.series === "CR")) && <p>Drawings requiring client approval and CR revisions also need the exact client decision and portal evidence from S14.</p>}</aside>}

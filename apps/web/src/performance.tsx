@@ -34,7 +34,7 @@ async function request<T>(url: string, csrf: string, init: RequestInit = {}): Pr
 const explainValue = (value: unknown) => value === null || value === undefined || value === "" ? "—" : String(value);
 const validDateRange = (from: string, to: string) => Boolean(from && to && from <= to);
 
-export function PerformanceWorkspace({ csrfToken, owner }: { csrfToken: string; owner: boolean }): React.JSX.Element {
+export function PerformanceWorkspace({ csrfToken, owner, initialTab = "employee", focused = false }: { csrfToken: string; owner: boolean; initialTab?: "employee" | "project"; focused?: boolean }): React.JSX.Element {
   const [context, setContext] = useState<Context | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -43,7 +43,7 @@ export function PerformanceWorkspace({ csrfToken, owner }: { csrfToken: string; 
   const pendingCommand = useRef<{ fingerprint: string; id: string } | null>(null);
   const employeeRequest = useRef(0);
   const projectRequest = useRef(0);
-  const [tab, setTab] = useState<"employee" | "project">("employee");
+  const [tab, setTab] = useState<"employee" | "project">(initialTab);
   const [employeeId, setEmployeeId] = useState("");
   const [projectId, setProjectId] = useState(() => new URLSearchParams(window.location.search).get("projectId") ?? "");
   const [employee, setEmployee] = useState<EmployeeView | null>(null);
@@ -131,10 +131,10 @@ export function PerformanceWorkspace({ csrfToken, owner }: { csrfToken: string; 
     void mutate("POLICY_CREATE", { policy }, "context");
   };
   if (loading) return <section className="identity-section performance"><p role="status">Loading performance…</p></section>;
-  if (!context) return <section className="identity-section performance"><h1>Performance and project health</h1><p role="alert" className="auth-error">{error || "Performance is unavailable."}</p><button type="button" onClick={() => void loadContext()}>Try again</button></section>;
+  if (!context) return <section className="identity-section performance"><h1>{initialTab === "project" ? "Project Health" : "Performance"}</h1><p role="alert" className="auth-error">{error || "Performance is unavailable."}</p><button type="button" onClick={() => void loadContext()}>Try again</button></section>;
   return <section className="identity-section performance" aria-labelledby="performance-heading">
-    <header className="perf-heading"><div><div className="eyebrow">PEOPLE & DELIVERY</div><h1 id="performance-heading">Performance and project health</h1><p>Published snapshots retain their source evidence, selected policy and calculation.</p></div><button type="button" className="secondary-action" disabled={busy} onClick={() => { void loadContext(); void loadEmployee(); void loadProject(); }}>Refresh</button></header>
-    <div className="perf-tabs" role="tablist" aria-label="Performance views"><button role="tab" aria-selected={tab === "employee"} onClick={() => setTab("employee")}>Employee performance</button><button role="tab" aria-selected={tab === "project"} onClick={() => setTab("project")}>Design / Turnkey health</button></div>
+    <header className="perf-heading"><div><div className="eyebrow">{initialTab === "project" ? "PROJECT DELIVERY" : "PEOPLE"}</div><h1 id="performance-heading">{initialTab === "project" ? "Project Health" : "Performance"}</h1><p>{initialTab === "project" ? "Review current health evidence and immutable project snapshots." : "Published performance snapshots retain their source evidence, selected policy and calculation."}</p></div><button type="button" className="secondary-action" disabled={busy} onClick={() => { void loadContext(); void loadEmployee(); void loadProject(); }}>Refresh</button></header>
+    {!focused && <div className="perf-tabs" role="tablist" aria-label="Performance views"><button role="tab" aria-selected={tab === "employee"} onClick={() => setTab("employee")}>Employee performance</button><button role="tab" aria-selected={tab === "project"} onClick={() => setTab("project")}>Design / Turnkey health</button></div>}
     {error && <p role="alert" className="auth-error">{error}</p>}{notice && <p role="status" className="notice">{notice}</p>}
     <label className="perf-reason">Reason for this action (required)<input disabled={busy} value={reason} maxLength={1000} onChange={event => setReason(event.target.value)} placeholder="Explain why this change or review is needed" /></label>
     {context.unavailable.length > 0 && <p className="perf-unavailable">Unavailable in this release: {context.unavailable.join(", ")}. No training, skills or SOP evidence is inferred.</p>}

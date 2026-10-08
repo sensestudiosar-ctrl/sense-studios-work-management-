@@ -66,11 +66,11 @@ describe("S26 automation HTTP boundaries", () => {
     const preview = await post("reports/preview", definition);
     expect(preview.status).toBe(201); expect(preview.headers["cache-control"]).toBe("no-store");
     expect(automation.preview).toHaveBeenCalledWith(expect.objectContaining({ sessionId: "session-id" }), definition);
-    expect((await post("reports/preview", { ...definition, category: "skills_training" })).status).toBe(400);
+    expect((await post("reports/preview", { ...definition, category: "skills_training" })).status).toBe(201);
     expect((await post("reports/preview", { ...definition, columns: ["employee", "employee"] })).status).toBe(400);
     expect((await post("reports/preview", definition, "https://foreign.test")).status).toBe(403);
     expect((await post("reports/preview", definition, origin, "wrong")).status).toBe(403);
-    expect(automation.preview).toHaveBeenCalledTimes(1);
+    expect(automation.preview).toHaveBeenCalledTimes(2);
   });
 
   it("maps report save, update, saved preview, and export using a validated UUID", async () => {

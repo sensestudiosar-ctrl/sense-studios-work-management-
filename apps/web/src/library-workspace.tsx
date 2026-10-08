@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useWindowSearchParams } from "./use-window-search-params.js";
 import "./library-workspace.css";
 
 const API = "/api/v1/library";
@@ -27,12 +28,17 @@ const reasonOf = (cause: unknown) => cause instanceof ApiError && cause.status =
 const defaultBlock = () => ({ type: "TEXT", text: "" });
 
 export function LibraryWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+  const [searchParams, setSearchParams] = useWindowSearchParams();
+  const queryKind = searchParams.get("kind") ?? "";
+  const querySearch = searchParams.get("search") ?? "";
+  const queryRecordId = searchParams.get("recordId") ?? "";
+  const queryVersionId = searchParams.get("versionId") ?? "";
   const [setup, setSetup] = useState<Setup | null>(null);
   const [items, setItems] = useState<Item[]>([]);
   const [detail, setDetail] = useState<Detail | null>(null);
-  const [filterKind, setFilterKind] = useState<Kind | "">("");
-  const [search, setSearch] = useState("");
-  const [selectedId, setSelectedId] = useState(() => new URLSearchParams(window.location.search).get("recordId") ?? "");
+  const [filterKind, setFilterKind] = useState<Kind | "">(() => ["SOP", "KNOWLEDGE", "MODULE"].includes(queryKind) ? queryKind as Kind : "");
+  const [search, setSearch] = useState(querySearch);
+  const [selectedId, setSelectedIdState] = useState(queryRecordId);
   const [loading, setLoading] = useState(true);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -59,13 +65,24 @@ export function LibraryWorkspace({ csrfToken }: { csrfToken: string }): React.JS
   const detailRequest = useRef(0);
   const [uploadBlockType, setUploadBlockType] = useState<"FILE" | "IMAGE" | "PDF" | "VIDEO" | "TEMPLATE">("FILE");
 
+  const updateLibraryQuery = useCallback((changes: Partial<Record<"kind" | "search" | "recordId" | "versionId", string>>, replace = false) => {
+    setSearchParams(current => { const next = new URLSearchParams(current); for (const [key, value] of Object.entries(changes)) { if (value) next.set(key, value); else next.delete(key); } return next; }, { replace });
+  }, [setSearchParams]);
+  const setSelectedId = useCallback((id: string, replace = false) => { setSelectedIdState(id); updateLibraryQuery({ recordId: id, ...(id !== queryRecordId ? { versionId: "" } : {}) }, replace); }, [queryRecordId, updateLibraryQuery]);
+  useEffect(() => {
+    setFilterKind(["SOP", "KNOWLEDGE", "MODULE"].includes(queryKind) ? queryKind as Kind : "");
+    setSearch(querySearch);
+    setSelectedIdState(queryRecordId);
+  }, [queryKind, querySearch, queryRecordId]);
+
   const loadSetup = useCallback(async () => setSetup(await api<Setup>(`${API}/setup`, csrfToken)), [csrfToken]);
   const loadList = useCallback(async () => {
     const params = new URLSearchParams(); if (filterKind) params.set("kind", filterKind); if (search.trim()) params.set("search", search.trim());
     const result = await api<{ items: Item[] }>(`${API}${params.size ? `?${params}` : ""}`, csrfToken);
     const requestedRecordId = new URLSearchParams(window.location.search).get("recordId");
-    setItems(result.items); setSelectedId(current => requestedRecordId ? (result.items.some(item => item.id === requestedRecordId) ? requestedRecordId : "") : current ? (result.items.some(item => item.id === current) ? current : "") : result.items[0]?.id ?? "");
-  }, [csrfToken, filterKind, search]);
+    setItems(result.items); setSelectedIdState(current => requestedRecordId ? (result.items.some(item => item.id === requestedRecordId) ? requestedRecordId : "") : current ? (result.items.some(item => item.id === current) ? current : "") : result.items[0]?.id ?? "");
+    if (requestedRecordId && !result.items.some(item => item.id === requestedRecordId)) updateLibraryQuery({ recordId: "" }, true);
+  }, [csrfToken, filterKind, search, updateLibraryQuery]);
   const loadDetail = useCallback(async (id: string) => {
     const request = ++detailRequest.current;
     if (!id) { setDetail(null); return; }
@@ -75,6 +92,11 @@ export function LibraryWorkspace({ csrfToken }: { csrfToken: string }): React.JS
   const refresh = useCallback(async () => { await Promise.all([loadSetup(), loadList()]); }, [loadList, loadSetup]);
   useEffect(() => { let active = true; setLoading(true); setError(""); void Promise.all([loadSetup(), loadList()]).catch(cause => { if (active) setError(reasonOf(cause)); }).finally(() => { if (active) setLoading(false); }); return () => { active = false; }; }, [loadList, loadSetup]);
   useEffect(() => { let active = true; if (selectedId) void loadDetail(selectedId).catch(cause => { if (active) { setDetail(null); setError(reasonOf(cause)); } }); else setDetail(null); return () => { active = false; }; }, [loadDetail, selectedId]);
+  useEffect(() => {
+    if (!detail || detail.record.id !== selectedId || !queryVersionId) return;
+    if (!detail.versions.some(version => version.id === queryVersionId)) { updateLibraryQuery({ versionId: "" }, true); return; }
+    document.getElementById(`library-version-${queryVersionId}`)?.focus({ preventScroll: false });
+  }, [detail, queryVersionId, selectedId, updateLibraryQuery]);
   const options = setup?.authorAudienceOptions[kind] ?? [];
   const activeScope = options.find(scope => `${scope.audience}:${scope.branchId ?? ""}:${scope.teamId ?? ""}` === audienceKey) ?? options[0];
   const selectedVersion = useMemo(() => detail?.versions.find(version => version.id === referenceVersionId), [detail, referenceVersionId]);
@@ -136,7 +158,7 @@ export function LibraryWorkspace({ csrfToken }: { csrfToken: string }): React.JS
   return <section className="library-workspace" aria-busy={pending}>
     <header className="library-heading"><div><p className="library-eyebrow">Private company reference</p><h2>Library</h2><p>Versioned SOPs, shared knowledge and training modules for your current access.</p></div>{canCreate && <button type="button" onClick={() => { setCreating(value => !value); setError(""); }}>{creating ? "Close form" : "Create record"}</button>}</header>
     {error && <div className="library-alert" role="alert">{error}</div>}{notice && <div className="library-notice" role="status">{notice}</div>}
-    <div className="library-toolbar"><label>Kind<select value={filterKind} onChange={event => setFilterKind(event.target.value as Kind | "")}><option value="">All Library content</option>{setup.kinds.map(value => <option key={value} value={value}>{value}</option>)}</select></label><label>Search titles and accessible text<input value={search} onChange={event => setSearch(event.target.value)} maxLength={120} placeholder="Search the Library" /></label></div>
+    <div className="library-toolbar"><label>Kind<select value={filterKind} onChange={event => { const value = event.target.value as Kind | ""; setFilterKind(value); updateLibraryQuery({ kind: value }, true); }}><option value="">All Library content</option>{setup.kinds.map(value => <option key={value} value={value}>{value}</option>)}</select></label><label>Search titles and accessible text<input value={search} onChange={event => { setSearch(event.target.value); updateLibraryQuery({ search: event.target.value }, true); }} maxLength={120} placeholder="Search the Library" /></label></div>
     {creating && <section className="library-panel"><h3>Create a Library record</h3><form className="library-form" onSubmit={submitCreate}>
       <label>Type<select value={kind} onChange={event => { setKind(event.target.value as Kind); setAudienceKey(""); setCategory(""); }}>{setup.kinds.map(value => <option key={value}>{value}</option>)}</select></label>
       <label>Audience<select value={audienceKey || (options[0] ? `${options[0].audience}:${options[0].branchId ?? ""}:${options[0].teamId ?? ""}` : "")} onChange={event => setAudienceKey(event.target.value)}>{options.map(scope => <option key={`${scope.audience}:${scope.branchId}:${scope.teamId}`} value={`${scope.audience}:${scope.branchId ?? ""}:${scope.teamId ?? ""}`}>{scope.audience} · {scope.label}</option>)}</select></label>
@@ -152,7 +174,7 @@ export function LibraryWorkspace({ csrfToken }: { csrfToken: string }): React.JS
       <div className="library-detail">{detail ? <>
         <section className="library-panel"><div className="library-section-heading"><div><p className="library-eyebrow">{detail.record.kind} · {detail.record.audience}</p><h3>{detail.record.title}</h3><p>{detail.record.category} · Current version {detail.record.version}</p></div><button className="library-secondary" type="button" onClick={() => { void loadDetail(detail.record.id).catch(recover); }}>Refresh</button></div>
           <div className="library-capabilities">{detail.record.capabilities.canAppend && <span>Author access</span>}{detail.record.capabilities.canRequestPublication && <span>Publisher review required</span>}{detail.record.capabilities.canActivate && <span>Training management</span>}</div>
-          {detail.versions.map(version => <article className="library-version" key={version.id}><div className="library-version-heading"><div><strong>Version {version.version}{detail.record.publishedVersionId === version.id ? " · Published" : ""}</strong><p>{version.reason} · {new Date(version.createdAt).toLocaleString()}</p></div>{version.acknowledgementRequired && <span>{version.acknowledged ? "Acknowledged" : "Acknowledgement required"}</span>}</div>
+          {detail.versions.map(version => <article className={`library-version ${queryVersionId === version.id ? "is-focused" : ""}`} id={`library-version-${version.id}`} tabIndex={queryVersionId === version.id ? -1 : undefined} key={version.id}><div className="library-version-heading"><div><strong>Version {version.version}{detail.record.publishedVersionId === version.id ? " · Published" : ""}</strong><p>{version.reason} · {new Date(version.createdAt).toLocaleString()}</p></div><div className="library-version-actions">{queryVersionId === version.id ? <span>Selected exact version</span> : <button className="library-text-button" type="button" onClick={() => updateLibraryQuery({ versionId: version.id })}>View this version</button>}{version.acknowledgementRequired && <span>{version.acknowledged ? "Acknowledged" : "Acknowledgement required"}</span>}</div></div>
             <ContentView version={version} referenceTargets={setup.referenceTargets} />
             {version.acknowledgementRequired && !version.acknowledged && detail.publications.some(publication => publication.versionId === version.id) && <button type="button" disabled={pending} onClick={() => void mutate(`${API}/versions/${version.id}/acknowledgements`, { reason: "I have read and acknowledge this published version." }, "Acknowledgement recorded for this exact version.")}>Acknowledge version {version.version}</button>}
           </article>)}

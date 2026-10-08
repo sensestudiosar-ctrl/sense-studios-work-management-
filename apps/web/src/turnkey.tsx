@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useWindowSearchParams } from "./use-window-search-params.js";
 import "./turnkey.css";
 
 const API = "/api/v1";
@@ -53,12 +54,14 @@ function releaseLabel(state: Release["state"]): string {
 function eventLabel(value: string): string { return value.replaceAll("_", " ").toLowerCase(); }
 
 export function TurnkeyWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+  const [searchParams, setSearchParams] = useWindowSearchParams();
   const [projects, setProjects] = useState<ProjectChoice[]>([]);
-  const [projectId, setProjectId] = useState("");
+  const [projectId, setProjectId] = useState(() => new URLSearchParams(window.location.search).get("projectId") ?? "");
   const [detail, setDetail] = useState<ProjectDetail>();
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [unavailableRequestedProject, setUnavailableRequestedProject] = useState(false);
   const [notice, setNotice] = useState("");
   const epoch = useRef(0);
   const [selectedRevisionIds, setSelectedRevisionIds] = useState<string[]>([]);
@@ -80,6 +83,11 @@ export function TurnkeyWorkspace({ csrfToken }: { csrfToken: string }): React.JS
   const [shareAccountId, setShareAccountId] = useState("");
   const [shareReason, setShareReason] = useState("");
 
+  useEffect(() => {
+    const requested = searchParams.get("projectId") ?? "";
+    setProjectId(requested);
+  }, [searchParams]);
+
   const loadProject = useCallback(async (id: string, request: number): Promise<void> => {
     const next = await json<ProjectDetail>(await fetch(`${API}/turnkey/projects/${encodeURIComponent(id)}`, { credentials: "include", cache: "no-store" }));
     if (request !== epoch.current) return;
@@ -97,6 +105,7 @@ export function TurnkeyWorkspace({ csrfToken }: { csrfToken: string }): React.JS
       if (request !== epoch.current) return;
       setProjects(result.items);
       const nextId = result.items.some((project) => project.id === projectId) ? projectId : "";
+      setUnavailableRequestedProject(!!projectId && !nextId);
       setProjectId(nextId);
       if (nextId) await loadProject(nextId, request);
       else setDetail(undefined);
@@ -116,7 +125,9 @@ export function TurnkeyWorkspace({ csrfToken }: { csrfToken: string }): React.JS
   };
 
   const selectProject = async (id: string): Promise<void> => {
+    setSearchParams(current => { const next = new URLSearchParams(current); if (id) next.set("projectId", id); else next.delete("projectId"); return next; });
     const request = ++epoch.current;
+    setUnavailableRequestedProject(false);
     setProjectId(id); setDetail(undefined); setError(""); setNotice("");
     if (!id) return;
     setLoading(true);
@@ -185,6 +196,7 @@ export function TurnkeyWorkspace({ csrfToken }: { csrfToken: string }): React.JS
     {loading && <p className="turnkey-muted" role="status">Loading Turnkey projects…</p>}
     {!loading && <label className="turnkey-project-picker">Project<select aria-label="Turnkey project" value={projectId} onChange={(event) => void selectProject(event.target.value)} disabled={busy}><option value="">Choose a Turnkey project</option>{projects.map((project) => <option key={project.id} value={project.id}>{project.title} · {project.branchName} · {project.status}</option>)}</select></label>}
     {!loading && !error && !projects.length && <p className="turnkey-muted" role="status">No Turnkey projects are available to this account.</p>}
+    {!loading && !error && unavailableRequestedProject && <p className="turnkey-error" role="status">The requested Turnkey project is unavailable or your access has changed. Choose an authorized project.</p>}
     {!loading && projectId && detail && <>
       <div className="turnkey-project-heading"><div><h2>{detail.project.title}</h2><p>{projects.find((project) => project.id === projectId)?.branchName ?? "Project branch"} · {detail.project.status}</p></div><span>{detail.releases.length} {detail.releases.length === 1 ? "release" : "releases"}</span></div>
       {detail.releases.map((release) => <article className="turnkey-release" key={release.id}>

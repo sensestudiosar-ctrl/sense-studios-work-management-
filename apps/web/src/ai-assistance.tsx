@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useWindowSearchParams } from "./use-window-search-params.js";
 import "./ai-assistance.css";
 
 const API = "/api/v1/ai";
@@ -6,13 +7,14 @@ type Kind = "DAILY" | "PROJECT" | "MANAGEMENT" | "ASSIGNMENT";
 type Purpose = "PRIMARY_OWNER" | "COLLABORATOR" | "REVIEWER";
 type Project = { id: string; title?: string; name?: string };
 type Task = { id: string; title?: string; name?: string; projectId?: string };
+type SourceReference = { kind?: string; id?: string; projectId?: string; taskId?: string; employeeId?: string; assignmentId?: string; recordId?: string; versionId?: string };
 type Capabilities = Partial<Record<Kind, boolean>> & { canDaily?: boolean; canProject?: boolean; canManagement?: boolean; canAssignment?: boolean; canDecide?: boolean; canRecordOutcome?: boolean; canBroaderSearch?: boolean };
 type Context = { capabilities?: Capabilities; projects?: Project[]; tasks?: Task[]; requestKinds?: Kind[]; supportedKinds?: Kind[]; provider?: string | { name?: string; model?: string }; providerVersion?: string; unavailableCapabilities?: string[]; unavailable?: string[] };
-type Evidence = { id?: string; sourceId?: string; label?: string; title?: string; type?: string; field?: string; value?: unknown; observedAt?: string; sourceDate?: string | null; summary?: string };
-type Candidate = { employeeId: string; label?: string; displayName?: string; purpose?: Purpose; teamId?: string | null; team?: string | { label?: string }; eligible?: boolean; factors?: Array<{ key?: string; label?: string; value?: unknown; status?: string; sourceId?: string }>; unavailableFactors?: string[] };
+type Evidence = { id?: string; sourceId?: string; source?: SourceReference; label?: string; title?: string; type?: string; field?: string; value?: unknown; observedAt?: string; sourceDate?: string | null; summary?: string };
+type Candidate = { employeeId: string; label?: string; displayName?: string; purpose?: Purpose; teamId?: string | null; team?: string | { label?: string }; eligible?: boolean; factors?: Array<{ key?: string; label?: string; value?: unknown; status?: string; source?: SourceReference; sourceId?: string }>; unavailableFactors?: string[] };
 type Result = { kind?: Kind; provider?: string; providerVersion?: string; generatedAt?: string; scope?: string | Record<string, unknown>; summary?: string; facts?: Evidence[]; candidates?: Candidate[]; unavailableFactors?: string[]; limitations?: string[] };
 type Decision = { id: string; version?: number; kind?: string; outcome?: string; reason?: string; actorLabel?: string; createdAt?: string; selectionEmployeeId?: string | null; selectionPurpose?: Purpose | null; selection?: { employeeId?: string; purpose?: Purpose }; observation?: { taskId?: string; taskVersion?: number; purpose?: Purpose; employeeId?: string; observedState?: string; observedAt?: string } | null };
-type Run = { id: string; kind?: Kind; projectId?: string | null; taskId?: string | null; request?: { kind?: Kind; projectId?: string | null; taskId?: string | null }; createdAt?: string; decisionVersion?: number; result?: Result; decisions?: Decision[]; summary?: string };
+type Run = { id: string; kind?: Kind; projectId?: string | null; taskId?: string | null; request?: { kind?: Kind; projectId?: string | null; taskId?: string | null }; createdAt?: string; decisionVersion?: number; capabilities?: Pick<Capabilities, "canDecide" | "canRecordOutcome">; result?: Result; decisions?: Decision[]; summary?: string };
 type ApiError = Error & { status?: number };
 const uuid = () => globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 async function api<T>(path: string, csrf: string, init: RequestInit = {}): Promise<T> {
@@ -44,8 +46,41 @@ const allowed = (context: Context | null, kind: Kind) => {
 function jsonText(value: unknown): string { return typeof value === "string" ? value : value == null ? "Unavailable" : JSON.stringify(value); }
 const readableField = (field?: string) => ({ title: "Title", status: "Status", priority: "Priority", targetDate: "Target date", committedDueDate: "Committed due date", dueDate: "Due date", version: "Version", publishedText: "Published text" } as Record<string, string>)[field ?? ""] ?? (field ? field.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, value => value.toUpperCase()) : "Source");
 const readableState = (state?: string) => state?.replaceAll("_", " ").toLowerCase() ?? "Unavailable";
+function sourceHref(source?: SourceReference): string | undefined {
+  if (!source?.kind || !source.id) return undefined;
+  const query = new URLSearchParams();
+  switch (source.kind) {
+    case "TASK": query.set("taskId", source.id); return `/tasks?${query}`;
+    case "PROJECT": query.set("projectId", source.id); return `/projects?${query}`;
+    case "SKILL_RATING":
+      if (!source.employeeId) return undefined;
+      query.set("panel", "skills"); query.set("employeeId", source.employeeId); query.set("ratingId", source.id); return `/learning?${query}`;
+    case "SKILL_CHANGE":
+      if (!source.employeeId) return undefined;
+      query.set("panel", "skills"); query.set("employeeId", source.employeeId); query.set("changeId", source.id); return `/learning?${query}`;
+    case "TRAINING_ASSIGNMENT":
+      if (!source.employeeId) return undefined;
+      query.set("panel", "training"); query.set("employeeId", source.employeeId); query.set("assignmentId", source.id); return `/learning?${query}`;
+    case "TRAINING_ASSESSMENT":
+    case "TRAINING_EFFECTIVENESS":
+      if (!source.employeeId || !source.assignmentId) return undefined;
+      query.set("panel", "training"); query.set("employeeId", source.employeeId); query.set("assignmentId", source.assignmentId); return `/learning?${query}`;
+    case "LIBRARY_SOP_VERSION":
+      if (!source.recordId) return undefined;
+      query.set("panel", "library"); query.set("recordId", source.recordId); query.set("versionId", source.id); return `/learning?${query}`;
+    default: return undefined;
+  }
+}
+function SourceLink({ source }: { source?: SourceReference | undefined }): React.JSX.Element | null {
+  const href = sourceHref(source);
+  if (!href) return null;
+  const label = source?.kind === "TASK" ? "task" : source?.kind === "PROJECT" ? "project" : source?.kind === "SKILL_RATING" || source?.kind === "SKILL_CHANGE" ? "Skills record" : source?.kind === "TRAINING_ASSESSMENT" ? "Training assessment" : source?.kind === "TRAINING_EFFECTIVENESS" ? "Effectiveness observation" : source?.kind === "LIBRARY_SOP_VERSION" ? "SOP version" : "Training assignment";
+  return <a className="ai-assist-source-link" href={href}>Open exact {label}</a>;
+}
 
 export function AiAssistanceWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+  const [searchParams, setSearchParams] = useWindowSearchParams();
+  const requestedRunId = searchParams.get("runId") ?? "";
   const [context, setContext] = useState<Context | null>(null);
   const [runs, setRuns] = useState<Run[]>([]);
   const [detail, setDetail] = useState<Run | null>(null);
@@ -96,12 +131,23 @@ export function AiAssistanceWorkspace({ csrfToken }: { csrfToken: string }): Rea
   }, [csrfToken]);
   useEffect(() => { void load(true); }, [load]);
 
-  const openRun = async (id: string) => {
+  const openRun = useCallback(async (id: string) => {
+    if (!id) return;
     detailId.current = id; setOpening(true); setDetail(null); setError("");
+    setDecisionReason(""); setSelection(""); setOutcomeReason("");
+    if (requestedRunId !== id) setSearchParams(current => { const next = new URLSearchParams(current); next.set("runId", id); return next; }, { replace: false });
     try { const result = await api<Run>(`/runs/${encodeURIComponent(id)}`, csrfToken); if (detailId.current === id) setDetail(result); }
     catch (cause) { setError(reasonText(cause, "Saved evidence")); if ([401, 403, 404].includes((cause as ApiError)?.status ?? 0)) { setDetail(null); setRuns(current => current.filter(run => run.id !== id)); } }
     finally { if (detailId.current === id) setOpening(false); }
-  };
+  }, [csrfToken, requestedRunId, setSearchParams]);
+  useEffect(() => {
+    if (requestedRunId) {
+      if (requestedRunId !== detailId.current) void openRun(requestedRunId);
+      return;
+    }
+    detailId.current = ""; setDetail(null); setOpening(false);
+    setDecisionReason(""); setSelection(""); setOutcomeReason("");
+  }, [openRun, requestedRunId]);
   const runRequest = async (event: FormEvent) => {
     event.preventDefault();
     if (requestReason.trim().length < 3 || !boundedWindow(from, to) || !allowed(context, kind)) return;
@@ -142,8 +188,8 @@ export function AiAssistanceWorkspace({ csrfToken }: { csrfToken: string }): Rea
 
   const result = detail?.result;
   const assignment = result?.kind === "ASSIGNMENT";
-  const canDecide = context?.capabilities?.canDecide === true;
-  const canRecordOutcome = context?.capabilities?.canRecordOutcome === true;
+  const canDecide = detail?.capabilities?.canDecide === true;
+  const canRecordOutcome = detail?.capabilities?.canRecordOutcome === true;
   const outcomeTaskId = detail?.taskId ?? detail?.request?.taskId ?? "";
   return <section className="ai-assist" aria-labelledby="ai-assist-title">
     <header className="ai-assist-heading"><div><p className="ai-assist-kicker">Internal workspace</p><h2 id="ai-assist-title">Evidence assistance</h2><p>Deterministic evidence summaries and explainable candidates, using only your currently authorized records.</p></div><button type="button" className="ai-assist-secondary" onClick={() => void load()} disabled={loading || busy}>Refresh</button></header>
@@ -171,8 +217,8 @@ export function AiAssistanceWorkspace({ csrfToken }: { csrfToken: string }): Rea
         <section className="ai-assist-panel" aria-label="Selected evidence"><h3>Selected evidence</h3>{opening && !detail && <p role="status">Rechecking access and loading saved evidence…</p>}{!detail && !opening && <p role="status">Choose a saved item to review its currently authorized evidence.</p>}{detail && <>
           <p className="ai-assist-provider">{result?.provider ?? (typeof context.provider === "string" ? context.provider : context.provider?.name) ?? "deterministic-evidence-v1"} · {result?.providerVersion ?? context.providerVersion ?? "model none"}</p>
           <p>{result?.summary ?? detail.summary ?? "No summary was returned."}</p><p className="ai-assist-muted">This is an unranked, source-grounded aid. Review the evidence and unavailable factors; it is not a decision or action.</p>
-          {!!result?.facts?.length && <div><h4>Evidence</h4><ul>{result.facts.map((fact, index) => <li key={fact.id ?? fact.sourceId ?? index}><strong>{fact.label ?? fact.title ?? fact.type ?? "Source"} · {readableField(fact.field)}</strong>: {jsonText(fact.value ?? fact.summary)}{fact.sourceDate ? ` · Source date ${fact.sourceDate}` : fact.observedAt ? ` · Observed ${fact.observedAt}` : ""}</li>)}</ul></div>}
-          {!!result?.candidates?.length && <div><h4>Eligible candidates (unranked)</h4><ul className="ai-assist-candidates">{result.candidates.map(candidate => <li key={`${candidate.purpose ?? "candidate"}:${candidate.employeeId}`}><label><input type="radio" name="ai-selection" value={candidate.employeeId} checked={selection === candidate.employeeId} onChange={() => setSelection(candidate.employeeId)} disabled={!assignment} /><strong>{candidate.label ?? candidate.displayName ?? "Authorized candidate"}</strong></label><span>{typeof candidate.team === "string" ? candidate.team : candidate.team?.label ?? (candidate.teamId ? `Team ${candidate.teamId}` : "Team unavailable")} · {candidate.eligible === false ? "Currently unavailable" : "Eligible when checked"}</span>{candidate.factors?.map((factor, index) => <span key={`${factor.key ?? index}`}>{factor.label ?? factor.key ?? "Factor"}: {jsonText(factor.value)}{factor.status ? ` (${factor.status})` : ""}</span>)}</li>)}</ul></div>}
+          {!!result?.facts?.length && <div><h4>Evidence</h4><ul>{result.facts.map((fact, index) => <li key={fact.id ?? fact.sourceId ?? index}><strong>{fact.label ?? fact.title ?? fact.type ?? "Source"} · {readableField(fact.field)}</strong>: {jsonText(fact.value ?? fact.summary)}{fact.sourceDate ? ` · Source date ${fact.sourceDate}` : fact.observedAt ? ` · Observed ${fact.observedAt}` : ""}{sourceHref(fact.source) && <span className="ai-assist-source"><SourceLink source={fact.source} /></span>}</li>)}</ul></div>}
+          {!!result?.candidates?.length && <div><h4>Eligible candidates (unranked)</h4><ul className="ai-assist-candidates">{result.candidates.map(candidate => <li key={`${candidate.purpose ?? "candidate"}:${candidate.employeeId}`}><label><input type="radio" name="ai-selection" value={candidate.employeeId} checked={selection === candidate.employeeId} onChange={() => setSelection(candidate.employeeId)} disabled={!assignment} /><strong>{candidate.label ?? candidate.displayName ?? "Authorized candidate"}</strong></label><span>{typeof candidate.team === "string" ? candidate.team : candidate.team?.label ?? (candidate.teamId ? `Team ${candidate.teamId}` : "Team unavailable")} · {candidate.eligible === false ? "Currently unavailable" : "Eligible when checked"}</span>{candidate.factors?.map((factor, index) => <span key={`${factor.key ?? index}`}>{factor.label ?? factor.key ?? "Factor"}: {jsonText(factor.value)}{factor.status ? ` (${factor.status})` : ""}{sourceHref(factor.source) && <span className="ai-assist-source"><SourceLink source={factor.source} /></span>}</span>)}{assignment && candidate.purpose === "PRIMARY_OWNER" && outcomeTaskId && <a className="ai-assist-source-link" href={`/tasks?taskId=${encodeURIComponent(outcomeTaskId)}`}>Open task workflow</a>}{assignment && candidate.purpose === "REVIEWER" && outcomeTaskId && <a className="ai-assist-source-link" href={`/reviews?taskId=${encodeURIComponent(outcomeTaskId)}`}>Open review workflow</a>}{assignment && candidate.purpose === "COLLABORATOR" && <p className="ai-assist-handoff-unavailable">Collaborator handoff is unavailable here. The current task API has no add or remove participant operation; use the ordinary task workflow if collaboration needs to change.</p>}</li>)}</ul></div>}
           {[...(result?.unavailableFactors ?? []), ...(result?.limitations ?? [])].length > 0 && <div className="ai-assist-limitations"><h4>Unavailable factors and limitations</h4><ul>{[...(result?.unavailableFactors ?? []), ...(result?.limitations ?? [])].map((item, index) => <li key={`${index}-${item}`}>{item}</li>)}</ul></div>}
           {!!detail.decisions?.length && <div><h4>Decision and observation history</h4><ol>{detail.decisions.map(decision => decision.kind === "OUTCOME" ? <li key={decision.id}><strong>Verified source observation</strong>{decision.observation ? <><p>Current task state: {readableState(decision.observation.observedState)} · Task version {decision.observation.taskVersion ?? "Unavailable"}{decision.observation.observedAt ? ` · Observed ${decision.observation.observedAt}` : ""}</p>{decision.observation.taskId && <p>Source task: {decision.observation.taskId}</p>}</> : <p>Observation details are unavailable under current access.</p>}{decision.reason && <p>Reason: {decision.reason}</p>}<p className="ai-assist-muted">This records the observed source state; it does not imply the suggestion caused it.</p></li> : <li key={decision.id}><strong>{decision.outcome ?? decision.kind ?? "Decision"}</strong>{decision.actorLabel ? ` · ${decision.actorLabel}` : ""}{decision.reason ? ` · ${decision.reason}` : ""}</li>)}</ol></div>}
           {canDecide && <div className="ai-assist-decision"><h4>Record a nonbinding human decision</h4><label>Decision reason<textarea value={decisionReason} onChange={event => setDecisionReason(event.target.value)} minLength={3} maxLength={1000} /></label><div className="ai-assist-actions"><button type="button" disabled={busy || decisionReason.trim().length < 3 || (assignment && !selection)} onClick={() => void decide("ACCEPTED")}>Accept suggestion</button><button type="button" className="ai-assist-secondary" disabled={busy || decisionReason.trim().length < 3} onClick={() => void decide("REJECTED")}>Reject</button>{assignment && <button type="button" className="ai-assist-secondary" disabled={busy || decisionReason.trim().length < 3 || !selection} onClick={() => void decide("OVERRIDDEN")}>Record override</button>}</div><p className="ai-assist-muted">Acceptance records your choice only. Use the ordinary authorized task or review workflow to make any change.</p></div>}

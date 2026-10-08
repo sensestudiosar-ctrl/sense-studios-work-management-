@@ -284,6 +284,8 @@ export function ClientReviewPortal({ session }: { session: PortalSession }): Rea
 export function StaffClientReviewWorkspace({ csrfToken, owner }: { csrfToken: string; owner: boolean }): React.JSX.Element {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
+  const [requestedProjectId, setRequestedProjectId] = useState(() => new URLSearchParams(window.location.search).get("projectId") ?? "");
+  const [unavailableProjectId, setUnavailableProjectId] = useState("");
   const [reviews, setReviews] = useState<ProjectReviews>();
   const [tasks, setTasks] = useState<TaskOption[]>([]);
   const [revisions, setRevisions] = useState<RevisionOption[]>([]);
@@ -314,8 +316,10 @@ export function StaffClientReviewWorkspace({ csrfToken, owner }: { csrfToken: st
         );
         if (!live) return;
         setProjects(items.filter((project) => project.status === "ACTIVE"));
-        const first = items.find((project) => project.status === "ACTIVE")?.id ?? "";
-        setProjectId(first);
+        const active = items.filter((project) => project.status === "ACTIVE");
+        const requested = new URLSearchParams(window.location.search).get("projectId") ?? "";
+        setRequestedProjectId(requested);
+        setProjectId(requested ? (active.some((project) => project.id === requested) ? requested : "") : active[0]?.id ?? "");
       } catch (cause) { if (live) setError(errorText(cause, "Internal project list could not be loaded.")); }
       finally { if (live) setLoading(false); }
     })();
@@ -335,10 +339,43 @@ export function StaffClientReviewWorkspace({ csrfToken, owner }: { csrfToken: st
       setReviews(data); setTasks(data.eligibleTasks ?? []);
       setRevisions((data.eligibleTasks ?? []).flatMap((task) => task.revisions.filter((revision) => ["INTERNAL_APPROVED", "APPROVED", "ISSUED"].includes(revision.state)).map((revision) => ({ ...revision, taskId: task.id }))));
       setOwnerAccess(access);
-    } catch (cause) { if (generation === projectLoad.current) setError(errorText(cause, "Project review details could not be loaded.")); }
+    } catch (cause) {
+      if (generation === projectLoad.current) {
+        const status = typeof cause === "object" && cause !== null && "status" in cause ? (cause as { status?: number }).status : undefined;
+        if (status === 403 || status === 404) { setUnavailableProjectId(id); setProjectId(""); setError(""); }
+        else setError(errorText(cause, "Project review details could not be loaded."));
+      }
+    }
     finally { if (generation === projectLoad.current) setLoading(false); }
   };
-  useEffect(() => { if (projectId) void loadProject(projectId); }, [projectId]);
+  useEffect(() => {
+    const onPopState = (): void => {
+      const requested = new URLSearchParams(window.location.search).get("projectId") ?? "";
+      setRequestedProjectId(requested);
+      setUnavailableProjectId("");
+      const activeProjects = projects.filter((project) => project.status === "ACTIVE");
+      setProjectId(requested ? (activeProjects.some((project) => project.id === requested) ? requested : "") : activeProjects[0]?.id ?? "");
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, [projects]);
+  useEffect(() => {
+    if (projectId && projects.some((project) => project.id === projectId && project.status === "ACTIVE")) void loadProject(projectId);
+    else {
+      projectLoad.current += 1;
+      setReviews(undefined); setTasks([]); setRevisions([]); setOwnerAccess(undefined);
+      setSelectedTask(""); setSelectedRevision("");
+    }
+  }, [projectId, projects]);
+
+  const selectProject = (id: string): void => {
+    const url = new URL(window.location.href);
+    if (id) url.searchParams.set("projectId", id); else url.searchParams.delete("projectId");
+    window.history.pushState({ clientReviewProjectSelection: true }, "", url);
+    setRequestedProjectId(id);
+    setUnavailableProjectId("");
+    setProjectId(id);
+  };
 
   const createPackage = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault(); if (!projectId || !selectedTask || !packageTitle.trim()) return;
@@ -428,7 +465,8 @@ export function StaffClientReviewWorkspace({ csrfToken, owner }: { csrfToken: st
     finally { setBusy(false); }
   };
 
-  return <section className="client-review-workspace" aria-labelledby="staff-client-review-heading"><header className="client-review-header"><div><p className="client-review-eyebrow">INTERNAL WORKSPACE</p><h2 id="staff-client-review-heading">Client reviews</h2><p>Publish exact task and revision snapshots, then track client outcomes.</p></div><label>Active project<select disabled={busy} value={projectId} onChange={(event) => setProjectId(event.target.value)}><option value="">Choose a project</option>{projects.map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label></header>
+  return <section className="client-review-workspace" aria-labelledby="staff-client-review-heading"><header className="client-review-header"><div><p className="client-review-eyebrow">INTERNAL WORKSPACE</p><h2 id="staff-client-review-heading">Client reviews</h2><p>Publish exact task and revision snapshots, then track client outcomes.</p></div><label>Active project<select disabled={busy} value={projectId} onChange={(event) => selectProject(event.target.value)}><option value="">Choose a project</option>{projects.filter((project) => project.status === "ACTIVE").map((project) => <option key={project.id} value={project.id}>{project.title}</option>)}</select></label></header>
+    {requestedProjectId && !loading && !error && (unavailableProjectId === requestedProjectId || !projects.some((project) => project.id === requestedProjectId && project.status === "ACTIVE")) && <p className="client-review-muted" role="status">The requested project is unavailable or your access has changed. Choose an authorized project.</p>}
     {loading && <p role="status">Loading projects and review details…</p>}{error && <p className="client-review-error" role="alert">{error}</p>}{notice && <p className="client-review-notice" role="status">{notice}</p>}
     {owner && projectId && ownerAccess && <section className="client-review-panel" aria-labelledby="owner-client-access-heading"><h3 id="owner-client-access-heading">Owner client access</h3><form className="client-review-form" onSubmit={(event) => void setPrimary(event)}><label>Primary Client email<input type="email" required maxLength={320} value={primaryEmail} onChange={(event) => setPrimaryEmail(event.target.value)} /></label><label>Reason for appointment or replacement<input required minLength={3} maxLength={1000} value={ownerReason} onChange={(event) => setOwnerReason(event.target.value)} /></label><button disabled={busy || ownerReason.trim().length < 3}>{busy ? "Saving…" : "Set Primary Client"}</button></form><ul className="client-review-access-list">{ownerAccess.grants.map((grant) => <li key={grant.id}><strong>{grant.email ?? grant.accountId}{grant.primary ? " · Primary" : " · Additional"}</strong><span>{grant.revokedAt ? "Revoked" : `Expires ${grant.expiresAt ? dateText(grant.expiresAt) : "not set"}`}</span>{!grant.revokedAt && <div className="client-review-owner-actions"><label>New expiry<input type="date" value={grantExpiry[grant.id] ?? ""} onChange={(event) => setGrantExpiry((value) => ({ ...value, [grant.id]: event.target.value }))} /></label><button type="button" disabled={busy || !grantExpiry[grant.id] || ownerReason.trim().length < 3} onClick={() => void updateOwnerGrant(grant, "SET_EXPIRY")}>Set expiry</button><button type="button" className="client-review-secondary" disabled={busy || ownerReason.trim().length < 3} onClick={() => void updateOwnerGrant(grant, "REVOKE")}>Revoke</button></div>}</li>)}</ul><p className="client-review-muted">Set future expiry for each active client grant before project cancellation.</p></section>}
     {projectId && reviews && <form className="client-review-form client-review-publish" onSubmit={(event) => void createPackage(event)}><h3>Send a task for client review</h3><label>Package title<input required maxLength={200} value={packageTitle} onChange={(event) => setPackageTitle(event.target.value)} /></label><label>Task<select aria-label="Task" required value={selectedTask} onChange={(event) => { setSelectedTask(event.target.value); setSelectedRevision(""); }}><option value="">Choose internally approved work</option>{tasks.map((task) => <option key={task.id} value={task.id}>{task.title} · {task.status}</option>)}</select></label><label>Internal R or CR revision (optional)<select value={selectedRevision} onChange={(event) => setSelectedRevision(event.target.value)}><option value="">Task-only review item</option>{revisions.filter((revision) => revision.taskId === selectedTask).map((revision) => <option key={revision.id} value={revision.id}>{revision.label}</option>)}</select></label><label>Client label<input maxLength={200} value={label} onChange={(event) => setLabel(event.target.value)} /></label><label>Reason<input minLength={3} maxLength={1000} required value={reason} onChange={(event) => setReason(event.target.value)} /></label><button disabled={busy || !selectedTask || !packageTitle.trim() || reason.trim().length < 3}>{busy ? "Sending…" : "Send for client review"}</button></form>}

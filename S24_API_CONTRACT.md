@@ -56,3 +56,23 @@ Command advisory locks precede identity/session locks, so revocation during a wa
 - `dashboard-reads.unit.spec.ts`: bounded transaction-local full-dataset reads, no cross-request/actor authority reuse, source/protected-field loss denial and no rebuilding of committed immutable summary slots.
 - Dashboard/client dashboard web tests and desktop/mobile authenticated browser journeys passed: real persisted preview/freeze/history/exports/rule/reminder, built-service summary generation and isolated client context. Sixteen current core views and supporting crops passed final Sol visual review.
 - Final pinned single `pnpm verify` exited0:207 API unit,142 web unit,280 PostgreSQL integration and45 desktop/mobile browser tests;typecheck/lint/build passed. All104 migrations are current on15 guarded targets;137 original tables/15,474 rows and source99 remain preserved. Exact evidence is recorded in `S24_VERIFICATION_LOG.md` and `S24_COMPLETION_REPORT.md`.
+
+## G11 Learning report source addendum — 2026-10-08
+
+The later Owner-authorized G11 increment makes `skills_training` available to authenticated interactive fixed-report previews/freezes/reads/exports and S26 saved-report authoring, preview and export. It composes only the current SkillsService, TrainingService and LibraryService public `reportEvidence` ports through the caller transaction. No direct table reads, new persistence or performance calculation are introduced. The original per-source manifest is retained before saved-report filters/grouping and is reauthorized on retained snapshot read/export against exact current source IDs, parent identities, date range, flat field keys, current session and current owning-port access. Current source values may change; reauthorization checks current exact source existence and field access without requiring equality to frozen values.
+
+The manifest source kinds are `SKILL_RATING`, `SKILL_CHANGE`, `TRAINING_ASSIGNMENT`, `TRAINING_ASSESSMENT`, `TRAINING_EFFECTIVENESS`, `LIBRARY_SOP_PUBLICATION` and `LIBRARY_SOP_ACKNOWLEDGEMENT`. Existing source date behavior is retained: current skill ratings are current-state facts; skill changes use `occurredAt`; training assignments use `assignedAt`, assessments use `occurredAt`, effectiveness uses the authored observation date; SOP publications use `publishedAt` and acknowledgements use `acknowledgedAt`. An SOP acknowledgement is included/re-authorized only when its employee account equals the current reader's account, including for Owner readers.
+
+Each manifest entry also stores the original report `from`/`to` range. Its exact ID, parent identity and allowed flat field keys are:
+
+| Kind | Source ID | Parent identity | Flat field keys |
+| --- | --- | --- | --- |
+| `SKILL_RATING` | Rating ID | `employeeId` | `skillId`, `level`, `version` |
+| `SKILL_CHANGE` | Change ID | `employeeId`, `ratingId` | `ratingId`, `fromLevel`, `toLevel`, `occurredAt` |
+| `TRAINING_ASSIGNMENT` | Assignment ID | `employeeId`, `moduleVersionId` | `state`, `moduleVersionId`, `moduleVersion`, `moduleTitle`, `assignedAt` |
+| `TRAINING_ASSESSMENT` | Attempt ID | `assignmentId`, `employeeId`, `moduleVersionId` | `outcome`, `occurredAt` |
+| `TRAINING_EFFECTIVENESS` | Attempt ID | `assignmentId`, `employeeId`, `moduleVersionId` | `date`, `observation` |
+| `LIBRARY_SOP_PUBLICATION` | Publication ID | `recordId`, `versionId` | `version`, `publishedAt` |
+| `LIBRARY_SOP_ACKNOWLEDGEMENT` | Acknowledgement ID | `recordId`, `versionId`, `employeeId`, `actorAccountId` | `acknowledgedAt` |
+
+S24 scheduled `summary()` and retained `summaries()` continue to exclude Training. Sessionless AUT workers cannot read Learning ports; `skills_training` saved reports are excluded from rule REPORT choices, rejected by current rule API validation and remain SKIPPED at execution if a changed/legacy definition selects one. No manual saved-run endpoint or training summary persistence is added. This addendum is an implementation boundary; current-tree gates/acceptance remain pending.

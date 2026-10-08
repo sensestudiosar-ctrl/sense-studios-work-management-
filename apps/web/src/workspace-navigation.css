@@ -5,6 +5,7 @@
 .workspace-bell-link { display: flex; align-items: center; justify-content: center; gap: .55rem; min-width: 2.9rem; min-height: 2.9rem; margin-bottom: .5rem; padding: .55rem .8rem; border: 1px solid #d9d8cd; border-radius: .55rem; color: #29463d; text-decoration: none; font-weight: 700; }
 .workspace-bell-link:hover, .workspace-bell-link[aria-current="page"] { background: #e3eadf; }
 .workspace-bell-link span { font-size: .88rem; }
+.workspace-bell-link svg { width: 1.25rem; height: 1.25rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .workspace-nav a, .workspace-mobile-main a, .workspace-more-links a { display: flex; align-items: center; min-height: 2.9rem; padding: .7rem .85rem; border-radius: .55rem; color: #334d44; text-decoration: none; font-size: .88rem; font-weight: 650; }
 .workspace-nav a:hover, .workspace-mobile-main a:hover, .workspace-more-links a:hover { background: #edf0e8; }
 .workspace-nav a[aria-current="page"], .workspace-mobile-main a[aria-current="page"], .workspace-more-links a[aria-current="page"] { background: #e3eadf; color: #1e493b; box-shadow: inset 3px 0 #426457; }
