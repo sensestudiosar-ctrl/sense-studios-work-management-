@@ -1,4 +1,4 @@
-import { ConflictException, ForbiddenException } from "@nestjs/common";
+import { ConflictException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { jest } from "@jest/globals";
 import { AccountKind, ApprovalDecisionOutcome, ApprovalRequestState, type ApprovalRequest, type Prisma } from "./generated/prisma/client.js";
 import { ApprovalService, type ApprovalActor, type ApprovalDecisionInput, type ApprovalHandler, type ApprovalRequestInput } from "./approval.service.js";
@@ -124,6 +124,36 @@ describe("ApprovalService S05 policy and transaction behavior", () => {
     expect(result.items[0]).toMatchObject({ id: requestId, title: "Approval" });
     expect(handler.canView).toHaveBeenCalledTimes(2);
     expect(handler.projectCard).toHaveBeenCalledTimes(1);
+  });
+
+  it("reauthorizes an exact pending card with the current typed handler and no decision mutation", async () => {
+    const { service, handler, database, tx } = harness();
+    const prisma = database.prisma as unknown as {
+      organization: { findFirst: () => Promise<{ id: string }>; };
+      account: { findUnique: () => Promise<{ id: string; kind: AccountKind; state: string; employee: null }> };
+    };
+    prisma.organization = { findFirst: async () => ({ id: orgId }) };
+    prisma.account = { findUnique: async () => ({ id: actorId, kind: AccountKind.OWNER, state: "ACTIVE", employee: null }) };
+    const item = await service.attentionItem(actorId, requestId);
+    expect(item).toMatchObject({ id: requestId, typeKey: "test.approval", title: "Approval", state: ApprovalRequestState.PENDING });
+    expect(handler.canView).toHaveBeenCalledWith(tx, { accountId: actorId, organizationId: orgId }, expect.objectContaining({ id: requestId }));
+    expect(handler.projectCard).toHaveBeenCalledTimes(1);
+    expect(tx.approvalDecision.create).not.toHaveBeenCalled();
+    expect(tx.approvalRequest.update).not.toHaveBeenCalled();
+  });
+
+  it("does not reveal an exact request when its current owning handler hides it", async () => {
+    const { service, handler, database, tx } = harness();
+    const prisma = database.prisma as unknown as {
+      organization: { findFirst: () => Promise<{ id: string }> };
+      account: { findUnique: () => Promise<{ id: string; kind: AccountKind; state: string; employee: null }> };
+    };
+    prisma.organization = { findFirst: async () => ({ id: orgId }) };
+    prisma.account = { findUnique: async () => ({ id: actorId, kind: AccountKind.OWNER, state: "ACTIVE", employee: null }) };
+    (handler.canView as jest.Mock).mockResolvedValue(false);
+    await expect(service.attentionItem(actorId, requestId)).rejects.toBeInstanceOf(NotFoundException);
+    expect(handler.projectCard).not.toHaveBeenCalled();
+    expect(tx.approvalDecision.create).not.toHaveBeenCalled();
   });
 
   it("runs the typed owning-domain callback and decision audit/outbox after appending one decision", async () => {

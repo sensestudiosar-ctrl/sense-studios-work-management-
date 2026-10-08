@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, ForbiddenException, Get, Inject, Query, Req, Res } from "@nestjs/common";
+import { BadRequestException, Controller, ForbiddenException, Get, Inject, Param, Query, Req, Res } from "@nestjs/common";
 import type { Request, Response } from "express";
 import { z } from "zod";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
@@ -25,5 +25,15 @@ export class ApprovalsController {
     if (cursor !== undefined && (cursor.length > 512 || cursor.length < 1)) throw new BadRequestException("Invalid queue cursor");
     response.setHeader("Cache-Control", "no-store");
     return this.approvals.attention(active.row.accountId, value, cursor);
+  }
+
+  @Get("attention/:requestId")
+  async attentionItem(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Param("requestId") requestId?: string) {
+    const active = await this.identity.session(this.cookie(request));
+    if (active.row.account.kind === "OWNER" && !(await this.identity.ownerReady(active.row.accountId))) throw new ForbiddenException("Owner identity setup is required");
+    const parsed = z.string().uuid().safeParse(requestId);
+    if (!parsed.success) throw new BadRequestException("Invalid approval reference");
+    response.setHeader("Cache-Control", "no-store");
+    return this.approvals.attentionItem(active.row.accountId, parsed.data);
   }
 }

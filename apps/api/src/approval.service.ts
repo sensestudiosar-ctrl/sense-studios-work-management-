@@ -196,6 +196,25 @@ export class ApprovalService {
     };
   }
 
+  /** Exact, read-only handoff for an item already governed by its registered approval policy. */
+  async attentionItem(actorId: string, requestId: string) {
+    const org = await this.database.prisma.organization.findFirst({ select: { id: true } });
+    if (!org) throw new NotFoundException("Approval request is unavailable");
+    const actor = await this.database.prisma.account.findUnique({ where: { id: actorId }, select: { id: true, kind: true, state: true, employee: { select: { organizationId: true, state: true } } } });
+    if (!actor || actor.state !== AccountState.ACTIVE || actor.kind === AccountKind.STAFF && (actor.employee?.organizationId !== org.id || actor.employee.state !== "ACTIVE")) throw new ForbiddenException("Permission denied");
+    return this.database.prisma.$transaction(async tx => {
+      await this.assertActor(tx, { accountId: actorId, organizationId: org.id });
+      const rows = await tx.$queryRaw<ApprovalRequest[]>`SELECT * FROM "approval_requests" WHERE "id" = ${requestId}::uuid AND "organizationId" = ${org.id}::uuid AND "state" = ${ApprovalRequestState.PENDING}::"ApprovalRequestState" AND ("expiresAt" IS NULL OR "expiresAt" > ${new Date()}) FOR SHARE`;
+      const request = rows[0];
+      const handler = request && this.handlers.get(request.typeKey);
+      if (!request || !handler) throw new NotFoundException("Approval request is unavailable");
+      const currentActor = { accountId: actorId, organizationId: org.id };
+      if (!(await handler.canView(tx, currentActor, request))) throw new NotFoundException("Approval request is unavailable");
+      const card = await handler.projectCard(tx, request);
+      return { id: request.id, typeKey: request.typeKey, title: card.title, summary: card.summary, subjectLabel: card.subjectLabel, requesterLabel: card.requesterLabel, reason: request.reason, requestedAt: request.requestedAt, expiresAt: request.expiresAt, approvalLevel: card.levelLabel, state: request.state };
+    });
+  }
+
   private requireHandler(typeKey: string): ApprovalHandler {
     const handler = this.handlers.get(typeKey);
     if (!handler) throw new ForbiddenException("Approval type is not registered");

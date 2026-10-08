@@ -171,6 +171,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #b98f49; outline-offs
 .approval-queue-empty { margin: .7rem 0 0; padding: 1.25rem; border: 1px dashed #b5c3b4; border-radius: .65rem; background: #f7faf4; color: #50645b; text-align: center; }
 .approval-queue-list { display: grid; gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
 .approval-queue-item { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid #d5dfd3; border-radius: .7rem; background: white; }
+.approval-queue-item.is-selected { border-color: #456b58; box-shadow: 0 0 0 2px rgb(69 107 88 / 16%); }
 .approval-queue-copy { min-width: 0; }
 .approval-queue-copy h3 { margin: .5rem 0; color: #29463d; font-size: 1.05rem; }
 .approval-queue-copy p { margin: .35rem 0; color: #50645b; line-height: 1.5; overflow-wrap: anywhere; }

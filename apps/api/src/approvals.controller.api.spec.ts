@@ -17,7 +17,7 @@ describe("S05 read-only approval queue HTTP contract", () => {
   let kind: "OWNER" | "STAFF";
   let ownerReady: boolean;
   let sessionValid: boolean;
-  let service: { attention: jest.Mock };
+  let service: { attention: jest.Mock; attentionItem: jest.Mock };
   let identity: { session: jest.Mock; ownerReady: jest.Mock };
 
   beforeAll(async () => {
@@ -31,7 +31,7 @@ describe("S05 read-only approval queue HTTP contract", () => {
       }),
       ownerReady: jest.fn(async () => ownerReady)
     };
-    service = { attention: jest.fn(async () => ({ items: [], nextCursor: null })) };
+    service = { attention: jest.fn(async () => ({ items: [], nextCursor: null })), attentionItem: jest.fn(async () => ({ id: "request-1" })) };
     const config: RuntimeConfig = {
       nodeEnv: "test", port: 4000, databaseUrl: "postgresql://test:test@localhost:5432/test",
       webOrigin: "http://localhost:5173", ownerBootstrapEmail: "owner@example.test", ownerBootstrapSecret: "b".repeat(48)
@@ -85,10 +85,28 @@ describe("S05 read-only approval queue HTTP contract", () => {
     expect(service.attention).not.toHaveBeenCalled();
   });
 
+  it("reads one exact policy-visible pending decision without enabling mutations", async () => {
+    const requestId = "55555555-5555-4555-8555-555555555501";
+    service.attentionItem.mockResolvedValue({ id: requestId, typeKey: "test.policy", title: "Current decision" });
+    const response = await request(app.getHttpServer()).get(`/api/v1/approvals/attention/${requestId}`).set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(response.body).toEqual({ id: requestId, typeKey: "test.policy", title: "Current decision" });
+    expect(service.attentionItem).toHaveBeenCalledWith(accountId, requestId);
+    expect(service.attention).not.toHaveBeenCalled();
+  });
+
+  it("rejects malformed exact references before querying the service", async () => {
+    const response = await request(app.getHttpServer()).get("/api/v1/approvals/attention/not-a-uuid").set("Cookie", cookie);
+    expect(response.status).toBe(400);
+    expect(service.attentionItem).not.toHaveBeenCalled();
+  });
+
   it("does not expose a generic request creation route", async () => {
     const response = await request(app.getHttpServer()).post("/api/v1/approvals").set("Cookie", cookie).send({ typeKey: "test.anything" });
     expect(response.status).toBe(404);
     expect(service.attention).not.toHaveBeenCalled();
+    expect(service.attentionItem).not.toHaveBeenCalled();
   });
 
   it("requires Owner setup completion before reading as Owner", async () => {

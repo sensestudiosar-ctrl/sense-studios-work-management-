@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, vi } from "vitest";
 import { ApprovalQueue } from "./approval-queue.js";
 
@@ -29,6 +29,31 @@ describe("read-only approval queue", () => {
     expect(screen.getByText(/Client requested a revised scope/)).toBeInTheDocument();
     expect(screen.getByText(/Requested by owner@example.test/)).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /approve|reject|decide/i })).not.toBeInTheDocument();
+  });
+
+  it("opens an exact Dashboard decision through the current authorized pending-item read", async () => {
+    window.history.replaceState({}, "", "/my-work?approvalId=approval-1");
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
+      .mockResolvedValueOnce(response(item));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ApprovalQueue title="Decisions awaiting you"/>);
+    const heading = await screen.findByRole("heading", { name: "Scope change" });
+    const row = heading.closest("li");
+    expect(row).toHaveAttribute("id", "approval-approval-1");
+    await waitFor(() => expect(document.activeElement).toBe(row));
+    expect(fetchMock.mock.calls[1]?.[0]).toBe("/api/v1/approvals/attention/approval-1");
+    expect(screen.queryByRole("button", { name: /approve|reject|decide/i })).not.toBeInTheDocument();
+  });
+
+  it("explains when an exact approval is no longer pending or available without leaking source details", async () => {
+    window.history.replaceState({}, "", "/my-work?approvalId=approval-stale");
+    vi.stubGlobal("fetch", vi.fn()
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
+      .mockResolvedValueOnce(response({ error: "private source data" }, 404)));
+    render(<ApprovalQueue />);
+    expect(await screen.findByText(/This decision is no longer pending or is unavailable to your account/i)).toHaveAttribute("role", "status");
+    expect(screen.queryByText(/private source data/)).not.toBeInTheDocument();
   });
 
   it("loads more with a cursor and de-duplicates overlapping rows", async () => {
