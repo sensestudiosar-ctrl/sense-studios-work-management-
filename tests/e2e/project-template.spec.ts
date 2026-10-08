@@ -71,6 +71,7 @@ test("Owner applies a versioned template and required milestone gates survive re
     await expect(workspace.getByText("Draft project created.", { exact: true })).toBeVisible();
     await expect(templates.getByLabel("Project template")).toHaveValue("");
     await workspace.getByRole("button", { name: new RegExp(projectTitle) }).click();
+    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
     const plan = workspace.getByRole("region", { name: "Project plan" });
     await expect(plan.getByText(`${templateName} · version 1`)).toBeVisible();
     await expect(plan.getByText("Design/Working drawings", { exact: true })).toBeVisible();
@@ -79,7 +80,9 @@ test("Owner applies a versioned template and required milestone gates survive re
     await expect(workspace.getByText("Loading projects…", { exact: true })).toBeHidden();
     await expect(workspace.getByRole("button", { name: new RegExp(projectTitle) })).toBeVisible();
     await workspace.getByRole("button", { name: new RegExp(projectTitle) }).click();
+    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
     await expect(plan.getByText(`${templateName} · version 1`)).toBeVisible();
+    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
     const reason = workspace.getByLabel("Project action reason");
     await reason.fill("Assign eligible delivery lead");
     await workspace.getByLabel("Contributor", { exact: true }).selectOption(employeeId);
@@ -93,17 +96,21 @@ test("Owner applies a versioned template and required milestone gates survive re
     await reason.fill("Activate templated delivery");
     await status.selectOption("ACTIVE");
     await workspace.getByRole("button", { name: "Change status" }).click();
+    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
     await expect(plan.getByLabel("Reason for plan update")).toBeVisible();
     const projectId = (await db.query<{ id: string }>('SELECT id FROM projects WHERE title=$1 AND "createdById"=$2', [projectTitle, ownerId])).rows[0]!.id;
+    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
     await reason.fill("Required milestone must block completion");
     await status.selectOption("COMPLETED");
     const denial = page.waitForResponse((response) => response.url().includes(`/projects/${projectId}/status`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Change status" }).click();
     expect((await denial).status()).toBe(409);
+    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
     await expect(plan.getByLabel("Reason for plan update")).toBeVisible();
     await plan.getByLabel("Reason for plan update").fill("Record completed brief milestone");
     await plan.locator("li").filter({ has: page.getByText("Brief approved", { exact: true }) }).getByRole("button", { name: "Mark complete" }).click();
     await expect(plan.locator("li").filter({ has: page.getByText("Brief approved", { exact: true }) }).getByText("Complete", { exact: true })).toBeVisible();
+    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
     await reason.fill("Complete delivery after required milestone");
     await status.selectOption("COMPLETED");
     await workspace.getByRole("button", { name: "Change status" }).click();
@@ -114,6 +121,7 @@ test("Owner applies a versioned template and required milestone gates survive re
       (SELECT count(*) FROM project_gate_overrides WHERE "projectId"=p.id)::text AS "overrideCount" FROM projects p WHERE p.id=$1`, [projectId]);
     expect(persisted.rows[0]).toEqual({ status: "COMPLETED", planCount: "1", completed: true, overrideCount: "0" });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
     await plan.scrollIntoViewIfNeeded();
     await page.screenshot({ path: testInfo.outputPath("s08-plan.png") });
   } finally {

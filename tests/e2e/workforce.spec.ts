@@ -99,10 +99,17 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
       await expect(more).toBeVisible();
       await expect(more.getByRole("link", { name: "Workforce", exact: true })).toHaveAttribute("aria-current", "page");
       const destinations = [...await navigation.getByRole("link").allTextContents(), ...await more.getByRole("link").allTextContents()];
-      for (const label of ["My Work & decisions", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Time", "Workforce"]) expect(destinations).toContain(label);
+      for (const label of ["My Work", "Decisions", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Time", "Workforce"]) expect(destinations).toContain(label);
       await page.getByRole("button", { name: "Close navigation" }).click();
       await expect(page.getByRole("button", { name: "More", exact: true })).toBeFocused();
     } else await expect(navigation.getByRole("link", { name: "Workforce", exact: true })).toHaveAttribute("aria-current", "page");
+    const workforceSections = workspace.getByRole("navigation", { name: "Workforce sections" });
+    const openSection = async (label: string) => {
+      const link = workforceSections.getByRole("link", { name: label, exact: true });
+      await link.click();
+      await expect(link).toHaveAttribute("aria-current", "page");
+    };
+    await openSection("Schedule & capacity");
     const periodControl = workspace.locator(".wf-period-control");
     await expect(periodControl.getByRole("combobox", { name: "Period" })).toBeVisible();
     expect(await periodControl.evaluate(element => element.getBoundingClientRect().width)).toBeGreaterThanOrEqual(120);
@@ -112,8 +119,10 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     }, { title: `S17 capacity task ${dbSuffix}`, targetDate, projectId, employeeId, csrfToken: ownerCsrf });
     expect(createdTask.status, JSON.stringify(createdTask.body)).toBe(201);
     const taskId = createdTask.body.id!;
-    const policyPanel = workspace.locator(".wf-panel").filter({ hasText: "Owner policy setup" });
+    await openSection("Leave & WFH");
+    const policyPanel = workspace.locator(".wf-panel").filter({ hasText: "Leave setup · Owner" });
     await expect(policyPanel).toHaveCount(1);
+    await policyPanel.getByText("Configure leave policy", { exact: true }).click();
     const policyBranch = policyPanel.getByRole("combobox", { name: "Branch", exact: true });
     await expect(policyBranch).toHaveCount(1);
     await policyBranch.selectOption(branchId);
@@ -138,8 +147,10 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await policyPanel.getByRole("button", { name: "Save policy" }).click();
     await expect(workspace.getByText("Workforce record saved.")).toBeVisible();
 
-    const sitePanel = workspace.locator(".wf-panel").filter({ hasText: "Site check-in setup" });
+    await openSection("Attendance");
+    const sitePanel = workspace.locator(".wf-panel").filter({ hasText: "Site check-in setup · Owner" });
     await expect(sitePanel).toHaveCount(1);
+    await sitePanel.getByText("Configure site check-in", { exact: true }).click();
     await sitePanel.getByLabel("Project", { exact: true }).selectOption(projectId);
     await sitePanel.getByLabel("Site label").fill("Studio site");
     await sitePanel.getByLabel("Latitude").fill("0");
@@ -150,8 +161,10 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await sitePanel.getByRole("button", { name: "Save site configuration" }).click();
     await expect(workspace.getByText("Workforce record saved.")).toBeVisible();
 
-    const schedulePanel = workspace.locator(".wf-panel").filter({ hasText: "Schedule setup" });
+    await openSection("Schedule & capacity");
+    const schedulePanel = workspace.locator(".wf-panel").filter({ hasText: "Schedule setup · Owner" });
     await expect(schedulePanel).toHaveCount(1);
+    await schedulePanel.getByText("Configure schedule", { exact: true }).click();
     await schedulePanel.getByLabel("Employee", { exact: true }).selectOption(employeeId);
     await schedulePanel.getByLabel("Effective from").fill(day(0));
     await schedulePanel.getByLabel("Employment type").selectOption("FULL_TIME");
@@ -170,6 +183,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await schedulePanel.getByRole("button", { name: "Save schedule" }).click();
     await expect(workspace.getByText("Workforce record saved.")).toBeVisible();
 
+    await openSection("Allocation");
     await workspace.getByLabel("Reason for this action (required)").fill("Allocate scheduled project work");
     const allocationPanel = workspace.locator(".wf-panel").filter({ hasText: "Explicit task allocation" });
     await expect(allocationPanel).toHaveCount(1);
@@ -187,6 +201,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: staffSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workforce");
+    await openSection("Leave & WFH");
     await expect(workspace.getByRole("heading", { name: "Request leave or WFH" })).toBeVisible();
     const leavePanel = workspace.locator(".wf-panel").filter({ hasText: "Request leave or WFH" });
     await expect(leavePanel).toHaveCount(1);
@@ -203,6 +218,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     expect(annualPersisted.rows[0]?.count).toBe("1");
     const pendingRequest = workspace.locator(`[data-record-id="${annualRecord.id}"]`);
     await expect(pendingRequest).toContainText("PENDING");
+    await openSection("Schedule & capacity");
     const workloadPanel = workspace.locator(".wf-panel").filter({ hasText: "Workload" });
     await expect(workloadPanel).toHaveCount(1);
     await expect(workloadPanel.getByRole("table").filter({ hasText: "Policy period" })).toContainText("2940 min");
@@ -211,6 +227,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await workspace.getByLabel("Period").selectOption("day");
     await expect(workloadPanel.locator(".wf-note").first()).toContainText(`Selected range: ${day(0)} to ${day(0)}`);
     await workspace.getByLabel("Period").selectOption("week");
+    await openSection("Leave & WFH");
     await leavePanel.getByLabel("Type").selectOption("WFH");
     await leavePanel.getByLabel("Date", { exact: true }).fill(day(0));
     await workspace.getByLabel("Reason for this action (required)").fill("Request WFH schedule");
@@ -223,6 +240,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     const wfhRequestRow = workspace.locator(`[data-record-id="${wfhRecord.id}"]`);
     await expect(wfhRequestRow).toContainText("PENDING");
 
+    await openSection("Attendance");
     await workspace.getByLabel("Site", { exact: true }).selectOption({ label: "Studio site" });
     await workspace.getByLabel("Reason for this action (required)").fill("Record provisional site arrival");
     page.once("dialog", dialog => dialog.accept("GPS unavailable during arrival"));
@@ -301,6 +319,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workforce");
+    await openSection("Leave & WFH");
     await workspace.getByLabel("View").selectOption("managed");
     const managedRequest = workspace.locator(`[data-record-id="${annualRecord.id}"]`);
     await expect(managedRequest).toContainText("PENDING");
@@ -310,6 +329,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await expect(managedRequest).toContainText("APPROVED");
     await expect(managedRequest.getByText("Affected tasks and capacity-based suggestions")).toBeVisible();
     await expect(managedRequest).toContainText(helperEmail);
+    await openSection("Attendance");
     const provisionalReviewPanel = workspace.locator(".wf-panel").filter({ hasText: "Provisional attendance reviews" });
     await expect(provisionalReviewPanel).toHaveCount(1);
     const provisionalReview = provisionalReviewPanel.locator(`[data-record-id="${provisionalRecord.id}"]`);
@@ -322,6 +342,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: staffSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workforce");
+    await openSection("Leave & WFH");
     const staffAnnual = workspace.locator(`[data-record-id="${annualRecord.id}"]`);
     await expect(staffAnnual).toContainText("APPROVED");
     await expect(staffAnnual).toContainText("Cancellation applies only to future unused dates");
@@ -336,6 +357,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workforce");
+    await openSection("Leave & WFH");
     await workspace.getByLabel("View").selectOption("managed");
     const cancellation = workspace.locator(`[data-record-id="${annualRecord.id}"]`);
     await expect(cancellation).toContainText("CANCEL_PENDING");
@@ -343,12 +365,14 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await cancellation.getByRole("button", { name: "Approve cancellation" }).click();
     await expect(workspace.getByText("Workforce record saved.")).toBeVisible();
 
+    await openSection("Leave & WFH");
     const wfhRequest = workspace.locator(`[data-record-id="${wfhRecord.id}"]`);
     await expect(wfhRequest).toContainText("PENDING");
     await workspace.getByLabel("Reason for this action (required)").fill("Approve WFH schedule request");
     await wfhRequest.getByRole("button", { name: "Approve" }).click();
     await expect(workspace.getByText("Workforce record saved.")).toBeVisible();
     await expect(wfhRequest).toContainText("APPROVED");
+    await openSection("Attendance");
     await workspace.getByLabel("Reason for this action (required)").fill("Record expiry notice");
     const retentionAttendance = workspace.locator(`[data-record-id="${siteRecord.id}"]`);
     await retentionAttendance.getByRole("button", { name: "Place retention hold" }).click();
@@ -366,6 +390,7 @@ test("workforce setup, scheduled leave approval and capacity persist on desktop 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: staffSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workforce");
+    await openSection("Attendance");
     await expect(workspace.getByText("An approved WFH request covers today; this check-in will be marked remote.")).toBeVisible();
     await workspace.getByLabel("Reason for this action (required)").fill("Record approved remote attendance");
     const remoteCheckInPromise = page.waitForResponse(response => response.url().includes("/api/v1/workforce/attendance/check-in") && response.request().method() === "POST", { timeout: 10_000 });

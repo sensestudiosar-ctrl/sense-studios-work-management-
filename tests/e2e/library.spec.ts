@@ -57,7 +57,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     const workspace = page.locator(".learning-route");
     await page.goto("/learning");
-    await workspace.getByRole("button", { name: "Library", exact: true }).click();
+    await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await expect(workspace.getByRole("heading", { name: "Library", exact: true })).toBeVisible();
     await workspace.getByRole("button", { name: "Create record" }).click();
     const form = workspace.locator("form.library-form").first();
@@ -86,7 +86,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: employeeSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/learning");
-    await workspace.getByRole("button", { name: "Library", exact: true }).click();
+    await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
     await expect(workspace.getByRole("button", { name: "Acknowledge version 1" })).toBeVisible();
     await workspace.getByRole("button", { name: "Acknowledge version 1" }).click();
@@ -96,7 +96,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/learning");
-    await workspace.getByRole("button", { name: "Library", exact: true }).click();
+    await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
     const versionForm = workspace.locator("form.library-version-form");
     await versionForm.getByLabel("Text").fill("Read the current site safety standard and attached guide.");
@@ -129,7 +129,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: employeeSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/learning");
-    await workspace.getByRole("button", { name: "Library", exact: true }).click();
+    await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
     await expect(workspace.getByText("Read the current site safety standard and attached guide.")).toBeVisible();
     await expect(workspace.getByText("Read the current site safety standard.")).toBeVisible();
@@ -171,7 +171,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: managerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/learning");
-    await workspace.getByRole("button", { name: "Library", exact: true }).click();
+    await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await workspace.getByRole("button", { name: new RegExp(knowledgeTitle) }).click();
     const pendingRequest = workspace.locator(".library-request").filter({ hasText: "PENDING" });
     await expect(pendingRequest.getByRole("button", { name: "Approve and publish" })).toBeVisible();
@@ -185,7 +185,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: employeeSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/learning");
-    await workspace.getByRole("button", { name: "Library", exact: true }).click();
+    await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await workspace.getByRole("button", { name: new RegExp(knowledgeTitle) }).click();
     await expect(workspace.getByText("Check the wall condition before selecting the fixing.")).toBeVisible();
     await expect(workspace.getByText(/APPROVED/)).toBeVisible();

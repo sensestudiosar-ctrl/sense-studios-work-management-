@@ -49,6 +49,7 @@ test("assigned staff sees only its project and a cancellation request persists a
     await expect(workspace.getByText(/Cancellation request submitted/)).toBeVisible();
     await page.reload();
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
+    await workspace.getByRole("button", { name: "Activity", exact: true }).click();
     await expect(workspace.getByText(/Cancellation request · PENDING · Delivery request needs Owner review/)).toBeVisible();
     const evidence = await db.query<{ count: string }>('SELECT count(*) FROM project_cancellation_requests WHERE "projectId"=$1', [projectId]);
     expect(evidence.rows[0]?.count).toBe("1");
