@@ -27,9 +27,12 @@ const runtimeUser = "sense_app_runtime";
 const adminPassword = randomBytes(32).toString("base64url");
 const runtimePassword = randomBytes(32).toString("base64url");
 const clusterNames = { main: `sense-ci-pg-main-${runId}`, s14: `sense-ci-pg-s14-${runId}` };
+const mainPort = 57433;
+const s14Port = 56436;
+const mainCompatibilityPort = 58440;
 const clusters = [
-  { name: clusterNames.main, port: 58440 },
-  { name: clusterNames.s14, port: 58441 }
+  { name: clusterNames.main, port: mainPort },
+  { name: clusterNames.s14, port: s14Port }
 ];
 const suiteKeys = [
   "DATABASE_URL", "S12_DATABASE_URL", "S13_DATABASE_URL", "S14_DATABASE_URL", "S15_DATABASE_URL",
@@ -97,7 +100,7 @@ const started = [];
 try {
   await mkdir(toolsDir, { recursive: true, mode: 0o700 });
   await mkdir(reportDir, { recursive: true });
-  await ensureLoopbackPortFree(57433);
+  for (const port of [mainPort, s14Port, mainCompatibilityPort]) await ensureLoopbackPortFree(port);
   for (const cluster of clusters) {
     const adminUrl = databaseUrl("postgres", cluster.port, adminUser, adminPassword);
     const readiness = new Client({ connectionString: adminUrl, connectionTimeoutMillis: 500, application_name: "sense-ci-port-preflight" });
@@ -110,7 +113,7 @@ try {
     runDocker([
       "run", "--detach", "--rm", "--name", cluster.name,
       "--publish", `127.0.0.1:${cluster.port}:${cluster.port}`,
-      ...(cluster.name === clusterNames.main ? ["--publish", "127.0.0.1:57433:58440"] : []),
+      ...(cluster.name === clusterNames.main ? ["--publish", `127.0.0.1:${mainCompatibilityPort}:${mainPort}`] : []),
       "--env", `POSTGRES_USER=${adminUser}`,
       "--env", "POSTGRES_PASSWORD",
       "--env", "POSTGRES_DB=postgres",
@@ -128,28 +131,33 @@ try {
   for (const key of suiteKeys) {
     const suiteNumber = key === "DATABASE_URL" ? "s27_main" : `s${/^S(\d+)/.exec(key)[1]}${key.includes("_SECURITY_") ? "_security" : ""}`;
     const name = `sense_${suiteNumber}_s27_${suffix}_test`;
-    const port = key === "S14_DATABASE_URL" ? 58441 : 58440;
+    const port = key === "S14_DATABASE_URL"
+      ? s14Port
+      : key === "DATABASE_URL"
+        ? mainCompatibilityPort
+        : mainPort;
+    const serverPort = key === "S14_DATABASE_URL" ? s14Port : mainPort;
     if (databaseNames.has(name)) throw new Error("Generated CI database targets must be unique.");
-    databaseNames.set(name, { key, port });
+    databaseNames.set(name, { key, port, serverPort });
     generated[key] = databaseUrl(name, port);
   }
 
   const mainDatabase = new URL(generated.DATABASE_URL).pathname.slice(1);
   const s14Database = new URL(generated.S14_DATABASE_URL).pathname.slice(1);
-  const mainAdmin = await connectVerified(databaseUrl("postgres", 58440, adminUser, adminPassword), "postgres", 58440);
+  const mainAdmin = await connectVerified(databaseUrl("postgres", mainPort, adminUser, adminPassword), "postgres", mainPort);
   try {
     if ((await mainAdmin.query("SELECT 1 FROM pg_database WHERE datname = $1", [mainDatabase])).rowCount !== 0) throw new Error("Generated main fixture database already exists.");
     await mainAdmin.query(`CREATE DATABASE ${quoteIdentifier(mainDatabase)} OWNER ${quoteRole(adminUser)}`);
   }
   finally { await mainAdmin.end(); }
-  const s14Admin = await connectVerified(databaseUrl("postgres", 58441, adminUser, adminPassword), "postgres", 58441);
+  const s14Admin = await connectVerified(databaseUrl("postgres", s14Port, adminUser, adminPassword), "postgres", s14Port);
   try {
     if ((await s14Admin.query("SELECT 1 FROM pg_database WHERE datname = $1", [s14Database])).rowCount !== 0) throw new Error("Generated S14 fixture database already exists.");
     await s14Admin.query(`CREATE DATABASE ${quoteIdentifier(s14Database)} OWNER ${quoteRole(adminUser)}`);
   }
   finally { await s14Admin.end(); }
 
-  const mainAlias = await connectVerified(databaseUrl(mainDatabase, 57433, adminUser, adminPassword), mainDatabase, 58440);
+  const mainAlias = await connectVerified(databaseUrl(mainDatabase, mainCompatibilityPort, adminUser, adminPassword), mainDatabase, mainPort);
   await mainAlias.end();
 
   const environment = {
@@ -158,7 +166,7 @@ try {
     S27_E2E_ENABLED: "1",
     S27_TEST_ENV_FILE: `.env.s27-tools/${envName}`,
     S27_EXPECTED_MIGRATIONS: "115",
-    MIGRATION_DATABASE_URL: generated.DATABASE_URL,
+    MIGRATION_DATABASE_URL: databaseUrl(mainDatabase, mainPort, adminUser, adminPassword),
     S16_ADMIN_DATABASE_URL: generated.S16_DATABASE_URL,
     API_TEST_WORKERS: "2",
     VITEST_WORKERS: "2",
@@ -195,18 +203,18 @@ try {
     provider: "github-actions-disposable-postgres",
     runId,
     suffix,
-    targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, port: target.port, migrations: 115 })),
-    e2eCompatibilityAlias: "The GitHub-only loopback port 57433 maps to this run's disposable main server listening on 58440; it is verified against current_database() before tests.",
+    targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 115 })),
+    e2eCompatibilityAlias: `The GitHub-only loopback port ${mainCompatibilityPort} maps to this run's disposable main server listening on ${mainPort}; DATABASE_URL uses that alias for the existing E2E target contract. Other suite URLs use their guard-approved host ports; S14 uses ${s14Port}.`,
+    runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} CREATE on schema public for its injected-trigger test.`,
     identityChecks: "Each server and database name was checked before fixture creation; accepted local databases are not referenced."
   };
   await writeFile(resolve(toolsDir, `ci-fixtures-${suffix}.json`), `${JSON.stringify(manifest, null, 2)}\n`, { flag: "wx", mode: 0o600 });
 
-  for (const [targetUrl, adminUrl, label] of [
-    [generated.DATABASE_URL, databaseUrl(mainDatabase, 58440, adminUser, adminPassword), "main"],
-    [generated.S14_DATABASE_URL, databaseUrl(s14Database, 58441, adminUser, adminPassword), "S14"]
+  for (const [targetUrl, adminUrl, label, targetPort] of [
+    [generated.DATABASE_URL, databaseUrl(mainDatabase, mainPort, adminUser, adminPassword), "main", mainPort],
+    [generated.S14_DATABASE_URL, databaseUrl(s14Database, s14Port, adminUser, adminPassword), "S14", s14Port]
   ]) {
     const targetName = new URL(targetUrl).pathname.slice(1);
-    const targetPort = Number(new URL(targetUrl).port);
     const verifiedTarget = await connectVerified(adminUrl, targetName, targetPort);
     await verifiedTarget.end();
     const migrated = spawnSync("pnpm", ["--filter", "@sense/api", "db:migrate:deploy"], {
@@ -218,32 +226,41 @@ try {
     if (migrated.status !== 0) throw new Error(`Prisma migrations failed for the isolated ${label} CI fixture.`);
   }
 
-  const mainClient = await connectVerified(databaseUrl(mainDatabase, 58440, adminUser, adminPassword), mainDatabase, 58440);
+  const mainClient = await connectVerified(databaseUrl(mainDatabase, mainPort, adminUser, adminPassword), mainDatabase, mainPort);
   try {
       const migrations = await mainClient.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
       if (migrations.rows[0]?.count !== 115 || migrations.rows[0]?.incomplete !== 0) throw new Error("The CI fixture template is not at migration 115 with a clean migration ledger.");
   } finally { await mainClient.end(); }
 
-  const admin = await connectVerified(databaseUrl("postgres", 58440, adminUser, adminPassword), "postgres", 58440);
+  const admin = await connectVerified(databaseUrl("postgres", mainPort, adminUser, adminPassword), "postgres", mainPort);
   try {
     for (const [database, target] of databaseNames) {
       if (database === mainDatabase || database === s14Database) continue;
-      if (target.port !== 58440) throw new Error("Unexpected secondary-cluster database target.");
+      if (target.serverPort !== mainPort) throw new Error("Unexpected secondary-cluster database target.");
       if ((await admin.query("SELECT 1 FROM pg_database WHERE datname = $1", [database])).rowCount !== 0) throw new Error("Generated suite database already exists.");
       await admin.query(`CREATE DATABASE ${quoteIdentifier(database)} WITH TEMPLATE ${quoteIdentifier(mainDatabase)} OWNER ${quoteRole(adminUser)}`);
+      if (target.key === "S22_DATABASE_URL") {
+        const s22 = await connectVerified(databaseUrl(database, mainPort, adminUser, adminPassword), database, mainPort);
+        try {
+          await s22.query(`GRANT USAGE, CREATE ON SCHEMA public TO ${quoteRole(runtimeUser)}`);
+          const privileges = (await s22.query("SELECT has_schema_privilege($1, 'public', 'USAGE') AS can_use, has_schema_privilege($1, 'public', 'CREATE') AS can_create", [runtimeUser])).rows[0];
+          if (!privileges?.can_use || !privileges?.can_create) throw new Error("The isolated S22 runtime role lacks its required test-schema privileges.");
+        }
+        finally { await s22.end(); }
+      }
     }
   } finally { await admin.end(); }
 
-  const s14Client = await connectVerified(databaseUrl(s14Database, 58441, adminUser, adminPassword), s14Database, 58441);
+  const s14Client = await connectVerified(databaseUrl(s14Database, s14Port, adminUser, adminPassword), s14Database, s14Port);
   try {
     const migrations = await s14Client.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
     if (migrations.rows[0]?.count !== 115 || migrations.rows[0]?.incomplete !== 0) throw new Error("The isolated S14 fixture is not at migration 115 with a clean ledger.");
   } finally { await s14Client.end(); }
 
   for (const [database, target] of databaseNames) {
-    const runtimeClient = await connectVerified(generated[target.key], database, target.port);
+    const runtimeClient = await connectVerified(generated[target.key], database, target.serverPort);
     await runtimeClient.end();
-    const targetClient = await connectVerified(databaseUrl(database, target.port, adminUser, adminPassword), database, target.port);
+    const targetClient = await connectVerified(databaseUrl(database, target.serverPort, adminUser, adminPassword), database, target.serverPort);
     try {
       const migrations = await targetClient.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
       if (migrations.rows[0]?.count !== 115 || migrations.rows[0]?.incomplete !== 0) throw new Error(`CI target ${target.key} is not at migration 115 with a clean migration ledger.`);
@@ -256,9 +273,9 @@ try {
   }
   await appendFile(process.env.GITHUB_ENV, `${Object.entries(environment).map(([key, value]) => `${key}=${value}`).join("\n")}\nCI_REPORT_DIR=${reportDir}\n`, { mode: 0o600 });
   if (process.env.GITHUB_STEP_SUMMARY) {
-    await appendFile(process.env.GITHUB_STEP_SUMMARY, "\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 115 across loopback ports 58440 and 58441.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n");
+    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 115 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role CREATE on schema public for its injected-trigger test.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
   }
-  process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 115 across loopback ports 58440 and 58441. CI credentials were generated for this run and were not printed.\n`);
+  process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 115 on loopback servers ${mainPort} (main) and ${s14Port} (S14), with the main compatibility alias on ${mainCompatibilityPort}. CI credentials were generated for this run and were not printed.\n`);
 } catch (error) {
   for (const name of started) spawnSync("docker", ["rm", "--force", name], { cwd: workspace, stdio: "ignore" });
   throw error;
