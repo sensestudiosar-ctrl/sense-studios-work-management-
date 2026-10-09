@@ -205,7 +205,7 @@ try {
     suffix,
     targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 116 })),
     e2eCompatibilityAlias: `The GitHub-only loopback port ${mainCompatibilityPort} maps to this run's disposable main server listening on ${mainPort}; DATABASE_URL uses that alias for the existing E2E target contract. Other suite URLs use their guard-approved host ports; S14 uses ${s14Port}.`,
-    runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} USAGE, CREATE on schema public and TRIGGER on audit_events for its injected-function/trigger tests.`,
+    runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} USAGE and CREATE on schema public and transfers audit_events ownership for its injected-trigger rollback test.`,
     identityChecks: "Each server and database name was checked before fixture creation; accepted local databases are not referenced."
   };
   await writeFile(resolve(toolsDir, `ci-fixtures-${suffix}.json`), `${JSON.stringify(manifest, null, 2)}\n`, { flag: "wx", mode: 0o600 });
@@ -243,9 +243,9 @@ try {
         const s22 = await connectVerified(databaseUrl(database, mainPort, adminUser, adminPassword), database, mainPort);
         try {
           await s22.query(`GRANT USAGE, CREATE ON SCHEMA public TO ${quoteRole(runtimeUser)}`);
-          await s22.query(`GRANT TRIGGER ON TABLE audit_events TO ${quoteRole(runtimeUser)}`);
-          const privileges = (await s22.query("SELECT has_schema_privilege($1, 'public', 'USAGE') AS can_use, has_schema_privilege($1, 'public', 'CREATE') AS can_create, has_table_privilege($1, 'audit_events', 'TRIGGER') AS can_create_trigger", [runtimeUser])).rows[0];
-          if (!privileges?.can_use || !privileges?.can_create || !privileges?.can_create_trigger) throw new Error("The isolated S22 runtime role lacks its required test-only privileges.");
+          await s22.query(`ALTER TABLE audit_events OWNER TO ${quoteRole(runtimeUser)}`);
+          const privileges = (await s22.query("SELECT has_schema_privilege($1, 'public', 'USAGE') AS can_use, has_schema_privilege($1, 'public', 'CREATE') AS can_create, pg_get_userbyid(c.relowner) = $1 AS owns_audit_events FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND c.relname = 'audit_events'", [runtimeUser])).rows[0];
+          if (!privileges?.can_use || !privileges?.can_create || !privileges?.owns_audit_events) throw new Error("The isolated S22 runtime role lacks its required test-only trigger ownership.");
         }
         finally { await s22.end(); }
       }
@@ -274,7 +274,7 @@ try {
   }
   await appendFile(process.env.GITHUB_ENV, `${Object.entries(environment).map(([key, value]) => `${key}=${value}`).join("\n")}\nCI_REPORT_DIR=${reportDir}\n`, { mode: 0o600 });
   if (process.env.GITHUB_STEP_SUMMARY) {
-    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 116 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role USAGE, CREATE on schema public and TRIGGER on audit_events for its injected-function/trigger tests.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
+    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 116 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role USAGE and CREATE on schema public and transfers audit_events ownership for its injected-trigger rollback test.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
   }
   process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 116 on loopback servers ${mainPort} (main) and ${s14Port} (S14), with the main compatibility alias on ${mainCompatibilityPort}. CI credentials were generated for this run and were not printed.\n`);
 } catch (error) {
