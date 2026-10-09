@@ -87,7 +87,10 @@ export class DashboardService {
  private periodDate(v:unknown):string {return v instanceof Date?v.toISOString().slice(0,10):typeof v==="string"?v.slice(0,10):"";}
  private async collect(actor:Actor,input:ReportFilter):Promise<{table:ReportTable;manifest:Manifest}>{
   await this.transaction(tx=>this.active(tx,actor));
-  if(input.category==="skills_training"&&!actor.sessionId)throw new ForbiddenException("Current session required for Learning reports");
+  const skillsAvailable=typeof this.skills?.setup==="function"&&typeof this.skills?.reportEvidence==="function";
+  const trainingAvailable=typeof this.training?.reportEvidence==="function";
+  const libraryAvailable=typeof this.library?.reportEvidence==="function";
+  if(input.category==="skills_training"&&!actor.sessionId&&(skillsAvailable||trainingAvailable||libraryAvailable))throw new ForbiddenException("Current session required for Learning reports");
   const context=await this.performance.context(actor),manifest:Manifest=[],rows:ReportTable["rows"]=[],unavailable:string[]=[];
   const add=(kind:string,id:string,label:string,value:unknown,dateValue?:unknown,status?:unknown,projectId?:string)=>{
    const date=this.periodDate(dateValue);if(date&&(date<input.from||date>input.to))return;
@@ -128,28 +131,28 @@ export class DashboardService {
     for(const [field,value] of Object.entries(values))rows.push({source:kind,id,label,status,date,field,value});
     manifest.push({kind,id,parent,keys,from:input.from,to:input.to});
    };
-   if(this.skills){
+   if(skillsAvailable){
     try{
-     const setup=await this.skills.setup(actor);
+     const setup=await this.skills!.setup(actor);
      for(const employee of setup.employees){
-      const evidence=await this.skills.reportEvidence(actor,employee.id,input.from,input.to);
+      const evidence=await this.skills!.reportEvidence(actor,employee.id,input.from,input.to);
       for(const rating of evidence.ratings)addLearning("SKILL_RATING",rating.id,`${employee.label}: skill rating`,"CURRENT",null,{employeeId:employee.id},{skillId:rating.skillId,level:rating.level,version:rating.version});
       for(const change of evidence.changes)addLearning("SKILL_CHANGE",change.id,`${employee.label}: skill change`,"RECORDED",change.occurredAt,{employeeId:employee.id,ratingId:change.ratingId},{ratingId:change.ratingId,fromLevel:change.fromLevel,toLevel:change.toLevel,occurredAt:change.occurredAt.toISOString()});
      }
     }catch(error){if(error instanceof ForbiddenException||error instanceof NotFoundException)unavailable.push("Skill evidence is unavailable for the current authorized audience.");else throw error;}
    }else unavailable.push("Skill evidence source is unavailable.");
-   if(this.training){
+   if(trainingAvailable){
     try{
-     for(const item of await this.training.reportEvidence(actor,input.from,input.to)){
+     for(const item of await this.training!.reportEvidence(actor,input.from,input.to)){
       addLearning("TRAINING_ASSIGNMENT",item.assignmentId,item.moduleTitle,item.state,item.assignedAt,{employeeId:item.employeeId,moduleVersionId:item.moduleVersionId},{state:item.state,moduleVersionId:item.moduleVersionId,moduleVersion:item.moduleVersion,moduleTitle:item.moduleTitle,assignedAt:item.assignedAt.toISOString()});
       for(const assessment of item.assessments)addLearning("TRAINING_ASSESSMENT",assessment.id,`${item.moduleTitle}: assessment`,assessment.outcome,assessment.occurredAt,{assignmentId:item.assignmentId,employeeId:item.employeeId,moduleVersionId:item.moduleVersionId},{outcome:assessment.outcome,occurredAt:assessment.occurredAt.toISOString()});
       for(const observation of item.effectiveness)addLearning("TRAINING_EFFECTIVENESS",observation.id,`${item.moduleTitle}: effectiveness observation`,"RECORDED",observation.date,{assignmentId:item.assignmentId,employeeId:item.employeeId,moduleVersionId:item.moduleVersionId},{date:observation.date,observation:observation.observation});
      }
     }catch(error){if(error instanceof ForbiddenException||error instanceof NotFoundException)unavailable.push("Training evidence is unavailable for the current authorized audience.");else throw error;}
    }else unavailable.push("Training evidence source is unavailable.");
-   if(this.library){
+   if(libraryAvailable){
     try{
-     for(const item of await this.library.reportEvidence(actor,input.from,input.to))for(const version of item.versions){
+     for(const item of await this.library!.reportEvidence(actor,input.from,input.to))for(const version of item.versions){
       if(version.publishedAt)addLearning("LIBRARY_SOP_PUBLICATION",version.publicationId,`${item.title}: published SOP`,"PUBLISHED",version.publishedAt,{recordId:item.recordId,versionId:version.versionId},{version:version.version,publishedAt:version.publishedAt.toISOString()});
       if(version.acknowledgementId&&version.employeeId&&version.acknowledgedByAccountId===actor.accountId&&version.acknowledgedAt)addLearning("LIBRARY_SOP_ACKNOWLEDGEMENT",version.acknowledgementId,`${item.title}: SOP acknowledgement`,"ACKNOWLEDGED",version.acknowledgedAt,{recordId:item.recordId,versionId:version.versionId,employeeId:version.employeeId,actorAccountId:version.acknowledgedByAccountId},{acknowledgedAt:version.acknowledgedAt.toISOString()});
      }

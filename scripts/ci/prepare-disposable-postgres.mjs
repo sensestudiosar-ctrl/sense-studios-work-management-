@@ -165,7 +165,7 @@ try {
     NODE_ENV: "test",
     S27_E2E_ENABLED: "1",
     S27_TEST_ENV_FILE: `.env.s27-tools/${envName}`,
-    S27_EXPECTED_MIGRATIONS: "115",
+    S27_EXPECTED_MIGRATIONS: "116",
     MIGRATION_DATABASE_URL: databaseUrl(mainDatabase, mainPort, adminUser, adminPassword),
     S16_ADMIN_DATABASE_URL: generated.S16_DATABASE_URL,
     API_TEST_WORKERS: "2",
@@ -203,9 +203,9 @@ try {
     provider: "github-actions-disposable-postgres",
     runId,
     suffix,
-    targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 115 })),
+    targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 116 })),
     e2eCompatibilityAlias: `The GitHub-only loopback port ${mainCompatibilityPort} maps to this run's disposable main server listening on ${mainPort}; DATABASE_URL uses that alias for the existing E2E target contract. Other suite URLs use their guard-approved host ports; S14 uses ${s14Port}.`,
-    runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} CREATE on schema public for its injected-trigger test.`,
+    runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} USAGE, CREATE on schema public and TRIGGER on audit_events for its injected-function/trigger tests.`,
     identityChecks: "Each server and database name was checked before fixture creation; accepted local databases are not referenced."
   };
   await writeFile(resolve(toolsDir, `ci-fixtures-${suffix}.json`), `${JSON.stringify(manifest, null, 2)}\n`, { flag: "wx", mode: 0o600 });
@@ -229,7 +229,7 @@ try {
   const mainClient = await connectVerified(databaseUrl(mainDatabase, mainPort, adminUser, adminPassword), mainDatabase, mainPort);
   try {
       const migrations = await mainClient.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-      if (migrations.rows[0]?.count !== 115 || migrations.rows[0]?.incomplete !== 0) throw new Error("The CI fixture template is not at migration 115 with a clean migration ledger.");
+      if (migrations.rows[0]?.count !== 116 || migrations.rows[0]?.incomplete !== 0) throw new Error("The CI fixture template is not at migration 116 with a clean migration ledger.");
   } finally { await mainClient.end(); }
 
   const admin = await connectVerified(databaseUrl("postgres", mainPort, adminUser, adminPassword), "postgres", mainPort);
@@ -243,8 +243,9 @@ try {
         const s22 = await connectVerified(databaseUrl(database, mainPort, adminUser, adminPassword), database, mainPort);
         try {
           await s22.query(`GRANT USAGE, CREATE ON SCHEMA public TO ${quoteRole(runtimeUser)}`);
-          const privileges = (await s22.query("SELECT has_schema_privilege($1, 'public', 'USAGE') AS can_use, has_schema_privilege($1, 'public', 'CREATE') AS can_create", [runtimeUser])).rows[0];
-          if (!privileges?.can_use || !privileges?.can_create) throw new Error("The isolated S22 runtime role lacks its required test-schema privileges.");
+          await s22.query(`GRANT TRIGGER ON TABLE audit_events TO ${quoteRole(runtimeUser)}`);
+          const privileges = (await s22.query("SELECT has_schema_privilege($1, 'public', 'USAGE') AS can_use, has_schema_privilege($1, 'public', 'CREATE') AS can_create, has_table_privilege($1, 'audit_events', 'TRIGGER') AS can_create_trigger", [runtimeUser])).rows[0];
+          if (!privileges?.can_use || !privileges?.can_create || !privileges?.can_create_trigger) throw new Error("The isolated S22 runtime role lacks its required test-only privileges.");
         }
         finally { await s22.end(); }
       }
@@ -254,7 +255,7 @@ try {
   const s14Client = await connectVerified(databaseUrl(s14Database, s14Port, adminUser, adminPassword), s14Database, s14Port);
   try {
     const migrations = await s14Client.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-    if (migrations.rows[0]?.count !== 115 || migrations.rows[0]?.incomplete !== 0) throw new Error("The isolated S14 fixture is not at migration 115 with a clean ledger.");
+    if (migrations.rows[0]?.count !== 116 || migrations.rows[0]?.incomplete !== 0) throw new Error("The isolated S14 fixture is not at migration 116 with a clean ledger.");
   } finally { await s14Client.end(); }
 
   for (const [database, target] of databaseNames) {
@@ -263,7 +264,7 @@ try {
     const targetClient = await connectVerified(databaseUrl(database, target.serverPort, adminUser, adminPassword), database, target.serverPort);
     try {
       const migrations = await targetClient.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-      if (migrations.rows[0]?.count !== 115 || migrations.rows[0]?.incomplete !== 0) throw new Error(`CI target ${target.key} is not at migration 115 with a clean migration ledger.`);
+      if (migrations.rows[0]?.count !== 116 || migrations.rows[0]?.incomplete !== 0) throw new Error(`CI target ${target.key} is not at migration 116 with a clean migration ledger.`);
     } finally { await targetClient.end(); }
   }
 
@@ -273,9 +274,9 @@ try {
   }
   await appendFile(process.env.GITHUB_ENV, `${Object.entries(environment).map(([key, value]) => `${key}=${value}`).join("\n")}\nCI_REPORT_DIR=${reportDir}\n`, { mode: 0o600 });
   if (process.env.GITHUB_STEP_SUMMARY) {
-    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 115 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role CREATE on schema public for its injected-trigger test.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
+    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 116 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role USAGE, CREATE on schema public and TRIGGER on audit_events for its injected-function/trigger tests.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
   }
-  process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 115 on loopback servers ${mainPort} (main) and ${s14Port} (S14), with the main compatibility alias on ${mainCompatibilityPort}. CI credentials were generated for this run and were not printed.\n`);
+  process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 116 on loopback servers ${mainPort} (main) and ${s14Port} (S14), with the main compatibility alias on ${mainCompatibilityPort}. CI credentials were generated for this run and were not printed.\n`);
 } catch (error) {
   for (const name of started) spawnSync("docker", ["rm", "--force", name], { cwd: workspace, stdio: "ignore" });
   throw error;
