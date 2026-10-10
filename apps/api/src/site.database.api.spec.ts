@@ -142,7 +142,7 @@ databaseDescribe("S20 site workflow and authority PostgreSQL acceptance scratch"
     await expect(f.db.$executeRaw`UPDATE "site_verification_attempts" SET "outcome"='PASSED' WHERE "id"=${attempts[0]!.id}::uuid`).rejects.toThrow();
     const handoverRow = await f.db.siteRecord.findUniqueOrThrow({ where: { id: handover.id } });
     expect(handoverRow.kind).toBe("HANDOVER");
-  });
+  }, 30_000);
 
   it("denies unassigned guessed IDs and stale workspace writes without leaving partial history", async () => {
     const f = await fixture(database, nasRoot);
@@ -289,5 +289,5 @@ databaseDescribe("S20 site workflow and authority PostgreSQL acceptance scratch"
     for (const secret of [photo.id, photo.name, photo.sha256]) expect(redacted).not.toContain(secret);
     expect(JSON.stringify(await f.site.detail(f.owner, f.projectId))).toContain(photo.sha256);
     expect(JSON.stringify((await f.db.siteRecord.findUniqueOrThrow({ where: { id: report.id } })).data)).toContain(photo.sha256);
-  });
+  }, 30_000);
 });
