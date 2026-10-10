@@ -198,6 +198,7 @@ try {
 
   const envPath = resolve(toolsDir, envName);
   await writeFile(envPath, `${Object.entries(environment).map(([key, value]) => `${key}=${value}`).join("\n")}\n`, { flag: "wx", mode: 0o600 });
+  await writeFile(resolve(toolsDir, "run-aut-batch-s27.mjs"), 'await import("../scripts/ci/run-aut-batch-s27.mjs");\n', { mode: 0o600 });
   const manifest = {
     version: 1,
     provider: "github-actions-disposable-postgres",
