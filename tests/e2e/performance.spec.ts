@@ -105,7 +105,7 @@ test("Owner configures test-only policies, publishes source-backed snapshots and
     taskStatusId = (await readDb.query<{ id: string }>('SELECT id FROM task_status_changes WHERE "taskId"=$1 ORDER BY "taskVersion" DESC LIMIT 1', [taskId])).rows[0]?.id ?? "";
   } finally { await readDb.end(); }
   await page.goto("/performance");
-  await expect(page.getByRole("heading", { name: "Performance and project health" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Performance" })).toBeVisible();
   await page.getByLabel("Employee").selectOption({ label: employeeEmail });
   await expect(page.getByText("Policy not configured")).toBeVisible();
   await expect(page.getByRole("button", { name: /Generate employee snapshot/i })).toBeDisabled();

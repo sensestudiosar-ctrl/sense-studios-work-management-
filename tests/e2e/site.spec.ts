@@ -251,7 +251,7 @@ test("site reports, independent snag repair and handover persist across refresh"
 
     await context.clearCookies();
     await context.addCookies([{ name: "sense_sid", value: ownerAuth.secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
-    const dashboardReady = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard" && response.request().method() === "GET", { timeout: 30_000 });
+    const dashboardReady = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard/sources/site" && response.request().method() === "GET", { timeout: 30_000 });
     await page.goto("/dashboard");
     expect((await dashboardReady).status()).toBe(200);
     await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 30_000 });

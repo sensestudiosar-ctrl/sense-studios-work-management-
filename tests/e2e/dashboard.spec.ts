@@ -12,7 +12,7 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
   page.setDefaultTimeout(12_000);
   const openDashboard = async (reload = false): Promise<void> => {
     const startedAt = Date.now();
-    const ready = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard" && response.request().method() === "GET", { timeout: 60_000 });
+    const ready = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard/sources/tasks" && response.request().method() === "GET", { timeout: 60_000 });
     if (reload) await page.reload(); else await page.goto("/dashboard");
     expect((await ready).status()).toBe(200);
     await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 60_000 });
