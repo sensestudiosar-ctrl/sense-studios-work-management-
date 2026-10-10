@@ -162,6 +162,8 @@ test("Owner configures test-only policies, publishes source-backed snapshots and
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
   await page.getByRole("tab", { name: "Design / Turnkey health" }).click();
+  await page.getByRole("button", { name: new RegExp(`S23 performance ${suffix}`) }).click();
+  await expect(page.getByRole("heading", { name: `S23 performance ${suffix}` })).toBeVisible();
   await editor.getByLabel("Policy family").selectOption("DESIGN");
   const contextResponse = await page.request.get("/api/v1/performance/context");
   const currentContext = await contextResponse.json() as { policies: Array<{ state: string; data: { family?: string; groupKey?: string; effectiveFrom?: string; components?: Array<{ metric: string; weight: number; min: number; max: number; direction: string; required: boolean }> } }> };
@@ -193,7 +195,6 @@ test("Owner configures test-only policies, publishes source-backed snapshots and
   await expect(designPolicyCard).toContainText("APPROVED");
   }
   await expect(page.getByRole("button", { name: "Generate project health snapshot" })).toBeEnabled();
-  await page.getByLabel("Project", { exact: true }).selectOption(projectId);
   await page.getByLabel("From", { exact: true }).first().fill(today);
   await page.getByLabel("To", { exact: true }).first().fill(today);
 

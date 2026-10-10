@@ -257,13 +257,13 @@ test("site reports, independent snag repair and handover persist across refresh"
     await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 30_000 });
     const siteDashboard = page.locator(".dashboard-panel").filter({ has: page.getByRole("heading", { name: `Site: ${projectTitle}` }) });
     await expect(siteDashboard).toBeVisible();
-    for (const family of ["today:", "tomorrow:", "packages:", "manpower:", "snags:", "reports:", "handovers:", "materials:"]) await expect(siteDashboard).toContainText(family);
-    for (const fact of ["Marked and cleaned the slab area", "Begin steel fixing", "Masonry", "100", "Uneven tile edge", "north-slab.jpg", "Two cement pallets", "Current package complete, passing quality, and closed snag verified"]) await expect(siteDashboard).toContainText(fact);
+    for (const summary of ["Prepare north slab", "Daily report ·", "Uneven tile edge", "Site handover ·"]) await expect(siteDashboard).toContainText(summary);
+    for (const fact of ["COMPLETED", "100", "Marked and cleaned the slab area", "CLOSED", "Tile edge at the north wall needs correction", "Current package complete, passing quality, and closed snag verified"]) await expect(siteDashboard).toContainText(fact);
     const s24ScreenshotDirectory = resolve(".env.s24-tools", "screenshots");
     mkdirSync(s24ScreenshotDirectory, { recursive: true });
     await siteDashboard.scrollIntoViewIfNeeded();
     await page.screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-viewport-${testInfo.project.name}.png`), fullPage: false });
-    for (const [name, fact] of [["today", "Marked and cleaned the slab area"], ["tomorrow", "Begin steel fixing"], ["photo", "north-slab.jpg"], ["materials", "Two cement pallets"]] as const) {
+    for (const [name, fact] of [["package", "Prepare north slab"], ["report", "Marked and cleaned the slab area"], ["snag", "Uneven tile edge"], ["handover", "Current package complete, passing quality, and closed snag verified"]] as const) {
       await siteDashboard.getByText(fact, { exact: true }).first().screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-${name}-${testInfo.project.name}.png`) });
     }
   } finally {
