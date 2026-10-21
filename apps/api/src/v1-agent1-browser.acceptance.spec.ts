@@ -320,6 +320,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
       await f.workflow.assignment(f.actor, projectId, { employeeId: person.employee.id, expectedVersion: current.version, reason: "Explicit V10 account project assignment" });
     }
     const identities = [{ key: "owner", secret: f.ownerSession.secret }, { key: "leader", secret: leader.secret }, { key: "employee", secret: f.worker.secret }, { key: "site", secret: site.secret }, { key: "reviewer", secret: f.reviewer.secret }, { key: "cross-branch", secret: cross.secret }];
+    const contextFailures: Array<{ context: string; message: string }> = [];
     for (const identity of identities) {
       const session = await context(identity.secret, viewports[0]!);
       const page = await session.newPage();
@@ -404,9 +405,10 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
       } catch (error) {
         await page.screenshot({ path: resolve(base, `browser/v10-${identity.key}-failure.png`), fullPage: true }).catch(() => undefined);
         writeFileSync(resolve(base, `browser/v10-${identity.key}-failure.json`), JSON.stringify({ context: identity.key, message: error instanceof Error ? error.message : "Unknown V10 acceptance failure" }, null, 2));
-        throw error;
+        contextFailures.push({ context: identity.key, message: error instanceof Error ? error.message : "Unknown V10 acceptance failure" });
       } finally { await session.close(); }
     }
+    expect(contextFailures).toEqual([]);
     expect(serverErrors).toEqual([]);
     expect(diagnostics.filter(row => row.event === "pageerror")).toEqual([]);
   }, 240000);
