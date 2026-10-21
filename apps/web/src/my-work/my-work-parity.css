@@ -1,0 +1,244 @@
+/* Sense task colour system — Monday-style immediate recognition with a unique
+   semantic meaning per state. Final Owner reference: the supplied
+   Sense_Studios_My_Work_Final_Demo.html prototype.
+
+   SCOPED AND ADDITIVE. Everything here lives under
+   `.task-workspace-personal` (the My Work route's workspace) and under the
+   `.my-work-demo-row` row renderer. It does not restyle the existing
+   `.task-queue-row` markup used by the Tasks route, and it does not change
+   any canonical phase, date, permission or command. Presentation only.
+
+   Colour source (verbatim from the prototype):
+     --state-todo:#758496; --state-progress:#2384be; --state-review:#e3a52d;
+     --state-waiting:#7d5cb9; --state-correction:#c84955; --state-done:#2b916a;
+     --priority-urgent:#b72f42; --priority-high:#d17623;
+     --priority-normal:#4a76a9; --priority-low:#647d76;
+*/
+
+.task-workspace-personal {
+  --state-todo: #758496;
+  --state-progress: #2384be;
+  --state-review: #e3a52d;
+  --state-waiting: #7d5cb9;
+  --state-correction: #c84955;
+  --state-done: #2b916a;
+  --priority-urgent: #b72f42;
+  --priority-high: #d17623;
+  --priority-normal: #4a76a9;
+  --priority-low: #647d76;
+
+  /* Prototype row geometry: 65px comfortable / 50px compact. */
+  --my-work-row: 65px;
+  --my-work-rail: 5px;
+}
+
+.task-workspace-personal.is-compact {
+  --my-work-row: 50px;
+}
+
+/* Preserve the prototype fills. Small labels need dark ink where white
+   falls below 4.5:1; waiting/correction retain their readable white ink. */
+.task-workspace-personal .my-work-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 27px;
+  padding: 6px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  box-shadow: inset 0 -1px 0 #0000000c;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.task-workspace-personal .my-work-status::before {
+  content: "";
+  display: inline-block;
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: .88;
+}
+.task-workspace-personal .my-work-status.my-work-status-todo { background: var(--state-todo); color: #0b100d; }
+.task-workspace-personal .my-work-status.my-work-status-progress { background: var(--state-progress); color: #0b100d; }
+.task-workspace-personal .my-work-status.my-work-status-review { background: var(--state-review); color: #2e2517; }
+.task-workspace-personal .my-work-status.my-work-status-waiting { background: var(--state-waiting); color: #fff; }
+.task-workspace-personal .my-work-status.my-work-status-correction { background: var(--state-correction); color: #fff; }
+.task-workspace-personal .my-work-status.my-work-status-done { background: var(--state-done); color: #0b100d; }
+
+.task-workspace-personal :is(.my-work-review-inbox-link, .my-work-decisions-link) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-right: .75rem;
+  padding-block: .4rem;
+}
+
+/* ---- Row: coloured left rail + whole-row tint, both driven by one
+   `--state-rail` variable per status. ---- */
+.task-workspace-personal .my-work-demo-row[role="listitem"] {
+  --state-rail: var(--state-todo);
+  --row-tint: #f8f9fb;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 2.35fr) minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.15fr) minmax(0, .8fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: var(--my-work-row);
+  padding: 12px 19px 12px 29px;
+  border: 0;
+  border-top: 1px solid #f0f1ee;
+  border-left: var(--my-work-rail) solid var(--state-rail);
+  background: var(--row-tint);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  outline: 0;
+}
+.task-workspace-personal .my-work-demo-row.state-todo { --state-rail: var(--state-todo); --row-tint: #f8f9fb; }
+.task-workspace-personal .my-work-demo-row.state-progress { --state-rail: var(--state-progress); --row-tint: #f4f9fd; }
+.task-workspace-personal .my-work-demo-row.state-review { --state-rail: var(--state-review); --row-tint: #fffbf2; }
+.task-workspace-personal .my-work-demo-row.state-waiting { --state-rail: var(--state-waiting); --row-tint: #f9f6fe; }
+.task-workspace-personal .my-work-demo-row.state-correction { --state-rail: var(--state-correction); --row-tint: #fff6f6; }
+.task-workspace-personal .my-work-demo-row.state-done { --state-rail: var(--state-done); --row-tint: #f5fbf7; }
+
+.task-workspace-personal .my-work-demo-row[role="listitem"]:hover { background: #edf5f2; box-shadow: inset 0 0 0 1px #d8e6df; }
+.task-workspace-personal .my-work-demo-row[role="listitem"]:focus-visible { outline: 2px solid #7da393; outline-offset: -2px; }
+.task-workspace-personal .my-work-demo-row[role="listitem"].is-selected { background: #e6f1ec; box-shadow: inset 0 0 0 2px #9bbdaf; border-left-color: var(--state-rail); }
+
+/* The named row button covers the row without consuming a content column.
+   Independent pin/quick actions stay above it and retain their own events. */
+.task-workspace-personal .my-work-demo-row > .my-work-row-main {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+}
+.task-workspace-personal .my-work-row-main:focus-visible { outline: 3px solid #244f43; outline-offset: -3px; }
+.task-workspace-personal .my-work-demo-row > :is(.my-work-row-task, .my-work-row-cell, .my-work-status-cell, .my-work-row-action) { position: relative; min-width: 0; pointer-events: none; }
+.task-workspace-personal .my-work-demo-row :is(.my-work-pin, .my-work-row-action button) { pointer-events: auto; min-height: 44px; min-width: 44px; }
+
+/* ---- Row cells ---- */
+.task-workspace-personal .my-work-row-task { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.task-workspace-personal .my-work-row-text { min-width: 0; flex: 1; }
+.task-workspace-personal .my-work-titleline { display: flex; min-width: 0; gap: 8px; align-items: center; }
+.task-workspace-personal .my-work-titleline strong { min-width: 0; flex: 0 1 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; font-weight: 680; }
+.task-workspace-personal .my-work-row-text small { display: block; color: #8a988e; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 10px; margin-top: 5px; line-height: 1.4; }
+.task-workspace-personal .my-work-row-cell { font-size: 11px; color: #576d5f; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task-workspace-personal .my-work-row-cell small { display: block; color: #9baa9d; font-size: 10px; margin-top: 4px; }
+.task-workspace-personal .my-work-status-cell { display: flex; justify-content: center; min-height: 33px; width: 100%; max-width: 125px; text-align: center; }
+.task-workspace-personal .my-work-status-cell .my-work-status { justify-content: center; width: 100%; box-shadow: inset 0 -2px 0 #0000000c; }
+.task-workspace-personal .my-work-due.overdue { display: inline-flex; width: max-content; align-items: center; background: #fce7e8; border: 1px solid #f1c6ca; color: #ac3442; border-radius: 5px; padding: 6px 7px; white-space: nowrap; font-weight: 800; }
+
+/* ---- Priority pills ---- */
+.task-workspace-personal .my-work-priority {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  line-height: 1.35;
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.task-workspace-personal .my-work-priority.pr-Urgent { background: #fbe9ec; color: #ac253a; border-color: #f3cad2; }
+.task-workspace-personal .my-work-priority.pr-High { background: #fff0dc; color: #a75810; border-color: #f5d8ac; }
+.task-workspace-personal .my-work-priority.pr-Normal { background: #eaf2fd; color: #365f95; border-color: #d4e4f8; }
+.task-workspace-personal .my-work-priority.pr-Low { background: #edf2ef; color: #5c766c; border-color: #d8e5dd; }
+
+/* ---- Pin ---- */
+.task-workspace-personal .my-work-pin { border: 0; background: transparent; color: #bc9c60; font-size: 15px; padding: 2px; line-height: 1; }
+.task-workspace-personal .my-work-pin[aria-pressed="false"] { color: #c5cfca; }
+
+/* ---- Next-action button in the last column ---- */
+.task-workspace-personal .my-work-row-action { display: flex; justify-content: flex-end; }
+.task-workspace-personal .my-work-row-action button { font-size: 10px; white-space: nowrap; border-radius: 7px; border: 1px solid #d8e5dc; background: #f4f8f5; color: #35624d; padding: 7px 8px; font-weight: 600; min-height: 29px; }
+.task-workspace-personal .my-work-row-action button:hover { background: #e7f1e9; }
+
+/* ---- Group header ---- */
+.task-workspace-personal .my-work-group { border-bottom: 1px solid #eef0ec; }
+.task-workspace-personal .my-work-group-head { display: flex; align-items: center; gap: 8px; width: 100%; background: #fff; border: 0; text-align: left; padding: 13px 18px; color: #445a4d; font-weight: 750; font-size: 12px; min-height: 44px; }
+.task-workspace-personal .my-work-group-head:hover { background: #f8faf7; }
+.task-workspace-personal .my-work-group-count { display: inline-grid; place-items: center; min-width: 22px; height: 19px; background: #eef2ed; color: #718175; padding: 0 6px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+.task-workspace-personal .my-work-chev { display: inline-block; font-size: 12px; width: 13px; transition: transform .2s; }
+.task-workspace-personal .my-work-chev.is-collapsed { transform: rotate(-90deg); }
+.task-workspace-personal .my-work-tablehead { display: grid; grid-template-columns: minmax(0, 2.35fr) minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.15fr) minmax(0, .8fr) minmax(0, 1fr); gap: 12px; padding: 0 19px 9px 34px; font-size: 10px; letter-spacing: .6px; color: #94a296; text-transform: uppercase; font-weight: 700; }
+.task-workspace-personal .my-work-showmore { display: block; width: 100%; padding: 11px 18px 14px 28px; background: #fff; color: #40775a; font-size: 11px; border: 0; font-weight: 650; text-align: left; min-height: 44px; }
+.task-workspace-personal .my-work-showmore:hover { background: #f8faf7; }
+
+/* ---- Metric cards: coloured left border + soft gradient ---- */
+.task-workspace-personal .my-work-metric { border-left: 4px solid #d8e3dd; box-shadow: 0 3px 12px #294c3610; }
+.task-workspace-personal .my-work-metric.metric-action { border-left-color: var(--state-progress); background: linear-gradient(115deg, #f0f8fe, #fff 56%); }
+.task-workspace-personal .my-work-metric.metric-overdue,
+.task-workspace-personal .my-work-metric.metric-snags { border-left-color: var(--state-correction); background: linear-gradient(115deg, #fff1f2, #fff 56%); }
+.task-workspace-personal .my-work-metric.metric-reviews { border-left-color: var(--state-review); background: linear-gradient(115deg, #fff7e5, #fff 56%); }
+
+/* ---- Mobile row: status + due chips inside the row, desktop cells hidden ---- */
+.task-workspace-personal .my-work-mobile-state { display: none; gap: 7px; align-items: center; flex-wrap: wrap; margin-top: 9px; }
+.task-workspace-personal .my-work-mobile-due { font-size: 10px; color: #596f64; background: #eaf0eb; padding: 6px 8px; border-radius: 5px; font-weight: 750; }
+.task-workspace-personal .my-work-mobile-due.overdue { background: #fce4e8; color: #af3044; border: 1px solid #f1bfc8; }
+
+/* ---- Status legend (clickable status filter) ---- */
+.task-workspace-personal .my-work-legend { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 0 19px 13px; }
+.task-workspace-personal .my-work-legend button { display: inline-flex; align-items: center; gap: 6px; min-height: 29px; padding: 5px 8px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #65746b; font-size: 10px; font-weight: 650; }
+.task-workspace-personal .my-work-legend button i { width: 11px; height: 11px; flex-shrink: 0; border-radius: 3px; background: var(--task-state-rail, #758496); }
+.task-workspace-personal .my-work-legend button[aria-pressed="true"] { border-color: #b9d2c2; background: #f1f7f3; color: #235e47; }
+
+/* ---- Metric focus panel ---- */
+.task-workspace-personal .my-work-metric-focus-panel { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 12px; padding: 13px 15px; border: 1px solid #dae8dc; border-radius: 12px; background: #f4f9f5; }
+.task-workspace-personal .my-work-metric-focus-panel .focus-symbol { display: grid; place-items: center; flex: 0 0 38px; width: 38px; height: 38px; border-radius: 10px; background: #e7f1ea; color: #35654f; font-size: 19px; }
+.task-workspace-personal .my-work-metric-focus-panel .focus-copy { min-width: 0; }
+.task-workspace-personal .my-work-metric-focus-panel b { display: block; font-size: 12px; margin-bottom: 4px; }
+.task-workspace-personal .my-work-metric-focus-panel p { margin: 0; font-size: 11px; line-height: 1.55; color: #647367; }
+.task-workspace-personal .my-work-metric-focus-panel .focus-clear { min-height: 29px; margin-left: auto; font-size: 10px; }
+
+/* ---- Empty state ---- */
+.task-workspace-personal .my-work-empty { padding: 48px 24px; text-align: center; color: #77867b; }
+.task-workspace-personal .my-work-empty strong { display: block; color: var(--task-ink); font-size: 15px; margin: 13px 0 5px; }
+.task-workspace-personal .my-work-empty p { font-size: 12px; max-width: 400px; margin: 0 auto 17px; line-height: 1.5; }
+
+/* ---- Responsive: tablet hides the project column, mobile becomes cards ---- */
+@media (max-width: 1100px) {
+  .task-workspace-personal .my-work-demo-row[role="listitem"],
+  .task-workspace-personal .my-work-tablehead { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, .85fr) minmax(0, 1.1fr) minmax(0, .8fr) minmax(0, 1fr); }
+  .task-workspace-personal .my-work-demo-row > .my-work-row-project,
+  .task-workspace-personal .my-work-tablehead > :nth-child(2) { display: none; }
+}
+@media (max-width: 700px) {
+  .task-workspace-personal .my-work-demo-row[role="listitem"] {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    min-height: 92px;
+    padding: 13px 11px 12px 20px;
+  }
+  .task-workspace-personal .my-work-row-task { flex: 1; }
+  .task-workspace-personal .my-work-titleline strong { white-space: normal; line-height: 1.3; }
+  .task-workspace-personal .my-work-row-text small { white-space: normal; line-height: 1.4; }
+  .task-workspace-personal .my-work-demo-row > .my-work-row-cell,
+  .task-workspace-personal .my-work-demo-row > .my-work-status-cell,
+  .task-workspace-personal .my-work-demo-row > .my-work-priority-cell,
+  .task-workspace-personal .my-work-demo-row > .my-work-row-action,
+  .task-workspace-personal .my-work-tablehead { display: none; }
+  .task-workspace-personal .my-work-mobile-state { display: flex; }
+  .task-workspace-personal .my-work-demo-row > .my-work-row-action { display: flex; align-self: center; }
+  .task-workspace-personal .my-work-demo-row > .my-work-row-action button { font-size: 10px; padding: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .task-workspace-personal .my-work-chev,
+  .task-workspace-personal .my-work-demo-row { transition: none; }
+}

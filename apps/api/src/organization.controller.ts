@@ -1,5 +1,6 @@
-import { BadRequestException, Body, Controller, ForbiddenException, Get, Headers, Inject, Param, Post, Put, Query, Req } from "@nestjs/common";
-import type { Request } from "express";
+import { BadRequestException, Body, Controller, ForbiddenException, Get, Header, Headers, Inject, Param, Post, Put, Query, Req, Res } from "@nestjs/common";
+import type { Request, Response } from "express";
+import { PERMISSION_CATALOGUE, isKnownPermissionKey } from "@sense/contracts";
 import { z } from "zod";
 import { RUNTIME_CONFIG, type RuntimeConfig } from "./config.js";
 import { IdentityService } from "./identity.service.js";
@@ -12,6 +13,13 @@ const organizationBody = z.object({ name, reason }).strict();
 const branchBody = z.object({ organizationId: id, name: z.string().trim().min(2).max(120), reason }).strict();
 const teamBody = z.object({ organizationId: id, branchId: id, name: z.string().trim().min(2).max(120), reason }).strict();
 const roleBody = z.object({ organizationId: id, name: z.string().trim().min(2).max(120), description: z.string().trim().max(1000).optional(), reason }).strict();
+const roleCreationPresentation = z.enum(["EMPLOYEE", "LEADER", "SITE"]).nullable();
+const roleCreationPresentationBody = z.object({
+  organizationId: id,
+  creationPresentation: roleCreationPresentation,
+  expectedCreationPresentation: roleCreationPresentation,
+  reason
+}).strict();
 const employeeBody = z.object({
   organizationId: id,
   accountId: id,
@@ -33,7 +41,7 @@ const membershipBody = z.object({
 const employeeJobRolesBody = z.object({ organizationId: id, jobRoleIds: z.array(id).max(16), reason }).strict();
 const rolePermissionBody = z.object({
   organizationId: id,
-  permissionKey: z.string().trim().min(3).max(160),
+  permissionKey: z.string().trim().min(3).max(160).refine(isKnownPermissionKey, "Choose a supported permission from the catalogue."),
   scopeKind: z.enum(["ORGANIZATION", "BRANCH", "TEAM", "SELF"]),
   branchId: id.optional(),
   teamId: id.optional(),
@@ -93,6 +101,7 @@ export class OrganizationController {
   }
 
   @Get()
+  @Header("Cache-Control", "no-store")
   async getOrganization(@Req() request: Request) {
     await this.owner(request);
     return this.organization.getOrganization();
@@ -106,6 +115,7 @@ export class OrganizationController {
   }
 
   @Get("branches")
+  @Header("Cache-Control", "no-store")
   async listBranches(@Req() request: Request, @Query("organizationId") organizationId?: string) {
     await this.owner(request);
     if (!id.safeParse(organizationId).success) throw new BadRequestException("Invalid organization");
@@ -120,6 +130,7 @@ export class OrganizationController {
   }
 
   @Get("teams")
+  @Header("Cache-Control", "no-store")
   async listTeams(@Req() request: Request, @Query("organizationId") organizationId?: string, @Query("branchId") branchId?: string) {
     await this.owner(request);
     if (!id.safeParse(organizationId).success || (branchId && !id.safeParse(branchId).success)) throw new BadRequestException("Invalid organization or branch");
@@ -146,10 +157,19 @@ export class OrganizationController {
   }
 
   @Get("roles")
+  @Header("Cache-Control", "no-store")
   async listJobRoles(@Req() request: Request, @Query("organizationId") organizationId?: string) {
     await this.owner(request);
     if (!id.safeParse(organizationId).success) throw new BadRequestException("Invalid organization");
     return this.organization.listJobRoles(organizationId!);
+  }
+
+  @Get("permission-catalogue")
+  @Header("Cache-Control", "no-store")
+  async permissionCatalogue(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    await this.owner(request);
+    response.setHeader("Cache-Control", "no-store");
+    return { version: 1, groups: PERMISSION_CATALOGUE };
   }
 
   @Post("roles")
@@ -159,7 +179,16 @@ export class OrganizationController {
     return this.organization.createJobRole(active.row.accountId, input.organizationId, input.name, input.reason, input.description);
   }
 
+  @Put("roles/:roleId/creation-presentation")
+  async setJobRoleCreationPresentation(@Req() request: Request, @Param("roleId") roleId: string, @Headers("x-csrf-token") csrfToken: string | undefined, @Body() body: unknown) {
+    const active = await this.mutation(request, csrfToken);
+    if (!id.safeParse(roleId).success) throw new BadRequestException("Invalid job role");
+    const input = parse(roleCreationPresentationBody, body);
+    return this.organization.setJobRoleCreationPresentation(active.row.accountId, roleId, input);
+  }
+
   @Get("employees")
+  @Header("Cache-Control", "no-store")
   async listEmployees(@Req() request: Request, @Query("organizationId") organizationId?: string) {
     await this.owner(request);
     if (!id.safeParse(organizationId).success) throw new BadRequestException("Invalid organization");
@@ -257,10 +286,22 @@ export class OrganizationController {
   }
 
   @Get("team/employees")
+  @Header("Cache-Control", "no-store")
   async listManagedEmployees(@Req() request: Request) {
     const active = await this.identity.session(this.cookie(request));
     if (active.row.account.kind !== "STAFF") throw new ForbiddenException("Staff access is required");
     return this.organization.listManagedEmployees(active.row.accountId);
+  }
+
+  @Get("self")
+  @Header("Cache-Control", "no-store")
+  async myEmployeeProfile(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    response.setHeader("Cache-Control", "no-store");
+    const active = await this.identity.session(this.cookie(request));
+    if (!["OWNER", "STAFF"].includes(active.row.account.kind) || active.row.account.kind === "OWNER" && !await this.identity.ownerReady(active.row.accountId)) {
+      throw new ForbiddenException("Current internal identity required");
+    }
+    return this.organization.myEmployeeProfile(active.row.accountId);
   }
 
   @Put("team/employees/:id/reporting")

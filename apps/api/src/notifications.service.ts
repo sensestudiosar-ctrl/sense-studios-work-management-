@@ -87,6 +87,27 @@ export class NotificationsService {
     return { read: true };
   }
 
+  /**
+   * Unread in-app count for the recipient's own account only. Scoped to the
+   * same predicate as `listInbox` — delivered in-app rows with `readAt` unset —
+   * so the badge never disagrees with the inbox it opens. Critical and
+   * mandatory rows are counted separately rather than weighted into the total,
+   * because summing them into one number would hide mandatory obligations.
+   */
+  async unreadSummary(accountId: string) {
+    const where: Prisma.NotificationWhereInput = {
+      recipientAccountId: accountId,
+      channel: NotificationChannel.IN_APP,
+      deliveryState: NotificationDeliveryState.DELIVERED,
+      readAt: null
+    };
+    const [unread, critical] = await Promise.all([
+      this.db.notification.count({ where }),
+      this.db.notification.count({ where: { ...where, critical: true } })
+    ]);
+    return { unread, critical };
+  }
+
   async getPreferences(accountId: string) {
     const [preferences, quietHours] = await Promise.all([
       this.db.notificationPreference.findMany({ where: { accountId }, orderBy: [{ category: "asc" }, { channel: "asc" }], select: { category: true, channel: true, enabled: true } }),

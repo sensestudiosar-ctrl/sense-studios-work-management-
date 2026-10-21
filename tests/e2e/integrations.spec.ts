@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { mkdir } from "node:fs/promises";
@@ -7,6 +8,7 @@ import { resolve } from "node:path";
 test.use({ trace: "off" });
 
 const fixtureUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const screenshotDirectory = resolve(process.env.S25_SCREENSHOT_DIR ?? ".env.s25-tools/screenshots");
 type FixtureDatabase = {
   connect(): Promise<void>;
@@ -24,7 +26,7 @@ test("S25 minimal calendar events, export and revocable subscription", async ({ 
     && ["56433", "57433"].includes(databaseUrl.port)
     && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname)
     || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && !["56433", "56434"].includes(databaseUrl.port))
     || (!/^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname) && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
@@ -46,6 +48,10 @@ test("S25 minimal calendar events, export and revocable subscription", async ({ 
   let ownerAccountId: string, organizationId: string, branchId: string;
 
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(61025001)");

@@ -16,6 +16,7 @@ import { RevisionService } from "./revision.service.js";
 import { ClientPortalScopeService } from "./client-portal-scope.service.js";
 import { ExternalPortalIdentityService, type ActiveExternalPortalSession } from "./external-portal-identity.service.js";
 import { ExternalPortalService } from "./external-portal.service.js";
+import { externalEvidence } from "./external-portal-policy.js";
 import { TurnkeyService } from "./turnkey.service.js";
 import { WorkforceService } from "./workforce.service.js";
 import { NotificationsService } from "./notifications.service.js";
@@ -24,6 +25,7 @@ import { NotificationWorker, OperationalRecipientPredicate, PersistedVerifiedAdd
 import { recordProjectEvent } from "./project-events.js";
 import type { BrevoEmailAdapter } from "./brevo-email.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 import { DOCUMENT_CHUNK_SIZE } from "./document-file-policy.js";
 
 const databaseUrl = process.env.S21_DATABASE_URL;
@@ -179,11 +181,15 @@ databaseDescribe("S21 external portal PostgreSQL/API acceptance", () => {
     const s21 = /^sense_s21_[a-z0-9_]*_test$/.test(dbName) && parsed.port === "56433";
     const s25 = process.env.S25_E2E_ENABLED === "1" && /^sense_s21_s25_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
     const s26 = process.env.S26_E2E_ENABLED === "1" && /^sense_s21_s26_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
-    const s27 = process.env.S27_E2E_ENABLED === "1" && /^sense_s21_s27_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    const s27Legacy = process.env.S27_E2E_ENABLED === "1" && /^sense_s21_s27_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    const s27Disposable = isS27DisposableTestTarget("S21_DATABASE_URL", databaseUrl);
+    const s27 = s27Legacy || s27Disposable;
     if ((!s21 && !s25 && !s26 && !s27) || !["127.0.0.1", "localhost"].includes(parsed.hostname)) throw new Error("External portal integration requires an isolated S21 or explicitly enabled exact S21/S25/S26/S27 loopback database");
     nasRoot = await mkdtemp(join(tmpdir(), "sense-s21-external-"));
     database = new DatabaseService({ ...config, databaseUrl, nasRoot });
     await database.check();
+    const actual = (await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`)[0]!;
+    if (s27Disposable && !matchesS27DisposableServer(databaseUrl, actual.name, actual.port)) throw new Error("S21 disposable server mismatch");
   });
   afterAll(async () => { await database?.onModuleDestroy(); });
 
@@ -671,14 +677,18 @@ databaseDescribe("S21 external portal PostgreSQL/API acceptance", () => {
     const f = await fixture(database, nasRoot);
     const before = await database.prisma.externalPortalRecord.count({ where: { projectId: f.projectId } });
     const session = await database.prisma.externalPortalSession.findUniqueOrThrow({ where: { id: f.consultantActor.sessionId } });
-    await database.prisma.externalPortalSession.update({ where: { id: session.id }, data: { expiresAt: new Date(Date.now() + 1_000) } });
-    await new Promise((resolve) => setTimeout(resolve, 1_100));
+    await database.prisma.$executeRaw`UPDATE external_portal_sessions SET "createdAt" = clock_timestamp() - interval '2 days', "expiresAt" = clock_timestamp() - interval '1 day' WHERE id = ${session.id}::uuid`;
     await expect(f.external.submit(f.consultantActor, f.projectId, { grantId: f.consultantGrant.id, kind: "COMMENT", title: "Expired session", body: "Must not be retained", revisionId: f.revisionId, reason: "Expired exact session" }, randomUUID())).rejects.toMatchObject({ status: 403 });
     expect(await database.prisma.externalPortalRecord.count({ where: { projectId: f.projectId } })).toBe(before);
     const grant = await database.prisma.externalPortalGrant.findUniqueOrThrow({ where: { id: f.consultantGrant.id } });
-    await f.external.changeGrant(f.owner, grant.id, { expectedVersion: grant.version, expiresAt: new Date(Date.now() + 1000).toISOString(), reason: "Set brief external access expiry" });
+    // Test the valid and expired states explicitly; a short wall-clock window races slow CI queries.
+    const [{ expiresAt }] = await database.prisma.$queryRaw<Array<{ expiresAt: Date }>>`SELECT clock_timestamp() + interval '1 day' AS "expiresAt"`;
+    await f.external.changeGrant(f.owner, grant.id, { expectedVersion: grant.version, expiresAt: expiresAt.toISOString(), reason: "Set future external access expiry" });
     expect(await database.prisma.$queryRaw<Array<{ usable: boolean }>>`SELECT s21_grant_usable(${grant.id}::uuid) AS usable`).toEqual([{ usable: true }]);
-    await new Promise((resolve) => setTimeout(resolve, 1_100));
+    await database.prisma.$transaction(async (tx) => {
+      const [expired] = await tx.$queryRaw<Array<{ version: number }>>`UPDATE external_portal_grants SET "expiresAt" = clock_timestamp() - interval '1 day', version = version + 1 WHERE id = ${grant.id}::uuid RETURNING version`;
+      await externalEvidence(tx, f.owner.accountId, "external_portal_grants", grant.id, expired.version, "Set expired grant fixture with retained evidence");
+    });
     expect(await database.prisma.$queryRaw<Array<{ usable: boolean }>>`SELECT s21_grant_usable(${grant.id}::uuid) AS usable`).toEqual([{ usable: false }]);
   });
 

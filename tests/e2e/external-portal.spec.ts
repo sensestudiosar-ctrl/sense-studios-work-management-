@@ -1,9 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 type FixtureDatabase = {
   connect(): Promise<void>;
   query<Row extends Record<string, unknown> = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<{ rows: Row[]; rowCount: number | null }>;
@@ -20,7 +22,7 @@ test("external consultant grant, OTP session, advisory upload and review, native
   const databaseUrl = new URL(process.env.DATABASE_URL!);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && ((["56433", "57433"].includes(databaseUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname)) || (databaseUrl.port === "57433" && /^\/sense_s21_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname)));
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && databaseUrl.port !== "56433") || (!/^\/sense_[a-z0-9_]*_test$/.test(databaseUrl.pathname) && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
     throw new Error("External portal browser acceptance requires a dedicated local S21 or explicitly enabled exact S25 _test database");
   }
@@ -45,6 +47,10 @@ test("external consultant grant, OTP session, advisory upload and review, native
   let ownerAccountId: string;
 
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(6092706)");
@@ -152,7 +158,7 @@ test("external consultant grant, OTP session, advisory upload and review, native
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     const staffScreenshot = await page.screenshot({ fullPage: true });
     await testInfo.attach("s21-staff-" + testInfo.project.name, { body: staffScreenshot, contentType: "image/png" });
-    const screenshotDirectory = resolve(".env.s21-tools", "screenshots");
+    const screenshotDirectory = resolve(process.env.S21_SCREENSHOT_DIR ?? ".env.s21-tools/screenshots");
     mkdirSync(screenshotDirectory, { recursive: true });
     writeFileSync(join(screenshotDirectory, "s21-staff-" + testInfo.project.name + ".png"), staffScreenshot);
 
@@ -331,7 +337,7 @@ test("external consultant grant, OTP session, advisory upload and review, native
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     const vendorScreenshot = await page.screenshot({ fullPage: true });
     await testInfo.attach("s21-vendor-" + testInfo.project.name, { body: vendorScreenshot, contentType: "image/png" });
-    writeFileSync(join(resolve(".env.s21-tools", "screenshots"), "s21-vendor-" + testInfo.project.name + ".png"), vendorScreenshot);
+    writeFileSync(join(screenshotDirectory, "s21-vendor-" + testInfo.project.name + ".png"), vendorScreenshot);
 
     await page.getByRole("button", { name: "Sign out" }).click();
     await expect(page.getByRole("heading", { name: "Sign in to your project portal" })).toBeVisible();

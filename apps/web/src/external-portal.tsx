@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./external-portal.css";
+import { AuthFrame } from "./auth-flow.js";
 
 const AUTH = "/api/v1/external-portal/auth";
 const PORTAL = "/api/v1/external-portal";
@@ -42,6 +43,7 @@ function ProductionDetails({ requirements }: { requirements: ProductionRequireme
 }
 
 export function ExternalPortalWorkspace(): React.JSX.Element {
+  const audience = window.location.pathname.includes("/consultant/") ? "Consultant" : window.location.pathname.includes("/factory/") ? "Factory / production" : window.location.pathname.includes("/vendor/") ? "Vendor" : "";
   const [session, setSession] = useState<Session | null>();
   const [email, setEmail] = useState(""); const [code, setCode] = useState(""); const [requested, setRequested] = useState(false);
   const [devices, setDevices] = useState<Device[]>([]); const [projects, setProjects] = useState<Project[]>([]); const [projectId, setProjectId] = useState(""); const [workspace, setWorkspace] = useState<ExternalWorkspace | null>(null);
@@ -106,7 +108,22 @@ export function ExternalPortalWorkspace(): React.JSX.Element {
   const acknowledge = (t: Transmittal) => { const grant = workspace?.grants.find((g) => !g.revokedAt); if (!grant || !session) return; void run(`${PORTAL}/transmittals/${encodeURIComponent(t.id)}/acknowledge`, { note: ackNotes[t.id] ?? "", reason: reason.trim() }, "Acknowledgement recorded for your recipient account."); };
   const showCad = async (shareId: string) => { setError(""); try { const data = await request<{ id: string; url: string; extractionCode: string; expiresAt: string; warning: string }>(`${PORTAL}/cad-shares/${encodeURIComponent(shareId)}`); setCad((prior) => ({ ...prior, [shareId]: data })); } catch { setError("This native CAD link is no longer available to your account."); } };
   if (session === undefined) return <main className="external-portal"><p role="status">Checking external portal session…</p></main>;
-  if (!session) return <main className="external-portal"><section className="external-card"><p className="external-kicker">Sense Studios · External access</p><h1>Sign in to your project portal</h1><p>Use the invited email address connected to your project access.</p><form onSubmit={(e) => { e.preventDefault(); void signIn(false); }}><label>Email address<input type="email" autoComplete="email" maxLength={320} required value={email} onChange={(e) => setEmail(e.target.value)} /></label><button disabled={busy || !email.trim()}>{busy ? "Sending…" : "Send sign-in code"}</button></form>{requested && <form onSubmit={(e) => { e.preventDefault(); void signIn(true); }}><label>One-time code<input inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))} /></label><button disabled={busy || code.length !== 6}>{busy ? "Checking…" : "Continue"}</button></form>}{notice && <p role="status">{notice}</p>}{error && <p role="alert">{error}</p>}</section></main>;
+  if (!session) return <AuthFrame audience={audience ? audience.toUpperCase() + " PORTAL" : "EXTERNAL PROJECT ACCESS"}
+    title={requested ? "Check your email" : audience ? audience + " sign in" : "Sign in to your project portal"}
+    intro={requested ? "If this address has access, a code has been sent. It expires in 10 minutes." : "Use the invited email address connected to your project access."}>
+    {!requested ? <form onSubmit={event => { event.preventDefault(); void signIn(false); }}>
+      <div className="auth-flow-field"><label htmlFor="external-login-email">Email address</label><input id="external-login-email" type="email" autoComplete="email" maxLength={320} required value={email} onChange={event => setEmail(event.target.value)} disabled={busy} /></div>
+      <button disabled={busy || !email.trim()}>{busy ? "Sending…" : "Send sign-in code"}</button>
+    </form> : <form onSubmit={event => { event.preventDefault(); void signIn(true); }}>
+      <p className="auth-flow-hint">Email entered: <strong>{email}</strong></p>
+      <div className="auth-flow-field"><label htmlFor="external-login-code">One-time code</label><input id="external-login-code" name="code" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required value={code} onChange={event => setCode(event.target.value.replace(/\D/g, "").slice(0, 6))} disabled={busy} /></div>
+      <button disabled={busy || code.length !== 6}>{busy ? "Checking…" : "Continue"}</button>
+      <p className="auth-flow-hint">Can’t find the email? Check spam. You can request a new code after 60 seconds.</p>
+      <button className="auth-secondary" type="button" disabled={busy} onClick={() => { setRequested(false); setCode(""); setError(""); }}>Change email or request another code</button>
+    </form>}
+    {notice && <p className="auth-flow-success" role="status">{notice}</p>}{error && <p className="auth-flow-alert" role="alert">{error}</p>}
+    <div className="auth-flow-links"><a href="/sign-in">Other sign-in options</a>{audience === "Vendor" && <a href="/external-portal/factory/login">Factory / production sign in</a>}</div>
+  </AuthFrame>;
   return <main className="external-portal"><div className="external-shell"><header className="external-header"><div><p className="external-kicker">Sense Studios · External workspace</p><h1>Project portal</h1><p>{session.account.email}</p></div><button className="secondary" onClick={() => void signOut()} disabled={busy}>Sign out</button></header>
     {notice && <p className="external-notice" role="status">{notice}</p>}{error && <p className="external-error" role="alert">{error}</p>}
     <section className="external-card"><div className="external-heading"><div><h2>Your projects</h2><p>Access reflects current project grants.</p></div><button className="secondary" onClick={() => void restore()}>Refresh</button></div>{projects.length === 0 ? <p className="external-empty">No projects are available to this account.</p> : <label>Project<select value={projectId} onChange={(e) => setProjectId(e.target.value)}>{projects.map((p) => <option key={p.id} value={p.id}>{p.title} · {p.portalType === "CONSULTANT" ? "Consultant" : "Vendor / factory"}</option>)}</select></label>}

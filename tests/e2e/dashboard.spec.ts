@@ -1,10 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const fixtureUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const screenshotDirectory = resolve(process.env.S24_SCREENSHOT_DIR ?? ".env.s24-tools/screenshots");
 
 test("S24 dashboard reports freeze, export, history and schedule; staff retain personal reminders", async ({ page, context, baseURL }, testInfo) => {
@@ -15,7 +17,7 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
     const ready = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard/sources/tasks" && response.request().method() === "GET", { timeout: 60_000 });
     if (reload) await page.reload(); else await page.goto("/dashboard");
     expect((await ready).status()).toBe(200);
-    await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 60_000 });
+    await expect(page.getByRole("heading", { name: "Dashboard", exact: true, level: 2 })).toBeVisible({ timeout: 60_000 });
     console.info(`[s24-e2e] dashboard load ${Date.now() - startedAt}ms`);
   };
   test.skip((process.env.S24_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1" && process.env.S27_E2E_ENABLED !== "1") || !fixtureUrl, "Set an approved isolated S24, S25, or S27 database acceptance flag");
@@ -23,7 +25,7 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
   const explicitlyEnabledS24Database = process.env.S24_E2E_ENABLED === "1" && /sense_[a-z0-9_]*s24_[a-z0-9_]*_test$/i.test(parsed.pathname);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && ((["56433", "57433"].includes(parsed.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)) || (parsed.port === "57433" && /^\/sense_s24_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)));
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsed.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsed.port !== "56433") || (!explicitlyEnabledS24Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) throw new Error("Dashboard browser acceptance requires an explicitly enabled isolated S24 or exact S25/S26/S27 database on a local test port");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as typeof import("pg");
@@ -35,6 +37,10 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
   const ownerSession = randomUUID(), staffSession = randomUUID(), staffId = randomUUID(), staffAccount = randomUUID();
   let ownerId: string, organizationId: string, branchId: string, teamId: string;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(61024001)");

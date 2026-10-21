@@ -12,7 +12,19 @@ COPY packages/contracts packages/contracts
 COPY apps/web apps/web
 RUN pnpm --filter @sense/contracts build && pnpm --filter @sense/web build
 
-FROM nginx:1.30.5-alpine3.24
-COPY infra/nginx.conf /etc/nginx/conf.d/default.conf
+FROM nginx:1.30.5-alpine3.24 AS base
+ARG VCS_REF=development
+LABEL org.opencontainers.image.revision=$VCS_REF
+COPY infra/nginx-headers.conf /etc/nginx/sense/headers.conf
+COPY infra/nginx-proxy.conf /etc/nginx/sense/proxy.conf
+COPY infra/nginx-routes.conf /etc/nginx/sense/routes.conf
 COPY --from=build /workspace/apps/web/dist /usr/share/nginx/html
 EXPOSE 8080
+
+FROM base AS production
+LABEL com.sense.web.variant=production
+COPY infra/nginx.production.conf /etc/nginx/conf.d/default.conf
+
+# Preserve the existing staging Compose behavior as the default build target.
+FROM base AS staging
+COPY infra/nginx.conf /etc/nginx/conf.d/default.conf

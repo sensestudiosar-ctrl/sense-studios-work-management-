@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { DashboardWorkspace } from "./dashboard.js";
 
@@ -9,12 +9,17 @@ const context = { categories: [{ key: "employee", label: "Employee" }, { key: "s
 const table = { title: "Employee report", category: "employee", from: "2026-10-01", to: "2026-10-05", generatedAt: "2026-10-05T12:00:00.000Z", columns: [{ key: "employee", label: "Employee" }, { key: "hours", label: "Hours" }], rows: [{ employee: "Asha", hours: 12 }], unavailable: [] };
 const initialHistory = { snapshots: [{ id: "snapshot-1", title: "Older employee report", category: "employee", from: "2026-10-01", to: "2026-10-03", createdAt: "2026-10-03T12:00:00.000Z", correctsId: null }] };
 type Call = { url: string; init?: RequestInit };
-function mockFetch(options: { owner?: boolean; history?: unknown; summaries?: unknown; onPost?: (url: string, body: Record<string, unknown>) => void } = {}): Call[] {
+function sourcePage(source: string, sections: unknown[]): Response {
+  return json({ source, today: "2026-10-05", readCompletedAt: "2026-10-05T12:00:00.000Z", sections });
+}
+function mockFetch(options: { owner?: boolean; history?: unknown; summaries?: unknown; sourceResponse?: (source: string) => Response | Promise<Response> | undefined; onPost?: (url: string, body: Record<string, unknown>) => void } = {}): Call[] {
   const calls: Call[] = [];
   vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input); calls.push(init ? { url, init } : { url });
     if (url.includes("/dashboard/sources/")) {
       const source = new URL(url, "http://localhost").pathname.split("/").at(-1)!;
+      const override = options.sourceResponse?.(source);
+      if (override) return override;
       return json({
         source,
         today: "2026-10-05",
@@ -44,9 +49,88 @@ function mockFetch(options: { owner?: boolean; history?: unknown; summaries?: un
   return calls;
 }
 function renderWorkspace(owner: boolean) { return render(<MemoryRouter><DashboardWorkspace csrfToken="csrf-s24" owner={owner} /></MemoryRouter>); }
+function tile(label: string): HTMLElement {
+  const element = screen.getByText(label).closest<HTMLElement>(".dashboard-kpi");
+  if (!element) throw new Error(`Missing summary tile: ${label}`);
+  return element;
+}
 afterEach(() => vi.unstubAllGlobals());
 
 describe("DashboardWorkspace", () => {
+  it("keeps overlapping task buckets separate instead of inventing an all-domain work total", async () => {
+    const task = { id: "task-shared", label: "Prepare drawings", status: "IN_PROGRESS", date: "2026-10-05" };
+    mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [
+      { key: "attention", label: "Task attention", rows: [task] },
+      { key: "overdue", label: "Overdue", rows: [task] },
+      { key: "waiting", label: "Waiting", rows: [] },
+    ]) : undefined });
+    renderWorkspace(true);
+    await waitFor(() => expect(within(tile("Overdue tasks")).getByText("1", { exact: true })).toBeInTheDocument());
+    expect(within(tile("Needs attention")).getByText("1", { exact: true })).toBeInTheDocument();
+    expect(within(tile("Blocked / waiting")).getByText("0", { exact: true })).toBeInTheDocument();
+    expect(screen.queryByText("Work items", { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText("Across all active sources")).not.toBeInTheDocument();
+  });
+
+  it("uses the supplied health scale without turning health into completion or inventing a risk threshold", async () => {
+    mockFetch({ sourceResponse: source => source === "health" ? sourcePage(source, [{ key: "health", label: "Health source", rows: [
+      { id: "project-scored", label: "Studio fitout", score: 4, scoreScale: { min: 1, max: 5 }, status: "CURRENT" },
+      { id: "project-no-scale", label: "Unscaled project", score: 12 },
+    ] }]) : undefined });
+    renderWorkspace(true);
+    const panel = screen.getByRole("region", { name: "Project health" });
+    expect(await within(panel).findByText("Health score 4 · Scale 1–5")).toBeInTheDocument();
+    expect(within(panel).getByText("Health score 12 · Scale unavailable")).toBeInTheDocument();
+    expect(panel.querySelector(".at-risk, .on-track")).toBeNull();
+    expect(screen.queryByText(/% complete/)).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Project timeline" })).not.toBeInTheDocument();
+  });
+
+  it("presents review task state and today's due work without fabricated activity or date windows", async () => {
+    mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [
+      { key: "today", label: "Due today", rows: [{ id: "task-today", label: "Finish elevations", date: "2026-10-05", status: "IN_PROGRESS" }] },
+      { key: "reviews", label: "Review tasks", rows: [{ id: "task-review", label: "Review floor plan", status: "CORRECTIONS_REQUIRED", date: "2026-09-01", route: "/tasks?taskId=task-review" }] },
+    ]) : undefined });
+    renderWorkspace(true);
+    const panel = screen.getByRole("region", { name: "Task reviews and corrections" });
+    expect(await within(panel).findByText("Review floor plan")).toBeInTheDocument();
+    expect(within(panel).getByText("CORRECTIONS_REQUIRED · 2026-09-01")).toBeInTheDocument();
+    expect(within(panel).getByRole("link", { name: "Open" })).toHaveAttribute("href", "/tasks?taskId=task-review");
+    expect(screen.getByRole("heading", { name: "Tasks due today" })).toBeInTheDocument();
+    expect(screen.queryByText("Last 14 days")).not.toBeInTheDocument();
+    expect(screen.queryByText("Due work in the next 30 days")).not.toBeInTheDocument();
+    expect(within(panel).queryByText(/moved|completed/)).not.toBeInTheDocument();
+  });
+
+  it.each(["pending", "failed", "section-unavailable", "section-missing"])("does not publish zero for a %s task summary", async state => {
+    mockFetch({ sourceResponse: source => source !== "tasks" ? undefined : state === "pending" ? new Promise<Response>(() => undefined)
+      : state === "failed" ? json({ message: "Task source unavailable" }, 503)
+      : sourcePage(source, state === "section-unavailable" ? [
+        { key: "overdue", label: "Overdue", rows: [], unavailable: "Overdue evidence is unavailable." },
+        { key: "waiting", label: "Waiting", rows: [], unavailable: "Waiting evidence is unavailable." },
+      ] : []) });
+    renderWorkspace(false);
+    const expected = state === "pending" ? "Loading…" : "Unavailable";
+    await waitFor(() => expect(within(tile("Overdue tasks")).getByText(expected, { exact: true })).toBeInTheDocument());
+    expect(within(tile("Blocked / waiting")).getByText(expected, { exact: true })).toBeInTheDocument();
+    expect(within(tile("Overdue tasks")).queryByText("0", { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText("Nothing needs your attention right now.")).not.toBeInTheDocument();
+  });
+
+  it("clears prior task evidence after a failed refresh while retaining healthy decision evidence", async () => {
+    let taskReads = 0;
+    mockFetch({ sourceResponse: source => source !== "tasks" ? undefined : ++taskReads === 1 ? sourcePage(source, [
+      { key: "overdue", label: "Overdue", rows: [{ id: "task-prior", label: "Previously read task", status: "IN_PROGRESS" }] },
+    ]) : json({ message: "Task read failed" }, 503) });
+    renderWorkspace(false);
+    await waitFor(() => expect(within(tile("Overdue tasks")).getByText("1", { exact: true })).toBeInTheDocument());
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    await waitFor(() => expect(within(tile("Overdue tasks")).getByText("Unavailable", { exact: true })).toBeInTheDocument());
+    expect(within(tile("Overdue tasks")).queryByText("1", { exact: true })).not.toBeInTheDocument();
+    expect(screen.queryByText("Previously read task")).not.toBeInTheDocument();
+    expect(screen.getByText("Approve task closeout")).toBeInTheDocument();
+  });
+
   it("shows scoped sections and decisions while marking unavailable evidence instead of inventing a measure", async () => {
     const calls = mockFetch({ owner: false });
     renderWorkspace(false);

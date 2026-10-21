@@ -1,0 +1,417 @@
+/* Shared studio palette tokens. Module-specific status colors remain local to each module. */
+:root {
+  --sense-font-ui: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --sense-ink: #26312b;
+  --sense-ink-strong: #26312b;
+  --sense-ink-muted: #68776c;
+  --sense-canvas: #f7f5f0;
+  --sense-surface: #fff;
+  --sense-surface-muted: #fff;
+  --sense-surface-active: #edf3ed;
+  --sense-border: #e8e8e2;
+  --sense-border-soft: #e8e8e2;
+  --sense-pine: #244f43;
+  --sense-pine-hover: #2e594e;
+  --sense-focus: #8c6b30;
+  --sense-radius-control: 9px;
+  --sense-radius-panel: 15px;
+  --sense-shadow-panel: 0 3px 18px #27493807;
+}
+
+/* Entry points and portals share the palette without changing access or page structure. */
+:is(.auth-card, .client-portal-auth, .external-portal, .s15-public-page) {
+  font-family: var(--sense-font-ui);
+  color: var(--sense-ink);
+}
+:is(.client-portal-auth, .external-portal, .s15-public-page) { background-color: var(--sense-canvas); }
+.external-portal {
+  --external-ink: var(--sense-ink);
+  --external-muted: var(--sense-ink-muted);
+  --external-line: var(--sense-border);
+  --external-accent: var(--sense-pine);
+}
+:is(.auth-card, .client-portal-card, .external-card, .s15-public-card) {
+  border-color: var(--sense-border);
+  border-radius: var(--sense-radius-panel);
+  background-color: var(--sense-surface);
+  box-shadow: var(--sense-shadow-panel);
+}
+:is(.auth-card, .client-portal-auth, .external-portal, .s15-public-page) :is(h1, h2, h3) {
+  font-family: var(--sense-font-ui);
+  letter-spacing: -.025em;
+}
+
+.workspace-page {
+  --sense-ink: #26312b;
+  --sense-ink-strong: #26312b;
+  --sense-ink-muted: #68776c;
+  --sense-canvas: #f7f5f0;
+  --sense-surface: #fff;
+  --sense-surface-muted: #fff;
+  --sense-surface-active: #edf3ed;
+  --sense-border: #e8e8e2;
+  --sense-border-soft: #e8e8e2;
+  --sense-pine: #244f43;
+  --sense-pine-hover: #2e594e;
+  --sense-focus: #8c6b30;
+  --sense-radius-control: 9px;
+  --sense-radius-panel: 15px;
+  --sense-shadow-panel: 0 3px 18px #27493807;
+  color: var(--sense-ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Translate shared tokens into the local variables consumed by established modules. */
+.workspace-page :is(.document-workspace, .document-route-heading) {
+  --doc-ink: var(--sense-ink);
+  --doc-muted: var(--sense-ink-muted);
+  --doc-line: var(--sense-border);
+  --doc-accent: var(--sense-pine);
+}
+.workspace-page .review-workspace {
+  --review-ink: var(--sense-ink);
+  --review-muted: var(--sense-ink-muted);
+  --review-line: var(--sense-border);
+  --review-accent: var(--sense-pine);
+}
+.workspace-page .client-review-workspace {
+  --cr-ink: var(--sense-ink);
+  --cr-muted: var(--sense-ink-muted);
+  --cr-line: var(--sense-border);
+  --cr-accent: var(--sense-pine);
+}
+.workspace-page .site-workspace {
+  --site-ink: var(--sense-ink);
+  --site-muted: var(--sense-ink-muted);
+  --site-line: var(--sense-border);
+  --site-accent: var(--sense-pine);
+}
+.workspace-page .turnkey-workspace {
+  --tk-ink: var(--sense-ink);
+  --tk-muted: var(--sense-ink-muted);
+  --tk-line: var(--sense-border);
+  --tk-accent: var(--sense-pine);
+}
+.workspace-page .review-evidence {
+  --evidence-ink: var(--sense-ink);
+  --evidence-muted: var(--sense-ink-muted);
+  --evidence-line: var(--sense-border);
+}
+.workspace-page .external-portal {
+  --external-ink: var(--sense-ink);
+  --external-muted: var(--sense-ink-muted);
+  --external-line: var(--sense-border);
+  --external-accent: var(--sense-pine);
+}
+.workspace-page :is(.settings-homes, .decisions-home, .settings-shell) {
+  --settings-ink: var(--sense-ink);
+  --settings-muted: var(--sense-ink-muted);
+  --settings-line: var(--sense-border);
+  --settings-accent: var(--sense-pine);
+}
+
+/* Replace the leftover editorial headings on authenticated workspace surfaces. */
+.workspace-page :is(
+  .dashboard-heading h2,
+  .project-heading h2,
+  .wf-heading h2,
+  .wf-heading h3,
+  .document-header h2,
+  .document-register-heading h3,
+  .review-header h2,
+  .client-review-header h2,
+  .site-workspace-header h1,
+  .turnkey-header h1,
+  .turnkey-project-heading h2,
+  .time-heading h2,
+  .time-heading h3,
+  .automation-heading h2,
+  .integrations-heading h2,
+  .learning-heading h2,
+  .learning-panel h3,
+  .library-heading h2,
+  .library-panel h3,
+  .training-heading h2,
+  .training-panel h3,
+  .training-panel h4,
+  .training-recommendation h4,
+  .perf-heading h1,
+  .identity-section h2,
+  .identity-details h2,
+  .notification-center h2
+) {
+  color: var(--sense-ink-strong);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: -.02em;
+}
+
+.workspace-page :is(
+  .dashboard-heading h2,
+  .project-heading h2,
+  .document-header h2,
+  .review-header h2,
+  .client-review-header h2,
+  .site-workspace-header h1,
+  .turnkey-header h1,
+  .automation-heading h2,
+  .integrations-heading h2,
+  .learning-heading h2,
+  .library-heading h2,
+  .training-heading h2,
+  .perf-heading h1,
+  .identity-section h2,
+  .notification-center h2
+) { font-size: clamp(1.45rem, 2.5vw, 1.9rem); font-weight: 700; line-height: 1.2; }
+
+/* Explicit neutral surfaces. Warning, error, success, and selected-state surfaces are omitted. */
+.workspace-page :is(
+  .dashboard-panel,
+  .project-panel,
+  .project-detail,
+  .project-section-panel,
+  .wf-panel,
+  .wf-section-panel.is-active,
+  .document-panel,
+  .review-panel,
+  .client-review-panel,
+  .site-panel,
+  .site-overview,
+  .site-record,
+  .time-panel,
+  .time-history,
+  .automation-panel,
+  .integrations-panel,
+  .integrations-events,
+  .learning-panel,
+  .library-panel,
+  .training-panel,
+  .perf-panel,
+  .perf-snapshot,
+  .perf-cycle,
+  .turnkey-release,
+  .turnkey-create,
+  .turnkey-panel,
+  .review-evidence,
+  .s15-gallery-panel,
+  .identity-section,
+  .identity-card,
+  .org-permission-manager,
+  .notification-center
+) {
+  border-color: var(--sense-border);
+  border-radius: var(--sense-radius-panel);
+  background-color: var(--sense-surface);
+  box-shadow: var(--sense-shadow-panel);
+}
+
+.workspace-page :is(
+  .automation-table-wrap,
+  .perf-table-wrap,
+  .dashboard-table-wrap,
+  .project-table-wrap,
+  .wf-table-wrap,
+  .turnkey-table-wrap
+) :is(th, td) { border-color: var(--sense-border); }
+.workspace-page :is(
+  .automation-table-wrap,
+  .perf-table-wrap,
+  .dashboard-table-wrap,
+  .project-table-wrap,
+  .wf-table-wrap,
+  .turnkey-table-wrap
+) th { background-color: #f7f8f5; color: var(--sense-ink-strong); }
+
+/* Readable controls; native choice, file, range, color, and action inputs keep their sizing. */
+.workspace-page :is(
+  .dashboard-workspace,
+  .project-workspace,
+  .workforce,
+  .document-workspace,
+  .review-workspace,
+  .client-review-workspace,
+  .site-workspace,
+  .site-offline,
+  .time-workspace,
+  .automation-workspace,
+  .integrations-workspace,
+  .learning-workspace,
+  .library-workspace,
+  .training-workspace,
+  .performance,
+  .turnkey-workspace,
+  .review-evidence,
+  .s15-gallery,
+  .identity-content,
+  .notification-center,
+  .settings-homes,
+  .decisions-home,
+  .settings-shell
+) :is(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]):not([type="color"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]),
+  select,
+  textarea
+) {
+  min-height: 38px;
+  border-color: var(--sense-border);
+  border-radius: var(--sense-radius-control);
+  background-color: #fff;
+  color: var(--sense-ink);
+  font-family: inherit;
+}
+
+.workspace-page :is(
+  .dashboard-workspace,
+  .project-workspace,
+  .workforce,
+  .document-workspace,
+  .review-workspace,
+  .client-review-workspace,
+  .site-workspace,
+  .site-offline,
+  .time-workspace,
+  .automation-workspace,
+  .integrations-workspace,
+  .learning-workspace,
+  .library-workspace,
+  .training-workspace,
+  .performance,
+  .turnkey-workspace,
+  .review-evidence,
+  .s15-gallery,
+  .identity-content,
+  .notification-center,
+  .settings-homes,
+  .decisions-home,
+  .settings-shell
+) :is(input, select, textarea, button, a):focus-visible {
+  outline: 2px solid var(--sense-focus);
+  outline-offset: 2px;
+}
+
+/* Keep action colors intact; share only their control shape and focus ring. */
+.workspace-page :is(
+  .dashboard-workspace,
+  .project-workspace,
+  .workforce,
+  .document-workspace,
+  .review-workspace,
+  .client-review-workspace,
+  .site-workspace,
+  .site-offline,
+  .time-workspace,
+  .automation-workspace,
+  .integrations-workspace,
+  .learning-workspace,
+  .library-workspace,
+  .training-workspace,
+  .performance,
+  .turnkey-workspace,
+  .review-evidence,
+  .s15-gallery,
+  .identity-content,
+  .notification-center,
+  .settings-homes,
+  .decisions-home,
+  .settings-shell
+) button { border-radius: var(--sense-radius-control); }
+
+/* Preserve selected affordances while bringing existing primary actions onto the approved pine. */
+.workspace-page .project-primary-button,
+.workspace-page .document-primary,
+.workspace-page .turnkey-primary,
+.workspace-page .review-form button,
+.workspace-page .learning-workspace button:not(.learning-secondary),
+.workspace-page .library-workspace button:not(.library-secondary):not(.library-text-button),
+.workspace-page .training-workspace button:not(.training-secondary) {
+  border-color: var(--sense-pine);
+  background-color: var(--sense-pine);
+  color: #fff;
+}
+.workspace-page :is(
+  .project-primary-button,
+  .document-primary,
+  .turnkey-primary,
+  .review-form button,
+  .learning-workspace button:not(.learning-secondary),
+  .library-workspace button:not(.library-secondary):not(.library-text-button),
+  .training-workspace button:not(.training-secondary)
+):hover:not(:disabled) { border-color: var(--sense-pine-hover); background-color: var(--sense-pine-hover); color: #fff; }
+
+.workspace-page .perf-tabs button[aria-selected="true"],
+.workspace-page .dashboard-tabs button[aria-pressed="true"],
+.workspace-page .project-section-nav button[aria-current="page"] {
+  border-color: var(--sense-pine);
+  background-color: var(--sense-pine);
+  color: #fff;
+}
+.workspace-page .project-list-item.is-selected { border-color: var(--sense-pine); background-color: #edf3ed; color: var(--sense-ink); }
+.workspace-page .perf-project-choice[aria-pressed="true"] { border-color: var(--sense-pine); background-color: #edf3ed; color: var(--sense-ink); }
+
+/* Project neutral actions: white controls with pine text, without touching selected or semantic variants. */
+.workspace-page :is(
+  .project-list-filters button,
+  .project-action-row button,
+  .project-actions > button,
+  .project-scope-decision button,
+  .template-list-row button,
+  .template-edit-heading button,
+  .template-row > button,
+  .template-milestone > button,
+  .template-new-button,
+  .project-plan-items button
+):not(:disabled):not([aria-pressed="true"]):not([aria-selected="true"]):not([aria-current]):not(.is-selected) {
+  border-color: var(--sense-border);
+  background-color: #fff;
+  color: var(--sense-pine);
+}
+.workspace-page :is(
+  .project-list-filters button,
+  .project-action-row button,
+  .project-actions > button,
+  .project-scope-decision button,
+  .template-list-row button,
+  .template-edit-heading button,
+  .template-row > button,
+  .template-milestone > button,
+  .template-new-button,
+  .project-plan-items button
+):not(:disabled):not([aria-pressed="true"]):not([aria-selected="true"]):not([aria-current]):not(.is-selected):hover {
+  border-color: var(--sense-pine);
+  background-color: #f7f9f6;
+  color: var(--sense-pine);
+}
+.workspace-page :is(.project-quiet-button, .project-context-nav a, .document-navigation a, .document-route-heading a) {
+  color: var(--sense-pine);
+}
+
+@media (max-width: 640px) {
+  .workspace-page :is(
+    .dashboard-workspace,
+    .project-workspace,
+    .workforce,
+    .document-workspace,
+    .review-workspace,
+    .client-review-workspace,
+    .site-workspace,
+    .site-offline,
+    .time-workspace,
+    .automation-workspace,
+    .integrations-workspace,
+    .learning-workspace,
+    .library-workspace,
+    .training-workspace,
+    .performance,
+    .turnkey-workspace,
+    .review-evidence,
+    .s15-gallery,
+    .identity-content,
+    .notification-center,
+    .settings-homes,
+    .decisions-home,
+    .settings-shell
+  ) :is(
+    input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]):not([type="color"]):not([type="hidden"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="image"]),
+    select,
+    textarea
+  ) { min-height: 44px; }
+}

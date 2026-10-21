@@ -299,10 +299,46 @@ model Task {
   closeoutApproval TaskCloseoutApproval?
   recurrenceRule TaskRecurrenceRule? @relation("RecurrenceSource")
   recurrenceOccurrence TaskRecurrenceOccurrence? @relation("RecurrenceGeneratedTask")
+  subtaskLinks TaskSubtaskLink[] @relation("TaskSubtaskParent")
+  subtaskLink TaskSubtaskLink? @relation("TaskSubtaskChild")
+  creationReceipts TaskCreationReceipt[] @relation("TaskCreationResult")
+  childCreationReceipts TaskCreationReceipt[] @relation("TaskCreationParent")
   @@unique([id, organizationId])
   @@index([organizationId, primaryOwnerEmployeeId, status, targetDate, id])
   @@index([organizationId, projectId, status, targetDate, id])
   @@map("tasks")
+}
+
+model TaskCreationReceipt {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  actorId String @db.Uuid
+  key String @db.Uuid
+  command String @db.VarChar(24)
+  parentTaskId String? @db.Uuid
+  taskId String @db.Uuid
+  payloadHash String @db.Char(64)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  task Task @relation("TaskCreationResult", fields: [taskId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Restrict)
+  parentTask Task? @relation("TaskCreationParent", fields: [parentTaskId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([organizationId, actorId, key])
+  @@map("task_creation_receipts")
+}
+
+model TaskSubtaskLink {
+  id String @id @default(uuid()) @db.Uuid
+  organizationId String @db.Uuid
+  projectId String @db.Uuid
+  parentTaskId String @db.Uuid
+  childTaskId String @db.Uuid
+  createdById String @db.Uuid
+  reason String @db.VarChar(1000)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  parentTask Task @relation("TaskSubtaskParent", fields: [parentTaskId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Restrict)
+  childTask Task @relation("TaskSubtaskChild", fields: [childTaskId, organizationId], references: [id, organizationId], onDelete: Restrict, onUpdate: Restrict)
+  @@unique([childTaskId, organizationId])
+  @@index([organizationId, parentTaskId, childTaskId])
+  @@map("task_subtask_links")
 }
 
 enum ClientReviewPackageStatus {
@@ -1608,6 +1644,7 @@ model JobRole {
   name           String                      @db.VarChar(120)
   description    String?                     @db.VarChar(1000)
   active         Boolean                     @default(true)
+  creationPresentation String?                @db.VarChar(16)
   createdAt      DateTime                    @default(now()) @db.Timestamptz(3)
   updatedAt      DateTime                    @updatedAt @db.Timestamptz(3)
   organization   Organization                @relation(fields: [organizationId], references: [id], onDelete: Restrict, onUpdate: Cascade)

@@ -1,0 +1,92 @@
+/* Card chrome matches the prototype's `.od-card` (attention card). */
+.actionable-work { min-width: 0; padding: 16px; border: 1px solid #e3e9e0; border-radius: 14px; background: #fff; color: #26312b; }
+/* ---- Prototype status colour system --------------------------------------
+   These tokens are the prototype's exact state palette, shared with
+   my-work-parity.css and pinned by my-work-parity.test.tsx. A silent palette
+   change must fail that test, so the demo and the real queue cannot drift. */
+.actionable-work { --my-work-rail: 5px; --state-rail: var(--state-todo); --row-tint: #f8f9fb; --state-todo: #758496; --state-progress: #2384be; --state-review: #e3a52d; --state-waiting: #7d5cb9; --state-correction: #c84955; --state-done: #2b916a; --priority-urgent: #b72f42; --priority-high: #d17623; --priority-normal: #4a76a9; --priority-low: #647d76; --my-work-row: 65px; }
+
+/* Per-state rail and row tint, matching the prototype row geometry. */
+.actionable-work .state-todo { --state-rail: var(--state-todo); --row-tint: #f8f9fb; }
+.actionable-work .state-progress { --state-rail: var(--state-progress); --row-tint: #f4f9fd; }
+.actionable-work .state-review { --state-rail: var(--state-review); --row-tint: #fffbf2; }
+.actionable-work .state-waiting { --state-rail: var(--state-waiting); --row-tint: #f9f6fe; }
+.actionable-work .state-correction { --state-rail: var(--state-correction); --row-tint: #fff6f6; }
+.actionable-work .state-done { --state-rail: var(--state-done); --row-tint: #f5fbf7; }
+/* Rows whose status the server did not project: a neutral rail, so the row is
+   not colour-coded against a status nobody confirmed. */
+.actionable-work .state-none { --state-rail: #b6beb8; --row-tint: #fafbfa; }
+
+/* Row geometry matches the prototype: the state rail on the left and the
+   whole-row tint driven by the same variable, inside a hairline card row. */
+.actionable-work .actionable-work__row > :is(button,a) { display: grid; grid-template-columns: minmax(0,1fr) auto; align-items: center; gap: 12px; width: 100%; box-sizing: border-box; padding: 10px 12px 10px 15px; text-align: left; border: 1px solid #e7ece5; border-left: var(--my-work-rail) solid var(--state-rail); border-radius: 9px; background: var(--row-tint); color: #3f5145; text-decoration: none; font: inherit; overflow-wrap: anywhere; min-height: 0; cursor: pointer; }
+.actionable-work .actionable-work__row.is-selected > :is(button,a) { background: #eef4ee; box-shadow: inset 3px 0 0 #244f43; }
+.actionable-work .actionable-work__row > :is(button,a):hover { background: #f8fbf8; }
+.actionable-work .actionable-work__row.is-overdue > :is(button,a) { border-left-color: var(--state-correction); }
+.actionable-work .actionable-work__row .my-work-status { justify-self: end; }
+.actionable-work .actionable-work__row-text { display: grid; gap: 0; min-width: 0; }
+.actionable-work .actionable-work__row-heading strong { font-size: 11px; font-weight: 700; display: block; }
+.actionable-work .actionable-work__row-text small { color: #7d8e82; font-size: 10px; margin-top: 4px; display: block; }
+.actionable-work ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+
+/* Solid status chip, coloured by state. */
+.actionable-work .my-work-status { justify-self: start; display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 5px 7px; border-radius: 6px; font-size: 10px; font-weight: 600; letter-spacing: normal; text-transform: none; white-space: nowrap; }
+.actionable-work .my-work-status::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.actionable-work .my-work-status-todo { background: var(--state-todo); color: #0b100d; }
+.actionable-work .my-work-status-progress { background: var(--state-progress); color: #0b100d; }
+.actionable-work .my-work-status-review { background: var(--state-review); color: #2e2517; }
+.actionable-work .my-work-status-waiting { background: var(--state-waiting); color: #fff; }
+.actionable-work .my-work-status-correction { background: var(--state-correction); color: #fff; }
+.actionable-work .my-work-status-done { background: var(--state-done); color: #0b100d; }
+/* Neutral chip for an unprojected status. Outlined rather than solid, so it
+   never reads as one of the six real states. */
+.actionable-work .my-work-status-none { background: #eef1ef; color: #4c5a52; box-shadow: inset 0 0 0 1px #d4dbd6; }
+
+/* Priority pill — the prototype's exact values, so the two queues read alike. */
+.actionable-work .my-work-priority { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; line-height: 1.35; padding: 3px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; border: 1px solid transparent; }
+.actionable-work .my-work-priority.pr-Urgent { background: #fbe9ec; color: #ac253a; border-color: #f3cad2; }
+.actionable-work .my-work-priority.pr-High { background: #fff0dc; color: #a75810; border-color: #f5d8ac; }
+.actionable-work .my-work-priority.pr-Normal { background: #eaf2fd; color: #365f95; border-color: #d4e4f8; }
+/* The prototype's Low pill is #5c766c; that is 4.35:1 on this background and
+   fails WCAG AA for small text, so the label is one step darker (4.78:1). The
+   demo's other three pills are already compliant and kept exactly. */
+.actionable-work .my-work-priority.pr-Low { background: #edf2ef; color: #586f66; border-color: #d8e5dd; }
+
+.actionable-work__header { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 0 0 12px; }
+.actionable-work__header h3 { margin: 0; font-size: 16px; letter-spacing: -.2px; }
+.actionable-work__header p { margin: 4px 0 0; color: #758078; font-size: 11px; }
+.actionable-work__controls { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; padding: 0 0 14px; }
+.actionable-work__controls label { display: flex; align-items: center; gap: 8px; font-size: 11px; color: #6d7c70; }
+/* The shared form :is() inherits input-attribute specificity for selects too. */
+.actionable-work__controls select { min-height: 44px!important; border: 1px solid #e8e8e2; border-radius: 10px; padding: 0 9px; background: #fff; color: #26312b; font-size: 12px; }
+.actionable-work :is(button,select,a):focus-visible { outline: 3px solid #244f43; outline-offset: 2px; }
+.actionable-work__read-at { color: #667069; font-size: 11px; padding: 11px 0 0; }
+.actionable-work__pager { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 11px 0 0; }
+.actionable-work__empty { padding: 48px 24px; text-align: center; color: #77867b; }
+.actionable-work__empty strong { display: block; color: #26312b; font-size: 15px; margin: 13px 0 5px; }
+.actionable-work__empty p { font-size: 12px; max-width: 400px; margin: 0 auto 17px; line-height: 1.5; }
+
+/* Prototype action buttons. */
+.actionable-work button { min-width: 44px; min-height: 44px; padding: 8px 13px; border: 1px solid #e8e8e2; border-radius: 10px; background: #fff; color: #26312b; font-weight: 600; font-size: 12px; white-space: nowrap; }
+.actionable-work button:hover:not(:disabled) { background: #f4f7f3; }
+.actionable-work button:disabled { cursor: not-allowed; opacity: .45; }
+.actionable-work .actionable-work__header button, .actionable-work__controls button { min-height: 44px; padding: 6px 10px; font-size: 11px; }
+.actionable-work .actionable-work__clear { border: 0; background: transparent; color: #758078; font-weight: 500; }
+.actionable-work .actionable-work__clear:hover:not(:disabled) { background: #f0f4ef; color: #3f6753; }
+.actionable-work > nav { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 14px; padding: 0; font-size: 11px; }
+.actionable-work > nav a { display: inline-flex; align-items: center; min-height: 44px; color: #386e53; font-weight: 700; text-decoration: none; padding: 7px; border-radius: 7px; }
+.actionable-work > nav a:hover { background: #f0f6f0; }
+
+@media (max-width: 700px) {
+  .actionable-work { padding: 13px; border-radius: 13px; }
+  .actionable-work__header { padding: 0 0 8px; }
+  .actionable-work__controls { padding: 0 0 11px; gap: 6px; }
+  .actionable-work__controls :is(button, select) { flex: 1; padding-left: 5px; padding-right: 5px; font-size: 11px; }
+  .actionable-work__controls label { flex: 1 1 100%; }
+  .actionable-work .actionable-work__row > :is(button,a) { display: flex; align-items: flex-start; justify-content: space-between; gap: 9px; min-height: 92px; padding: 13px 11px 13px 15px; flex-wrap: wrap; }
+  .actionable-work .actionable-work__row .actionable-work__row-text { flex: 1 1 100%; min-width: 0; }
+  .actionable-work .actionable-work__row-heading strong { font-size: 12px; white-space: normal; line-height: 1.3; }
+  .actionable-work .actionable-work__row-text small { white-space: normal; line-height: 1.4; }
+  .actionable-work .actionable-work__row .my-work-status { justify-self: flex-start; }
+  .actionable-work__read-at, .actionable-work__pager, .actionable-work > nav { padding-left: 0; padding-right: 0; }
+}

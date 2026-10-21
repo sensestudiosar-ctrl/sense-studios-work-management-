@@ -44,6 +44,8 @@ import { ProjectTemplateService } from "./project-template.service.js";
 import { ProjectTemplateController } from "./project-template.controller.js";
 import { TaskController } from "./task.controller.js";
 import { TaskService } from "./task.service.js";
+import { MyWorkController } from "./my-work.controller.js";
+import { MyWorkService } from "./my-work.service.js";
 import { TaskRecurrenceController } from "./task-recurrence.controller.js";
 import { TaskRecurrenceService } from "./task-recurrence.service.js";
 import { DocumentController } from "./document.controller.js";
@@ -79,8 +81,11 @@ import { ExternalPortalController } from "./external-portal.controller.js";
 import { ExternalAccessController } from "./external-access.controller.js";
 
 @Module({
-  controllers: [AiAssistanceController, AutomationController, IntegrationController, DashboardController, PerformanceController, ExternalPortalIdentityController, ExternalPortalController, ExternalAccessController, SiteController, WorkforceController, TimeController, SkillsController, LibraryController, TrainingController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
+  controllers: [MyWorkController, AiAssistanceController, AutomationController, IntegrationController, DashboardController, PerformanceController, ExternalPortalIdentityController, ExternalPortalController, ExternalAccessController, SiteController, WorkforceController, TimeController, SkillsController, LibraryController, TrainingController, TurnkeyController, ClientTurnkeyController, HealthController, IdentityController, OrganizationController, NotificationsController, AuditRetentionController, ApprovalsController, CrmController, ProjectController, ProjectTemplateController, TaskController, TaskRecurrenceController, DocumentController, RevisionController, ReviewController, ClientPortalIdentityController, ClientPortalAccessController, ClientPortalScopeController, ClientReviewController, ClientPortalReviewController, GalleryController, PortfolioController, ClientGalleryController, PublicPortfolioController],
   providers: [
+    DatabaseService,
+    { provide: DATABASE_PROBE, useExisting: DatabaseService },
+    MyWorkService,
     ExternalPortalService,
     ExternalPortalIdentityService,
     SiteService,
@@ -96,8 +101,6 @@ import { ExternalAccessController } from "./external-access.controller.js";
     LibraryService,
     TrainingService,
     { provide: RUNTIME_CONFIG, useFactory: loadRuntimeConfig },
-    DatabaseService,
-    { provide: DATABASE_PROBE, useExisting: DatabaseService },
     IdentityService,
     OrganizationService,
     AuthorizationService,

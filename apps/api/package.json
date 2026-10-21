@@ -1,8 +1,9 @@
 {
   "name": "@sense/api",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
+  "files": ["dist", "prisma", "assets", "package.json"],
   "scripts": {
     "dev": "tsx watch src/main.ts",
     "build": "pnpm db:generate && tsc -p tsconfig.build.json",

@@ -9,6 +9,23 @@ test-results/
 !.env.example
 !.env.test.example
 !.env.compose.example
+.mcp.json
 apps/api/src/generated/
 *.log
 .DS_Store
+verify-run.txt
+.repair-deps-state
+
+# Sandbox node_modules repair artifacts (transient, not project code)
+/scripts/repair-*.mjs
+/scripts/fix-node-modules.mjs
+/scripts/index-store.mjs
+/.repair-state
+/.repair-state2
+/.repair.out
+/.store-index.json
+
+# Local V1 source receipts, test reports and synthetic browser captures.
+/.artifacts/v1/
+/.artifacts/nas/
+/.artifacts/login-auth-tests/

@@ -40,7 +40,7 @@ databaseDescribe("S16 time PostgreSQL and service acceptance", () => {
     const s16 = parsed.port === "56433" && parsed.pathname.endsWith("_test");
     const s25 = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s16_s25_[a-z0-9_]+_test$/.test(parsed.pathname);
     const s26 = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s16_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
-    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s16_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "58440" && /^\/sense_s16_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
     if (!/(?:localhost|127\.0\.0\.1)/.test(parsed.hostname) || (!s16 && !s25 && !s26 && !s27)) {
       throw new Error("Time API acceptance requires a dedicated local S16 or explicitly enabled exact S16/S25/S26/S27 _test database");
     }
@@ -113,7 +113,8 @@ databaseDescribe("S16 time PostgreSQL and service acceptance", () => {
     await expect(database.prisma.$executeRaw`UPDATE time_entry_versions SET data=data || '{"workNote":"forged"}'::jsonb WHERE "entryId"=${entry.id}::uuid AND version=1`).rejects.toThrow();
     await expect(database.prisma.$executeRaw`DELETE FROM time_transitions WHERE "timerId"=${started.id}::uuid AND version=2`).rejects.toThrow();
     expect(await database.prisma.timeEntryVersion.findUniqueOrThrow({ where: { entryId_version: { entryId: entry.id, version: 1 } } })).toMatchObject({ data: expect.objectContaining({ workNote: "Timer segment acceptance" }) });
-  });
+  // This real-clock test deliberately waits 3.3 seconds, in addition to fixture and transactional work.
+  }, 15_000);
 
   it("pauses project timers on actual hold and cancellation, preserves elapsed time and blocks resume", async () => {
     const f = await fixture();

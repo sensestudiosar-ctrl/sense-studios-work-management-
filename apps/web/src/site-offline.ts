@@ -148,6 +148,12 @@ export async function deleteOfflineCommand(key: string): Promise<void> {
   await transaction("readwrite", (store) => store.delete(key));
 }
 
+/** Updates must preserve every account's pending queue without exposing its contents. */
+export async function hasPendingOfflineCommands(): Promise<boolean> {
+  const entries = await transaction<OfflineCommand[]>("readonly", (store) => store.getAll());
+  return entries.some((entry) => entry.status !== "SYNCED");
+}
+
 export async function purgeOfflineAccount(accountId: string): Promise<void> {
   invalidateOfflineWrites(accountId);
   const db = await openDb();

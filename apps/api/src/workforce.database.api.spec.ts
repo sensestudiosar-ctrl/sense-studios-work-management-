@@ -40,7 +40,7 @@ databaseDescribe("S17 workforce PostgreSQL acceptance", () => {
     const s17 = url.port === "56433" && url.pathname.endsWith("_test");
     const s25 = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s17_s25_[a-z0-9_]+_test$/.test(url.pathname);
     const s26 = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s17_s26_[a-z0-9_]+_test$/.test(url.pathname);
-    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s17_s27_[a-z0-9_]+_test$/.test(url.pathname);
+    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "58440" && /^\/sense_s17_s27_[a-z0-9_]+_test$/.test(url.pathname);
     if (!/(?:localhost|127\.0\.0\.1)/.test(url.hostname) || (!s17 && !s25 && !s26 && !s27)) {
       throw new Error("Workforce API acceptance requires a dedicated local S17 or explicitly enabled exact S17/S25/S26/S27 _test database");
     }

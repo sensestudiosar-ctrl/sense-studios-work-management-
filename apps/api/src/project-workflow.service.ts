@@ -110,17 +110,32 @@ export class ProjectWorkflowService {
     return { owner: actor.kind === AccountKind.OWNER, ownerAccountId: actor.kind === AccountKind.OWNER ? actor.accountId : undefined, branches, employees: employees.map((row) => ({ id: row.id, accountId: row.accountId, name: row.account.normalizedEmail, homeBranchId: row.homeBranchId })) };
   }
   async list(actor: ProjectActor, branchId: string | undefined, offset: number, limit: number, filters: { q?: string; stageKey?: string; sort?: "created" | "name" | "milestone"; direction?: "asc" | "desc" } = {}) {
+    if (actor.kind !== AccountKind.OWNER && actor.kind !== AccountKind.STAFF) throw new ForbiddenException("Internal project access is required");
     return this.db.$transaction(async (tx) => {
-      const projects = await tx.project.findMany({ where: { organizationId: actor.organizationId, ...(branchId ? { branchId } : {}) }, orderBy: [{ id: "asc" }], include: { scopes: { orderBy: [{ createdAt: "asc" }, { id: "asc" }] }, branch: { select: { id: true, name: true } }, client: { select: { id: true, name: true } }, currentLead: { select: { account: { select: { normalizedEmail: true } } } } } });
+      const account = await this.activeActor(tx, actor);
+      const self = account.employee;
+      const assignment = { organizationId: actor.organizationId, employeeId: self?.id ?? "", revokedAt: null };
+      // Narrow candidates by the same membership rules used by access(). The
+      // ordinary evaluator still decides every candidate Branch's permission.
+      const membership: Prisma.ProjectWhereInput = actor.kind === AccountKind.OWNER ? {} : { OR: [
+        { branchId: self!.homeBranchId, assignments: { some: assignment } },
+        { assignments: { some: { ...assignment, crossBranchAuthorized: true } } },
+      ] };
+      const projects = await tx.project.findMany({ where: { organizationId: actor.organizationId, ...(branchId ? { branchId } : {}), ...membership }, orderBy: [{ id: "asc" }], include: { scopes: { orderBy: [{ createdAt: "asc" }, { id: "asc" }] }, branch: { select: { id: true, name: true } }, client: { select: { id: true, name: true } }, currentLead: { select: { account: { select: { normalizedEmail: true } } } } } });
+      const branches = [...new Set(projects.map(project => project.branchId))];
+      const permissions = actor.kind === AccountKind.OWNER ? branches.map(() => true) : await this.authorization.evaluatePermissions(actor.accountId,
+        branches.map(id => ({ permissionKey: "project.view", scope: { kind: "BRANCH" as const, organizationId: actor.organizationId, branchId: id } })), tx);
+      const allowedBranches = new Set(branches.filter((_, index) => permissions[index]));
+      const visible = projects.filter(project => allowedBranches.has(project.branchId));
+      const planItems = visible.length ? await tx.projectPlanItem.findMany({ where: { organizationId: actor.organizationId, projectId: { in: visible.map(project => project.id) } }, orderBy: [{ targetAt: "asc" }, { id: "asc" }], select: { projectId: true, kind: true, key: true, label: true, stageKey: true, targetAt: true, completedAt: true } }) : [];
+      const plans = new Map<string, typeof planItems>();
+      for (const item of planItems) { const rows = plans.get(item.projectId) ?? []; rows.push(item); plans.set(item.projectId, rows); }
       const authorized: Array<{ project: typeof projects[number]; currentLeadName: string | null; appliedStageKeys: string[]; nextMilestone: { key: string; label: string; targetAt: Date } | null }> = [];
-      for (const project of projects) {
-        try {
-          await this.access(tx, actor, project, "project.view");
-          const planItems = await tx.projectPlanItem.findMany({ where: { organizationId: actor.organizationId, projectId: project.id }, orderBy: [{ targetAt: "asc" }, { id: "asc" }], select: { kind: true, key: true, label: true, stageKey: true, targetAt: true, completedAt: true } });
-          const milestones = planItems.filter((item) => item.kind === "MILESTONE" && item.completedAt === null && item.targetAt !== null);
+      for (const project of visible) {
+          const items = plans.get(project.id) ?? [];
+          const milestones = items.filter((item) => item.kind === "MILESTONE" && item.completedAt === null && item.targetAt !== null);
           const next = milestones[0];
-          authorized.push({ project, currentLeadName: project.currentLead?.account.normalizedEmail ?? null, appliedStageKeys: [...new Set(planItems.flatMap((item) => item.kind === "STAGE" ? [item.key] : item.stageKey ? [item.stageKey] : []))].sort((a, b) => a.localeCompare(b, "en-US")), nextMilestone: next?.targetAt ? { key: next.key, label: next.label, targetAt: next.targetAt } : null });
-        } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+          authorized.push({ project, currentLeadName: project.currentLead?.account.normalizedEmail ?? null, appliedStageKeys: [...new Set(items.flatMap((item) => item.kind === "STAGE" ? [item.key] : item.stageKey ? [item.stageKey] : []))].sort((a, b) => a.localeCompare(b, "en-US")), nextMilestone: next?.targetAt ? { key: next.key, label: next.label, targetAt: next.targetAt } : null });
       }
       const query = filters.q?.trim().toLocaleLowerCase("en-US");
       const filtered = authorized.filter(({ project, currentLeadName, appliedStageKeys }) => (!filters.stageKey || appliedStageKeys.includes(filters.stageKey)) && (!query || [project.title, project.deliveryType, currentLeadName ?? ""].some((value) => value.toLocaleLowerCase("en-US").includes(query))));

@@ -4,8 +4,10 @@ import { createRequire } from "node:module";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { spawn } from "node:child_process";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 
 const fixtureUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(fixtureUrl && isS27DisposableTestTarget("DATABASE_URL", fixtureUrl));
 const screenshots = resolve(process.env.S26_SCREENSHOT_DIR ?? ".env.s26-tools/screenshots");
 type QueryResult<T> = { rows: T[]; rowCount: number | null };
 type FixtureDatabase = { connect(): Promise<void>; query<T extends Record<string, unknown> = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<QueryResult<T>>; end(): Promise<void> };
@@ -16,8 +18,8 @@ test("S26 Owner saves a report and scoped event rule, then reviews an event gene
   test.skip((process.env.S26_E2E_ENABLED !== "1" && process.env.S27_E2E_ENABLED !== "1") || !fixtureUrl, "Set S26_E2E_ENABLED or S27_E2E_ENABLED with its guarded dedicated PostgreSQL fixture");
   const parsed = new URL(fixtureUrl!);
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
-  if (parsed.port !== "57433" || (!explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
+  const explicitlyEnabledS27Database = (process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname)) || disposableS27Database;
+  if ((parsed.port !== "57433" && !disposableS27Database) || (!explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
     throw new Error("S26 browser acceptance requires the isolated S26 main test database on port 57433");
   }
   const fixtureEnvironment = explicitlyEnabledS27Database ? process.env.S27_TEST_ENV_FILE : process.env.S26_TEST_ENV_FILE;
@@ -38,6 +40,10 @@ test("S26 Owner saves a report and scoped event rule, then reviews an event gene
   const digest = (value: string) => createHash("sha256").update(value).digest("hex");
   let ownerId: string, employeeId: string;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     ownerId = (await db.query<{ id: string }>(`SELECT id FROM accounts WHERE kind='OWNER' AND state='ACTIVE' ORDER BY id LIMIT 1`)).rows[0]?.id ?? "";
     if (!ownerId) {
@@ -124,7 +130,7 @@ test("S26 Owner saves a report and scoped event rule, then reviews an event gene
   const taskResponse = await page.request.post("/api/v1/tasks", { headers: { "X-CSRF-Token": csrf, Origin: new URL(baseURL!).origin }, data: { title: `S26 source event ${suffix}`, type: "NON_PROJECT", priority: "LOW", targetDate: taskDate, ownerEmployeeId: employeeId, reason: "S26 event driven automation browser acceptance" } });
   expect(taskResponse.status()).toBe(201);
   await new Promise<void>((resolveBatch, rejectBatch) => {
-    const helper = resolve(explicitlyEnabledS27Database ? ".env.s27-tools/run-aut-batch-s27.mjs" : ".env.s26-tools/run-aut-batch.mjs");
+    const helper = resolve(process.env.SENSE_RECOVERY_TEST_MANIFEST && disposableS27Database ? "scripts/ci/run-aut-batch-s27.mjs" : explicitlyEnabledS27Database ? ".env.s27-tools/run-aut-batch-s27.mjs" : ".env.s26-tools/run-aut-batch.mjs");
     const child = spawn(process.execPath, [helper, fixtureEnvironment], { cwd: process.cwd(), env: process.env, windowsHide: true, shell: false, stdio: ["ignore", "ignore", "pipe"] });
     let stderr = "";
     child.stderr?.setEncoding("utf8").on("data", (chunk: string) => { stderr += chunk; });
@@ -163,7 +169,7 @@ test("S26 Owner saves a report and scoped event rule, then reviews an event gene
   const taskBeforeDecision = await readTaskState(recommendationTaskTitle);
   if (!taskBeforeDecision) throw new Error("S26 recommendation source task was not persisted");
   await new Promise<void>((resolveBatch, rejectBatch) => {
-    const helper = resolve(explicitlyEnabledS27Database ? ".env.s27-tools/run-aut-batch-s27.mjs" : ".env.s26-tools/run-aut-batch.mjs");
+    const helper = resolve(process.env.SENSE_RECOVERY_TEST_MANIFEST && disposableS27Database ? "scripts/ci/run-aut-batch-s27.mjs" : explicitlyEnabledS27Database ? ".env.s27-tools/run-aut-batch-s27.mjs" : ".env.s26-tools/run-aut-batch.mjs");
     const child = spawn(process.execPath, [helper, fixtureEnvironment], { cwd: process.cwd(), env: process.env, windowsHide: true, shell: false, stdio: ["ignore", "ignore", "pipe"] });
     let stderr = "";
     child.stderr?.setEncoding("utf8").on("data", (chunk: string) => { stderr += chunk; });

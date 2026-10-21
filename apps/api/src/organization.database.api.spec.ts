@@ -122,7 +122,7 @@ databaseApiDescribe("organization and authorization with PostgreSQL", () => {
         expect(history[1]?.reportsToId).toBe(second.id);
 
         const override = await organization.grantEmployeeOverride(owner.id, second.id, {
-          organizationId: org.id, permissionKey: "task.review", effect: PermissionEffect.DENY,
+          organizationId: org.id, permissionKey: "review.decide", effect: PermissionEffect.DENY,
           scope: { scopeKind: PermissionScopeKind.SELF }, reason: "Temporary review restriction"
         });
         const rawSessionSecret = randomBytes(32).toString("base64url");
@@ -131,7 +131,7 @@ databaseApiDescribe("organization and authorization with PostgreSQL", () => {
           accountId: secondAccount.id, tokenHash, csrfTokenHash: createHash("sha256").update("csrf").digest("hex"),
           expiresAt: new Date(Date.now() + 60 * 60_000), userAgent: "S03 integration fixture", ipAddress: "127.0.0.1"
         } });
-        await expect(authorization.assertPermission(secondAccount.id, "task.review", {
+        await expect(authorization.assertPermission(secondAccount.id, "review.decide", {
           kind: "SELF", organizationId: org.id, branchId: branch.id, teamId: team.id, employeeId: second.id
         })).rejects.toBeInstanceOf(ForbiddenException);
         await organization.suspendEmployee(owner.id, second.id, "Suspend integration fixture employee");

@@ -15,6 +15,8 @@ COPY apps/api apps/api
 RUN pnpm --filter @sense/contracts build && pnpm --filter @sense/api build
 
 ENV NODE_ENV=staging
+ARG VCS_REF=development
+LABEL org.opencontainers.image.revision=$VCS_REF
 USER node
 EXPOSE 4000
 CMD ["node", "apps/api/dist/main.js"]

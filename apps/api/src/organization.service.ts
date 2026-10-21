@@ -1,4 +1,5 @@
 import { pauseTimeTimers } from "./time-lifecycle.js";
+import { isKnownPermissionKey } from "@sense/contracts";
 import { BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { AccountKind, AccountState, EmployeeState, NotificationChannel, OrganizationEventType, PermissionEffect, PermissionScopeKind, Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
@@ -22,6 +23,26 @@ export class OrganizationService {
 
   async getOrganization() {
     return this.db.organization.findFirst({ include: { branches: { where: { active: true }, orderBy: { name: "asc" } } } });
+  }
+
+  async myEmployeeProfile(accountId: string) {
+    const account = await this.db.account.findUnique({
+      where: { id: accountId },
+      select: {
+        kind: true, state: true,
+        employee: { select: {
+          id: true, state: true, employeeCode: true, hiredAt: true,
+          homeBranch: { select: { id: true, name: true } },
+          homeTeam: { select: { id: true, name: true } },
+          reportsTo: { select: { id: true, account: { select: { normalizedEmail: true } } } },
+          jobRoleAssignments: { where: { effectiveTo: null, jobRole: { active: true } }, select: { jobRole: { select: { id: true, name: true } } } }
+        } }
+      }
+    });
+    if (!account || account.state !== AccountState.ACTIVE || (account.kind !== AccountKind.OWNER && account.kind !== AccountKind.STAFF) || (account.employee && account.employee.state !== EmployeeState.ACTIVE)) {
+      throw new ForbiddenException("Current internal employee access required");
+    }
+    return { employee: account.employee };
   }
 
   private async settingsOwner(tx: Prisma.TransactionClient, actorId: string) {
@@ -119,6 +140,33 @@ export class OrganizationService {
         reason, after: { id: row.id, name: row.name, description: row.description }
       });
       return row;
+    });
+  }
+
+  async setJobRoleCreationPresentation(actorId: string, roleId: string, input: {
+    organizationId: string;
+    creationPresentation: "EMPLOYEE" | "LEADER" | "SITE" | null;
+    expectedCreationPresentation: "EMPLOYEE" | "LEADER" | "SITE" | null;
+    reason: string;
+  }) {
+    const reason = input.reason.trim();
+    if (reason.length < 10 || reason.length > 1000) throw new BadRequestException("A settings reason is required");
+    return this.db.$transaction(async (tx) => {
+      await this.settingsOwner(tx, actorId);
+      await tx.$queryRaw`SELECT "id" FROM "job_roles" WHERE "id"=${roleId}::uuid AND "organizationId"=${input.organizationId}::uuid FOR UPDATE`;
+      const current = await tx.jobRole.findFirst({ where: { id: roleId, organizationId: input.organizationId, active: true } });
+      if (!current) throw new NotFoundException("Active job role not found");
+      if (current.creationPresentation !== input.expectedCreationPresentation) throw new ConflictException("Job role presentation changed");
+      if (current.creationPresentation === input.creationPresentation) return current;
+
+      const updated = await tx.jobRole.update({ where: { id: current.id }, data: { creationPresentation: input.creationPresentation } });
+      await recordOrganizationMutation(tx, {
+        organizationId: current.organizationId, eventType: OrganizationEventType.JOB_ROLE_UPDATED,
+        actorId, subjectId: current.id, reason,
+        before: { id: current.id, name: current.name, creationPresentation: current.creationPresentation },
+        after: { id: updated.id, name: updated.name, creationPresentation: updated.creationPresentation }
+      });
+      return updated;
     });
   }
 
@@ -291,7 +339,11 @@ export class OrganizationService {
     const managedIds = this.descendantIds(actor.id, rows);
     const employees = rows.filter((row) => managedIds.has(row.id));
     const managerOptions = [{ id: actor.id, email: actor.account.normalizedEmail }, ...employees.map((employee) => ({ id: employee.id, email: employee.account.normalizedEmail }))];
-    return { employees, managerOptions };
+    const [canManageReporting] = await this.authorization.evaluatePermissions(actorAccountId, [{
+      permissionKey: "org.employee.manage",
+      scope: { kind: "TEAM", organizationId: actor.organizationId, branchId: actor.homeBranchId, teamId: actor.homeTeamId }
+    }]);
+    return { employees, managerOptions, capabilities: { canManageReporting: canManageReporting === true } };
   }
 
   async changeManagedEmployeeReporting(actorAccountId: string, employeeId: string, reportsToId: string, reason: string) {
@@ -389,6 +441,7 @@ export class OrganizationService {
   async grantRolePermission(actorId: string, roleId: string, input: {
     organizationId: string; permissionKey: string; scope: PermissionScopeInput; reason: string;
   }) {
+    if (!isKnownPermissionKey(input.permissionKey)) throw new BadRequestException({ code: "UNKNOWN_PERMISSION_KEY", message: "Choose a supported permission from the catalogue." });
     this.assertScope(input.scope);
     return this.db.$transaction(async (tx) => {
       const role = await tx.jobRole.findFirst({ where: { id: roleId, organizationId: input.organizationId, active: true } });
@@ -439,6 +492,7 @@ export class OrganizationService {
   async grantEmployeeOverride(actorId: string, employeeId: string, input: {
     organizationId: string; permissionKey: string; effect: PermissionEffect; scope: PermissionScopeInput; reason: string; expiresAt?: Date;
   }) {
+    if (!isKnownPermissionKey(input.permissionKey)) throw new BadRequestException({ code: "UNKNOWN_PERMISSION_KEY", message: "Choose a supported permission from the catalogue." });
     this.assertScope(input.scope);
     if (input.expiresAt && input.expiresAt.getTime() <= Date.now()) throw new BadRequestException("Permission expiry must be in the future");
     return this.db.$transaction(async (tx) => {

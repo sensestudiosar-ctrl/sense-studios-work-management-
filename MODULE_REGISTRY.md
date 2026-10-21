@@ -1,5 +1,45 @@
 # Planned module registry
 
+## NAS deployment preparation — 2026-10-16
+
+FND/OPS owns the explicit production package and guarded host-side operation scripts; IDN/ACC/DOC/SITE retain their existing authority and persistence. PWA installation/help and waiting-worker activation compose existing account/project-bound offline storage; no new business model, grant, schema or offline command is introduced. API production startup validates origin/storage/encryption, uses bounded pools and the private one-hop proxy contract; backend authorization remains unchanged. Source preparation is implemented, complete release/NAS acceptance remains IN PROGRESS. See `docs/operations/NAS_IMPLEMENTATION_PROGRESS_2026-10-16.md` and `docs/NAS_DEPLOYMENT.md`.
+
+## Agent 1 D/G/E/H local verification — 2026-10-16
+
+**COMPLETE for Agent1 local development acceptance: D/G/E and H on owned screens (4/4). Technical review found no blocking defect; Owner approved Codex final acceptance on16October2026.**
+
+Current candidate:610files/119migrations, SHA-256 `8cab4afa39fb8350004f1d43f38576fb9f57267be3bf10bc9938d1ae9c7c6abf`. Final approved isolated acceptance passed2/2real Project database cases and5/5browser/bounded-query cases at1440/1024/390/320,60states/120PNGimages, no unexpected server errors. Final directory read:103projects,50returned,11SQLqueries/34ms. API450/63suites, frontend568/57files and root typecheck/lint/build passed within the exact boundaries in the acceptance report; the final CSS-only minimum-height correction additionally passed its own web build and four-width real browser matrix. Both approved targets are stopped, data/evidence preserved; shutdown ports59749/59751/59752/59753 refused connections. Migration119 remains unapplied to retained previews/production. No whole-V1 staff-pilot or production acceptance. Other-agent ownership and stopped MW-I02 remain unchanged.
+
+PRJ uses assignment-narrowed candidates, the unchanged ACC batch permission evaluator and authorized plan metadata. TSK owns immutable migration119 receipts; My Work composes existing canonical sources. Current review: `docs/development/V1_AGENT1_ACCEPTANCE_REVIEW_2026-10-16.md`. Older module updates below are historical snapshots.
+
+## Agent 1 PRJ bounded directory read — IN PROGRESS, 2026-10-16
+
+PRJ directory now validates its active internal actor, narrows Staff candidates to existing current same-home-Branch/explicit cross-Branch assignments, calls ACC's existing batch evaluator with the same `project.view` Branch scopes, and batches plan metadata only for authorized projects. No ACC evaluator/rule, role, schema, workflow or cross-request permission cache was changed. Same79-Project read:323→11queries; real assignment/deny/metadata/revocation regression2cases and API450host units pass. The scoped real browser/query-bound acceptance is running on the already approved59751 target; final acceptance remains open. See V1-07F and `docs/development/V1_AGENT1_BROWSER_PROGRESS_2026-10-16.md`.
+
+## Agent 1 bounded real task persistence — PASS, 2026-10-16
+
+TSK receipt migration119 is verified on the one newly Owner-approved isolated PostgreSQL18.6 target;9 committed receipt/graph/concurrency and26 transactional task cases passed on unchanged603-file source. The target is stopped with data preserved. No retained migration/deployment or authenticated/pilot completion. Full API unit431passed; frontend540passed/8shared-shell/navigation failures remain open. PRJ is adding selected-section-only DOC/REV read composition under V1-07C; ownership/authority stays with DOC/REV, all writes remain in canonical workflows. See `docs/development/V1_AGENT1_PERSISTENCE_PROGRESS_2026-10-16.md`. Historical prepared-only wording below remains valid for retained targets.
+
+## Agent 1 PRJ confirmed-result recovery — IN PROGRESS, 2026-10-15
+
+PRJ browser create now validates/opens its returned canonical Project ID, preserves directory context and distinguishes uncertain writes from post-success read failures. Existing PRJ template receipts own exact-command recovery; non-template uncertainty has no invented retry guarantee. No PRJ backend/schema/permission change. Focused/UI/source evidence and remaining real lifecycle/authenticated acceptance: `docs/development/V1_AGENT1_PROJECT_RECOVERY_PROGRESS_2026-10-15.md`. C/other-agent ownership remains separate.
+
+## Agent 1 TSK receipts and E query composition — IN PROGRESS, 2026-10-15
+
+TSK owns the Owner-approved TaskCreationReceipt table/migration119 and ordinary/child create retry identity, typed normalized command hashes, current-resource replay and canonical evidence transaction. Other task-producing domains/keyless callers retain their existing lifecycle; no generic receipt service or new grant. Migration is prepared only. DASH/My Work composes TSK's bounded query refinements with separate REV/APR source identities and counts. Exact checks/failures/source boundaries and outstanding real persistence/concurrency/authenticated acceptance are in `docs/development/V1_AGENT1_RECEIPT_PROGRESS_2026-10-15.md` and `V1_AGENT1_QUERY_PROGRESS_2026-10-15.md`. Other-agent/C ownership unchanged.
+
+## Agent 1 Project Tasks / project People — IN PROGRESS, 2026-10-15
+
+PRJ browser workspace now embeds TSK's canonical list/composer/detail with fixed project context and projectTask… URL keys. Project People composes existing lead/contributor reads and Owner-only PRJ commands; organization People, shared navigation and Slice C remain with the other agent. No owning backend policy/schema/authority changed. Source gates, scoped styles, synthetic browser evidence and remaining persistence/workflow/acceptance are in `docs/development/V1_AGENT1_PROJECT_PROGRESS_2026-10-15.md`. This supersedes the earlier specific “Project embedding still required” source statement below; feature acceptance remains open.
+
+## V1 shared task creation — IN PROGRESS, 2026-10-15
+
+TSK owns the additive current-context `GET /tasks/creation-options` read and canonical create/subtask commands. It composes existing ACC/PRJ/reporting checks without creating grants or assignments. The browser ordinary/subtask composers share fields and payload construction; Project embedding is still required. Source gates and pending database/concurrency/authenticated acceptance are in `docs/development/V1_TASK_COMPOSER_PROGRESS_2026-10-15.md`. No schema or owning lifecycle change.
+
+## V1 People / Settings source boundary — IN PROGRESS, 2026-10-15
+
+ORG retains employee membership/reporting/roles and suspension/exit; IDN retains invitation/recovery/session ownership; ACC retains current grant evaluation. The new browser `/people` composes those existing workflows, plus an additive `/org/self` projection bound to the current active internal account and a separate `canManageReporting` hint on the existing scoped team read. It introduces no directory table, display-name field, new grant or lifecycle rule. Focused Owner Settings reuse those owners. Current source/unit/mocked-HTTP/synthetic-browser evidence and pending persistence/acceptance are recorded in `docs/development/V1_PEOPLE_SETTINGS_PROGRESS_2026-10-15.md`.
+
 ## S18/S27 current module boundaries — COMPLETE for development/local staging (2026-10-08)
 
 S18 owns SKL skills/change requests, SOPs, private knowledge publication/access and TRN authored training/assessment/effectiveness through authorized service ports. S18 migrations110–114 are accepted unchanged. S27 owns deterministic evidence runs, nonbinding human decisions and receipts in migration115; this bounded implementation has no live inference or external transmission. Combined full gates, 22-target migration status, source109, 154 preserved snapshots, 484-entry source fingerprint and GPT-6.1 Sol-accepted captures are recorded in the completion and acceptance reports. Actual R-104/R-105 operations and production remain unverified; the S27 waiver covers bounded local implementation only.
@@ -75,3 +115,7 @@ S17 is COMPLETE for development/local staging. Final9 pnpm verify exited0:172 AP
 ## S19 owning module — 2026-10-03
 
 TURNKEY owns BOQ/design releases, protected immutable prices, material selection, typed cost/procurement approval bindings, procurement/factory progress, retained operational history and explicit approved client cost shares. Dependencies: PRJ/ACC/AUD/EVT/APR/DOC/PORT. Cross-module production eligibility is supplied by RevisionService; approval policy uses S05 handlers and client reads use S14 project/session authority. S19 is Owner-authorized and COMPLETE for development/local staging; site work/external vendor portals remain later slices. Owned implementation: turnkey.service.ts/controller.ts, the four Turnkey Prisma models and additive S19 migration, staff turnkey.tsx and the client portal cost surface. Acceptance: S19_COMPLETION_REPORT.md.
+
+## October13 source ownership additions — IN PROGRESS
+
+ORG owns optional nullable JobRole creation presentation and reasoned Owner configuration; TSK resolves the current actor's setup hint without granting authority. TSK owns immutable TaskSubtaskLink, canonical child creation/projection and parent completion/dependency graph guards; REV and client-review completion consume the shared transaction helper while retaining their ordinary authority/evidence checks. No new organizational tier, permission or task type is introduced. Prepared forward migrations and API source are not deployed/accepted by this note; full persistence/concurrency/preservation and authenticated UI acceptance remain pending. See docs/development/APP_COMPLETION_PLAN_2026-10-13.md and APP_ACTIONS_SUBTASKS_CONTRACT_2026-10-13.md.

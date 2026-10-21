@@ -57,11 +57,12 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const workspace = page.locator(".task-workspace");
     await expect(workspace.getByRole("heading", { name: "Tasks" })).toBeVisible();
     await workspace.getByRole("button", { name: "Create task", exact: true }).first().click();
-    const form = workspace.getByRole("form", { name: "Create task" });
+    const dialog = page.getByRole("dialog", { name: "Create my task", exact: true });
+    const form = dialog.getByRole("form", { name: "Create task" });
     await form.getByLabel("Task name").fill(title);
     await form.getByLabel("Target date").fill("2026-12-31");
     await form.getByLabel("Reason").fill("Capture planned independent work");
-    await form.getByRole("button", { name: "Create task" }).click();
+    await dialog.getByRole("button", { name: "Create task", exact: true }).click();
     await expect(workspace.getByText("Task created.", { exact: true })).toBeVisible();
     await expect(workspace.getByRole("button", { name: new RegExp(title) })).toBeVisible();
 
@@ -79,7 +80,7 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const transition = page.waitForResponse((response) => response.url().endsWith(`/api/v1/tasks/${taskId}/state`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Start task" }).click();
     expect((await transition).status()).toBe(201);
-    await expect(workspace.locator(".task-state")).toHaveText("In progress");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("In progress");
     const changed = await db.query<{ status: string; version: number; changeCount: string }>(`SELECT t.status::text,t.version,(SELECT count(*) FROM task_status_changes c WHERE c."taskId"=t.id)::text AS "changeCount" FROM tasks t WHERE t.id=$1`, [taskId]);
     expect(changed.rows[0]).toEqual({ status: "IN_PROGRESS", version: 2, changeCount: "2" });
 
@@ -90,20 +91,20 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const waited = page.waitForResponse((response) => response.url().endsWith(`/api/v1/tasks/${taskId}/wait`) && response.request().method() === "POST");
     await waitingForm.getByRole("button", { name: "Move to waiting" }).click();
     expect((await waited).status()).toBe(201);
-    await expect(workspace.locator(".task-state")).toHaveText("Waiting");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("Waiting");
     await expect(workspace.locator(".task-waiting-details").getByText("Supplier credentials pending", { exact: true })).toBeVisible();
     const waitingRow = await db.query<{ status: string; version: number; delayCause: string; responsibleParty: string | null }>(`SELECT t.status::text,t.version,c."delayCause",c."responsibleParty" FROM tasks t JOIN task_status_changes c ON c."taskId"=t.id AND c."taskVersion"=t.version WHERE t.id=$1`, [taskId]);
     expect(waitingRow.rows[0]).toMatchObject({ status: "WAITING", version: 3, delayCause: "Supplier credentials pending", responsibleParty: "Supplier coordinator" });
 
     await page.reload();
-    await expect(workspace.locator(".task-state")).toHaveText("Waiting");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("Waiting");
     await expect(workspace.locator(".task-waiting-details").getByText("Supplier credentials pending", { exact: true })).toBeVisible();
     await workspace.screenshot({ path: testInfo.outputPath("task-waiting.png") });
     await workspace.getByLabel("Reason for resuming").fill("Supplier access has been restored");
     const resumed = page.waitForResponse((response) => response.url().endsWith(`/api/v1/tasks/${taskId}/resume`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Resume task" }).click();
     expect((await resumed).status()).toBe(201);
-    await expect(workspace.locator(".task-state")).toHaveText("In progress");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("In progress");
     const resumedRow = await db.query<{ status: string; version: number; delayCause: string; responsibleParty: string | null }>(`SELECT t.status::text,t.version,c."delayCause",c."responsibleParty" FROM tasks t JOIN task_status_changes c ON c."taskId"=t.id AND c."toStatus"='WAITING'::"TaskStatus" WHERE t.id=$1 ORDER BY c."taskVersion" DESC LIMIT 1`, [taskId]);
     expect(resumedRow.rows[0]).toMatchObject({ status: "IN_PROGRESS", version: 4, delayCause: "Supplier credentials pending", responsibleParty: "Supplier coordinator" });
 
@@ -138,7 +139,7 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     await expect(workspace.locator(".task-history")).toContainText("Committed due date changed from 2026-11-15 to 2026-11-30: Owner approved the revised client commitment");
 
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
-    await expect(workspace.locator(".task-state")).toHaveText("In progress");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("In progress");
     await workspace.getByRole("button", { name: "Edit task", exact: true }).click();
     await workspace.getByLabel("Edit tags").fill("studio,brief");
     await workspace.getByLabel("Edit checklist").fill("[x] Confirm scope\n[ ] Prepare notes");
@@ -151,13 +152,13 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     await expect(workspace.locator(".task-facts").getByText("2026-11-30", { exact: true })).toBeVisible();
     await workspace.getByLabel("Reason for change").fill("All deliverable work is finished");
     await workspace.getByRole("button", { name: "Complete task", exact: true }).click();
-    await expect(workspace.locator(".task-state")).toHaveText("Completed");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("Completed");
     const finished = await db.query<{ status: string; version: number; tags: string[] }>('SELECT status::text,version,tags FROM tasks WHERE id=$1', [taskId]);
     expect(finished.rows[0]).toEqual({ status: "COMPLETED", version: 8, tags: ["studio", "brief"] });
     await page.goto(`/workspace?taskId=${taskId}`);
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
-    await expect(workspace.locator(".task-state")).toHaveText("Completed");
+    await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("Completed");
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await workspace.screenshot({ path: testInfo.outputPath("task-completed.png") });
   } finally {

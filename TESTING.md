@@ -1,5 +1,9 @@
 # Testing architecture — S01–S14 local evidence
 
+## NAS deployment preparation checks — 16 October 2026
+
+API456/64suites and frontend570/58files passed in this session, with91affected web tests after final small UI changes; NAS21safety/orchestration tests passed using mocked Docker/restic plus real temporary filesystem checks. Root typecheck/build and changed-file lint passed; `pnpm verify` stopped at root lint in unrelated concurrently edited `docs/design/_build` files, so no passing whole gate is claimed. Production-build Chromium update/defer/multiple-window/pending-queue/IndexedDB/offline journeys passed at320/390/1024/1440 with8captures; these use a static server/synthetic queue, not authenticated real site workflows or phones. Compose synthetic structure and CI YAML parsing passed. Docker Linux engine is unavailable; no real container/PG17/proxy/NAS/offsite backup/restore, hosted CI or pilot acceptance occurred. Failed initial sandbox temp/loopback/junction runs and exact source boundaries are retained in `docs/operations/NAS_IMPLEMENTATION_PROGRESS_2026-10-16.md`. New commands: `pnpm test:nas`, `pnpm nas:check:compose`, `pnpm nas:check:phones`; host commands are in `docs/NAS_DEPLOYMENT.md`.
+
 ## Current UX gate boundary — 2026-10-08
 
 Current pinned Node24.19.0/pnpm11.19.0 full-run attempt passed typecheck/lint, API unit281/281 and web unit231/231; standalone production build passed. PostgreSQL integration failed10/62 suites (30/373 tests) at existing Owner singleton fixtures, and browser checks did not run. Do not repair or reset accepted clusters to clear fixtures. Both template0/template1 fresh-database creation paths currently fail with missing relation files. The repository’s safe test runner is restricted to approved ports57433/56436; a separate isolated cluster requires Owner approval before widening the endpoint guard. See `docs/ui/UX_CURRENT_VERIFICATION_2026-10-08.md`.

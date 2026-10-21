@@ -1,9 +1,11 @@
 import { test, expect } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 
 const fixtureUrl = process.env.DATABASE_URL ?? process.env.S16_ADMIN_DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const receiverUrl = process.env.TIME_ACCOUNTING_RECEIVER_URL;
 const receiverToken = process.env.S16_TEST_RECEIVER_TOKEN;
 
@@ -13,7 +15,7 @@ test("time workspace persists timer and manual work through correction, approval
   const parsed = new URL(fixtureUrl!);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && ((["56433", "57433"].includes(parsed.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)) || (parsed.port === "57433" && /^\/sense_s16_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)));
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsed.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsed.port !== "56433") || (!parsed.pathname.endsWith("_test") && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
     throw new Error("Time browser acceptance requires a dedicated local PostgreSQL _test database on an approved S16 or exact S25 target");
   }
@@ -40,6 +42,10 @@ test("time workspace persists timer and manual work through correction, approval
   const correctedNote = `S16 correction ${suffix}`;
 
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(61001001)");

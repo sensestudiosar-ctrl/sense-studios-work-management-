@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "releaseRoot": ".env.staging/releases",
+  "activePointer": ".env.staging/active-release.json",
+  "runtimeState": ".env.staging/runtime.json",
+  "controlRoot": ".env.staging/control",
+  "logRoot": ".env.staging/logs",
+  "postgresData": ".env.checkpoint-tools/pg-demo-20261006-a7c9",
+  "postgresBin": "C:/Program Files/PostgreSQL/18/bin",
+  "taskName": "Sense Studios Canonical Staging"
+}

@@ -49,6 +49,18 @@ export class NotificationsController {
     return this.notifications.listInbox(active.row.accountId, cursor);
   }
 
+  /**
+   * Read-only unread summary for the caller's own account. No cursor, no
+   * paging, no cross-account read — the count is derived from the same
+   * predicate as `listInbox`, so a badge and its inbox cannot disagree.
+   */
+  @Get("unread")
+  async unread(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+    response.setHeader("Cache-Control", "no-store");
+    const active = await this.active(request);
+    return this.notifications.unreadSummary(active.row.accountId);
+  }
+
   @Patch(":id/read")
   async markRead(@Req() request: Request, @Param("id") id: string, @Headers("x-csrf-token") csrfToken?: string) {
     const active = await this.verifyMutation(request, csrfToken);

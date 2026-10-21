@@ -1,9 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 type FixtureDatabase = {
   connect(): Promise<void>;
   query<Row extends Record<string, unknown> = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<{ rows: Row[]; rowCount: number | null }>;
@@ -29,7 +31,7 @@ async function seedOfflineSite(page: import("@playwright/test").Page, context: i
   const databaseUrl = new URL(process.env.DATABASE_URL!);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && ["56433", "57433"].includes(databaseUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && databaseUrl.port !== "56433") || (!/^\/sense_s15_s19_s17_s20_s22_.*_test$/.test(databaseUrl.pathname) && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) {
     throw new Error("Offline SITE browser acceptance requires the guarded dedicated localhost S22 or explicitly enabled exact S25 PostgreSQL database on port 56433");
   }
@@ -51,6 +53,10 @@ async function seedOfflineSite(page: import("@playwright/test").Page, context: i
   const employeeId = randomUUID();
   const projectTitle = `S22 offline ${suffix.slice(0, 8)}`;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   let committed = false;
   try {
     await db.query("BEGIN");
@@ -123,11 +129,16 @@ test("offline SITE capture persists locally, replays once, resolves conflicts an
   const s27Preview = process.env.S27_E2E_ENABLED === "1" && previewUrl.hostname === "localhost" && previewUrl.port === "58323";
   if (!s22Preview && !s27Preview) throw new Error("S22 requires its localhost:58223 preview; S27 may use only its explicitly enabled localhost:58323 preview");
   const f = await seedOfflineSite(page, context, baseURL);
-  const screenshotDirectory = resolve(".env.s22-tools", "screenshots");
+  const screenshotDirectory = resolve(process.env.S22_SCREENSHOT_DIR ?? ".env.s22-tools/screenshots");
   mkdirSync(screenshotDirectory, { recursive: true });
   try {
     await context.addCookies([{ name: "sense_sid", value: f.actor.secret, url: preview, httpOnly: true, sameSite: "Strict" }]);
     await page.goto(new URL("/site", preview).toString());
+    // Initial installation deliberately does not claim an open document. Finish
+    // the production precache and navigate online before saving offline work.
+    await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+    await page.reload();
+    await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker?.controller))).toBe(true);
     const workspace = page.locator(".site-workspace");
     await expect(workspace.getByRole("heading", { name: "Site progress and daily work" })).toBeVisible({ timeout: 20_000 });
     await workspace.getByLabel("Active Turnkey project").selectOption(f.projectId);
@@ -192,7 +203,7 @@ test("offline SITE capture persists locally, replays once, resolves conflicts an
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     const coldCapture = await page.locator(".site-offline").screenshot();
     await testInfo.attach(`s22-offline-cold-${testInfo.project.name}`, { body: coldCapture, contentType: "image/png" });
-    writeFileSync(join(resolve(".env.s22-tools", "screenshots"), `s22-offline-cold-${testInfo.project.name}.png`), coldCapture);
+    writeFileSync(join(screenshotDirectory, `s22-offline-cold-${testInfo.project.name}.png`), coldCapture);
     await context.setOffline(false);
     await page.reload();
     await workspace.getByLabel("Active Turnkey project").selectOption(f.projectId);
@@ -260,7 +271,7 @@ test("offline SITE capture persists locally, replays once, resolves conflicts an
     await expect(capture.getByText("Conflict", { exact: true })).toHaveCount(2, { timeout: 30_000 });
     const conflictScreenshot = await capture.locator("div.site-offline-conflict").first().screenshot();
     await testInfo.attach(`s22-offline-conflicts-${testInfo.project.name}`, { body: conflictScreenshot, contentType: "image/png" });
-    writeFileSync(join(resolve(".env.s22-tools", "screenshots"), `s22-offline-conflicts-${testInfo.project.name}.png`), conflictScreenshot);
+    writeFileSync(join(screenshotDirectory, `s22-offline-conflicts-${testInfo.project.name}.png`), conflictScreenshot);
     const serverConflict = capture.locator("li").filter({ hasText: "North slab · base version" }).locator(".site-offline-conflict");
     await expect(serverConflict.getByRole("heading", { name: /Current server values · version/ })).toBeVisible();
     await expect(serverConflict.locator("dl").first()).toContainText("Owner current observation");

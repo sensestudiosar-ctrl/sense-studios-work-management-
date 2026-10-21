@@ -16,7 +16,7 @@ const command = learningCommand;
 export function learningDatabase() {
  const databaseUrl = process.env.S18_DATABASE_URL!; const url = new URL(databaseUrl);
  const s18Target = url.port === "57433" && /^[a-z0-9_]+_test$/.test(url.pathname.slice(1)) && !/^\/sense_s18_s27_[a-z0-9_]+_test$/.test(url.pathname);
- const s27Target = process.env.S27_E2E_ENABLED === "1" && url.port === "57433" && /^\/sense_s18_s27_[a-z0-9_]+_test$/.test(url.pathname);
+ const s27Target = process.env.S27_E2E_ENABLED === "1" && url.port === "58440" && /^\/sense_s18_s27_[a-z0-9_]+_test$/.test(url.pathname);
  if (!["localhost", "127.0.0.1"].includes(url.hostname) || (!s18Target && !s27Target)) throw new Error("S18 requires a dedicated local test target or the explicitly enabled exact S27 suite target");
  return new DatabaseService({ nodeEnv: "test", port: 4219, databaseUrl, webOrigin: "http://localhost:5319", ownerBootstrapEmail: undefined, ownerBootstrapSecret: undefined });
 }

@@ -1,0 +1,3 @@
+# Prisma records exact migration bytes, including historical mixed line endings.
+# Never normalize or convert these files during checkout, staging or export.
+apps/api/prisma/migrations/**/migration.sql -text

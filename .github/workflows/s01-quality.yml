@@ -45,6 +45,9 @@ jobs:
           node-version: 24.19.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm test:nas
+      - run: node --test scripts/ci/fixture-process.test.mjs scripts/ci/browser-progress.test.mjs
+      - run: pnpm nas:check:compose
       - run: pnpm db:generate
       - run: pnpm db:migrate:deploy
       - name: Set the restricted test runtime password
@@ -59,16 +62,22 @@ jobs:
       - name: Run API, PostgreSQL, and web suites with no-skips acceptance
         run: node scripts/ci/run-api-web-tests.mjs
       - run: pnpm build
+        env:
+          NODE_ENV: production
       - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm nas:check:phones
       - run: mkdir -p "$E2E_NAS_ROOT"
       - name: Run browser suites with loopback accounting receiver and no-skips acceptance
+        timeout-minutes: 30
         run: node scripts/ci/run-e2e.mjs
       - name: Upload structured test reports
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-reports-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .artifacts/ci/${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .artifacts/ci/${{ github.run_id }}-${{ github.run_attempt }}
+            test-results/
           if-no-files-found: warn
       - name: Container and recovery rehearsal
         run: |

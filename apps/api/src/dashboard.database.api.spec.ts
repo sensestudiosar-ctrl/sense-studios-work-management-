@@ -22,6 +22,7 @@ import { localCalendarDate } from "./task-recurrence-policy.js";
 import { Prisma } from "./generated/prisma/client.js";
 import type { ProjectActor } from "./project.service.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 
 const url = process.env.S24_DATABASE_URL;
 const suite = url ? describe : describe.skip;
@@ -33,11 +34,12 @@ suite("S24 real PostgreSQL command and evidence boundaries", () => {
   const s24 = parsed.port === "56433" && /^\/sense_s24_[a-z0-9_]+_test$/.test(parsed.pathname);
   const s25 = process.env.S25_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_s25_[a-z0-9_]+_test$/.test(parsed.pathname);
   const s26 = process.env.S26_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
-  const s27 = process.env.S27_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  const s27 = (process.env.S27_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_s27_[a-z0-9_]+_test$/.test(parsed.pathname)) || isS27DisposableTestTarget("S24_DATABASE_URL", url);
   if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || (!s24 && !s25 && !s26 && !s27)) throw new Error("Dashboard requires an exact S24 or explicitly enabled exact S24/S25/S26/S27 loopback test target");
   database = new DatabaseService({nodeEnv:"test",port:4000,databaseUrl:url!,webOrigin:"http://localhost:5173"} as RuntimeConfig);
-  const rows = await database.prisma.$queryRaw<Array<{name:string}>>`SELECT current_database() AS name`;
+  const rows = await database.prisma.$queryRaw<Array<{name:string; port:number}>>`SELECT current_database() AS name, inet_server_port() AS port`;
   if (rows[0]?.name !== parsed.pathname.slice(1)) throw new Error("S24 exact target mismatch");
+  if (isS27DisposableTestTarget("S24_DATABASE_URL", url) && !matchesS27DisposableServer(url!, rows[0]!.name, rows[0]!.port)) throw new Error("S24 disposable server mismatch");
  });
  afterAll(async () => { await database?.onModuleDestroy(); });
  async function fixture(work:(f:{service:DashboardService;fullService:DashboardService;owner:ProjectActor;staff:ProjectActor;other:ProjectActor;tx:Prisma.TransactionClient;tasks:TaskService;time:TimeService;workflow:ProjectWorkflowService;projects:ProjectService;branchId:string;staffEmployeeId:string})=>Promise<void>) {

@@ -1,12 +1,32 @@
 import { createConnection, createServer } from "node:net";
-import { mkdir } from "node:fs/promises";
-import { resolve } from "node:path";
+import { mkdir, readFile, realpath } from "node:fs/promises";
+import { resolve, relative, isAbsolute } from "node:path";
 import { spawn } from "node:child_process";
+import { progressLines } from './browser-progress.mjs';
+import { startFixture, stopFixture } from './fixture-process.mjs';
 import { assertNoSkipped, playwrightCounts, readJson, redact, reportDirectory, writeJson, writeSummary } from "./test-report-utils.mjs";
 
 if (process.env.GITHUB_ACTIONS !== "true" || process.env.NODE_ENV !== "test" || process.env.S27_E2E_ENABLED !== "1") {
   throw new Error("Full browser acceptance requires the guarded GitHub CI environment.");
 }
+const fixtureRoot=await realpath(resolve('.env.s27-tools'));
+const fixtureFile=await realpath(resolve(process.env.SENSE_CI_BROWSER_ENV_FILE??''));
+const fixtureName=relative(fixtureRoot,fixtureFile);
+if(isAbsolute(fixtureName)||!/^s27-fresh-[0-9]+_[a-f0-9]+\.test$/.test(fixtureName))throw new Error('Exact generated browser fixture file required');
+const browserEnvironment={};
+for(const line of (await readFile(fixtureFile,'utf8')).split(/\r?\n/)){
+  if(!line)continue;const match=/^([A-Z][A-Z0-9_]+)=(.*)$/.exec(line);
+  if(!match||Object.hasOwn(browserEnvironment,match[1]))throw new Error('Invalid browser fixture environment');
+  browserEnvironment[match[1]]=match[2];
+}
+if(browserEnvironment.NODE_ENV!=='test'||browserEnvironment.S27_E2E_ENABLED!=='1'||browserEnvironment.S27_TEST_ENV_FILE!==process.env.SENSE_CI_BROWSER_ENV_FILE)throw new Error('Browser fixture activation differs');
+const {isS27DisposableTestTarget}=await import('../../apps/api/src/s27-disposable-test-target.ts');
+const browserUrls=Object.entries(browserEnvironment).filter(([key])=>/^S\d+_(?:SECURITY_|PARITY_)?DATABASE_URL$|^DATABASE_URL$/.test(key));
+if(browserUrls.length!==22)throw new Error('All distinct browser suite targets required');
+for(const [key,value]of browserUrls){
+  if(!isS27DisposableTestTarget(key,value,browserEnvironment))throw new Error('Browser fixture URL does not match its exact manifest');
+}
+Object.assign(process.env,browserEnvironment);
 const reports = reportDirectory();
 const reportFile = resolve(reports, "playwright.json");
 const receiverPort = Number(process.env.S16_TEST_RECEIVER_PORT);
@@ -21,9 +41,8 @@ if (e2eMainDatabase.hostname !== "127.0.0.1" || e2eMainDatabase.port !== "58440"
     !/^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(e2eMainDatabase.pathname)) {
   throw new Error("The browser compatibility database must be the generated disposable S27 main target on loopback port 58440.");
 }
-// One legacy browser guard requires 57433. CI maps that loopback alias to this
-// exact disposable PostgreSQL server; keep all API/Jest and PWA service URLs on 58440.
-e2eMainDatabase.port = "57433";
+// All suites use the fresh browser manifest and its exact live server port.
+// Preserve the manifest-bound server port for all browser and PWA services.
 const playwrightEnv = {
   ...process.env,
   CI: "true",
@@ -44,7 +63,8 @@ function run(program, args, options = {}) {
     const child = spawn(program, args, { cwd: process.cwd(), env: process.env, shell: false, windowsHide: true, ...options });
     const stdout = [];
     const stderr = [];
-    child.stdout?.on("data", (chunk) => stdout.push(chunk));
+    const progress = progressLines(line => process.stdout.write(line), redact);
+    child.stdout?.on("data", (chunk) => { stdout.push(chunk); progress(chunk); });
     child.stderr?.on("data", (chunk) => stderr.push(chunk));
     child.once("error", rejectRun);
     child.once("close", (code) => {
@@ -57,17 +77,6 @@ function run(program, args, options = {}) {
   });
 }
 
-function startProcess(name, program, args, env) {
-  const child = spawn(program, args, {
-    cwd: process.cwd(), env, shell: false, windowsHide: true, stdio: ["ignore", "pipe", "pipe"]
-  });
-  const service = { name, child, logs: [], startError: null };
-  child.stdout.on("data", (chunk) => service.logs.push(chunk));
-  child.stderr.on("data", (chunk) => service.logs.push(chunk));
-  child.once("error", (error) => { service.startError = error; });
-  return service;
-}
-
 async function waitForService(service, probe, label) {
   for (let attempt = 0; attempt < 60; attempt += 1) {
     if (service.startError || service.child.exitCode !== null) throw new Error(`${label} exited before it became ready.`);
@@ -78,16 +87,6 @@ async function waitForService(service, probe, label) {
     await new Promise((resolveWait) => setTimeout(resolveWait, 250));
   }
   throw new Error(`${label} did not become ready on its guarded loopback endpoint.`);
-}
-
-async function stopService(service) {
-  if (!service || service.child.exitCode !== null || service.child.signalCode !== null) return;
-  service.child.kill("SIGTERM");
-  const closed = await Promise.race([
-    new Promise((resolveClose) => service.child.once("close", resolveClose)),
-    new Promise((resolveTimeout) => setTimeout(() => resolveTimeout(null), 5000))
-  ]);
-  if (closed === null) service.child.kill("SIGKILL");
 }
 
 const services = [];
@@ -111,7 +110,7 @@ try {
   for (const port of [58323, 58324, receiverPort]) {
     if (!await portIsFree(port)) throw new Error(`Refusing to use occupied CI fixture port ${port}.`);
   }
-  const pwaApi = startProcess("production PWA API", process.execPath, ["apps/api/dist/main.js"], {
+  const pwaApi = startFixture("production PWA API", process.execPath, ["apps/api/dist/main.js"], {
     ...process.env,
     PORT: "58324",
     WEB_ORIGIN: "http://localhost:58323",
@@ -122,17 +121,17 @@ try {
   services.push(pwaApi);
   await waitForService(pwaApi, "http://127.0.0.1:58324/api/v1/health/ready", "Production PWA API");
 
-  const pwaWeb = startProcess("production PWA preview", "pnpm", [
-    "--filter", "@sense/web", "preview", "--host", "127.0.0.1", "--port", "58323", "--strictPort"
-  ], { ...process.env, API_PROXY_TARGET: "http://127.0.0.1:58324" });
+  const pwaWeb = startFixture("production PWA preview", process.execPath, [
+    resolve("apps/web/node_modules/vite/bin/vite.js"), "preview", "--host", "127.0.0.1", "--port", "58323", "--strictPort"
+  ], { ...process.env, API_PROXY_TARGET: "http://127.0.0.1:58324" }, { cwd: resolve("apps/web") });
   services.push(pwaWeb);
   await waitForService(pwaWeb, "http://127.0.0.1:58323/", "Production PWA preview");
 
-  const receiver = startProcess("accounting receiver", process.execPath, ["scripts/s16-accounting-test-receiver.mjs"], process.env);
+  const receiver = startFixture("accounting receiver", process.execPath, ["scripts/s16-accounting-test-receiver.mjs"], process.env);
   services.push(receiver);
   await receiverReady(receiver);
   const runResult = await run(process.execPath, [
-    "node_modules/@playwright/test/cli.js", "test", "--reporter=github,json"
+    "node_modules/@playwright/test/cli.js", "test", "--global-timeout=1500000", "--reporter=github,json,./scripts/ci/browser-progress.mjs"
   ], { env: playwrightEnv });
   let report;
   try { report = await readJson(reportFile); }
@@ -150,7 +149,11 @@ try {
 } catch (error) {
   failure = error;
 } finally {
-  for (const service of services.reverse()) await stopService(service);
+  for (const service of services.reverse()) {
+    process.stdout.write(`Stopping CI fixture: ${service.name}\n`);
+    try { await stopFixture(service); process.stdout.write(`Stopped CI fixture: ${service.name}\n`); }
+    catch (error) { failure ??= error; }
+  }
 }
 if (failure) {
   for (const service of services) {

@@ -56,6 +56,50 @@ function harness(overrides: { request?: Partial<ApprovalRequest>; accountKind?: 
   return { service, handler, tx, database, request };
 }
 
+describe("Actionable approval source", () => {
+  function sourceHarness(rows: ApprovalRequest[]) {
+    const h = harness();
+    Object.assign(h.tx.organization, { findFirst: async () => ({ id: orgId }) });
+    Object.assign(h.tx.approvalRequest, { findMany: async () => rows });
+    return h;
+  }
+  it("uses decision authority rather than visibility, exact eligible count and one read transaction", async () => {
+    const h = harness();
+    const rows = Array.from({ length: 5002 }, (_, n) => ({ ...h.request, id: `request-${String(n).padStart(5, "0")}`, requesterId: approverId }));
+    const source = sourceHarness(rows);
+    (source.handler.canDecide as jest.Mock).mockImplementation(async (_tx: unknown, _actor: unknown, row: ApprovalRequest) => row.id !== "request-00000");
+    const result = await source.service.actionable(actorId, 5000, 2);
+    expect(result.total).toBe(5001);
+    expect(result.items.map(row => row.sourceId)).toEqual(["request-05001"]);
+    expect(result.items[0]).toMatchObject({ source: "approval", requestId: "request-05001", typeKey: "test.approval", destination: "/decisions?approvalId=request-05001" });
+    expect(result.items[0]).not.toHaveProperty("taskId");
+    expect(source.handler.projectCard).toHaveBeenCalledTimes(1);
+    expect(source.tx.approvalDecision.create).not.toHaveBeenCalled();
+    expect(source.database.prisma.$transaction).toHaveBeenCalledTimes(1);
+  });
+  it("excludes foreign, expired, resolved and forbidden self decisions, preserving a policy self-review exception", async () => {
+    const h = harness();
+    const source = sourceHarness([
+      { ...h.request, id: "self" },
+      { ...h.request, id: "expired", requesterId: approverId, expiresAt: new Date(0) },
+      { ...h.request, id: "resolved", requesterId: approverId, state: ApprovalRequestState.APPROVED },
+      { ...h.request, id: "foreign", requesterId: approverId, organizationId: "foreign" }
+    ]);
+    expect((await source.service.actionable(actorId)).total).toBe(0);
+    source.handler.canSelfApprove = true;
+    expect((await source.service.actionable(actorId)).items.map(row => row.requestId)).toEqual(["self"]);
+  });
+  it("passes current delegation expiry to the identical command policy", async () => {
+    const h = harness();
+    const source = sourceHarness([
+      { ...h.request, id: "expired-delegate", requesterId: approverId, delegationAccountId: actorId, delegationExpiresAt: new Date(0) },
+      { ...h.request, id: "current-delegate", requesterId: approverId, delegationAccountId: actorId, delegationExpiresAt: new Date(Date.now() + 60000) }
+    ]);
+    (source.handler.canDecide as jest.Mock).mockImplementation(async (_tx: unknown, _actor: unknown, _row: unknown, context: { delegated: boolean }) => context.delegated);
+    expect((await source.service.actionable(actorId)).items.map(row => row.requestId)).toEqual(["current-delegate"]);
+    expect(source.tx.approvalRequest.update).not.toHaveBeenCalled();
+  });
+});
 describe("ApprovalService S05 policy and transaction behavior", () => {
   it("uses the registered approver policy and writes request, audit, domain event and outbox through the supplied transaction", async () => {
     const { service, handler, tx } = harness();

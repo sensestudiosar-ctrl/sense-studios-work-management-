@@ -1,0 +1,28 @@
+# Fresh partial screenshots
+
+These were captured by this single current-source authenticated journey before its failure. They are not the required completed My Work four-width comparison set. No old or component screenshots are substituted.
+
+- [my-work-designer-initial-1440.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/my-work-designer-initial-1440.png)
+- [tasks-designer-desktop-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-designer-desktop-viewport.png)
+- [tasks-designer-desktop.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-designer-desktop.png)
+- [tasks-desktop-cards-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-desktop-cards-viewport.png)
+- [tasks-desktop-cards.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-desktop-cards.png)
+- [tasks-desktop-list-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-desktop-list-viewport.png)
+- [tasks-desktop-list.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-desktop-list.png)
+- [tasks-detail-desktop.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-detail-desktop.png)
+- [tasks-leader-desktop-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-leader-desktop-viewport.png)
+- [tasks-leader-desktop.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-leader-desktop.png)
+- [tasks-mobile-320-cards-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-320-cards-viewport.png)
+- [tasks-mobile-320-detail.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-320-detail.png)
+- [tasks-mobile-320-list-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-320-list-viewport.png)
+- [tasks-mobile-320-list.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-320-list.png)
+- [tasks-mobile-320-queue-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-320-queue-viewport.png)
+- [tasks-mobile-320.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-320.png)
+- [tasks-mobile-390-cards-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-390-cards-viewport.png)
+- [tasks-mobile-390-detail.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-390-detail.png)
+- [tasks-mobile-390-list-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-390-list-viewport.png)
+- [tasks-mobile-390-list.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-390-list.png)
+- [tasks-mobile-390-queue-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-390-queue-viewport.png)
+- [tasks-mobile-390.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-mobile-390.png)
+- [tasks-site-employee-desktop-viewport.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-site-employee-desktop-viewport.png)
+- [tasks-site-employee-desktop.png](artifacts/acceptance-MW-I02-authenti-25c64-mmands-and-responsive-shell-mw-i02-chromium/tasks-site-employee-desktop.png)

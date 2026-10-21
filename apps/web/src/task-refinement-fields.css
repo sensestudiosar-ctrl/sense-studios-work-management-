@@ -1,0 +1,10 @@
+.task-refinement-fields { grid-column: 1 / -1; min-width: 0; margin: 0; padding: .65rem; border: 1px solid var(--sense-border, #d9d8cd); border-radius: .55rem; }
+.task-refinement-fields legend { padding-inline: .2rem; font-weight: 650; }
+.task-refinement-fields p { margin: 0 0 .3rem; color: var(--sense-ink-muted, #61736b); font-size: .78rem; }
+.task-refinement-choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .15rem .65rem; max-height: 13rem; overflow-y: auto; }
+.task-workspace .task-refinement-fields .task-refinement-choices label { display: flex; flex-direction: row; align-items: center; gap: .5rem; min-height: 44px; min-width: 0; margin: 0; font-size: .85rem; overflow-wrap: anywhere; }
+.task-workspace .task-refinement-fields .task-refinement-choices input[type="checkbox"] { flex: 0 0 auto; width: 20px; min-height: 20px; height: 20px; padding: 0; margin: 0; accent-color: var(--sense-pine, #29463d); }
+.task-refinement-choices label span { min-width: 0; }
+.task-priority-refinement .task-refinement-choices { display: flex; flex-wrap: wrap; max-height: none; }
+.task-priority-refinement .task-refinement-choices label { flex: 1 1 7rem; }
+.task-workspace .task-secondary-filter-grid { align-items: start; }

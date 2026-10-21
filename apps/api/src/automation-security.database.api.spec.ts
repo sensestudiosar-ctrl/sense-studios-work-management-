@@ -20,6 +20,7 @@ import { PerformanceService } from "./performance.service.js";
 import { DashboardService } from "./dashboard.service.js";
 import { AutomationService } from "./automation.service.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 
 const url = process.env.S26_SECURITY_DATABASE_URL;
 const suite = url ? describe : describe.skip;
@@ -39,12 +40,15 @@ suite("S26 committed PostgreSQL automation authorization and evidence checks", (
   beforeAll(async () => {
     const parsed = new URL(url!);
     const s26 = /^\/sense_s26_security_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
-    const s27 = process.env.S27_E2E_ENABLED === "1" && /^\/sense_s26_security_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
-    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || (!s26 && !s27)) throw new Error("Refuse anything except the dedicated S26 security target or explicitly enabled S27 suite target");
+    const s27Legacy = process.env.S27_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s26_security_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+    const s27Disposable = isS27DisposableTestTarget("S26_SECURITY_DATABASE_URL", url);
+    const s27 = s27Legacy || s27Disposable;
+    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || !(s26 && parsed.port === "57433" || s27)) throw new Error("Refuse anything except the dedicated S26 security target or explicitly enabled S27 suite target");
     const config = { nodeEnv: "test", port: 4000, databaseUrl: url!, webOrigin: "http://localhost:5173", nasRoot: ".env.s26-tools/nas" } as RuntimeConfig;
     database = new DatabaseService(config);
-    const names = await database.prisma.$queryRaw<Array<{ name: string }>>`SELECT current_database() AS name`;
+    const names = await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`;
     if (names[0]?.name !== parsed.pathname.slice(1)) throw new Error("S26 security exact database target mismatch");
+    if (s27Disposable && !matchesS27DisposableServer(url!, names[0]!.name, names[0]!.port)) throw new Error("S26 security disposable server mismatch");
     const fixture = await database.prisma.$transaction(async (tx) => {
         const org = await tx.organization.findFirst() ?? await tx.organization.create({ data: { name: "S26 isolated security organization" } });
         const branch = await tx.branch.create({ data: { organizationId: org.id, name: `S26 security branch ${randomUUID()}` } });

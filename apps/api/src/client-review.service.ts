@@ -8,6 +8,7 @@ import { RevisionService } from "./revision.service.js";
 import { ClientPortalIdentityService, type ActiveClientPortalSession } from "./client-portal-identity.service.js";
 import { ClientPortalScopeService } from "./client-portal-scope.service.js";
 import { recordProjectEvent } from "./project-events.js";
+import { assertSubtasksCompleted } from "./task-subtask-policy.js";
 import type { ProjectActor } from "./project.service.js";
 
 type Tx = Prisma.TransactionClient;
@@ -501,6 +502,7 @@ export class ClientReviewService {
         if (item.status === ClientReviewItemStatus.APPROVED && reviewPackage?.status === ClientReviewPackageStatus.APPROVED && final && itemSnapshot && snapshot.title === task.title && snapshot.description === task.description && snapshot.ownerEmployeeId === task.primaryOwnerEmployeeId && snapshot.targetDate === date(task.targetDate) && snapshot.startDate === date(task.startDate) && snapshot.estimatedHours === (task.estimatedHours === null ? null : Number(task.estimatedHours)) && snapshot.planItemId === task.planItemId && JSON.stringify(snapshot.tags) === JSON.stringify(task.tags) && JSON.stringify(snapshot.checklist) === JSON.stringify(task.checklist)) { approved = true; break; }
       }
       if (!approved) throw new ConflictException("Final Primary Client package approval is required before completion");
+      await assertSubtasksCompleted(tx, actor.organizationId, taskId);
       return this.taskStatus(tx, actor.accountId, task, TaskStatus.COMPLETED, input.reason, "task.completed");
     });
   }

@@ -17,7 +17,7 @@ databaseDescribe("S18 Skills real PostgreSQL acceptance", () => {
   beforeAll(async () => {
     const url = new URL(databaseUrl!);
     const legacyS18 = url.port === "56433" && /^[a-z0-9_]+_test$/.test(url.pathname.slice(1));
-    const s27S18 = process.env.S27_E2E_ENABLED === "1" && url.port === "57433" && /^\/sense_s18_s27_[a-z0-9_]+_test$/.test(url.pathname);
+    const s27S18 = process.env.S27_E2E_ENABLED === "1" && url.port === "58440" && /^\/sense_s18_s27_[a-z0-9_]+_test$/.test(url.pathname);
     if (!["localhost", "127.0.0.1"].includes(url.hostname) || (!legacyS18 && !s27S18)) throw new Error("S18 requires a dedicated local test target or the explicitly enabled exact S27 suite target");
     database = new DatabaseService({ nodeEnv: "test", port: 4218, databaseUrl: databaseUrl!, webOrigin: "http://localhost:5318", ownerBootstrapEmail: undefined, ownerBootstrapSecret: undefined });
     const rows = await database.prisma.$queryRaw<Array<{ table: string | null }>>`SELECT to_regclass('skill_ratings')::text AS "table"`;

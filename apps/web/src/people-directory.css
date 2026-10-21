@@ -1,0 +1,61 @@
+.people-directory-filters { display: grid; grid-template-columns: minmax(13rem, 2fr) repeat(3, minmax(8rem, 1fr)); gap: .8rem; align-items: end; margin-block: 1rem; }
+.people-directory-filters label { display: grid; gap: .4rem; font-size: .85rem; font-weight: 600; min-width: 0; }
+.people-directory-filters input, .people-directory-filters select { width: 100%; min-width: 0; }
+.people-directory-list { list-style: none; padding: 0; display: grid; gap: .6rem; }
+.people-directory-list > li { display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 1px solid var(--hairline, #d9d8cd); border-radius: .65rem; background: var(--surface, #fffdf7); }
+.people-directory-list > li > div { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.people-directory-list p { margin: .3rem 0 0; color: var(--muted, #61736b); font-size: .85rem; }
+.people-detail h3 { overflow-wrap: anywhere; }
+.people-detail :focus-visible { outline: 2px solid #b98f49; outline-offset: 4px; }
+.people-route .org-admin { margin-block: 1rem; }
+.people-route .people-administration { padding: 0; border: 0; box-shadow: none; background: transparent; }
+.people-route .org-admin > .sessions-heading-row .eyebrow { display: none; }
+.people-route .org-admin > .sessions-heading-row h2 { font-size: 1.2rem; }
+.people-route .org-admin > .sessions-heading-row { margin-bottom: .5rem; }
+.org-admin--access .org-form-grid, .org-admin--access .org-list-grid { grid-template-columns: minmax(0, 1fr); }
+.staff-identity-disclosure { cursor: pointer; font-weight: 650; }
+.people-directory-filters input[type="search"] { padding: .65rem .75rem; min-height: 44px; border: 1px solid #d9d8cd; border-radius: .5rem; background: #fff; font: inherit; }
+.people-route .people-onboarding { margin-block: 1rem; border: 1px solid #d9d8cd; border-radius: .65rem; padding: 1rem; }
+.people-onboarding > summary { cursor: pointer; font-weight: 650; padding: .35rem 0; }
+.people-route-heading p { max-width: 70ch; }
+.people-personal-links { display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; margin-block: 1rem; }
+.people-self-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); gap: 1rem; }
+.people-self-details dt { color: #61736b; font-size: .85rem; }
+.people-self-details dd { margin: .3rem 0 0; overflow-wrap: anywhere; }
+/* task-empty-state pattern (icon + title + optional action), used by the
+   directory list, the notification inbox list and the approval queue. The
+   container/icon rules are generic because they are additive; the action
+   button is scoped to the surface it belongs to so it never overrides the
+   task or project modules' own empty-state styling. */
+.task-empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .75rem; padding: 3.5rem 2rem; border: 1px dashed #b5c3b4; border-radius: .65rem; background: #f7faf4; text-align: center; margin-top: 1rem; }
+.task-empty-state__icon { width: 2.8rem; height: 2.8rem; flex: none; fill: none; stroke: #b5c3b4; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.task-empty-state__title { margin: 0; color: #50645b; font-size: .92rem; line-height: 1.5; max-width: 40ch; }
+/* The approval queue's existing dashed-card rule (.approval-queue-empty)
+   keeps its own padding; only the notification inbox list is restyled. */
+.notification-center .task-empty-state { padding: 2.6rem 1.5rem; }
+.people-directory .task-empty-state__action { margin-top: .25rem; border: 1px solid #446257; border-radius: .55rem; background: #182c29; color: #fff; padding: .6rem 1rem; font-size: .82rem; font-weight: 650; cursor: pointer; }
+.people-directory .task-empty-state__action:hover { background: #35534a; }
+
+/* Preference-panel empty states keep the existing identity-note typography. */
+.notification-preference-empty { display: flex; flex-direction: column; align-items: flex-start; gap: .2rem; margin-top: .7rem; padding: .9rem 1rem; border: 1px dashed #b5c3b4; border-radius: .65rem; background: #f7faf4; }
+.notification-preference-empty__icon { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: #b5c3b4; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.notification-preference-empty .identity-note { margin-top: .1rem; }
+
+/* Profile detail panel: card styling for the selected person's record. */
+.people-detail {
+  padding: 1.2rem;
+  border: 1px solid var(--hairline, #d9d8cd);
+  border-radius: .75rem;
+  background: var(--surface, #fffdf7);
+}
+.people-detail > h3 { margin: .6rem 0 .4rem; font-size: 1.15rem; }
+
+@media (max-width: 1050px) {
+  .people-directory-filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 540px) {
+  .people-directory-filters { grid-template-columns: minmax(0, 1fr); }
+  .people-directory-list > li { flex-wrap: wrap; gap: .65rem; }
+  .people-directory-list > li > div { flex-basis: 100%; }
+  .people-directory-list .secondary-action { min-height: 44px; display: inline-flex; align-items: center; }
+}

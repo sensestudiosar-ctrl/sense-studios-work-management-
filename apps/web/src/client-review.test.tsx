@@ -24,6 +24,30 @@ function mockFetch(handler: (url: string, init?: RequestInit) => Response | Prom
 beforeEach(() => { vi.restoreAllMocks(); startAuthentication.mockReset(); });
 
 describe("client review portal", () => {
+  it("opens an invited review deep link only after the project and item are in authorized results", async () => {
+    const fetchMock = mockFetch(url => url === "/api/v1/client-portal/projects" ? response({ projects: [project] })
+      : url.endsWith("/reviews/projects/project-1") ? response(reviews)
+      : url.endsWith("/reviews/items/item-1") ? response(item) : response({}, 404));
+    render(<ClientReviewPortal session={primarySession} requestedProjectId="project-1" requestedItemId="item-1" />);
+    expect(await screen.findByRole("heading", { name: /^Client review$/ })).toBeInTheDocument();
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith("/reviews/items/item-1"))).toBe(true);
+  });
+
+  it("does not fetch a foreign deep-link project", async () => {
+    const fetchMock = mockFetch(() => response({ projects: [project] }));
+    render(<ClientReviewPortal session={primarySession} requestedProjectId="foreign-project" requestedItemId="foreign-item" />);
+    expect(await screen.findByText("This project is not available under your current access.")).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not fetch a deep-link item absent from its authorized project package", async () => {
+    const fetchMock = mockFetch(url => url === "/api/v1/client-portal/projects" ? response({ projects: [project] })
+      : url.endsWith("/reviews/projects/project-1") ? response(reviews) : response({}, 404));
+    render(<ClientReviewPortal session={primarySession} requestedProjectId="project-1" requestedItemId="foreign-item" />);
+    expect(await screen.findByText("This item is not available in the selected project.")).toBeInTheDocument();
+    expect(fetchMock.mock.calls.some(([url]) => String(url).includes("foreign-item"))).toBe(false);
+  });
+
   it("loads only authorized projects and shows a safe empty state when there are none", async () => {
     const fetchMock = mockFetch((url) => url === "/api/v1/client-portal/projects" ? response({ projects: [] }) : response({}, 404));
     render(<ClientReviewPortal session={primarySession} />);

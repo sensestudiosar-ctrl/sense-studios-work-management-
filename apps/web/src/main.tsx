@@ -3,6 +3,9 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { App } from "./app.js";
 import "./styles.css";
+import "./studio-theme.css";
+import { PhoneInstall, PwaUpdateNotice } from "./pwa-delivery.js";
+import { ReleaseStatus } from "./release-status.js";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Application root is missing.");
@@ -13,12 +16,15 @@ const PublicPortfolioPage = React.lazy(async () => ({ default: (await import("./
 createRoot(root).render(
   <React.StrictMode>
     <BrowserRouter>
+      <PwaUpdateNotice />
       <Routes>
+        <Route path="/install" element={<PhoneInstall />} />
         <Route path="/client-portal/*" element={<React.Suspense fallback={<p role="status">Loading client portal…</p>}><ClientPortalAuth /></React.Suspense>} />
         <Route path="/external-portal/*" element={<React.Suspense fallback={<p role="status">Loading external portal…</p>}><ExternalPortalWorkspace /></React.Suspense>} />
         <Route path="/portfolio" element={<React.Suspense fallback={<p role="status">Loading portfolio…</p>}><PublicPortfolioPage /></React.Suspense>} />
         <Route path="*" element={<App />} />
       </Routes>
+      <ReleaseStatus />
     </BrowserRouter>
   </React.StrictMode>
 );

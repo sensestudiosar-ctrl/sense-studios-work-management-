@@ -85,6 +85,7 @@ test("Owner applies a versioned template and required milestone gates survive re
     await workspace.getByRole("button", { name: "Overview", exact: true }).click();
     const reason = workspace.getByLabel("Project action reason");
     await reason.fill("Assign eligible delivery lead");
+    await workspace.getByRole("button", { name: "People", exact: true }).click();
     await workspace.getByLabel("Contributor", { exact: true }).selectOption(employeeId);
     await workspace.getByRole("button", { name: "Assign contributor" }).click();
     await expect(reason).toHaveValue("");
@@ -93,6 +94,7 @@ test("Owner applies a versioned template and required milestone gates survive re
     await workspace.getByRole("button", { name: "Set lead" }).click();
     await expect(reason).toHaveValue("");
     const status = workspace.getByLabel("New project status");
+    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
     await reason.fill("Activate templated delivery");
     await status.selectOption("ACTIVE");
     await workspace.getByRole("button", { name: "Change status" }).click();

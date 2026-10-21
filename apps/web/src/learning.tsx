@@ -176,5 +176,5 @@ export function SkillsWorkspace({ csrfToken }: { csrfToken: string }): React.JSX
 }
 
 export function SkillsTrainingWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
-  return <><SkillsWorkspace csrfToken={csrfToken} /><TrainingWorkspace csrfToken={csrfToken} /></>;
+  return <><SkillsWorkspace csrfToken={csrfToken} /><TrainingWorkspace csrfToken={csrfToken} preserveEmployeeQuery /></>;
 }

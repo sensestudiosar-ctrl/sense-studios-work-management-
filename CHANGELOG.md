@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.1] - 2026-10-21
+
+### Changed
+
+- Consolidate the existing Sense frontend, API and shared contracts through the recovery integration branch, preserving historical alternatives and deferring unaccepted client-password migration120.
+- Present factual Dashboard source counts and health scales, add the configured Site employee's authorized snag summary, and restore frontend test-file isolation.
+- Add commit-bound matched staging artifacts, visible web/API release identities, exact database/schema readiness, guarded Windows supervision and release-aware offline delivery.
+- Keep canonical startup commands on the approved artifact workflow; preserve experimental demos and route new UI work into existing application pages.
+
+Recovery acceptance remains in progress until exact-candidate persistence, browser and deployed-runtime checks are recorded. Actual-project and production readiness are not claimed.
+
 ## [0.2.0] - 2026-09-27
 
 ### Added

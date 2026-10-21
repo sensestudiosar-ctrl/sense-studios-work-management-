@@ -43,12 +43,17 @@ describe("S09 task HTTP boundary", () => {
     };
     projects = { actor: jest.fn(async () => ({ accountId, organizationId, kind })) };
     tasks = {
+      actionable: jest.fn(async () => ({ source: "task", total: 0, items: [], offset: 0, limit: 25 })),
+      creationOptions: jest.fn(async () => ({ actorEmployeeId: employeeId, project: null, canAssign: false, canCreate: true, owners: [], collaborators: [], readAt: "2026-10-15T00:00:00Z" })),
       setup: jest.fn(async () => ({ projects: [], employees: [] })),
       list: jest.fn(async () => ({ total: 0, items: [] })),
       attention: jest.fn(async () => ({ total: 0, items: [] })),
       detail: jest.fn(async () => ({ task: { id: taskId } })),
+      subtasks: jest.fn(async () => ({ items: [], parent: null, isSubtask: false, completionBlocked: false, canCreate: true, taskVersion: 2 })),
+      createSubtask: jest.fn(async () => ({ task: { id: taskId }, parentVersion: 3 })),
       dependencyCandidates: jest.fn(async () => ({ items: [] })),
       create: jest.fn(async () => ({ id: taskId })),
+      edit: jest.fn(async () => ({ id: taskId })),
       transition: jest.fn(async () => ({ id: taskId, status: "IN_PROGRESS" })),
       wait: jest.fn(async () => ({ id: taskId, status: "WAITING" })),
       resume: jest.fn(async () => ({ id: taskId, status: "IN_PROGRESS" })),
@@ -79,6 +84,51 @@ describe("S09 task HTTP boundary", () => {
   const taskBody = { title: "Prepare project brief", type: "NON_PROJECT", priority: "HIGH", targetDate: "2026-10-15", reason: "Create assigned studio work" };
   const write = (method: "post" | "put", path: string, body: object) => request(app.getHttpServer())[method](`/api/v1/tasks${path}`).set("Cookie", cookie).set("Origin", origin).set("x-csrf-token", token).send(body);
 
+  it("accepts only a UUID retry key on the session-bound ordinary and child command", async () => {
+    const body = { ...taskBody, idempotencyKey: otherEmployeeId };
+    expect((await write("post", "", body)).status).toBe(201);
+    expect(tasks.create).toHaveBeenCalledWith(expect.objectContaining({ accountId }), body);
+    expect((await write("post", `/${taskId}/subtasks`, { ...body, type: "PROJECT", projectId, expectedParentVersion: 2 })).status).toBe(201);
+    expect((await write("post", "", { ...body, idempotencyKey: "title-as-key" })).status).toBe(400);
+    expect((await write("post", "", { ...body, actorId: accountId })).status).toBe(400);
+  });
+
+  it("parses bounded priority/collaborator filters and preserves the session actor", async () => {
+    const query = `scope=personal&priorities=HIGH,CRITICAL&collaboratorEmployeeIds=${otherEmployeeId}&sort=priority_desc&offset=50&limit=25`;
+    const result = await request(app.getHttpServer()).get(`/api/v1/tasks?${query}`).set("Cookie", cookie);
+    expect(result.status).toBe(200); expect(result.headers["cache-control"]).toBe("no-store");
+    expect(tasks.list).toHaveBeenCalledWith({ accountId, organizationId, kind: "OWNER" }, "personal", 50, 25, { priorities: ["HIGH", "CRITICAL"], collaboratorEmployeeIds: [otherEmployeeId], sort: "priority_desc" });
+    tasks.list.mockClear();
+    for (const invalid of ["priorities=HIGH,HIGH", "priorities=URGENT", "collaboratorEmployeeIds=foreign-person", `collaboratorEmployeeIds=${employeeId},${employeeId}`]) {
+      expect((await request(app.getHttpServer()).get(`/api/v1/tasks?scope=personal&${invalid}`).set("Cookie", cookie)).status).toBe(400);
+    }
+    expect(tasks.list).not.toHaveBeenCalled();
+  });
+
+  it("protects and validates context-specific creation choices without allowing target identity selection", async () => {
+    expect((await request(app.getHttpServer()).get("/api/v1/tasks/creation-options")).status).toBe(401);
+    for (const query of ["projectId=invalid", "employeeId=" + employeeId, "projectId=" + projectId + "&scope=all"]) {
+      const result = await request(app.getHttpServer()).get("/api/v1/tasks/creation-options?" + query).set("Cookie", cookie);
+      expect(result.status).toBe(400);
+    }
+    expect(tasks.creationOptions).not.toHaveBeenCalled();
+    kind = "STAFF";
+    const result = await request(app.getHttpServer()).get("/api/v1/tasks/creation-options?projectId=" + projectId).set("Cookie", cookie);
+    expect(result.status).toBe(200); expect(result.headers["cache-control"]).toBe("no-store");
+    expect(tasks.creationOptions).toHaveBeenCalledWith({ accountId, organizationId, kind: "STAFF" }, projectId);
+  });
+
+  it("exposes an independent actionable source with bounded pagination and current-session guards", async () => {
+    const response = await request(app.getHttpServer()).get("/api/v1/tasks/actionable?offset=3&limit=10").set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(tasks.actionable).toHaveBeenCalledWith(expect.objectContaining({ accountId }), 3, 10);
+    expect((await request(app.getHttpServer()).get("/api/v1/tasks/actionable?limit=101").set("Cookie", cookie)).status).toBe(400);
+    expect(tasks.actionable).toHaveBeenCalledTimes(1);
+    validSession = false;
+    expect((await request(app.getHttpServer()).get("/api/v1/tasks/actionable").set("Cookie", cookie)).status).toBe(401);
+    expect(tasks.actionable).toHaveBeenCalledTimes(1);
+  });
   it("requires a live session and completed Owner identity setup, and sends no-store reads", async () => {
     validSession = false;
     expect((await request(app.getHttpServer()).get("/api/v1/tasks/setup").set("Cookie", cookie)).status).toBe(401);
@@ -98,6 +148,25 @@ describe("S09 task HTTP boundary", () => {
     const result = await request(app.getHttpServer()).get("/api/v1/tasks?scope=personal").set("Cookie", cookie);
     expect(result.status).toBe(200);
     expect(tasks.list).toHaveBeenCalledWith(expect.objectContaining({ accountId }), "personal", 0, 50, { sort: "created_desc" });
+  });
+
+  it("protects and validates versioned subtask creation and keeps authorized reads uncached", async () => {
+    const read = await request(app.getHttpServer()).get(`/api/v1/tasks/${taskId}/subtasks`).set("Cookie", cookie);
+    expect(read.status).toBe(200);
+    expect(read.headers["cache-control"]).toBe("no-store");
+    expect(tasks.subtasks).toHaveBeenCalledWith(expect.objectContaining({ accountId, organizationId }), taskId);
+    const body = { ...taskBody, type: "PROJECT", projectId, expectedParentVersion: 2 };
+    const noCsrf = await request(app.getHttpServer()).post(`/api/v1/tasks/${taskId}/subtasks`).set("Cookie", cookie).set("Origin", origin).send(body);
+    const wrongOrigin = await request(app.getHttpServer()).post(`/api/v1/tasks/${taskId}/subtasks`).set("Cookie", cookie).set("Origin", "https://attacker.test").set("x-csrf-token", token).send(body);
+    const missingVersion = await write("post", `/${taskId}/subtasks`, { ...taskBody, type: "PROJECT", projectId });
+    const forgedLink = await write("post", `/${taskId}/subtasks`, { ...body, parentTaskId: projectId });
+    expect([noCsrf.status, wrongOrigin.status, missingVersion.status, forgedLink.status]).toEqual([403, 403, 400, 400]);
+    expect(tasks.createSubtask).not.toHaveBeenCalled();
+    const valid = await write("post", `/${taskId}/subtasks`, body);
+    expect(valid.status).toBe(201);
+    expect(tasks.createSubtask).toHaveBeenCalledWith(expect.objectContaining({ accountId, organizationId }), taskId, body);
+    tasks.createSubtask.mockImplementationOnce(async () => { throw new ConflictException("Task changed. Refresh and retry"); });
+    expect((await write("post", `/${taskId}/subtasks`, body)).status).toBe(409);
   });
   it("normalizes server filters and rejects invalid filters before list execution", async () => {
     const filtered = await request(app.getHttpServer()).get(`/api/v1/tasks?scope=mine&projectId=${projectId}&ownerEmployeeId=${employeeId}&q=%20Brief%20&status=WAITING`).set("Cookie", cookie);
@@ -163,6 +232,20 @@ describe("S09 task HTTP boundary", () => {
     expect([wrongOrigin.status, noCsrf.status, extra.status, invalidDate.status, invalidVersion.status, extraTransition.status]).toEqual([403, 403, 400, 400, 400, 400]);
     expect(tasks.create).not.toHaveBeenCalled();
     expect(tasks.transition).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["create", "post", "", taskBody],
+    ["createSubtask", "post", `/${taskId}/subtasks`, { ...taskBody, type: "PROJECT", projectId, expectedParentVersion: 2 }],
+    ["edit", "put", `/${taskId}`, { title: taskBody.title, targetDate: taskBody.targetDate, priority: taskBody.priority, reason: taskBody.reason, expectedVersion: 2 }],
+  ] as const)("keeps the 2000-character description boundary for %s before dispatch", async (command, method, path, body) => {
+    expect((await write(method, path, { ...body, description: "x".repeat(2001) })).status).toBe(400);
+    expect(tasks[command]).not.toHaveBeenCalled();
+    const accepted = "x".repeat(2000);
+    expect((await write(method, path, { ...body, description: ` ${accepted} ` })).status).toBe(method === "post" ? 201 : 200);
+    expect(tasks[command]).toHaveBeenCalledTimes(1);
+    const call = tasks[command]!.mock.calls[0]!;
+    expect(call.at(-1)).toMatchObject({ description: accepted });
   });
 
   it("forwards create, transition and reassign requests with normalized strict values and maps stale conflicts", async () => {

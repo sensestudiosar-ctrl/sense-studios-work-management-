@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import { afterEach, beforeEach } from "vitest";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { afterEach, beforeEach, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { WorkspaceLayout } from "./workspace-navigation.js";
 
@@ -12,36 +12,79 @@ beforeEach(() => {
   Object.defineProperty(HTMLDialogElement.prototype, "close", { configurable: true, value(this: HTMLDialogElement) { this.removeAttribute("open"); } });
 });
 
+let previousFetch: typeof window.fetch;
+
 afterEach(() => {
   Object.defineProperty(window, "innerWidth", { configurable: true, value: previousWidth });
   Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
   Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
+  vi.restoreAllMocks();
+  if (previousFetch) window.fetch = previousFetch;
 });
+
+/** Mock the unread endpoint so the badge renders without a network round trip. */
+function stubUnread(count: number): void {
+  previousFetch = window.fetch;
+  window.fetch = vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.includes("/notifications/unread")) {
+      return new Response(JSON.stringify({ unread: count, critical: 0 }), { status: 200, headers: { "Content-Type": "application/json" } });
+    }
+    throw new TypeError("network unavailable");
+  }) as typeof window.fetch;
+}
 
 function renderWorkspace(path: string): void {
   render(<MemoryRouter initialEntries={[path]}><WorkspaceLayout><main>Current page</main></WorkspaceLayout></MemoryRouter>);
 }
 
 describe("workspace navigation", () => {
+  it("applies the studio shell and keeps all mobile destinations accessible", () => {
+    renderWorkspace("/my-work");
+    expect(screen.getByText("Current page").closest(".workspace-layout")).toHaveClass("workspace-layout--my-work");
+    expect(screen.getByText("Current page").closest(".workspace-layout")).toHaveClass("workspace-layout--studio");
+    const mobileMain = screen.getByRole("navigation", { name: "Main workspace destinations" });
+    /* V10 mobile: fixed 5-tab bottom bar (Home/My Work/Projects/Decisions + More button).
+       The More dialog holds every remaining destination. */
+    expect(within(mobileMain).getAllByRole("link").map(link => link.textContent)).toEqual(["Home", "My Work", "Projects", "Decisions"]);
+    expect(within(mobileMain).getByRole("link", { name: "My Work" })).toHaveAttribute("aria-current", "page");
+    expect(mobileMain.querySelectorAll("svg")).toHaveLength(4);
+    const more = screen.getByRole("button", { name: "More" });
+    expect(more.querySelector("svg")).not.toBeNull();
+    fireEvent.click(more);
+    expect(within(screen.getByRole("dialog")).getByRole("link", { name: "Notifications" })).toHaveAttribute("href", "/notifications");
+  });
+
+  it("applies the same studio shell to other routes without applying the personal queue layout", () => {
+    renderWorkspace("/tasks");
+    expect(screen.getByText("Current page").closest(".workspace-layout")).not.toHaveClass("workspace-layout--my-work");
+    expect(screen.getByText("Current page").closest(".workspace-layout")).toHaveClass("workspace-layout--studio");
+    expect(screen.getByRole("button", { name: "More" }).querySelector("svg")).not.toBeNull();
+  });
+
   it("keeps the approved destinations available and marks the direct URL active", () => {
     renderWorkspace("/revisions");
 
     const activeDrawingRegisterLinks = screen.getAllByRole("link", { name: "Drawing register" });
     expect(activeDrawingRegisterLinks.some((link) => link.getAttribute("aria-current") === "page")).toBe(true);
-    const destinations = ["Account & settings", "My Work", "Decisions", "Notifications", "Tasks", "Projects", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Dashboard & reports", "Integrations", "Automation & reports", "Evidence assistance", "Performance", "External access", "Turnkey operations", "Site delivery", "Time", "Workforce", "Learning"];
+    const destinations = ["Account & settings", "My Work", "Decisions", "Notifications", "Tasks", "Projects", "People", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Dashboard", "Integrations", "Automation & reports", "Evidence assistance", "Performance", "External access", "Turnkey operations", "Site delivery", "Time", "Workforce", "Learning"];
 
     const desktopNav = screen.getByRole("navigation", { name: "Workspace navigation" });
-    expect(within(desktopNav).getByRole("heading", { name: "Work" })).toBeInTheDocument();
-    expect(within(desktopNav).getByRole("heading", { name: "People" })).toBeInTheDocument();
-    expect(within(desktopNav).getByRole("heading", { name: "Insights" })).toBeInTheDocument();
-    expect(within(desktopNav).getByRole("heading", { name: "Manage" })).toBeInTheDocument();
-    expect(new Set(within(desktopNav).getAllByRole("link").map(link => String(link.textContent)))).toEqual(new Set(destinations));
+    for (const label of ["Work", "People", "Insights", "Manage"]) {
+      const disclosure = within(desktopNav).getByRole("button", { name: label });
+      expect(disclosure).toBeInTheDocument();
+      if (disclosure.getAttribute("aria-expanded") !== "true") fireEvent.click(disclosure);
+    }
+    const desktopDestinations = destinations.filter(label => label !== "Notifications");
+    expect(new Set(within(desktopNav).getAllByRole("link").map(link => String(link.textContent)))).toEqual(new Set(desktopDestinations));
     const mobileMain = screen.getByRole("navigation", { name: "Main workspace destinations" });
-    expect(within(mobileMain).getAllByRole("link").map((link) => link.textContent)).toEqual(["My Work", "Tasks", "Project documents"]);
+    /* V10: mobile bottom bar shows Home/My Work/Projects/Decisions; remaining
+       destinations are inside the More dialog. "Home" links to /dashboard. */
+    expect(within(mobileMain).getAllByRole("link").map((link) => link.textContent)).toEqual(["Home", "My Work", "Projects", "Decisions"]);
     fireEvent.click(screen.getByRole("button", { name: "More" }));
     const moreLinks = within(screen.getByRole("dialog", { name: "More destinations" })).getAllByRole("link");
     const moreLabels = moreLinks.map(link => String(link.textContent));
-    const acceptedMore = destinations.filter(label => !["My Work", "Tasks", "Project documents"].includes(label));
+    const acceptedMore = destinations.filter(label => !["My Work", "Projects", "Decisions"].includes(label));
     expect(new Set(moreLabels)).toEqual(new Set(acceptedMore));
   });
 
@@ -61,5 +104,36 @@ describe("workspace navigation", () => {
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     expect(more).toHaveFocus();
+  });
+
+  it("badges the More button with the unread count and carries it into the dialog", async () => {
+    stubUnread(3);
+    renderWorkspace("/my-work");
+    await waitFor(() => expect(screen.getByRole("button", { name: /3 unread notifications/ })).toHaveTextContent("3"));
+    // The badge is presentational, so the More button keeps its exact name until there is a count
+    fireEvent.click(screen.getByRole("button", { name: /3 unread notifications/ }));
+    const dialog = screen.getByRole("dialog", { name: "More destinations" });
+    expect(within(dialog).getByRole("link", { name: "Notifications" })).toHaveTextContent("Notifications3");
+  });
+
+  it("caps the badge at 99+ so it cannot push the dialog layout", async () => {
+    stubUnread(1000);
+    renderWorkspace("/my-work");
+    await waitFor(() => expect(screen.getByRole("button", { name: /1000 unread notifications/ })).toHaveTextContent("99+"));
+  });
+
+  it("keeps the More button and destinations unchanged when the count is zero or the request fails", async () => {
+    stubUnread(0);
+    renderWorkspace("/my-work");
+    expect(screen.getByRole("button", { name: "More" })).not.toHaveTextContent("0");
+
+    // A failed request must not invent a count — it must fail silent
+    vi.restoreAllMocks();
+    window.fetch = vi.fn(async () => { throw new TypeError("offline"); }) as typeof window.fetch;
+    cleanup();
+    renderWorkspace("/tasks");
+    await new Promise<void>(resolve => setTimeout(() => { resolve(); }, 20));
+    expect(screen.getByRole("button", { name: "More" })).not.toHaveTextContent("0");
+    expect(screen.getByRole("navigation", { name: "Main workspace destinations" }).querySelectorAll("a")).toHaveLength(4);
   });
 });

@@ -24,7 +24,7 @@
 .project-list-item small { margin-top: .25rem; color: #536174; }
 .project-status-pill { flex: 0 0 auto; padding: .25rem .5rem; border-radius: 999px; background: #edf2f7; color: #354458; font-size: .72rem; font-weight: 750; letter-spacing: .02em; }
 .project-empty, .project-status { margin: 0; padding: 1rem; color: #536174; }
-.project-detail { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e6ed; }
+.project-detail { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e6ed; overflow-wrap: anywhere; }
 .project-context-nav { display: flex; flex-wrap: wrap; gap: .4rem; margin: .8rem 0 1rem; padding: .65rem; border: 1px solid #e0e6ed; border-radius: .65rem; background: #f8fafc; }
 .project-context-nav a, .project-context-nav span { padding: .4rem .65rem; border-radius: .45rem; font-size: .88rem; }
 .project-context-nav a { color: #214f92; font-weight: 650; text-decoration: none; }
@@ -131,8 +131,53 @@
 .project-section-panel[hidden] { display: none; }
 .project-section-links { display: flex; flex-wrap: wrap; gap: .75rem 1rem; align-items: center; }
 .project-section-links a { font-weight: 650; }
+.project-resource-summary { margin-block: 1rem; min-width: 0; }
+.project-resource-count { display: flex; align-items: baseline; flex-wrap: wrap; gap: .45rem; }
+.project-resource-count strong { font-size: 1.5rem; color: var(--project-ink); }
+.project-resource-caption { color: var(--project-muted); font-size: .875rem; }
+.project-resource-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--project-line); }
+.project-resource-list li { padding-block: .7rem; border-bottom: 1px solid var(--project-line); overflow-wrap: anywhere; }
+.project-resource-list small { display: block; margin-top: .25rem; color: var(--project-muted); }
+.project-resource-list a, .project-section-links a { display: inline-flex; align-items: center; min-height: 44px; max-width: 100%; overflow-wrap: anywhere; }
+.project-resource-summary button { min-height: 44px; padding: .55rem .8rem; border: 1px solid var(--project-line); border-radius: var(--sense-radius-control, .55rem); color: var(--project-ink); background: var(--sense-surface, #fff); font: inherit; cursor: pointer; }
+.project-resource-summary :is(a, button):focus-visible, .project-section-links a:focus-visible { outline: 3px solid var(--project-accent); outline-offset: 3px; }
+.project-workspace.is-project-open .project-columns { grid-template-columns: minmax(0, 1fr); }
+.project-task-panel, .project-task-panel .task-workspace { min-width: 0; }
+.project-task-panel .task-workspace { margin-top: 0; }
+.project-task-panel .task-header { flex-wrap: wrap; }
+.project-history li { min-width: 0; overflow-wrap: anywhere; }
+.project-task-panel .task-toolbar { flex-wrap: wrap; }
+.project-task-panel .task-compact-toggle { flex: 0 0 auto; white-space: nowrap; }
+.project-task-panel .task-compact-toggle input { width: auto; }
+.project-task-panel .task-queue-header { display: none; }
+.project-workspace .project-task-panel .task-workspace .task-queue-row { grid-template-columns: minmax(0, 1fr); gap: .5rem; }
+.project-task-panel .task-queue-row > .task-queue-open-main {
+  position: static;
+  inset: auto;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .6rem;
+  align-items: start;
+  height: auto;
+  min-height: 44px;
+  padding: .5rem;
+  text-align: left;
+}
+.project-task-panel .task-queue-open-main > :is(.task-queue-primary, .task-queue-open) { grid-column: 1 / -1; }
+.project-task-panel .task-queue-owner { grid-column: 1 / -1; padding-inline: .5rem; }
 @media (max-width: 760px) {
   .project-section-nav { margin-inline: -.25rem; }
   .project-section-nav button { min-height: 2.75rem; }
   .project-shared-reason { max-width: none; }
+}
+.project-create-fields { display: contents; }
+.project-workspace .project-create-recovery { display: flex; flex-wrap: wrap; gap: .75rem; }
+.project-workspace .project-create-recovery p { flex-basis: 100%; margin: 0; }
+.project-workspace .project-create-recovery button { min-height: 44px; white-space: normal; }
+.project-pagination { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; }
+.project-pagination button { min-height: 44px; }
+@media (max-width: 640px) {
+  .project-pagination { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-pagination span { grid-column: 1 / -1; grid-row: 1; text-align: center; }
+  .project-pagination button { width: 100%; min-width: 0; white-space: normal; }
 }

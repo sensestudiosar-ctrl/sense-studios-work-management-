@@ -22,6 +22,52 @@ describe("read-only approval queue", () => {
     expect(await screen.findByText(/No pending decisions in this list/)).toBeInTheDocument();
   });
 
+  it("optionally hides only a successfully confirmed empty queue", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => response({ items: [], nextCursor: null })));
+    const view = render(<ApprovalQueue title="Decisions awaiting you" hideWhenEmpty />);
+    expect(screen.getByText("Loading pending decisions…")).toBeInTheDocument();
+    await waitFor(() => expect(view.container.querySelector(".approval-queue")).toBeNull());
+  });
+
+  it("keeps an empty parsed fallback visible when the response omits an explicit null cursor", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => response({ items: [] })));
+    render(<ApprovalQueue hideWhenEmpty />);
+    expect(await screen.findByText(/No pending decisions in this list/)).toBeInTheDocument();
+    expect(document.querySelector(".approval-queue")).toBeInTheDocument();
+  });
+
+  it("keeps positive and loading queues visible when empty hiding is enabled", async () => {
+    const never = new Promise<Response>(() => undefined);
+    vi.stubGlobal("fetch", vi.fn()
+      .mockResolvedValueOnce(response({ items: [item], nextCursor: null }))
+      .mockImplementationOnce(() => never));
+    const positive = render(<ApprovalQueue hideWhenEmpty />);
+    expect(await screen.findByRole("heading", { name: "Scope change" })).toBeInTheDocument();
+    positive.unmount();
+
+    render(<ApprovalQueue hideWhenEmpty />);
+    expect(await screen.findByText("Loading pending decisions…")).toBeInTheDocument();
+    expect(document.querySelector(".approval-queue")).toBeInTheDocument();
+  });
+
+  it.each([403, 503])("keeps denied and failed queues visible when empty hiding is enabled (%i)", async (status) => {
+    vi.stubGlobal("fetch", vi.fn(async () => response({}, status)));
+    render(<ApprovalQueue hideWhenEmpty />);
+    expect(await screen.findByRole("alert")).toBeInTheDocument();
+    expect(document.querySelector(".approval-queue")).toBeInTheDocument();
+  });
+
+  it("keeps an explicit approval deep link visible even when its queue page is empty", async () => {
+    window.history.replaceState({}, "", "/my-work?approvalId=approval-empty");
+    vi.stubGlobal("fetch", vi.fn()
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
+      .mockResolvedValueOnce(response({}, 404)));
+    render(<ApprovalQueue hideWhenEmpty />);
+    expect(await screen.findByText(/This decision is no longer pending or is unavailable/)).toBeInTheDocument();
+    expect(document.querySelector(".approval-queue")).toBeInTheDocument();
+    window.history.replaceState({}, "", "/my-work");
+  });
+
   it("keeps request evidence readable and offers no decision controls", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => response({ items: [item], nextCursor: null })));
     render(<ApprovalQueue />);
@@ -68,6 +114,23 @@ describe("read-only approval queue", () => {
     expect(fetchMock.mock.calls[1]?.[0]).toBe("/api/v1/approvals/attention?limit=30&cursor=cursor%20value");
   });
 
+  it("does not append a late cursor response after the queue is refreshed", async () => {
+    let releaseLoadMore: ((value: Response) => void) | undefined;
+    const refreshed = { ...item, id: "approval-fresh", title: "Fresh queue item" };
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(response({ items: [item], nextCursor: "old-cursor" }))
+      .mockImplementationOnce(() => new Promise<Response>((resolve) => { releaseLoadMore = resolve; }))
+      .mockResolvedValueOnce(response({ items: [refreshed], nextCursor: null }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ApprovalQueue />);
+    fireEvent.click(await screen.findByRole("button", { name: "Load more" }));
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    expect(await screen.findByRole("heading", { name: "Fresh queue item" })).toBeInTheDocument();
+    releaseLoadMore?.(response({ items: [{ ...item, id: "approval-stale", title: "Stale cursor item" }], nextCursor: null }));
+    await waitFor(() => expect(screen.queryByRole("heading", { name: "Stale cursor item" })).not.toBeInTheDocument());
+    expect(screen.getByRole("heading", { name: "Fresh queue item" })).toBeInTheDocument();
+  });
+
   it("shows a retryable error without exposing server details", async () => {
     const fetchMock = vi.fn().mockResolvedValueOnce(response({ error: "database password leaked" }, 503))
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }));
@@ -84,5 +147,79 @@ describe("read-only approval queue", () => {
     render(<ApprovalQueue />);
     expect(await screen.findByRole("alert")).toHaveTextContent(/don’t have access to this decision queue/i);
     expect(screen.queryByText(/No pending decisions in this list/)).not.toBeInTheDocument();
+  });
+
+  it("labels retained queue data stale after a same-context refresh failure without rendering it as current", async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(response({ items: [item], nextCursor: "cursor-1" }))
+      .mockResolvedValueOnce(response({ error: "private service detail" }, 503));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ApprovalQueue />);
+    expect(await screen.findByRole("heading", { name: "Scope change" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/couldn’t load pending decisions/i);
+    expect(await screen.findByRole("status")).toHaveTextContent(/Previous decision data is retained but hidden · last successfully refreshed/);
+    expect(screen.queryByRole("heading", { name: "Scope change" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/private service detail/)).not.toBeInTheDocument();
+  });
+
+  it("keeps stale retained data visible when empty hiding is enabled", async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(response({ items: [item], nextCursor: null }))
+      .mockResolvedValueOnce(response({ error: "private service detail" }, 503));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ApprovalQueue hideWhenEmpty />);
+    expect(await screen.findByRole("heading", { name: "Scope change" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/couldn’t load pending decisions/i);
+    expect(await screen.findByText(/Previous decision data is retained but hidden/)).toBeInTheDocument();
+    expect(document.querySelector(".approval-queue")).toBeInTheDocument();
+  });
+
+  it("clears retained items, cursor, and freshness after refresh denial or session loss", async () => {
+    for (const status of [401, 403]) {
+      const fetchMock = vi.fn()
+        .mockResolvedValueOnce(response({ items: [item], nextCursor: "cursor-1" }))
+        .mockResolvedValueOnce(response({}, status));
+      vi.stubGlobal("fetch", fetchMock);
+      const view = render(<ApprovalQueue />);
+      expect(await screen.findByRole("heading", { name: "Scope change" })).toBeInTheDocument();
+      fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+      expect(await screen.findByRole("alert")).toHaveTextContent(status === 401 ? /session ended/i : /don’t have access/i);
+      expect(screen.queryByText(/Previous decision data/)).not.toBeInTheDocument();
+      expect(screen.queryByRole("heading", { name: "Scope change" })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
+      view.unmount();
+    }
+  });
+
+  it("drops the old approval snapshot when approvalId context changes", async () => {
+    window.history.replaceState({}, "", "/my-work?approvalId=approval-one");
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(response({ items: [item], nextCursor: "cursor-1" }))
+      .mockResolvedValueOnce(response(item))
+      .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
+      .mockResolvedValueOnce(response({ error: "private details" }, 404));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ApprovalQueue />);
+    expect(await screen.findByRole("heading", { name: "Scope change" })).toBeInTheDocument();
+    window.history.replaceState({}, "", "/my-work?approvalId=approval-two");
+    window.dispatchEvent(new PopStateEvent("popstate"));
+    expect(await screen.findByText(/This decision is no longer pending or is unavailable/)).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Scope change" })).not.toBeInTheDocument();
+    expect(screen.queryByText(/Previous decision data/)).not.toBeInTheDocument();
+  });
+
+  it("clears approval items and cursor when load-more loses authorization", async () => {
+    const fetchMock = vi.fn()
+      .mockResolvedValueOnce(response({ items: [item], nextCursor: "cursor-1" }))
+      .mockResolvedValueOnce(response({}, 403));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<ApprovalQueue />);
+    expect(await screen.findByRole("heading", { name: "Scope change" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Load more" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/don’t have access/i);
+    expect(screen.queryByRole("heading", { name: "Scope change" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Load more" })).not.toBeInTheDocument();
   });
 });

@@ -1,15 +1,21 @@
 import { BadRequestException, ConflictException, ForbiddenException, NotFoundException } from "@nestjs/common";
 import { jest } from "@jest/globals";
+import { ConflictException, NotFoundException } from "@nestjs/common";
 import { AccountKind, AccountState, EmployeeState, OrganizationEventType } from "./generated/prisma/client.js";
 import { OrganizationService } from "./organization.service.js";
 
 function serviceHarness(overrides: Record<string, unknown> = {}) {
   const tx = {
     $executeRaw: jest.fn().mockResolvedValue(1),
-    account: { findUnique: jest.fn().mockResolvedValue({ id: "account-1", kind: AccountKind.STAFF, state: AccountState.ACTIVE }) },
+    $queryRaw: jest.fn().mockResolvedValue([{ id: "role-1" }]),
+    account: { findUnique: jest.fn().mockResolvedValue({ id: "account-1", kind: AccountKind.STAFF, state: AccountState.ACTIVE, normalizedEmail: "owner@example.test" }) },
     branch: { findFirst: jest.fn().mockResolvedValue({ id: "branch-1", organizationId: "org-1", active: true }) },
     team: { findFirst: jest.fn().mockResolvedValue({ id: "team-1", branchId: "branch-1", organizationId: "org-1", active: true }) },
-    jobRole: { findMany: jest.fn().mockResolvedValue([{ id: "role-1" }, { id: "role-2" }]) },
+    jobRole: {
+      findMany: jest.fn().mockResolvedValue([{ id: "role-1" }, { id: "role-2" }]),
+      findFirst: jest.fn().mockResolvedValue({ id: "role-1", organizationId: "org-1", name: "Designer", active: true, creationPresentation: null }),
+      update: jest.fn().mockResolvedValue({ id: "role-1", organizationId: "org-1", name: "Designer", active: true, creationPresentation: "LEADER" })
+    },
     employee: {
       findUnique: jest.fn().mockResolvedValue(null),
       findFirst: jest.fn().mockResolvedValue({ id: "employee-1", accountId: "account-1", organizationId: "org-1", state: EmployeeState.ACTIVE, homeBranchId: "branch-1", homeTeamId: "team-1", reportsToId: null }),
@@ -132,6 +138,58 @@ describe("OrganizationService S03 transaction behavior", () => {
     expect(tx.organizationEvent.create).toHaveBeenCalledWith({ data: expect.objectContaining({ eventType: OrganizationEventType.EMPLOYEE_JOB_ROLES_CHANGED, actorId: "owner-1", subjectId: "employee-1", reason: "Role change", before: { jobRoleIds: ["role-old"] }, after: { jobRoleIds: ["role-2"] } }) });
   });
 
+  it("locks and reason-audits an active role presentation change, including its exact before and after hint", async () => {
+    const { service, tx } = serviceHarness();
+    tx.jobRole.update.mockResolvedValue({ id: "role-1", organizationId: "org-1", name: "Designer", active: true, creationPresentation: "SITE" });
+    const result = await service.setJobRoleCreationPresentation("owner-1", "role-1", {
+      organizationId: "org-1", creationPresentation: "SITE", expectedCreationPresentation: null,
+      reason: "Configure site task presentation"
+    });
+
+    expect(tx.$queryRaw).toHaveBeenCalledTimes(2);
+    expect(tx.jobRole.findFirst).toHaveBeenCalledWith({ where: { id: "role-1", organizationId: "org-1", active: true } });
+    expect(tx.jobRole.update).toHaveBeenCalledWith({ where: { id: "role-1" }, data: { creationPresentation: "SITE" } });
+    expect(tx.organizationEvent.create).toHaveBeenCalledWith({ data: expect.objectContaining({
+      organizationId: "org-1", eventType: OrganizationEventType.JOB_ROLE_UPDATED, actorId: "owner-1", subjectId: "role-1",
+      reason: "Configure site task presentation",
+      before: { id: "role-1", name: "Designer", creationPresentation: null },
+      after: { id: "role-1", name: "Designer", creationPresentation: "SITE" }
+    }) });
+    expect(result.creationPresentation).toBe("SITE");
+  });
+
+  it("rejects stale presentation hints and treats an unchanged expected value as an unaudited no-op", async () => {
+    const stale = serviceHarness();
+    stale.tx.jobRole.findFirst.mockResolvedValue({ id: "role-1", organizationId: "org-1", name: "Designer", active: true, creationPresentation: "SITE" });
+    await expect(stale.service.setJobRoleCreationPresentation("owner-1", "role-1", {
+      organizationId: "org-1", creationPresentation: "LEADER", expectedCreationPresentation: null,
+      reason: "Correct a stale role hint"
+    })).rejects.toBeInstanceOf(ConflictException);
+    expect(stale.tx.jobRole.update).not.toHaveBeenCalled();
+    expect(stale.tx.organizationEvent.create).not.toHaveBeenCalled();
+
+    const unchanged = serviceHarness();
+    unchanged.tx.jobRole.findFirst.mockResolvedValue({ id: "role-1", organizationId: "org-1", name: "Designer", active: true, creationPresentation: "SITE" });
+    const current = await unchanged.service.setJobRoleCreationPresentation("owner-1", "role-1", {
+      organizationId: "org-1", creationPresentation: "SITE", expectedCreationPresentation: "SITE",
+      reason: "Confirm current role presentation"
+    });
+    expect(current.creationPresentation).toBe("SITE");
+    expect(unchanged.tx.jobRole.update).not.toHaveBeenCalled();
+    expect(unchanged.tx.organizationEvent.create).not.toHaveBeenCalled();
+  });
+
+  it("rejects a missing, inactive, or cross-organization role without changing it", async () => {
+    const { service, tx } = serviceHarness();
+    tx.jobRole.findFirst.mockResolvedValue(null);
+    await expect(service.setJobRoleCreationPresentation("owner-1", "role-1", {
+      organizationId: "other-org", creationPresentation: "EMPLOYEE", expectedCreationPresentation: null,
+      reason: "Set another organization role"
+    })).rejects.toBeInstanceOf(NotFoundException);
+    expect(tx.jobRole.findFirst).toHaveBeenCalledWith({ where: { id: "role-1", organizationId: "other-org", active: true } });
+    expect(tx.jobRole.update).not.toHaveBeenCalled();
+  });
+
   it("suspends staff and revokes session access, employee overrides, and records evidence in one transaction", async () => {
     const { service, tx, identity, database } = serviceHarness();
     tx.employee.findFirst.mockResolvedValue({ id: "employee-1", accountId: "account-1", organizationId: "org-1", state: EmployeeState.ACTIVE });
@@ -163,6 +221,23 @@ describe("OrganizationService S03 transaction behavior", () => {
       kind: "TEAM", organizationId: "org-1", branchId: "branch-1", teamId: "team-1"
     }, tx);
     expect(tx.employeeMembershipHistory.updateMany).not.toHaveBeenCalled();
+  });
+
+  it.each(["projects.read", "task.review", "library.publish", "project.*"])("rejects unsupported permission %s even outside the controller before opening a transaction", async (permissionKey) => {
+    const { service, database } = serviceHarness();
+    const input = { organizationId: "org-1", permissionKey, scope: { scopeKind: "SELF" as const }, reason: "Review access configuration" };
+    await expect(service.grantRolePermission("owner-1", "role-1", input)).rejects.toBeInstanceOf(BadRequestException);
+    await expect(service.grantEmployeeOverride("owner-1", "employee-1", { ...input, effect: "DENY" })).rejects.toBeInstanceOf(BadRequestException);
+    expect(database.prisma.$transaction).not.toHaveBeenCalled();
+  });
+
+  it("keeps historical unknown grants revocable with their original evidence", async () => {
+    const row = { id: "legacy-1", roleId: "role-1", organizationId: "org-1", permissionKey: "legacy.custom", scopeKind: "SELF", branchId: null, teamId: null };
+    const rolePermission = { findFirst: jest.fn().mockResolvedValue(row), updateMany: jest.fn().mockResolvedValue({ count: 1 }) };
+    const { service, tx } = serviceHarness({ rolePermission });
+    await service.revokeRolePermission("owner-1", "role-1", "legacy-1", "Remove a historical unsupported grant");
+    expect(rolePermission.updateMany).toHaveBeenCalledWith(expect.objectContaining({ where: { id: "legacy-1", revokedAt: null } }));
+    expect(tx.organizationEvent.create).toHaveBeenCalledWith({ data: expect.objectContaining({ before: expect.objectContaining({ permissionKey: "legacy.custom" }), after: { revoked: true } }) });
   });
 
   it("rejects duplicate role IDs and future employee start dates", async () => {

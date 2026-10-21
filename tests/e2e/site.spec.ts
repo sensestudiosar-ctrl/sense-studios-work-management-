@@ -1,9 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 type FixtureDatabase = {
   connect(): Promise<void>;
   query<Row extends Record<string, unknown> = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<{ rows: Row[]; rowCount: number | null }>;
@@ -17,7 +19,7 @@ test("site reports, independent snag repair and handover persist across refresh"
   const standardSiteTestTarget = databaseUrl.port === "56433" && databaseUrl.pathname.endsWith("_test");
   const approvedS25MainTarget = process.env.S25_E2E_ENABLED === "1" && databaseUrl.port === "57433" && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
   const approvedS26MainTarget = process.env.S26_E2E_ENABLED === "1" && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
-  const approvedS27MainTarget = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const approvedS27MainTarget = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || (!standardSiteTestTarget && !approvedS25MainTarget && !approvedS26MainTarget && !approvedS27MainTarget)) {
     throw new Error("S20 browser acceptance requires a dedicated localhost PostgreSQL _test database on port 56433");
   }
@@ -37,6 +39,10 @@ test("site reports, independent snag repair and handover persist across refresh"
   let fixtureCommitted = false;
 
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(6092706)");
@@ -245,7 +251,7 @@ test("site reports, independent snag repair and handover persist across refresh"
     await expect(workspace.getByText("Marked and cleaned the slab area")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await testInfo.attach(`s20-site-${testInfo.project.name}`, { body: await page.screenshot({ fullPage: true }), contentType: "image/png" });
-    const screenshotDirectory = resolve(".env.s20-tools", "screenshots");
+    const screenshotDirectory = resolve(process.env.S20_SCREENSHOT_DIR ?? ".env.s20-tools/screenshots");
     mkdirSync(screenshotDirectory, { recursive: true });
     writeFileSync(join(screenshotDirectory, `s20-site-${testInfo.project.name}.png`), await page.screenshot({ fullPage: true }));
 
@@ -254,12 +260,12 @@ test("site reports, independent snag repair and handover persist across refresh"
     const dashboardReady = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard/sources/site" && response.request().method() === "GET", { timeout: 30_000 });
     await page.goto("/dashboard");
     expect((await dashboardReady).status()).toBe(200);
-    await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole("heading", { name: "Dashboard", exact: true, level: 2 })).toBeVisible({ timeout: 30_000 });
     const siteDashboard = page.locator(".dashboard-panel").filter({ has: page.getByRole("heading", { name: `Site: ${projectTitle}` }) });
     await expect(siteDashboard).toBeVisible();
     for (const summary of ["Prepare north slab", "Daily report ·", "Uneven tile edge", "Site handover ·"]) await expect(siteDashboard).toContainText(summary);
     for (const fact of ["COMPLETED", "100", "Marked and cleaned the slab area", "CLOSED", "Tile edge at the north wall needs correction", "Current package complete, passing quality, and closed snag verified"]) await expect(siteDashboard).toContainText(fact);
-    const s24ScreenshotDirectory = resolve(".env.s24-tools", "screenshots");
+    const s24ScreenshotDirectory = resolve(process.env.S24_SCREENSHOT_DIR ?? ".env.s24-tools/screenshots");
     mkdirSync(s24ScreenshotDirectory, { recursive: true });
     await siteDashboard.scrollIntoViewIfNeeded();
     await page.screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-viewport-${testInfo.project.name}.png`), fullPage: false });

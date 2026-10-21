@@ -7,11 +7,15 @@ import { isAbsolute } from "node:path";
 const environment = z.object({
   NODE_ENV: z.enum(["development", "test", "staging", "production"]).default("development"),
   PORT: z.coerce.number().int().min(1).max(65535).default(4000),
+  API_LISTEN_HOST: z.enum(["127.0.0.1", "0.0.0.0"]).default("0.0.0.0"),
   DATABASE_URL: z.url().refine((value) => {
     const protocol = new URL(value).protocol;
     return protocol === "postgresql:" || protocol === "postgres:";
   }, "must be a PostgreSQL URL"),
   WEB_ORIGIN: z.url().default("http://localhost:5173"),
+  DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(50).default(10),
+  TRUST_PROXY_HOPS: z.coerce.number().int().min(0).max(1).default(0),
+  WORKER_HEALTH_PATH: z.preprocess((value) => value === "" ? undefined : value, z.string().refine(isAbsolute, "must be absolute").optional()),
   OWNER_BOOTSTRAP_EMAIL: z.preprocess((value) => value === "" ? undefined : value, z.email().optional()),
   OWNER_BOOTSTRAP_SECRET: z.preprocess((value) => value === "" ? undefined : value, z.string().min(32).optional()),
   BREVO_API_KEY: z.preprocess((value) => value === "" ? undefined : value, z.string().min(1).max(512).optional()),
@@ -35,11 +39,20 @@ const environment = z.object({
   if (value.NODE_ENV === "production" && !value.WEB_ORIGIN.startsWith("https://")) {
     context.addIssue({ code: "custom", path: ["WEB_ORIGIN"], message: "production origin must use HTTPS" });
   }
+  if (value.NODE_ENV === "production") {
+    const origin = URL.canParse(value.WEB_ORIGIN) ? new URL(value.WEB_ORIGIN) : undefined;
+    if (origin && (origin.username || origin.password || origin.pathname !== "/" || origin.search || origin.hash)) {
+      context.addIssue({ code: "custom", path: ["WEB_ORIGIN"], message: "must be an HTTPS origin without credentials, path or query" });
+    }
+    if (!value.NAS_ROOT) context.addIssue({ code: "custom", path: ["NAS_ROOT"], message: "production storage must be configured" });
+    if (!value.EXTERNAL_SHARE_SECRET) context.addIssue({ code: "custom", path: ["EXTERNAL_SHARE_SECRET"], message: "production share encryption must be configured" });
+  }
 });
 
 export interface RuntimeConfig {
   nodeEnv: "development" | "test" | "staging" | "production";
   port: number;
+  apiListenHost?: "127.0.0.1" | "0.0.0.0";
   databaseUrl: string;
   webOrigin: string;
   ownerBootstrapEmail: string | undefined;
@@ -51,6 +64,9 @@ export interface RuntimeConfig {
   externalShareSecret?: string | undefined;
   nasRoot?: string | undefined;
   documentMaxFileBytes?: number | undefined;
+  databasePoolMax?: number | undefined;
+  trustProxyHops?: number | undefined;
+  workerHealthPath?: string | undefined;
 }
 
 export const RUNTIME_CONFIG = Symbol("RUNTIME_CONFIG");
@@ -64,6 +80,7 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
   return {
     nodeEnv: result.data.NODE_ENV,
     port: result.data.PORT,
+    apiListenHost: result.data.API_LISTEN_HOST,
     databaseUrl: result.data.DATABASE_URL,
     webOrigin: new URL(result.data.WEB_ORIGIN).origin,
     ownerBootstrapEmail: result.data.OWNER_BOOTSTRAP_EMAIL?.trim().toLowerCase(),
@@ -74,7 +91,10 @@ export function parseRuntimeConfig(input: NodeJS.ProcessEnv): RuntimeConfig {
     emailVerificationSecret: result.data.EMAIL_VERIFICATION_SECRET,
     externalShareSecret: result.data.EXTERNAL_SHARE_SECRET,
     nasRoot: result.data.NAS_ROOT,
-    documentMaxFileBytes: result.data.DOCUMENT_MAX_FILE_BYTES
+    documentMaxFileBytes: result.data.DOCUMENT_MAX_FILE_BYTES,
+    databasePoolMax: result.data.DATABASE_POOL_MAX,
+    trustProxyHops: result.data.TRUST_PROXY_HOPS,
+    workerHealthPath: result.data.WORKER_HEALTH_PATH
   };
 }
 

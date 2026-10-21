@@ -6,6 +6,37 @@ afterEach(() => vi.unstubAllGlobals());
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
 
 describe("ProjectWorkspace", () => {
+  it("loads summaries only for the selected section and retains canonical project context", async () => {
+    const project = { id: "summary-project", title: "Summary studio", status: "ACTIVE", deliveryType: "DESIGN", version: 1, scopes: [], branch: { id: "branch-1", name: "Mumbai" } };
+    const calls: string[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input); calls.push(url);
+      if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+      if (url.endsWith("/plan")) return response({ plan: null, items: [], history: [], capabilities: {} });
+      if (url === "/api/v1/projects/setup") return response({ owner: false, branches: [project.branch] });
+      if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
+      if (url === `/api/v1/projects/${project.id}`) return response({ project, capabilities: {} });
+      if (url === `/api/v1/documents/projects/${project.id}`) return response({ project: { id: project.id }, files: [{ id: "file-1", fileName: "Specification.pdf", viewOnly: false }] });
+      if (url.startsWith("/api/v1/reviews/inbox?")) return response({ total: 0, items: [] });
+      return response({}, 404);
+    }));
+    render(<ProjectWorkspace csrfToken="csrf" owner={false} />);
+    fireEvent.click(await screen.findByRole("button", { name: /Summary studio/ }));
+    await screen.findByRole("heading", { name: project.title });
+    expect(calls.some(url => url.includes("/documents/") || url.includes("/reviews/"))).toBe(false);
+    fireEvent.click(screen.getByRole("button", { name: "Documents" }));
+    await screen.findByText("Specification.pdf");
+    expect(screen.getByRole("link", { name: "Open documents" })).toHaveAttribute("href", `/documents?projectId=${project.id}`);
+    expect(calls.filter(url => url.includes("/reviews/"))).toHaveLength(0);
+    fireEvent.click(screen.getByRole("button", { name: "Reviews" }));
+    await screen.findByText("No waiting internal review rounds available to you in this project.");
+    expect(screen.queryByText("Specification.pdf")).not.toBeInTheDocument();
+    expect(new URL(calls.find(url => url.includes("/reviews/inbox"))!, "https://sense.invalid").searchParams.get("projectId")).toBe(project.id);
+    fireEvent.click(screen.getByRole("button", { name: "Delivery" }));
+    expect(screen.getByRole("link", { name: "Open delivery plan" })).toHaveAttribute("href", `/projects?projectId=${project.id}&projectSection=plan#project-plan`);
+    expect(calls.some(url => url.includes("/turnkey/"))).toBe(false);
+  });
+
   it("creates a Won-lead Draft project with multiple baseline scopes and CSRF", async () => {
     const branch = { id: "branch-1", name: "Mumbai" };
     const calls: Array<[string, RequestInit | undefined]> = [];
@@ -81,6 +112,7 @@ describe("ProjectWorkspace", () => {
     fireEvent.click(await screen.findByRole("button", { name: /Studio/ }));
     expect(await screen.findByRole("option", { name: "Owner" })).toHaveValue("owner-acct");
     fireEvent.change(await screen.findByLabelText("Project action reason"), { target: { value: "Appoint accountable lead" } });
+    fireEvent.click(screen.getByRole("button", { name: "People" }));
     fireEvent.change(screen.getByLabelText("Project lead"), { target: { value: "emp-1" } });
     fireEvent.click(screen.getByRole("button", { name: "Set lead" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("The latest details are loaded");

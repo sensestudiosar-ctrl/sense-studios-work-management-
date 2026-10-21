@@ -21,6 +21,7 @@ import { DashboardService } from "./dashboard.service.js";
 import { AutomationService, automationEventNames } from "./automation.service.js";
 import { Prisma } from "./generated/prisma/client.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 
 const url = process.env.S26_DATABASE_URL;
 const suite = url ? describe : describe.skip;
@@ -32,11 +33,14 @@ suite("S26 real PostgreSQL automation records, reports, and runs", () => {
   beforeAll(async () => {
     const parsed = new URL(url!);
     const s26 = process.env.S26_E2E_ENABLED === "1" && /^\/sense_s26_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
-    const s27 = process.env.S27_E2E_ENABLED === "1" && /^\/sense_s26_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
-    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || (!s26 && !s27)) throw new Error("Refuse anything except the explicitly enabled dedicated S26/S27 PostgreSQL test target");
+    const s27Legacy = process.env.S27_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s26_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+    const s27Disposable = isS27DisposableTestTarget("S26_DATABASE_URL", url);
+    const s27 = s27Legacy || s27Disposable;
+    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || !(s26 && parsed.port === "57433" || s27)) throw new Error("Refuse anything except the explicitly enabled dedicated S26/S27 PostgreSQL test target");
     database = new DatabaseService({ nodeEnv: "test", port: 4000, databaseUrl: url!, webOrigin: "http://localhost:5173" } as RuntimeConfig);
-    const rows = await database.prisma.$queryRaw<Array<{ name: string }>>`SELECT current_database() AS name`;
+    const rows = await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`;
     if (rows[0]?.name !== parsed.pathname.slice(1)) throw new Error("S26 exact database target mismatch");
+    if (s27Disposable && !matchesS27DisposableServer(url!, rows[0]!.name, rows[0]!.port)) throw new Error("S26 disposable server mismatch");
   });
   afterAll(async () => { await database?.onModuleDestroy(); });
 

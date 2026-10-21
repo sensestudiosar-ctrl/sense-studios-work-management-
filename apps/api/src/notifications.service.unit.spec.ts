@@ -8,6 +8,7 @@ function harness() {
     notification: {
       findFirst: jest.fn(async () => ({ id: "n-1" })),
       findMany: jest.fn(async () => []),
+      count: jest.fn(async () => 0),
       updateMany: jest.fn(async () => ({ count: 1 })),
       createMany: jest.fn(async () => ({ count: 1 })),
     },
@@ -98,5 +99,43 @@ describe("NotificationsService recipient boundaries", () => {
       category: "projects", title: "Update", body: "Bearer credential-value", internalRoute: "/projects/p-1"
     })).rejects.toBeInstanceOf(BadRequestException);
     expect(tx.notification.createMany).not.toHaveBeenCalled();
+  });
+
+  it("scopes unread to the caller's delivered in-app notices with readAt unset, matching listInbox", async () => {
+    const { service, prisma } = harness();
+    const base = {
+      recipientAccountId: "account-current",
+      channel: NotificationChannel.IN_APP,
+      deliveryState: NotificationDeliveryState.DELIVERED,
+      readAt: null
+    };
+    await service.unreadSummary("account-current");
+    expect(prisma.notification.count).toHaveBeenCalledTimes(2);
+    expect(prisma.notification.count).toHaveBeenCalledWith({ where: base });
+    expect(prisma.notification.count).toHaveBeenCalledWith({ where: { ...base, critical: true } });
+    // The where clause is identical to listInbox's, plus readAt — so badge and inbox cannot disagree
+    const baseWithoutReadAt = { ...base };
+    delete (baseWithoutReadAt as Record<string, unknown>).readAt;
+    expect(prisma.notification.count).not.toHaveBeenCalledWith({ where: baseWithoutReadAt });
+  });
+
+  it("keeps critical separate from unread so the total is never inflated", async () => {
+    const { service, prisma } = harness();
+    // Promise.all resolves both counts; mockResolvedValueOnce queues in call order.
+    prisma.notification.count.mockResolvedValueOnce(7); // unread total
+    prisma.notification.count.mockResolvedValueOnce(4); // critical subset
+    const summary = await service.unreadSummary("account-current");
+    expect(summary).toEqual({ unread: 7, critical: 4 });
+    // Critical is reported alongside unread, never folded into it
+    expect(summary.critical).toBeLessThan(summary.unread);
+  });
+
+  it("returns zero without querying beyond the account boundary", async () => {
+    const { service, prisma } = harness();
+    prisma.notification.count.mockResolvedValue(0);
+    const summary = await service.unreadSummary("account-current");
+    expect(summary).toEqual({ unread: 0, critical: 0 });
+    // Exactly two counts: one for unread total, one for critical. No paging, no foreign reads.
+    expect(prisma.notification.count).toHaveBeenCalledTimes(2);
   });
 });

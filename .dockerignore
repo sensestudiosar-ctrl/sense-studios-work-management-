@@ -1,4 +1,9 @@
 .git
+.artifacts
+.claude
+.codex
+.agents
+**/*.bak*
 node_modules
 **/node_modules
 **/dist

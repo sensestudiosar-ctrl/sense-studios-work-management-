@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { s18ScreenshotPath } from "./s18-screenshot.js";
 
 const databaseUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const suffix = randomUUID();
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 type PgClient = {
@@ -18,7 +20,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
   page.setDefaultTimeout(10_000);
   if (!databaseUrl) throw new Error("DATABASE_URL must point to the same dedicated local test database used by the API; Library browser acceptance never skips silently");
   const parsed = new URL(databaseUrl);
-  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1));
+  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1)) || disposableS27Database;
   const ciFixture = process.env.CI === "true" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "56433" && /^sense_[a-z0-9_]+_ci_test$/.test(parsed.pathname.slice(1));
   if (!localFixture && !ciFixture) throw new Error("Library browser acceptance requires a dedicated local or CI PostgreSQL test database");
   const require = createRequire(resolve("apps/api/package.json"));
@@ -31,6 +33,10 @@ test("Owner publishes private Library file history and staff acknowledges exact 
   const title = `Library acceptance ${suffix.slice(0, 8)}`;
   const pdfBytes = Buffer.from("%PDF-1.7\nPrivate Library acceptance document\n%%EOF\n");
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(61001805)");
@@ -89,7 +95,7 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await workspace.getByRole("link", { name: "Library", exact: true }).click();
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
     await expect(workspace.getByRole("button", { name: "Acknowledge version 1" })).toBeVisible();
-    const acknowledgementResponse = page.waitForResponse(response => response.url().includes("/api/v1/library/versions/" + version1.rows[0]!.id + "/acknowledgements") && response.request().method() === "POST");
+    const acknowledgementResponse = page.waitForResponse(response => response.url().endsWith(`/api/v1/library/versions/${version1.rows[0]!.id}/acknowledgements`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Acknowledge version 1" }).click();
     const acknowledgement = await acknowledgementResponse;
     expect(acknowledgement.ok(), await acknowledgement.text()).toBe(true);
@@ -139,7 +145,11 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await expect(workspace.getByText("Read the current site safety standard.")).toBeVisible();
     await expect(workspace.getByRole("link", { name: /safety-guide\.pdf.*Open private file/ })).toBeVisible();
     await expect(workspace.getByRole("button", { name: "Acknowledge version 2" })).toBeVisible();
+    const secondAcknowledgementResponse = page.waitForResponse(response => response.url().endsWith(`/api/v1/library/versions/${version2Id}/acknowledgements`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Acknowledge version 2" }).click();
+    const secondAcknowledgement = await secondAcknowledgementResponse;
+    expect(secondAcknowledgement.ok(), await secondAcknowledgement.text()).toBe(true);
+    expect(await secondAcknowledgement.json()).toMatchObject({ versionId: version2Id, acknowledged: true });
     await expect(workspace.getByText("Acknowledgement recorded for this exact version.")).toBeVisible();
     expect((await db.query('SELECT count(*)::int AS count FROM library_acknowledgements WHERE "employeeId"=$1 AND "versionId" IN ($2,$3)', [employeeId, version1.rows[0]!.id, version2Id])).rows[0]?.count).toBe(2);
 

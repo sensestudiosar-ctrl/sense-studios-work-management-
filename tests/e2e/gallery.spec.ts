@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -14,11 +15,12 @@ test("Owner curates exact S14 R0, client views it, and public derivative publica
   test.skip(process.env.S15_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1" && process.env.S27_E2E_ENABLED !== "1", "Set S15_E2E_ENABLED=1, S25_E2E_ENABLED=1, or S27_E2E_ENABLED=1 for approved persisted browser acceptance");
   test.skip(!process.env.DATABASE_URL || !process.env.NAS_ROOT, "Dedicated S15 test database and NAS_ROOT are required");
   const databaseUrl = process.env.DATABASE_URL!;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
   const parsed = new URL(databaseUrl);
   const explicitlyEnabledS15Database = process.env.S15_E2E_ENABLED === "1" && /^\/sense_s15_[a-z0-9_]*_test$/.test(parsed.pathname);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && ((["56433", "57433"].includes(parsed.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)) || (parsed.port === "57433" && /^\/sense_s15_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)));
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsed.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsed.port !== "56433") || (!explicitlyEnabledS15Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) throw new Error("Gallery E2E requires the explicitly enabled isolated S15 or exact S25/S26/S27 database on a local test port");
 
   const require = createRequire(resolve("apps/api/package.json"));
@@ -54,6 +56,10 @@ test("Owner curates exact S14 R0, client views it, and public derivative publica
 
   try {
     await pg.connect();
+  if (disposableS27Database) {
+    const identity = await pg.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
     const organization = await database.prisma.organization.findFirstOrThrow();
     const ownerAccount = await database.prisma.account.findFirst({ where: { kind: AccountKind.OWNER, state: "ACTIVE" } }) ?? await database.prisma.account.create({ data: { normalizedEmail: `s15-gallery-owner-${suffix}@example.test`, kind: AccountKind.OWNER, state: "ACTIVE" } });
     const owner = { accountId: ownerAccount.id, organizationId: organization.id, kind: AccountKind.OWNER };
@@ -162,13 +168,14 @@ test("Owner curates exact S14 R0, client views it, and public derivative publica
     await context.addCookies([{ name: "sense_client_sid", value: signIn.secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/client-portal/");
     await expect(page.getByRole("heading", { name: "Client portal account" })).toBeVisible();
-    await page.getByRole("button", { name: "Open project reviews" }).click();
+    await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     const clientGallery = page.locator(".s15-client-gallery");
     await expect(clientGallery.getByText("Approved presentation elevation R0")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: testInfo.outputPath("s15-client-gallery.png"), fullPage: true });
     await page.reload();
-    await page.getByRole("button", { name: "Open project reviews" }).click();
+    await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Client review", exact: true })).toBeVisible();
     await expect(page.locator(".s15-client-gallery").getByText("Approved presentation elevation R0")).toBeVisible();
 
     await context.clearCookies();

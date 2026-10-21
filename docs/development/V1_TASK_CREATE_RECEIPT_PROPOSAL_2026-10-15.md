@@ -1,0 +1,35 @@
+# Agent 1 — durable task creation proposal
+
+Date: 15 October 2026. **OWNER APPROVED FOR BOUNDED SOURCE IMPLEMENTATION.** The Owner answered “Approve the bounded receipt design” to the explicit proposal on this date. Approval covers source, preparing one reviewed migration and tests; retained/production database operations remain excluded. Covers V1-05/Slice D under R-018–R-024 and the existing subtask decision, preserving S10/S13/S14 and project/assignment/capacity rules. This explicit decision settles PLAN_V1_WORKING_VERSION.md's schema/idempotency prerequisite for this bounded change only. Implementation and acceptance remain IN PROGRESS.
+
+## Problem and current evidence
+
+The shared composer prevents simultaneous browser submissions and opens a confirmed canonical ID. Ordinary task creation, subtask creation and capacity acknowledgement do not have durable retry keys. A committed write followed by a lost response cannot be distinguished from a failed write by searching titles. A matching title/date is not proof of identity. Parent expectedVersion may prevent a repeated child command after success, but cannot recover its child ID and is not an idempotency mechanism.
+
+The existing ProjectCreationReceipt is deliberately project-specific and its API currently requires a template version whenever a retry key is supplied. Time, workforce, reporting and site receipts also belong to their own domains. Reusing any of these for tasks would change their ownership/invariants. No general-purpose approved task receipt exists.
+
+## Proposed bounded change for Owner approval
+
+Add one task-owned TaskCreationReceipt table in one append-only reviewed migration after the then-current migration tip (currently118). Suggested columns: UUID id, organizationId, actorId, key; command kind CREATE_TASK or CREATE_SUBTASK; optional parentTaskId; taskId; SHA-256 normalized payload hash; createdAt. Enforce a unique organizationId/actorId/key, same-organization task/actor foreign keys, and a kind/parent consistency check. Bind a subtask receipt to its parent and child. Retain receipts with task history; no TTL, cleanup job, raw request JSON, credentials or new deletion path. Receipt immutability must follow existing database evidence conventions. Exact DDL and relation names are reviewed before implementation.
+
+Add optional UUID idempotencyKey to the existing strict ordinary/subtask create bodies for compatibility; the shared browser composer supplies it. Other task-producing domains retain their own existing behavior. Closeout approval, correction generation, recurrence, task edit/reassignment and other domains are excluded. No client-supplied task ID or asserted permission/creation variant is accepted.
+
+Within the existing transaction, validate the session actor and acquire a namespaced actor/key advisory lock. Look up the receipt and compare the normalized command hash, including parent identity for a child. Different details with the same key return409. A matching committed receipt returns the same canonical task through current account/resource authorization, using the existing response shape and current authorized task state. It does not run task creation, history, events, notices, capacity consumption or parent-version increment again. Revoked/suspended/foreign-organization callers cannot recover data from a receipt. A closed parent may still permit recovery of an already-created child if ordinary current read authority remains; recovery never adds another child or bypasses a completion gate.
+
+On a first attempt, continue through every ordinary task/parent/graph/project/participant/plan/capacity check and insert the receipt in the same transaction as the task, collaborator/history/event rows and child link/parent increment. A rejected or rolled-back operation leaves no success receipt. Preserve current graph-lock ordering; the receipt key lock must be consistently outermost for both retryable entry points and must not be introduced into unrelated workers. Verify races against completion, reassignment, cancellation and permission revocation using real committed transactions.
+
+Normalize typed command fields explicitly rather than hashing arbitrary JSON property order. Include supported content, planning fields, participants, reason, parent identity and expectedParentVersion. Define optional/default equivalence once and test it. Include the overload acknowledgement in the accepted command hash: a warning rolls back without a receipt; its acknowledged command may reuse the same key because nothing committed. A changed command after a committed receipt conflicts. No partial success is reported after serialization/commit failure.
+
+The browser creates one random key per unchanged submission attempt. Keep the exact command/key for explicit recovery after an uncertain response and label it as checking that creation, rather than creating again. Hold the uncertain command immutable while recovering; a deliberate new task gets a new key. Do not persist draft content or keys across accounts in browser storage, and do not add an automatic retry loop. A successful ordinary result opens its returned ID; a successful subtask result refreshes its parent and exposes the returned child ID. Malformed success bodies remain unconfirmed. Safe navigation/refresh recovery across a browser restart needs its own explicit design; this proposal promises only same-composer recovery plus a durable server identity.
+
+## Required acceptance before claiming completion
+
+- Controller: optional-key validation, session/origin/CSRF, no-store and extra-field rejection remain; static routes stay before :id.
+- Unit: deterministic normalization, key conflict, current-authority replay, no duplicate side effects, overload warning/acknowledgement and rejected-write rollback.
+- Real PostgreSQL: simultaneous same-key writes produce one task/receipt/event history; retry after commit/lost response returns that task; different actor/organization/key/payload isolation; revoked access; child replay after parent-version change; completion/cancellation/child races; transaction rollback/retry.
+- UI: ordinary and child creation, capacity acknowledgement, malformed/lost response and explicit recovery retain the intended command; no duplicate-submit event; correct canonical opening, totals and project/personal views; focus/draft/error behavior at all four widths.
+- Full pinned gates on one unchanged source candidate and a supported dedicated acceptance harness. No stopped MW-I02 target or retained database is reused. Schema approval does not itself authorize database lifecycle, migration deployment, production or pilot acceptance.
+
+## Decision requested
+
+The Owner approved the one-table task receipt/API/composer implementation above. This covers preparing the reviewed migration and source/tests, not applying it to retained or production data. Durable retry safety remains unaccepted until implementation and the listed acceptance pass. No new workflow or broader access is authorized.

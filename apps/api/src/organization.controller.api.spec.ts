@@ -18,7 +18,7 @@ describe("organization HTTP security contract", () => {
   let kind: "OWNER" | "STAFF";
   let isReady: boolean;
   let sessionCreatedAt: Date;
-  let service: { createBranch: jest.Mock; listEmployees: jest.Mock; listManagedEmployees: jest.Mock; changeManagedEmployeeReporting: jest.Mock; finalizeEmployeeExit: jest.Mock; changeTimezone: jest.Mock; changeWaitingAlerts: jest.Mock };
+  let service: { myEmployeeProfile: jest.Mock; createBranch: jest.Mock; listEmployees: jest.Mock; listManagedEmployees: jest.Mock; changeManagedEmployeeReporting: jest.Mock; finalizeEmployeeExit: jest.Mock; changeTimezone: jest.Mock; changeWaitingAlerts: jest.Mock; setJobRoleCreationPresentation: jest.Mock; grantRolePermission: jest.Mock; grantEmployeeOverride: jest.Mock };
 
   beforeAll(async () => {
     kind = "OWNER";
@@ -35,13 +35,17 @@ describe("organization HTTP security contract", () => {
       })
     };
     service = {
+      myEmployeeProfile: jest.fn(async () => ({ employee: null })),
       createBranch: jest.fn(async () => ({ id: "branch-id" })),
+      grantRolePermission: jest.fn(async () => ({ id: "permission-id" })),
+      grantEmployeeOverride: jest.fn(async () => ({ id: "override-id" })),
       listEmployees: jest.fn(async () => []),
       listManagedEmployees: jest.fn(async () => []),
       changeManagedEmployeeReporting: jest.fn(async () => ({ changed: true })),
       finalizeEmployeeExit: jest.fn(async () => { throw new ConflictException("S07/S09 dependency gate"); }),
       changeTimezone: jest.fn(async () => ({ changed: true })),
-      changeWaitingAlerts: jest.fn(async () => ({ changed: true }))
+      changeWaitingAlerts: jest.fn(async () => ({ changed: true })),
+      setJobRoleCreationPresentation: jest.fn(async (_actorId: string, _roleId: string, input: unknown) => input)
     };
     const config: RuntimeConfig = {
       nodeEnv: "test", port: 4000,
@@ -79,6 +83,21 @@ describe("organization HTTP security contract", () => {
     reason: "Initial branch setup"
   };
 
+  it("binds the self profile to the session account and prevents caching", async () => {
+    const path = "/api/v1/org/self?employeeId=another-person&accountId=another-account";
+    expect((await request(app.getHttpServer()).get(path)).status).toBe(401);
+    expect(service.myEmployeeProfile).not.toHaveBeenCalled();
+    kind = "STAFF";
+    const result = await request(app.getHttpServer()).get(path).set("Cookie", cookie);
+    expect(result.status).toBe(200);
+    expect(result.headers["cache-control"]).toBe("no-store");
+    expect(result.body).toEqual({ employee: null });
+    expect(service.myEmployeeProfile).toHaveBeenCalledWith(ownerId);
+    kind = "OWNER"; isReady = false;
+    expect((await request(app.getHttpServer()).get(path).set("Cookie", cookie)).status).toBe(403);
+    expect(service.myEmployeeProfile).toHaveBeenCalledTimes(1);
+  });
+
   it("denies non-Owner and incomplete Owner identity before reading organization data", async () => {
     kind = "STAFF";
     const staff = await request(app.getHttpServer()).get("/api/v1/org").set("Cookie", cookie);
@@ -89,6 +108,53 @@ describe("organization HTTP security contract", () => {
     const setupRequired = await request(app.getHttpServer()).get("/api/v1/org").set("Cookie", cookie);
     expect(setupRequired.status).toBe(403);
     expect(service.listEmployees).not.toHaveBeenCalled();
+  });
+
+  it("exposes the supported catalogue only to a secured Owner and prevents caching", async () => {
+    const path = "/api/v1/org/permission-catalogue";
+    expect((await request(app.getHttpServer()).get(path)).status).toBe(401);
+    kind = "STAFF";
+    expect((await request(app.getHttpServer()).get(path).set("Cookie", cookie)).status).toBe(403);
+    kind = "OWNER";
+    isReady = false;
+    expect((await request(app.getHttpServer()).get(path).set("Cookie", cookie)).status).toBe(403);
+    isReady = true;
+    const result = await request(app.getHttpServer()).get(path).set("Cookie", cookie);
+    expect(result.status).toBe(200);
+    expect(result.headers["cache-control"]).toBe("no-store");
+    expect(result.body.version).toBe(1);
+    const keys = result.body.groups.flatMap((group: { permissions: Array<{ key: string }> }) => group.permissions.map(permission => permission.key));
+    expect(keys).toEqual(expect.arrayContaining(["org.employee.read", "project.view", "task.assign", "review.decide", "site.work"]));
+    for (const key of ["projects.read", "task.review", "library.publish"]) expect(keys).not.toContain(key);
+  });
+
+  it.each(["projects.read", "task.review", "library.publish", "project.*"])("rejects unsupported new grant %s before service dispatch", async (permissionKey) => {
+    const roleId = "31000000-0000-4000-8000-000000000001";
+    const employeeId = "21000000-0000-4000-8000-000000000001";
+    const body = { organizationId: branch.organizationId, permissionKey, scopeKind: "SELF", reason: "Review the employee access" };
+    for (const [path, input] of [
+      [`/api/v1/org/roles/${roleId}/permissions`, body],
+      [`/api/v1/org/employees/${employeeId}/permissions`, { ...body, effect: "DENY" }],
+    ] as const) {
+      const result = await request(app.getHttpServer()).post(path).set("Cookie", cookie).set("Origin", "http://localhost:5173").set("x-csrf-token", csrfToken).send(input);
+      expect(result.status).toBe(400);
+    }
+    expect(service.grantRolePermission).not.toHaveBeenCalled();
+    expect(service.grantEmployeeOverride).not.toHaveBeenCalled();
+  });
+
+  it("forwards supported grant keys through the existing reasoned scope contract", async () => {
+    const roleId = "31000000-0000-4000-8000-000000000001";
+    const employeeId = "21000000-0000-4000-8000-000000000001";
+    const input = { organizationId: branch.organizationId, permissionKey: "review.decide", scopeKind: "SELF", reason: "Deny direct self review configuration" };
+    const roleResult = await request(app.getHttpServer()).post(`/api/v1/org/roles/${roleId}/permissions`).set("Cookie", cookie).set("Origin", "http://localhost:5173").set("x-csrf-token", csrfToken).send(input);
+    expect(roleResult.status).toBe(201);
+    expect(service.grantRolePermission).toHaveBeenCalledWith(ownerId, roleId, {
+      organizationId: branch.organizationId, permissionKey: "review.decide", scope: { scopeKind: "SELF" }, reason: input.reason,
+    });
+    const override = await request(app.getHttpServer()).post(`/api/v1/org/employees/${employeeId}/permissions`).set("Cookie", cookie).set("Origin", "http://localhost:5173").set("x-csrf-token", csrfToken).send({ ...input, effect: "DENY" });
+    expect(override.status).toBe(201);
+    expect(service.grantEmployeeOverride).toHaveBeenCalledWith(ownerId, employeeId, expect.objectContaining({ permissionKey: "review.decide", effect: "DENY", scope: { scopeKind: "SELF" } }));
   });
 
   it("requires same-origin, CSRF and recent Owner authentication for organization mutations", async () => {
@@ -173,5 +239,40 @@ describe("organization HTTP security contract", () => {
     expect((await request(app.getHttpServer()).put(`/api/v1/org/teams/${id}/waiting-alerts`).set("Cookie", cookie).set("Origin", "http://localhost:5173").send(alerts)).status).toBe(403);
     sessionCreatedAt = new Date(Date.now() - 6 * 60_000);
     expect((await write(`${id}/timezone`, timezone)).status).toBe(403);
+  });
+
+  it("protects role creation-presentation settings with strict Owner, origin, CSRF, and recent-auth checks", async () => {
+    const roleId = "20cfef90-f016-4b85-8c57-74ade820b71b";
+    const input = {
+      organizationId: "923f1f35-7228-4dd3-aa83-4aee07a87011",
+      creationPresentation: "SITE",
+      expectedCreationPresentation: null,
+      reason: "Use site task creation presentation"
+    };
+    const write = (body: object) => request(app.getHttpServer()).put(`/api/v1/org/roles/${roleId}/creation-presentation`)
+      .set("Cookie", cookie).set("Origin", "http://localhost:5173").set("x-csrf-token", csrfToken).send(body);
+
+    expect((await request(app.getHttpServer()).put(`/api/v1/org/roles/${roleId}/creation-presentation`)
+      .set("Cookie", cookie).set("Origin", "https://attacker.example").set("x-csrf-token", csrfToken).send(input)).status).toBe(403);
+    expect((await request(app.getHttpServer()).put(`/api/v1/org/roles/${roleId}/creation-presentation`)
+      .set("Cookie", cookie).set("Origin", "http://localhost:5173").send(input)).status).toBe(403);
+    expect((await write({ ...input, creationPresentation: "SITE_ADMIN" })).status).toBe(400);
+    expect((await write({ ...input, unexpected: true })).status).toBe(400);
+    expect(service.setJobRoleCreationPresentation).not.toHaveBeenCalled();
+
+    kind = "STAFF";
+    expect((await write(input)).status).toBe(403);
+    kind = "OWNER";
+    isReady = false;
+    expect((await write(input)).status).toBe(403);
+    isReady = true;
+    sessionCreatedAt = new Date(Date.now() - 6 * 60_000);
+    expect((await write(input)).status).toBe(403);
+    expect(service.setJobRoleCreationPresentation).not.toHaveBeenCalled();
+
+    sessionCreatedAt = new Date();
+    const valid = await write(input);
+    expect(valid.status).toBe(200);
+    expect(service.setJobRoleCreationPresentation).toHaveBeenCalledWith(ownerId, roleId, input);
   });
 });

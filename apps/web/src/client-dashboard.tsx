@@ -15,7 +15,7 @@ async function get<T>(path: string, signal: AbortSignal): Promise<T> {
   return await response.json() as T;
 }
 
-export function ClientDashboard({ session }: { session: PortalSession }): React.JSX.Element {
+export function ClientDashboard({ session, initialProjectId }: { session: PortalSession; initialProjectId?: string }): React.JSX.Element {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedId, setSelectedId] = useState("");
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
@@ -29,11 +29,14 @@ export function ClientDashboard({ session }: { session: PortalSession }): React.
     void get<Projects>("/projects", controller.signal).then(result => {
       if (controller.signal.aborted) return;
       setProjects(result.projects);
-      setSelectedId(result.projects[0]?.id ?? "");
+      if (initialProjectId && !result.projects.some(project => project.id === initialProjectId)) {
+        setError("This project is not available under your current access."); setLoading(false); return;
+      }
+      setSelectedId(initialProjectId ?? result.projects[0]?.id ?? "");
       if (!result.projects.length) setLoading(false);
     }).catch(() => { if (!controller.signal.aborted) { setError("Your shared projects could not be loaded. Refresh to try again."); setLoading(false); } });
     return () => controller.abort();
-  }, [session.account.id, retry]);
+  }, [session.account.id, retry, initialProjectId]);
 
   useEffect(() => {
     if (!selectedId) { setWorkspace(null); return; }
