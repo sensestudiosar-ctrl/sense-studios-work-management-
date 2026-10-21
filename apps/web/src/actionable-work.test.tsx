@@ -73,7 +73,7 @@ describe("Shared-snapshot attention queue", () => {
     expect(screen.getByRole("link", { name: /Review drawing/ })).toHaveAttribute("href", "/reviews?taskId=task-review&roundId=round-1");
     expect(screen.getByRole("link", { name: /Decision on material/ })).toHaveAttribute("href", "/decisions?approvalId=request-1");
     fireEvent.click(screen.getByRole("button", { name: /task-1/ })); expect(open).toHaveBeenCalledWith("task-1");
-    expect(counts).toHaveBeenLastCalledWith({ actionableTasks: { status: "ready", total: 1 }, assignedReviews: { status: "ready", total: 1 }, decisions: { status: "ready", total: 1 } });
+    await waitFor(() => expect(counts).toHaveBeenLastCalledWith({ actionableTasks: { status: "ready", total: 1 }, assignedReviews: { status: "ready", total: 1 }, decisions: { status: "ready", total: 1 } }));
   });
   it("pages the global result only once without local reordering or per-source requests", async () => {
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
