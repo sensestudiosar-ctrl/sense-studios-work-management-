@@ -134,6 +134,11 @@ test("offline SITE capture persists locally, replays once, resolves conflicts an
   try {
     await context.addCookies([{ name: "sense_sid", value: f.actor.secret, url: preview, httpOnly: true, sameSite: "Strict" }]);
     await page.goto(new URL("/site", preview).toString());
+    // Initial installation deliberately does not claim an open document. Finish
+    // the production precache and navigate online before saving offline work.
+    await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+    await page.reload();
+    await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker?.controller))).toBe(true);
     const workspace = page.locator(".site-workspace");
     await expect(workspace.getByRole("heading", { name: "Site progress and daily work" })).toBeVisible({ timeout: 20_000 });
     await workspace.getByLabel("Active Turnkey project").selectOption(f.projectId);

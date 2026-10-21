@@ -84,7 +84,7 @@ describe("workspace navigation", () => {
     fireEvent.click(screen.getByRole("button", { name: "More" }));
     const moreLinks = within(screen.getByRole("dialog", { name: "More destinations" })).getAllByRole("link");
     const moreLabels = moreLinks.map(link => String(link.textContent));
-    const acceptedMore = destinations.filter(label => !["My Work", "Tasks", "Project documents"].includes(label));
+    const acceptedMore = destinations.filter(label => !["My Work", "Projects", "Decisions"].includes(label));
     expect(new Set(moreLabels)).toEqual(new Set(acceptedMore));
   });
 

@@ -57,11 +57,12 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const workspace = page.locator(".task-workspace");
     await expect(workspace.getByRole("heading", { name: "Tasks" })).toBeVisible();
     await workspace.getByRole("button", { name: "Create task", exact: true }).first().click();
-    const form = workspace.getByRole("form", { name: "Create task" });
+    const dialog = page.getByRole("dialog", { name: "Create my task", exact: true });
+    const form = dialog.getByRole("form", { name: "Create task" });
     await form.getByLabel("Task name").fill(title);
     await form.getByLabel("Target date").fill("2026-12-31");
     await form.getByLabel("Reason").fill("Capture planned independent work");
-    await form.getByRole("button", { name: "Create task" }).click();
+    await dialog.getByRole("button", { name: "Create task", exact: true }).click();
     await expect(workspace.getByText("Task created.", { exact: true })).toBeVisible();
     await expect(workspace.getByRole("button", { name: new RegExp(title) })).toBeVisible();
 

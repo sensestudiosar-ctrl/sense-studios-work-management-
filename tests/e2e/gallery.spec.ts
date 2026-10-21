@@ -167,13 +167,14 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await context.clearCookies();
     await context.addCookies([{ name: "sense_client_sid", value: signIn.secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/client-portal/");
-    await expect(page.getByRole("heading", { name: "Your project workspace" })).toBeVisible();
-    await page.getByRole("link", { name: "Reviews & drawings" }).click();
+    await expect(page.getByRole("heading", { name: "Client portal account" })).toBeVisible();
+    await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     const clientGallery = page.locator(".s15-client-gallery");
     await expect(clientGallery.getByText("Approved presentation elevation R0")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     await page.screenshot({ path: testInfo.outputPath("s15-client-gallery.png"), fullPage: true });
     await page.reload();
+    await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Client review", exact: true })).toBeVisible();
     await expect(page.locator(".s15-client-gallery").getByText("Approved presentation elevation R0")).toBeVisible();
 

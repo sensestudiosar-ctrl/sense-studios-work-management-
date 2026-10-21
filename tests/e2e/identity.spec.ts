@@ -96,7 +96,7 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
 
     await mobilePage.goto("/workspace");
     await mobilePage.getByRole("button", { name: "Log out" }).click();
-    await expect(mobilePage.getByRole("heading", { name: "Sign in with your passkey" })).toBeVisible();
+    await expect(mobilePage.getByRole("heading", { name: "Sign in to view your dashboard" })).toBeVisible();
     await mobilePage.goto("/");
     await mobilePage.getByLabel("Work email", { exact: true }).fill(ownerEmail);
     await mobilePage.getByRole("button", { name: "Continue with passkey" }).click();
@@ -108,7 +108,7 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     await desktop.addCookies(await mobile.cookies());
     await desktopPage.goto("/workspace");
     await desktopPage.getByRole("button", { name: "Log out" }).click();
-    await expect(desktopPage.getByRole("heading", { name: "Sign in with your passkey" })).toBeVisible();
+    await expect(desktopPage.getByRole("heading", { name: "Sign in to view your dashboard" })).toBeVisible();
     await desktopPage.goto("/");
     await desktopPage.getByLabel("Work email", { exact: true }).fill(ownerEmail);
     await desktopPage.getByRole("button", { name: "Continue with passkey" }).click();

@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { atomicJson, loadActive, loadSettings, scoped, inventory } from './manifest.mjs';
 import { processIdentity, listeners, sameIdentity, ownsListeners, claimSupervisorLock, postgresProcesses, executableProcesses } from './windows.mjs';
-import { childFinished, restartDelay, captureLog } from './process-policy.mjs';
+import { childFinished, observeChildExit, restartDelay, captureLog } from './process-policy.mjs';
 
 const pause = ms => new Promise(done => setTimeout(done,ms));
 const root = path.resolve(process.argv[2] ?? '');
@@ -153,7 +153,16 @@ try {
     if(pointer.commit!==current.manifest.commit) { const next=loadActive(root);await verifyDatabase(next);await stopChildren();current=next;await launch('api');await launch('web');save('READY'); }
     else assert.deepEqual(pointer,current.pointer,'Same-commit release approval changed');
     for(const label of ['api','web'])if(childFinished(children[label])){const delay=restartDelay(restarts[label],Date.now());save('RECOVERING',{failedChild:label,retryAfterMs:delay});delete children[label];await pause(delay);await ensurePostgres();await verifyDatabase(current);await launch(label);save('READY');}
-    ownsListeners(listeners([59442,59443]),[[59442,children.api.child.pid],[59443,children.web.child.pid]]);
+    try { ownsListeners(listeners([59442,59443]),[[59442,children.api.child.pid],[59443,children.web.child.pid]]); }
+    catch(error) {
+      // A synchronous Windows query can observe termination before Node delivers
+      // the exit event. Recover a proven absent child on the next loop; a live
+      // process with different identity or unexpected listener still fails closed.
+      let exited=false;
+      for(const label of ['api','web']) if(observeChildExit(children[label],processIdentity(children[label].child.pid))) exited=true;
+      if(!exited)throw error;
+      continue;
+    }
     if(++ticks%12===0) { const checked=loadActive(root);assert.deepEqual(checked.pointer,current.pointer,'Release approval changed');await verifyDatabase(current);assert.deepEqual(inventory(current.release),{files:current.manifest.files,links:current.manifest.links},'Deployed artifact changed');save('READY'); }
   }
   await stopChildren();save('STOPPED');

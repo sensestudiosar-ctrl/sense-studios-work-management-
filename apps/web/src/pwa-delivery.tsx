@@ -15,7 +15,7 @@ export function PwaUpdateNotice(): React.JSX.Element | null {
     let disposed = false;
     let registration: ServiceWorkerRegistration | undefined;
     const refresh = () => {
-      if (!disposed && registration?.waiting && registration.waiting !== dismissed.current) setWaiting(registration.waiting);
+      if (!disposed) setWaiting(registration?.waiting && registration.waiting !== dismissed.current ? registration.waiting : undefined);
     };
     const check = () => { if (navigator.onLine) void registration?.update().catch(() => undefined); refresh(); };
     const installed = () => { refresh(); };

@@ -9,7 +9,7 @@ import { PassThrough } from 'node:stream';
 import test from 'node:test';
 import { inventory, verifyRelease, loadActive, atomicJson, fileHash } from './manifest.mjs';
 import { safeStaticPath, createStagingServer } from './server.mjs';
-import { childFinished, restartDelay, captureLog } from './process-policy.mjs';
+import { childFinished, observeChildExit, restartDelay, captureLog } from './process-policy.mjs';
 import { claimSupervisorLock, processIdentity } from './windows.mjs';
 
 function fixture(t) {
@@ -62,6 +62,13 @@ test('real signal termination is recognized and restart attempts are bounded',as
 });
 test('owned output stops at its byte budget without removing previous evidence',async t=>{
   const root=fixture(t),stream=new PassThrough(),file=path.join(root,'owned.log'),failures=[];captureLog(stream,file,error=>failures.push(error.message),4);stream.end('123456789');await once(stream,'close');assert.equal(fs.readFileSync(file,'utf8'),'1234');assert.equal(failures.length,1);
+});
+
+test('missing OS process recovers before its exit event, but a reused PID is refused',()=>{
+  const identity={ProcessId:123,Created:'original'},row={identity,exited:false,error:null,child:{exitCode:null,signalCode:null}};
+  assert.equal(observeChildExit(row,identity),false);
+  assert.equal(observeChildExit(row,null),true);assert.equal(childFinished(row),true);
+  assert.throws(()=>observeChildExit(row,{ProcessId:123,Created:'different'}),/identity changed/);
 });
 test('OS mutex serializes claims and refuses a live supervisor lock', {skip:process.platform!=='win32'},t=>{
   const root=fixture(t),file=path.join(root,'supervisor.lock.json'),identity=processIdentity(process.pid);claimSupervisorLock(file,identity,'first');assert.throws(()=>claimSupervisorLock(file,identity,'second'));assert.equal(JSON.parse(fs.readFileSync(file)).token,'first');

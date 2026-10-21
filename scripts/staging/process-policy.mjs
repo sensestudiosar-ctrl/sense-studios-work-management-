@@ -4,6 +4,11 @@ import fs from 'node:fs';
 export function childFinished(row) {
   return Boolean(row.exited || row.error || row.child.exitCode !== null || row.child.signalCode !== null);
 }
+export function observeChildExit(row, identity) {
+  if (identity === null) { row.exited = true; return true; }
+  assert.deepEqual(identity, row.identity, 'Owned child process identity changed');
+  return childFinished(row);
+}
 export function restartDelay(attempts, now) {
   while(attempts.length && attempts[0] < now-600000)attempts.shift();
   assert.ok(attempts.length<3,'Owned child restart budget exhausted (3 per 10 minutes)');

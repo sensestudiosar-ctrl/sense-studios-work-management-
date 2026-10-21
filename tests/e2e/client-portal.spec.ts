@@ -131,7 +131,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     });
     await context.clearCookies();
     await page.goto("/client-portal/");
-    await expect(page.getByRole("heading", { name: "Your projects, together" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Client portal sign in" })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("s14-client-portal-sign-in.png") });
 
     await page.getByLabel("Email address").fill(clientEmail);
@@ -151,11 +151,11 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
 
     await page.getByLabel("One-time code").fill(testCode);
     await page.getByRole("button", { name: "Verify code" }).click();
-    await expect(page.getByRole("heading", { name: "Your project workspace" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Client portal account" })).toBeVisible();
     await expect(page.getByText(clientEmail, { exact: true })).toBeVisible();
     await page.reload();
-    await expect(page.getByRole("heading", { name: "Your project workspace" })).toBeVisible();
-    await page.getByRole("link", { name: "Account & security" }).click();
+    await expect(page.getByRole("heading", { name: "Client portal account" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Account security", exact: true })).toBeVisible();
     await expect(page.getByText("0 registered passkeys")).toBeVisible();
 
     const cookies = await context.cookies(baseURL!);
@@ -179,7 +179,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await page.getByRole("button", { name: "Register a passkey" }).click();
     await expect(page.getByRole("status").filter({ hasText: "Passkey registered." })).toHaveText("Passkey registered.");
     await expect(page.getByText("1 registered passkey")).toBeVisible();
-    await page.getByRole("link", { name: "Overview", exact: true }).click();
+    if (await page.getByRole("button", { name: "Open project dashboard", exact: true }).count()) await page.getByRole("button", { name: "Open project dashboard", exact: true }).click();
     const clientDashboard = page.locator(".client-dashboard");
     await expect(clientDashboard.getByRole("heading", { name: "Project dashboard" })).toBeVisible();
     await expect(clientDashboard).toContainText("Project status");
@@ -196,7 +196,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     mkdirSync(clientScreenshotDirectory, { recursive: true });
     const pendingDashboardCapture = await page.screenshot({ path: testInfo.outputPath("s24-client-dashboard-pending.png"), fullPage: true });
     writeFileSync(join(clientScreenshotDirectory, `s24-client-dashboard-pending-${testInfo.project.name}.png`), pendingDashboardCapture);
-    await page.getByRole("link", { name: "Reviews & drawings" }).click();
+    if (await page.getByRole("button", { name: "Open project reviews", exact: true }).count()) await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await page.getByRole("button", { name: /Design approval brief/ }).click();
     await page.getByLabel("Reason", { exact: true }).last().fill("Approve the exact Design brief");
     await page.getByRole("button", { name: "Start review", exact: true }).click();
@@ -212,14 +212,14 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await expect(page.getByRole("heading", { name: "Client review", exact: true })).toBeVisible();
     await page.getByRole("button", { name: /Design approval brief/ }).click();
     await expect(page.getByText("Final overall approval", { exact: true })).not.toBeVisible();
-    await page.getByRole("link", { name: "Overview", exact: true }).click();
+    if (await page.getByRole("button", { name: "Open project dashboard", exact: true }).count()) await page.getByRole("button", { name: "Open project dashboard", exact: true }).click();
     const approvedDashboard = page.locator(".client-dashboard");
     await approvedDashboard.getByRole("button", { name: "Refresh" }).click();
     await expect(approvedDashboard).toContainText("1 / 1");
     await expect(approvedDashboard).toContainText("Design approval brief");
     const approvedDashboardCapture = await page.screenshot({ path: testInfo.outputPath("s24-client-dashboard-approved.png"), fullPage: true });
     writeFileSync(join(clientScreenshotDirectory, `s24-client-dashboard-approved-${testInfo.project.name}.png`), approvedDashboardCapture);
-    await page.getByRole("link", { name: "Reviews & drawings" }).click();
+    if (await page.getByRole("button", { name: "Open project reviews", exact: true }).count()) await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await page.getByRole("button", { name: /Design approval brief/ }).click();
     const selectedContrast = await page.locator('.client-review-item-list button[aria-current="true"]').evaluate((button) => {
       const luminance = (rgb: string): number => {
@@ -233,8 +233,8 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     expect(selectedContrast).toBeGreaterThanOrEqual(4.5);
     await page.screenshot({ path: testInfo.outputPath("s14-client-review-approved.png"), fullPage: true });
     await page.reload();
-    await page.getByRole("link", { name: "Account & security" }).click();
-    await expect(page.getByRole("heading", { name: "Your account", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Account security", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Client portal account", exact: true })).toBeVisible();
     await expect(page.getByText("1 registered passkey")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
     await page.screenshot({ path: testInfo.outputPath("s14-client-portal-security.png") });
@@ -256,13 +256,13 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     const currentPortalSession = await db.query<{ id: string }>('SELECT id FROM client_portal_sessions WHERE "accountId"=$1 AND "revokedAt" IS NULL ORDER BY "createdAt" DESC LIMIT 1', [clientAccountId]);
     expect(currentPortalSession.rows).toHaveLength(1);
     await page.getByRole("button", { name: "Revoke" }).click();
-    await expect(page.getByRole("heading", { name: "Your projects, together" })).toBeVisible();
-    await expect(page.getByRole("status")).toContainText("Your client session ended.");
+    await expect(page.getByRole("heading", { name: "Client portal sign in" })).toBeVisible();
+    await expect(page.getByRole("status")).toContainText("This session was revoked. Sign in again to continue.");
     const revoked = await db.query<{ revokedAt: Date | null }>('SELECT "revokedAt" FROM client_portal_sessions WHERE id=$1 AND "accountId"=$2', [currentPortalSession.rows[0]!.id, clientAccountId]);
     expect(revoked.rows[0]?.revokedAt).not.toBeNull();
 
     await page.reload();
-    await expect(page.getByRole("heading", { name: "Your projects, together" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Client portal sign in" })).toBeVisible();
     expect(internalRequests).toEqual([]);
     const endingCookies = await context.cookies(baseURL!);
     expect(endingCookies.some((cookie) => cookie.name === sessionName)).toBe(false);

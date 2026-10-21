@@ -260,7 +260,7 @@ test("site reports, independent snag repair and handover persist across refresh"
     const dashboardReady = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard/sources/site" && response.request().method() === "GET", { timeout: 30_000 });
     await page.goto("/dashboard");
     expect((await dashboardReady).status()).toBe(200);
-    await expect(page.getByRole("heading", { name: "Dashboard & reports" })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole("heading", { name: "Dashboard", exact: true, level: 2 })).toBeVisible({ timeout: 30_000 });
     const siteDashboard = page.locator(".dashboard-panel").filter({ has: page.getByRole("heading", { name: `Site: ${projectTitle}` }) });
     await expect(siteDashboard).toBeVisible();
     for (const summary of ["Prepare north slab", "Daily report ·", "Uneven tile edge", "Site handover ·"]) await expect(siteDashboard).toContainText(summary);

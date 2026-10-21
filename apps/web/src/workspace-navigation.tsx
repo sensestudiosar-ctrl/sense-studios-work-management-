@@ -28,7 +28,7 @@ const destinations = [
   { to: "/learning", label: "Learning" },
 ] as const;
 
-const primaryDestinationPaths = ["/dashboard", "/my-work", "/tasks", "/documents"] as const;
+const primaryDestinationPaths = ["/dashboard", "/my-work", "/projects", "/decisions"] as const;
 const primaryPaths = new Set<string>(primaryDestinationPaths);
 const destinationGroups = [
   { label: "Work", paths: ["/my-work", "/decisions", "/notifications", "/tasks", "/projects", "/documents", "/revisions", "/reviews", "/client-reviews", "/assistance", "/turnkey", "/site"] },
