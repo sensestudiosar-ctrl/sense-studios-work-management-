@@ -276,7 +276,9 @@ test("site reports, independent snag repair and handover persist across refresh"
     await siteDashboard.scrollIntoViewIfNeeded();
     await page.screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-viewport-${testInfo.project.name}.png`), fullPage: false });
     for (const [name, fact] of [["package", "Prepare north slab"], ["report", "Marked and cleaned the slab area"], ["snag", "Uneven tile edge"], ["handover", "Current package complete, passing quality, and closed snag verified"]] as const) {
-      await siteDashboard.getByText(fact, { exact: true }).first().screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-${name}-${testInfo.project.name}.png`) });
+      // V10 groups source status/date/value in one line; retain each factual
+      // screenshot without requiring the earlier separate value span.
+      await siteDashboard.getByText(fact, { exact: false }).first().screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-${name}-${testInfo.project.name}.png`) });
     }
   } finally {
     if (fixtureCommitted) await db.query('UPDATE sessions SET "revokedAt"=CURRENT_TIMESTAMP WHERE id = ANY($1::uuid[])', [[ownerAuth.id, leadAuth.id, fixerAuth.id, verifierAuth.id]]);
