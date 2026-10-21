@@ -34,7 +34,7 @@ describe("SkillsWorkspace", () => {
     await act(async () => { resolveTraining(json({ ...trainingSetup, employees: [manager] })); });
     await screen.findByText("No training assignments are available to you.");
     expect(new URLSearchParams(window.location.search).get("employeeId")).toBe(employeeId);
-    fireEvent.click(within(screen.getByRole("heading", { name: "Skills", exact: true }).closest("section")!).getByRole("button", { name: "Refresh" }));
+    fireEvent.click(within(screen.getByRole("heading", { name: "Skills" }).closest("section")!).getByRole("button", { name: "Refresh" }));
     await waitFor(() => expect(picker).toHaveValue(employeeId));
     expect(await screen.findByText("Intermediate · Version 3")).toBeInTheDocument();
   });
