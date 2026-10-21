@@ -17,7 +17,12 @@ for (const service of Object.values(config.services)) {
   assert.equal(service.ports?.length ?? 0, 0);
   assert.notEqual(service.network_mode, 'host');
   assert.notEqual(service.privileged, true);
-  for (const mount of service.volumes ?? []) if (mount.type === 'bind') assert.equal(mount.bind.create_host_path, false);
+  // Compose's JSON encoder may omit an explicit false boolean. A long bind
+  // object must still exist and an enabled create_host_path remains forbidden.
+  for (const mount of service.volumes ?? []) if (mount.type === 'bind') {
+    assert.ok(mount.bind && typeof mount.bind === 'object');
+    assert.equal(mount.bind.create_host_path ?? false, false);
+  }
 }
 assert.deepEqual(Object.keys(config.services.db.networks), ['database']);
 assert.deepEqual(Object.keys(config.services.tunnel.networks), ['ingress']);

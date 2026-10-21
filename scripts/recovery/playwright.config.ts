@@ -3,7 +3,9 @@ import { resolve } from "node:path";
 import base from "../../playwright.config.js";
 import { loadRecoveryTestTarget } from "../../apps/api/src/recovery-test-target.js";
 
-const root = resolve(import.meta.dirname, "../..");
+// The root workspace uses CommonJS Playwright config loading; import.meta is
+// unavailable after that transform. The guarded runner always sets this cwd.
+const root = resolve(process.cwd());
 loadRecoveryTestTarget(process.env, root, "DATABASE_URL");
 const quoted = (value: string) => `"${value.replaceAll('"', '')}"`;
 const apiCommand = `${quoted(process.execPath)} ${quoted(resolve(root, "apps/api/dist/main.js"))}`;
