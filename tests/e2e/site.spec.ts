@@ -261,7 +261,13 @@ test("site reports, independent snag repair and handover persist across refresh"
     await page.goto("/dashboard");
     expect((await dashboardReady).status()).toBe(200);
     await expect(page.getByRole("heading", { name: "Dashboard", exact: true, level: 2 })).toBeVisible({ timeout: 30_000 });
-    const siteDashboard = page.locator(".dashboard-panel").filter({ has: page.getByRole("heading", { name: `Site: ${projectTitle}` }) });
+    // V10 keeps Site as an optional Owner widget. Exercise the real gallery
+    // before checking the same persisted project facts as the earlier panel.
+    await page.getByRole("button", { name: "Edit widgets", exact: true }).click();
+    await page.getByRole("button", { name: "Add widgets", exact: true }).click();
+    await page.getByRole("region", { name: "Add widgets", exact: true }).getByRole("button", { name: /^Site delivery/ }).click();
+    await page.getByRole("button", { name: "Done", exact: true }).click();
+    const siteDashboard = page.locator(".dv-widget-body > div").filter({ has: page.getByRole("heading", { name: `Site: ${projectTitle}`, exact: true }) });
     await expect(siteDashboard).toBeVisible();
     for (const summary of ["Prepare north slab", "Daily report ·", "Uneven tile edge", "Site handover ·"]) await expect(siteDashboard).toContainText(summary);
     for (const fact of ["COMPLETED", "100", "Marked and cleaned the slab area", "CLOSED", "Tile edge at the north wall needs correction", "Current package complete, passing quality, and closed snag verified"]) await expect(siteDashboard).toContainText(fact);
@@ -270,7 +276,9 @@ test("site reports, independent snag repair and handover persist across refresh"
     await siteDashboard.scrollIntoViewIfNeeded();
     await page.screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-viewport-${testInfo.project.name}.png`), fullPage: false });
     for (const [name, fact] of [["package", "Prepare north slab"], ["report", "Marked and cleaned the slab area"], ["snag", "Uneven tile edge"], ["handover", "Current package complete, passing quality, and closed snag verified"]] as const) {
-      await siteDashboard.getByText(fact, { exact: true }).first().screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-${name}-${testInfo.project.name}.png`) });
+      // V10 groups source status/date/value in one line; retain each factual
+      // screenshot without requiring the earlier separate value span.
+      await siteDashboard.getByText(fact, { exact: false }).first().screenshot({ path: resolve(s24ScreenshotDirectory, `s24-site-dashboard-${name}-${testInfo.project.name}.png`) });
     }
   } finally {
     if (fixtureCommitted) await db.query('UPDATE sessions SET "revokedAt"=CURRENT_TIMESTAMP WHERE id = ANY($1::uuid[])', [[ownerAuth.id, leadAuth.id, fixerAuth.id, verifierAuth.id]]);

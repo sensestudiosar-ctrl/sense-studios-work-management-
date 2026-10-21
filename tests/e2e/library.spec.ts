@@ -79,8 +79,12 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     expect(created.ok(), await created.text()).toBe(true);
     recordId = (await created.json() as { record: { id: string } }).record.id;
     await expect(workspace.getByRole("heading", { name: title })).toBeVisible();
+    // Creation refreshes the list and selected record after the POST returns.
+    // Wait for that real lifecycle before entering the publication reason.
+    await expect(workspace.locator(".library-workspace")).toHaveAttribute("aria-busy", "false", { timeout: 30_000 });
     const publication = workspace.locator(".library-panel").filter({ has: page.getByRole("heading", { name: "Publication and activation", exact: true }) });
     await publication.getByLabel("Owner publication reason").fill("Owner directly approves this current SOP version");
+    await expect(publication.getByRole("button", { name: "Publish current version" })).toBeEnabled();
     const publishResponse = page.waitForResponse(response => response.url().endsWith(`/api/v1/library/${recordId}/publish`) && response.request().method() === "POST");
     await publication.getByRole("button", { name: "Publish current version" }).click();
     const published = await publishResponse;
