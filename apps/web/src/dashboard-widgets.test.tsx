@@ -47,10 +47,11 @@ describe("V10 real Time command adapter", () => {
         if (input.endsWith("/stop")) timer = null;
         return json({});
       }
-      return json(input.endsWith("/setup") ? { employeeId: "employee", projects: [], tasks: [] } : { timer });
+      return json(input.endsWith("/setup") ? { employeeId: "employee", projects: [], tasks: [{ id: "non-project-task", title: "Internal task", projectId: null }] } : { timer });
     }));
     render(<MemoryRouter><DashboardTimeWidget csrfToken="csrf" /></MemoryRouter>);
     fireEvent.change(await screen.findByPlaceholderText("What are you working on?"), { target: { value: "Draw plans" } });
+    fireEvent.change(screen.getByLabelText("Task · optional"), { target: { value: "non-project-task" } });
     expect(screen.getByRole("button", { name: "Start timer" })).toBeDisabled();
     fireEvent.change(screen.getByLabelText("Non-project activity"), { target: { value: "Internal planning" } });
     fireEvent.click(screen.getByRole("button", { name: "Start timer" }));
@@ -63,6 +64,7 @@ describe("V10 real Time command adapter", () => {
     await screen.findByRole("button", { name: "Start timer" });
     expect(commands).toHaveLength(5);
     expect(commands[0]!.commandId).toBe(commands[1]!.commandId);
+    expect(commands[1]).toMatchObject({ taskId: "non-project-task", activityLabel: "Internal planning" });
     expect(new Set(commands.slice(1).map(c => c.commandId)).size).toBe(4);
     expect(commands.slice(2).map(c => c.expectedVersion)).toEqual([1, 2, 3]);
   });

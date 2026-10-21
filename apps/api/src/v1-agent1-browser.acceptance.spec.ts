@@ -300,6 +300,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
   }
   it("accepts V10 Dashboard for six real account contexts at four widths with retained customization and timer persistence", async () => {
     const f = await fixture(1010);
+    const timerTask = await app!.get(TaskService).create(f.workerActor, { title: `V10 internal time task ${randomUUID()}`, type: "NON_PROJECT", priority: "LOW", targetDate: date, reason: "Verify existing non-project task time contract" });
     const createPerson = async (key: string, branchId = f.branch.id, teamId = f.worker.employee.homeTeamId) => {
       const account = await database.prisma.account.create({ data: { kind: "STAFF", state: "ACTIVE", normalizedEmail: `${key}-${randomUUID()}@example.test` } });
       const employee = await database.prisma.employee.create({ data: { accountId: account.id, organizationId: f.organization.id, homeBranchId: branchId, homeTeamId: teamId, hiredAt: new Date("2026-01-01") } });
@@ -348,6 +349,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
         if (!["owner", "leader"].includes(identity.key)) expect(scoreReads).toEqual([]);
         if (identity.key === "employee") {
           await page.getByPlaceholder("What are you working on?").fill("V10 real persisted timer");
+          await page.getByRole("combobox", { name: /^Task/ }).selectOption(timerTask.id);
           await page.getByLabel("Non-project activity", { exact: true }).fill("V10 internal coordination");
           const started = page.waitForResponse(r => new URL(r.url()).pathname === "/api/v1/time/timers" && r.request().method() === "POST");
           await page.getByRole("button", { name: "Start timer", exact: true }).click(); expect((await started).status()).toBe(201);
@@ -360,7 +362,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           page.once("dialog", dialog => dialog.accept("V10 timer completed"));
           await page.getByRole("button", { name: "Stop & save", exact: true }).click();
           await expectPage(page.getByRole("button", { name: "Start timer", exact: true })).toBeVisible();
-          const entries = await database.prisma.timeEntry.findMany({ where: { employeeId: f.worker.employee.id } });
+          const entries = await database.prisma.timeEntry.findMany({ where: { employeeId: f.worker.employee.id, taskId: timerTask.id } });
           const versions = await database.prisma.timeEntryVersion.findMany({ where: { OR: entries.map(entry => ({ entryId: entry.id, version: entry.version })) } });
           expect(versions.some(version => { const data = version.data as { workNote?: string; activityLabel?: string }; return data.workNote === "V10 real persisted timer" && data.activityLabel === "V10 internal coordination"; })).toBe(true);
         }
