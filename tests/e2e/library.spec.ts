@@ -145,7 +145,11 @@ test("Owner publishes private Library file history and staff acknowledges exact 
     await expect(workspace.getByText("Read the current site safety standard.")).toBeVisible();
     await expect(workspace.getByRole("link", { name: /safety-guide\.pdf.*Open private file/ })).toBeVisible();
     await expect(workspace.getByRole("button", { name: "Acknowledge version 2" })).toBeVisible();
+    const secondAcknowledgementResponse = page.waitForResponse(response => response.url().endsWith(`/api/v1/library/versions/${version2Id}/acknowledgements`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Acknowledge version 2" }).click();
+    const secondAcknowledgement = await secondAcknowledgementResponse;
+    expect(secondAcknowledgement.ok(), await secondAcknowledgement.text()).toBe(true);
+    expect(await secondAcknowledgement.json()).toMatchObject({ versionId: version2Id, acknowledged: true });
     await expect(workspace.getByText("Acknowledgement recorded for this exact version.")).toBeVisible();
     expect((await db.query('SELECT count(*)::int AS count FROM library_acknowledgements WHERE "employeeId"=$1 AND "versionId" IN ($2,$3)', [employeeId, version1.rows[0]!.id, version2Id])).rows[0]?.count).toBe(2);
 

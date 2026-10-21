@@ -12,6 +12,14 @@ const boundedWorkers = requestedWorkers;
 export default defineConfig({
   plugins: [
     {
+      name: "reserve-canonical-staging-port",
+      configResolved(config) {
+        if (config.server.port === 59443 || config.preview.port === 59443) {
+          throw new Error("Port 59443 is reserved for immutable canonical Sense staging. Use a separate port for Vite development or experimental previews.");
+        }
+      }
+    },
+    {
       name: "retire-preview-worker-in-development",
       apply: "serve",
       configureServer(server) {

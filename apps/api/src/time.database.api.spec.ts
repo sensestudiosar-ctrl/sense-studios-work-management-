@@ -113,7 +113,8 @@ databaseDescribe("S16 time PostgreSQL and service acceptance", () => {
     await expect(database.prisma.$executeRaw`UPDATE time_entry_versions SET data=data || '{"workNote":"forged"}'::jsonb WHERE "entryId"=${entry.id}::uuid AND version=1`).rejects.toThrow();
     await expect(database.prisma.$executeRaw`DELETE FROM time_transitions WHERE "timerId"=${started.id}::uuid AND version=2`).rejects.toThrow();
     expect(await database.prisma.timeEntryVersion.findUniqueOrThrow({ where: { entryId_version: { entryId: entry.id, version: 1 } } })).toMatchObject({ data: expect.objectContaining({ workNote: "Timer segment acceptance" }) });
-  });
+  // This real-clock test deliberately waits 3.3 seconds, in addition to fixture and transactional work.
+  }, 15_000);
 
   it("pauses project timers on actual hold and cancellation, preserves elapsed time and blocks resume", async () => {
     const f = await fixture();

@@ -22,11 +22,13 @@ const runtimeUrl = new URL(environment.DATABASE_URL ?? "");
 const adminUrl = new URL(environment.MIGRATION_DATABASE_URL ?? "");
 const recoveryModule = environment.SENSE_RECOVERY_TEST_MANIFEST ? await import("../../apps/api/dist/recovery-test-target.js") : undefined;
 const recovery = recoveryModule?.loadRecoveryTestTarget(environment, workspace, "DATABASE_URL");
+const { isS27DisposableTestTarget, matchesS27DisposableServer } = await import("../../apps/api/dist/s27-disposable-test-target.js");
+assert.ok(isS27DisposableTestTarget("DATABASE_URL", environment.DATABASE_URL, environment), "Automation requires the exact generated disposable fixture manifest");
 assert.ok(["127.0.0.1", "localhost"].includes(runtimeUrl.hostname), "S27 runtime database must be loopback-only");
 assert.equal(runtimeUrl.port, "58440", "S27 browser runtime must use the guarded CI compatibility port");
 assert.match(runtimeUrl.pathname, /^\/sense_s27_main_s27_[0-9]+_[a-f0-9]+_test$/);
 assert.ok(["127.0.0.1", "localhost"].includes(adminUrl.hostname), "S27 migration database must be loopback-only");
-assert.equal(adminUrl.port, recovery ? "58440" : "57433", "S27 fixture migrations must remain on the main disposable PostgreSQL listener");
+assert.equal(adminUrl.port, "58440", "S27 fixture migrations must remain on the main disposable PostgreSQL listener");
 assert.equal(adminUrl.pathname, runtimeUrl.pathname, "S27 runtime and migration URLs must identify the same run-scoped database");
 assert.equal(adminUrl.username, recovery ? "sense_recovery_admin" : "sense_ci_admin", "Only the run-scoped fixture administrator may own the migration URL");
 
@@ -45,7 +47,7 @@ try {
   const database = app.get(DatabaseService);
   const identity = await database.prisma.$queryRawUnsafe("SELECT current_database() AS database, inet_server_port() AS port");
   assert.equal(identity[0]?.database, runtimeUrl.pathname.slice(1), "S27 automation database identity mismatch");
-  assert.equal(Number(identity[0]?.port), recovery ? 58440 : 57433, "S27 automation must run against the isolated main server");
+  assert.ok(matchesS27DisposableServer(environment.DATABASE_URL, identity[0]?.database, Number(identity[0]?.port)), "S27 automation must run against the isolated main server");
   if (recovery) await recoveryModule.verifyRecoveryTestDatabase(database.prisma, recovery);
   await database.check();
   process.stdout.write(`${JSON.stringify(await app.get(AutomationService).runBatch())}\n`);

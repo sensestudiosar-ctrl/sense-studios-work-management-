@@ -68,7 +68,7 @@ async function ensurePostgres() {
     assert.equal(processIdentity(pid),null,'PostgreSQL PID is still live; refusing another startup');
   }
   const log = path.join(scoped(root,setting.logRoot),`postgres-${Date.now()}.log`);
-  execFileSync(path.join(setting.postgresBin,'pg_ctl.exe'),['-D',data,'-l',log,'-o',`-h 127.0.0.1 -p ${setting.runtime.database.port}`,'-w','start'],{encoding:'utf8',windowsHide:true,timeout:60000});
+  execFileSync(path.join(setting.postgresBin,'pg_ctl.exe'),['-D',data,'-l',log,'-o',`-h 127.0.0.1 -p ${setting.runtime.database.port}`,'-w','start'],{stdio:'ignore',windowsHide:true,timeout:60000});
   verifyPostgresListener();
 }
 async function recoverOrphans(previous) {
