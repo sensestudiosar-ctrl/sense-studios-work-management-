@@ -10,11 +10,12 @@ async function request<T>(path: string, csrf: string, body?: unknown): Promise<T
   if (!response.ok) throw new TimeReadError(result.error?.message ?? result.message ?? `Time source unavailable (${response.status})`, response.status);
   return result as T;
 }
-export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+export function DashboardTimeWidget({ csrfToken, refreshVersion = 0 }: { csrfToken: string; refreshVersion?: number }): React.JSX.Element {
   const [setup, setSetup] = useState<Setup | null>(null), [timer, setTimer] = useState<Timer | null>(null);
   const [loading, setLoading] = useState(true), [error, setError] = useState(""), [pending, setPending] = useState(false);
   const [workNote, setWorkNote] = useState(""), [location, setLocation] = useState("OFFICE"), [billable, setBillable] = useState(true);
   const [projectId, setProjectId] = useState(""), [taskId, setTaskId] = useState("");
+  const [activityLabel, setActivityLabel] = useState("");
   const [clock, setClock] = useState(Date.now), [readAt, setReadAt] = useState(0);
   const generation = useRef(0), command = useRef<{ signature: string; id: string } | null>(null), busy = useRef(false);
   const load = useCallback(async () => {
@@ -28,7 +29,7 @@ export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React
       setSetup(null); setTimer(null); setError(cause instanceof Error ? cause.message : "Time source unavailable");
     } finally { if (current === generation.current) setLoading(false); }
   }, [csrfToken]);
-  useEffect(() => { void load(); return () => { generation.current++; }; }, [load]);
+  useEffect(() => { void load(); return () => { generation.current++; }; }, [load, refreshVersion]);
   useEffect(() => { const tick = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(tick); }, []);
   const mutate = async (path: string, payload: Record<string, unknown>) => {
     if (busy.current) return; busy.current = true; setPending(true); setError("");
@@ -40,7 +41,7 @@ export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React
       await load();
     } catch (cause) {
       // Keep the command identity for a same-input retry after an uncertain response.
-      if (cause instanceof TimeReadError && [401, 403].includes(cause.status)) { generation.current++; setSetup(null); setTimer(null); setReadAt(0); }
+      if (cause instanceof TimeReadError && [401, 403].includes(cause.status)) { generation.current++; setSetup(null); setTimer(null); setReadAt(0); setLoading(false); }
       setError(cause instanceof Error ? cause.message : "Timer command not confirmed");
     } finally { busy.current = false; setPending(false); }
   };
@@ -62,9 +63,10 @@ export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React
       <div className="dv-time-display">00:00:00</div>
       <label className="dv-time-field">Project<select value={projectId} disabled={pending} onChange={e => { setProjectId(e.target.value); setTaskId(""); }}><option value="">Non-project activity</option>{setup.projects?.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
       <label className="dv-time-field">Task · optional<select value={taskId} disabled={pending} onChange={e => setTaskId(e.target.value)}><option value="">No linked task</option>{setup.tasks?.filter(t => (t.projectId ?? "") === projectId).map(t => <option key={t.id} value={t.id}>{t.title}</option>)}</select></label>
+      {!projectId && !taskId && <label className="dv-time-field">Non-project activity<input value={activityLabel} maxLength={160} disabled={pending} onChange={e => setActivityLabel(e.target.value)} placeholder="For example, internal coordination" /></label>}
       <label className="dv-time-field">Work note<input value={workNote} maxLength={1000} disabled={pending} onChange={e => setWorkNote(e.target.value)} placeholder="What are you working on?" /></label>
       <div className="dv-time-options"><label className="dv-time-field">Location<select value={location} disabled={pending} onChange={e => setLocation(e.target.value)}><option value="OFFICE">Office</option><option value="SITE">Site</option><option value="REMOTE">Remote</option></select></label><label className="dv-time-check"><input type="checkbox" checked={billable} disabled={pending} onChange={e => setBillable(e.target.checked)} />Billable</label></div>
-      <button type="button" disabled={pending || !workNote.trim()} onClick={() => void mutate("/timers", { workNote: workNote.trim(), location, billable, ...(projectId ? { projectId } : {}), ...(taskId ? { taskId } : {}) })}>Start timer</button>
+      <button type="button" disabled={pending || !workNote.trim() || !projectId && !taskId && !activityLabel.trim()} onClick={() => void mutate("/timers", { workNote: workNote.trim(), location, billable, ...(projectId ? { projectId } : {}), ...(taskId ? { taskId } : {}), ...(!projectId && !taskId ? { activityLabel: activityLabel.trim() } : {}) })}>Start timer</button>
     </div> : !error && <p>Your account has no employee record for a personal timer.</p>}
     <div className="dv-widget-foot"><span>{readAt ? `Read at ${new Date(readAt).toLocaleTimeString()}` : "Time source not read"}</span><Link to="/time">Time log & manual entry →</Link></div>
   </div>;

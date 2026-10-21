@@ -1,9 +1,33 @@
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
-import { WorkspaceLayout } from "./workspace-navigation.js";
+import { WorkspaceHeader, WorkspaceLayout } from "./workspace-navigation.js";
 
 let previousWidth = window.innerWidth;
+
+it("keeps destination icons accessible in the collapsed rail", () => {
+  render(<MemoryRouter><WorkspaceLayout>Current page</WorkspaceLayout></MemoryRouter>);
+  fireEvent.click(screen.getByRole("button", { name: "Collapse sidebar" }));
+  const nav = screen.getByRole("navigation", { name: "Workspace navigation" });
+  expect(within(nav).getByRole("link", { name: "Projects" })).toHaveAttribute("href", "/projects");
+  expect(within(nav).getAllByRole("link", { name: "Dashboard" })).toHaveLength(1);
+});
+
+it("opens the native page-finder dialog and navigates from its focused search input", () => {
+  render(<MemoryRouter><WorkspaceHeader session={{ account: { email: "owner@example.test", kind: "OWNER" } }} /></MemoryRouter>);
+  const trigger = screen.getByRole("button", { name: "Find a page" });
+  fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+  const input = screen.getByRole("searchbox", { name: "Search pages" });
+  expect(input).toHaveFocus();
+  expect(screen.getByRole("dialog", { name: "Page finder" }).tagName).toBe("DIALOG");
+  fireEvent.change(input, { target: { value: "Projects" } });
+  fireEvent.keyDown(input, { key: "ArrowDown" });
+  expect(screen.getByRole("option", { name: /Projects/ })).toHaveAttribute("aria-selected", "true");
+  fireEvent.keyDown(input, { key: "Enter" });
+  expect(screen.queryByRole("dialog", { name: "Page finder" })).not.toBeInTheDocument();
+  expect(trigger).toHaveFocus();
+  expect(screen.getByRole("link", { name: "New task" })).toHaveAttribute("href", "/tasks?create=1");
+});
 
 beforeEach(() => {
   previousWidth = window.innerWidth;

@@ -37,7 +37,8 @@ export function loadLayout(accountId: string, kind: "OWNER" | "STAFF", permitted
       if (typeof id !== "string" || !permitted.includes(id as WidgetId) || seen.has(id as WidgetId)) return false;
       seen.add(id as WidgetId); return true;
     });
-    return { version: 1, accountKind: kind, leftOrder: clean(parsed.leftOrder), rightOrder: clean(parsed.rightOrder), hidden: clean(parsed.hidden) };
+    const leftOrder = clean(parsed.leftOrder), rightOrder = clean(parsed.rightOrder), hidden = clean(parsed.hidden);
+    return { version: 1, accountKind: kind, leftOrder: mode === "mobile" ? [...leftOrder, ...rightOrder] : leftOrder, rightOrder: mode === "mobile" ? [] : rightOrder, hidden };
   } catch { return fallback(); }
 }
 export function saveLayout(accountId: string, layout: DashboardLayout, mode: LayoutMode = "desktop"): boolean {

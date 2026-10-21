@@ -38,6 +38,13 @@ async function fillTask() {
   return { dialog, form };
 }
 describe("confirmed task creation and recoverable drafts", () => {
+  it("consumes the shell create intent only after authoritative creation access is available", async () => {
+    installApi("success"); window.history.replaceState(null, "", "/tasks?create=1");
+    render(<TaskWorkspace csrfToken="csrf" owner accountId="owner" listFirst />);
+    const dialog = await screen.findByRole("dialog");
+    expect(within(dialog).getByRole("form", { name: "Create task" })).toBeInTheDocument();
+    expect(new URL(window.location.href).searchParams.has("create")).toBe(false);
+  });
   it("sends only one create when two submit events arrive before a pending response", async () => {
     const mock = installApi("success");
     const initial = mock.getMockImplementation()!;

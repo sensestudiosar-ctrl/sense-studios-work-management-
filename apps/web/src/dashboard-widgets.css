@@ -1116,6 +1116,7 @@
 
 /* Small tablet / large phone: 760px */
 @media (max-width: 760px) {
+  .dv-widget-col:empty { display: none; }
   .dv-essentials-heading { align-items: flex-start; }
   .dv-essentials-heading p { max-width: 14rem; }
   .dv-widget-tools { gap: .4rem; }

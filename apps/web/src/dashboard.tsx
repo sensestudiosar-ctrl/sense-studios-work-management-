@@ -11,7 +11,7 @@ import "./dashboard-widgets.css";
 import {
   WIDGET_INFO,
   type WidgetId, type DashboardLayout, type LayoutMode,
-  loadLayout, saveLayout, resetLayout,
+  loadLayout, saveLayout, defaultLayoutFor,
 } from "./dashboard-widgets.js";
 
 import { DashboardTimeWidget } from "./dashboard-time-widget.js";
@@ -84,12 +84,12 @@ function permittedWidgetIds(
 /* Draggable widget wrapper: dnd-kit sortable behaviour plus the V10
    edit-mode chrome (hide, drag handle, keyboard move controls). */
 function SortableWidget({
-  id, editing, onHide, onMoveUp, onMoveDown, onMoveAcross, canMoveUp, canMoveDown, children,
+  id, editing, onHide, onMoveUp, onMoveDown, onMoveAcross, canMoveUp, canMoveDown, canMoveAcross, children,
 }: {
   id: string; editing: boolean;
   onHide: (id: string) => void; onMoveUp: (id: string) => void;
   onMoveDown: (id: string) => void; onMoveAcross: (id: string) => void;
-  canMoveUp: boolean; canMoveDown: boolean;
+  canMoveUp: boolean; canMoveDown: boolean; canMoveAcross: boolean;
   children: React.ReactNode;
 }): React.JSX.Element {
   const { transform, transition, isDragging, attributes, listeners, setNodeRef, setActivatorNodeRef } = useSortable({ id, disabled: !editing });
@@ -108,7 +108,7 @@ function SortableWidget({
             </button>
             <button type="button" className="dv-edit-hbtn" title="Move up" aria-label={`Move ${info?.label ?? id} up`} disabled={!canMoveUp} onClick={() => onMoveUp(id)}>↑</button>
             <button type="button" className="dv-edit-hbtn" title="Move down" aria-label={`Move ${info?.label ?? id} down`} disabled={!canMoveDown} onClick={() => onMoveDown(id)}>↓</button>
-            <button type="button" className="dv-edit-hbtn" title="Move to other column" aria-label={`Move ${info?.label ?? id} to other column`} onClick={() => onMoveAcross(id)}>⇄</button>
+            {canMoveAcross && <button type="button" className="dv-edit-hbtn" title="Move to other column" aria-label={`Move ${info?.label ?? id} to other column`} onClick={() => onMoveAcross(id)}>⇄</button>}
           </div>
         )}
       </div>
@@ -291,8 +291,10 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   const [editing, setEditing] = useState(false), [galleryOpen, setGalleryOpen] = useState(false), [queueExpanded, setQueueExpanded] = useState(false);
   const [layoutNotice, setLayoutNotice] = useState("");
   const beforeDrag = useRef<DashboardLayout | null>(null);
+  const visitLayouts = useRef(new Map<string, DashboardLayout>());
+  const visitLayoutKey = `${accountId}:${mode}`;
   const longPress = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => { setLayout(loadLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode)); }, [accountId, kind, permitted, canSeePerformance, canSeeSite, mode]);
+  useEffect(() => { setLayout(visitLayouts.current.get(visitLayoutKey) ?? loadLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode)); }, [accountId, kind, permitted, canSeePerformance, canSeeSite, mode, visitLayoutKey]);
   const [reviewInbox, setReviewInbox] = useState<{ total: number; items: Array<{ roundId: string; taskId: string; taskTitle: string; projectTitle: string; roundNumber: number; status: string; dueDate: string; revisionLabel?: string }> } | null>(null);
   const [reviewError, setReviewError] = useState("");
   useEffect(() => { let active = true; setReviewInbox(null); setReviewError("");
@@ -306,7 +308,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
-  const updateLayout = (next: DashboardLayout): void => { setLayout(next); setLayoutNotice(saveLayout(accountId, next, mode) ? "Layout saved on this device." : "Layout changed for this visit; browser storage is unavailable."); };
+  const updateLayout = (next: DashboardLayout): void => { visitLayouts.current.set(visitLayoutKey, next); setLayout(next); setLayoutNotice(saveLayout(accountId, next, mode) ? "Layout saved on this device." : "Layout changed for this visit; browser storage is unavailable."); };
   const hideWidget = (id: string): void => {
     const wid = id as WidgetId;
     updateLayout({ ...layout, hidden: [...layout.hidden, wid], leftOrder: layout.leftOrder.filter(w => w !== wid), rightOrder: layout.rightOrder.filter(w => w !== wid) });
@@ -315,7 +317,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
     const wid = id as WidgetId;
     updateLayout({ ...layout, hidden: layout.hidden.filter(w => w !== wid), leftOrder: [...layout.leftOrder, wid] });
   };
-  const resetToDefaults = (): void => { setLayout(resetLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode)); setGalleryOpen(false); };
+  const resetToDefaults = (): void => { updateLayout(defaultLayoutFor(kind, permitted, canSeePerformance, canSeeSite, mode)); setGalleryOpen(false); };
   const moveWithin = (id: string, direction: "up" | "down" | "across"): void => {
     const wid = id as WidgetId;
     const lane: "leftOrder" | "rightOrder" = layout.leftOrder.includes(wid) ? "leftOrder" : "rightOrder";
@@ -350,10 +352,12 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
     return rows;
   }, [tasksState]);
   const attentionRows = queueExpanded ? attentionBaseRows : attentionBaseRows.slice(0, 2);
+  const queueIncomplete = Boolean(tasksState && !tasksState.loading && !tasksState.error && ["overdue", "waiting", "priority", "attention", "reviews", "today"].some(key => !tasksState.sections.some(section => section.key === key && !section.unavailable)));
 
   const onDragOver = (event: DragOverEvent): void => {
     const from = String(event.active.id), to = event.over ? String(event.over.id) : undefined;
     if (!to || from === to) return;
+    if (mode === "mobile" && to === "lane-right") return;
     const fromId = from as WidgetId, toId = to as WidgetId;
     if (to === "lane-left" || to === "lane-right") {
       const source = layout.leftOrder.includes(fromId) ? "leftOrder" : "rightOrder";
@@ -385,7 +389,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   };
   const renderWidget = (id: WidgetId): React.JSX.Element | null => {
     switch (id) {
-      case "time": return <DashboardTimeWidget csrfToken={csrfToken} />;
+      case "time": return <DashboardTimeWidget csrfToken={csrfToken} refreshVersion={accessRefresh} />;
       case "decisions":
         return (
           <div className="dv-widget-body">
@@ -461,7 +465,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
       case "nextAction":
         return (
           <div className="dv-widget-body">
-            {!tasksState || tasksState.loading ? <p role="status">Reading task source…</p> : tasksState.error ? <div className="dv-source-error" role="alert"><strong>Task source unavailable.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry tasks</button></div> : taskAttentionRows[0] ? (
+            {!tasksState || tasksState.loading ? <p role="status">Reading task source…</p> : taskSectionNote("attention") ? <div className="dv-source-error" role="alert"><strong>{taskSectionNote("attention")}</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry tasks</button></div> : taskAttentionRows[0] ? (
               <Link to={taskAttentionRows[0].route ?? "/my-work"} className="dv-nextaction">
                 <div className="dv-nextaction-icon" aria-hidden="true">→</div>
                 <div className="dv-nextaction-main">
@@ -561,6 +565,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                   onMoveAcross={wid => moveWithin(wid, "across")}
                   canMoveUp={visibleLeft.indexOf(id) > 0}
                   canMoveDown={visibleLeft.indexOf(id) < visibleLeft.length - 1}
+                  canMoveAcross={mode === "desktop"}
                 >
                   {renderWidget(id as WidgetId)}
                 </SortableWidget>
@@ -593,6 +598,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                   onMoveAcross={wid => moveWithin(wid, "across")}
                   canMoveUp={visibleRight.indexOf(id) > 0}
                   canMoveDown={visibleRight.indexOf(id) < visibleRight.length - 1}
+                  canMoveAcross={mode === "desktop"}
                 >
                   {renderWidget(id as WidgetId)}
                 </SortableWidget>
@@ -613,6 +619,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
           </div>
           <span className="dv-attention-locked" aria-hidden="true">Fixed</span>
         </div>
+        {queueIncomplete && <div className="dv-source-error" role="status"><strong>Some task sections are unavailable. This preview may be incomplete.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry attention source</button></div>}
         <div className="dv-attention-body">
           {!tasksState || tasksState.loading ? (
             <div className="dv-source-loading">Reading attention items…</div>
@@ -620,18 +627,18 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
             <div className="dv-source-error"><strong>Task source unavailable.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry</button></div>
           ) : attentionRows.length > 0 ? attentionRows.map(row => (
             <Link key={row.id} to={row.route ?? "/my-work"} className="dv-attention-row">
-              <span className={`dv-attention-stripe ${row.status?.includes("WAITING") ? "waiting" : row.date && row.date < today() ? "overdue" : "default"}`} aria-hidden="true"></span>
+              <span className={`dv-attention-stripe ${row.status?.includes("WAITING") ? "waiting" : row.date && dash.today && row.date < dash.today ? "overdue" : "default"}`} aria-hidden="true"></span>
               <div className="dv-attention-main">
                 <div className="dv-attention-title">{row.label}</div>
                 <div className="dv-attention-meta">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
               </div>
               <div className="dv-attention-right">
-                <span className={`dv-attention-due${row.date && row.date < today() ? " overdue" : ""}`}>{row.date ?? ""}</span>
+                <span className={`dv-attention-due${row.date && dash.today && row.date < dash.today ? " overdue" : ""}`}>{row.date ?? ""}</span>
                 <span className={`dv-attention-chip ${row.status?.includes("WAITING") ? "waiting" : ""}`}>{row.status?.replace(/_/g, " ") ?? ""}</span>
               </div>
             </Link>
           )) : (
-            <div className="dv-source-loading">No tasks in this scope.</div>
+            <div className="dv-source-loading">{queueIncomplete ? "No complete task preview is available." : "No tasks in this scope."}</div>
           )}
         </div>
         {attentionBaseRows.length > 2 && (

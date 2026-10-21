@@ -51,6 +51,8 @@ describe("V10 real Time command adapter", () => {
     }));
     render(<MemoryRouter><DashboardTimeWidget csrfToken="csrf" /></MemoryRouter>);
     fireEvent.change(await screen.findByPlaceholderText("What are you working on?"), { target: { value: "Draw plans" } });
+    expect(screen.getByRole("button", { name: "Start timer" })).toBeDisabled();
+    fireEvent.change(screen.getByLabelText("Non-project activity"), { target: { value: "Internal planning" } });
     fireEvent.click(screen.getByRole("button", { name: "Start timer" }));
     expect(await screen.findByRole("alert")).toHaveTextContent("Connection lost");
     fireEvent.click(screen.getByRole("button", { name: "Start timer" }));

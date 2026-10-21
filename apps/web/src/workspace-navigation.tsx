@@ -156,7 +156,7 @@ function DesktopDestinationGroups({ pathname, filter, onClearFilter, unreadCount
       const isCurrent = activeGroup === group.label;
       const expanded = query.length > 0 ? items.length > 0 : openGroups[group.label];
       return <section className={`workspace-nav-group${isCurrent ? " is-current" : ""}${collapsed ? " is-collapsed" : ""}`} key={group.label} aria-labelledby={headingId}>
-        <h2 id={headingId} className="workspace-nav-heading">
+        <h2 id={headingId} className="workspace-nav-heading" hidden={collapsed}>
           <button
             className={`workspace-nav-disclosure${isCurrent ? " is-current" : ""}`}
             type="button"
@@ -172,8 +172,8 @@ function DesktopDestinationGroups({ pathname, filter, onClearFilter, unreadCount
             {!collapsed && <svg className="workspace-nav-chevron" aria-hidden="true" focusable="false" viewBox="16 16 16 16"><path d="m4 6 4 4 4-4" /></svg>}
           </button>
         </h2>
-        <div id={linksId} className="workspace-nav-group-links" hidden={!expanded || collapsed}>
-          <DestinationLinks items={items} icons unreadCount={unreadCount} />
+        <div id={linksId} className="workspace-nav-group-links" hidden={!collapsed && !expanded}>
+          <DestinationLinks items={items} icons unreadCount={unreadCount} collapsed={collapsed} />
         </div>
       </section>;
     })}
@@ -193,11 +193,12 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
   const listRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const finderRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent): void => {
       const target = event.target as HTMLElement | null;
-      const inEditable = target !== null && (target.isContentEditable || target.tagName === "INPUT" || target.tagName === "TEXTAREA");
+      const inFinder = target === inputRef.current || target !== null && listRef.current?.contains(target);
       if ((event.metaKey || event.ctrlKey) && event.key === "k") {
         event.preventDefault();
         setOpen(previous => {
@@ -212,23 +213,27 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
         setOpen(false);
         onOpenChange?.(false);
         triggerRef.current?.focus();
-      } else if (open && event.key === "ArrowDown" && !inEditable) {
+      } else if (open && event.key === "ArrowDown" && inFinder) {
         event.preventDefault();
-        setActiveIndex(i => i + 1);
-      } else if (open && event.key === "ArrowUp" && !inEditable) {
+        setActiveIndex(i => Math.min(Math.max(0, Math.min(20, filtered(dests, query).length) - 1), i + 1));
+      } else if (open && event.key === "ArrowUp" && inFinder) {
         event.preventDefault();
         setActiveIndex(i => Math.max(0, i - 1));
-      } else if (open && event.key === "Enter" && !inEditable) {
+      } else if (open && event.key === "Enter" && target === inputRef.current) {
         event.preventDefault();
         const items = filtered(dests, query);
-        if (items[activeIndex]) { navigate(items[activeIndex].to); setOpen(false); onOpenChange?.(false); }
+        if (items[activeIndex]) { navigate(items[activeIndex].to); setOpen(false); onOpenChange?.(false); triggerRef.current?.focus(); }
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open, query, activeIndex, dests, navigate, onOpenChange]);
 
-  useEffect(() => { if (open) inputRef.current?.focus(); }, [open]);
+  useEffect(() => {
+    const dialog = finderRef.current;
+    if (open && dialog && !dialog.open) { dialog.showModal(); inputRef.current?.focus(); }
+    else if (!open && dialog?.open) dialog.close();
+  }, [open]);
 
   const filtered = (d: Destination[], q: string): Destination[] => {
     const query = q.trim().toLocaleLowerCase();
@@ -245,13 +250,13 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
   }, [activeIndex, open]);
 
   return <>
-    <button ref={triggerRef} type="button" className="workspace-page-finder-trigger" onClick={() => { setOpen(true); setQuery(""); setActiveIndex(0); onOpenChange?.(true); }} aria-haspopup="dialog" aria-expanded={open}>
+    <button ref={triggerRef} type="button" aria-label="Find a page" className="workspace-page-finder-trigger" onClick={() => { setOpen(true); setQuery(""); setActiveIndex(0); onOpenChange?.(true); }} aria-haspopup="dialog" aria-expanded={open}>
       <Icon path="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
       <span>Find a page</span>
       <kbd className="workspace-page-finder-kbd">{navigator.platform.toLowerCase().includes("mac") ? "⌘" : "Ctrl+"}K</kbd>
     </button>
     {open && (
-      <div role="dialog" aria-modal="true" aria-label="Page finder" className="workspace-page-finder" onClick={(event) => { if (event.target === event.currentTarget) { setOpen(false); triggerRef.current?.focus(); } }}>
+      <dialog ref={finderRef} aria-modal="true" aria-label="Page finder" className="workspace-page-finder" onCancel={event => { event.preventDefault(); setOpen(false); onOpenChange?.(false); triggerRef.current?.focus(); }} onClick={(event) => { if (event.target === event.currentTarget) { setOpen(false); onOpenChange?.(false); triggerRef.current?.focus(); } }}>
         <div className="workspace-page-finder-panel">
           <div className="workspace-page-finder-search">
             <input ref={inputRef} type="search" placeholder="Type a page name…" value={query}
@@ -273,7 +278,7 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
             ))}
           </div>
         </div>
-      </div>
+      </dialog>
     )}
   </>;
 }
@@ -386,8 +391,6 @@ export function WorkspaceNavigation(): React.JSX.Element {
         </>}
       </div>
       <nav className={`workspace-nav${collapsed ? " is-collapsed" : ""}`} aria-label="Workspace navigation">
-        {!collapsed && <NavLink className="workspace-dashboard-link" to="/dashboard"><Icon path={routeIcons["/dashboard"]} /><span>Dashboard</span></NavLink>}
-        {collapsed && <NavLink className="workspace-dashboard-link" to="/dashboard" aria-label="Dashboard"><Icon path={routeIcons["/dashboard"]} /></NavLink>}
         <DesktopDestinationGroups pathname={location.pathname} filter={filter} onClearFilter={clearFilter} unreadCount={unreadCount} collapsed={collapsed} />
       </nav>
       {!collapsed && <div className="workspace-sidebar-footer">
@@ -419,17 +422,17 @@ export function WorkspaceNavigation(): React.JSX.Element {
   </>;
 }
 
-export function WorkspaceHeader({ session }: { session: { account: { email: string; kind: "OWNER" | "STAFF" } } }): React.JSX.Element {
+export function WorkspaceHeader({ session, contextLabel = "Dashboard" }: { session: { account: { email: string; kind: string } }; contextLabel?: string }): React.JSX.Element {
   return (
     <header className="workspace-header">
       <div className="workspace-header-left">
         <span className="workspace-header-breadcrumb">Workspace</span>
         <span className="workspace-header-divider" aria-hidden="true"></span>
-        <span className="workspace-header-context">Dashboard</span>
+        <span className="workspace-header-context">{contextLabel}</span>
       </div>
       <div className="workspace-header-actions">
         <PageFinder destinations={[...destinations]} />
-        <NavLink to="/tasks" className="workspace-header-new-task" aria-label="New task">
+        <NavLink to="/tasks?create=1" className="workspace-header-new-task" aria-label="New task">
           <Icon path="M12 5v14M5 12h14" size={15} />
           <span>New task</span>
         </NavLink>

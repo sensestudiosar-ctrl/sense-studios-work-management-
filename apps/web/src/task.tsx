@@ -658,6 +658,14 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
   const requiresExplicitOwner = setup !== undefined && setup.actorEmployeeId === null;
   const assignToEmployee = !!creation.options?.canAssign && assignTo || requiresExplicitOwner;
   const canCreate = !!setup && (setup.canAssign || !!setup.actorEmployeeId) && (!projectContext || ["DRAFT", "ACTIVE"].includes(projectContext.status));
+  const createIntent = useRef(!projectContext && new URL(window.location.href).searchParams.get("create") === "1");
+  useEffect(() => {
+    if (!canCreate || !createIntent.current) return;
+    createIntent.current = false;
+    const url = new URL(window.location.href); url.searchParams.delete("create");
+    window.history.replaceState(window.history.state, "", url);
+    setShowForm(true);
+  }, [canCreate]);
   const selected = detail?.task;
   const selectedSubtasks = selected && subtasksTaskId === selected.id ? subtasks : undefined;
   const profile = setup?.creationProfile;

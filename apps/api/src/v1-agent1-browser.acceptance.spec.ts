@@ -309,7 +309,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     };
     const leader = await createPerson("v10-leader"), site = await createPerson("v10-site");
     await database.prisma.employee.update({ where: { id: f.worker.employee.id }, data: { reportsToId: leader.employee.id } });
-    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "performance.manage", effect: "ALLOW", scopeKind: "TEAM", teamId: leader.employee.homeTeamId, reason: "Explicit scoped V10 Team Leader fixture" } });
+    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "performance.manage", effect: "ALLOW", scopeKind: "TEAM", branchId: f.branch.id, teamId: leader.employee.homeTeamId, reason: "Explicit scoped V10 Team Leader fixture" } });
     const otherBranch = await database.prisma.branch.create({ data: { organizationId: f.organization.id, name: `V10 other ${randomUUID()}` } });
     const otherTeam = await database.prisma.team.create({ data: { organizationId: f.organization.id, branchId: otherBranch.id, name: "Other team" } });
     const cross = await createPerson("v10-cross", otherBranch.id, otherTeam.id);
@@ -346,6 +346,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
         if (!["owner", "leader"].includes(identity.key)) expect(scoreReads).toEqual([]);
         if (identity.key === "employee") {
           await page.getByPlaceholder("What are you working on?").fill("V10 real persisted timer");
+          await page.getByLabel("Non-project activity", { exact: true }).fill("V10 internal coordination");
           const started = page.waitForResponse(r => new URL(r.url()).pathname === "/api/v1/time/timers" && r.request().method() === "POST");
           await page.getByRole("button", { name: "Start timer", exact: true }).click(); expect((await started).status()).toBe(201);
           await expectPage(page.getByRole("button", { name: "Pause", exact: true })).toBeVisible();
@@ -358,7 +359,8 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await page.getByRole("button", { name: "Stop & save", exact: true }).click();
           await expectPage(page.getByRole("button", { name: "Start timer", exact: true })).toBeVisible();
           const entries = await database.prisma.timeEntry.findMany({ where: { employeeId: f.worker.employee.id } });
-          expect(entries.some(entry => (entry.data as { workNote?: string }).workNote === "V10 real persisted timer")).toBe(true);
+          const versions = await database.prisma.timeEntryVersion.findMany({ where: { OR: entries.map(entry => ({ entryId: entry.id, version: entry.version })) } });
+          expect(versions.some(version => { const data = version.data as { workNote?: string; activityLabel?: string }; return data.workNote === "V10 real persisted timer" && data.activityLabel === "V10 internal coordination"; })).toBe(true);
         }
         if (identity.key === "owner") {
           await page.getByRole("button", { name: "Edit widgets", exact: true }).click();

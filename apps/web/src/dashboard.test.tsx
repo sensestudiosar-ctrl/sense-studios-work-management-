@@ -61,9 +61,49 @@ function tile(label: string): HTMLElement {
   if (!element) throw new Error(`Missing summary tile: ${label}`);
   return element;
 }
-afterEach(() => { vi.unstubAllGlobals(); localStorage.clear(); });
+afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); localStorage.clear(); });
 
 describe("DashboardWorkspace", () => {
+  it("keeps visit-only layout edits across a source refresh when storage fails", async () => {
+    mockFetch({ owner: true });
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("Storage full"); });
+    renderWorkspace(true);
+    await screen.findByRole("heading", { name: "Performance" });
+    fireEvent.click(screen.getByRole("button", { name: "Edit widgets" }));
+    fireEvent.click(screen.getByRole("button", { name: "Hide Time tracking widget" }));
+    expect(screen.getByText(/Layout changed for this visit/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    await screen.findByRole("heading", { name: "Performance" });
+    expect(screen.queryByRole("heading", { name: "Time tracking" })).not.toBeInTheDocument();
+  });
+
+  it("refreshes the Time source with the Dashboard without discarding an idle draft", async () => {
+    const calls = mockFetch({ owner: false });
+    renderWorkspace(false);
+    const note = await screen.findByPlaceholderText("What are you working on?");
+    fireEvent.change(note, { target: { value: "Keep my time draft" } });
+    const before = calls.filter(call => call.url.endsWith("/time/setup")).length;
+    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+    await waitFor(() => expect(calls.filter(call => call.url.endsWith("/time/setup")).length).toBeGreaterThan(before));
+    expect(await screen.findByDisplayValue("Keep my time draft")).toBeInTheDocument();
+  });
+  it("does not turn missing or unavailable task sections into an empty preview or next action", async () => {
+    mockFetch({ owner: false, sourceResponse: source => source === "tasks" ? sourcePage(source, [{ key: "attention", label: "Attention", unavailable: "Attention evidence is unavailable.", rows: [{ id: "stale", label: "Hidden stale task" }] }]) : undefined });
+    renderWorkspace(false);
+    expect(await screen.findByText(/This preview may be incomplete/)).toBeInTheDocument();
+    expect(screen.queryByText("No tasks in this scope.")).not.toBeInTheDocument();
+    expect(screen.queryByText("Hidden stale task")).not.toBeInTheDocument();
+    expect(screen.getByText("Attention evidence is unavailable.")).toBeInTheDocument();
+  });
+
+  it("uses the source organization date for overdue presentation instead of the device UTC date", async () => {
+    mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [{ key: "overdue", label: "Overdue", rows: [{ id: "org-date", label: "Source overdue task", date: "2026-10-04", status: "IN_PROGRESS" }] }, { key: "today", label: "Due today", rows: [{ id: "org-today", label: "Source today task", date: "2026-10-05", status: "IN_PROGRESS" }] }]) : undefined });
+    renderWorkspace(true);
+    const overdue = await screen.findByRole("link", { name: /Source overdue task/ });
+    const current = screen.getByRole("link", { name: /Source today task/ });
+    expect(overdue.querySelector(".dv-attention-due")).toHaveClass("overdue");
+    expect(current.querySelector(".dv-attention-due")).not.toHaveClass("overdue");
+  });
   it("keeps overlapping task buckets separate instead of inventing an all-domain work total", async () => {
     const task = { id: "task-shared", label: "Prepare drawings", status: "IN_PROGRESS", date: "2026-10-05" };
     mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [
@@ -262,9 +302,10 @@ describe("DashboardWorkspace", () => {
     const startButton = await screen.findByRole("button", { name: "Start timer" });
     expect(startButton).toBeDisabled();
     fireEvent.change(screen.getByPlaceholderText("What are you working on?"), { target: { value: "Dashboard timer test" } });
+    fireEvent.change(screen.getByLabelText("Non-project activity"), { target: { value: "Internal coordination" } });
     fireEvent.click(startButton);
     await waitFor(() => expect(posted).toBeDefined());
-    expect(posted).toMatchObject({ workNote: "Dashboard timer test", location: "OFFICE", billable: true, commandId: expect.any(String) });
+    expect(posted).toMatchObject({ workNote: "Dashboard timer test", activityLabel: "Internal coordination", location: "OFFICE", billable: true, commandId: expect.any(String) });
     const postCall = calls.find(call => call.url.endsWith("/time/timers") && call.init?.method === "POST");
     expect(new Headers(postCall?.init?.headers ?? {}).get("X-CSRF-Token")).toBe("csrf-s24");
   });
