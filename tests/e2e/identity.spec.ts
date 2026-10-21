@@ -84,7 +84,9 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     await mobilePage.getByLabel("I stored this recovery code offline where only I can access it.").check();
     await mobilePage.getByRole("button", { name: "Confirm offline storage" }).click();
     await mobilePage.reload();
-    await expect(mobilePage).toHaveURL(/\/my-work(?:\?.*)?$/);
+    await expect(mobilePage).toHaveURL(/\/dashboard(?:\?.*)?$/);
+    await expect(mobilePage.getByRole("heading", { name: "Dashboard", exact: true })).toBeVisible();
+    await mobilePage.goto("/my-work");
     await expect(mobilePage.getByRole("heading", { name: "Decisions awaiting you" })).toBeVisible();
     await expect(mobilePage.getByText("No pending decisions in this list.", { exact: true })).toBeVisible();
     await expect(mobilePage.getByText("No personal tasks are available because this Owner account has no active employee identity.", { exact: true })).toBeVisible();
@@ -96,7 +98,9 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     await mobilePage.goto("/");
     await mobilePage.getByLabel("Work email", { exact: true }).fill(ownerEmail);
     await mobilePage.getByRole("button", { name: "Continue with passkey" }).click();
-    await expect(mobilePage).toHaveURL(/\/my-work(?:\?.*)?$/);
+    await expect(mobilePage).toHaveURL(/\/dashboard(?:\?.*)?$/);
+    await expect(mobilePage.getByRole("heading", { name: "Dashboard", exact: true })).toBeVisible();
+    await mobilePage.goto("/my-work");
     await expect(mobilePage.getByRole("heading", { name: "Decisions awaiting you" })).toBeVisible();
 
     await desktop.addCookies(await mobile.cookies());
@@ -106,7 +110,9 @@ test("Owner passkey enrollment, desktop and mobile login, session restore, and l
     await desktopPage.goto("/");
     await desktopPage.getByLabel("Work email", { exact: true }).fill(ownerEmail);
     await desktopPage.getByRole("button", { name: "Continue with passkey" }).click();
-    await expect(desktopPage).toHaveURL(/\/my-work(?:\?.*)?$/);
+    await expect(desktopPage).toHaveURL(/\/dashboard(?:\?.*)?$/);
+    await expect(desktopPage.getByRole("heading", { name: "Dashboard", exact: true })).toBeVisible();
+    await desktopPage.goto("/my-work");
     await expect(desktopPage.getByRole("heading", { name: "Decisions awaiting you" })).toBeVisible();
   } finally {
     await desktop.close();
