@@ -134,7 +134,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     await workflows.status(owner, current.id, { toStatus: "ACTIVE", expectedVersion: current.version, reason: why });
     const today = localCalendarDate(new Date(), org.timezone);
     const input = { title: `${token} task`, type: "PROJECT" as const, priority: "HIGH" as const, projectId: current.id, targetDate: today, ownerEmployeeId: person("worker").employee.id, reason: why };
-    return { prisma, org, owner, person, authorization, approvals, tasks, documents, revisions, reviews, work, token, today, input };
+    return { prisma, org, owner, person, authorization, approvals, workflows, tasks, documents, revisions, reviews, work, token, today, input };
   }
   type Fixture = Awaited<ReturnType<typeof fixture>>;
   async function start(f: Fixture, id: string, actor = f.owner) {
@@ -410,7 +410,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
 
   it("persists Owner-configured creation presentation without granting permissions", async () => {
     const f = await fixture(), worker = f.person("worker");
-    const organization = new OrganizationService(database, new IdentityService(database, config), f.authorization, new ProjectWorkflowService(database, f.authorization, f.approvals), f.tasks, new NotificationsService(database));
+    const organization = new OrganizationService(database, new IdentityService(database, config), f.authorization, f.workflows, f.tasks, new NotificationsService(database));
     const before = await f.tasks.setup(worker.actor);
     expect(before.creationProfile).toMatchObject({ variant: "EMPLOYEE", resolution: "GENERIC_FALLBACK" });
     const site = await organization.createJobRole(f.owner.accountId, f.org.id, `${f.token} Site presentation`, why);
@@ -449,17 +449,22 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
       expect((await f.prisma.task.findUniqueOrThrow({ where: { id: parent.id } })).status).toBe(TaskStatus.COMPLETED);
       expect((await f.prisma.task.findUniqueOrThrow({ where: { id: child.task.id } })).status).toBe(TaskStatus.COMPLETED);
     } else {
-      // Exercise the database alternate-write invariant; no new app reopen
-      // command is introduced. The parent must see the committed child change.
+      // Completed tasks are immutable even before their parent completes.
+      // Hold the child lock, reject the alternate write, then let the parent
+      // observe the still-completed child after that transaction commits.
       const reopening = f.prisma.$transaction(async tx => {
         await tx.$executeRaw`SET LOCAL lock_timeout = '5s'`;
-        await tx.task.update({ where: { id: child.task.id }, data: { status: "IN_PROGRESS", version: { increment: 1 } } });
+        await tx.$queryRaw`SELECT id FROM tasks WHERE id=${child.task.id}::uuid FOR UPDATE`;
+        await tx.$executeRawUnsafe('SAVEPOINT rejected_reopen');
+        await expect(tx.task.update({ where: { id: child.task.id }, data: { status: "IN_PROGRESS", version: { increment: 1 } } })).rejects.toThrow("Terminal tasks cannot change");
+        await tx.$executeRawUnsafe('ROLLBACK TO SAVEPOINT rejected_reopen');
         reached.release(); await resume.promise;
       }, { timeout: 15_000 });
       await Promise.race([reached.promise, reopening]);
-      const rejected = expect(f.tasks.transition(f.owner, parent.id, { toState: "COMPLETED", expectedVersion: 3, reason: why })).rejects.toThrow("Complete all subtasks");
-      resume.release(); await reopening; await rejected;
-      expect((await f.prisma.task.findUniqueOrThrow({ where: { id: parent.id } })).status).toBe(TaskStatus.IN_PROGRESS);
+      const completing = f.tasks.transition(f.owner, parent.id, { toState: "COMPLETED", expectedVersion: 3, reason: why });
+      resume.release(); await reopening; await completing;
+      expect((await f.prisma.task.findUniqueOrThrow({ where: { id: parent.id } })).status).toBe(TaskStatus.COMPLETED);
+      expect((await f.prisma.task.findUniqueOrThrow({ where: { id: child.task.id } })).status).toBe(TaskStatus.COMPLETED);
     }
   });
 });

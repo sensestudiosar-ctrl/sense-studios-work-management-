@@ -208,7 +208,7 @@ async function provision() {
         target.identity = (await targetAdmin.query(identitySql)).rows[0]; await migrations(targetAdmin);
       } finally { await targetAdmin.end(); }
     }
-    for (const path of [paths.reports, env.NAS_ROOT, ...Object.entries(env).filter(([key]) => key.endsWith('_SCREENSHOT_DIR')).map(([, value]) => value), manifest.targets.RECOVERY_BROWSER_DATABASE_URL.storage]) { assertContained(root, path); mkdirSync(path, { recursive: true }); }
+    for (const path of [paths.reports, env.NAS_ROOT, resolve(paths.base,'files/parity'), ...Object.entries(env).filter(([key]) => key.endsWith('_SCREENSHOT_DIR')).map(([, value]) => value), manifest.targets.RECOVERY_BROWSER_DATABASE_URL.storage]) { assertContained(root, path); mkdirSync(path, { recursive: true }); }
     const contents = `${Object.entries(env).map(([key, value]) => `${key}=${value}`).join('\n')}\n`;
     writeFileSync(paths.environment, contents, { flag: 'wx', mode: 0o600 });
     mkdirSync(resolve(root, '.env.s27-tools'), { recursive: true }); assertContained(root, resolve(root, envFile)); writeFileSync(resolve(root, envFile), contents, { flag: 'wx', mode: 0o600 });
