@@ -61,7 +61,7 @@ function dateText(value: string): string {
   return Number.isNaN(date.getTime()) ? "Date unavailable" : date.toLocaleString();
 }
 
-export function ClientReviewPortal({ session }: { session: PortalSession }): React.JSX.Element {
+export function ClientReviewPortal({ session, requestedProjectId, requestedItemId }: { session: PortalSession; requestedProjectId?: string; requestedItemId?: string }): React.JSX.Element {
   const [projects, setProjects] = useState<Project[]>([]);
   const [projectId, setProjectId] = useState("");
   const [reviews, setReviews] = useState<ProjectReviews>();
@@ -117,11 +117,20 @@ export function ClientReviewPortal({ session }: { session: PortalSession }): Rea
     void request<PortalProjectList>(`${PORTAL}/projects`).then((result) => {
       if (!live) return;
       setProjects(result.projects);
-      const first = result.projects[0]?.id ?? "";
+      const first = requestedProjectId ?? result.projects[0]?.id ?? "";
+      if (requestedProjectId && !result.projects.some(project => project.id === requestedProjectId)) { setError("This project is not available under your current access."); return; }
       setProjectId(first);
-      if (first) void request<ProjectReviews>(`${PORTAL}/reviews/projects/${encodeURIComponent(first)}`).then((value) => { if (live) setReviews(value); }).catch((cause) => { if (live) setError(errorText(cause, "Client reviews could not be loaded. Try again.")); });
+      if (first) void request<ProjectReviews>(`${PORTAL}/reviews/projects/${encodeURIComponent(first)}`).then((value) => {
+        if (!live) return;
+        setReviews(value);
+        if (requestedItemId) {
+          if (!value.packages.some(pack => pack.items.some(entry => entry.id === requestedItemId))) { setError("This item is not available in the selected project."); return; }
+          setSelectedItemId(requestedItemId);
+          void request<Item>(`${PORTAL}/reviews/items/${encodeURIComponent(requestedItemId)}`).then(item => { if (live) setItem(item); }).catch(cause => { if (live) setError(errorText(cause, "This review item could not be opened.")); });
+        }
+      }).catch((cause) => { if (live) setError(errorText(cause, "Client reviews could not be loaded. Try again.")); });
       if (first) void request<ProjectHandover>(`${PORTAL}/projects/${encodeURIComponent(first)}/handover`).then((value) => { if (live) setHandover(value); }).catch(() => { if (live) setHandover(undefined); });
-      if (result.projects[0]?.primary) void request<ProjectAccess>(`${PORTAL}/projects/${encodeURIComponent(first)}/access`).then((value) => { if (live) setAccessUsers(value.users); }).catch(() => { if (live) setAccessUsers([]); });
+      if (result.projects.find(project => project.id === first)?.primary) void request<ProjectAccess>(`${PORTAL}/projects/${encodeURIComponent(first)}/access`).then((value) => { if (live) setAccessUsers(value.users); }).catch(() => { if (live) setAccessUsers([]); });
     }).catch((cause) => { if (live) setError(errorText(cause, "Your client projects could not be loaded. Try again.")); })
       .finally(() => { if (live) setLoading(false); });
     return () => { live = false; };

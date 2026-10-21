@@ -16,7 +16,7 @@ const csrfToken = "notification-csrf-token";
 
 describe("notification HTTP recipient boundary", () => {
   let app: INestApplication;
-  let service: { listInbox: jest.Mock; markRead: jest.Mock; getPreferences: jest.Mock; getEmailDeliveryStatus: jest.Mock; setPreference: jest.Mock; setQuietHours: jest.Mock; clearQuietHours: jest.Mock };
+  let service: { listInbox: jest.Mock; markRead: jest.Mock; getPreferences: jest.Mock; getEmailDeliveryStatus: jest.Mock; setPreference: jest.Mock; setQuietHours: jest.Mock; clearQuietHours: jest.Mock; unreadSummary: jest.Mock };
   const emailVerification = {
     status: jest.fn(async () => ({ verified: false })),
     requestCode: jest.fn(async () => ({ sent: true })),
@@ -40,7 +40,8 @@ describe("notification HTTP recipient boundary", () => {
       getEmailDeliveryStatus: jest.fn(async (id: string) => [{ id }]),
       setPreference: jest.fn(async (id: string, category: string, channel: string, enabled: boolean) => ({ id, category, channel, enabled })),
       setQuietHours: jest.fn(async (id: string, value: unknown) => ({ id, value })),
-      clearQuietHours: jest.fn(async (id: string) => ({ id, cleared: true }))
+      clearQuietHours: jest.fn(async (id: string) => ({ id, cleared: true })),
+      unreadSummary: jest.fn(async (id: string) => ({ unread: 3, critical: 1, id }))
     };
     const config: RuntimeConfig = {
       nodeEnv: "test", port: 4000, databaseUrl: "postgresql://test:test@localhost:5432/test",
@@ -76,6 +77,20 @@ describe("notification HTTP recipient boundary", () => {
     const emailStatus = await request(app.getHttpServer()).get("/api/v1/notifications/email-status").set("Cookie", cookie);
     expect(emailStatus.body).toEqual({ verified: false, items: [{ id: accountId }] });
     expect(emailVerification.status).toHaveBeenCalledWith(accountId);
+  });
+
+  it("derives the unread count from the caller's session, ignoring any client-supplied account", async () => {
+    const unauthenticated = await request(app.getHttpServer()).get("/api/v1/notifications/unread");
+    expect(unauthenticated.status).toBe(401);
+    const summary = await request(app.getHttpServer())
+      .get("/api/v1/notifications/unread?accountId=somebody-else")
+      .set("Cookie", cookie);
+    expect(summary.status).toBe(200);
+    expect(summary.headers["cache-control"]).toBe("no-store");
+    // Only the authenticated account is ever consulted
+    expect(service.unreadSummary).toHaveBeenCalledWith(accountId);
+    expect(service.unreadSummary).toHaveBeenCalledTimes(1);
+    expect(summary.body).toEqual({ unread: 3, critical: 1, id: accountId });
   });
 
   it("requires same-origin CSRF for writes and scopes reads to the authenticated account", async () => {

@@ -1,5 +1,9 @@
 # NAS and file-control architecture — S11–S12 complete for development/local staging
 
+## Production mount and recovery preparation — 16 October 2026
+
+`infra/compose.production.yaml` now requires an existing restricted host application directory and binds it to API/worker `/data/documents` (`NAS_ROOT`); it never mounts the whole NAS or supplies staff NAS credentials. Backup access is read-only for documents with a separate private local repository/stage and offsite SSH material. Upload proxy routes accept the existing8MiB chunks without changing backend MIME/checksum/authorization/finalization rules. DB/global-role/count/file/checksum backup evidence is captured while exact writers are stopped and no other DB client remains. Explicit new-target restore retains a stopped isolated cluster; no in-place production reset/prune is supplied. This is implemented preparation, not tested real NAS/offsite/restore acceptance. See `docs/NAS_DEPLOYMENT.md` and its progress report.
+
 ## S22 captured images — COMPLETE for development/local staging
 
 Newly captured PNG/JPEG/GIF/WebP image bytes may remain in an account/project-bound IndexedDB queue until online synchronization. No downloaded project files, Confidential file cache or raw NAS path is added. SITE calls DocumentService.startOfflinePhoto inside its permission transaction, binding a stable caller UUID and exact actor/project/manifest to ordinary DOC staging. READY nonconfidential target and all ancestors are required; current document.upload and site.work remain separate checks. Existing size/signature/chunk-checksum/finalization/retained-blob controls apply, and exact manifest/finalization replay supplies one immutable document. A queued SITE command references finalized document IDs only; physical staging failures cannot create a synchronized site record. See S22_API_CONTRACT.md.

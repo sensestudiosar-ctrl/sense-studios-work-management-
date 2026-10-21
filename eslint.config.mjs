@@ -9,7 +9,12 @@ export default tseslint.config(
       "**/dist/**",
       "**/coverage/**",
       "**/generated/**",
+      "**/.artifacts/**",
       "**/.env.*/**",
+      // Preserved standalone design outputs and diagnostic scratch scripts are not application source.
+      "docs/design/_build/**",
+      "docs/v1-demo/task-create-refinement.js",
+      "_allviews.js", "_av2.js", "_dump.js", "_probe.js", "_runtest.js", "_trace.js",
       "playwright-report/**",
       "test-results/**"
     ]

@@ -84,6 +84,12 @@ export class ReviewController {
 
   private noStore(response: Response) { response.setHeader("Cache-Control", "no-store"); }
 
+  @Get("actionable")
+  async actionable(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("offset") offset?: string, @Query("limit") limit?: string) {
+    this.noStore(response); const { actor } = await this.actor(request);
+    const input = parse(z.object({ offset: z.coerce.number().int().min(0).max(1000000).default(0), limit: z.coerce.number().int().min(1).max(100).default(25) }), { offset, limit });
+    return this.reviews.actionable(actor, input.offset, input.limit);
+  }
   @Get("inbox")
   async inbox(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("offset") offset?: string, @Query("limit") limit?: string, @Query("personal") personal?: string, @Query("historical") historical?: string, @Query("projectId") projectId?: string, @Query("scope") scope?: string, @Query("queue") queue?: string, @Query("q") q?: string, @Query("sort") sort?: string) {
     this.noStore(response);

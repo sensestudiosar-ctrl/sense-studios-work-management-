@@ -1,0 +1,9 @@
+# Clean working server — 14 October 2026
+
+Owner requested removal of existing test servers and one clean new working server. Restart-only scope preserved the previously selected saved data; no database reset, clone, migration, deletion or credential changes were performed.
+
+The exact former API8764 and web27808 were stopped after recorded PID/creation/executable/command and loopback-listener identity checks. One fresh development stack is READY at http://localhost:59443/: web10532 at59443 and API11580 at59442. Current checkout frontend and compiled API are used. Existing saved migrated118 database `sense_latest_retained_20261014_test`/OID145606, PostgreSQL45434/system7693570241708228348 and existing NAS were preserved. Original115 database/NAS and recovery archives remain retained. Unrelated services were untouched.
+
+The restart operator `.env.working-server-20261014/start.mjs` passed Node24.19.0 syntax, live source preparation and independent GPT-6.1 Sol review. One execution exited0 with READY. Live database identity/migration118 checks passed before/after; root and proxied API readiness returned200; exact final listener ownership passed. No other project app/test listeners were found on the audited ports. Bootstrap, email/provider configuration and background-worker receiver configuration were omitted or explicitly blank.
+
+Fresh runtime evidence/logs and exact new process identities are under `.env.working-server-20261014/manifest.json`. This is the active runtime manifest; historical launch manifests remain preserved and no longer identify active app processes. The existing browser's login remained active after reload into the current My Work screen. Full workflow, full verification and production readiness are not claimed by this restart. Actual model routing: GPT-6.1 Sol intake/operator review and parent execution.

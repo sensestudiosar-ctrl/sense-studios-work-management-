@@ -45,6 +45,8 @@ jobs:
           node-version: 24.19.0
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm test:nas
+      - run: pnpm nas:check:compose
       - run: pnpm db:generate
       - run: pnpm db:migrate:deploy
       - name: Set the restricted test runtime password
@@ -60,6 +62,7 @@ jobs:
         run: node scripts/ci/run-api-web-tests.mjs
       - run: pnpm build
       - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm nas:check:phones
       - run: mkdir -p "$E2E_NAS_ROOT"
       - name: Run browser suites with loopback accounting receiver and no-skips acceptance
         run: node scripts/ci/run-e2e.mjs

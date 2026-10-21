@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ApprovalQueue } from "./approval-queue.js";
 import "./settings-homes.css";
 
@@ -14,6 +14,8 @@ const settingsSections: Array<{ key: Exclude<SettingsSection, "setup">; label: s
 ];
 
 export function SettingsSectionNavigation({ active, owner, staff }: { active: SettingsSection; owner: boolean; staff: boolean }): React.JSX.Element {
+  const location = useLocation();
+  const selectedPanel = new URLSearchParams(location.search).get("panel");
   const personal = settingsSections.filter((item) => item.key === "account" || item.key === "notifications");
   const organization = settingsSections.filter((item) => (item.key === "organization" || item.key === "team") && (!item.ownerOnly || owner) && (!item.staffOnly || staff));
   const renderSection = (item: (typeof settingsSections)[number]): React.JSX.Element => (
@@ -22,7 +24,7 @@ export function SettingsSectionNavigation({ active, owner, staff }: { active: Se
   return (
     <nav className="settings-section-navigation" aria-label="Settings sections">
       <section aria-labelledby="settings-personal-heading"><h2 id="settings-personal-heading">Personal</h2>{personal.map(renderSection)}</section>
-      <section aria-labelledby="settings-organization-heading"><h2 id="settings-organization-heading">Organization &amp; administration</h2>{organization.map(renderSection)}<Link to="/integrations">Integrations</Link><Link to="/automation">Automation &amp; reports</Link></section>
+      <section aria-labelledby="settings-organization-heading"><h2 id="settings-organization-heading">Organization &amp; administration</h2>{organization.map(renderSection)}{owner && [["structure", "Organization, branches & teams"], ["access", "Job roles & permissions"], ["presentation", "Task creation presentation"]].map(([key, label]) => <Link key={key} to={`/settings?section=organization&panel=${key}`} aria-current={active === "organization" && selectedPanel === key ? "page" : undefined}>{label}</Link>)}<Link to="/people">People management</Link><Link to="/integrations">Integrations</Link><Link to="/automation">Automation &amp; reports</Link></section>
     </nav>
   );
 }

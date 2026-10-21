@@ -225,8 +225,9 @@ export class SkillsService {
         if (!employee) throw new ForbiddenException("Skill target unavailable");
         if (context.approverAccountId === employee.accountId || context.approverAccountId === actor.accountId) throw new ForbiddenException("Self approval is not allowed");
         const approver = await tx.account.findFirst({ where: { id: context.approverAccountId, state: AccountState.ACTIVE, OR: [{ kind: AccountKind.OWNER }, { kind: AccountKind.STAFF, employee: { organizationId: actor.organizationId, state: "ACTIVE" } }] }, include: { employee: true } });
-        if (!approver) throw new ForbiddenException("Eligible approver unavailable");
-        if (approver.kind !== AccountKind.OWNER && !await this.managerWithoutSession(tx, approver.id, approver.kind, actor.organizationId, employee.id)) throw new ForbiddenException("Eligible approver unavailable");
+        // A missing or scope-revoked approver is a workflow state, not a denial of the requester's authority.
+        if (!approver) throw new ConflictException({ message: "The selected approver is no longer an active account", code: "SKILL_APPROVER_UNAVAILABLE" });
+        if (approver.kind !== AccountKind.OWNER && !await this.managerWithoutSession(tx, approver.id, approver.kind, actor.organizationId, employee.id)) throw new ConflictException({ message: "The selected approver no longer holds current skill approval scope", code: "SKILL_APPROVER_SCOPE_REVOKED" });
         return { accountId: approver.id, level: approver.kind === AccountKind.OWNER ? "OWNER" : "MANAGER" };
       },
       canView: async (tx, actor, request) => { const r = await tx.skillChangeRequest.findFirst({ where: { approvalRequestId: request.id } }), account = await tx.account.findUnique({ where: { id: actor.accountId }, select: { kind: true } }); return !!r && !!account && (actor.accountId === request.requesterId || actor.accountId === request.approverId || account.kind === AccountKind.OWNER || await this.managerWithoutSession(tx, actor.accountId, account.kind, actor.organizationId, r.employeeId, "skills.view")); },
@@ -235,7 +236,7 @@ export class SkillsService {
       onDecision: async (tx, request, decision, deciderId) => {
         const row = await tx.skillChangeRequest.findFirst({ where: { approvalRequestId: request.id } }); if (!row) throw new NotFoundException("Skill request unavailable");
         const kind = (await tx.account.findUniqueOrThrow({ where: { id: deciderId }, select: { kind: true } })).kind;
-        if (!await this.managerWithoutSession(tx, deciderId, kind, row.organizationId, row.employeeId, "skills.manage")) throw new ForbiddenException("Current skill approver scope required");
+        if (!await this.managerWithoutSession(tx, deciderId, kind, row.organizationId, row.employeeId, "skills.manage")) throw new ConflictException({ message: "Current skill approver scope was revoked during this decision", code: "SKILL_APPROVER_SCOPE_CHANGED" });
         const actor = { accountId: deciderId, kind, organizationId: row.organizationId } as SessionActor;
         if (decision.outcome !== "APPROVED") return;
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${row.organizationId + ":skill-rating:" + row.employeeId + ":" + (row.skillId ?? row.proposedSkillName!.toLocaleLowerCase("en-US"))},0))`;

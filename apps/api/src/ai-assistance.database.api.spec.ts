@@ -26,6 +26,7 @@ import { IdentityService } from "./identity.service.js";
 import { OrganizationService } from "./organization.service.js";
 import { ProjectWorkflowService } from "./project-workflow.service.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 
 const databaseUrl = process.env.S27_DATABASE_URL;
 const databaseDescribe = process.env.S27_E2E_ENABLED === "1" && databaseUrl ? describe : describe.skip;
@@ -44,10 +45,13 @@ databaseDescribe("S27 assistance PostgreSQL invariants", () => {
 
   beforeAll(async () => {
     const parsed = new URL(databaseUrl!);
-    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || !/^\/sense_s27_s27_[a-z0-9_]+_test$/i.test(parsed.pathname)) throw new Error("S27 PostgreSQL tests require the exact generated local S27 _test target on port 57433");
+    const legacyS27 = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s27_s27_[a-z0-9_]+_test$/i.test(parsed.pathname);
+    const disposableS27 = isS27DisposableTestTarget("S27_DATABASE_URL", databaseUrl);
+    if (!legacyS27 && !disposableS27) throw new Error("S27 PostgreSQL tests require the exact generated local S27 _test target");
     database = new DatabaseService(config(databaseUrl!));
-    const row = (await database.prisma.$queryRaw<Array<{ name: string }>>`SELECT current_database() AS name`)[0];
+    const row = (await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`)[0];
     if (row?.name !== parsed.pathname.slice(1)) throw new Error("S27 exact database target mismatch");
+    if (disposableS27 && !matchesS27DisposableServer(databaseUrl!, row.name, row.port)) throw new Error("S27 disposable database server mismatch");
 
     const authorization = new AuthorizationService(database), projects = new ProjectService(database), tasks = new TaskService(database, authorization), approvals = new ApprovalService(database), notifications = new NotificationsService(database);
     const documents = new DocumentService(database, authorization, config(databaseUrl!)), revisions = new RevisionService(database, authorization, documents);

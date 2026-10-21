@@ -1,0 +1,18 @@
+# Login implementation scope — 17 October 2026
+
+Status: IN PROGRESS under Owner “ok impliment it”, following LOGIN_FLOWS_BY_USER and LOGIN_UI_REFERENCES_REFERO. Actual implementer: current Codex; Opus/Sonnet CLI/routing is unavailable here; no independent acceptance is claimed.
+
+Requirements: R-005.a–d/R-007/R-008/R-009; R-075/S14.a/S21.a–f; R-076/LOGIN.a client password setup/login/reset, R-076.b exact approval passkey; R-099.a–f; C-008 retained for internal and EXTERNAL identities, client method extended under current Owner approval; C-013–C-016/C-023/C-024 unchanged.
+
+In scope: common branded auth frame/chooser; Owner/staff entry/recovery and existing enrollment/setup styling; CLIENT password login/setup/reset/change with isolated sessions and existing OTP alternative; project-first client entry/account separation; EXTERNAL audience-labelled code entries; responsive states and focused regressions. Public portfolio remains anonymous. No new roles or job-title authority, staff passwords, public signup, external password fallback, approval bypass, unrelated app redesign or retained-data reset.
+
+Identity contract: native asynchronous Argon2id (19MiB/two passes/one lane, random16byte salt,32byte tag),15–128 Unicode characters without trimming/truncation, bounded common-password denylist and repetitive/sequence rejection, no remote password lookup. CLIENT-only credential row/version, single current setup/reset action per account with random256bit proof stored only as SHA256 digest,15minute expiry,60second resend interval/five sends per hour. Setup only for no credential; reset only for an existing credential. Public response is generic; email proof does not change any grant or passkey. Reset links use configured origin and URL fragment; frontend scrubs proof from visible history and holds it only in memory. Code access remains available for clients who have not set a password.
+
+Login/setup/reset/change recheck current CLIENT account, credential version and usable grant after hashing/lock waits. Completion atomically consumes proof, changes credential/version, invalidates other password/code proofs and dependent ceremonies, revokes CLIENT sessions, and writes security evidence; return to ordinary sign-in. Password change additionally requires current password and current cookie/CSRF/session. Durable hashed-identifier/IP throttles bound requests across processes. Existing internal/client/EXTERNAL session boundaries remain unchanged.
+
+Email dispatch must not reveal eligible account status via provider latency. Public request returns after persistence, dispatches through the existing adapter asynchronously, and records nonsecret delivery failure. Acceptance never promises actual email delivery or a durable mail queue. No real mail is sent during tests.
+
+Schema: one additive reviewed migration after current119; credential/action rows use CLIENT-only DB guards, foreign keys and no secret/audit exposure. Never deploy it to the retained saved server without its separately reviewed lifecycle step. New isolated acceptance uses only a dedicated target; old stopped MW-I02/Agent1 runs are not reused.
+
+Verification: baseline client identity unit16 PASS. Baseline web typecheck fails existing project.tsx:302 RefObject<HTMLElement>/HTMLDivElement mismatch. Run focused hash/service/controller/UI regressions, fresh/populated dedicated persistence where available, scoped lint, typecheck/build and current full gates; classify unrelated failures honestly. Four-width auth screenshots/keyboard, actual code/password state transitions and permission/expiry/replay races are required before whole-slice COMPLETE. No production/R-104/R-105 claim.
+

@@ -1,5 +1,17 @@
 # Decisions and proposals
 
+## Owner decision — Agent1 final reviewer model, 2026-10-16
+
+After all Agent1 implementation/checks/source review/approved-target shutdown and the concrete `docs/development/V1_AGENT1_ACCEPTANCE_REVIEW_2026-10-16.md` were complete, the Owner explicitly answered “Approve Codex final acceptance” to the bounded reviewer-model exception. The question identified AGENTS.md:52's Opus final-review requirement and unavailable Opus runner. This authorizes the current Codex same-agent review as final Agent1 D/G/E/owned H local development acceptance only. No independent/Opus/Sonnet review is claimed. No required check, authority, schema or retained/production database/deployment boundary is waived. Final source8cab4afa39fb8350004f1d43f38576fb9f57267be3bf10bc9938d1ae9c7c6abf/610files/119migrations; exact checks and limits are in the acceptance review. Agent1 is COMPLETE4/4; whole-V1 staff-pilot/other-agent/production gates remain separate.
+
+## Agent1 isolated source119 acceptance — Owner approved 2026-10-16
+
+Owner selected “Approve isolated database tests” after reviewing the concrete operator/target in `docs/development/V1_AGENT1_LOCAL_ACCEPTANCE_2026-10-16.md`. Authorization covers a fresh PostgreSQL18.6 cluster inside `.artifacts/v1/20261016-agent1-local/postgres/data`, only127.0.0.1:59749, database `sense_v1_agent1_20261016_test`, migrations1–119, committed Task/receipt/race and transactional Task checks, and stopping only that verified cluster while preserving evidence. It excludes retained previews, production, stopped MW-I02 and existing S27 targets/guards. Read-only preflight found the path absent and port available;15target-shape unit checks/API typecheck/scoped lint passed before approval. The new source pin requires review on drift; repin cannot change applied migrations. Execution/real persistence acceptance remains IN PROGRESS until actual results are recorded.
+
+## V1 task creation receipts — Owner approved 2026-10-15
+
+Owner explicitly selected “Approve the bounded receipt design” for `docs/development/V1_TASK_CREATE_RECEIPT_PROPOSAL_2026-10-15.md`. TSK owns one additive immutable receipt table and optional ordinary/subtask create retry keys, with normalized command identity and current-resource replay authorization. One transaction owns task/history/events/child links and receipt; recovery returns the existing canonical ID without repeating side effects. Other domains/receipt stores are not reused. Approval covers source, one reviewed migration preparation and tests, excluding retained/production migration application or database lifecycle. Implementation/real persistence/concurrency acceptance remains IN PROGRESS; no production/pilot claim.
+
 ## S24 approved report/schedule authority and composition — 2026-10-05
 
 The Owner authorized starting and finishing S24 and approved Owner-only organization schedule configuration and frozen-report finalization/corrections, creator-only personal reminders, explicit unavailable S18 sources and explicit critical/mandatory/escalation policy without seeded defaults. Other current readers may preview/export and read authorized frozen evidence through existing owning-domain permissions. S18 and S25–S27 remain excluded. Dashboards and the management action center grant no new approval authority.
@@ -264,3 +276,256 @@ Owner approved calendar one-way minimal export and then the remaining signed-enq
 ## S26 bounded automation and saved reports — Owner decision, 2026-10-06
 
 The Owner expressly approved bounded S26 before the actual-project checkpoint: saved report definitions on existing S24 source/column reads, scalar filters and retained-row count charts; automatic internal notifications/report generation; high-impact recommendations finalized by an authorized human through the existing domain workflow. AUT never executes a high-impact business command. S05 recommendation review is nonbinding and can be reviewed by its named current authorized human, including its configuration author; this creates no owning-domain approval fact and does not change any ordinary self-approval rule. Current original report manifests remain attached to generated results and are reauthorized before read/export. Four additive AUT tables, immutable versions/runs/receipts, prospective version cutoffs and rule/version/event deduplication implement this boundary. See S26_SPEC.md and S26_API_CONTRACT.md. S18/S27 and production gates remain excluded.
+
+## Application completion — Owner decisions, 2026-10-13
+
+The Owner requested completion of the application and explicitly selected the bounded actionable-work and subtask recommendations during this completion task. My Work may present separately typed actionable tasks, assigned review rounds and decidable approvals with honest separate counts. Collaborator or blocked work is included only when a concrete existing authorized next action belongs to that actor. Task due/overdue attention uses Target and the organization calendar; existing review/approval deadlines retain their domain meaning. This does not invent risk/severity thresholds, sum overlapping sources as tasks, broaden access or authorize automatic decisions.
+
+The Owner approved one-level same-project subtasks using ordinary explicit assignment and access. Each child has its own Target and task workflow. The parent cannot complete until every child is completed. Existing review, cancellation and archive restrictions remain. Relationship implementation must preserve branch/project/employee isolation, versions, audit and concurrent completion guards; checklist/dependency/correction relationships remain distinct. Source implementation is authorized within these settled rules; no database lifecycle operation, migration deployment, production change or external transmission follows implicitly.
+
+Create-task role-profile work remains at the Owner-selected backend-plan-first stage. The optional JobRole presentation classification and conflict fallback in MY_WORK_CREATE_ROLE_PROFILE_PLAN_2026-10-13.md are proposals, not additional approved schema/configuration decisions.
+
+## Creation presentation — Owner decision, 2026-10-13
+
+During application completion the Owner explicitly approved the optional Owner-configured job-role presentation setting, with generic Employee fallback when the classification is missing or conflicting. The setting affects presentation only; existing permission checks remain unchanged. The role-profile plan's optional nullable JobRole hint, canonical Owner account precedence and no automatic role-name mapping/backfill define the bounded implementation. Canonical current active role assignments determine staff hints. This settles the earlier backend-plan-first decision gate for source implementation; database lifecycle and migration deployment still require their applicable dedicated-target authorization.
+
+## Subtask relationship implementation choice — 2026-10-13
+
+Sol selected an immutable TaskSubtaskLink table rather than a Task.parentTaskId scalar. Existing endpoints return raw canonical Task scalars; a nullable parent column would disclose inaccessible parent identifiers through those existing serializers. The separate relation allows explicit independently authorized parent/child projections and a batched isSubtask marker without expanding access or rewriting every task mutation response. It implements the Owner's one-level same-project relationship, with unique child/organization, scoped parent/child/project foreign keys, immutable link evidence, ordinary parent edit/management authority, explicit child assignment and parent version/audit changes.
+
+Parent completion is gated in ordinary, internal-review and client-review service paths and the new SQL guard. Explicit dependency edges and implicit parent-needs-child completion edges share one graph evaluator and the existing project advisory lock, rejecting direct/indirect completion cycles while allowing valid sibling ordering. New source migration20261008020000_task_subtasks is prepared after role hint migration20261008010000; neither is claimed deployed here. No accepted existing migration is edited. Runtime persistence/concurrency/preservation acceptance remains pending.
+
+## My Work consolidated parity plan — Owner review decisions, 2026-10-13
+
+During the explicitly requested CEO/engineering/Refero planning review, Owner selected HOLD SCOPE (D1), one globally ordered server-paged attention queue with separate Tasks/Reviews/Decisions counts and preserved permissions (D2), and visible Tasks source selection for task-only filters with Clear restoring mixed work (D3). Domain task/round/request identities remain distinct; personal task totals are not an aggregate of these independent obligations. Unsupported risk/follow-up/responsibility policies are not invented.
+
+Owner selected exact demo status fills with dark labels on Not started, In progress and Completed badges (D4). The reference pairs fall below normal-text contrast; use #0b100d for those labels and minimally strengthen secondary text/focus where required. Layout, canonical lifecycle and the rest of the locked demo colour language remain authoritative; rendered verification is pending.
+
+Owner selected one composer-owned RepeatableRead response snapshot with transaction-aware domain ports and a shared readAt/organization-calendar context (E1). Evaluate the complete authorized filtered candidates, derive separate counts, sort globally and apply bounded paging once. Source public endpoints retain their own transaction wrappers; the composer does not call independently transacting wrappers. Each later page reauthorizes current data. Commands remain in owning modules and recheck authorization under their existing locks.
+
+These are planning decisions. They do not independently authorize a host run, database setup, migration deployment, retained-preview reseed or authenticated acceptance, and do not begin MW-I03. Existing bounded source authorizations remain intact. The reviewed plan, test checklist, reference ledger and execution gates are in docs/design/my-work-integration-audit/MY_WORK_DEMO_PARITY_CONSOLIDATED_PLAN_2026-10-13.md. MW-I02 remains IN PROGRESS pending actual current-source functional/visual evidence and Owner acceptance.
+
+## Integration adapter boundary — recorded 2026-10-14
+
+G09 in the 14 October API/product gap register was a documentation-only finding: the register listed "aspirational integration adapters" as a gap. This records what the source actually implements so the absence is not later mistaken for a defect or an oversight.
+
+The integration module implements exactly two external adapters, both injected `@Optional()` in `apps/api/src/integration.service.ts:22-23` and both resolving internal Sense services rather than third-party providers: `CrmService` (`crm.service.ts`) and `WorkforceService` (`workforce.service.ts`). `configuredActor` at `integration.service.ts:115` throws `ConflictException("CRM adapter unavailable")` when the CRM adapter is absent, which is the deliberate degradation path for an unconfigured optional adapter.
+
+No Slack, Microsoft Teams, QuickBooks, Zoho or other third-party adapter exists, and none is planned or implied by the approved requirements. The only inbound external path is the signed website-enquiry webhook (`integration-webhook.ts`, signature verification and idempotent advisory locking), which is a connector ingestion path, not a provider adapter. Outbound integration is the internal calendar projection with token-scoped subscription feeds.
+
+This is a boundary statement, not an authorization to build third-party adapters. Adding one would be new scope requiring an explicit Owner decision, its own requirement IDs, and review of the credential custody and external-transmission consequences. It would also conflict with the retrieval-grounded, no-external-transmission boundary recorded for the AI assistance module on 13 October, so the two must be reconciled before any provider integration is proposed.
+
+## G04 dashboard drain — narrowed, no change made, 2026-10-14
+
+G04 in the 14 October API/product gap register claimed `allDecisions` "drains to completion rather than honoring a page bound." Source review on 14 October confirms the drain is real but shows the register overstated its severity, and shows the mitigation it proposed already exists. No code change was made, because the defect as described does not exist.
+
+Confirmed real: `dashboard.service.ts:85` `allDecisions` loops `approvals.attention(actor.accountId, 100, cursor)` until `nextCursor` is exhausted, and `dashboard.service.ts:81` `allTasks` does the same across the `mine` and `assigned` scopes until `offset >= page.total`. Both materialize the full set before the caller filters.
+
+Not a defect, contrary to the register: the composer at `dashboard.service.ts:272` gates both behind `include(source)`, and `dashboardSource(actor, source)` at `:268` already routes to `dashboardRead` with a single `selectedSource`. So a caller fetching `dashboard/sources/decisions` does not pay for the task walk at all, and vice versa. The register proposed building per-source fetching as the closure; `dashboardSource` is that closure and it predates the register.
+
+The residual issue is therefore narrow and low severity under S27 scope: the *full* `GET dashboard` (no `selectedSource`) still materializes every decision and every task to render five attention sections that filter but never slice. That is a full-shell read for a single actor, bounded by what that actor can actually see, so it is not an authorization or branch-isolation concern — it is a payload-size concern that grows with an actor's own backlog.
+
+Recommended treatment, if the Owner wants it closed: bound the attention sections at a fixed page size (for example the existing 100 used elsewhere) and expose the true total separately, rather than introducing a new pagination surface. That is a report-contract change affecting the web dashboard and its tests, so it needs its own slice and acceptance run. It is not worth doing unasked, and nothing here blocks MW-I02.
+
+No application code, test, schema or database change was made for G04. No gate was run; this VM cannot execute `pnpm verify` (Node 22.23.2 against a pinned 24.19.0, no pnpm, and the `.pnpm` symlink store is unreadable through this mount).
+
+## G01 per-typeKey approval counts — deferred as unsafe to add now, 2026-10-14
+
+G01 in the 14 October API/product gap register proposed a per-`typeKey` approval breakdown so a client could show "3 skill approvals, 2 leave approvals". Source review on 14 October found the count is not a simple `groupBy`, and that adding it now would conflict with the settled D2 parity design. No code change was made.
+
+Why it is not a `groupBy`: `ApprovalRequest` (`apps/api/prisma/schema.prisma:1823`) carries only `organizationId` — there is no branch, team or employee scoping column. Visibility is decided per (actor, request) by each handler's `canView`, which is why `ApprovalService.attention` (`approval.service.ts:191`) scans candidate rows and filters through `canView` inside a per-request transaction rather than aggregating in SQL. A `groupBy` on `typeKey` would therefore count rows the calling actor is not authorized to see, leaking other branches' pending approval counts. Any correct implementation must reuse the same scan-and-authorize path, which makes it a scan over the eligible set rather than a cheap aggregate.
+
+Why now is the wrong time: the settled D2 decision ("one globally ordered server-paged attention queue with separate Tasks/Reviews/Decisions counts and preserved permissions") is implemented, and the web composes its source counts client-side in `apps/web/src/my-work-attention.tsx` (`sourceCount` at `:209`, `actionCounts` at `:237`) from independently fetched sources. Introducing a server-side per-type breakdown as well would create a second, competing count source — the same class of double-counting defect the 14 October register was written to correct in the first place.
+
+Recommended treatment, if the Owner wants it: add the breakdown inside the existing `attention` scan so it is authorized by construction, expose it as an additive optional field on the attention response (never replacing the client-composed D2 counts), and gate it behind its own slice with acceptance evidence. Until then it is a missing feature, not a defect, and nothing here blocks MW-I02.
+
+No application code, test, schema or database change was made for G01. No gate was run; this VM cannot execute `pnpm verify` (Node 22.23.2 against a pinned 24.19.0, no pnpm, and the `.pnpm` symlink store is unreadable through this mount).
+
+## G08 follow-up audit — one further instance of the same class found, 2026-10-14
+
+The G08 addendum's suggested next session asked whether any other place in the API returns 403 where 409 would be the honest status. This records the audit and its one finding. Source review only; **no application code, test, schema or database change was made** and **no gate was run**.
+
+Scope of the audit: every `ForbiddenException` throw in `apps/api/src/*.ts` (462 in total) is far too broad to triage by eye, so the audit targeted the actual G08 pattern rather than all 403s. G08 was a 403 thrown inside an approval handler callback, on a path where the requester's or decider's authority had already been validated earlier in the same flow, and where the real condition was that workflow state had changed. That pattern can only arise in handler callbacks, so all six `ApprovalHandler` callbacks across every registered handler were extracted by brace-matching and their bodies scanned.
+
+Result: of the six callbacks, exactly one contains a `ForbiddenException` other than the two already fixed in G08 — `onDecision` in `apps/api/src/skills.service.ts:236`, `"Current skill approver scope required"`.
+
+Why it is the same defect, and on the more important path: `decisionPolicy` (`approval.service.ts:140-151`) runs `handler.canDecide` at `:147`, and the skills handler's `canDecide` (`skills.service.ts:234`) already evaluates `currentEligibleWithoutSession`. The engine then invokes `onDecision`, which re-checks `managerWithoutSession` independently at `:236`. Both checks run in the same transaction, but they are separate evaluations, so a `skills.manage` scope revocation landing between them makes the decider receive 403 "Current skill approver scope required" — telling them they are not permitted to decide, when in fact they were permitted moments earlier and the workflow state moved underneath them. The honest status is 409, for the same reason G08's was: authority was valid at decision time, the state changed, refresh and retry.
+
+This instance is arguably more consequential than G08's, because `onDecision` is the mutating path — G08's `resolveApprover` only constructs the request. A 403 here can strand a legitimate approver mid-decision.
+
+Recommended treatment, if the Owner wants it closed: mirror G08 in `onDecision`, throwing `ConflictException` with a stable code such as `SKILL_APPROVER_SCOPE_CHANGED`. Note the deliberate asymmetry with `canDecide`: the 403 at `approval.service.ts:147` should stay 403, because there the decider genuinely was not authorized and no state change is implied — the two checks answer different questions and only the later one is racy.
+
+This is a behavior change on an approval path and is not applied here. It needs its own slice, an Owner decision, a concurrency regression test that revokes scope between the two checks, and an acceptance run. No client currently depends on the 403 string, but the status change matters to any caller treating 403 as permanent.
+
+The remaining 461 `ForbiddenException` throws are ordinary authorization denials — actor/employee/session validity, branch and project access, ownership checks — where 403 is correct. They are not the G08 class and are not listed here.
+
+## G08 test pre-flight — traced, not executed, 2026-10-14
+
+The two G08 unit tests in `apps/api/src/skills.service.unit.spec.ts` have never been executed, because this environment cannot run them. This records a static trace of both cases so the host run is not wasted on a stub defect. **No tests were run and no code was changed.**
+
+What was verified by reading source and the installed `@nestjs/common` implementation:
+
+1. **Construction is safe.** `SkillsService`'s constructor (`skills.service.ts:20-22`) calls `approvals.registerHandler(this.approvalHandler())`. Both new tests pass a real `new ApprovalService({ prisma: { $transaction: jest.fn() } })`, and `registerHandler` (`approval.service.ts:56`) only writes to a `Map`. `ApprovalService`'s constructor takes only `DatabaseService`, matching the argument. No DB call happens during construction.
+
+2. **`approvalHandler()` is pure.** It returns an object literal (`skills.service.ts:219-224`) with no database access, so the helper's `(service as unknown as { approvalHandler(): ApprovalHandler }).approvalHandler()` cast is safe to invoke on a bare instance.
+
+3. **`this` binding reaches the instance stub.** The handler's callbacks are arrow functions inside `approvalHandler()`, so `this` is captured lexically from the `SkillsService` instance. Test 2's `(service as unknown as { managerWithoutSession: () => Promise<boolean> }).managerWithoutSession = async () => false` therefore *is* reached when line 230 calls `this.managerWithoutSession(...)`. This was the main risk — a non-arrow callback would have bound `this` to the handler object and the stub would have been silently ignored, making the test pass or fail for the wrong reason.
+
+4. **Assertion shape is correct for NestJS.** Read `node_modules/.pnpm/@nestjs+common@12.1.0_.../exceptions/http.exception.js`: `HttpException` assigns `this.response = response` verbatim, and `ConflictException({ message, code })` therefore sets `response` to that whole object. So `toMatchObject({ status: 409, response: { code: "..." } })` matches, because `error.status === 409` and `error.response.code` is the code. This also means the HTTP response body carries `{ message, code }`, which is the shape the web's generic 409 handling already expects.
+
+5. **Both traces reach the intended branch.** Test 1: employee found, account `null` → line 229, `SKILL_APPROVER_UNAVAILABLE`. Test 2: employee found, STAFF approver with valid employee, `kind !== OWNER` so the second branch is entered and the stubbed `false` → line 230, `SKILL_APPROVER_SCOPE_REVOKED`.
+
+Conclusion: both tests are expected to pass on a correct dependency graph. This is a static trace only and is **not** a substitute for the host run — it rules out stub and assertion defects, not a broken environment or a type error under the pinned TypeScript config.
+
+The host run still required to close G08: `pnpm --filter @sense/api test -- skills.service.unit.spec.ts` and `skills.database.api.spec.ts` on Node 24.19.0 / pnpm 11.19.0, plus `typecheck`. The pre-existing `skills.database.api.spec.ts:108` case exercises the untouched `request()` 403 path and should still pass.
+
+## G08-class fix APPLIED to skills onDecision — UNVERIFIED, 2026-10-14
+
+The Owner authorized the recommended action on 14 October 2026. This applies the 403→409 correction recorded earlier for `apps/api/src/skills.service.ts` `onDecision`. **The change is applied to source but is UNVERIFIED — no test, typecheck, lint or build was executed.**
+
+### Change applied
+
+`apps/api/src/skills.service.ts:239`, inside the `onDecision` callback of the `skill.change` approval handler. One line replaced:
+
+- Before: `if (!await this.managerWithoutSession(tx, deciderId, kind, row.organizationId, row.employeeId, "skills.manage")) throw new ForbiddenException("Current skill approver scope required");`
+- After: `... throw new ConflictException({ message: "Current skill approver scope was revoked during this decision", code: "SKILL_APPROVER_SCOPE_CHANGED" });`
+
+`ConflictException` was already imported at `skills.service.ts:1`, so no import change was needed. This is the only line changed in the file.
+
+### Why this is the right status
+
+`decisionPolicy` (`approval.service.ts:140-151`) runs `handler.canDecide` at `:147`, and the skills handler's `canDecide` (`skills.service.ts:234`) already evaluates `currentEligibleWithoutSession`. The engine then calls `onDecision`, which re-checked `managerWithoutSession` independently. A `skills.manage` revocation landing between the two checks produced 403 "Current skill approver scope required", telling a legitimate approver they were never authorized, when in fact they were authorized moments earlier and the workflow state moved. 409 with a stable code states the true condition: refresh and retry.
+
+### Deliberate asymmetry — the engine 403 stays 403
+
+`approval.service.ts:147` `throw new ForbiddenException("Approval decision is not allowed")` is **unchanged and correct**. That check answers a different question — "was this actor authorized to decide at all" — with no implication that state changed. Only the later, racy re-check in `onDecision` is a state question. Both checks are required; conflating them would make a genuine authorization denial look retryable.
+
+### Regression test added
+
+`apps/api/src/skills.service.unit.spec.ts` gained one case in the existing `describe("SkillsService skill.change approval handler", ...)` block, plus a small `onDecision` helper mirroring the existing `resolveApprover` helper. The case stubs `skillChangeRequest.findFirst` to return a row, `account.findUniqueOrThrow` to return `{ kind: STAFF }`, and `managerWithoutSession` to `false`, then asserts `rejects.toMatchObject({ status: 409, response: { code: "SKILL_APPROVER_SCOPE_CHANGED" } })`.
+
+Verified statically, not executed: the scope check at `:239` runs before the `decision.outcome !== "APPROVED"` early return, before `$executeRaw`, and before any rating or catalogue logic, so the stub is reached and nothing else can throw first. Assertion shape was confirmed against the installed `@nestjs/common` `HttpException`, which assigns the constructor argument verbatim to `this.response`.
+
+### What was NOT changed and why
+
+The two G08 cases and both G08 codes are untouched — diff against the pre-change file shows **zero deleted lines** in the spec and one changed line in the service. No existing test referenced the old message (verified by search across `apps/`, `tests/`, `packages/`), so nothing depended on it.
+
+### Client impact
+
+No web code parses a skill-specific approval code; the generic 409 handling is established in `crm.tsx:14`, `external-portal.tsx:62,139`, `gallery.tsx:15`, `learning-training.tsx:107,203`, `document.tsx` and `task.tsx`, all mapping 409 to a refresh-and-retry message and 403 to a permanent-access message. The new code will therefore surface as retryable without client changes.
+
+### Required before this can be called complete
+
+On Node 24.19.0 / pnpm 11.19.0:
+
+1. `pnpm --filter @sense/api test -- skills.service.unit.spec.ts` — all five cases should pass, including the two G08 cases and the new one.
+2. `pnpm --filter @sense/api test -- skills.database.api.spec.ts` — the pre-existing `request()` 403 path at `:108` is on an independent code path and should still pass.
+3. `pnpm --filter @sense/api typecheck`.
+4. Full `pnpm verify`, and an E2E pass on the skill-approval decision path confirming a mid-decision revocation now renders as retryable rather than as lost access.
+5. A real concurrency test that revokes `skills.manage` between `canDecide` and `onDecision` — the unit test simulates the revocation by stub, which proves the branch but not the race.
+
+Until 1-4 run, this change is **UNVERIFIED** and must not be described as passing.
+
+## G08 EXECUTED — tests pass on host, 2026-10-14
+
+**This is a real execution, recorded after the fact, not a static trace.** On 2026-10-14 the Owner ran G08's unit tests on the Windows host. Environment confirmed correct first: Node **v24.19.0** and pnpm **11.19.0**, matching `engines` and `.nvmrc` exactly. `pnpm install --frozen-lockfile` returned `Already up to date` in 509ms, confirming the tree recovered on 2026-10-14 is healthy and the lockfile matches.
+
+### Command and result
+
+```
+pnpm --filter @sense/api test:unit -- skills.service.unit.spec.ts
+```
+
+```
+ PASS  src/skills.service.unit.spec.ts
+  SkillsService authorization
+    √ requires a supplied live session even for service-level reads (3 ms)
+    √ rechecks catalogue authority before returning an actor-scoped replay receipt (1 ms)
+  SkillsService skill.change approval handler
+    √ returns 409 SKILL_APPROVER_UNAVAILABLE when the named approver account is missing (2 ms)
+    √ returns 409 SKILL_APPROVER_SCOPE_REVOKED when the named approver's session-bound scope is gone (1 ms)
+    √ returns 409 SKILL_APPROVER_SCOPE_CHANGED when the decider's skill scope is revoked mid-decision (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       5 passed, 5 total
+```
+
+### What this establishes
+
+The two G08 cases pass: `SKILL_APPROVER_UNAVAILABLE` and `SKILL_APPROVER_SCOPE_REVOKED` both return 409 with their stable codes on a real dependency graph. The original G08 change is behaviorally correct, not merely syntactically correct.
+
+The two pre-existing authorization cases still pass, so G08's change did not disturb the surrounding authorization logic in `setup` or `createCatalogue`.
+
+The `SKILL_APPROVER_SCOPE_CHANGED` case added this session passes, confirming the `onDecision` fix at `skills.service.ts:239` reaches its branch under the pinned TypeScript config on a real `node_modules`. The static trace's one real residual risk — that a stub-based test might not reach the stubbed method — is cleared.
+
+### What this does NOT establish — read before calling G08 closed
+
+1. **Only this one file ran.** The remainder of the API unit suite, `typecheck`, `lint`, `build`, and `test:integration` have not run in this session. The earlier MW-I02 preparation reported API 359/57 suites and frontend 453/45 files on frozen source `752761cb`, but that predates the `onDecision` change and the new test.
+
+2. **The `request()` 403 path is unverified by this run.** `skills.database.api.spec.ts` (integration) was not executed. The unit run confirms nothing about it, because it exercises `resolveApprover`, not `request`.
+
+3. **The new test proves the branch, not the race.** `managerWithoutSession` is stubbed to `false`. It demonstrates that when the second scope check fails, a 409 with the right code is thrown. It does not demonstrate that a real `skills.manage` revocation between `canDecide` and `onDecision` produces that path. The concurrency claim in this decision record still rests on code reading, not on evidence.
+
+### Required to fully close
+
+```
+pnpm --filter @sense/api test:integration -- skills.database.api.spec.ts
+pnpm --filter @sense/api typecheck
+pnpm verify
+```
+
+Plus a genuine concurrency test that revokes `skills.manage` between the `canDecide` and `onDecision` evaluations, and an E2E pass on the skill-approval decision path confirming a mid-decision revocation renders as retryable rather than as lost access.
+
+### Status
+
+**G08: unit tests PASS (executed 2026-10-14).** The register's core finding — the 403→409 change with both stable codes — is verified behaviorally. The `onDecision` follow-up fix is applied and its unit case passes. Both remain open pending integration, typecheck, `pnpm verify`, and a real concurrency test.
+
+## Integration suite cannot run outside GitHub CI — verified by source, 2026-10-14
+
+The `skills.database.api.spec.ts` integration path was attempted on the host and cannot complete there. This is the project's intended design, not a defect and not a G08 regression. Recorded so no one mistakes these failures for a code problem later.
+
+### Observed
+
+`pnpm --filter @sense/api test:integration` produced **22 suites passed, 4 failed, 38 skipped** and **141 tests passed, 30 failed, 230 skipped**.
+
+Every failure was one of two environment messages, never an assertion:
+
+- `"S18 requires a dedicated local test target or the explicitly enabled exact S27 suite target"` — thrown by the port/name guard at `apps/api/src/s18-test-fixture.ts:20` (port **57433**) and at `apps/api/src/skills.database.api.spec.ts:21` (port **56433**).
+- `"Can't reach database server at 127.0.0.1:56433"` — `PrismaClientKnownRequestError` from `$queryRaw` in the skills suite's `beforeAll`, because no disposable Postgres was listening on that port.
+
+### Why these guards exist
+
+`apps/api/scripts/../ci/run-api-web-tests.mjs` opens with a hard gate:
+
+```js
+if (process.env.GITHUB_ACTIONS !== "true" || process.env.NODE_ENV !== "test" || process.env.S27_E2E_ENABLED !== "1") {
+  throw new Error("Full fixture tests require the guarded GitHub CI environment.");
+}
+```
+
+It also calls `assertNoSkipped`, so a skip is a failure by design. The fixed-port guards in the specs enforce the same thing at the suite level: each guarded suite demands its own dedicated disposable PostgreSQL on a specific loopback port with a `*_test` name. This is deliberate isolation, and it is why `library.database.api.spec.ts` refused to run when `S18_DATABASE_URL` pointed at the wrong port rather than silently testing against the wrong data.
+
+### How CI satisfies it
+
+`.github/workflows/s01-quality.yml` does four things in order: starts one `postgres:17.10-alpine3.24` service on port 56433; runs `pnpm db:migrate:deploy`; runs `scripts/ci/prepare-disposable-postgres.mjs` (284 lines, spawns `docker` and `pnpm` subprocesses to provision per-suite fixtures); then runs `scripts/ci/run-api-web-tests.mjs` instead of invoking Jest directly. The last two steps are what a developer host does not replicate, and the prepare script is written for Linux CI — it is not a supported Windows workflow.
+
+### Consequence for G08
+
+The `request()` 403 path in `skills.service.ts` is exercised only by this integration suite, which has **not** executed. It remains unverified. Note that G08 did not change `request()`, and 22 integration suites plus 5 unit tests passed in these runs, so there is no evidence of a regression — only an absence of coverage.
+
+### Correct route to this evidence
+
+Push the branch and let CI run `s01-quality.yml`. That is where this suite is designed to run, and it is the only route that does not require rebuilding the CI fixture pipeline by hand. Local provisioning via Docker plus `prepare-disposable-postgres.mjs` is possible but unsupported on Windows and should not be attempted casually.
+
+### Interim state
+
+G08 unit tests pass (recorded above). `pnpm verify` — typecheck, lint, unit, build, E2E — is the host-runnable gate that covers everything G08's change could plausibly have affected without a disposable PostgreSQL, and is the next step on the host.
+## Owner-approved Agent 1 isolated real-browser acceptance — 2026-10-16
+
+Owner selected **“Approve isolated browser tests”** for `docs/development/V1_AGENT1_BROWSER_ACCEPTANCE_2026-10-16.md`: a NEW PostgreSQL18.6 cluster under `.artifacts/v1/20261016-agent1-browser`, loopback59751, database`sense_v1_agent1_browser_20261016_test`, migrations1–119, real AppModule API59752/current frontend59753, synthetic fixture users/sessions/files, four-width task/receipt/My Work/Project browser checks and bounded fixes/rechecks while that exact stack remains running, then stopping only owned processes/cluster with all data preserved. No retained/old59749/MW-I02/production restart/migration, reset/drop/delete, live provider/external transmission or deployment. This is separate from the earlier source-only receipt and59749 database-test approvals. Server-validated fixture sessions do not claim passkey/onboarding or pilot acceptance. The custom execution switch remains a guard, not independent authorization.
+# NAS deployment implementation model exception — 16 October 2026
+
+Owner explicitly authorized implementing the NAS/phone deployment proposal and selected “Use current Codex for this deployment work” after being informed that AGENTS.md requires unavailable Opus/Sonnet routing. This exception covers current-agent implementation and review of NAS-01–04, not independent/model-specific acceptance claims. Owner has an existing website domain and agreed an app subdomain; the exact domain was not supplied. Production activation still needs verified NAS/storage/offsite inputs and concrete release evidence. No business policy, permission, schema, retention or actual-project acceptance rule is changed.
+
+The implemented package uses a separate production Compose, the existing PostgreSQL17 baseline (no major upgrade), private one-hop Cloudflare/proxy contract, required dedicated NAS mounts, explicit migrations and immutable release labels. Phone delivery reuses the approved PWA and S22 authority with deferred, sole-window, queue-preserving activation. Operational restoration is a new isolated stopped rehearsal target, not automatic production failover. Current Codex completed source review and bounded verification; full-root lint and real container/NAS/phone/offsite/pilot acceptance remain open as recorded in the NAS progress report.
+

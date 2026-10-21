@@ -1,7 +1,14 @@
+import { actionableTaskReasons } from "./actionable-work-policy.js";
+import { taskCreateHash } from "./task-create-identity.js";
+import type { TaskCreationOptions, TaskReadRefinements, TaskListSort } from "@sense/contracts";
+import { withAuthorizationReadTime } from "./authorization-read-context.js";
+import { reviewMetricWhere } from "./task-review-metric.js";
+import { taskRefinementPredicates, taskSearchPredicate, taskReadOrder, actionableTaskSearchMatches } from "./task-read-filters.js";
 import { pauseTimeTimers } from "./time-lifecycle.js";
 import { cancelExternalGrants, externalCancellationBlockers, externalRevocationNotices } from "./external-portal-policy.js";
-import { ConflictException, ForbiddenException, Injectable, NotFoundException, Optional } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Injectable, NotFoundException, Optional, ServiceUnavailableException } from "@nestjs/common";
 import { WorkforceService } from "./workforce.service.js";
+import { assertNoSubtaskDependencyCycle, assertSubtasksCompleted } from "./task-subtask-policy.js";
 import { AccountKind, AccountState, EmployeeState, NotificationChannel, Prisma, ProjectStatus, TaskPriority, TaskReviewRequirement, TaskStatus, TaskType } from "./generated/prisma/client.js";
 import { AuthorizationService } from "./authorization.service.js";
 import { DatabaseService } from "./database.service.js";
@@ -9,12 +16,18 @@ import { recordProjectEvent } from "./project-events.js";
 import { NotificationsService } from "./notifications.service.js";
 import { ApprovalService, type ApprovalHandler } from "./approval.service.js";
 import { evaluateEmployeeExitTask, evaluateProjectCancellationTask, evaluateTaskResume, evaluateTaskStateTransition, evaluateTaskWaiting } from "./task-state-policy.js";
+import { resolveTaskCreationProfile } from "./task-creation-profile.js";
 import type { ProjectActor } from "./project.service.js";
 
 type Tx = Prisma.TransactionClient;
 type TaskRow = NonNullable<Awaited<ReturnType<Tx["task"]["findUnique"]>>>;
 type ProjectRow = NonNullable<Awaited<ReturnType<Tx["project"]["findUnique"]>>>;
 const EXTENSION_TYPE = "task.deadline_extension";
+// Readable bound for the unbounded actionable scan. Candidates are ordered by
+// target date, so a bounded scan covers the most urgent work first. Exceeding
+// it is a refusal (ServiceUnavailableException), never a silent truncation, so
+// a published total is never smaller than the real set of actionable work.
+export const UNBOUNDED_CANDIDATE_SCAN = 5000;
 type ExtensionContext = { taskId: string; previousDate: string; proposedDate: string; ownerEmployeeId: string; approverAccountId: string; taskVersion?: number };
 function extensionContext(value: unknown): ExtensionContext {
   if (!value || typeof value !== "object" || Array.isArray(value)) throw new ConflictException("Extension evidence is unavailable");
@@ -25,6 +38,7 @@ function extensionContext(value: unknown): ExtensionContext {
 }
 
 export interface CreateTaskInput {
+  idempotencyKey?: string | undefined;
   acknowledgeOverload?: boolean | undefined;
   title: string; type: TaskType; priority: TaskPriority; targetDate: string; reason: string;
   description?: string | undefined; startDate?: string | undefined; estimatedHours?: number | undefined; projectId?: string | undefined;
@@ -181,9 +195,57 @@ export class TaskService {
     return result;
   }
 
+  /** Current command-equivalent candidate read; a picker never grants participation. */
+  async creationOptions(actor: ProjectActor, projectId?: string): Promise<TaskCreationOptions> {
+    return this.transaction(async tx => {
+      if (actor.kind !== AccountKind.OWNER && actor.kind !== AccountKind.STAFF) throw new ForbiddenException("Permission denied");
+      const account = await this.activeActor(tx, actor);
+      const project = projectId ? await this.project(tx, actor, projectId) : undefined;
+      if (project) {
+        await this.projectAccess(tx, actor, project);
+        if (project.status !== ProjectStatus.DRAFT && project.status !== ProjectStatus.ACTIVE) throw new ConflictException("Project is unavailable for new delivery work");
+      }
+      let canAssign = actor.kind === AccountKind.OWNER;
+      if (!canAssign && account.employee) {
+        try {
+          if (project) await this.projectAccess(tx, actor, project, "project.manage");
+          await this.authorization.assertPermission(actor.accountId, "task.assign", project
+            ? { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }
+            : { kind: "TEAM", organizationId: actor.organizationId, branchId: account.employee.homeBranchId, teamId: account.employee.homeTeamId }, tx);
+          canAssign = true;
+        } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+      }
+      let candidateIds: string[] | undefined;
+      if (project && canAssign) candidateIds = (await tx.projectAssignment.findMany({ where: { projectId: project.id, organizationId: actor.organizationId, revokedAt: null }, select: { employeeId: true } })).map(row => row.employeeId);
+      else if (actor.kind === AccountKind.STAFF) candidateIds = [...(account.employee ? [account.employee.id] : []), ...(canAssign ? await this.managedReportIds(tx, actor) : [])];
+      const candidates = await tx.employee.findMany({
+        where: { organizationId: actor.organizationId, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE }, ...(candidateIds ? { id: { in: candidateIds } } : {}) },
+        include: { account: { select: { normalizedEmail: true } } }, orderBy: { createdAt: "asc" }
+      });
+      const owners: Array<{ id: string; name: string; homeBranchId: string }> = [];
+      for (const candidate of candidates) {
+        try {
+          if (project) await this.eligibleForProject(tx, actor, project, candidate.id);
+          if (actor.kind === AccountKind.STAFF && candidate.id !== account.employee?.id) await this.managedEmployee(tx, actor, candidate, project);
+          owners.push({ id: candidate.id, name: candidate.account.normalizedEmail, homeBranchId: candidate.homeBranchId });
+        } catch (error) { if (!(error instanceof ForbiddenException) && !(error instanceof ConflictException)) throw error; }
+      }
+      return { actorEmployeeId: account.employee?.id ?? null, project: project ? { id: project.id, title: project.title, status: project.status } : null,
+        canAssign, canCreate: owners.length > 0, owners, collaborators: canAssign ? owners : [], readAt: new Date().toISOString() };
+    });
+  }
+
   async setup(actor: ProjectActor) {
     return this.transaction(async (tx) => {
+      if (actor.kind !== AccountKind.OWNER && actor.kind !== AccountKind.STAFF) throw new ForbiddenException("Permission denied");
       const account = await this.activeActor(tx, actor);
+      const roleAssignments = actor.kind === AccountKind.STAFF && account.employee
+        ? await tx.employeeJobRoleAssignment.findMany({
+          where: { employeeId: account.employee.id, organizationId: actor.organizationId, effectiveTo: null, jobRole: { active: true } },
+          select: { jobRole: { select: { creationPresentation: true } } }
+        })
+        : [];
+      const creationProfile = resolveTaskCreationProfile(actor.kind, roleAssignments.map((assignment) => assignment.jobRole.creationPresentation));
       const ids = await this.visibleProjectIds(tx, actor);
       const projectRows = await tx.project.findMany({ where: { organizationId: actor.organizationId, ...(ids === null ? {} : { id: { in: ids } }) }, orderBy: { title: "asc" } });
       const projects: Array<{ id: string; title: string; status: ProjectStatus; branchId: string; canApproveCloseout: boolean }> = [];
@@ -228,11 +290,11 @@ export class TaskService {
       }
       const employees = await tx.employee.findMany({ where: { organizationId: actor.organizationId, state: EmployeeState.ACTIVE, account: { state: AccountState.ACTIVE }, ...(actor.kind === AccountKind.OWNER ? {} : { id: { in: [...visibleEmployeeIds] } }) }, include: { account: { select: { normalizedEmail: true } } }, orderBy: { createdAt: "asc" } });
       const planItems = await tx.projectPlanItem.findMany({ where: { organizationId: actor.organizationId, projectId: { in: projects.map((project) => project.id) } }, select: { id: true, projectId: true, kind: true, label: true }, orderBy: [{ projectId: "asc" }, { position: "asc" }] });
-      return { actorEmployeeId: account.employee?.id ?? null, projects, planItems, employees: employees.map((row) => ({ id: row.id, name: row.account.normalizedEmail, homeBranchId: row.homeBranchId })), canAssign };
+      return { actorEmployeeId: account.employee?.id ?? null, creationProfile, projects, planItems, employees: employees.map((row) => ({ id: row.id, name: row.account.normalizedEmail, homeBranchId: row.homeBranchId })), canAssign };
     });
   }
 
-  async list(actor: ProjectActor, scope: "mine" | "assigned" | "personal" | "all" | "owned" | "created" | "collaborating", offset: number, limit: number, filters: { projectId?: string; planItemId?: string; ownerEmployeeId?: string; q?: string; status?: TaskStatus; phase?: "active" | "waiting" | "review" | "completed"; dateBasis?: "target" | "committed"; dateFrom?: string; dateTo?: string; type?: TaskType; requiresReassignment?: boolean; sort?: "created_desc" | "target_asc" | "title_asc" | "owner_asc" } = {}) {
+  async list(actor: ProjectActor, scope: "mine" | "assigned" | "personal" | "all" | "owned" | "created" | "collaborating", offset: number, limit: number, filters: TaskReadRefinements & { metric?: "reviews"; projectId?: string; planItemId?: string; ownerEmployeeId?: string; q?: string; status?: TaskStatus; phase?: "active" | "waiting" | "review" | "completed"; dateBasis?: "target" | "committed"; dateFrom?: string; dateTo?: string; type?: TaskType; requiresReassignment?: boolean; sort?: TaskListSort } = {}) {
     return this.transaction(async (tx) => {
       const account = await this.activeActor(tx, actor);
       const ids = await this.visibleProjectIds(tx, actor);
@@ -269,19 +331,13 @@ export class TaskService {
       const phase: Prisma.TaskWhereInput = filters.phase === "active" ? { status: { notIn: [TaskStatus.COMPLETED, TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION] } } : filters.phase === "waiting" ? { status: TaskStatus.WAITING } : filters.phase === "completed" ? { status: TaskStatus.COMPLETED } : filters.phase === "review" ? { OR: [{ type: TaskType.CORRECTION }, { status: { in: [TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.CORRECTIONS_REQUIRED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED, TaskStatus.CLIENT_REVISION_REQUIRED] } }] } : {};
       const dateRange = { ...(filters.dateFrom ? { gte: new Date(`${filters.dateFrom}T00:00:00.000Z`) } : {}), ...(filters.dateTo ? { lte: new Date(`${filters.dateTo}T00:00:00.000Z`) } : {}) };
       const dateFilter: Prisma.TaskWhereInput = filters.dateFrom || filters.dateTo ? filters.dateBasis === "committed" ? { committedDueDate: dateRange } : { targetDate: dateRange } : {};
-      const search: Prisma.TaskWhereInput = filters.q ? { OR: [
-        { title: { contains: filters.q, mode: "insensitive" } },
-        { project: { is: { title: { contains: filters.q, mode: "insensitive" } } } },
-        { primaryOwner: { is: { account: { is: { normalizedEmail: { contains: filters.q, mode: "insensitive" } } } } } },
-        { createdBy: { is: { normalizedEmail: { contains: filters.q, mode: "insensitive" } } } }
-      ] } : {};
-      const where: Prisma.TaskWhereInput = { organizationId: actor.organizationId, AND: [ownership, phase, dateFilter, ...(filters.type ? [{ type: filters.type }] : []), ...(filters.requiresReassignment !== undefined ? [{ requiresReassignment: filters.requiresReassignment }] : []), ...(ids === null ? [] : [{ OR: [{ projectId: null }, { projectId: { in: ids } }] }]), ...(filters.projectId ? [{ projectId: filters.projectId }] : []), ...(filters.planItemId ? [{ planItemId: filters.planItemId }] : []), ...(filters.ownerEmployeeId ? [{ primaryOwnerEmployeeId: filters.ownerEmployeeId }] : []), search, ...(filters.status ? [{ status: filters.status }] : [])] };
-      const orderBy: Prisma.TaskOrderByWithRelationInput[] = filters.sort === "target_asc" ? [{ targetDate: "asc" }, { id: "asc" }]
-        : filters.sort === "title_asc" ? [{ title: "asc" }, { id: "asc" }]
-          : filters.sort === "owner_asc" ? [{ primaryOwner: { account: { normalizedEmail: "asc" } } }, { id: "asc" }]
-            : [{ createdAt: "desc" }, { id: "desc" }];
+      const search = taskSearchPredicate(filters.q);
+      const where: Prisma.TaskWhereInput = { organizationId: actor.organizationId, AND: [ownership, phase, dateFilter, ...taskRefinementPredicates(filters), ...(filters.metric === "reviews" ? [reviewMetricWhere()] : []), ...(filters.type ? [{ type: filters.type }] : []), ...(filters.requiresReassignment !== undefined ? [{ requiresReassignment: filters.requiresReassignment }] : []), ...(ids === null ? [] : [{ OR: [{ projectId: null }, { projectId: { in: ids } }] }]), ...(filters.projectId ? [{ projectId: filters.projectId }] : []), ...(filters.planItemId ? [{ planItemId: filters.planItemId }] : []), ...(filters.ownerEmployeeId ? [{ primaryOwnerEmployeeId: filters.ownerEmployeeId }] : []), search, ...(filters.status ? [{ status: filters.status }] : [])] };
+      const orderBy = taskReadOrder(filters.sort);
       const [total, items] = await Promise.all([tx.task.count({ where }), tx.task.findMany({ where, include: { primaryOwner: { include: { account: { select: { normalizedEmail: true } } } }, project: { select: { id: true, title: true } } }, orderBy, skip: offset, take: limit })]);
-      return { total, items };
+      const childLinks = items.length ? await tx.taskSubtaskLink.findMany({ where: { organizationId: actor.organizationId, childTaskId: { in: items.map(item => item.id) } }, select: { childTaskId: true } }) : [];
+      const childIds = new Set(childLinks.map(link => link.childTaskId));
+      return { total, items: items.map(item => ({ ...item, ...(childIds.has(item.id) ? { isSubtask: true as const } : {}) })) };
     });
   }
 
@@ -326,9 +382,62 @@ export class TaskService {
     return { account, project };
   }
 
+  /** Independent exact source evaluated with the same current command capabilities. */
+  async actionable(actor: ProjectActor, offset = 0, limit = 25) {
+    return this.db.$transaction(async tx => {
+      const organization = await tx.organization.findUniqueOrThrow({ where: { id: actor.organizationId }, select: { timezone: true } });
+      const readAt = new Date();
+      const result = await withAuthorizationReadTime(tx, readAt, () => this.actionableInTransaction(tx, actor, readAt, organization.timezone));
+      return { ...result, items: result.items.slice(offset, offset + limit), offset, limit };
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, timeout: 30_000 });
+  }
+
+  async actionableInTransaction(tx: Prisma.TransactionClient, actor: ProjectActor, readAt: Date, timezone: string, maxCandidates = UNBOUNDED_CANDIDATE_SCAN, filters: TaskReadRefinements & { q?: string | undefined } = {}) {
+      const account = await this.activeActor(tx, actor);
+      // One query more than the cap decides "in range" without a second count.
+      const candidates = await tx.task.findMany({ where: { organizationId: actor.organizationId, AND: taskRefinementPredicates(filters),
+        status: { notIn: [TaskStatus.COMPLETED, TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION] },
+        OR: [...(account.employee ? [{ primaryOwnerEmployeeId: account.employee.id }] : []), { requiresReassignment: true }]
+      }, include: { project: { select: { id: true, title: true } }, planItem: { select: { label: true } } }, orderBy: [{ targetDate: "asc" }, { id: "asc" }], take: maxCandidates + 1 });
+      // Never silently truncate: a capped scan that would hide work is reported as
+      // unavailable, not as a smaller total. Callers surface this as "no complete
+      // page or count was published" instead of a plausible-looking partial queue.
+      if (candidates.length > maxCandidates) throw new ServiceUnavailableException("Actionable work exceeds the readable bound; no complete page or count was published");
+      const links = candidates.length ? await tx.taskSubtaskLink.findMany({ where: { organizationId: actor.organizationId, childTaskId: { in: candidates.map(task => task.id) } }, select: { childTaskId: true } }) : [];
+      const childIds = new Set(links.map(link => link.childTaskId));
+      const items = [];
+      for (const candidate of candidates) {
+        try {
+          // Reuse current authority policies without fetching per-row detail/history.
+          const task = candidate;
+          const { project } = await this.taskAccess(tx, actor, task);
+          const closeout = task.type === TaskType.CLOSEOUT ? await tx.taskCloseoutApproval.findUnique({ where: { taskId: task.id } }) : null;
+          const open = task.status !== TaskStatus.COMPLETED && task.status !== TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION;
+          const projectAllowsProgress = !project || project.status === (task.type === TaskType.CLOSEOUT ? ProjectStatus.CANCELLED : ProjectStatus.ACTIVE);
+          const approvalActive = task.type !== TaskType.CLOSEOUT || !!closeout && !closeout.revokedAt;
+          const progress = open && projectAllowsProgress && approvalActive && !task.requiresReassignment && (actor.kind === AccountKind.OWNER || account.employee?.id === task.primaryOwnerEmployeeId);
+          let manager = actor.kind === AccountKind.OWNER;
+          if (!manager && task.requiresReassignment) {
+            const owner = await tx.employee.findUnique({ where: { id: task.primaryOwnerEmployeeId } });
+            if (owner) try { await this.managedEmployee(tx, actor, owner, project ?? undefined); manager = true; } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
+          }
+          const capabilities = { edit: progress && task.type !== TaskType.CLOSEOUT && !new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED]).has(task.status), transition: progress, wait: progress && task.status === TaskStatus.IN_PROGRESS, resume: progress && task.status === TaskStatus.WAITING && task.waitingPreviousStatus === TaskStatus.IN_PROGRESS, reassign: manager && open && projectAllowsProgress && approvalActive };
+          const reasons = actionableTaskReasons(task, capabilities, account.employee?.id === task.primaryOwnerEmployeeId, readAt, timezone);
+          if (!reasons.length || !actionableTaskSearchMatches(task, filters.q)) continue;
+          items.push({ source: "task" as const, sourceId: task.id, taskId: task.id, title: task.title,
+            project: task.project, responsibility: reasons.includes("reassignment_required") ? "manager" as const : "primary_owner" as const,
+            reason: reasons[0]!, reasons, deadline: task.targetDate, priority: task.priority, status: task.status, type: task.type, ownerEmployeeId: task.primaryOwnerEmployeeId, planItemId: task.planItemId, committedDueDate: task.committedDueDate, isSubtask: childIds.has(task.id),
+            destination: `/my-work?taskId=${encodeURIComponent(task.id)}`, readAt });
+        } catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException)) throw error; }
+      }
+      return { source: "task" as const, total: items.length, items, readAt };
+
+  }
   async detail(actor: ProjectActor, id: string) {
-    return this.transaction(async (tx) => {
-      const task = await tx.task.findFirst({ where: { id, organizationId: actor.organizationId }, include: { primaryOwner: { include: { account: { select: { normalizedEmail: true } } } }, project: { select: { id: true, title: true } } } });
+    return this.transaction(tx => this.detailInTransaction(actor, id, tx));
+  }
+  private async detailInTransaction(actor: ProjectActor, id: string, tx: Tx) {
+      const task = await tx.task.findFirst({ where: { id, organizationId: actor.organizationId }, include: { primaryOwner: { include: { account: { select: { normalizedEmail: true } } } }, createdBy: { select: { normalizedEmail: true, kind: true } }, project: { select: { id: true, title: true } } } });
       if (!task) throw new NotFoundException("Task not found");
       const { account, project } = await this.taskAccess(tx, actor, task);
       let reassign = actor.kind === AccountKind.OWNER;
@@ -340,9 +449,9 @@ export class TaskService {
         }
       }
       const [collaborators, statusChanges, ownerChanges, committedDateChanges, dependencyRows, closeoutApproval, extensionRows] = await Promise.all([
-        tx.taskCollaborator.findMany({ where: { taskId: id }, include: { employee: { include: { account: { select: { normalizedEmail: true } } } } } }),
+        tx.taskCollaborator.findMany({ where: { taskId: id }, include: { employee: { include: { account: { select: { normalizedEmail: true } } } }, addedBy: { select: { normalizedEmail: true } } } }),
         tx.taskStatusChange.findMany({ where: { taskId: id }, orderBy: [{ occurredAt: "asc" }, { id: "asc" }] }),
-        tx.taskOwnerChange.findMany({ where: { taskId: id }, orderBy: [{ occurredAt: "asc" }, { id: "asc" }] }),
+        tx.taskOwnerChange.findMany({ where: { taskId: id }, include: { actor: { select: { normalizedEmail: true, kind: true } } }, orderBy: [{ occurredAt: "asc" }, { id: "asc" }] }),
         tx.taskCommittedDateChange.findMany({ where: { taskId: id }, orderBy: [{ occurredAt: "asc" }, { id: "asc" }] }),
         tx.taskDependency.findMany({ where: { dependentTaskId: id, removedAt: null }, include: { predecessorTask: true }, orderBy: [{ addedAt: "asc" }, { id: "asc" }] }),
         tx.taskCloseoutApproval.findUnique({ where: { taskId: id } }),
@@ -355,6 +464,16 @@ export class TaskService {
           predecessors.push({ id: edge.predecessorTask.id, title: edge.predecessorTask.title, status: edge.predecessorTask.status });
         } catch (error) { if (!(error instanceof ForbiddenException)) throw error; }
       }
+      // "Assigned by" is the actor of the most recent owner reassignment,
+      // falling back to the task creator when it has never been reassigned.
+      // Both are read from tasks this caller is already authorized to see,
+      // so this exposes no identity that task detail does not already carry.
+      const lastOwnerChange = ownerChanges[ownerChanges.length - 1];
+      // Guard the optional chaining on the account objects, not just on the
+      // relation row: the generated client types `actorId`/`addedById` as
+      // nullable, so a null relation must not reach the response.
+      const assignedByName = lastOwnerChange?.actor?.normalizedEmail ?? task.createdBy?.normalizedEmail ?? "Unknown";
+      const assignedByKind = lastOwnerChange?.actor?.kind ?? task.createdBy?.kind ?? AccountKind.OWNER;
       const open = task.status !== TaskStatus.COMPLETED && task.status !== TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION;
       const projectAllowsProgress = !project || project.status === (task.type === TaskType.CLOSEOUT ? ProjectStatus.CANCELLED : ProjectStatus.ACTIVE);
       const approvalActive = task.type !== TaskType.CLOSEOUT || !!closeoutApproval && !closeoutApproval.revokedAt;
@@ -370,16 +489,108 @@ export class TaskService {
         }
         extensions.push({ id: row.id, previousDate: context.previousDate, proposedDate: context.proposedDate, reason: row.reason, state: row.state, requesterId: row.requesterId, approverId: row.approverId, requestedAt: row.requestedAt, decision: row.decision, canDecide, canWithdraw: row.state === "PENDING" && actor.kind === AccountKind.OWNER });
       }
-      return { task, linkedReviewTaskId: linkedReview?.taskId ?? null, collaborators: collaborators.map((row) => ({ employeeId: row.employeeId, name: row.employee.account.normalizedEmail, estimatedHours: row.estimatedHours })), history: { statusChanges, ownerChanges, committedDateChanges }, extensions, dependencies: { predecessors, hasUnfinished: dependencyRows.some((edge) => edge.predecessorTask.status !== TaskStatus.COMPLETED), hiddenCount: dependencyRows.length - predecessors.length }, closeoutApproval, capabilities: { edit: progress && task.type !== TaskType.CLOSEOUT && !new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED]).has(task.status), transition: progress, wait: progress && task.status === TaskStatus.IN_PROGRESS, resume: progress && task.status === TaskStatus.WAITING && task.waitingPreviousStatus === TaskStatus.IN_PROGRESS, changeCommittedDate: await this.canChangeCommittedDate(tx, actor, task, project), requestExtension: actor.kind === AccountKind.STAFF && account.employee?.id === task.primaryOwnerEmployeeId && this.extensionOpen(task, project) && !extensionRows.some((row) => row.state === "PENDING"), manageDependencies: await this.canManageDependencies(tx, actor, task, project), reassign: reassign && open && projectAllowsProgress && approvalActive, revokeCloseout: actor.kind === AccountKind.OWNER && !!closeoutApproval && !closeoutApproval.revokedAt } };
+      return { task, linkedReviewTaskId: linkedReview?.taskId ?? null, people: { assignedBy: { name: assignedByName, kind: assignedByKind }, collaboratorAdders: collaborators.map((row) => ({ employeeId: row.employeeId, name: row.addedBy?.normalizedEmail ?? assignedByName })) }, collaborators: collaborators.map((row) => ({ employeeId: row.employeeId, name: row.employee.account.normalizedEmail, estimatedHours: row.estimatedHours })), history: { statusChanges, ownerChanges, committedDateChanges }, extensions, dependencies: { predecessors, hasUnfinished: dependencyRows.some((edge) => edge.predecessorTask.status !== TaskStatus.COMPLETED), hiddenCount: dependencyRows.length - predecessors.length }, closeoutApproval, capabilities: { edit: progress && task.type !== TaskType.CLOSEOUT && !new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED]).has(task.status), transition: progress, wait: progress && task.status === TaskStatus.IN_PROGRESS, resume: progress && task.status === TaskStatus.WAITING && task.waitingPreviousStatus === TaskStatus.IN_PROGRESS, changeCommittedDate: await this.canChangeCommittedDate(tx, actor, task, project), requestExtension: actor.kind === AccountKind.STAFF && account.employee?.id === task.primaryOwnerEmployeeId && this.extensionOpen(task, project) && !extensionRows.some((row) => row.state === "PENDING"), manageDependencies: await this.canManageDependencies(tx, actor, task, project), reassign: reassign && open && projectAllowsProgress && approvalActive, revokeCloseout: actor.kind === AccountKind.OWNER && !!closeoutApproval && !closeoutApproval.revokedAt } };
+
+  }
+
+  private async subtaskParentOpen(tx: Tx, actor: ProjectActor, task: TaskRow, project: ProjectRow | null): Promise<boolean> {
+    const structurallyOpen = !!project && project.status === ProjectStatus.ACTIVE && task.type !== TaskType.CLOSEOUT && !task.requiresReassignment &&
+      !new Set<TaskStatus>([TaskStatus.SUBMITTED_INTERNAL_REVIEW, TaskStatus.IN_INTERNAL_REVIEW, TaskStatus.INTERNAL_APPROVED, TaskStatus.SUBMITTED_CLIENT_REVIEW, TaskStatus.IN_CLIENT_REVIEW, TaskStatus.CLIENT_APPROVED, TaskStatus.COMPLETED, TaskStatus.STOPPED_DUE_TO_PROJECT_CANCELLATION]).has(task.status) &&
+      !await tx.taskSubtaskLink.findUnique({ where: { childTaskId_organizationId: { childTaskId: task.id, organizationId: task.organizationId } } });
+    if (!structurallyOpen || !project) return false;
+    const account = await this.activeActor(tx, actor);
+    if (actor.kind === AccountKind.OWNER || account.employee?.id === task.primaryOwnerEmployeeId) return true;
+    const owner = await tx.employee.findUnique({ where: { id: task.primaryOwnerEmployeeId } });
+    if (!owner) return false;
+    try { await this.managedEmployee(tx, actor, owner, project); return true; }
+    catch (error) { if (error instanceof ForbiddenException) return false; throw error; }
+  }
+
+  async subtasks(actor: ProjectActor, taskId: string) {
+    return this.transaction(async tx => {
+      const task = await tx.task.findFirst({ where: { id: taskId, organizationId: actor.organizationId } });
+      if (!task) throw new NotFoundException("Task not found");
+      const { project } = await this.taskAccess(tx, actor, task);
+      const links = await tx.taskSubtaskLink.findMany({ where: { parentTaskId: taskId, organizationId: actor.organizationId }, include: { childTask: { include: { primaryOwner: { include: { account: { select: { normalizedEmail: true } } } } } } }, orderBy: [{ createdAt: "asc" }, { id: "asc" }] });
+      const items: Array<{ id: string; title: string; status: TaskStatus; targetDate: Date; primaryOwnerEmployeeId: string; primaryOwnerName: string; version: number }> = [];
+      for (const link of links) {
+        try {
+          await this.taskAccess(tx, actor, link.childTask);
+          const child = link.childTask;
+          items.push({ id: child.id, title: child.title, status: child.status, targetDate: child.targetDate, primaryOwnerEmployeeId: child.primaryOwnerEmployeeId, primaryOwnerName: child.primaryOwner.account.normalizedEmail, version: child.version });
+        } catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException)) throw error; }
+      }
+      const parentLink = await tx.taskSubtaskLink.findUnique({ where: { childTaskId_organizationId: { childTaskId: taskId, organizationId: actor.organizationId } }, include: { parentTask: true } });
+      let parent: { id: string; title: string } | null = null;
+      if (parentLink) {
+        try { await this.taskAccess(tx, actor, parentLink.parentTask); parent = { id: parentLink.parentTask.id, title: parentLink.parentTask.title }; }
+        catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException)) throw error; }
+      }
+      return { items, parent, isSubtask: !!parentLink, completionBlocked: links.some(link => link.childTask.status !== TaskStatus.COMPLETED), canCreate: await this.subtaskParentOpen(tx, actor, task, project), taskVersion: task.version };
+    });
+  }
+
+  async createSubtask(actor: ProjectActor, parentTaskId: string, input: CreateTaskInput & { expectedParentVersion: number }) {
+    return this.transaction(async tx => {
+      const retry = await this.creationRetry(tx, actor, input, { id: parentTaskId, expectedVersion: input.expectedParentVersion });
+      if (retry?.task) {
+        const parent = await this.task(tx, actor, parentTaskId);
+        await this.taskAccess(tx, actor, parent);
+        return { task: retry.task, parentVersion: parent.version };
+      }
+      const preview = await tx.task.findFirst({ where: { id: parentTaskId, organizationId: actor.organizationId }, select: { projectId: true } });
+      if (!preview?.projectId) throw new ConflictException("Subtasks require an accessible project parent");
+      // Same graph lock order as dependency edits; parent completion edges are graph edges.
+      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtextextended(${preview.projectId}::text, 0))::text AS lock`;
+      const parent = await this.task(tx, actor, parentTaskId, input.expectedParentVersion);
+      const { project } = await this.taskAccess(tx, actor, parent);
+      if (!await this.subtaskParentOpen(tx, actor, parent, project)) throw new ForbiddenException("Current parent edit or management authority is required to add a subtask");
+      if (input.projectId !== undefined && input.projectId !== parent.projectId) throw new ConflictException("Subtask must use the parent project");
+      const child = await this.createInTransaction(tx, actor, { ...input, projectId: parent.projectId! }, parentTaskId);
+      await tx.taskSubtaskLink.create({ data: { organizationId: actor.organizationId, projectId: parent.projectId!, parentTaskId, childTaskId: child.id, createdById: actor.accountId, reason: input.reason } });
+      const updatedParent = await tx.task.update({ where: { id: parentTaskId, version: parent.version }, data: { version: { increment: 1 } } });
+      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.updated", subjectType: "task", subjectId: parentTaskId, reason: input.reason,
+        before: { version: parent.version }, after: { version: updatedParent.version, subtaskAction: "created", childTaskId: child.id } });
+      if (retry) await this.saveCreationReceipt(tx, actor, input.idempotencyKey!, retry.hash, child.id, parentTaskId);
+      return { task: child, parentVersion: updatedParent.version };
     });
   }
 
   async create(actor: ProjectActor, input: CreateTaskInput) {
-    return this.transaction((tx) => this.createInTransaction(tx, actor, input));
+    return this.transaction(async tx => {
+      const retry = await this.creationRetry(tx, actor, input);
+      if (retry?.task) return retry.task;
+      const task = await this.createInTransaction(tx, actor, input);
+      if (retry) await this.saveCreationReceipt(tx, actor, input.idempotencyKey!, retry.hash, task.id);
+      return task;
+    });
+  }
+
+  private async creationRetry(tx: Tx, actor: ProjectActor, input: CreateTaskInput, parent?: { id: string; expectedVersion: number }) {
+    if (!input.idempotencyKey) return undefined;
+    await this.activeActor(tx, actor);
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`task-create:${actor.organizationId}:${actor.accountId}:${input.idempotencyKey}`}, 0))::text AS lock`;
+    const hash = taskCreateHash(input, parent);
+    const receipt = await tx.taskCreationReceipt.findUnique({ where: { organizationId_actorId_key: { organizationId: actor.organizationId, actorId: actor.accountId, key: input.idempotencyKey } } });
+    if (!receipt) return { hash, task: undefined };
+    if (receipt.payloadHash !== hash || receipt.command !== (parent ? "CREATE_SUBTASK" : "CREATE_TASK") || receipt.parentTaskId !== (parent?.id ?? null)) throw new ConflictException("Retry key was used for different task details");
+    if (parent) {
+      const currentParent = await tx.task.findFirst({ where: { id: parent.id, organizationId: actor.organizationId }, select: { projectId: true } });
+      if (!currentParent?.projectId) throw new NotFoundException("Task not found");
+      // Retain graph -> task lock order on recovery as well as first creation.
+      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtextextended(${currentParent.projectId}::text, 0))::text AS lock`;
+    }
+    const task = await this.task(tx, actor, receipt.taskId);
+    await this.taskAccess(tx, actor, task);
+    return { hash, task };
+  }
+
+  private async saveCreationReceipt(tx: Tx, actor: ProjectActor, key: string, hash: string, taskId: string, parentTaskId?: string) {
+    await tx.taskCreationReceipt.create({ data: { organizationId: actor.organizationId, actorId: actor.accountId, key, payloadHash: hash, taskId, command: parentTaskId ? "CREATE_SUBTASK" : "CREATE_TASK", parentTaskId: parentTaskId ?? null } });
   }
 
   /** Domain workers reuse the same task creation, access and evidence rules. */
-  async createInTransaction(tx: Tx, actor: ProjectActor, input: CreateTaskInput) {
+  async createInTransaction(tx: Tx, actor: ProjectActor, input: CreateTaskInput, parentTaskId?: string) {
       const account = await this.activeActor(tx, actor);
       const ownerId = input.ownerEmployeeId ?? account.employee?.id;
       if (!ownerId) throw new ForbiddenException("A primary owner is required");
@@ -407,7 +618,7 @@ export class TaskService {
       const row = await tx.task.create({ data: { organizationId: actor.organizationId, ...(project ? { projectId: project.id } : {}), ...(input.planItemId ? { planItemId: input.planItemId } : {}), tags: input.tags ?? [], checklist: input.checklist ?? [], title: input.title, ...(input.description === undefined ? {} : { description: input.description }), type: input.type, priority: input.priority, targetDate, ...(startDate ? { startDate } : {}), ...(input.estimatedHours === undefined ? {} : { estimatedHours: input.estimatedHours }), primaryOwnerEmployeeId: ownerId, createdById: actor.accountId, reviewRequirement: input.reviewRequirement ?? TaskReviewRequirement.NONE } });
       await tx.taskStatusChange.create({ data: { organizationId: actor.organizationId, taskId: row.id, toStatus: TaskStatus.NOT_STARTED, actorId: actor.accountId, reason: input.reason, taskVersion: 1 } });
       for (const collaborator of input.collaborators ?? []) await tx.taskCollaborator.create({ data: { organizationId: actor.organizationId, taskId: row.id, employeeId: collaborator.employeeId, ...(collaborator.estimatedHours === undefined ? {} : { estimatedHours: collaborator.estimatedHours }), addedById: actor.accountId } });
-      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.created", subjectType: "task", subjectId: row.id, reason: input.reason, after: { taskId: row.id, projectId: project?.id ?? null, ownerEmployeeId: ownerId, type: row.type, priority: row.priority, targetDate: input.targetDate, version: row.version, planItemId: row.planItemId, tags: row.tags, checklist: row.checklist } });
+      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.created", subjectType: "task", subjectId: row.id, reason: input.reason, after: { taskId: row.id, projectId: project?.id ?? null, ownerEmployeeId: ownerId, type: row.type, priority: row.priority, targetDate: input.targetDate, version: row.version, planItemId: row.planItemId, tags: row.tags, checklist: row.checklist, ...(parentTaskId ? { parentTaskId } : {}) } });
       return row;
   }
 
@@ -599,6 +810,7 @@ export class TaskService {
       if (reason.length < 3 || reason.length > 1000) throw new ConflictException("A dependency reason of 3 to 1000 characters is required");
       const existing = await tx.taskDependency.findFirst({ where: { dependentTaskId: id, predecessorTaskId, removedAt: null } });
       if (action === "add" && existing || action === "remove" && !existing) throw new ConflictException("Dependency link changed. Refresh and retry");
+      if (action === "add") await assertNoSubtaskDependencyCycle(tx, actor.organizationId, id, predecessorTaskId);
       const updated = await tx.task.update({ where: { id, version: dependent.version }, data: { version: { increment: 1 }, dependencyRevision: { increment: 1 } } });
       const edge = action === "add"
         ? await tx.taskDependency.create({ data: { organizationId: actor.organizationId, dependentTaskId: id, predecessorTaskId, addedById: actor.accountId, addReason: reason, addedTaskVersion: updated.version } })
@@ -633,6 +845,7 @@ export class TaskService {
       const unfinishedPredecessorIds = unfinished.map((edge) => edge.predecessorTaskId);
       if (unfinishedPredecessorIds.length > 0 && !input.acknowledgeUnfinishedDependencies) throw new ConflictException("Unfinished dependencies require explicit acknowledgement before starting");
       if (unfinishedPredecessorIds.length === 0 && input.acknowledgeUnfinishedDependencies) throw new ConflictException("No unfinished dependencies require acknowledgement");
+      if (input.toState === TaskStatus.COMPLETED) await assertSubtasksCompleted(tx, actor.organizationId, id);
       const updated = await tx.task.update({ where: { id, version: row.version }, data: { status: input.toState, version: { increment: 1 } } });
       await tx.taskStatusChange.create({ data: { organizationId: actor.organizationId, taskId: id, fromStatus: row.status, toStatus: input.toState, actorId: actor.accountId, reason: input.reason, taskVersion: updated.version, ...(transition.previousState ? { previousStatus: transition.previousState } : {}), ...(unfinishedPredecessorIds.length ? { earlyStartAcknowledged: true, unfinishedPredecessorIds } : {}) } });
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: input.toState === TaskStatus.IN_PROGRESS ? "task.started" : "task.completed", subjectType: "task", subjectId: id, reason: input.reason, before: { status: row.status, version: row.version }, after: { status: updated.status, version: updated.version, ...(unfinishedPredecessorIds.length ? { earlyStartAcknowledged: true, unfinishedPredecessorIds } : {}) } });

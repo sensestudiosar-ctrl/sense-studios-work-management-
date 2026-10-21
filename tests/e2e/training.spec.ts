@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { s18ScreenshotPath } from "./s18-screenshot.js";
 
 const databaseUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 type PgClient = { connect(): Promise<void>; query<T = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<{ rows: T[]; rowCount: number | null }>; end(): Promise<void> };
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 
@@ -13,7 +15,7 @@ test("Training assignment, authored assessment, named review, effectiveness and 
   page.setDefaultTimeout(30_000);
   if (!databaseUrl) throw new Error("DATABASE_URL must point to the dedicated local S18 test database; Training browser acceptance cannot silently skip");
   const parsed = new URL(databaseUrl);
-  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1));
+  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1)) || disposableS27Database;
   const ciFixture = process.env.CI === "true" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "56433" && /^sense_[a-z0-9_]+_ci_test$/.test(parsed.pathname.slice(1));
   if (!localFixture && !ciFixture) throw new Error("Training browser acceptance requires a dedicated local or CI PostgreSQL test database");
   const require = createRequire(resolve("apps/api/package.json"));
@@ -26,6 +28,10 @@ test("Training assignment, authored assessment, named review, effectiveness and 
   const ownerSessionId = randomUUID(), managerSessionId = randomUUID(), employeeSessionId = randomUUID();
   let ownerAccountId: string, organizationId: string;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN"); await db.query("SELECT pg_advisory_xact_lock(61001805)");
     const org = await db.query<{ id: string }>("SELECT id FROM organizations LIMIT 1");

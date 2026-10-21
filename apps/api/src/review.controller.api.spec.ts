@@ -35,6 +35,7 @@ describe("S13 review HTTP boundary", () => {
       })
     };
     reviews = {
+      actionable: jest.fn(async () => ({ source: "review", total: 0, items: [], offset: 0, limit: 25 })),
       inbox: jest.fn(async () => ({ tasks: [] })),
       detail: jest.fn(async () => ({ task: { id: taskId } })),
       assignReviewer: jest.fn(async (_actor: unknown, _taskId: string, input: unknown) => input),
@@ -68,6 +69,17 @@ describe("S13 review HTTP boundary", () => {
 
   const write = (path: string, body: object) => request(app.getHttpServer()).post(`/api/v1/reviews/${path}`).set("Cookie", cookie).set("Origin", origin).set("x-csrf-token", csrfToken).send(body);
 
+  it("exposes an independent actionable source with bounded pagination and current-session guards", async () => {
+    const response = await request(app.getHttpServer()).get("/api/v1/reviews/actionable?offset=3&limit=10").set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(reviews.actionable).toHaveBeenCalledWith(expect.objectContaining({ accountId }), 3, 10);
+    expect((await request(app.getHttpServer()).get("/api/v1/reviews/actionable?limit=101").set("Cookie", cookie)).status).toBe(400);
+    expect(reviews.actionable).toHaveBeenCalledTimes(1);
+    validSession = false;
+    expect((await request(app.getHttpServer()).get("/api/v1/reviews/actionable").set("Cookie", cookie)).status).toBe(401);
+    expect(reviews.actionable).toHaveBeenCalledTimes(1);
+  });
   it("requires a live session for reads and origin plus CSRF for mutations", async () => {
     validSession = false;
     expect((await request(app.getHttpServer()).get("/api/v1/reviews/inbox").set("Cookie", cookie)).status).toBe(401);

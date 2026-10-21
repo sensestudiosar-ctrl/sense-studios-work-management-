@@ -1,14 +1,26 @@
 {
   "name": "sense-studios-work-management",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "packageManager": "pnpm@11.19.0",
   "engines": {
     "node": ">=24.19.0 <25",
     "pnpm": "11.19.0"
   },
   "scripts": {
-    "dev": "pnpm --filter @sense/contracts build && pnpm --parallel --filter @sense/api --filter @sense/web dev",
+    "dev": "node scripts/staging/cli.mjs start",
+    "runtime:status": "node scripts/staging/cli.mjs status",
+    "runtime:stop": "node scripts/staging/cli.mjs stop",
+    "runtime:restart": "node scripts/staging/cli.mjs restart",
+    "staging:build": "node scripts/staging/build.mjs",
+    "staging:status": "node scripts/staging/cli.mjs status",
+    "staging:start": "node scripts/staging/cli.mjs start",
+    "staging:stop": "node scripts/staging/cli.mjs stop",
+    "test:staging": "node --test scripts/staging/operations.test.mjs",
+    "test:nas": "node --test scripts/nas/operations.test.mjs",
+    "nas:check:compose": "node scripts/nas/verify-compose.mjs",
+    "nas:check:phones": "node scripts/nas/verify-phone-delivery.mjs",
+    "nas:ops": "node scripts/nas/cli.mjs",
     "build": "pnpm --filter @sense/contracts build && pnpm --filter @sense/api build && pnpm --filter @sense/web build",
     "typecheck": "pnpm --filter @sense/contracts build && pnpm --filter @sense/contracts typecheck && pnpm --filter @sense/api typecheck && pnpm --filter @sense/web typecheck",
     "lint": "eslint .",

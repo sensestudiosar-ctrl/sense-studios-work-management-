@@ -1,10 +1,11 @@
 import { startAuthentication, startRegistration } from "@simplewebauthn/browser";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { NotificationCenter } from "./notifications.js";
+import { SignInHub, StaffRecovery } from "./auth-flow.js";
 import { AuditRetentionCenter } from "./audit-retention.js";
 import { ApprovalQueue } from "./approval-queue.js";
-import { MyWorkAttention } from "./my-work-attention.js";
+import { MyWorkManagement } from "./my-work-attention.js";
 import { ProjectsRoute } from "./projects-route.js";
 import { WorkspaceLayout } from "./workspace-navigation.js";
 import { CrmWorkspace } from "./crm.js";
@@ -31,10 +32,12 @@ import { TrainingWorkspace } from "./learning-training.js";
 import { LibraryWorkspace } from "./library-workspace.js";
 import { InsightsNavigation } from "./insights-navigation.js";
 import { DecisionsHome, SettingsSectionNavigation, type SettingsSection } from "./settings-homes.js";
+import { OrganizationAdmin, TeamWorkspace } from "./organization-admin.js";
+import { PeopleSelf } from "./people-self.js";
 import { passkeyRegistrationError } from "./passkey-registration-error.js";
 
 const AUTH_PATH = "/api/v1/auth";
-const ORG_PATH = "/api/v1/org";
+
 
 type Account = { id: string; email: string; kind: "OWNER" | "STAFF" };
 type Session = { account: Account; csrfToken: string; ownerSetupRequired?: boolean; activePasskeyCount?: number };
@@ -47,32 +50,6 @@ type DeviceSession = {
   userAgent: string | null;
   current: boolean;
 };
-type Org = { id: string; name: string; timezone?: string; settingsVersion?: number };
-type Branch = { id: string; name: string };
-type Team = { id: string; branchId: string; name: string; waitingAlertsEnabled?: boolean; settingsVersion?: number };
-type RolePermission = { id: string; permissionKey: string; scopeKind: "ORGANIZATION" | "BRANCH" | "TEAM" | "SELF"; branchId?: string | null; teamId?: string | null };
-type JobRole = { id: string; name: string; permissions?: RolePermission[] };
-type EmployeeOverride = RolePermission & { effect: "ALLOW" | "DENY"; expiresAt: string | null };
-type Employee = {
-  id: string;
-  state: string;
-  employeeCode: string | null;
-  account: { normalizedEmail: string; state: string };
-  homeBranch: { id: string; name: string };
-  homeTeam: { id: string; name: string };
-  jobRoleAssignments: Array<{ jobRole: { id: string; name: string } }>;
-  permissionOverrides: EmployeeOverride[];
-  reportsTo: { id: string; account: { normalizedEmail: string } } | null;
-};
-type ManagedEmployee = {
-  id: string;
-  employeeCode: string | null;
-  hiredAt: string;
-  reportsToId: string | null;
-  account: { normalizedEmail: string };
-  jobRoleAssignments: Array<{ jobRole: { id: string; name: string } }>;
-};
-type ManagerOption = { id: string; email: string };
 type AuthView =
   | { kind: "restoring" }
   | { kind: "signed-out"; notice?: string }
@@ -136,6 +113,8 @@ function displayDate(value: string): string {
 }
 
 function Login({ onSignedIn, notice }: { onSignedIn: (session: Session) => void; notice: string | undefined }): React.JSX.Element {
+  const loginLocation = useLocation();
+  const ownerEntry = loginLocation.pathname === "/owner/sign-in";
   const [email, setEmail] = useState("");
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<LoginError | null>(null);
@@ -194,9 +173,9 @@ function Login({ onSignedIn, notice }: { onSignedIn: (session: Session) => void;
 
   return (
     <main className="auth-content">
-      <section className="auth-card" aria-labelledby="login-heading">
+      <section className="auth-card auth-login" aria-labelledby="login-heading">
         <div className="eyebrow">SENSE STUDIOS WORKSPACE</div>
-        <h1 id="login-heading">Sign in with your passkey</h1>
+        <h1 id="login-heading">{ownerEntry ? "Owner sign in" : loginLocation.pathname === "/staff/sign-in" ? "Studio team sign in" : "Sign in with your passkey"}</h1>
         <p className="auth-intro">Use the passkey registered to your work account to continue.</p>
         {notice && <p className="notice" role="status">{notice}</p>}
         {error && <p className="auth-error" role="alert">{errorMessage(error)}</p>}
@@ -219,23 +198,32 @@ function Login({ onSignedIn, notice }: { onSignedIn: (session: Session) => void;
         </form>
         {!window.PublicKeyCredential && <p className="support-note">This browser may not support passkeys. Use a supported browser or device.</p>}
         <nav className="identity-links" aria-label="Identity setup">
+          <Link to="/staff/recovery">Can't sign in?</Link>
+          <a href="/client-portal/login">Client sign in</a>
+          <Link to="/sign-in">All sign-in options</Link>
           <Link to="/bootstrap">Set up the first Owner account</Link>
           <Link to="/enroll">Accept an invitation or recovery token</Link>
           <Link to="/owner-recovery">Recover an Owner account</Link>
+          <Link to="/install">Install on your phone</Link>
         </nav>
       </section>
     </main>
   );
 }
 
-function Identity({ session, onLogout, busy, error, settingsSection, onSessionUpdate }: {
+function Identity({ session, onLogout, busy, error, settingsSection, peopleMode = false, onSessionUpdate }: {
   session: Session;
   onLogout: () => void;
   busy: boolean;
   error: string | undefined;
   settingsSection?: SettingsSection;
+  peopleMode?: boolean;
   onSessionUpdate?: (session: Session) => void;
 }): React.JSX.Element {
+  const location = useLocation();
+  const requestedPanel = new URLSearchParams(location.search).get("panel");
+  const selectedPersonContext = peopleMode && new URLSearchParams(location.search).has("employeeId");
+  const adminPanel = peopleMode ? "people" : requestedPanel === "structure" || requestedPanel === "access" || requestedPanel === "presentation" ? requestedPanel : "all";
   const identityActive = useRef(true);
   const [currentSession, setCurrentSession] = useState(session);
   const [refreshing, setRefreshing] = useState(false);
@@ -274,7 +262,7 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
     } finally { setSessionsLoading(false); }
   }, []);
 
-  useEffect(() => { void loadDeviceSessions(); }, [loadDeviceSessions]);
+  useEffect(() => { if (!peopleMode) void loadDeviceSessions(); }, [loadDeviceSessions, peopleMode]);
 
   const revokeDeviceSession = async (item: DeviceSession): Promise<void> => {
     if (item.current || revokingSessionId) return;
@@ -409,14 +397,14 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
   };
 
   const ownerNeedsSetup = currentSession.account.kind === "OWNER" && currentSession.ownerSetupRequired === true;
-  const settingsMode = settingsSection !== undefined;
+  const settingsMode = settingsSection !== undefined || peopleMode;
   const owner = currentSession.account.kind === "OWNER";
   const staff = currentSession.account.kind === "STAFF";
-  const effectiveSettingsSection = settingsSection === "setup" && !ownerNeedsSetup ? "account" : settingsSection;
+  const effectiveSettingsSection = peopleMode ? "people" : settingsSection === "setup" && !ownerNeedsSetup ? "account" : settingsSection;
   const showAccount = !settingsMode || effectiveSettingsSection === "account" || ownerNeedsSetup;
   const showNotifications = !settingsMode || effectiveSettingsSection === "notifications";
-  const showOrganization = !settingsMode || effectiveSettingsSection === "organization";
-  const showTeam = !settingsMode || effectiveSettingsSection === "team";
+  const showOrganization = peopleMode || !settingsMode || effectiveSettingsSection === "organization";
+  const showTeam = peopleMode || !settingsMode || effectiveSettingsSection === "team";
   const copyToken = async (): Promise<void> => {
     if (!token) return;
     try { await navigator.clipboard.writeText(token); setActionError(undefined); setActionSuccess("Copied. Store or hand off this one-time secret securely."); }
@@ -424,10 +412,11 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
   };
 
   return (
-    <main className={`identity-content${settingsMode ? " settings-shell" : ""}`}>
-      {settingsMode && <header className="settings-shell-heading"><p className="settings-homes-eyebrow">WORKSPACE</p><h1>Settings</h1><p>Manage your account and workspace preferences.</p></header>}
-      {settingsMode && !ownerNeedsSetup && <SettingsSectionNavigation active={effectiveSettingsSection!} owner={owner} staff={staff} />}
-      {settingsMode && !ownerNeedsSetup && <h2 className="settings-section-heading">{effectiveSettingsSection === "account" ? "Account & devices" : effectiveSettingsSection === "notifications" ? "Notifications" : effectiveSettingsSection === "organization" ? "Organization administration" : "Team workspace"}</h2>}
+    <main className={`identity-content${peopleMode ? " people-route" : settingsMode ? " settings-shell" : ""}`}>
+      {peopleMode && <><header className="people-route-heading"><div className="workspace-account-heading"><span>People</span><span>{currentSession.account.email}</span></div><p className="settings-homes-eyebrow">WORKSPACE</p><h1>People</h1>{!selectedPersonContext && <p>{owner ? "Manage employee membership, responsibilities and access through the current authorized workflows." : "Your account and permitted reporting team. Team records require an explicit grant."}</p>}</header>{!selectedPersonContext && <nav className="people-personal-links" aria-label="People workspaces"><Link to="/my-work">My Work</Link><Link to="/settings?section=account">My account &amp; devices</Link><Link to="/workforce">Workforce</Link><Link to="/learning">Learning</Link>{owner && <Link to="/settings?section=organization&panel=access">Job roles &amp; permissions</Link>}</nav>}</>}
+      {settingsMode && !peopleMode && <header className="settings-shell-heading"><p className="settings-homes-eyebrow">WORKSPACE</p><h1>Settings</h1><p>Manage your account and workspace preferences.</p></header>}
+      {settingsMode && !peopleMode && !ownerNeedsSetup && <SettingsSectionNavigation active={effectiveSettingsSection as SettingsSection} owner={owner} staff={staff} />}
+      {settingsMode && !peopleMode && !ownerNeedsSetup && <h2 className="settings-section-heading">{effectiveSettingsSection === "account" ? "Account & devices" : effectiveSettingsSection === "notifications" ? "Notifications" : effectiveSettingsSection === "organization" ? "Organization administration" : "Team workspace"}</h2>}
       {(!settingsMode || effectiveSettingsSection === "account" || ownerNeedsSetup) && <div className="eyebrow">IDENTITY</div>}
       {!settingsMode && <><h1>You’re signed in.</h1><p className="auth-intro">Your account is authenticated. Workspace access will appear as approved capabilities are added.</p></>}
       {showAccount && <>
@@ -443,8 +432,9 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
         </button>
       </section>
       </>}
-      {!settingsMode && <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/dashboard">Dashboard &amp; reports</Link><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/learning">Learning</Link><Link to="/performance">Performance</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/external-access">External access</Link><Link to="/turnkey">Turnkey operations</Link></nav>}
+      {!settingsMode && <nav className="document-navigation" aria-label="Workspace navigation"><Link to="/dashboard">Dashboard</Link><Link to="/time">Time</Link><Link to="/workforce">Workforce</Link><Link to="/learning">Learning</Link><Link to="/performance">Performance</Link><Link to="/site">Site delivery</Link><Link to="/documents">Project documents</Link><Link to="/revisions">Drawing register</Link><Link to="/reviews">Internal reviews</Link><Link to="/client-reviews">Client reviews</Link><Link to="/external-access">External access</Link><Link to="/turnkey">Turnkey operations</Link></nav>}
       {error && <p className="auth-error" role="alert">{error}</p>}
+      {peopleMode && staff && <PeopleSelf />}
       {!settingsMode && !ownerNeedsSetup && <ApprovalQueue />}
       {!settingsMode && !ownerNeedsSetup && <CrmWorkspace csrfToken={currentSession.csrfToken} owner={owner} />}
       {!settingsMode && !ownerNeedsSetup && <ProjectWorkspace csrfToken={currentSession.csrfToken} owner={owner} />}
@@ -481,6 +471,7 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
         <section className="identity-section" aria-labelledby="owner-setup-heading">
           <div className="eyebrow">OWNER SETUP</div><h2 id="owner-setup-heading">Secure your Owner account</h2>
           <p>Add a second distinct passkey, create your one-time offline recovery code, then confirm that you stored it safely.</p>
+          <ol className="owner-setup-progress"><li>{(currentSession.activePasskeyCount ?? 0) >= 2 ? "Two passkeys registered" : "Register a second passkey"}</li><li>{token ? "Save your offline recovery code" : "Create your recovery code"}</li><li>Confirm safe storage</li></ol>
           {!token && <div className="identity-actions">
             {(currentSession.activePasskeyCount ?? 0) < 2 && <button type="button" disabled={pending} onClick={() => void addOwnerPasskey()}>Add second passkey</button>}
             {(currentSession.activePasskeyCount ?? 0) >= 2 && <button type="button" disabled={pending} onClick={() => void createRecoveryCode()}>Create offline recovery code</button>}
@@ -494,32 +485,34 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
         </section>
       )}
       {owner && currentSession.ownerSetupRequired === false && (showOrganization || settingsMode) && <div hidden={settingsMode && !showOrganization}>
-        <AuditRetentionCenter csrfToken={currentSession.csrfToken} />
-        <section className="identity-section" aria-labelledby="organization-settings-toggle">
-          <div className="sessions-heading-row">
+        {!peopleMode && (adminPanel === "all" || adminPanel === "structure") && <AuditRetentionCenter csrfToken={currentSession.csrfToken} />}
+        <section className={`identity-section${peopleMode ? " people-administration" : ""}`} aria-labelledby={peopleMode || adminPanel !== "all" ? "organization-heading" : "organization-settings-toggle"}>
+          {!peopleMode && adminPanel === "all" && <div className="sessions-heading-row">
             <div><div className="eyebrow">ORGANIZATION</div><h2 id="organization-settings-toggle">Organization settings</h2></div>
             <button className="secondary-action" type="button" aria-expanded={organizationSettingsOpen} onClick={() => setOrganizationSettingsOpen((open) => !open)}>
               {organizationSettingsOpen ? "Hide settings" : "Manage organization"}
             </button>
-          </div>
-          {organizationSettingsOpen && <OrganizationAdmin session={currentSession} />}
+          </div>}
+          {(peopleMode || adminPanel !== "all" || organizationSettingsOpen) && <OrganizationAdmin key={adminPanel} session={currentSession} panel={adminPanel} />}
         </section>
       </div>}
       {staff && (showTeam || settingsMode) && (
         <div hidden={settingsMode && !showTeam}>
         <section className="identity-section" aria-labelledby="team-workspace-heading">
-          <div className="sessions-heading-row">
+          {!peopleMode && <div className="sessions-heading-row">
             <div><div className="eyebrow">TEAM</div><h2 id="team-workspace-heading">Team workspace</h2></div>
             <button className="secondary-action" type="button" aria-expanded={teamWorkspaceOpen} onClick={() => setTeamWorkspaceOpen((open) => !open)}>
               {teamWorkspaceOpen ? "Close team workspace" : "Open team workspace"}
             </button>
-          </div>
-          {teamWorkspaceOpen && <TeamWorkspace session={currentSession} />}
+          </div>}
+          {peopleMode && <h2 id="team-workspace-heading">Permitted reporting team</h2>}
+          {(peopleMode || teamWorkspaceOpen) && <TeamWorkspace session={currentSession} />}
         </section>
         </div>
       )}
-      {owner && currentSession.ownerSetupRequired === false && (!settingsMode || settingsSection === "organization") && (
+      {owner && currentSession.ownerSetupRequired === false && (peopleMode || !settingsMode || settingsSection === "organization" && adminPanel === "all") && (
         <section className="identity-section" aria-labelledby="staff-identity-heading">
+          <details open={peopleMode ? undefined : true}><summary className="staff-identity-disclosure">Staff invitations and recovery</summary>
           <div className="eyebrow">IDENTITY ADMINISTRATION</div><h2 id="staff-identity-heading">Staff identity access</h2>
           <form className="identity-form" onSubmit={(event) => void createInvitation(event)}>
             <label htmlFor="staff-invite-email">Invite staff by work email</label>
@@ -539,416 +532,17 @@ function Identity({ session, onLogout, busy, error, settingsSection, onSessionUp
             <button disabled={pending || !verifiedOutOfBand}>Revoke access and authorize recovery</button>
           </form>}
           {token && <div className="secret-handoff"><label htmlFor="handoff-token">One-time enrollment token for secure handoff</label><textarea id="handoff-token" readOnly value={token} rows={2} />{tokenExpiresIn !== undefined && <p className="identity-note">Expires in {Math.ceil(tokenExpiresIn / 3600)} hours.</p>}<button type="button" onClick={() => void copyToken()}>Copy token</button><button type="button" className="secondary-action" onClick={() => { setToken(undefined); setTokenExpiresIn(undefined); }}>Hide token</button></div>}
+          </details>
         </section>
       )}
-      {(showAccount || effectiveSettingsSection === "organization" || ownerNeedsSetup) && actionError && <p className="auth-error" role="alert">{actionError}</p>}
-      {(showAccount || effectiveSettingsSection === "organization" || ownerNeedsSetup) && actionSuccess && <p className="notice" role="status">{actionSuccess}</p>}
+      {(peopleMode || showAccount || effectiveSettingsSection === "organization" || ownerNeedsSetup) && actionError && <p className="auth-error" role="alert">{actionError}</p>}
+      {(peopleMode || showAccount || effectiveSettingsSection === "organization" || ownerNeedsSetup) && actionSuccess && <p className="notice" role="status">{actionSuccess}</p>}
       {showAccount && <div className="identity-bottom-actions">
         <button className="secondary-action" type="button" onClick={() => void refreshIdentity()} disabled={refreshing}>{refreshing ? "Refreshing…" : "Refresh session"}</button>
         <p className="identity-note" role="status">Your sign-in is checked again when you return to this page.</p>
       </div>}
     </main>
   );
-}
-
-function OrganizationAdmin({ session }: { session: Session }): React.JSX.Element {
-  const [organization, setOrganization] = useState<Org | null>(null);
-  const [branches, setBranches] = useState<Branch[]>([]);
-  const [teams, setTeams] = useState<Team[]>([]);
-  const [roles, setRoles] = useState<JobRole[]>([]);
-  const [employees, setEmployees] = useState<Employee[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string>();
-  const [success, setSuccess] = useState<string>();
-  const [orgName, setOrgName] = useState("");
-  const [orgTimezone, setOrgTimezone] = useState("Asia/Kolkata");
-  const [branchName, setBranchName] = useState("");
-  const [selectedBranchId, setSelectedBranchId] = useState("");
-  const [teamName, setTeamName] = useState("");
-  const [roleName, setRoleName] = useState("");
-  const [roleDescription, setRoleDescription] = useState("");
-  const [permissionRoleId, setPermissionRoleId] = useState("");
-  const [permissionKey, setPermissionKey] = useState("");
-  const [permissionScope, setPermissionScope] = useState<RolePermission["scopeKind"]>("ORGANIZATION");
-  const [permissionBranchId, setPermissionBranchId] = useState("");
-  const [permissionTeamId, setPermissionTeamId] = useState("");
-  const [staffEmail, setStaffEmail] = useState("");
-  const [staffAccount, setStaffAccount] = useState<{ id: string; email: string; state: string } | null>(null);
-  const [employeeBranchId, setEmployeeBranchId] = useState("");
-  const employeeBranchIdRef = useRef("");
-  const [employeeTeamId, setEmployeeTeamId] = useState("");
-  const [employeeRoleIds, setEmployeeRoleIds] = useState<string[]>([]);
-  const [editingRolesEmployeeId, setEditingRolesEmployeeId] = useState("");
-  const [editingRoleIds, setEditingRoleIds] = useState<string[]>([]);
-  const [editingMembershipEmployeeId, setEditingMembershipEmployeeId] = useState("");
-  const [membershipBranchId, setMembershipBranchId] = useState("");
-  const [membershipTeamId, setMembershipTeamId] = useState("");
-  const [membershipReportsToId, setMembershipReportsToId] = useState("");
-  const [editingPermissionsEmployeeId, setEditingPermissionsEmployeeId] = useState("");
-  const [overridePermissionKey, setOverridePermissionKey] = useState("");
-  const [overrideEffect, setOverrideEffect] = useState<"ALLOW" | "DENY">("DENY");
-  const [overrideScope, setOverrideScope] = useState<RolePermission["scopeKind"]>("SELF");
-  const [overrideBranchId, setOverrideBranchId] = useState("");
-  const [overrideTeamId, setOverrideTeamId] = useState("");
-  const [overrideExpiresAt, setOverrideExpiresAt] = useState("");
-  const [managerId, setManagerId] = useState("");
-  const [employeeCode, setEmployeeCode] = useState("");
-  const [hiredAt, setHiredAt] = useState(new Date().toISOString().slice(0, 10));
-  const [reason, setReason] = useState("");
-  const [suspendingEmployee, setSuspendingEmployee] = useState("");
-  const [exitingEmployee, setExitingEmployee] = useState("");
-
-  const load = useCallback(async (): Promise<void> => {
-    setLoading(true);
-    setError(undefined);
-    try {
-      const orgResponse = await fetch(ORG_PATH, { credentials: "include", cache: "no-store" });
-      if (!orgResponse.ok) throw Object.assign(new Error("organization-unavailable"), { status: orgResponse.status });
-      const org = await orgResponse.json() as Org | null;
-      setOrganization(org);
-      setOrgTimezone(org?.timezone ?? "Asia/Kolkata");
-      if (!org) { setBranches([]); setTeams([]); setRoles([]); setEmployees([]); return; }
-      const query = `?organizationId=${encodeURIComponent(org.id)}`;
-      const [branchResponse, teamResponse, roleResponse, employeeResponse] = await Promise.all([
-        fetch(`${ORG_PATH}/branches${query}`, { credentials: "include", cache: "no-store" }),
-        fetch(`${ORG_PATH}/teams${query}`, { credentials: "include", cache: "no-store" }),
-        fetch(`${ORG_PATH}/roles${query}`, { credentials: "include", cache: "no-store" }),
-        fetch(`${ORG_PATH}/employees${query}`, { credentials: "include", cache: "no-store" })
-      ]);
-      if ([branchResponse, teamResponse, roleResponse, employeeResponse].some((response) => !response.ok)) throw new Error("organization-unavailable");
-      const [nextBranches, nextTeams, nextRoles, nextEmployees] = await Promise.all([
-        branchResponse.json() as Promise<Branch[]>, teamResponse.json() as Promise<Team[]>,
-        roleResponse.json() as Promise<JobRole[]>, employeeResponse.json() as Promise<Employee[]>
-      ]);
-      setBranches(nextBranches); setTeams(nextTeams); setRoles(nextRoles); setEmployees(nextEmployees);
-      setSelectedBranchId((current) => nextBranches.some((item) => item.id === current) ? current : nextBranches[0]?.id ?? "");
-      const nextEmployeeBranchId = nextBranches.some((item) => item.id === employeeBranchIdRef.current)
-        ? employeeBranchIdRef.current : nextBranches[0]?.id ?? "";
-      employeeBranchIdRef.current = nextEmployeeBranchId;
-      setEmployeeBranchId(nextEmployeeBranchId);
-      setEmployeeTeamId((current) => nextTeams.some((item) => item.id === current && item.branchId === nextEmployeeBranchId) ? current : "");
-    } catch (cause) {
-      const status = typeof cause === "object" && cause !== null && "status" in cause ? Number(cause.status) : 0;
-      setError(status === 403 ? "Organization access is restricted to a fully secured Owner session." : "We couldn’t load organization settings. Try again.");
-    } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { void load(); }, [load]);
-
-  const mutate = async (path: string, method: "POST" | "PUT", body: unknown): Promise<void> => {
-    setPending(true); setError(undefined); setSuccess(undefined);
-    try {
-      const response = await fetch(`${ORG_PATH}${path}`, {
-        method, credentials: "include",
-        headers: { "Content-Type": "application/json", "X-CSRF-Token": session.csrfToken },
-        body: JSON.stringify(body)
-      });
-      if (!response.ok) throw Object.assign(new Error("organization-write-failed"), { status: response.status });
-      await load();
-      setSuccess("Organization settings saved.");
-    } catch (cause) {
-      const status = typeof cause === "object" && cause !== null && "status" in cause ? Number(cause.status) : 0;
-      setError(status === 403 ? "Sign in again before changing organization settings." : "We couldn’t save this change. Check the details and try again.");
-    } finally { setPending(false); }
-  };
-
-  const submit = (event: React.FormEvent<HTMLFormElement>, action: () => Promise<void>): void => {
-    event.preventDefault();
-    if (!pending) void action();
-  };
-
-  const requireReason = reason.trim();
-  const orgBody = { name: orgName.trim(), reason: requireReason };
-
-  const findStaff = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault(); setPending(true); setError(undefined); setSuccess(undefined); setStaffAccount(null);
-    try {
-      const response = await fetch(`${AUTH_PATH}/staff?email=${encodeURIComponent(staffEmail.trim())}`, { credentials: "include", cache: "no-store" });
-      if (!response.ok) throw new Error("identity-lookup-failed");
-      const result = await response.json() as { account: { id: string; email: string; state: string } | null };
-      if (!result.account || result.account.state !== "ACTIVE") setError("No active staff identity was found for that email.");
-      else { setStaffAccount(result.account); setSuccess("Active staff identity found. Choose the employee’s home membership below."); }
-    } catch { setError("We couldn’t look up that staff identity. Try again."); }
-    finally { setPending(false); }
-  };
-
-  const visibleEmployeeTeams = teams.filter((item) => item.branchId === employeeBranchId);
-  const visiblePermissionTeams = teams.filter((item) => item.branchId === permissionBranchId);
-  const visibleOverrideTeams = teams.filter((item) => item.branchId === overrideBranchId);
-  const visibleMembershipTeams = teams.filter((item) => item.branchId === membershipBranchId);
-  const grantRolePermission = (): Promise<void> => mutate(`/roles/${encodeURIComponent(permissionRoleId)}/permissions`, "POST", {
-    organizationId: organization?.id, permissionKey: permissionKey.trim(), scopeKind: permissionScope,
-    ...(permissionScope === "BRANCH" || permissionScope === "TEAM" ? { branchId: permissionBranchId } : {}),
-    ...(permissionScope === "TEAM" ? { teamId: permissionTeamId } : {}), reason: requireReason
-  });
-  const grantEmployeeOverride = (employeeId: string): Promise<void> => mutate(`/employees/${encodeURIComponent(employeeId)}/permissions`, "POST", {
-    organizationId: organization?.id, permissionKey: overridePermissionKey.trim(), effect: overrideEffect, scopeKind: overrideScope,
-    ...(overrideScope === "BRANCH" || overrideScope === "TEAM" ? { branchId: overrideBranchId } : {}),
-    ...(overrideScope === "TEAM" ? { teamId: overrideTeamId } : {}),
-    ...(overrideExpiresAt ? { expiresAt: new Date(overrideExpiresAt).toISOString() } : {}), reason: requireReason
-  });
-  return <section className="identity-section org-admin" aria-labelledby="organization-heading">
-    <div className="sessions-heading-row">
-      <div><div className="eyebrow">ORGANIZATION</div><h2 id="organization-heading">Branches, teams and employees</h2></div>
-      <button className="secondary-action" type="button" onClick={() => void load()} disabled={loading || pending}>Refresh</button>
-    </div>
-    {loading && <p className="identity-note" role="status">Loading organization settings…</p>}
-    {error && <p className="auth-error" role="alert">{error}</p>}
-    {success && <p className="notice" role="status">{success}</p>}
-    {!loading && !organization && <form className="identity-form" onSubmit={(event) => submit(event, () => mutate("", "POST", orgBody))}>
-      <h3>Set up the organization</h3>
-      <label htmlFor="org-name">Organization name</label><input id="org-name" required minLength={2} maxLength={160} value={orgName} onChange={(event) => setOrgName(event.target.value)} />
-      <label htmlFor="org-reason">Reason</label><textarea id="org-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-      <button disabled={pending || orgName.trim().length < 2 || requireReason.length < 10}>{pending ? "Saving…" : "Create organization"}</button>
-    </form>}
-    {!loading && organization && <>
-      <p className="identity-note">{organization.name}. Job roles, reporting lines and permissions are managed separately. An employee can hold multiple job roles.</p>
-      <div className="org-form-grid">
-        <form className="identity-form" onSubmit={(event) => submit(event, () => mutate("/branches", "POST", { organizationId: organization.id, name: branchName.trim(), reason: requireReason }))}>
-          <h3>Add a branch</h3><label htmlFor="branch-name">Branch name</label><input id="branch-name" required maxLength={120} value={branchName} onChange={(event) => setBranchName(event.target.value)} />
-          <label htmlFor="org-reason-branch">Reason</label><textarea id="org-reason-branch" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-          <button disabled={pending || !branchName.trim() || requireReason.length < 10}>Add branch</button>
-        </form>
-        <form className="identity-form" onSubmit={(event) => submit(event, () => mutate("/teams", "POST", { organizationId: organization.id, branchId: selectedBranchId, name: teamName.trim(), reason: requireReason }))}>
-          <h3>Add a team</h3><label htmlFor="team-branch">Branch</label><select id="team-branch" required value={selectedBranchId} onChange={(event) => setSelectedBranchId(event.target.value)}><option value="">Select a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select>
-          <label htmlFor="team-name">Team name</label><input id="team-name" required maxLength={120} value={teamName} onChange={(event) => setTeamName(event.target.value)} />
-          <label htmlFor="org-reason-team">Reason</label><textarea id="org-reason-team" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-          <button disabled={pending || !selectedBranchId || !teamName.trim() || requireReason.length < 10}>Add team</button>
-        </form>
-        <form className="identity-form" onSubmit={(event) => submit(event, () => mutate("/roles", "POST", { organizationId: organization.id, name: roleName.trim(), description: roleDescription.trim() || undefined, reason: requireReason }))}>
-          <h3>Add a job role</h3><label htmlFor="role-name">Role name</label><input id="role-name" required maxLength={120} value={roleName} onChange={(event) => setRoleName(event.target.value)} />
-          <label htmlFor="role-description">Description</label><textarea id="role-description" maxLength={1000} value={roleDescription} onChange={(event) => setRoleDescription(event.target.value)} />
-          <label htmlFor="org-reason-role">Reason</label><textarea id="org-reason-role" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-          <button disabled={pending || !roleName.trim() || requireReason.length < 10}>Add job role</button>
-        </form>
-      </div>
-      <div className="org-list-grid">
-        <section aria-labelledby="branches-list-heading"><h3 id="branches-list-heading">Branches</h3>{branches.length ? <ul>{branches.map((branch) => <li key={branch.id}>{branch.name}</li>)}</ul> : <p className="identity-note">No branches yet.</p>}</section>
-        <section aria-labelledby="teams-list-heading"><h3 id="teams-list-heading">Teams</h3>{teams.length ? <ul>{teams.map((team) => <li key={team.id}><span>{branches.find((branch) => branch.id === team.branchId)?.name}: {team.name} · Waiting alerts {team.waitingAlertsEnabled ? "enabled" : "disabled"}</span><button className="secondary-action" type="button" disabled={pending || requireReason.length < 3} onClick={() => void mutate(`/teams/${team.id}/waiting-alerts`, "PUT", { enabled: !team.waitingAlertsEnabled, expectedVersion: team.settingsVersion ?? 1, reason: requireReason })}>{team.waitingAlertsEnabled ? "Disable" : "Enable"} Waiting alerts for {team.name}</button></li>)}</ul> : <p className="identity-note">No teams yet.</p>}</section>
-        <form className="identity-form" aria-label="Organization timezone" onSubmit={(event) => submit(event, () => mutate(`/${organization.id}/timezone`, "PUT", { timezone: orgTimezone.trim(), expectedVersion: organization.settingsVersion ?? 1, reason: requireReason }))}><h3>Recurring task timezone</h3><p className="identity-note">Schedule dates use this organization timezone. Missed dates are skipped; monthly dates use the last day in shorter months.</p><label htmlFor="organization-timezone">IANA timezone</label><input id="organization-timezone" value={orgTimezone} onChange={(event) => setOrgTimezone(event.target.value)} maxLength={80} required /><button className="secondary-action" type="submit" disabled={pending || requireReason.length < 3 || !orgTimezone.trim() || orgTimezone.trim() === (organization.timezone ?? "Asia/Kolkata")}>Change timezone</button></form>
-        <section aria-labelledby="roles-list-heading"><h3 id="roles-list-heading">Job roles</h3>{roles.length ? <ul>{roles.map((role) => <li key={role.id}>{role.name}</li>)}</ul> : <p className="identity-note">No job roles yet.</p>}</section>
-      </div>
-      <section className="org-permission-manager" aria-labelledby="role-permissions-heading">
-        <h3 id="role-permissions-heading">Job role permission bundles</h3>
-        <p className="identity-note">Permissions are granted explicitly to a job role. Role names do not grant access by themselves.</p>
-        {roles.length === 0 ? <p className="identity-note">Create a job role before configuring permissions.</p> : <>
-          <form className="org-permission-form" onSubmit={(event) => submit(event, grantRolePermission)}>
-            <label htmlFor="permission-role">Job role</label>
-            <select id="permission-role" required value={permissionRoleId} onChange={(event) => setPermissionRoleId(event.target.value)}>
-              <option value="">Select a job role</option>{roles.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}
-            </select>
-            <label htmlFor="permission-key">Permission key</label>
-            <input id="permission-key" required minLength={2} maxLength={160} value={permissionKey} onChange={(event) => setPermissionKey(event.target.value)} placeholder="e.g. projects.read" />
-            <label htmlFor="permission-scope">Permission scope</label>
-            <select id="permission-scope" value={permissionScope} onChange={(event) => { setPermissionScope(event.target.value as RolePermission["scopeKind"]); setPermissionTeamId(""); }}>
-              <option value="ORGANIZATION">Organization</option><option value="BRANCH">Branch</option><option value="TEAM">Team</option><option value="SELF">Self</option>
-            </select>
-            {(permissionScope === "BRANCH" || permissionScope === "TEAM") && <>
-              <label htmlFor="permission-branch">Branch</label>
-              <select id="permission-branch" required value={permissionBranchId} onChange={(event) => { setPermissionBranchId(event.target.value); setPermissionTeamId(""); }}>
-                <option value="">Select a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}
-              </select>
-            </>}
-            {permissionScope === "TEAM" && <>
-              <label htmlFor="permission-team">Team</label>
-              <select id="permission-team" required value={permissionTeamId} onChange={(event) => setPermissionTeamId(event.target.value)}>
-                <option value="">Select a team</option>{visiblePermissionTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}
-              </select>
-            </>}
-            <label htmlFor="permission-reason">Reason</label>
-            <textarea id="permission-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-            <button disabled={pending || !permissionRoleId || !permissionKey.trim() || requireReason.length < 10 || ((permissionScope === "BRANCH" || permissionScope === "TEAM") && !permissionBranchId) || (permissionScope === "TEAM" && !permissionTeamId)}>{pending ? "Saving…" : "Grant permission"}</button>
-          </form>
-          <div className="org-role-permission-list">
-            {roles.map((role) => <section key={role.id} aria-labelledby={`role-permissions-${role.id}`}>
-              <h4 id={`role-permissions-${role.id}`}>{role.name}</h4>
-              {role.permissions?.length ? <ul>{role.permissions.map((permission) => <li key={permission.id}>
-                <span><strong>{permission.permissionKey}</strong> · {permission.scopeKind}{permission.branchId ? ` · ${branches.find((item) => item.id === permission.branchId)?.name ?? "Branch"}` : ""}{permission.teamId ? ` / ${teams.find((item) => item.id === permission.teamId)?.name ?? "Team"}` : ""}</span>
-                <button type="button" className="secondary-action" disabled={pending || requireReason.length < 10} aria-label={`Revoke ${permission.permissionKey} from ${role.name}`} onClick={() => void mutate(`/roles/${encodeURIComponent(role.id)}/permissions/${encodeURIComponent(permission.id)}/revoke`, "PUT", { reason: requireReason })}>Revoke</button>
-              </li>)}</ul> : <p className="identity-note">No active permissions assigned.</p>}
-            </section>)}
-          </div>
-        </>}
-      </section>
-      <form className="identity-form" onSubmit={(event) => void findStaff(event)}>
-        <h3>Create an employee record</h3><p className="identity-note">The person must first accept an Owner invitation and register a passkey under Staff identity access.</p>
-        <label htmlFor="employee-staff-email">Staff work email</label><div className="inline-form"><input id="employee-staff-email" type="email" required maxLength={320} value={staffEmail} onChange={(event) => { setStaffEmail(event.target.value); setStaffAccount(null); }} /><button type="submit" disabled={pending || !staffEmail.trim()}>Find active identity</button></div>
-      </form>
-      {staffAccount && !employees.some((employee) => employee.id === staffAccount.id) && <form className="identity-form" onSubmit={(event) => submit(event, () => mutate("/employees", "POST", {
-        organizationId: organization.id, accountId: staffAccount.id, branchId: employeeBranchId, teamId: employeeTeamId,
-        jobRoleIds: employeeRoleIds, ...(managerId ? { reportsToId: managerId } : {}), ...(employeeCode.trim() ? { employeeCode: employeeCode.trim() } : {}),
-        hiredAt, reason: requireReason
-      }))}>
-        <p className="resolved-account">Staff identity: <strong>{staffAccount.email}</strong></p>
-        <label htmlFor="employee-branch">Home branch</label><select id="employee-branch" required value={employeeBranchId} onChange={(event) => { employeeBranchIdRef.current = event.target.value; setEmployeeBranchId(event.target.value); setEmployeeTeamId(""); }}><option value="">Select a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select>
-        <label htmlFor="employee-team">Home team</label><select id="employee-team" required value={employeeTeamId} onChange={(event) => setEmployeeTeamId(event.target.value)}><option value="">Select a team</option>{visibleEmployeeTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}</select>
-        <label htmlFor="employee-roles">Job roles</label><select id="employee-roles" multiple value={employeeRoleIds} onChange={(event) => setEmployeeRoleIds(Array.from(event.target.selectedOptions, (option) => option.value))}>{roles.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}</select>
-        <label htmlFor="employee-manager">Reports to</label><select id="employee-manager" value={managerId} onChange={(event) => setManagerId(event.target.value)}><option value="">No reporting manager</option>{employees.filter((employee) => employee.state === "ACTIVE" && employee.homeBranch.id === employeeBranchId && employee.homeTeam.id === employeeTeamId).map((employee) => <option key={employee.id} value={employee.id}>{employee.account.normalizedEmail}</option>)}</select>
-        <label htmlFor="employee-code">Employee code (optional)</label><input id="employee-code" maxLength={64} value={employeeCode} onChange={(event) => setEmployeeCode(event.target.value)} />
-        <label htmlFor="employee-hired-at">Employment start date</label><input id="employee-hired-at" type="date" required value={hiredAt} onChange={(event) => setHiredAt(event.target.value)} />
-        <label htmlFor="employee-reason">Reason for employee setup</label><textarea id="employee-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-        <button disabled={pending || !employeeBranchId || !employeeTeamId || requireReason.length < 10}>{pending ? "Saving…" : "Create employee"}</button>
-      </form>}
-      <section className="org-employees" aria-labelledby="employees-heading"><h3 id="employees-heading">Employees</h3>
-        {employees.length === 0 ? <p className="identity-note">No employees have been added.</p> : <ul className="org-employee-list">{employees.map((employee) => <li key={employee.id}>
-          <div><strong>{employee.account.normalizedEmail}</strong><p>{employee.homeBranch.name} · {employee.homeTeam.name}{employee.jobRoleAssignments.length ? ` · ${employee.jobRoleAssignments.map((assignment) => assignment.jobRole.name).join(", ")}` : " · No job role"}</p><p>{employee.state}{employee.reportsTo ? ` · Reports to ${employee.reportsTo.account.normalizedEmail}` : ""}</p></div>
-          {employee.state === "ACTIVE" && <div className="org-employee-actions">
-            <button type="button" className="secondary-action" disabled={pending} onClick={() => {
-              setEditingMembershipEmployeeId((current) => current === employee.id ? "" : employee.id);
-              setMembershipBranchId(employee.homeBranch.id);
-              setMembershipTeamId(employee.homeTeam.id);
-              setMembershipReportsToId(employee.reportsTo?.id ?? "");
-            }}>Manage home team</button>
-            <button type="button" className="secondary-action" disabled={pending} onClick={() => {
-              setEditingRolesEmployeeId((current) => current === employee.id ? "" : employee.id);
-              setEditingRoleIds(employee.jobRoleAssignments.map((assignment) => assignment.jobRole.id));
-            }}>Manage job roles</button>
-            <button type="button" className="secondary-action" disabled={pending} onClick={() => setEditingPermissionsEmployeeId((current) => current === employee.id ? "" : employee.id)}>Manage access overrides</button>
-            <button type="button" className="secondary-action" disabled={pending} onClick={() => setSuspendingEmployee(employee.id)}>Suspend access</button>
-          </div>}
-          {employee.state !== "EXITED" && <button type="button" className="secondary-action" disabled={pending} aria-label={`Finalize exit for ${employee.account.normalizedEmail}`} onClick={() => { setReason(""); setExitingEmployee(employee.id); }}>Finalize employee exit</button>}
-          {editingMembershipEmployeeId === employee.id && employee.state === "ACTIVE" && <form className="org-role-editor" onSubmit={(event) => submit(event, async () => {
-            await mutate(`/employees/${encodeURIComponent(employee.id)}/membership`, "PUT", {
-              organizationId: organization.id, branchId: membershipBranchId, teamId: membershipTeamId,
-              reportsToId: membershipReportsToId || null, reason: requireReason
-            });
-            setEditingMembershipEmployeeId("");
-          })}>
-            <h4>Home branch, team and manager</h4>
-            <label htmlFor={`employee-branch-edit-${employee.id}`}>Home branch</label>
-            <select id={`employee-branch-edit-${employee.id}`} required value={membershipBranchId} onChange={(event) => { setMembershipBranchId(event.target.value); setMembershipTeamId(""); setMembershipReportsToId(""); }}><option value="">Select a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select>
-            <label htmlFor={`employee-team-edit-${employee.id}`}>Home team</label>
-            <select id={`employee-team-edit-${employee.id}`} required value={membershipTeamId} onChange={(event) => { setMembershipTeamId(event.target.value); setMembershipReportsToId(""); }}><option value="">Select a team</option>{visibleMembershipTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}</select>
-            <label htmlFor={`employee-manager-edit-${employee.id}`}>Reports to</label>
-            <select id={`employee-manager-edit-${employee.id}`} value={membershipReportsToId} onChange={(event) => setMembershipReportsToId(event.target.value)}><option value="">No reporting manager</option>{employees.filter((candidate) => candidate.id !== employee.id && candidate.state === "ACTIVE" && candidate.homeBranch.id === membershipBranchId && candidate.homeTeam.id === membershipTeamId).map((candidate) => <option key={candidate.id} value={candidate.id}>{candidate.account.normalizedEmail}</option>)}</select>
-            <label htmlFor={`employee-membership-reason-${employee.id}`}>Reason</label>
-            <textarea id={`employee-membership-reason-${employee.id}`} required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-            <button disabled={pending || !membershipBranchId || !membershipTeamId || requireReason.length < 10}>{pending ? "Saving…" : "Save home membership"}</button>
-          </form>}
-          {editingRolesEmployeeId === employee.id && <form className="org-role-editor" onSubmit={(event) => submit(event, async () => {
-            await mutate(`/employees/${encodeURIComponent(employee.id)}/job-roles`, "PUT", {
-              organizationId: organization.id, jobRoleIds: editingRoleIds, reason: requireReason
-            });
-            setEditingRolesEmployeeId("");
-          })}>
-            <label htmlFor={`employee-role-edit-${employee.id}`}>Assigned job roles</label>
-            <select id={`employee-role-edit-${employee.id}`} multiple value={editingRoleIds} onChange={(event) => setEditingRoleIds(Array.from(event.target.selectedOptions, (option) => option.value))}>
-              {roles.map((role) => <option key={role.id} value={role.id}>{role.name}</option>)}
-            </select>
-            <label htmlFor={`employee-role-reason-${employee.id}`}>Reason</label>
-            <textarea id={`employee-role-reason-${employee.id}`} required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-            <button disabled={pending || requireReason.length < 10}>{pending ? "Saving…" : "Save job roles"}</button>
-          </form>}
-          {editingPermissionsEmployeeId === employee.id && employee.state === "ACTIVE" && <div className="org-role-editor">
-            <h4>Explicit employee access overrides</h4>
-            {employee.permissionOverrides.length ? <ul>{employee.permissionOverrides.map((override) => <li key={override.id}>
-              <span><strong>{override.effect}</strong> {override.permissionKey} · {override.scopeKind}{override.branchId ? ` · ${branches.find((item) => item.id === override.branchId)?.name ?? "Branch"}` : ""}{override.teamId ? ` / ${teams.find((item) => item.id === override.teamId)?.name ?? "Team"}` : ""}{override.expiresAt ? ` · expires ${new Date(override.expiresAt).toLocaleString()}` : ""}</span>
-              <button type="button" className="secondary-action" disabled={pending || requireReason.length < 10} aria-label={`Revoke ${override.permissionKey} override from ${employee.account.normalizedEmail}`} onClick={() => void mutate(`/employees/${encodeURIComponent(employee.id)}/permissions/${encodeURIComponent(override.id)}/revoke`, "PUT", { reason: requireReason })}>Revoke</button>
-            </li>)}</ul> : <p className="identity-note">No explicit employee overrides are recorded.</p>}
-            <form className="org-permission-form" onSubmit={(event) => submit(event, () => grantEmployeeOverride(employee.id))}>
-              <label htmlFor={`override-key-${employee.id}`}>Permission key</label>
-              <input id={`override-key-${employee.id}`} required minLength={2} maxLength={160} value={overridePermissionKey} onChange={(event) => setOverridePermissionKey(event.target.value)} placeholder="e.g. task.review" />
-              <label htmlFor={`override-effect-${employee.id}`}>Effect</label>
-              <select id={`override-effect-${employee.id}`} value={overrideEffect} onChange={(event) => setOverrideEffect(event.target.value as "ALLOW" | "DENY")}><option value="DENY">Deny</option><option value="ALLOW">Allow</option></select>
-              <label htmlFor={`override-scope-${employee.id}`}>Scope</label>
-              <select id={`override-scope-${employee.id}`} value={overrideScope} onChange={(event) => { setOverrideScope(event.target.value as RolePermission["scopeKind"]); setOverrideTeamId(""); }}><option value="SELF">Self</option><option value="TEAM">Team</option><option value="BRANCH">Branch</option><option value="ORGANIZATION">Organization</option></select>
-              {(overrideScope === "BRANCH" || overrideScope === "TEAM") && <>
-                <label htmlFor={`override-branch-${employee.id}`}>Branch</label>
-                <select id={`override-branch-${employee.id}`} required value={overrideBranchId} onChange={(event) => { setOverrideBranchId(event.target.value); setOverrideTeamId(""); }}><option value="">Select a branch</option>{branches.map((branch) => <option key={branch.id} value={branch.id}>{branch.name}</option>)}</select>
-              </>}
-              {overrideScope === "TEAM" && <>
-                <label htmlFor={`override-team-${employee.id}`}>Team</label>
-                <select id={`override-team-${employee.id}`} required value={overrideTeamId} onChange={(event) => setOverrideTeamId(event.target.value)}><option value="">Select a team</option>{visibleOverrideTeams.map((team) => <option key={team.id} value={team.id}>{team.name}</option>)}</select>
-              </>}
-              <label htmlFor={`override-expiry-${employee.id}`}>Expiry (optional)</label>
-              <input id={`override-expiry-${employee.id}`} type="datetime-local" value={overrideExpiresAt} onChange={(event) => setOverrideExpiresAt(event.target.value)} />
-              <label htmlFor={`override-reason-${employee.id}`}>Reason</label>
-              <textarea id={`override-reason-${employee.id}`} required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-              <button disabled={pending || !overridePermissionKey.trim() || requireReason.length < 10 || ((overrideScope === "BRANCH" || overrideScope === "TEAM") && !overrideBranchId) || (overrideScope === "TEAM" && !overrideTeamId)}>{pending ? "Saving…" : "Save override"}</button>
-            </form>
-          </div>}
-        </li>)}</ul>}
-      </section>
-      {suspendingEmployee && <form className="identity-form" onSubmit={(event) => submit(event, async () => { await mutate(`/employees/${encodeURIComponent(suspendingEmployee)}/suspend`, "PUT", { reason: requireReason }); setSuspendingEmployee(""); })}>
-        <h3>Confirm employee suspension</h3><p className="identity-note">This immediately blocks sign-in and revokes every current session. It does not finalize employment exit or change project/task ownership.</p>
-        <label htmlFor="suspend-reason">Reason</label><textarea id="suspend-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-        <div className="identity-actions"><button disabled={pending || requireReason.length < 10}>Confirm suspension</button><button type="button" className="secondary-action" onClick={() => setSuspendingEmployee("")}>Cancel</button></div>
-      </form>}
-      {exitingEmployee && <form className="identity-form" onSubmit={(event) => submit(event, async () => { await mutate(`/employees/${encodeURIComponent(exitingEmployee)}/exit`, "POST", { reason: requireReason }); setExitingEmployee(""); })}>
-        <h3>Finalize employee exit</h3><p className="identity-note">Access and sessions end immediately. Unfinished owned tasks wait for individual reassignment; Active projects led by this employee go On Hold until you appoint a replacement. Completed work and history are retained.</p>
-        <label htmlFor="exit-reason">Exit reason</label><textarea id="exit-reason" required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-        <div className="identity-actions"><button disabled={pending || requireReason.length < 10}>Finalize exit</button><button type="button" className="secondary-action" onClick={() => setExitingEmployee("")}>Cancel</button></div>
-      </form>}
-    </>}
-  </section>;
-}
-
-function TeamWorkspace({ session }: { session: Session }): React.JSX.Element {
-  const [employees, setEmployees] = useState<ManagedEmployee[]>([]);
-  const [managerOptions, setManagerOptions] = useState<ManagerOption[]>([]);
-  const [managerByEmployee, setManagerByEmployee] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(true);
-  const [pendingEmployeeId, setPendingEmployeeId] = useState<string>();
-  const [error, setError] = useState<string>();
-  const [success, setSuccess] = useState<string>();
-  const [reason, setReason] = useState("");
-
-  const load = useCallback(async (): Promise<void> => {
-    setLoading(true); setError(undefined);
-    try {
-      const response = await fetch(`${ORG_PATH}/team/employees`, { credentials: "include", cache: "no-store" });
-      if (!response.ok) throw Object.assign(new Error("team-unavailable"), { status: response.status });
-      const result = await response.json() as { employees: ManagedEmployee[]; managerOptions: ManagerOption[] };
-      setEmployees(result.employees); setManagerOptions(result.managerOptions);
-      setManagerByEmployee(Object.fromEntries(result.employees.map((employee) => [employee.id, employee.reportsToId ?? ""])));
-    } catch (cause) {
-      const status = typeof cause === "object" && cause !== null && "status" in cause ? Number(cause.status) : 0;
-      setError(status === 403 || status === 404
-        ? "This account does not have an active team-management grant. Ask the Owner to review your team permissions."
-        : "We couldn’t load the managed team. Try again.");
-    } finally { setLoading(false); }
-  }, []);
-
-  useEffect(() => { void load(); }, [load]);
-
-  const updateManager = async (event: React.FormEvent<HTMLFormElement>, employeeId: string): Promise<void> => {
-    event.preventDefault();
-    if (pendingEmployeeId) return;
-    setPendingEmployeeId(employeeId); setError(undefined); setSuccess(undefined);
-    try {
-      const response = await fetch(`${ORG_PATH}/team/employees/${encodeURIComponent(employeeId)}/reporting`, {
-        method: "PUT", credentials: "include",
-        headers: { "Content-Type": "application/json", "X-CSRF-Token": session.csrfToken },
-        body: JSON.stringify({ reportsToId: managerByEmployee[employeeId], reason: reason.trim() })
-      });
-      if (!response.ok) throw Object.assign(new Error("team-update-failed"), { status: response.status });
-      await load(); setSuccess("Reporting relationship saved.");
-    } catch (cause) {
-      const status = typeof cause === "object" && cause !== null && "status" in cause ? Number(cause.status) : 0;
-      setError(status === 403 ? "Your team-management permission changed. Refresh your session and try again." : "We couldn’t save this reporting change. Review the details and try again.");
-    } finally { setPendingEmployeeId(undefined); }
-  };
-
-  return <div className="team-workspace">
-    <div className="sessions-heading-row"><p className="identity-note">This list includes only active employees in your reporting team. Reporting changes require an explicit team-scoped grant and a reason.</p><button type="button" className="secondary-action" onClick={() => void load()} disabled={loading || pendingEmployeeId !== undefined}>Refresh team</button></div>
-    {loading && <p role="status" className="identity-note">Loading managed team…</p>}
-    {error && <p role="alert" className="auth-error">{error}</p>}
-    {success && <p role="status" className="notice">{success}</p>}
-    {!loading && !error && employees.length === 0 && <p role="status" className="identity-note">You do not currently manage any employees.</p>}
-    {!loading && employees.length > 0 && <ul className="org-employee-list">{employees.map((employee) => <li key={employee.id}>
-      <div><strong>{employee.account.normalizedEmail}</strong><p>{employee.employeeCode ? `Employee ${employee.employeeCode} · ` : ""}{employee.jobRoleAssignments.map((assignment) => assignment.jobRole.name).join(", ") || "No job role"}</p></div>
-      <form className="team-reporting-form" onSubmit={(event) => void updateManager(event, employee.id)}>
-        <label htmlFor={`team-manager-${employee.id}`}>Reports to</label>
-        <select id={`team-manager-${employee.id}`} required value={managerByEmployee[employee.id] ?? ""} onChange={(event) => setManagerByEmployee((current) => ({ ...current, [employee.id]: event.target.value }))}>
-          <option value="">Choose a reporting manager</option>{managerOptions.map((manager) => <option key={manager.id} value={manager.id}>{manager.email}</option>)}
-        </select>
-        <label htmlFor={`team-reporting-reason-${employee.id}`}>Reason</label>
-        <textarea id={`team-reporting-reason-${employee.id}`} required minLength={10} maxLength={1000} value={reason} onChange={(event) => setReason(event.target.value)} />
-        <button disabled={pendingEmployeeId !== undefined || !managerByEmployee[employee.id] || reason.trim().length < 10}>{pendingEmployeeId === employee.id ? "Saving…" : "Save reporting line"}</button>
-      </form>
-    </li>)}</ul>}
-  </div>;
 }
 
 type Ceremony = { ceremonyId: string; options: Parameters<typeof startRegistration>[0]["optionsJSON"] };
@@ -1136,9 +730,54 @@ function AuthHome({ legacyWorkspace = false }: { legacyWorkspace?: boolean }): R
   if (view.kind === "signed-out") return <Login onSignedIn={(session) => setView({ kind: "signed-in", session })} notice={view.notice} />;
   if (!legacyWorkspace && !(view.session.account.kind === "OWNER" && view.session.ownerSetupRequired)) {
     const linkedTaskId = new URLSearchParams(window.location.search).get("taskId");
-    return <Navigate replace to={linkedTaskId ? `/tasks?taskId=${encodeURIComponent(linkedTaskId)}` : "/my-work"} />;
+    return <Navigate replace to={linkedTaskId ? `/tasks?taskId=${encodeURIComponent(linkedTaskId)}` : "/dashboard"} />;
   }
-  return <WorkspaceLayout><Identity key={view.session.account.id} session={view.session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} /></WorkspaceLayout>;
+  return <WorkspaceLayout key={view.session.account.id}><Identity key={view.session.account.id} session={view.session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} /></WorkspaceLayout>;
+}
+
+function HeaderControls(): React.JSX.Element | null {
+  const { session } = useSessionProbe();
+  const [logoutBusy, setLogoutBusy] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
+  const logoutInFlight = useRef(false);
+  const navigate = useNavigate();
+
+  const logout = async (): Promise<void> => {
+    if (!session || logoutInFlight.current) return;
+    logoutInFlight.current = true;
+    setLogoutBusy(true);
+    setLogoutError("");
+    try {
+      const response = await fetch(`${AUTH_PATH}/logout`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "X-CSRF-Token": session.csrfToken },
+      });
+      if (!response.ok && response.status !== 401) throw new Error("logout-failed");
+      const pointer = readOfflinePointer();
+      if (pointer) await purgeOfflineAccount(pointer.accountId).catch(() => undefined);
+      clearOfflinePointer();
+      window.dispatchEvent(new Event("sense-session-ended"));
+      navigate("/", { replace: true });
+    } catch {
+      setLogoutError("We couldn’t sign you out. Try again.");
+    } finally {
+      logoutInFlight.current = false;
+      setLogoutBusy(false);
+    }
+  };
+
+  if (!session) return null;
+  return <div className="site-header-controls">
+    {logoutError && <p className="site-header-error" role="alert">{logoutError}</p>}
+    {!session.ownerSetupRequired && <NavLink className="site-header-notifications" to="/notifications" aria-label="Notifications">
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></svg>
+      <span>Notifications</span>
+    </NavLink>}
+    <button className="site-header-logout" type="button" onClick={() => void logout()} disabled={logoutBusy}>
+      {logoutBusy ? "Logging out…" : "Log out"}
+    </button>
+  </div>;
 }
 
 function NotFound(): React.JSX.Element {
@@ -1146,66 +785,28 @@ function NotFound(): React.JSX.Element {
 }
 
 function DocumentsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore();
-    window.addEventListener("sense-session-ended", ended);
-    window.addEventListener("focus", recheck);
-    document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view project documents</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Project documents</span><span>{session.account.email}</span></div><DocumentWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Project documents</span><span>{session.account.email}</span></div><DocumentWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
 }
 
 function NotificationsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore();
-    window.addEventListener("sense-session-ended", ended);
-    window.addEventListener("focus", recheck);
-    document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/workspace">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view notifications</h1><Link to="/">Return to sign in</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Notifications</span><span>{session.account.email}</span></div><NotificationCenter csrfToken={session.csrfToken} initiallyOpen /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Notifications</span><span>{session.account.email}</span></div><NotificationCenter csrfToken={session.csrfToken} initiallyOpen /></main></WorkspaceLayout>;
 }
 
 function SettingsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
+  const { session, failed, updateSession } = useProtectedRouteSession();
   const [logoutBusy, setLogoutBusy] = useState(false);
   const [logoutError, setLogoutError] = useState<string>();
-  const settingsActive = useRef(false);
   const location = useLocation();
   const navigate = useNavigate();
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    settingsActive.current = true;
-    const restore = (): void => { const token = ++generation; void readSession().then(value => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore(); window.addEventListener("sense-session-ended", ended); window.addEventListener("focus", recheck); document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; settingsActive.current = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
   const logout = async (): Promise<void> => {
     if (!session || logoutBusy) return;
     setLogoutBusy(true);
@@ -1217,7 +818,7 @@ function SettingsRoute(): React.JSX.Element {
       if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined);
       clearOfflinePointer();
       window.dispatchEvent(new Event("sense-session-ended"));
-      setSession(null);
+      updateSession(() => null);
       navigate("/", { replace: true });
     } catch {
       setLogoutError("We couldn’t sign you out. Try again.");
@@ -1230,150 +831,201 @@ function SettingsRoute(): React.JSX.Element {
   const requestedSection = new URLSearchParams(location.search).get("section");
   const validSections: SettingsSection[] = ["account", "notifications", ...(owner ? ["organization" as const] : ["team" as const])];
   const section: SettingsSection = owner && session.ownerSetupRequired ? "setup" : validSections.includes(requestedSection as SettingsSection) ? requestedSection as SettingsSection : "account";
-  return <WorkspaceLayout><Identity key={session.account.id} session={session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} settingsSection={section} onSessionUpdate={(updated) => { if (settingsActive.current) setSession((current) => current?.account.id === updated.account.id ? updated : current); }} /></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><Identity key={session.account.id} session={session} onLogout={() => void logout()} busy={logoutBusy} error={logoutError} settingsSection={section} onSessionUpdate={(updated) => updateSession((current) => current?.account.id === updated.account.id ? updated : current)} /></WorkspaceLayout>;
 }
 
 function DecisionsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then(value => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore(); window.addEventListener("sense-session-ended", ended); window.addEventListener("focus", recheck); document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/workspace">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view decisions</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/workspace">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Decisions</span><span>{session.account.email}</span></div><DecisionsHome /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Decisions</span><span>{session.account.email}</span></div><DecisionsHome /></main></WorkspaceLayout>;
+}
+
+function PeopleRoute(): React.JSX.Element {
+  const { session, failed } = useProtectedRouteSession();
+  if (session === undefined && !failed) return <main className="identity-content"><p role="status">Checking your session…</p></main>;
+  if (failed) return <main className="identity-content"><p role="alert">We couldn’t check your session. Return to the workspace and try again.</p><Link to="/">Return to workspace</Link></main>;
+  if (!session) return <main className="identity-content"><h1>Sign in to view People</h1><Link to="/">Return to sign in</Link></main>;
+  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><h1>Complete Owner setup first</h1><Link to="/workspace">Return to Owner setup</Link></main>;
+  return <WorkspaceLayout key={session.account.id}><Identity key={session.account.id} session={session} onLogout={() => undefined} busy={false} error={undefined} peopleMode /></WorkspaceLayout>;
 }
 
 function TasksRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore();
-    window.addEventListener("sense-session-ended", ended);
-    window.addEventListener("focus", recheck);
-    document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view tasks</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content tasks-route"><div className="workspace-account-heading"><span>Tasks</span><span>{session.account.email}</span></div><TaskWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} listFirst /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content tasks-route"><div className="workspace-account-heading"><span>Tasks</span><span>{session.account.email}</span></div><TaskWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} listFirst /></main></WorkspaceLayout>;
 }
 
 function MyWorkRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore();
-    window.addEventListener("sense-session-ended", ended);
-    window.addEventListener("focus", recheck);
-    document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
+  const { session, failed, updateSession } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view My Work</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content my-work-route"><div className="workspace-account-heading"><span>My Work</span><span>{session.account.email}</span></div><ApprovalQueue title="Decisions awaiting you" /><MyWorkAttention onSessionExpired={() => setSession(null)} /><TaskWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} listFirst personalOnly /></main></WorkspaceLayout>;
+  const personalObligations = ({ employeeLessOwner }: { employeeLessOwner: boolean }): React.ReactNode => <div className="my-work-obligations"><MyWorkManagement key={`management-${session.account.id}`} prioritizeReassignment={employeeLessOwner} onSessionExpired={() => updateSession(() => null)} /></div>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content my-work-route"><TaskWorkspace key={`tasks-${session.account.id}`} accountId={session.account.id} csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} listFirst personalOnly personalObligations={personalObligations} onSessionExpired={() => updateSession(() => null)} /></main></WorkspaceLayout>;
 }
 
-function RevisionsRoute(): React.JSX.Element {
+/**
+ * Header/presence probe: renders for anonymous visitors too, so a failed
+ * session read must not flip it into an error state. No `failed` flag.
+ */
+function useSessionProbe(): { session: Session | null | undefined } {
   const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
-  if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
-  if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
-  if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view the drawing register</h1><Link to="/">Return to sign in</Link></section></main>;
-  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Drawing register</span><span>{session.account.email}</span></div><RevisionWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
-}
-
-function ReviewsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
   useEffect(() => {
     let active = true;
     let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
+    const restore = (): void => {
+      const requestId = ++generation;
+      void readSession().then(value => {
+        if (active && requestId === generation) setSession(value);
+      }).catch(() => undefined);
+    };
     const ended = (): void => { generation += 1; if (active) setSession(null); };
     const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
     restore();
     window.addEventListener("sense-session-ended", ended);
     window.addEventListener("focus", recheck);
     document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
+    return () => {
+      active = false;
+      generation += 1;
+      window.removeEventListener("sense-session-ended", ended);
+      window.removeEventListener("focus", recheck);
+      document.removeEventListener("visibilitychange", recheck);
+    };
   }, []);
+  return { session };
+}
+
+/** Keep protected workspaces out of the tree after explicit session loss. */
+function useProtectedRouteSession(): { session: Session | null | undefined; failed: boolean; updateSession: (updater: (current: Session | null | undefined) => Session | null | undefined) => void } {
+  const [session, setSession] = useState<Session | null>();
+  const [failed, setFailed] = useState(false);
+  const mounted = useRef(true);
+  const updateSession = useCallback((updater: (current: Session | null | undefined) => Session | null | undefined): void => {
+    if (mounted.current) setSession(updater);
+  }, []);
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
+  useEffect(() => {
+    let active = true;
+    let generation = 0;
+    const restore = (): void => {
+      const requestId = ++generation;
+      void readSession().then(value => {
+        if (active && requestId === generation) { setSession(value); setFailed(false); }
+      }).catch(() => {
+        if (active && requestId === generation) setFailed(true);
+      });
+    };
+    const ended = (): void => {
+      generation += 1;
+      if (active) { setSession(null); setFailed(false); }
+    };
+    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
+    restore();
+    window.addEventListener("sense-session-ended", ended);
+    window.addEventListener("focus", recheck);
+    document.addEventListener("visibilitychange", recheck);
+    return () => {
+      active = false;
+      generation += 1;
+      window.removeEventListener("sense-session-ended", ended);
+      window.removeEventListener("focus", recheck);
+      document.removeEventListener("visibilitychange", recheck);
+    };
+  }, []);
+  return { session, failed, updateSession };
+}
+
+function RevisionsRoute(): React.JSX.Element {
+  const { session, failed } = useProtectedRouteSession();
+  if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
+  if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
+  if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view the drawing register</h1><Link to="/">Return to sign in</Link></section></main>;
+  if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Drawing register</span><span>{session.account.email}</span></div><RevisionWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
+}
+
+function ReviewsRoute(): React.JSX.Element {
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to review project drawings</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Internal reviews</span><span>{session.account.email}</span></div><ReviewWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Internal reviews</span><span>{session.account.email}</span></div><ReviewWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
 }
 
 function ClientReviewsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to manage client reviews</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Client reviews</span><span>{session.account.email}</span></div><StaffClientReviewWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Client reviews</span><span>{session.account.email}</span></div><StaffClientReviewWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
 }
 
 function TurnkeyRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view Turnkey operations</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Turnkey operations</span><span>{session.account.email}</span></div><TurnkeyWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Turnkey operations</span><span>{session.account.email}</span></div><TurnkeyWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
 }
 
 export function App(): React.JSX.Element {
+  const siteHeaderRef = useRef<HTMLElement>(null);
+
+  useLayoutEffect(() => {
+    const header = siteHeaderRef.current;
+    if (!header) return;
+    const root = document.documentElement;
+    const updateHeaderHeight = (): void => {
+      const height = `${Math.ceil(header.getBoundingClientRect().height)}px`;
+      if (root.style.getPropertyValue("--sense-header-height") !== height) {
+        root.style.setProperty("--sense-header-height", height);
+      }
+    };
+    updateHeaderHeight();
+    if (typeof ResizeObserver === "undefined") {
+      window.addEventListener("resize", updateHeaderHeight);
+      return () => {
+        window.removeEventListener("resize", updateHeaderHeight);
+        root.style.removeProperty("--sense-header-height");
+      };
+    }
+    const observer = new ResizeObserver(updateHeaderHeight);
+    observer.observe(header);
+    return () => {
+      observer.disconnect();
+      root.style.removeProperty("--sense-header-height");
+    };
+  }, []);
+
   return (
     <div className="app-shell">
-      <header className="site-header">
+      <header className="site-header" ref={siteHeaderRef}>
         <Link to="/" className="brand" aria-label="Sense Studios home">
           <span className="brand-mark">S</span>
           <span><strong>SENSE STUDIOS</strong><small>WORK MANAGEMENT</small></span>
         </Link>
         <span className="phase-badge">IDENTITY</span>
+        <HeaderControls />
       </header>
       <Routes>
+        <Route path="/sign-in" element={<SignInHub />} />
+        <Route path="/staff/sign-in" element={<AuthHome />} />
+        <Route path="/owner/sign-in" element={<AuthHome />} />
+        <Route path="/staff/recovery" element={<StaffRecovery />} />
         <Route path="/" element={<AuthHome />} />
         <Route path="/workspace" element={<AuthHome legacyWorkspace />} />
         <Route path="/my-work" element={<MyWorkRoute />} />
@@ -1382,6 +1034,7 @@ export function App(): React.JSX.Element {
         <Route path="/notifications" element={<NotificationsRoute />} />
         <Route path="/tasks" element={<TasksRoute />} />
         <Route path="/projects" element={<ProjectsRoute readSession={readSession} />} />
+        <Route path="/people" element={<PeopleRoute />} />
         <Route path="/bootstrap" element={<Bootstrap />} />
         <Route path="/enroll" element={<Enrollment />} />
         <Route path="/owner-recovery" element={<OwnerRecovery />} />
@@ -1414,76 +1067,38 @@ export function App(): React.JSX.Element {
 }
 
 function ExternalAccessRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore();
-    window.addEventListener("sense-session-ended", ended);
-    window.addEventListener("focus", recheck);
-    document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to manage external access</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>External access</span><span>{session.account.email}</span></div><StaffExternalAccessWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>External access</span><span>{session.account.email}</span></div><StaffExternalAccessWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
 }
 
 function TimeRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view time records</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Time</span><span>{session.account.email}</span></div><TimeWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Time</span><span>{session.account.email}</span></div><TimeWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
 }
 
 function WorkforceRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view workforce records</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content workforce-route"><div className="workspace-account-heading"><span>Workforce</span><span>{session.account.email}</span></div><WorkforceWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content workforce-route"><div className="workspace-account-heading"><span>Workforce</span><span>{session.account.email}</span></div><WorkforceWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} /></main></WorkspaceLayout>;
 }
 
 function LearningRoute({ area }: { area?: "skills" | "training" | "library" }): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
+  const { session, failed } = useProtectedRouteSession();
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const legacyPanel = query.get("panel");
   const panel = area ?? (legacyPanel === "library" || (!legacyPanel && (query.has("recordId") || query.has("versionId"))) ? "library" : legacyPanel === "training" || (!legacyPanel && query.has("assignmentId")) ? "training" : legacyPanel === "skills" || (!legacyPanel && (query.has("employeeId") || query.has("ratingId") || query.has("changeId"))) ? "skills" : "legacy");
-  useEffect(() => {
-    let active = true;
-    let generation = 0;
-    const restore = (): void => { const token = ++generation; void readSession().then((value) => { if (active && token === generation) { setSession(value); setFailed(false); } }).catch(() => { if (active && token === generation) setFailed(true); }); };
-    const ended = (): void => { generation += 1; if (active) setSession(null); };
-    const recheck = (): void => { if (document.visibilityState === "visible") restore(); };
-    restore();
-    window.addEventListener("sense-session-ended", ended);
-    window.addEventListener("focus", recheck);
-    document.addEventListener("visibilitychange", recheck);
-    return () => { active = false; generation += 1; window.removeEventListener("sense-session-ended", ended); window.removeEventListener("focus", recheck); document.removeEventListener("visibilitychange", recheck); };
-  }, []);
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view Learning</h1><Link to="/">Return to sign in</Link></section></main>;
@@ -1493,98 +1108,62 @@ function LearningRoute({ area }: { area?: "skills" | "training" | "library" }): 
   preservedQuery.delete("panel");
   const queryString = preservedQuery.toString();
   const legacyCombined = panel === "legacy";
-  return <WorkspaceLayout><main className="identity-content learning-route"><div className="workspace-account-heading"><span>{panel === "library" ? "Library" : panel === "training" ? "Training" : panel === "legacy" ? "Skills & Training" : "Skills"}</span><span>{session.account.email}</span></div><nav className="learning-area-tabs" aria-label="Learning areas">{areaLinks.map(([key, label, path]) => <Link key={key} to={`${path}${queryString ? `&${queryString}` : ""}`} aria-current={panel === key ? "page" : undefined}>{label}</Link>)}</nav>{panel === "library" ? <LibraryWorkspace csrfToken={session.csrfToken} /> : panel === "training" ? <TrainingWorkspace csrfToken={session.csrfToken} /> : legacyCombined ? <SkillsTrainingWorkspace csrfToken={session.csrfToken} /> : <SkillsWorkspace csrfToken={session.csrfToken} />}</main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content learning-route"><div className="workspace-account-heading"><span>{panel === "library" ? "Library" : panel === "training" ? "Training" : panel === "legacy" ? "Skills & Training" : "Skills"}</span><span>{session.account.email}</span></div><nav className="learning-area-tabs" aria-label="Learning areas">{areaLinks.map(([key, label, path]) => <Link key={key} to={`${path}${queryString ? `&${queryString}` : ""}`} aria-current={panel === key ? "page" : undefined}>{label}</Link>)}</nav>{panel === "library" ? <LibraryWorkspace csrfToken={session.csrfToken} /> : panel === "training" ? <TrainingWorkspace csrfToken={session.csrfToken} /> : legacyCombined ? <SkillsTrainingWorkspace csrfToken={session.csrfToken} /> : <SkillsWorkspace csrfToken={session.csrfToken} />}</main></WorkspaceLayout>;
 }
 
 function PerformanceRoute({ initialTab = "employee", focused = false }: { initialTab?: "employee" | "project"; focused?: boolean }): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then(value => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view performance records</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
   const projectId = new URLSearchParams(window.location.search).get("projectId") ?? undefined;
   const title = initialTab === "project" ? "Project Health" : "Performance";
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>{title}</span><span>{session.account.email}</span></div><InsightsNavigation {...(projectId ? { projectId } : {})} /><PerformanceWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>{title}</span><span>{session.account.email}</span></div><InsightsNavigation {...(projectId ? { projectId } : {})} /><PerformanceWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
 }
 
 function DashboardRoute({ initialTab = "dashboard", focused = false }: { initialTab?: "dashboard" | "summaries" | "reports" | "schedules"; focused?: boolean }): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then(value => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view your dashboard</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
   const reportsHome = initialTab === "reports";
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>{reportsHome ? "Reports" : "Dashboard & reports"}</span><span>{session.account.email}</span></div>{reportsHome && <InsightsNavigation />}<DashboardWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>{reportsHome ? "Reports" : "Dashboard"}</span><span>{session.account.email}</span></div>{reportsHome && <InsightsNavigation />}<DashboardWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
 }
 
 function IntegrationsRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then(value => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to manage calendar integrations</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Integrations</span><span>{session.account.email}</span></div><IntegrationsWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Integrations</span><span>{session.account.email}</span></div><IntegrationsWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
 }
 
 function AutomationRoute({ savedReportsOnly = false }: { savedReportsOnly?: boolean }): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then(value => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to manage automation and reports</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>{savedReportsOnly ? "Saved Reports" : "Automation & reports"}</span><span>{session.account.email}</span></div>{savedReportsOnly && <InsightsNavigation />}<AutomationWorkspace csrfToken={session.csrfToken} mode={savedReportsOnly ? "saved-reports" : "automation"} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>{savedReportsOnly ? "Saved Reports" : "Automation & reports"}</span><span>{session.account.email}</span></div>{savedReportsOnly && <InsightsNavigation />}<AutomationWorkspace csrfToken={session.csrfToken} mode={savedReportsOnly ? "saved-reports" : "automation"} /></main></WorkspaceLayout>;
 }
 
 function SiteRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then((value) => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <SiteOfflineCaptureRoute />;
   if (!session) { const pointer = readOfflinePointer(); if (pointer) void purgeOfflineAccount(pointer.accountId).catch(() => undefined); if (pointer) window.dispatchEvent(new Event("sense-session-ended")); clearOfflinePointer(); return <main className="identity-content"><section className="identity-section"><h1>Sign in to view site delivery</h1><Link to="/">Return to sign in</Link></section></main>; }
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Site delivery</span><span>{session.account.email}</span></div><SiteWorkspace csrfToken={session.csrfToken} accountId={session.account.id} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Site delivery</span><span>{session.account.email}</span></div><SiteWorkspace csrfToken={session.csrfToken} accountId={session.account.id} /></main></WorkspaceLayout>;
 }
 
 function AiAssistanceRoute(): React.JSX.Element {
-  const [session, setSession] = useState<Session | null>();
-  const [failed, setFailed] = useState(false);
-  useEffect(() => {
-    let active = true;
-    void readSession().then(value => { if (active) setSession(value); }).catch(() => { if (active) setFailed(true); });
-    return () => { active = false; };
-  }, []);
+  const { session, failed } = useProtectedRouteSession();
   if (session === undefined && !failed) return <main className="identity-content"><p className="loading-state" role="status">Checking your session…</p></main>;
   if (failed) return <main className="identity-content"><section className="identity-section"><p className="auth-error" role="alert">We couldn’t check your session. Try again from the workspace home.</p><Link to="/">Return to workspace</Link></section></main>;
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view evidence assistance</h1><Link to="/">Return to workspace</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to workspace</Link></section></main>;
-  return <WorkspaceLayout><main className="identity-content"><div className="workspace-account-heading"><span>Evidence assistance</span><span>{session.account.email}</span></div><AiAssistanceWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>Evidence assistance</span><span>{session.account.email}</span></div><AiAssistanceWorkspace csrfToken={session.csrfToken} /></main></WorkspaceLayout>;
 }

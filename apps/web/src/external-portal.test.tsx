@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+// jsdom File lacks Blob.arrayBuffer; exercise browser upload bytes with Node's standard File.
+import { Blob, File } from "node:buffer";
 import { ExternalPortalWorkspace, StaffExternalAccessWorkspace } from "./external-portal.js";
 
 function response(body: unknown, status = 200): Response { return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } }); }
@@ -89,6 +91,7 @@ describe("external portal", () => {
   });
 
   it("retries a lost finalize response against the same upload without restarting or reuploading chunks", async () => {
+    vi.stubGlobal("Blob", Blob);
     const uploadUrls: string[] = []; const finalizeUrls: string[] = []; let finalizeCount = 0;
     const workspace = { project: { id: "p1", title: "Granted project", status: "ACTIVE" }, grants: [{ id: "g1", portalType: "CONSULTANT", version: 1, revisionIds: ["r1"], releaseIds: [], packageIds: [], expiresAt: null, revokedAt: null, closeoutTaskId: null }], revisions: [], production: [], packages: [], requests: [], submissions: [], uploads: [], transmittals: [], cadShares: [], capabilities: { submit: false, upload: true, acknowledge: false } };
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -117,6 +120,7 @@ describe("external portal", () => {
     expect(vi.mocked(fetch).mock.calls.filter(([url]) => String(url).includes("/chunks/0"))).toHaveLength(1);
   });
   it("retries an ambiguously acknowledged chunk with the original retained file bytes", async () => {
+    vi.stubGlobal("Blob", Blob);
     const starts: string[] = []; const chunkBodies: string[] = []; let chunkCount = 0;
     const workspace = { project: { id: "p1", title: "Granted project", status: "ACTIVE" }, grants: [{ id: "g1", portalType: "CONSULTANT", version: 1, revisionIds: ["r1"], releaseIds: [], packageIds: [], expiresAt: null, revokedAt: null, closeoutTaskId: null }], revisions: [], production: [], packages: [], requests: [], submissions: [], uploads: [], transmittals: [], cadShares: [], capabilities: { submit: false, upload: true, acknowledge: false } };
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -191,11 +195,13 @@ describe("external portal", () => {
 
   it("records an Owner-created native share and exposes unconfirmed revocation blockers", async () => {
     const base = { project: { id: "p1", title: "Studio", status: "ACTIVE", version: 2 }, grants: [{ id: "g1", email: "consultant@example.test", portalType: "CONSULTANT", version: 4, revisionIds: ["r1"], releaseIds: [], packageIds: [], expiresAt: null, revokedAt: null, closeoutTaskId: null }], revisionOptions: [{ id: "r1", title: "Plan", documentNumber: "A-01", series: "A", number: "1", fileName: "plan.dwg", cad: true }], releaseOptions: [], packageOptions: [], closeoutTaskOptions: [], requests: [], submissions: [], uploads: [], cadShares: [], capabilities: { manage: true, issueCad: true } };
+    const issuedAt = new Date();
+    const expiresAt = new Date(issuedAt.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString();
     const calls: Array<{ url: string; init: RequestInit | undefined }> = [];
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input); calls.push({ url, init });
       if (url.endsWith("/cad-shares")) return response({ id: "share1" });
-      if (url.includes("/projects/p1")) return response({ ...base, cadShares: [{ id: "share1", grantId: "g1", revisionId: "r1", nativeLinkId: "native-99", issuedAt: "2026-10-04T10:00:00Z", expiresAt: "2026-10-11T10:00:00Z", version: 1, revokedAt: null, revocationRequired: true }] });
+      if (url.includes("/projects/p1")) return response({ ...base, cadShares: [{ id: "share1", grantId: "g1", revisionId: "r1", nativeLinkId: "native-99", issuedAt: issuedAt.toISOString(), expiresAt, version: 1, revokedAt: null, revocationRequired: true }] });
       return response(base);
     }));
     window.history.replaceState({}, "", "?projectId=p1");
@@ -212,6 +218,17 @@ describe("external portal", () => {
     const call = calls.find((entry) => entry.url.endsWith("/cad-shares"));
     expect(call?.init?.headers).toMatchObject({ "x-csrf-token": "csrf-token" });
     expect(JSON.parse(String(call?.init?.body))).toMatchObject({ grantId: "g1", revisionId: "r1", nativeLinkId: "native-99", expectedGrantVersion: 4, reason: "Owner recorded the native share." });
+  });
+
+  it("does not show expired CAD shares as cancellation blockers", async () => {
+    const expiresAt = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const issuedAt = new Date(expiresAt.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const payload = { project: { id: "p1", title: "Studio", status: "ACTIVE", version: 2 }, grants: [], revisionOptions: [], releaseOptions: [], packageOptions: [], closeoutTaskOptions: [], requests: [], submissions: [], uploads: [], cadShares: [{ id: "share1", grantId: "g1", revisionId: "r1", nativeLinkId: "native-1", issuedAt: issuedAt.toISOString(), expiresAt: expiresAt.toISOString(), version: 1, revokedAt: null, revocationRequired: true }], capabilities: { manage: true, issueCad: true } };
+    vi.stubGlobal("fetch", vi.fn(async () => response(payload)));
+    window.history.replaceState({}, "", "?projectId=p1");
+    render(<StaffExternalAccessWorkspace csrfToken="csrf" owner={false} />);
+    await screen.findByRole("heading", { name: "Studio" });
+    expect(screen.getByText("No outstanding CAD cancellation blockers.")).toBeInTheDocument();
   });
 
   it("keeps native URL and extraction code out of the staff workspace until an Owner asks to reveal them", async () => {

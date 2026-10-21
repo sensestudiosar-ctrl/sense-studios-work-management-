@@ -2,6 +2,7 @@ import { ConflictException, ForbiddenException, Injectable, NotFoundException } 
 import { AccountKind, AccountState, ApprovalDecisionOutcome, ApprovalRequestState, OutboxConsumer, Prisma, type ApprovalRequest } from "./generated/prisma/client.js";
 import { randomUUID } from "node:crypto";
 import { DatabaseService } from "./database.service.js";
+import { withAuthorizationReadTime } from "./authorization-read-context.js";
 import { assertSafeDomainPayload, isDomainEventName } from "./domain-event-catalogue.js";
 
 export interface ApprovalActor { accountId: string; organizationId: string; }
@@ -114,13 +115,8 @@ export class ApprovalService {
   async decide(tx: Prisma.TransactionClient, actor: ApprovalActor, requestId: string, decision: ApprovalDecisionInput): Promise<void> {
     await this.assertActor(tx, actor);
     const request = await this.lockedRequest(tx, actor.organizationId, requestId);
-    const handler = this.requireHandler(request.typeKey);
     const now = new Date();
-    if (request.state !== ApprovalRequestState.PENDING) throw new ConflictException("Approval is already resolved");
-    if (request.expiresAt && request.expiresAt <= now) throw new ConflictException("Approval has expired");
-    const delegationActive = request.delegationAccountId === actor.accountId && request.delegationExpiresAt !== null && request.delegationExpiresAt > now;
-    if (!(await handler.canDecide(tx, actor, request, { delegated: delegationActive }))) throw new ForbiddenException("Approval decision is not allowed");
-    if (!handler.canSelfApprove && request.requesterId === actor.accountId) throw new ForbiddenException("Self-approval is not allowed");
+    const handler = await this.decisionPolicy(tx, actor, request, now);
     if (decision.reason.trim().length < 3 || decision.reason.length > 1000 || (decision.comment?.length ?? 0) > 2000) throw new ForbiddenException("Decision evidence is invalid");
     assertSafeDomainPayload(lifecycleEvent.decided, {
       reason: decision.reason,
@@ -139,6 +135,57 @@ export class ApprovalService {
     await handler.onDecision(tx, request, decision, actor.accountId);
     await this.recordLifecycle(tx, actor.accountId, { ...request, state, resolvedAt: now }, lifecycleEvent.decided, decision.reason,
       { outcome, state }, { state: request.state });
+  }
+
+  /** Shared read-only decision policy. Commands still lock and recheck at decision time. */
+  private async decisionPolicy(tx: Prisma.TransactionClient, actor: ApprovalActor, request: ApprovalRequest, now: Date): Promise<ApprovalHandler> {
+    const handler = this.requireHandler(request.typeKey);
+    if (request.organizationId !== actor.organizationId) throw new NotFoundException("Approval not found");
+    if (request.state !== ApprovalRequestState.PENDING) throw new ConflictException("Approval is already resolved");
+    if (request.expiresAt && request.expiresAt <= now) throw new ConflictException("Approval has expired");
+    const delegated = request.delegationAccountId === actor.accountId && request.delegationExpiresAt !== null && request.delegationExpiresAt > now;
+    if (!(await handler.canDecide(tx, actor, request, { delegated }))) throw new ForbiddenException("Approval decision is not allowed");
+    if (!handler.canSelfApprove && request.requesterId === actor.accountId) throw new ForbiddenException("Self-approval is not allowed");
+    return handler;
+  }
+
+  /** Exact independent source: no capped scan or cross-source aggregate. */
+  async actionable(actorId: string, offset = 0, limit = 25) {
+    return this.database.prisma.$transaction(async tx => {
+      const org = await tx.organization.findFirst({ select: { id: true } });
+      if (!org) throw new NotFoundException("Organization is unavailable");
+      const readAt = new Date();
+      const result = await withAuthorizationReadTime(tx, readAt, () => this.actionableInTransaction(tx, { accountId: actorId, organizationId: org.id }, readAt, { offset, limit }));
+      return { ...result, offset, limit };
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, timeout: 30_000 });
+  }
+
+  async actionableInTransaction(tx: Prisma.TransactionClient, actor: ApprovalActor, readAt: Date, page?: { offset: number; limit: number }) {
+      await this.assertActor(tx, actor);
+      const candidates = await tx.approvalRequest.findMany({ where: {
+        organizationId: actor.organizationId, state: ApprovalRequestState.PENDING, typeKey: { in: [...this.handlers.keys()] },
+        OR: [{ expiresAt: null }, { expiresAt: { gt: readAt } }]
+      }, orderBy: [{ expiresAt: { sort: "asc", nulls: "last" } }, { id: "asc" }] });
+      const eligible: Array<{ request: ApprovalRequest; handler: ApprovalHandler }> = [];
+      for (const request of candidates) {
+        try {
+          const handler = await this.decisionPolicy(tx, actor, request, readAt);
+          // Card visibility remains an independent owning-domain boundary.
+          if (await handler.canView(tx, actor, request)) eligible.push({ request, handler });
+        } catch (error) {
+          if (!(error instanceof ForbiddenException || error instanceof NotFoundException || error instanceof ConflictException)) throw error;
+        }
+      }
+      const items = [];
+      for (const { request, handler } of page ? eligible.slice(page.offset, page.offset + page.limit) : eligible) {
+        const card = await handler.projectCard(tx, request);
+        items.push({ source: "approval" as const, sourceId: request.id, requestId: request.id, typeKey: request.typeKey,
+          title: card.title, summary: card.summary, subjectLabel: card.subjectLabel, requesterLabel: card.requesterLabel,
+          responsibility: "decision" as const, reason: "decision_required" as const, deadline: request.expiresAt,
+          destination: `/decisions?approvalId=${encodeURIComponent(request.id)}`, readAt });
+      }
+      return { source: "approval" as const, total: eligible.length, items, readAt };
+
   }
 
   async attention(actorId: string, limit: number, cursor?: string) {

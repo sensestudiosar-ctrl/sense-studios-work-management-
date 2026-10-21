@@ -1,3 +1,9 @@
+# Current Owner recovery direction — 2026-10-21
+
+The Owner authorized preservation, non-destructive consolidation and controlled local staging of the existing Sense monorepo, with current Codex and independent Codex reviews replacing unavailable Opus/Sonnet for this recovery. Work is IN PROGRESS until exact-candidate acceptance and the deployed matched release are verified. Preserve all historical branches, archives, evidence, configurations and retained data. Use `codex/sense-integration`; exclude ArchiFlow and unaccepted client-password migration120. Migration119 is the bounded candidate; never automatically migrate retained data. See `docs/operations/RECOVERY_CONSOLIDATION_PLAN_2026-10-21.md` and `docs/operations/STAGING_RELEASE_WORKFLOW.md`.
+
+Permanent demo rule: map every new HTML/UI/UX demo to the existing Sense page, implement approved changes directly in `apps/web` using existing routes/APIs/contracts/business rules, preserve unaffected features and real data, test and review, explicitly commit selected files, and deploy only the approved matched commit to canonical staging. Experimental previews remain labeled and separate. Do not create a competing frontend/backend or silently promote prototype behavior. Material product-rule conflicts require the Owner's decision.
+
 # Current Owner direction — 2026-10-08
 
 The Owner authorized S18 integration from the settled `codex/s17-workforce` scope at `e9df56e` and bounded S27 local-staging implementation, waiving the R-104/R-105 actual-project prerequisite only for this S27 implementation. S18 and bounded S27 are COMPLETE for development/local staging after current-tree acceptance. S18 migrations110–114 remain unchanged and S27 migration115 follows them. Final pinned Node24.19.0/pnpm11.19.0 `pnpm verify` exited0: API275/48 suites, web220/33 files, PostgreSQL367/62 suites, all57 desktop/mobile browser tests, typecheck/lint/build, no failures/skips/retries. All22 dedicated targets are at115; accepted source109 and all154 populated-clone snapshots are preserved; the484-entry acceptance fingerprint matched. GPT-6.1 Sol accepted all six S18 and two S27 refreshed captures. Keep the waiver explicit: actual operational R-104/R-105 acceptance and production readiness remain unverified. S27 remains deterministic and provider-neutral, with human decisions, no live inference or external transmission. See S18/S27 completion and acceptance reports plus S27_VERIFICATION_LOG.md.
@@ -30,25 +36,6 @@ For a task, read CURRENT_STATE.md and IMPLEMENTATION_STATUS.md, then its entry i
 - Record material approved architecture changes in DECISIONS.md. Update context/status after meaningful changes; describe implemented behavior only.
 - Classify failing checks before changes. Record unrelated confirmed defects separately.
 
-## Model routing
-
-### Context input and token rule — Owner instruction, 2026-10-01
-
-- Always route project-context intake and interpretation to GPT-6.1 Sol (`gpt-6.1-sol`). This includes understanding Owner instructions, reading requirements/addenda and status documents, resolving conflicts, forming plans, restoring compacted context and preparing implementation handoffs.
-- Read the required context in the documented order, then only the relevant sections and source/callers. Avoid repeatedly loading full documents or passing the entire conversation to routine implementation agents. Preserve requirement IDs, approved decisions, scope boundaries, permissions, acceptance criteria and unresolved questions in compact handoffs; never omit necessary context merely to save tokens.
-- Keep the approximately 70% Luna / 30% Sol allocation target for bounded implementation work. Context intake always belongs to GPT-6.1 Sol even when the resulting implementation is delegated to Luna; Luna may read the focused files needed to execute its settled brief and must escalate new interpretation or material ambiguity.
-- Use the exact `gpt-6.1-sol` model when creating a context-intake agent through a tool that supports model selection. Do not silently substitute another model. If unavailable, report the limitation and leave model-dependent routing unresolved until the Owner directs otherwise.
-- This repository rule records the required routing; it does not change the model of an already-running chat or configure the app's model selector. Report actual models used and do not claim GPT-6.1 Sol was used unless it actually ran.
-
-Use Sol-level reasoning for architecture, schema, authentication, authorization, branch isolation, state machines, calculations, offline sync, difficult debugging and security review. Use Luna for routine, well-specified implementation after design. Escalate by reasoning risk, not task size. Model choice does not waive verification.
-
-Apply this routing automatically to future tasks in this project; the Owner does not need to repeat it.
-
-- Keep requirement interpretation, architecture, permissions, schema and migration design, security, difficult debugging, and final acceptance review with Sol-level reasoning.
-- When there is a concrete, bounded, well-specified implementation or documentation subtask that can run independently alongside useful work, assign it to a Luna agent. Give it the requirement IDs, slice boundary, acceptance criteria, relevant files or interfaces, and required checks. Review its result against the approved sources before accepting it.
-- If Luna encounters an unclear business rule, an access or data consequence, a schema change, or a failed acceptance criterion, resolve the issue with Sol-level reasoning and involve the Owner only when an approved source does not settle a material product choice.
-- Report the models actually used. Instructions in this file guide routing but do not change an existing task's model automatically.
-
 ## Definition of done and reporting
 
 Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, permission, real persistence, audit/events, UI states, responsive behavior, tests, type check, lint, build and documentation are verified. Unverified work remains IN PROGRESS or BLOCKED. Report actual changes, exact checks, defects, unresolved work and concrete risks. Never claim an unrun check passed.
@@ -66,9 +53,13 @@ Mark a slice COMPLETE only when applicable acceptance, schema, backend, API, per
 
 S01–S15 and S19 are COMPLETE for their authorized development/local-staging scopes; see their completion reports for evidence and limits. S16/S17 accepted source at 6bfd14e is integrated and combined dependency acceptance passed. S20 is COMPLETE for development/local staging on 2026-10-04 under the 2026-10-03 Owner authorization; S20_SPEC.md and S20_COMPLETION_REPORT.md record settled decisions, implemented scope and final evidence. Full pinned pnpm verify exited 0 with 172 API unit, 112 web unit, 220 PostgreSQL integration and 37 desktop/mobile browser tests; all 90 migrations are current and 108 retained original-table snapshots were preserved. A separately identified actual-project R-105 checkpoint remains unverified; local fixture acceptance does not claim production use. S18 authorization conflicts with its separate-branch completion record and remains unresolved; do not start or integrate S18. S21 is COMPLETE for development/local staging on 2026-10-04; see S21_COMPLETION_REPORT.md; S22 is COMPLETE for development/local staging on 2026-10-05; see S22_COMPLETION_REPORT.md for final gates, preservation and the unintended local postgres migration. S23 is COMPLETE for development/local staging on 2026-10-05; see S23_COMPLETION_REPORT.md. Final pinned pnpm verify exited 0 with 186 API unit, 133 web unit, 261 PostgreSQL integration across 48 suites and 43 desktop/mobile browser tests; all 99 migrations are current on 13 dedicated targets, all 134 original-table snapshots are preserved and ten refreshed captures passed Sol visual review. S24 is COMPLETE for development/local staging on 2026-10-05; FINAL3 pinned pnpm verify exited 0 with typecheck/lint/build, 207 API unit/34 suites, 142 web unit/22 files, 280 real PostgreSQL/51 suites and all 45 desktop/mobile browsers without skips or retries. All 104 migrations are current on 15 targets; 137 original S23 tables and 15,474 rows are unchanged, source migration 99 untouched, and Sol accepted the current views and all four PDF pages. See S24_COMPLETION_REPORT.md and S24_ACCEPTANCE_REVIEW.md. S25 is COMPLETE for development/local staging; S26 is COMPLETE for development/local staging; S27 remains unauthorized/excluded. The Windows Playwright managed-server lifecycle caveat remains documented in S01_COMPLETION_REPORT.md; encrypted offsite backup, key custody, production NAS validation and production restore remain production gates.
 
-## Current Owner routing preference
+## Model routing
 
-Aim for approximately 70% Luna and 30% Sol task allocation. Sol handles important decisions, schema/permissions, difficult debugging and final review. Luna handles general work within settled boundaries. This is a task allocation target; report actual models used and do not substitute the ratio for verification.
+Use Opus for design, schema, auth/permissions, state machines, calculations, security review, difficult debugging and final acceptance review. Use Sonnet for bounded, well-specified implementation after the design is settled. Escalate by reasoning risk, not task size. Model choice does not waive verification.
+
+- When delegating implementation to a Sonnet agent, give it the requirement IDs, slice boundary, acceptance criteria, relevant files or interfaces, and required checks. Review its result against the approved sources before accepting it.
+- If a delegated agent encounters an unclear business rule, an access or data consequence, a schema change, or a failed acceptance criterion, resolve it with Opus-level reasoning and involve the Owner only when an approved source does not settle a material product choice.
+- Report the models actually used. Do not claim a check passed that was not run in this session.
 
 
 ## Historical S17 implementation checkpoint — 2026-10-02

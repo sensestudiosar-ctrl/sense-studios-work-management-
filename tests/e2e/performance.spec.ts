@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 const fixtureUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const screenshotDirectory = resolve(process.env.S23_SCREENSHOT_DIR ?? ".env.s23-tools/screenshots");
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 const today = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Kolkata" }).format(new Date());
@@ -17,7 +19,7 @@ test("Owner configures test-only policies, publishes source-backed snapshots and
   const explicitlyEnabledS23Database = process.env.S23_E2E_ENABLED === "1" && /^\/?sense_s15_s19_s17_s20_s22_s23_(?:s24_)?[a-z0-9_]+_test$/i.test(parsed.pathname);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && ((["56433", "57433"].includes(parsed.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)) || (parsed.port === "57433" && /^\/sense_s23_s25_[a-z0-9_]+_test$/i.test(parsed.pathname)));
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(parsed.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && parsed.hostname === "127.0.0.1" && parsed.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && parsed.port !== "56433") || (!explicitlyEnabledS23Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) throw new Error("Performance browser acceptance requires an explicitly enabled isolated S23 or exact S25/S26/S27 database on a local test port");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as typeof import("pg");
@@ -36,6 +38,10 @@ test("Owner configures test-only policies, publishes source-backed snapshots and
   const ownerSecret = randomBytes(32).toString("base64url");
   const ownerCsrf = createHmac("sha256", ownerSecret).update("csrf").digest("base64url");
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     // The preceding identity E2E deliberately deletes its Owner. Provision a
     // local fixture identity with the same readiness records used by other

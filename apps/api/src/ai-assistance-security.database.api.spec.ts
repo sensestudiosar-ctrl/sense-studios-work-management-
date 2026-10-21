@@ -4,6 +4,7 @@ import { jest } from "@jest/globals";
 import { ConflictException, ForbiddenException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { AccountKind, AccountState, PermissionScopeKind, TaskPriority, TaskType } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 import { AuthorizationService } from "./authorization.service.js";
 import { ProjectService, type ProjectActor } from "./project.service.js";
 import { TaskService } from "./task.service.js";
@@ -63,11 +64,15 @@ securityDescribe("S27 assistance current-session authorization and source isolat
   beforeAll(async () => {
     if (!databaseUrl) throw new Error("S27_SECURITY_DATABASE_URL is required");
     const parsed = new URL(databaseUrl);
-    if (!["localhost", "127.0.0.1"].includes(parsed.hostname) || parsed.port !== "57433" || !/^\/sense_s27_security_s27_[a-z0-9_]+_test$/i.test(parsed.pathname)) throw new Error("Refuse anything except the dedicated S27 security PostgreSQL target on loopback port 57433");
+    const legacyS27 = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^\/sense_s27_security_s27_[a-z0-9_]+_test$/i.test(parsed.pathname);
+    const disposableS27 = isS27DisposableTestTarget("S27_SECURITY_DATABASE_URL", databaseUrl);
+    if (!legacyS27 && !disposableS27) throw new Error("Refuse anything except the dedicated S27 security PostgreSQL target on loopback");
     const appConfig = config(databaseUrl);
     database = new DatabaseService(appConfig);
-    const databaseName = (await database.prisma.$queryRaw<Array<{ name: string }>>`SELECT current_database() AS name`)[0]?.name;
+    const server = (await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`)[0];
+    const databaseName = server?.name;
     if (databaseName !== parsed.pathname.slice(1)) throw new Error("S27 security exact database target mismatch");
+    if (disposableS27 && !matchesS27DisposableServer(databaseUrl, databaseName, server!.port)) throw new Error("S27 security disposable database server mismatch");
 
     const authorization = new AuthorizationService(database);
     projects = new ProjectService(database);

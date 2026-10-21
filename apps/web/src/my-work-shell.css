@@ -1,0 +1,379 @@
+/* Shared authenticated workspace shell: final Owner demo, extended app-wide by Owner. */
+.app-shell:has(.workspace-layout--studio) {
+  --sense-ink: #26312b;
+  --sense-ink-strong: #26312b;
+  --sense-ink-muted: #66726b;
+  --sense-canvas: #f7f5f0;
+  --sense-surface: #fff;
+  --sense-surface-muted: #fff;
+  --sense-surface-active: #edf3ed;
+  --sense-border: #e8e8e2;
+  --sense-border-soft: #e8e8e2;
+  --sense-pine: #234a3f;
+  --sense-pine-hover: #2e594e;
+  --sense-focus: #8c6b30;
+  background: #f7f5f0;
+  color: #26312b;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header {
+  z-index: 16;
+  min-height: 64px;
+  flex-wrap: nowrap;
+  gap: .75rem;
+  margin-left: 232px;
+  padding: .55rem 1.5rem;
+  border-bottom-color: #e8e8e2;
+  background: #fff;
+}
+
+.app-shell:has(.workspace-layout--studio) .brand {
+  gap: 0;
+  color: #26312b;
+}
+
+.app-shell:has(.workspace-layout--studio) .brand-mark,
+.app-shell:has(.workspace-layout--studio) .brand small,
+.app-shell:has(.workspace-layout--studio) .phase-badge {
+  display: none;
+}
+
+.app-shell:has(.workspace-layout--studio) .brand strong {
+  font-size: .84rem;
+  letter-spacing: .1em;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header-controls {
+  width: auto;
+  gap: .5rem;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header:has(.site-header-error),
+.app-shell:has(.workspace-layout--studio) .site-header-controls:has(.site-header-error) {
+  flex-wrap: wrap;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header-error {
+  flex-basis: 100%;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header-notifications,
+.app-shell:has(.workspace-layout--studio) .site-header-logout {
+  min-height: 44px;
+  border-color: #e8e8e2;
+  border-radius: 9px;
+  padding: .55rem .85rem;
+  background: #fff;
+  color: #26312b;
+  box-shadow: none;
+  font-size: .78rem;
+  font-weight: 600;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header-notifications:hover,
+.app-shell:has(.workspace-layout--studio) .site-header-notifications[aria-current="page"],
+.app-shell:has(.workspace-layout--studio) .site-header-logout:hover {
+  background: #f5f7f3;
+}
+
+.app-shell:has(.workspace-layout--studio) .site-header-notifications:focus-visible,
+.app-shell:has(.workspace-layout--studio) .site-header-logout:focus-visible {
+  outline: 3px solid #8c6b30;
+  outline-offset: 2px;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-layout--studio {
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
+  margin-left: 232px;
+  padding-bottom: 0;
+  background: #f7f5f0;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-sidebar {
+  position: fixed;
+  z-index: 17;
+  inset: 0 auto 0 0;
+  display: flex;
+  width: 232px;
+  height: 100vh;
+  height: 100dvh;
+  max-height: none;
+  overflow: hidden;
+  padding: 17px 13px 18px;
+  border: 0;
+  background: #234a3f;
+  color: #d8e4db;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-sidebar-header {
+  margin-bottom: .65rem;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-shell-brand {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: .65rem;
+  margin: 0 0 1rem;
+  padding: 0 .45rem;
+  color: #fff;
+  font-size: .77rem;
+  font-weight: 750;
+  letter-spacing: .08em;
+  text-decoration: none;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-shell-brand-mark {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  place-items: center;
+  border: 1px solid #9fb8a1;
+  border-radius: 9px;
+  color: #f9f7ed;
+  font-size: .83rem;
+  font-weight: 800;
+  letter-spacing: -.06em;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-sidebar-title {
+  margin: 0 .35rem .55rem;
+  color: #9bb9aa;
+  font-size: .64rem;
+  font-weight: 750;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-filter-label {
+  margin: 0 .35rem .3rem;
+  color: #b4c9bc;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-filter {
+  min-height: 36px;
+  border-color: #42675b;
+  border-radius: 8px;
+  background: #2e594e;
+  color: #fff;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-filter::placeholder {
+  color: #c5d7cb;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-filter-clear {
+  min-height: 29px;
+  color: #d8e4db;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav {
+  gap: .45rem;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-heading,
+.app-shell:has(.workspace-layout--studio) .workspace-nav-disclosure,
+.app-shell:has(.workspace-layout--studio) .workspace-nav-current-marker {
+  color: #9bb9aa;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-disclosure {
+  min-height: 32px;
+  padding: .3rem .5rem;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-disclosure:hover:not(:disabled),
+.app-shell:has(.workspace-layout--studio) .workspace-nav a:hover,
+.app-shell:has(.workspace-layout--studio) .workspace-nav > a:hover {
+  background: #2e594e;
+  color: #fff;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav a,
+.app-shell:has(.workspace-layout--studio) .workspace-nav > a {
+  min-height: 36px;
+  border-radius: 8px;
+  color: #c5d7cb;
+  font-size: .77rem;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-group-links a .workspace-route-icon,
+.app-shell:has(.workspace-layout--studio) .workspace-nav > a .workspace-route-icon {
+  color: currentColor;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav a[aria-current="page"],
+.app-shell:has(.workspace-layout--studio) .workspace-nav > a[aria-current="page"] {
+  background: #376458;
+  color: #fff;
+  box-shadow: none;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav a[aria-current="page"] .workspace-route-icon,
+.app-shell:has(.workspace-layout--studio) .workspace-nav > a[aria-current="page"] .workspace-route-icon {
+  color: #fff;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-nav-current-marker {
+  background: #376458;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-sidebar :is(a, button, input):focus-visible,
+.app-shell:has(.workspace-layout--studio) .workspace-nav :is(a, button):focus-visible {
+  outline-color: #88b4a3;
+}
+
+.app-shell:has(.workspace-layout--studio) .workspace-page {
+  min-width: 0;
+  min-height: calc(100vh - var(--sense-header-height, 64px));
+  background: #f7f5f0;
+}
+
+.workspace-layout--studio .workspace-dialog-heading h2 { font: 700 1.25rem/1.3 Inter, ui-sans-serif, system-ui, sans-serif; }
+
+.workspace-layout--studio .workspace-page .identity-content { padding: 24px clamp(16px, 3vw, 44px); }
+
+/* The final desktop demo uses an icon rail on tablet. Labels remain available
+   to assistive technology and native tooltips; the page filter expands on focus. */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .app-shell:has(.workspace-layout--studio) :is(.site-header, .workspace-layout--studio) { margin-left: 65px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-sidebar { width: 65px; padding: 20px 9px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-shell-brand { justify-content: center; padding: 0; }
+  .app-shell:has(.workspace-layout--studio) :is(.workspace-shell-brand > span:last-child, .workspace-sidebar-title, .workspace-nav-filter-label, .workspace-nav a > span) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav a { justify-content: center; min-height: 44px; padding: 8px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav-disclosure { min-height: 44px; padding: 3px 0; gap: 2px; font-size: 8px; letter-spacing: 0; }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav-current-marker { display: none; }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav-chevron { width: 8px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav-filter { min-height: 44px; padding: 6px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav-filter::placeholder { color: transparent; }
+  .app-shell:has(.workspace-layout--studio) .workspace-nav-filter-wrap::before { content: '⌕'; position: absolute; top: 8px; left: 14px; color: #c5d7cb; pointer-events: none; }
+  .app-shell:has(.workspace-layout--studio) .workspace-sidebar:has(.workspace-nav-filter:focus) { width: 232px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-sidebar:has(.workspace-nav-filter:focus) .workspace-nav-filter { padding-left: 38px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-sidebar:has(.workspace-nav-filter:focus) .workspace-nav-filter::placeholder { color: #c5d7cb; }
+}
+
+@media (max-width: 767px) {
+  .workspace-layout--studio .workspace-page .identity-content { padding: 16px 12px 24px; }
+  .app-shell:has(.workspace-layout--studio) .workspace-sidebar { display: none; }
+  .app-shell:has(.workspace-layout--studio) .site-header {
+    min-height: 60px;
+    gap: .4rem;
+    margin-left: 0;
+    padding: .45rem .75rem;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .brand strong {
+    font-size: .72rem;
+    letter-spacing: .07em;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .site-header-controls {
+    gap: .3rem;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .site-header-notifications,
+  .app-shell:has(.workspace-layout--studio) .site-header-logout {
+    min-height: 44px;
+    padding: .45rem .55rem;
+    font-size: .7rem;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-layout--studio {
+    margin-left: 0;
+    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-nav {
+    z-index: 18;
+    align-items: stretch;
+    gap: .15rem;
+    min-height: calc(66px + env(safe-area-inset-bottom));
+    padding: .3rem max(.45rem, env(safe-area-inset-right)) calc(.3rem + env(safe-area-inset-bottom)) max(.45rem, env(safe-area-inset-left));
+    border-top-color: #e8e8e2;
+    background: #fff;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-main {
+    align-items: stretch;
+    gap: .1rem;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-main a,
+  .app-shell:has(.workspace-layout--studio) .workspace-more-button {
+    display: flex;
+    min-width: 0;
+    min-height: 44px;
+    flex: 1 1 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: .1rem;
+    padding: .25rem .1rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #66726b;
+    text-align: center;
+    text-decoration: none;
+    font-size: .62rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-main a .workspace-route-icon,
+  .app-shell:has(.workspace-layout--studio) .workspace-more-icon {
+    width: 19px;
+    height: 19px;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-more-icon circle {
+    fill: currentColor;
+    stroke: none;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-main a[aria-current="page"] {
+    background: #edf3ed;
+    color: #234a3f;
+    box-shadow: none;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-more-button[aria-expanded="true"] {
+    background: #edf3ed;
+    color: #234a3f;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-more-button { flex: 0 0 18%; }
+
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-nav :is(a, button):focus-visible {
+    outline: 3px solid #8c6b30;
+    outline-offset: 1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app-shell:has(.workspace-layout--studio) .brand strong {
+    font-size: .66rem;
+  }
+
+  .app-shell:has(.workspace-layout--studio) .site-header-notifications,
+  .app-shell:has(.workspace-layout--studio) .site-header-logout {
+    padding-inline: .4rem;
+    font-size: .66rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-shell:has(.workspace-layout--studio) .workspace-mobile-main a,
+  .app-shell:has(.workspace-layout--studio) .workspace-nav a {
+    transition: none;
+  }
+}

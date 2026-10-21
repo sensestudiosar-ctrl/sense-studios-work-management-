@@ -1,8 +1,10 @@
 import { test, expect } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 test("linked project task is submitted, reviewed from inbox, and assigned correction survives refresh", async ({ page, context, baseURL }, testInfo) => {
   test.setTimeout(150_000);
   test.skip(!process.env.DATABASE_URL, "Dedicated S13 PostgreSQL database required");
@@ -11,7 +13,7 @@ test("linked project task is submitted, reviewed from inbox, and assigned correc
   const explicitlyEnabledS15Database = process.env.S15_E2E_ENABLED === "1" && /^\/sense_s15_[a-z0-9_]*_test$/.test(url.pathname);
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && ((["56433", "57433"].includes(url.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(url.pathname)) || (url.port === "57433" && /^\/sense_s13_s25_[a-z0-9_]+_test$/i.test(url.pathname)));
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(url.hostname) && url.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(url.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && url.hostname === "127.0.0.1" && url.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(url.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && url.hostname === "127.0.0.1" && url.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(url.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(url.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && url.port !== "56433") || (!dedicatedS13Database && !explicitlyEnabledS15Database && !explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database)) throw new Error("Review browser fixture requires an isolated local S13, explicitly enabled S15, or explicitly enabled exact S25/S26/S27 test database");
   const require = createRequire(resolve("apps/api/package.json"));
   const { Client } = require("pg") as typeof import("pg");
@@ -31,6 +33,10 @@ test("linked project task is submitted, reviewed from inbox, and assigned correc
   const projectTitle = `S13 browser review ${suffix.slice(0, 8)}`;
   const taskTitle = `Submit for review ${suffix.slice(0, 8)}`;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   let ownerAccountId: string;
   try {
     await db.query("BEGIN");

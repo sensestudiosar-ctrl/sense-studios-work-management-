@@ -1,10 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { lstat, mkdir } from "node:fs/promises";
 import { resolve, relative, sep } from "node:path";
 
 const fixtureUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const screenshotRoot = resolve(process.env.S27_SCREENSHOT_DIR ?? ".env.s27-tools/runs/missing/screenshots");
 type QueryResult<T> = { rows: T[]; rowCount: number | null };
 type FixtureDatabase = { connect(): Promise<void>; query<T extends Record<string, unknown> = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<QueryResult<T>>; end(): Promise<void> };
@@ -14,7 +16,7 @@ test("S27 Owner creates, decides, and records a source-verified assignment obser
   page.setDefaultTimeout(20_000);
   test.skip(process.env.S27_E2E_ENABLED !== "1" || !fixtureUrl, "Set S27_E2E_ENABLED=1 with the dedicated S27 PostgreSQL fixture");
   const parsed = new URL(fixtureUrl!);
-  if (process.env.S27_E2E_ENABLED !== "1" || parsed.hostname !== "127.0.0.1" || parsed.port !== "57433" || !/^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname)) throw new Error("S27 browser acceptance requires the explicitly enabled exact S27 main PostgreSQL test target on loopback port 57433");
+  if (!disposableS27Database && (process.env.S27_E2E_ENABLED !== "1" || parsed.hostname !== "127.0.0.1" || parsed.port !== "57433" || !/^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(parsed.pathname))) throw new Error("S27 browser acceptance requires the explicitly enabled exact S27 main PostgreSQL test target on loopback port 57433");
   const runId = process.env.S27_RUN_ID ?? "";
   if (!/^[a-z0-9-]{8,64}$/i.test(runId)) throw new Error("S27_SCREENSHOT_DIR requires the unique S27_RUN_ID");
   const screenshotBase = resolve(".env.s27-tools/runs");
@@ -28,6 +30,10 @@ test("S27 Owner creates, decides, and records a source-verified assignment obser
   const ownerToken = randomBytes(32).toString("base64url"), csrf = createHmac("sha256", ownerToken).update("csrf").digest("base64url");
   let ownerId: string, organizationId: string, branchId: string, teamId: string, employeeId: string;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(61027001)");

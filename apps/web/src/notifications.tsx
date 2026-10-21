@@ -91,6 +91,8 @@ export function NotificationCenter({ csrfToken, initiallyOpen = false }: { csrfT
       });
       if (!response.ok) throw new Error("request");
       await load();
+      // Re-fetching the inbox reflects the new read state in the nav badge.
+      window.dispatchEvent(new Event("sense-notifications-read"));
     } catch {
       setError("We couldn’t save that change. Try again.");
     } finally {
@@ -171,7 +173,10 @@ export function NotificationCenter({ csrfToken, initiallyOpen = false }: { csrfT
       {open && <>
         {loading && <p role="status" className="identity-note">Loading notifications…</p>}
         {error && <div className="sessions-error"><p role="alert" className="auth-error">{error}</p><button className="secondary-action" type="button" onClick={() => void load()}>Try again</button></div>}
-        {!loading && !error && inbox?.items.length === 0 && <p className="identity-note" role="status">Your inbox is clear. New authorized updates will appear here.</p>}
+        {!loading && !error && inbox?.items.length === 0 && <div className="notification-center-empty task-empty-state" role="status">
+          <svg className="task-empty-state__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+          <p className="task-empty-state__title">Your inbox is clear. New authorized updates will appear here.</p>
+        </div>}
         {!loading && !error && inbox && inbox.items.length > 0 && <ul className="notification-list">
           {inbox.items.map((item) => <li className={item.readAt ? "notification-item is-read" : "notification-item"} key={item.id}>
             <div className="notification-copy">
@@ -199,7 +204,10 @@ export function NotificationCenter({ csrfToken, initiallyOpen = false }: { csrfT
             {verificationMessage && <p className="identity-note" role="status">{verificationMessage}</p>}
             {verificationError && <p className="auth-error" role="alert">{verificationError}</p>}
           </div> : <p className="identity-note" role="status">Checking email verification…</p>}
-          {emailStatus.length === 0 ? <p className="identity-note" role="status">No email notifications have been queued.</p> : <ul className="notification-preference-list">
+          {emailStatus.length === 0 ? <div className="notification-preference-empty" role="status">
+            <svg className="notification-preference-empty__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+            <p className="identity-note">No email notifications have been queued.</p>
+          </div> : <ul className="notification-preference-list">
             {emailStatus.map((item) => <li key={item.id}>
               <span><strong>{item.title}</strong><small>{item.deliveryState === "DELIVERED" ? "Delivered" : item.deliveryState === "DEAD" ? "Not delivered" : "Pending"}{emailFailure(item.failureCode) ? ` · ${emailFailure(item.failureCode)}` : ""}</small></span>
               <span>{item.attempts} attempts</span>
@@ -215,7 +223,10 @@ export function NotificationCenter({ csrfToken, initiallyOpen = false }: { csrfT
               {settings.preferences.map((item) => <li key={`${item.category}:${item.channel}`}>
                 <span><strong>{item.category}</strong> · {item.channel}</span><span>{item.enabled ? "On" : "Off"}</span>
               </li>)}
-            </ul> : <p className="identity-note" role="status">No optional preferences are saved.</p>}
+            </ul> : <div className="notification-preference-empty" role="status">
+              <svg className="notification-preference-empty__icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10m-7 6h4"/></svg>
+              <p className="identity-note">No optional preferences are saved.</p>
+            </div>}
             <form className="notification-form" onSubmit={(event) => void savePreference(event)}>
               <label htmlFor="notification-category">Category</label><input id="notification-category" value={category} onChange={(event) => setCategory(event.target.value)} maxLength={100} pattern="[a-zA-Z0-9][a-zA-Z0-9._-]{0,99}" required />
               <label htmlFor="notification-channel">Channel</label><select id="notification-channel" value={channel} onChange={(event) => setChannel(event.target.value as Channel)}><option value="EMAIL">Email</option><option value="IN_APP">In app</option></select>

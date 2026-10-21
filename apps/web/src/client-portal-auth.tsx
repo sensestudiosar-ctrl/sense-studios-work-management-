@@ -76,7 +76,7 @@ function dateLabel(value: string): string {
   return Number.isNaN(time.getTime()) ? "Time unavailable" : time.toLocaleString();
 }
 
-export function ClientPortalAuth(): React.JSX.Element {
+export function ClientPortalAuth({ accountOnly = false, onSessionEnded }: { accountOnly?: boolean; onSessionEnded?: () => void } = {}): React.JSX.Element {
   const [session, setSession] = useState<PortalSession | null>();
   const [sessionNotice, setSessionNotice] = useState("");
   const [email, setEmail] = useState("");
@@ -96,6 +96,7 @@ export function ClientPortalAuth(): React.JSX.Element {
   const [businessOpen, setBusinessOpen] = useState(false);
   const [costsOpen, setCostsOpen] = useState(false);
   const [dashboardOpen, setDashboardOpen] = useState(false);
+  useEffect(() => { if (session === null) onSessionEnded?.(); }, [session, onSessionEnded]);
 
   const restoreSession = useCallback(async (): Promise<PortalSession | null> => {
     try {
@@ -309,11 +310,12 @@ export function ClientPortalAuth(): React.JSX.Element {
           <button className="client-portal-secondary" type="button" onClick={() => void signOut()} disabled={logoutBusy}>{logoutBusy ? "Signing out…" : "Sign out"}</button>
         </header>
         <p className="client-portal-intro">Manage sign-in security and active sessions for this client account.</p>
-      <section className="client-portal-business-nav" aria-label="Client project workspace">
+      {!accountOnly && <section className="client-portal-business-nav" aria-label="Client project workspace">
         <button type="button" className="client-portal-secondary" aria-expanded={dashboardOpen} onClick={() => setDashboardOpen((open) => !open)}>{dashboardOpen ? "Hide project dashboard" : "Open project dashboard"}</button>
         <button type="button" className="client-portal-secondary" aria-expanded={businessOpen} onClick={() => setBusinessOpen((open) => !open)}>{businessOpen ? "Hide project reviews" : "Open project reviews"}</button>
         <button type="button" className="client-portal-secondary" aria-expanded={costsOpen} onClick={() => setCostsOpen((open) => !open)}>{costsOpen ? "Hide approved cost snapshots" : "View approved cost snapshots"}</button>
       </section>
+      }
       {dashboardOpen && <ClientDashboard session={session} />}
       {businessOpen && <ClientReviewPortal session={session} />}
       {costsOpen && <ClientApprovedCostSnapshots />}
@@ -359,7 +361,7 @@ export function ClientPortalAuth(): React.JSX.Element {
   );
 }
 
-function ClientApprovedCostSnapshots(): React.JSX.Element {
+export function ClientApprovedCostSnapshots(): React.JSX.Element {
   const [projects, setProjects] = useState<SharedCostProject[]>([]);
   const [projectId, setProjectId] = useState("");
   const [snapshots, setSnapshots] = useState<SharedCostSnapshot[] | null>(null);

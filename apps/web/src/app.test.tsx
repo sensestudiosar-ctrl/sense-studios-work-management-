@@ -9,23 +9,40 @@ vi.mock("@simplewebauthn/browser", () => ({ startAuthentication, startRegistrati
 const account = { id: "acct_1", email: "owner@example.test", kind: "OWNER" as const };
 const session = { account, csrfToken: "csrf-test-token" };
 
-function renderApp(path = "/workspace"): void {
+function renderApp(path = "/"): void {
   render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
 }
 
 function response(body: unknown, status = 200): Response {
-  return { ok: status >= 200 && status < 300, status, json: async () => body } as Response;
+  return { ok: status >= 200 && status < 300, status, json: async () => body, text: async () => JSON.stringify(body) } as Response;
 }
 
-function stubFetchWithCrmSetup(fetchMock: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>): void {
+function stubFetchWithCrmSetup(fetchMock: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>, headerSessionResponse: Response): void {
+  let headerSessionRead = true;
   vi.stubGlobal("fetch", vi.fn((input: RequestInfo | URL, init?: RequestInit) => {
     const url = String(input);
+    if (url === "/api/v1/auth/session" && headerSessionRead) {
+      headerSessionRead = false;
+      return Promise.resolve(headerSessionResponse);
+    }
     if (url === "/api/v1/crm/setup") return Promise.resolve(response({ branches: [], sources: [], owner: false }));
     if (url === "/api/v1/project-templates") return Promise.resolve(response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } }));
     if (url === "/api/v1/projects/setup") return Promise.resolve(response({ branches: [] }));
     if (url.startsWith("/api/v1/projects?")) return Promise.resolve(response({ total: 0, items: [] }));
-    if (url === "/api/v1/tasks/setup") return Promise.resolve(response({ actorEmployeeId: null, projects: [], employees: [], canAssign: false }));
+    if (url === "/api/v1/tasks/setup") return Promise.resolve(response({ actorEmployeeId: null, projects: [], employees: [], planItems: [], canAssign: false }));
     if (url.startsWith("/api/v1/tasks?")) return Promise.resolve(response({ total: 0, items: [] }));
+    if (url === "/api/v1/site/projects") return Promise.resolve(response({ items: [] }));
+    if (url === "/api/v1/reports/context") return Promise.resolve(response({ categories: [], eventNames: [], owner: false }));
+    if (url === "/api/v1/dashboard/schedules") return Promise.resolve(response({ rules: [] }));
+    if (url === "/api/v1/dashboard/reminders") return Promise.resolve(response({ reminders: [] }));
+    if (url === "/api/v1/dashboard/summaries") return Promise.resolve(response({ summaries: [] }));
+    if (url === "/api/v1/reports/snapshots") return Promise.resolve(response({ snapshots: [] }));
+    // The workspace shell polls its unread count for the navigation badge; it is
+    // not the subject of these journeys, so absorb it here rather than letting it
+    // shift the positional mock queues below.
+    if (url === "/api/v1/notifications/unread") return Promise.resolve(response({ unread: 0, critical: 0 }));
+    const source = url.match(/^\/api\/v1\/dashboard\/sources\/(tasks|decisions|health|performance|workload|site|training)$/)?.[1];
+    if (source) return Promise.resolve(response({ source, today: "2026-10-13", readCompletedAt: "2026-10-13T00:00:00.000Z", sections: [], ...(source === "decisions" ? { decisions: { items: [], nextCursor: null } } : {}) }));
     return fetchMock(input, init);
   }));
 }
@@ -34,10 +51,36 @@ beforeEach(() => {
   vi.restoreAllMocks();
   startAuthentication.mockReset();
   startRegistration.mockReset();
+  localStorage.clear();
   Object.defineProperty(window, "PublicKeyCredential", { configurable: true, value: class {} });
 });
 
 describe("identity authentication shell", () => {
+  it("offers organization setup for the server's successful empty response without a false load error", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) === "/api/v1/auth/session") return response({ ...session, ownerSetupRequired: false });
+      if (String(input) === "/api/v1/org") return new Response("", { status: 200 });
+      return response([]);
+    }));
+    renderApp("/settings?section=organization");
+    fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
+    expect(await screen.findByRole("heading", { name: "Set up the organization" })).toBeInTheDocument();
+    expect(screen.queryByText(/couldn’t load organization settings/)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Create organization" })).toBeDisabled();
+  });
+
+  it.each([403, 503])("does not offer organization creation after an unsuccessful setup read (%s)", async status => {
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) === "/api/v1/auth/session") return response({ ...session, ownerSetupRequired: false });
+      if (String(input) === "/api/v1/org") return response({}, status);
+      return response([]);
+    }));
+    renderApp("/settings?section=organization");
+    fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(status === 403 ? "Organization access is restricted" : "couldn’t load organization settings");
+    expect(screen.queryByRole("heading", { name: "Set up the organization" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Create organization" })).not.toBeInTheDocument();
+  });
   it("opens the internal evidence assistance workspace through authenticated navigation", async () => {
     stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
@@ -45,28 +88,41 @@ describe("identity authentication shell", () => {
       if (url === "/api/v1/ai/context") return response({ provider: "deterministic-evidence-v1", providerVersion: "1", requestKinds: ["DAILY", "PROJECT", "MANAGEMENT", "ASSIGNMENT"], capabilities: { DAILY: true, PROJECT: true, MANAGEMENT: true, ASSIGNMENT: true, canDecide: true }, projects: [], tasks: [] });
       if (url === "/api/v1/ai/runs") return response({ items: [] });
       return response({});
-    }));
+    }), response(session));
     renderApp("/assistance");
     expect(await screen.findByRole("heading", { name: "Evidence assistance" })).toBeInTheDocument();
     expect(await screen.findByText(/no live inference or external data transmission/i)).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: "Evidence assistance" }).length).toBeGreaterThan(0);
   });
 
-  it("lands a ready signed-in account on My Work while retaining the accepted destinations", async () => {
+  it("lands a ready signed-in account on Dashboard while retaining the accepted destinations", async () => {
     stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
       if (url === "/api/v1/auth/session") return response(session);
       if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
-      return response({ total: 0, items: [] });
-    }));
+      if (url === "/api/v1/reports/context") return response({ categories: [], eventNames: [], owner: true });
+      if (url === "/api/v1/dashboard/schedules") return response({ rules: [] });
+      if (url === "/api/v1/dashboard/reminders") return response({ reminders: [] });
+      if (url === "/api/v1/dashboard/summaries") return response({ summaries: [] });
+      if (url === "/api/v1/reports/snapshots") return response({ snapshots: [] });
+      const source = url.match(/^\/api\/v1\/dashboard\/sources\/(tasks|decisions|health|performance|workload|site|training)$/)?.[1];
+      if (source) return response({ source, today: "2026-10-13", readCompletedAt: "2026-10-13T00:00:00.000Z", sections: [], ...(source === "decisions" ? { decisions: { items: [], nextCursor: null } } : {}) });
+      return response({}, 404);
+    }), response(session));
     renderApp("/");
-    expect(await screen.findByRole("heading", { name: "Decisions awaiting you" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "You’re signed in." })).not.toBeInTheDocument();
-    for (const name of ["Account & settings", "Dashboard & reports", "Performance", "External access", "Turnkey operations", "Site delivery"]) expect(screen.getAllByRole("link", { name }).length).toBeGreaterThan(0);
+    const desktopNav = screen.getByRole("navigation", { name: "Workspace navigation" });
+    for (const group of ["Work", "People", "Insights", "Manage"]) {
+      const disclosure = within(desktopNav).getByRole("button", { name: group });
+      if (disclosure.getAttribute("aria-expanded") !== "true") fireEvent.click(disclosure);
+    }
+    for (const name of ["Account & settings", "Dashboard", "Performance", "External access", "Turnkey operations", "Site delivery"]) expect(screen.getAllByRole("link", { name }).length).toBeGreaterThan(0);
     expect(screen.getAllByRole("link", { name: "Learning" }).length).toBeGreaterThan(0);
     fireEvent(window, new Event("sense-session-ended"));
-    expect(await screen.findByRole("heading", { name: "Sign in to view My Work" })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "Decisions awaiting you" })).not.toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Sign in to view your dashboard" })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+    expect(screen.queryByText("owner@example.test")).not.toBeInTheDocument();
   });
 
   it.each([
@@ -82,7 +138,7 @@ describe("identity authentication shell", () => {
       if (url === "/api/v1/notifications/email-status") return response({ verified: true, available: true, items: [] });
       return response({}, 404);
     });
-    stubFetchWithCrmSetup(fetchMock);
+    stubFetchWithCrmSetup(fetchMock, response(currentSession));
     renderApp("/settings?section=notifications");
 
     expect(await screen.findByRole("heading", { name: "Settings" })).toBeInTheDocument();
@@ -97,7 +153,7 @@ describe("identity authentication shell", () => {
   });
 
   it.each(["/my-work", "/tasks", "/projects"])("requires a session before opening %s", async (path) => {
-    stubFetchWithCrmSetup(vi.fn(async () => response({}, 401)));
+    stubFetchWithCrmSetup(vi.fn(async () => response({}, 401)), response({}, 401));
     renderApp(path);
     expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
@@ -105,7 +161,7 @@ describe("identity authentication shell", () => {
 
 
   it.each(["/tasks", "/documents", "/reviews"])("removes the protected route %s on a session-ended signal", async (path) => {
-    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response(session) : response({ branches: [], total: 0, items: [], categories: [] })));
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response(session) : response({ branches: [], total: 0, items: [], categories: [] })), response(session));
     renderApp(path);
     expect(await screen.findByRole("navigation", { name: "Workspace navigation" })).toBeInTheDocument();
     fireEvent(window, new Event("sense-session-ended"));
@@ -114,52 +170,119 @@ describe("identity authentication shell", () => {
   });
 
   it.each(["/my-work", "/tasks", "/documents", "/reviews", "/projects"])("ignores a late session response after explicit session loss on %s", async (path) => {
-    let resolveRefresh: ((value: Response) => void) | undefined;
+    const resolveRefresh: Array<(value: Response) => void> = [];
     let authCalls = 0;
     stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
       if (String(input) !== "/api/v1/auth/session") return response({ branches: [], total: 0, items: [], categories: [], nextCursor: null });
       authCalls += 1;
       if (authCalls === 1) return response(session);
-      return new Promise<Response>(resolve => { resolveRefresh = resolve; });
-    }));
+      return new Promise<Response>(resolve => { resolveRefresh.push(resolve); });
+    }), response(session));
     renderApp(path);
     expect(await screen.findByRole("navigation", { name: "Workspace navigation" })).toBeInTheDocument();
     fireEvent(window, new Event("focus"));
-    await waitFor(() => expect(resolveRefresh).toBeDefined());
+    await waitFor(() => expect(resolveRefresh).toHaveLength(2));
     fireEvent(window, new Event("sense-session-ended"));
     expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
-    await act(async () => { resolveRefresh!(response(session)); });
+    await act(async () => { resolveRefresh.forEach(resolve => resolve(response(session))); });
     expect(screen.getByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
   });
 
   it("clears Learning after session loss and ignores a late refresh", async () => {
-    let resolveRefresh: ((value: Response) => void) | undefined;
+    const resolveRefresh: Array<(value: Response) => void> = [];
     let authCalls = 0;
     stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
       if (String(input) === "/api/v1/auth/session") {
         authCalls += 1;
         if (authCalls === 1) return response(session);
-        return new Promise<Response>(resolve => { resolveRefresh = resolve; });
+        return new Promise<Response>(resolve => { resolveRefresh.push(resolve); });
       }
       if (String(input) === "/api/v1/skills/setup") return response({ skills: [], employees: [], eligibleApprovers: [] });
       if (String(input) === "/api/v1/training/setup") return response({ employees: [], modulesByEmployee: [], reviewers: [], practicalTasks: [], assignments: [], capabilities: { currentAccountId: session.account.id, manageableEmployeeIds: [], canManage: false, canSubmit: false } });
       return response({ items: [], total: 0 });
-    }));
+    }), response(session));
     renderApp("/learning");
     expect(await screen.findByRole("heading", { name: "Skills" })).toBeInTheDocument();
     fireEvent(window, new Event("focus"));
-    await waitFor(() => expect(resolveRefresh).toBeDefined());
+    await waitFor(() => expect(resolveRefresh).toHaveLength(2));
     fireEvent(window, new Event("sense-session-ended"));
     expect(await screen.findByRole("heading", { name: "Sign in to view Learning" })).toBeInTheDocument();
-    await act(async () => { resolveRefresh!(response(session)); });
+    await act(async () => { resolveRefresh.forEach(resolve => resolve(response(session))); });
     expect(screen.getByRole("heading", { name: "Sign in to view Learning" })).toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
   });
 
+  const protectedRoutePaths = [
+    "/revisions", "/client-reviews", "/turnkey", "/time", "/workforce", "/performance", "/project-health",
+    "/dashboard", "/reports", "/integrations", "/automation", "/saved-reports", "/site", "/assistance",
+  ];
+
+  it.each(protectedRoutePaths)("keeps %s signed out when its initial session read finishes after session loss", async path => {
+    const pendingReads: Array<(value: Response) => void> = [];
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) === "/api/v1/auth/session") return new Promise<Response>(resolve => { pendingReads.push(resolve); });
+      return response({}, 404);
+    }), response(session));
+    renderApp(path);
+    await waitFor(() => expect(pendingReads).toHaveLength(1));
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    await act(async () => { pendingReads[0]!(response(session)); });
+    expect(screen.getByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+    expect(screen.queryByText("owner@example.test")).not.toBeInTheDocument();
+  });
+
+  it.each(protectedRoutePaths)("removes the authenticated %s workspace on explicit session loss", async path => {
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response(session) : response({}, 404)), response(session));
+    renderApp(path);
+    expect(await screen.findByRole("navigation", { name: "Workspace navigation" })).toBeInTheDocument();
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+    expect(screen.queryByText("owner@example.test")).not.toBeInTheDocument();
+  });
+
+  it.each(protectedRoutePaths)("ignores delayed %s session refreshes after session loss", async path => {
+    let routeReads = 0;
+    const pendingReads: Array<(value: Response) => void> = [];
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) !== "/api/v1/auth/session") return response({}, 404);
+      routeReads += 1;
+      if (routeReads === 1) return response(session);
+      return new Promise<Response>(resolve => { pendingReads.push(resolve); });
+    }), response(session));
+    renderApp(path);
+    expect(await screen.findByRole("navigation", { name: "Workspace navigation" })).toBeInTheDocument();
+    fireEvent(window, new Event("focus"));
+    await waitFor(() => expect(pendingReads).toHaveLength(2));
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    await act(async () => { pendingReads.forEach(resolve => resolve(response(session))); });
+    expect(screen.getByRole("heading", { name: /Sign in to/ })).toBeInTheDocument();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+    expect(screen.queryByText("owner@example.test")).not.toBeInTheDocument();
+  });
+
+  it("clears the local Site fallback and account pointer when a session ends", async () => {
+    const pointerKey = "sense-site-offline-pointer-v1";
+    localStorage.setItem(pointerKey, JSON.stringify({ accountId: "acct_1", projectId: "project-1", projectTitle: "Project" }));
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input) === "/api/v1/auth/session") throw new Error("identity service unavailable");
+      return response({}, 404);
+    }), response(session));
+    renderApp("/site");
+    expect(await screen.findByRole("heading", { name: "Offline site capture unavailable" })).toBeInTheDocument();
+    fireEvent(window, new Event("sense-session-ended"));
+    expect(await screen.findByRole("heading", { name: "Sign in to view site delivery" })).toBeInTheDocument();
+    expect(localStorage.getItem(pointerKey)).toBeNull();
+    expect(screen.queryByRole("navigation", { name: "Workspace navigation" })).not.toBeInTheDocument();
+  });
+
   it("restores the session and shows only the authenticated identity", async () => {
-    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input).startsWith("/api/v1/approvals/attention") ? response({ items: [], nextCursor: null }) : response(session)));
-    renderApp();
+    stubFetchWithCrmSetup(vi.fn(async (input: RequestInfo | URL) => String(input).startsWith("/api/v1/approvals/attention") ? response({ items: [], nextCursor: null }) : response(session)), response(session));
+    renderApp("/workspace");
 
     expect(screen.getByRole("status")).toHaveTextContent(/Checking your session/);
     expect(await screen.findByRole("heading", { name: "You’re signed in." })).toBeInTheDocument();
@@ -175,9 +298,9 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response(session))
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]));
-    stubFetchWithCrmSetup(fetchMock);
+    stubFetchWithCrmSetup(fetchMock, response({}, 401));
     startAuthentication.mockResolvedValue({ id: "credential-response" });
-    renderApp();
+    renderApp("/workspace");
 
     fireEvent.change(await screen.findByLabelText("Work email"), { target: { value: "owner@example.test" } });
     fireEvent.click(screen.getByRole("button", { name: "Continue with passkey" }));
@@ -197,8 +320,8 @@ describe("identity authentication shell", () => {
   it("shows a generic invalid response without exposing account details", async () => {
     stubFetchWithCrmSetup(vi.fn()
       .mockResolvedValueOnce(response({}, 401))
-      .mockResolvedValueOnce(response({}, 401)));
-    renderApp();
+      .mockResolvedValueOnce(response({}, 401)), response({}, 401));
+    renderApp("/");
     fireEvent.change(await screen.findByLabelText("Work email"), { target: { value: "unknown@example.test" } });
     fireEvent.click(screen.getByRole("button", { name: "Continue with passkey" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/couldn’t sign you in/i);
@@ -208,8 +331,8 @@ describe("identity authentication shell", () => {
   it("reports network failure and passkey cancellation in generic terms", async () => {
     stubFetchWithCrmSetup(vi.fn()
       .mockResolvedValueOnce(response({}, 401))
-      .mockRejectedValueOnce(new Error("offline")));
-    renderApp();
+      .mockRejectedValueOnce(new Error("offline")), response({}, 401));
+    renderApp("/");
     fireEvent.change(await screen.findByLabelText("Work email"), { target: { value: "owner@example.test" } });
     fireEvent.click(screen.getByRole("button", { name: "Continue with passkey" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/couldn’t reach the sign-in service/i);
@@ -226,8 +349,8 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({}));
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
     fireEvent.click(await screen.findByRole("button", { name: "Sign out" }));
     expect(await screen.findByText(/You’ve signed out/)).toBeInTheDocument();
     expect(fetchMock.mock.calls.find(([url]) => url === "/api/v1/auth/logout")?.[1]).toMatchObject({
@@ -236,14 +359,37 @@ describe("identity authentication shell", () => {
     });
   });
 
+  it("header logout clears protected content and reaches the normal sign-in route", async () => {
+    let signedOut = false;
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === "/api/v1/auth/logout") { signedOut = true; return response({}); }
+      if (url === "/api/v1/auth/session") return signedOut ? response({}, 401) : response(session);
+      if (url === "/api/v1/notifications") return response({ items: [], nextCursor: null });
+      return response([]);
+    });
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/tasks");
+    fireEvent.click(await screen.findByRole("button", { name: "Log out" }));
+    expect(await screen.findByLabelText("Work email")).toBeInTheDocument();
+    expect(screen.queryByText("We couldn’t sign you out. Try again.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Log out" })).not.toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledWith("/api/v1/auth/logout", expect.objectContaining({
+      method: "POST", headers: { "X-CSRF-Token": "csrf-test-token" },
+    }));
+  });
+
   it("returns to sign in when a refreshed session has been revoked", async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(response(session))
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockResolvedValueOnce(response([]))
       .mockResolvedValueOnce(response({}, 401));
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    fetchMock.mockResolvedValueOnce(response({}, 401));
+    // A revoked server session keeps returning401 to every concurrent probe.
+    fetchMock.mockResolvedValue(response({}, 401));
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
     expect(await screen.findByRole("heading", { name: "You’re signed in." })).toBeInTheDocument();
     fireEvent.focus(window);
     await waitFor(() => expect(screen.getByLabelText("Work email")).toBeInTheDocument());
@@ -266,7 +412,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ recoveryCode: "offline-recovery-code-once" }))
       .mockResolvedValueOnce(response({ acknowledged: true }))
       .mockResolvedValueOnce(response(readySession));
-    stubFetchWithCrmSetup(fetchMock);
+    stubFetchWithCrmSetup(fetchMock, response({}, 401));
     startRegistration.mockResolvedValue({ id: "registration-response" });
     renderApp("/bootstrap");
 
@@ -295,7 +441,7 @@ describe("identity authentication shell", () => {
       return response({}, 404);
     }));
     startRegistration.mockRejectedValue(Object.assign(new Error("Previously registered"), { code: "ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED", name: "InvalidStateError" }));
-    renderApp();
+    renderApp("/workspace");
     fireEvent.click(await screen.findByRole("button", { name: "Add second passkey" }));
     expect(await screen.findByRole("alert")).toHaveTextContent(/already registered.*different passkey method/i);
     expect(screen.queryByText(/couldn’t reach the identity service/i)).not.toBeInTheDocument();
@@ -308,13 +454,13 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
       .mockResolvedValueOnce(response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }))
       .mockImplementation(async (input: RequestInfo | URL) => String(input) === "/api/v1/auth/session" ? response({ ...session, account: { ...account, kind: "STAFF" }, ownerSetupRequired: false }) : response({ total: 0, items: [], nextCursor: null }));
-    stubFetchWithCrmSetup(fetchMock);
+    stubFetchWithCrmSetup(fetchMock, response({}, 401));
     startRegistration.mockResolvedValue({ id: "staff-registration" });
     renderApp("/enroll");
     fireEvent.change(screen.getByLabelText("One-time enrollment token"), { target: { value: "t".repeat(44) } });
     fireEvent.click(screen.getByRole("button", { name: "Continue" }));
     fireEvent.click(await screen.findByRole("button", { name: "Register staff passkey" }));
-    expect(await screen.findByRole("heading", { name: "Decisions awaiting you" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
     expect(fetchMock.mock.calls[0]?.[0]).toBe("/api/v1/auth/staff/invitations/options");
     expect(JSON.parse(fetchMock.mock.calls[1]?.[1]?.body as string)).toMatchObject({ token: "t".repeat(44), ceremonyId: "staff-c" });
   });
@@ -326,7 +472,7 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ ...session, ownerSetupRequired: true, activePasskeyCount: 1 }))
       .mockResolvedValueOnce(response({ ...session, ownerSetupRequired: true, activePasskeyCount: 1 }))
       .mockResolvedValueOnce(response([]));
-    stubFetchWithCrmSetup(fetchMock);
+    stubFetchWithCrmSetup(fetchMock, response(session));
     startRegistration.mockResolvedValue({ id: "replacement-registration" });
     renderApp("/owner-recovery");
     fireEvent.change(screen.getByLabelText("Owner work email"), { target: { value: "owner@example.test" } });
@@ -347,8 +493,8 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ account: { id: "staff-account-id", email: "staff@example.test", state: "ACTIVE" } }))
       .mockResolvedValueOnce(response({ revokedSessions: 2 }))
       .mockResolvedValueOnce(response({ recoveryToken: "recovery-once-token", expiresInSeconds: 86400 }));
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
     fireEvent.change(await screen.findByLabelText("Invite staff by work email"), { target: { value: "staff@example.test" } });
     fireEvent.click(screen.getByRole("button", { name: "Create invitation" }));
     expect(await screen.findByDisplayValue("invite-once-token")).toBeInTheDocument();
@@ -377,8 +523,8 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response({ items: [], nextCursor: null }))
       .mockReturnValueOnce(pendingSessions)
       .mockResolvedValueOnce(response([]));
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
 
     expect(await screen.findByText("Loading your sessions…")).toBeInTheDocument();
     finishSessionsRequest(response({}, 503));
@@ -404,8 +550,8 @@ describe("identity authentication shell", () => {
       .mockResolvedValueOnce(response([current, other]))
       .mockResolvedValueOnce(response({}, 204))
       .mockResolvedValueOnce(response([current, revoked]));
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
 
     expect(await screen.findByText("Chrome on Windows")).toBeInTheDocument();
     expect(screen.getByText("This device")).toBeInTheDocument();
@@ -467,12 +613,15 @@ describe("identity authentication shell", () => {
       }
       return response({}, 404);
     });
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
 
     fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
     expect(await screen.findByRole("heading", { name: "Job role permission bundles" })).toBeInTheDocument();
     expect(await screen.findByLabelText("Permission key")).toBeInTheDocument();
+    const permissionPicker = screen.getByRole("combobox", { name: "Permission key" });
+    expect(within(permissionPicker).getByRole("option", { name: "View managed employees" })).toHaveValue("org.employee.read");
+    expect(within(permissionPicker).queryByRole("option", { name: "projects.read" })).not.toBeInTheDocument();
     expect(fetchMock.mock.calls.filter(([url]) => url === "/api/v1/org")).toHaveLength(1);
     fireEvent.change(screen.getByLabelText("Job role"), { target: { value: role.id } });
     fireEvent.change(screen.getByLabelText("Permission key"), { target: { value: "org.employee.read" } });
@@ -488,13 +637,61 @@ describe("identity authentication shell", () => {
 
     const employeeRow = screen.getByText(employee.account.normalizedEmail).closest("li") as HTMLElement;
     fireEvent.click(within(employeeRow).getByRole("button", { name: "Manage access overrides" }));
-    fireEvent.change(within(employeeRow).getByLabelText("Permission key"), { target: { value: "task.review" } });
+    fireEvent.change(within(employeeRow).getByLabelText("Permission key"), { target: { value: "review.decide" } });
     fireEvent.change(within(employeeRow).getByLabelText("Reason"), { target: { value: "Temporarily deny review access" } });
     fireEvent.click(within(employeeRow).getByRole("button", { name: "Save override" }));
     const overrideRow = await within(employeeRow).findByText("DENY", { selector: "strong" });
     expect(fetchMock.mock.calls.some(([url, init]) => url === `/api/v1/org/employees/${employee.id}/permissions` && init?.method === "POST" && JSON.parse(String(init.body)).effect === "DENY")).toBe(true);
-    fireEvent.click(within(overrideRow.closest("li") as HTMLElement).getByRole("button", { name: "Revoke task.review override from designer@example.test" }));
+    fireEvent.click(within(overrideRow.closest("li") as HTMLElement).getByRole("button", { name: "Revoke review.decide override from designer@example.test" }));
     await waitFor(() => expect(employeeOverrides).toHaveLength(0));
+  });
+
+  it("refreshes stale role-presentation hints and lets the Owner clear them without changing permissions", async () => {
+    const ownerSession = { ...session, ownerSetupRequired: false, activePasskeyCount: 2 };
+    const org = { id: "org-role-presentation", name: "Sense Studios" };
+    const role = { id: "role-leader", name: "Team Leader", creationPresentation: "LEADER" };
+    let rolePresentation: string | null = "LEADER";
+    let roleListReads = 0;
+    let rejectStaleWrite = true;
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input); const method = init?.method ?? "GET";
+      if (url === "/api/v1/auth/session") return response(ownerSession);
+      if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
+      if (url === "/api/v1/auth/sessions") return response([]);
+      if (url === "/api/v1/org") return response(org);
+      if (url === `/api/v1/org/branches?organizationId=${org.id}`) return response([]);
+      if (url === `/api/v1/org/teams?organizationId=${org.id}`) return response([]);
+      if (url === `/api/v1/org/roles?organizationId=${org.id}`) { roleListReads += 1; return response([{ ...role, creationPresentation: rolePresentation, permissions: [] }]); }
+      if (url === `/api/v1/org/employees?organizationId=${org.id}`) return response([]);
+      if (url === `/api/v1/org/roles/${role.id}/creation-presentation` && method === "PUT") {
+        if (rejectStaleWrite) { rejectStaleWrite = false; return response({ message: "stale" }, 409); }
+        const body = JSON.parse(String(init?.body)) as Record<string, unknown>;
+        rolePresentation = body.creationPresentation as string | null;
+        return response({ creationPresentation: rolePresentation });
+      }
+      return response({}, 404);
+    });
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
+    fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
+    const select = await screen.findByLabelText("Team Leader presentation");
+    const presentationForm = screen.getByRole("form", { name: "Team Leader task creation presentation" });
+    fireEvent.change(select, { target: { value: "" } });
+    fireEvent.change(within(presentationForm).getByRole("textbox"), { target: { value: "Remove outdated task presentation" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save presentation" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(/changed elsewhere/i);
+    const refreshReads = roleListReads;
+    fireEvent.click(within(screen.getByRole("region", { name: "Branches, teams and employees" })).getByRole("button", { name: "Refresh" }));
+    await waitFor(() => expect(roleListReads).toBeGreaterThan(refreshReads));
+    fireEvent.change(screen.getByLabelText("Team Leader presentation"), { target: { value: "" } });
+    fireEvent.change(within(presentationForm).getByRole("textbox"), { target: { value: "Remove outdated task presentation" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save presentation" }));
+    await waitFor(() => expect(rolePresentation).toBeNull());
+    const write = fetchMock.mock.calls.find(([url, init]) => url === `/api/v1/org/roles/${role.id}/creation-presentation` && init?.method === "PUT");
+    expect(JSON.parse(String(write?.[1]?.body))).toEqual({
+      organizationId: org.id, creationPresentation: null, expectedCreationPresentation: "LEADER", reason: "Remove outdated task presentation"
+    });
+    await screen.findByText("Task creation presentation saved.");
   });
 
   it("persists Owner waiting-alert opt-in and timezone changes with reasons and versions", async () => {
@@ -528,8 +725,8 @@ describe("identity authentication shell", () => {
       }
       return response({}, 404);
     });
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(session));
+    renderApp("/workspace");
 
     fireEvent.click(await screen.findByRole("button", { name: "Manage organization" }));
     expect(await screen.findByRole("heading", { name: "Recurring task timezone" })).toBeInTheDocument();
@@ -567,12 +764,12 @@ describe("identity authentication shell", () => {
       if (url === "/api/v1/auth/session") return response(staffSession);
       if (url.startsWith("/api/v1/approvals/attention")) return response({ items: [], nextCursor: null });
       if (url === "/api/v1/auth/sessions") return response([]);
-      if (url === "/api/v1/org/team/employees") return response({ employees: [managedEmployee], managerOptions: [{ id: "leader-employee", email: "lead@example.test" }, { id: managedEmployee.id, email: "report@example.test" }] });
+      if (url === "/api/v1/org/team/employees") return response({ employees: [managedEmployee], capabilities: { canManageReporting: true }, managerOptions: [{ id: "leader-employee", email: "lead@example.test" }, { id: managedEmployee.id, email: "report@example.test" }] });
       if (url === `/api/v1/org/team/employees/${managedEmployee.id}/reporting` && init?.method === "PUT") return response({ changed: true });
       return response({}, 404);
     });
-    stubFetchWithCrmSetup(fetchMock);
-    renderApp();
+    stubFetchWithCrmSetup(fetchMock, response(staffSession));
+    renderApp("/workspace");
 
     fireEvent.click(await screen.findByRole("button", { name: "Open team workspace" }));
     expect(await screen.findByText("report@example.test", { selector: "strong" })).toBeInTheDocument();

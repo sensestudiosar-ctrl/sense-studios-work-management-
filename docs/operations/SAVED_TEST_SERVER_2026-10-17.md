@@ -1,0 +1,11 @@
+# Saved test server restoration — 17 October 2026
+
+Owner explicitly approved correcting the backup command, backing up the saved test database, applying migration119 and starting the latest app. Earlier failed backup invocation created no dump or migration; it was retained as a failed attempt and was not silently retried. Renewed approval preceded the corrected operator.
+
+Verified saved database `sense_latest_retained_20261014_test`, OID145606, owner sense_demo, PostgreSQL system7693570241708228348 at loopback45434,118 completed migrations and no unfinished migration. Application ports59442/59443 were free and no other clients were connected to the saved database. All118 existing migration checksums matched source.
+
+Corrected backup completed as `.env.local-runtime-tools/restore-20261017/saved118.dump` (1,372,949 bytes); `pg_restore --list` succeeded and SHA256 is recorded privately. This confirms archive creation/listing, not a restored-copy rehearsal. The operator then applied only existing `20261015000000_task_creation_receipts` through pinned migration deployment. All119 migrations are complete, no unfinished migration remains, prior migration history is unchanged and every pre-existing public table's row count/content hash matches before/after. The new receipt table starts empty. Original other databases, NAS files and credentials were untouched.
+
+Canonical `config/local-runtime.json` now expects119. Updated its focused runtime test to reflect the approved database version; all5 rejection tests pass. Evidence/operator/logs and before/after hashes are private under `.env.local-runtime-tools/restore-20261017/`. Latest app launch uses ordinary canonical `pnpm dev` and rebuilds contracts/API before startup. Final running process identities and readiness are recorded by `.env.local-runtime-tools/active.json` when startup completes. Full `pnpm verify`, feature/workflow acceptance and production readiness are separate and not claimed.
+
+Canonical startup exited0 with READY at http://localhost:59443/. Contracts/API builds passed. A separate post-start status invocation verified database119 and exact owned loopback API/web listeners plus root, direct API and proxied readiness200 after the launch process exited. No browser login or feature workflow was exercised in this restoration.

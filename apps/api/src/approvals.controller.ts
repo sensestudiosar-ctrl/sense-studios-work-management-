@@ -15,6 +15,16 @@ export class ApprovalsController {
     return pair?.slice(name.length + 1);
   }
 
+  @Get("actionable")
+  async actionable(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("offset") offset?: string, @Query("limit") limit?: string) {
+    const active = await this.identity.session(this.cookie(request));
+    if (active.row.account.kind === "OWNER" && !(await this.identity.ownerReady(active.row.accountId))) throw new ForbiddenException("Owner identity setup is required");
+    const parsed = z.object({ offset: z.coerce.number().int().min(0).max(1000000).default(0), limit: z.coerce.number().int().min(1).max(100).default(25) }).safeParse({ offset, limit });
+    if (!parsed.success) throw new BadRequestException("Invalid queue pagination");
+    response.setHeader("Cache-Control", "no-store");
+    return this.approvals.actionable(active.row.accountId, parsed.data.offset, parsed.data.limit);
+  }
+
   @Get("attention")
   async attention(@Req() request: Request, @Res({ passthrough: true }) response: Response, @Query("cursor") cursor?: string, @Query("limit") limit?: string) {
     const active = await this.identity.session(this.cookie(request));

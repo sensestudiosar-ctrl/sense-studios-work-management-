@@ -1,0 +1,61 @@
+# Application completion plan — 13 October 2026
+
+Status: IN PROGRESS. GPT-6.1 Sol context interpretation and review; GPT-6 Luna performs bounded routine fixes. This plan records remaining work, not acceptance of unimplemented behavior. Preserve all existing working changes, retained databases, credentials, fixtures and prior evidence.
+
+## Starting boundary
+
+S01–S27 are complete for their accepted development/local-staging scopes. The latest Owner direction supersedes historical S18/S27 exclusions. S27 remains deterministic, provider-neutral and human-decided, without live inference or external transmission. Its R-104/R-105 waiver covers bounded implementation only.
+
+The clean S18/S27 full run applies to the accepted 484-file fingerprint, not the current checkout. Subsequent Review/My Work/shared-theme changes require fresh verification. MW-I01 is accepted; MW-I02 remains in progress. Do not begin MW-I03 before the established MW-I02 Owner acceptance checkpoint. Latest Owner requests extend specific MW-I02 presentation work; they do not silently settle backend business rules.
+
+## Work order and acceptance
+
+| Order | Requirement-linked work | Boundary and acceptance |
+| --- | --- | --- |
+| 1 | Existing behavior reliability: R-001–R-006, R-079/R-080/R-092; S21 R-075 and applicable C-006/C-016 | Correct reproduced test/source mismatches without weakening authentication, session races, CSRF, scoped access or expiry rules. Reproduce application defects before source changes. Run affected suites and full-web comparison. |
+| 2 | MW-I02 task opening and source hierarchy: R-018–R-029, R-037, R-096–R-097, C-023/C-024 | Finish authorized modal-drawer presentation with canonical task/round IDs, capabilities, dirty-form protection, queue/filter restoration and shared-caller compatibility. Verify all views, keyboard/focus and 1440/1024/390/320 layouts. Preserve independent source loading/denied/stale/error states and truthful totals. |
+| 3 | App-wide approved studio presentation; existing module contracts | Audit current components against the hash-locked Final Demo. Fix demonstrable material usability defects, including the recorded oversized Tasks search SVG if still reproducible. Do not alter domain rules or fabricate counts. Capture actual authenticated role/state evidence after readiness and applicable environment authorization. |
+| 4 | Additive actionable-work projection: R-018–R-024/R-027–R-029, R-037, R-096–R-097, R-006/R-079/R-080/R-092 | Settle the decisions below before backend implementation. One canonical authorized evaluator must govern counts/pagination and stable ordering. Retain exact review-round/approval-request identities; deduplicate task IDs before paging. Cover collaborator responsibility, blocked/terminal/cancelled work, employee-less Owner, named reviewer independence, delegation/self-approval and cross-branch leakage. No schema change is assumed for this read projection. |
+| 5 | Genuine subtasks under latest Owner clarification and existing task contracts | Own assignee, Target and workflow plus parent-completion gating are settled. Complete access/lifecycle/schema contract first. Preserve assignment, review, version, audit and cancellation rules; verify cycles, concurrency and atomic parent gating with real persistence. Never relabel checklist/dependency/correction records as subtasks. |
+| 6 | Create-task role profiles: R-018–R-024, R-006/R-079/R-080/R-092, R-027–R-029, C-023/C-024 | Owner selected backend plan first, not schema implementation. Review the proposed nullable JobRole presentation hint and setup contract; no role-name/email/permission inference. Hint grants no authority. Preserve canonical create payload, reason, capacity acknowledgement, employee-less Owner policy and ordinary callers. Migration/configuration require settled Owner choices and preservation checks. |
+| 7 | Remaining MW-I03–08 roadmap | After MW-I02 acceptance, scope evidence/activity/time context, progressive creation, supported filters/views, authorized team directory, workload/Insights and site quick actions as separate bounded slices. Reuse owning workflows; do not invent missing contracts. Apply per-slice requirements, source review, affected tests and responsive acceptance. |
+| 8 | Final current-tree integration and operational readiness | Run pinned full gates on approved dedicated targets, preserve migrations/data, review security and current authenticated journeys. Separately perform actual operational R-104/R-105 acceptance and production readiness gates. Local fixtures do not prove real deployment/adoption. |
+
+## Fresh reliability findings
+
+The parent-run web baseline `.env.s27-tools/app-completion-web-20261013.log` reports 322 passed/24 failed across 41 files, with three unhandled errors. This supersedes the earlier 20-failure inventory for this exact run; not all additional failures are established application regressions.
+
+- Shell/navigation tests contain outdated routing, labels and disclosure assumptions. The approved October 8 Dashboard direction makes authenticated `/` open Dashboard, with Dashboard first in navigation; preserve explicit `/workspace`, task deep links and Owner setup exceptions. Authentication and session-loss assertions remain required.
+- App test setup omits `planItems`; the canonical task service always returns that array. Generic Dashboard mock bodies omit canonical categories/summaries. Correct precise route-specific fixtures rather than treating these exceptions as proof of malformed real server responses.
+- The native-share fixture expired October 11. Production correctly excludes expired cancellation blockers. Luna changed the active fixture to a seven-day relative expiry and added expired/no-blocker coverage; its reported portal suite passes 11/11. Sol reviewed the diff: POST/CSRF/version assertions remain intact and production behavior is unchanged.
+- The task filter test timed out during the parallel whole run. Sol reran the exact case unchanged: 1 passed/38 filtered out, 2.30 seconds total. The complete unchanged task file then passed 39/39, 11.58 seconds. Do not raise timeouts or change correct behavior without a reproducible cause. Initial sandbox execution failed workspace realpath EPERM; successful tests used approved escalated execution and pinned pnpm.
+
+## Material decisions still needed
+
+1. Actionable work: approve separately typed task/review/decision items and explicit count/dedup semantics; require a concrete existing next-action capability for collaborator/blocked work. Target and organization-calendar comparison are settled. Do not invent severe-overdue thresholds, risk/follow-up sources or team responsibility. Recommended initial scope preserves existing priority/deadlines without new severity tiers.
+2. Subtasks: confirm one-level, same-project children with ordinary explicit assignment/access; settle parent/child visibility, review completion, cancellation/archive and concurrent completion rules. Own assignee/Target/workflow and parent gating are already settled; no need to ask again.
+3. Role-profile creation: approve or revise optional Owner-configured JobRole `creationPresentation` (EMPLOYEE/LEADER/SITE), no automatic backfill, Owner account precedence, generic Employee fallback for missing/conflicting classifications. Presentation classification must never grant permissions or create an organizational tier. Follow `MY_WORK_CREATE_ROLE_PROFILE_PLAN_2026-10-13.md`; backend/schema implementation is not authorized by that plan alone.
+
+Do useful independent implementation/review while decisions are pending. Batch necessary Owner questions and do not repeat approvals already provided. Existing stop-on-failure infrastructure conditions remain applicable; broad completion wording does not supply database identity, credentials or external-provider decisions.
+
+## Final verification and limits
+
+Use Node 24.19.0/pnpm 11.19.0. Run focused regressions, affected typecheck/lint/build and component readiness before consolidated authenticated verification. `pnpm verify` runs typecheck, lint, API/web unit, PostgreSQL integration, builds and desktop/mobile Playwright. Run database/migration checks only against approved dedicated targets with exact identity/preservation protections. Report exact failures/skips/retries and actual models; never mark an unrun gate passed.
+
+Production gates include NAS/storage validation, encrypted offsite backup and key custody, production restore, provider configuration and applicable legal/accounting operational validation. Hosted CI must be verified for the actual candidate commit. R-085.a WhatsApp and R-086.a deep CAD/BIM remain future/excluded; S27 live inference/external transmission remains outside its accepted bounded scope.
+
+References: `IMPLEMENTATION_PLAN.md`; `MODULE_REGISTRY.md`; `REQUIREMENTS_TRACE.md`; `docs/development/OWNER_COMPLETION_PROTOCOL_2026-10-10.md`; `docs/design/my-work-integration-audit/README.md`; `MY_WORK_ACTIONABLE_QUEUE_GAP_REPORT_2026-10-13.md`; `TASK_OPENING_PARITY_PLAN_2026-10-13.md`; `MY_WORK_CREATE_ROLE_PROFILE_PLAN_2026-10-13.md`.
+
+## Subsequent Owner answers and security correction — 2026-10-13
+
+The Owner explicitly approved the actionable-work and subtask recommendations: separately typed tasks/assigned reviews/decidable approvals with honest counts; collaborator/blocked inclusion only for a concrete authorized next action; one-level same-project subtasks with ordinary explicit assignment/access, own Target/workflow and parent completion gated on every child completed. Existing review/cancellation/archive restrictions remain. These answers settle items 1–2 above within those boundaries; no database lifecycle/migration deployment is authorized. DECISIONS.md records the exact adopted rules. Role-profile schema/configuration remains a separate plan-first decision.
+
+Sol source review found a real session-revocation defect in eleven analogous one-shot protected route components, including Dashboard and Reports: the workspace remained mounted after sense-session-ended and a late read could retain a stale session. A shared generation-guarded session hook now handles explicit loss, focus/visibility refresh and cleanup for those routes, clearing both session and failure state on revocation. Regression verification is pending and must cover initial/read-refresh races, loaded workspace removal and Site offline fallback suppression. Do not replace revocation assertions with assertions that private Dashboard content stays visible.
+
+## Subsequent role-profile answer — 2026-10-13
+
+The Owner also approved the optional Owner-configured job-role presentation setting and generic Employee fallback for missing/conflicting classifications, presentation only with existing permissions unchanged. Role-profile source implementation is now authorized; the preceding plan-first/pending decision wording is historical. Use nullable opt-in JobRole storage, no backfill/name inference and canonical active assignments. Database lifecycle/migration deployment remains unperformed and is not granted by this source decision. Sol sent the bounded schema/Owner mutation/setup resolver handoff to the implementation coordinator.
+
+## Confirmed account-switch privacy defect corrected — 2026-10-13
+
+GPT-6.1 Sol reproduced a source-level privacy defect through the real App/RevisionWorkspace components: focus session revalidation returned actor B and displayed B's identity while actor A's confidential branch/project options remained visible. The regression failed before the fix. Authenticated WorkspaceLayout trees in App and ProjectsRoute now key by stable account ID, clearing actor-bound child state on account changes without remounting for same-account CSRF rotation. Existing route/session-generation guards are retained. New regressions verify loaded A content disappears while B reads are pending, a late A task response cannot enter the mounted B workspace, and same-actor token rotation preserves the project DOM instance. All three cases plus the existing app suite passed: 82/82 tests across two files. Scoped diff check passed. Full current-source gates and authenticated real-browser acceptance remain pending; no database operation was performed.

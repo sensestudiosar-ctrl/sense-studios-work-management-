@@ -1,7 +1,8 @@
 import { hasPermission, type AuthorizationContext, type AuthorizationScope } from "./authorization.js";
 import { AuthorizationService } from "./authorization.service.js";
+import { authorizationTime, withAuthorizationReadTime } from "./authorization-read-context.js";
 import type { DatabaseService } from "./database.service.js";
-import { jest } from "@jest/globals";
+import { afterEach, jest } from "@jest/globals";
 
 const self: AuthorizationScope = {
   kind: "SELF", organizationId: "org-1", branchId: "branch-1", teamId: "team-1", employeeId: "emp-1",
@@ -84,6 +85,92 @@ describe("hasPermission", () => {
   it("does not use job-role labels or titles to infer permissions", () => {
     const c = context({ employee: { ...context().employee!, jobRoleIds: ["Owner / Team Leader / Admin"] } });
     expect(hasPermission(c, "employee.manage", org)).toBe(false);
+  });
+});
+
+describe("transaction authorization read clock", () => {
+  const readAt = new Date("2026-10-13T12:00:00.000Z");
+  const later = new Date("2026-10-13T12:00:10.000Z");
+  const expiresAt = new Date("2026-10-13T12:00:01.000Z");
+  const checks = [{ permissionKey: "review.decide", scope: branch }];
+  afterEach(() => { jest.useRealTimers(); });
+
+  function harness(effect: "ALLOW" | "DENY" = "ALLOW") {
+    const findUnique = jest.fn(async (input: unknown) => {
+      const query = input as { include: { employee: { include: { permissionOverrides: { where: { OR: [{ expiresAt: null }, { expiresAt: { gt: Date } }] } } } } } };
+      const now = query.include.employee.include.permissionOverrides.where.OR[1].expiresAt.gt;
+      // Cross expiry while graph loading is awaiting persistence. Both the
+      // SQL predicate and the policy must still use the selected read instant.
+      jest.setSystemTime(later);
+      return { id: "account", kind: "STAFF", state: "ACTIVE", employee: {
+        id: "emp-1", organizationId: "org-1", homeBranchId: "branch-1", homeTeamId: "team-1", state: "ACTIVE",
+        jobRoleAssignments: effect === "DENY" ? [{ jobRoleId: "role", jobRole: { permissions: [{ permissionKey: "review.decide", scopeKind: "BRANCH", branchId: "branch-1" }] } }] : [],
+        permissionOverrides: expiresAt > now ? [{ permissionKey: "review.decide", effect, scopeKind: "BRANCH", branchId: "branch-1", expiresAt }] : []
+      } };
+    });
+    const tx = { account: { findUnique }, organization: { findFirst: async () => ({ id: "org-1" }) } };
+    const service = new AuthorizationService({ prisma: tx } as unknown as DatabaseService);
+    return { service, tx, findUnique };
+  }
+
+  it("keeps nested source policies on readAt across expiry, then rechecks commands at their current time", async () => {
+    jest.useFakeTimers(); jest.setSystemTime(readAt);
+    const h = harness();
+    await withAuthorizationReadTime(h.tx as never, readAt, async () => {
+      await expect(h.service.evaluatePermissions("account", checks, h.tx as never)).resolves.toEqual([true]);
+      // Represents a nested owning-domain approval handler using the same tx.
+      await expect(h.service.assertPermission("account", "review.decide", branch, h.tx as never)).resolves.toBeUndefined();
+    });
+    for (const call of h.findUnique.mock.calls) expect(call[0]).toMatchObject({ include: { employee: { include: { permissionOverrides: { where: { OR: [{ expiresAt: null }, { expiresAt: { gt: readAt } }] } } } } } });
+    await expect(h.service.evaluatePermissions("account", checks, h.tx as never)).resolves.toEqual([false]);
+    expect(h.findUnique.mock.calls.at(-1)?.[0]).toMatchObject({ include: { employee: { include: { permissionOverrides: { where: { OR: [{ expiresAt: null }, { expiresAt: { gt: later } }] } } } } } });
+  });
+
+  it("retains a deny override through its read snapshot, including after the wall clock passes expiry", async () => {
+    jest.useFakeTimers(); jest.setSystemTime(later);
+    const h = harness("DENY");
+    await withAuthorizationReadTime(h.tx as never, readAt, async () => {
+      await expect(h.service.evaluatePermissions("account", checks, h.tx as never)).resolves.toEqual([false]);
+    });
+    await expect(h.service.evaluatePermissions("account", checks, h.tx as never)).resolves.toEqual([true]);
+  });
+
+  it("uses one fresh execution time for an ordinary permission check even when its query crosses expiry", async () => {
+    jest.useFakeTimers(); jest.setSystemTime(readAt);
+    const h = harness();
+    await expect(h.service.evaluatePermissions("account", checks, h.tx as never)).resolves.toEqual([true]);
+    await expect(h.service.evaluatePermissions("account", checks, h.tx as never)).resolves.toEqual([false]);
+  });
+
+  it("isolates concurrently composed transactions and restores the clock after success or failure", async () => {
+    jest.useFakeTimers(); jest.setSystemTime(later);
+    const first = {} as never, second = {} as never;
+    await Promise.all([
+      withAuthorizationReadTime(first, readAt, async () => {
+        await Promise.resolve();
+        expect(authorizationTime(first)).toEqual(readAt);
+        const copy = authorizationTime(first); copy.setTime(0);
+        expect(authorizationTime(first)).toEqual(readAt);
+        await withAuthorizationReadTime(first, readAt, async () => { expect(authorizationTime(first)).toEqual(readAt); });
+        expect(authorizationTime(first)).toEqual(readAt);
+      }),
+      withAuthorizationReadTime(second, expiresAt, async () => { await Promise.resolve(); expect(authorizationTime(second)).toEqual(expiresAt); })
+    ]);
+    expect(authorizationTime(first)).toEqual(later); expect(authorizationTime(second)).toEqual(later);
+    const failure = new Error("projection failed");
+    await expect(withAuthorizationReadTime(first, readAt, async () => { throw failure; })).rejects.toBe(failure);
+    expect(authorizationTime(first)).toEqual(later);
+  });
+
+  it("rejects invalid or conflicting nested clocks without changing the outer transaction context", async () => {
+    const tx = {} as never, work = jest.fn(async () => undefined);
+    await expect(withAuthorizationReadTime(tx, new Date("invalid"), work)).rejects.toBeInstanceOf(RangeError);
+    expect(work).not.toHaveBeenCalled();
+    await withAuthorizationReadTime(tx, readAt, async () => {
+      await expect(withAuthorizationReadTime(tx, later, work)).rejects.toThrow("conflicting authorization read times");
+      expect(authorizationTime(tx)).toEqual(readAt);
+    });
+    expect(work).not.toHaveBeenCalled();
   });
 });
 

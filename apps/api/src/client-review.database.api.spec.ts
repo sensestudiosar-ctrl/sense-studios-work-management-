@@ -24,6 +24,7 @@ import { TaskService } from "./task.service.js";
 import { ApprovalService } from "./approval.service.js";
 import type { ProjectActor } from "./project.service.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 
 const databaseUrl = process.env.S14_DATABASE_URL;
 const databaseDescribe = databaseUrl ? describe : describe.skip;
@@ -50,7 +51,10 @@ databaseDescribe("S14 client review PostgreSQL acceptance", () => {
     const target = new URL(databaseUrl!);
     const s25 = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s25_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
     const s26 = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s26_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
-    const s27 = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s27_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
+    const s27Legacy = process.env.S27_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(target.hostname) && /^sense_s14_s27_[a-z0-9_]+_test$/.test(rows[0]?.name ?? "") && rows[0]?.port === 56436 && target.port === "56436";
+    const s27Disposable = isS27DisposableTestTarget("S14_DATABASE_URL", databaseUrl);
+    const s27 = s27Legacy || s27Disposable;
+    if (s27Disposable && !matchesS27DisposableServer(databaseUrl!, rows[0]!.name, rows[0]!.port)) throw new Error("S14 disposable server mismatch");
     if (!s14 && !s25 && !s26 && !s27) throw new Error("Client review tests require the dedicated local S14 database or explicitly enabled exact S14/S25/S26/S27 target");
   });
 

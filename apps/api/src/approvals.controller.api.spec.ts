@@ -17,7 +17,7 @@ describe("S05 read-only approval queue HTTP contract", () => {
   let kind: "OWNER" | "STAFF";
   let ownerReady: boolean;
   let sessionValid: boolean;
-  let service: { attention: jest.Mock; attentionItem: jest.Mock };
+  let service: { attention: jest.Mock; attentionItem: jest.Mock; actionable: jest.Mock };
   let identity: { session: jest.Mock; ownerReady: jest.Mock };
 
   beforeAll(async () => {
@@ -31,7 +31,7 @@ describe("S05 read-only approval queue HTTP contract", () => {
       }),
       ownerReady: jest.fn(async () => ownerReady)
     };
-    service = { attention: jest.fn(async () => ({ items: [], nextCursor: null })), attentionItem: jest.fn(async () => ({ id: "request-1" })) };
+    service = { actionable: jest.fn(async () => ({ source: "approval", total: 0, items: [], offset: 0, limit: 25, readAt: "2026-10-13T00:00:00Z" })), attention: jest.fn(async () => ({ items: [], nextCursor: null })), attentionItem: jest.fn(async () => ({ id: "request-1" })) };
     const config: RuntimeConfig = {
       nodeEnv: "test", port: 4000, databaseUrl: "postgresql://test:test@localhost:5432/test",
       webOrigin: "http://localhost:5173", ownerBootstrapEmail: "owner@example.test", ownerBootstrapSecret: "b".repeat(48)
@@ -60,6 +60,20 @@ describe("S05 read-only approval queue HTTP contract", () => {
 
   const cookie = `sense_sid=${sessionSecret}`;
 
+  it("exposes an exact independent decidable source with no-store and bounded pagination", async () => {
+    const response = await request(app.getHttpServer()).get("/api/v1/approvals/actionable?offset=25&limit=10").set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    expect(response.headers["cache-control"]).toBe("no-store");
+    expect(service.actionable).toHaveBeenCalledWith(accountId, 25, 10);
+    expect(response.body).toMatchObject({ source: "approval", total: 0 });
+  });
+  it("rejects malformed actionable pagination and unready Owner identity", async () => {
+    expect((await request(app.getHttpServer()).get("/api/v1/approvals/actionable?offset=-1").set("Cookie", cookie)).status).toBe(400);
+    expect((await request(app.getHttpServer()).get("/api/v1/approvals/actionable?limit=101").set("Cookie", cookie)).status).toBe(400);
+    ownerReady = false;
+    expect((await request(app.getHttpServer()).get("/api/v1/approvals/actionable").set("Cookie", cookie)).status).toBe(403);
+    expect(service.actionable).not.toHaveBeenCalled();
+  });
   it("requires an authenticated session", async () => {
     sessionValid = false;
     const response = await request(app.getHttpServer()).get("/api/v1/approvals/attention");

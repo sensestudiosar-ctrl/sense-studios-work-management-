@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable } from "@nestjs/common";
 import { AccountKind, AccountState, Prisma } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
 import { hasPermission, type AuthorizationScope, type AuthorizationContext } from "./authorization.js";
+import { authorizationTime } from "./authorization-read-context.js";
 
 @Injectable()
 export class AuthorizationService {
@@ -19,6 +20,7 @@ export class AuthorizationService {
   ): Promise<boolean[]> {
     if (checks.length === 0) return [];
     const client = tx ?? this.database.prisma;
+    const now = authorizationTime(tx);
     const account = await client.account.findUnique({
       where: { id: accountId },
       include: {
@@ -27,7 +29,7 @@ export class AuthorizationService {
             homeBranch: true,
             homeTeam: true,
             jobRoleAssignments: { where: { effectiveTo: null, jobRole: { active: true } }, include: { jobRole: { include: { permissions: { where: { revokedAt: null } } } } } },
-            permissionOverrides: { where: { revokedAt: null, OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] } }
+            permissionOverrides: { where: { revokedAt: null, OR: [{ expiresAt: null }, { expiresAt: { gt: now } }] } }
           }
         }
       }
@@ -58,7 +60,6 @@ export class AuthorizationService {
         ...(row.teamId ? { teamId: row.teamId } : {}), expiresAt: row.expiresAt
       })) ?? []
     };
-    const now = new Date();
     return checks.map(({ permissionKey, scope }) => hasPermission(context, permissionKey, scope, now));
   }
 }

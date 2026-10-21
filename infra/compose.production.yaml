@@ -1,0 +1,184 @@
+name: ${NAS_PROJECT:?Set NAS_PROJECT}
+
+x-logging: &logging
+  driver: json-file
+  options: { max-size: "10m", max-file: "3" }
+
+x-api-environment: &api-environment
+  NODE_ENV: production
+  WEB_ORIGIN: ${NAS_WEB_ORIGIN:?Set the permanent HTTPS app origin}
+  DATABASE_URL: ${NAS_APP_DATABASE_URL:?Set the restricted runtime datasource}
+  DATABASE_POOL_MAX: "8"
+  TRUST_PROXY_HOPS: "1"
+  NAS_ROOT: /data/documents
+  EXTERNAL_SHARE_SECRET: ${NAS_EXTERNAL_SHARE_SECRET:?Set the share encryption secret}
+  EMAIL_VERIFICATION_SECRET: ${NAS_EMAIL_VERIFICATION_SECRET:?Set the email HMAC secret}
+  BREVO_API_KEY: ${NAS_BREVO_API_KEY:?Set the approved Brevo sender key}
+  BREVO_SENDER_EMAIL: ${NAS_BREVO_SENDER_EMAIL:?Set the authenticated sender}
+  BREVO_SENDER_NAME: ${NAS_BREVO_SENDER_NAME:-Sense Studios}
+
+x-documents: &documents
+  type: bind
+  source: ${NAS_DOCUMENTS_DIR:?Set an existing restricted application directory}
+  target: /data/documents
+  bind: { create_host_path: false }
+
+services:
+  db:
+    image: ${NAS_POSTGRES_IMAGE:?Set a tested PostgreSQL 17 image digest}
+    environment:
+      POSTGRES_DB: ${NAS_DB_NAME:?Set an explicit application database}
+      POSTGRES_USER: ${NAS_DB_USER:?Set the migration administrator}
+      POSTGRES_PASSWORD: ${NAS_DB_PASSWORD:?Set the database password}
+      S04_APP_DB_PASSWORD: ${NAS_APP_DB_PASSWORD:?Set the separate runtime role password}
+    command: ["postgres", "-c", "max_connections=40", "-c", "shared_buffers=256MB", "-c", "work_mem=4MB", "-c", "maintenance_work_mem=64MB"]
+    volumes:
+      - type: bind
+        source: ${NAS_POSTGRES_DIR:?Set the dedicated PostgreSQL 17 data directory}
+        target: /var/lib/postgresql/data
+        bind: { create_host_path: false }
+      - type: bind
+        source: ./init-s04-app-role.sh
+        target: /docker-entrypoint-initdb.d/10-s04-app-role.sh
+        read_only: true
+        bind: { create_host_path: false }
+    networks: [database]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    mem_limit: 1536m
+    cpus: 1.5
+    shm_size: 256m
+    restart: unless-stopped
+    logging: *logging
+
+  migrate:
+    profiles: [release]
+    image: ${NAS_API_IMAGE:?Set the verified API image digest}
+    command: ["pnpm", "--filter", "@sense/api", "db:migrate:deploy"]
+    environment:
+      MIGRATION_DATABASE_URL: ${NAS_MIGRATION_DATABASE_URL:?Set the dedicated migration datasource}
+    networks: [database]
+    depends_on: { db: { condition: service_healthy } }
+    mem_limit: 768m
+    restart: "no"
+    logging: *logging
+
+  api:
+    image: ${NAS_API_IMAGE:?Set the verified API image digest}
+    environment:
+      <<: *api-environment
+      PORT: "4000"
+      OWNER_BOOTSTRAP_EMAIL: ${NAS_OWNER_BOOTSTRAP_EMAIL:-}
+      OWNER_BOOTSTRAP_SECRET: ${NAS_OWNER_BOOTSTRAP_SECRET:-}
+    volumes: [*documents]
+    networks: [application, database, outbound]
+    depends_on: { db: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/v1/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    mem_limit: 768m
+    cpus: 1.5
+    init: true
+    stop_grace_period: 120s
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    restart: unless-stopped
+    logging: *logging
+
+  worker:
+    image: ${NAS_API_IMAGE:?Set the verified API image digest}
+    command: ["node", "apps/api/dist/worker.js"]
+    environment:
+      <<: *api-environment
+      DATABASE_POOL_MAX: "4"
+      WORKER_HEALTH_PATH: /tmp/sense-worker-health.json
+    volumes: [*documents]
+    networks: [database, outbound]
+    depends_on: { db: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD", "node", "apps/api/dist/worker-health-check.js"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    mem_limit: 512m
+    cpus: 1.0
+    init: true
+    stop_grace_period: 120s
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    restart: unless-stopped
+    logging: *logging
+
+  web:
+    image: ${NAS_WEB_IMAGE:?Set the verified production web image digest}
+    volumes:
+      - type: bind
+        source: ${NAS_ASSETS_DIR:?Set the retained hashed-assets directory}
+        target: /srv/sense/static-history/assets
+        read_only: true
+        bind: { create_host_path: false }
+    networks: [ingress, application]
+    depends_on: { api: { condition: service_healthy } }
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 5s
+      retries: 6
+    mem_limit: 128m
+    cpus: 0.5
+    restart: unless-stopped
+    logging: *logging
+
+  tunnel:
+    image: ${NAS_TUNNEL_IMAGE:?Set a tested cloudflared image digest}
+    command: ["tunnel", "--no-autoupdate", "run"]
+    environment: { TUNNEL_TOKEN: "${NAS_TUNNEL_TOKEN:?Set the restricted app tunnel token}" }
+    networks: [ingress]
+    depends_on: { web: { condition: service_healthy } }
+    mem_limit: 128m
+    cpus: 0.5
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    restart: unless-stopped
+    logging: *logging
+
+  backup:
+    profiles: [operations]
+    image: ${NAS_BACKUP_IMAGE:?Set a tested restic image digest}
+    environment:
+      RESTIC_REPOSITORY: ${NAS_OFFSITE_REPOSITORY:?Set the physically separate backup repository}
+      RESTIC_PASSWORD: ${NAS_BACKUP_PASSWORD:?Set and escrow the backup encryption password}
+      RESTIC_FROM_PASSWORD: ${NAS_BACKUP_PASSWORD:?Set and escrow the backup encryption password}
+      RESTIC_CACHE_DIR: /backup/cache
+    volumes:
+      - <<: *documents
+        read_only: true
+      - type: bind
+        source: ${NAS_BACKUP_DIR:?Set a private local backup directory}
+        target: /backup
+        bind: { create_host_path: false }
+      - type: bind
+        source: ${NAS_BACKUP_SSH_DIR:?Set a private backup SSH directory}
+        target: /root/.ssh
+        read_only: true
+        bind: { create_host_path: false }
+    networks: [outbound]
+    mem_limit: 512m
+    cpus: 0.75
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    cap_add: [DAC_OVERRIDE]
+    restart: "no"
+    logging: *logging
+
+networks:
+  ingress: {}
+  application: { internal: true }
+  database: { internal: true }
+  outbound: {}

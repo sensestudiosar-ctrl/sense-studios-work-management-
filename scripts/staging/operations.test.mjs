@@ -1,0 +1,68 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import http from 'node:http';
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
+import { PassThrough } from 'node:stream';
+import test from 'node:test';
+import { inventory, verifyRelease, loadActive, atomicJson, fileHash } from './manifest.mjs';
+import { safeStaticPath, createStagingServer } from './server.mjs';
+import { childFinished, restartDelay, captureLog } from './process-policy.mjs';
+import { claimSupervisorLock, processIdentity } from './windows.mjs';
+
+function fixture(t) {
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sense-staging-test-'));
+  t.after(()=>{assert.ok(path.resolve(dir).startsWith(path.resolve(os.tmpdir())+path.sep));fs.rmSync(dir,{recursive:true,force:true});});return dir;
+}
+function makeRelease(root) {
+  const commit='a'.repeat(40),release=path.join(root,'.env.staging/releases',commit);fs.mkdirSync(path.join(release,'web/assets'),{recursive:true});
+  fs.writeFileSync(path.join(release,'web/index.html'),'<main>approved</main>');fs.writeFileSync(path.join(release,'web/assets/app.js'),'approved');
+  const migrations=Array.from({length:119},(_,i)=>({name:String(20260101000000+i)+'_test',checksum:'a'.repeat(64)}));migrations[118].name='20261015000000_task_creation_receipts';
+  const database={name:'sense_retained',user:'sense_demo',host:'127.0.0.1',port:45434,oid:'145606',system:'7693570241708228348'};
+  const manifest={schemaVersion:1,commit,buildId:'test-build',builtAt:new Date().toISOString(),database,migrations,...inventory(release)};
+  atomicJson(path.join(release,'private-manifest.json'),manifest);
+  fs.mkdirSync(path.join(root,'config'));atomicJson(path.join(root,'config/staging.json'),{version:1,releaseRoot:'.env.staging/releases',activePointer:'.env.staging/active-release.json',runtimeState:'.env.staging/runtime.json',controlRoot:'.env.staging/control',logRoot:'.env.staging/logs',postgresData:'.env.postgres/data'});
+  atomicJson(path.join(root,'config/local-runtime.json'),{webOrigin:'http://localhost:59443',webPort:59443,apiPort:59442,database:{...database,migrations:119}});
+  atomicJson(path.join(root,'.env.staging/active-release.json'),{commit,manifestSha256:fileHash(path.join(release,'private-manifest.json'))});
+  return {release,manifest};
+}
+test('release approval rejects file, migration, private manifest and target changes',t=>{
+  const root=fixture(t),{release,manifest}=makeRelease(root);assert.equal(loadActive(root).manifest.commit,manifest.commit);
+  fs.writeFileSync(path.join(release,'web/assets/app.js'),'obsolete');assert.throws(()=>loadActive(root),/changed/);fs.writeFileSync(path.join(release,'web/assets/app.js'),'approved');
+  assert.throws(()=>verifyRelease(release,{...manifest,migrations:manifest.migrations.slice(1)}));
+  const altered={...manifest,database:{...manifest.database,name:'other_retained'}};atomicJson(path.join(release,'private-manifest.json'),altered);assert.throws(()=>loadActive(root),/pointer differs/);
+  atomicJson(path.join(root,'.env.staging/active-release.json'),{commit:manifest.commit,manifestSha256:fileHash(path.join(release,'private-manifest.json'))});assert.throws(()=>loadActive(root),/different database/);
+});
+test('dependency links cannot leave the release and their exact targets are recorded',t=>{
+  const root=fixture(t);fs.mkdirSync(path.join(root,'one'));fs.mkdirSync(path.join(root,'two'));fs.symlinkSync(path.join(root,'one'),path.join(root,'link'),'junction');
+  const before=inventory(root);fs.unlinkSync(path.join(root,'link'));fs.symlinkSync(path.join(root,'two'),path.join(root,'link'),'junction');assert.notDeepEqual(inventory(root),before);
+  fs.unlinkSync(path.join(root,'link'));fs.symlinkSync(os.tmpdir(),path.join(root,'link'),'junction');assert.throws(()=>inventory(root),/leaves/);fs.unlinkSync(path.join(root,'link'));
+});
+test('path validation rejects encoded traversal, separators and private file paths',()=>{
+  const root=path.resolve('public');for(const url of ['//host/x','/%2e%2e/secret','/%5csecret','/x/../secret','/%252e%252e/secret','/.env','/C:/secret','/%00','/%xx'])assert.equal(safeStaticPath(root,url),null,url);
+  assert.equal(safeStaticPath(root,'/projects?sort=updated').pathname,'/projects');
+});
+test('static serving enforces public whitelist, Host, methods and fixed API failures',async t=>{
+  const root=fixture(t),{release,manifest}=makeRelease(root);
+  const api=http.createServer((req,res)=>{if(req.url==='/api/broken'){res.writeHead(200,{'Content-Length':100});res.write('partial');setTimeout(()=>res.destroy(),10);return;}res.writeHead(404,{'Content-Type':'application/json'}).end(JSON.stringify({path:req.url,forwarded:req.headers['x-forwarded-for']??null}));});api.listen(0,'127.0.0.1');await once(api,'listening');t.after(()=>api.close());
+  const server=createStagingServer({webRoot:path.join(release,'web'),manifest,webPort:1,apiPort:api.address().port});server.listen(0,'127.0.0.1');await once(server,'listening');t.after(()=>server.close());
+  const request=(url,extra={})=>new Promise((resolve,reject)=>{http.request({host:'127.0.0.1',port:server.address().port,path:url,headers:{Host:'localhost:1',...extra.headers},method:extra.method??'GET'},res=>{let body='';res.on('data',data=>body+=data);res.on('aborted',()=>resolve({status:res.statusCode,aborted:true}));res.on('error',()=>resolve({status:res.statusCode,aborted:true}));res.on('end',()=>resolve({status:res.statusCode,body,headers:res.headers}));}).on('error',reject).end();});
+  assert.equal((await request('/')).body,'<main>approved</main>');assert.equal((await request('/projects')).status,200);
+  assert.equal((await request('/private-manifest.json')).status,404);assert.equal((await request('/.env')).status,400);
+  fs.writeFileSync(path.join(release,'web/leaked.json'),'private');assert.equal((await request('/leaked.json')).status,404);
+  assert.equal((await request('/',{headers:{Host:'foreign.example'}})).status,403);assert.equal((await request('/',{method:'POST'})).status,405);
+  const proxied=await request('/api',{headers:{'x-forwarded-for':'evil'}});assert.equal(proxied.status,404);assert.deepEqual(JSON.parse(proxied.body),{path:'/api',forwarded:null});assert.equal(proxied.headers['cache-control'],'no-store');
+  assert.equal((await request('/api/broken')).aborted,true);assert.equal((await request('/')).status,200,'Truncated API response must not terminate the web process');
+});
+test('real signal termination is recognized and restart attempts are bounded',async()=>{
+  const child=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],{windowsHide:true,stdio:'ignore'}),row={child,exited:false,error:null};child.on('exit',()=>row.exited=true);await once(child,'spawn');assert.equal(childFinished(row),false);child.kill('SIGTERM');await once(child,'exit');assert.equal(childFinished(row),true);
+  const attempts=[];assert.equal(restartDelay(attempts,1),1000);assert.equal(restartDelay(attempts,2),2000);assert.equal(restartDelay(attempts,3),4000);assert.throws(()=>restartDelay(attempts,4),/budget/);assert.equal(restartDelay(attempts,600005),1000);
+});
+test('owned output stops at its byte budget without removing previous evidence',async t=>{
+  const root=fixture(t),stream=new PassThrough(),file=path.join(root,'owned.log'),failures=[];captureLog(stream,file,error=>failures.push(error.message),4);stream.end('123456789');await once(stream,'close');assert.equal(fs.readFileSync(file,'utf8'),'1234');assert.equal(failures.length,1);
+});
+test('OS mutex serializes claims and refuses a live supervisor lock', {skip:process.platform!=='win32'},t=>{
+  const root=fixture(t),file=path.join(root,'supervisor.lock.json'),identity=processIdentity(process.pid);claimSupervisorLock(file,identity,'first');assert.throws(()=>claimSupervisorLock(file,identity,'second'));assert.equal(JSON.parse(fs.readFileSync(file)).token,'first');
+});

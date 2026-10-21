@@ -11,6 +11,7 @@ import { DashboardService } from "./dashboard.service.js";
 import { NotificationWorker, OperationalRecipientPredicate, PersistedVerifiedAddressPredicate } from "./notification-worker.js";
 import type { ProjectActor } from "./project.service.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 import type { BrevoEmailAdapter } from "./brevo-email.js";
 
 const url = process.env.S24_SECURITY_DATABASE_URL;
@@ -35,7 +36,7 @@ suite("S24 committed PostgreSQL after-wait and notification revocation security"
     const s24 = parsed.port === "56433" && /^\/sense_s24_security_[a-z0-9_]+_test$/.test(parsed.pathname);
     const s25 = process.env.S25_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_security_s25_[a-z0-9_]+_test$/.test(parsed.pathname);
     const s26 = process.env.S26_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_security_s26_[a-z0-9_]+_test$/.test(parsed.pathname);
-    const s27 = process.env.S27_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_security_s27_[a-z0-9_]+_test$/.test(parsed.pathname);
+    const s27 = (process.env.S27_E2E_ENABLED === "1" && parsed.port === "57433" && /^\/sense_s24_security_s27_[a-z0-9_]+_test$/.test(parsed.pathname)) || isS27DisposableTestTarget("S24_SECURITY_DATABASE_URL", url);
     if (!(parsed.hostname === "localhost" || parsed.hostname === "127.0.0.1") || (!s24 && !s25 && !s26 && !s27)) {
       throw new Error("Dashboard security requires an exact S24 or explicitly enabled exact S24/S25/S26/S27 loopback database");
     }
@@ -108,7 +109,8 @@ suite("S24 committed PostgreSQL after-wait and notification revocation security"
       const current = await database.prisma.project.findUniqueOrThrow({ where: { id: projectId } });
       await workflow.status(owner, projectId, { toStatus: "ACTIVE", expectedVersion: current.version, reason: "Activate retained S24 notification source" });
     }
-    await database.prisma.$queryRaw<Array<{ name: string }>>`SELECT current_database() AS name`;
+    const target = (await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`)[0]!;
+    if (s27 && isS27DisposableTestTarget("S24_SECURITY_DATABASE_URL", url) && !matchesS27DisposableServer(url!, target.name, target.port)) throw new Error("S24 security disposable server mismatch");
   }, 120_000);
 
   afterAll(async () => { await database?.onModuleDestroy(); });

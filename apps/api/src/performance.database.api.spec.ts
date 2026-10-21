@@ -105,7 +105,7 @@ databaseDescribe("S23 performance PostgreSQL acceptance", () => {
     const s23 = url.port === "56433" && /^\/sense_s23_[a-z0-9_]+_test$/.test(url.pathname);
     const s25 = process.env.S25_E2E_ENABLED === "1" && url.port === "57433" && /^\/sense_s23_s25_[a-z0-9_]+_test$/.test(url.pathname);
     const s26 = process.env.S26_E2E_ENABLED === "1" && url.port === "57433" && /^\/sense_s23_s26_[a-z0-9_]+_test$/.test(url.pathname);
-    const s27 = process.env.S27_E2E_ENABLED === "1" && url.port === "57433" && /^\/sense_s23_s27_[a-z0-9_]+_test$/.test(url.pathname);
+    const s27 = process.env.S27_E2E_ENABLED === "1" && url.port === "58440" && /^\/sense_s23_s27_[a-z0-9_]+_test$/.test(url.pathname);
     if (!/^(localhost|127\.0\.0\.1)$/.test(url.hostname) || (!s23 && !s25 && !s26 && !s27)) {
       throw new Error("Performance acceptance requires an exact S23 or explicitly enabled exact S23/S25/S26/S27 loopback database");
     }

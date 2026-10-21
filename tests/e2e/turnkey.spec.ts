@@ -1,9 +1,11 @@
 import { expect, test } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join, resolve } from "node:path";
 
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 type FixtureDatabase = {
   connect(): Promise<void>;
   query<Row extends Record<string, unknown> = Record<string, unknown>>(sql: string, values?: unknown[]): Promise<{ rows: Row[]; rowCount: number | null }>;
@@ -19,7 +21,7 @@ test("Turnkey production release persists exact approved inputs through distinct
     && (process.env.S19_E2E_ENABLED === "1" || process.env.S15_E2E_ENABLED === "1");
   const explicitlyEnabledS25Database = process.env.S25_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && ["56433", "57433"].includes(databaseUrl.port) && /^\/sense_s25_main_s25_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
   const explicitlyEnabledS26Database = process.env.S26_E2E_ENABLED === "1" && ["localhost", "127.0.0.1"].includes(databaseUrl.hostname) && databaseUrl.port === "57433" && /^\/sense_s26_main_s26_[a-z0-9_]+_test$/i.test(databaseUrl.pathname);
-  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname);
+  const explicitlyEnabledS27Database = process.env.S27_E2E_ENABLED === "1" && databaseUrl.hostname === "127.0.0.1" && databaseUrl.port === "57433" && /^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(databaseUrl.pathname) || disposableS27Database;
   if (!["localhost", "127.0.0.1"].includes(databaseUrl.hostname) || ((!explicitlyEnabledS25Database && !explicitlyEnabledS26Database && !explicitlyEnabledS27Database) && databaseUrl.port !== "56433") || !(isolatedS19 || combinedS15S19 || explicitlyEnabledS25Database || explicitlyEnabledS26Database || explicitlyEnabledS27Database)) {
     throw new Error("Turnkey browser acceptance requires localhost port 56433 and an isolated sense_s19_*_test DB or explicitly enabled sense_s15_s19_*_test DB");
   }
@@ -44,6 +46,10 @@ test("Turnkey production release persists exact approved inputs through distinct
   const bytes = Buffer.from(`%PDF-1.7\nSense Studios S19 approved drawing ${suffix}\n%%EOF\n`, "ascii");
 
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   let fixtureCommitted = false;
   try {
     await db.query("BEGIN");
@@ -250,7 +256,7 @@ test("Turnkey production release persists exact approved inputs through distinct
     await expect(workspace.getByText("Unit price", { exact: true })).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     const screenshot = await page.screenshot({ fullPage: true });
-    const screenshotDirectory = resolve(".env.s19-tools", "screenshots");
+    const screenshotDirectory = resolve(process.env.S19_SCREENSHOT_DIR ?? ".env.s19-tools/screenshots");
     mkdirSync(screenshotDirectory, { recursive: true });
     writeFileSync(join(screenshotDirectory, `s19-turnkey-${testInfo.project.name}.png`), screenshot);
     await testInfo.attach(`s19-turnkey-${testInfo.project.name}`, { body: screenshot, contentType: "image/png" });

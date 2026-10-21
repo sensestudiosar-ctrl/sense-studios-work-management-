@@ -11,7 +11,8 @@ import { TaskService } from "./task.service.js";
 import { NotificationsService } from "./notifications.service.js";
 import { OperationalRecipientPredicate } from "./notification-worker.js";
 import { recordProjectEvent } from "./project-events.js";
-import type { ProjectActor } from "./project.service.js";
+import { ProjectService, type ProjectActor } from "./project.service.js";
+import { ProjectTemplateService } from "./project-template.service.js";
 import type { RuntimeConfig } from "./config.js";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -31,7 +32,7 @@ databaseDescribe("S09 task persistence and authorization database integration", 
   async function fixture(run: (value: {
     tx: Prisma.TransactionClient; organizationId: string; branchId: string; teamId: string;
     managerActor: ProjectActor; managerEmployeeId: string; employeeId: string; outsiderActor: ProjectActor; ownerActor: ProjectActor;
-    ownerId: string; tasks: TaskService; organization: OrganizationService; workflow: ProjectWorkflowService;
+    ownerId: string; tasks: TaskService; organization: OrganizationService; workflow: ProjectWorkflowService; projects: ProjectService; templates: ProjectTemplateService;
   }) => Promise<void>) {
     try {
       await database.prisma.$transaction(async (tx) => {
@@ -64,7 +65,7 @@ databaseDescribe("S09 task persistence and authorization database integration", 
         const managerActor: ProjectActor = { accountId: manager.id, organizationId: organization.id, kind: AccountKind.STAFF };
         const outsiderActor: ProjectActor = { accountId: outsider.id, organizationId: organization.id, kind: AccountKind.STAFF };
         const ownerActor: ProjectActor = { accountId: owner.id, organizationId: organization.id, kind: AccountKind.OWNER };
-        await run({ tx, organizationId: organization.id, branchId: branch.id, teamId: team.id, managerActor, managerEmployeeId: managerEmployee.id, employeeId: employeeRow.id, outsiderActor, ownerActor, ownerId: owner.id, tasks, organization: organizationService, workflow });
+        await run({ tx, organizationId: organization.id, branchId: branch.id, teamId: team.id, managerActor, managerEmployeeId: managerEmployee.id, employeeId: employeeRow.id, outsiderActor, ownerActor, ownerId: owner.id, tasks, organization: organizationService, workflow, projects: new ProjectService(db), templates: new ProjectTemplateService(db, authorization) });
         await tx.$executeRaw`SET CONSTRAINTS ALL IMMEDIATE`;
         throw new FixtureRollback();
       }, { timeout: 30_000 });
@@ -72,6 +73,143 @@ databaseDescribe("S09 task persistence and authorization database integration", 
   }
 
   const taskInput = (reason: string, extras: Record<string, unknown> = {}) => ({ title: "Prepare studio brief", type: TaskType.NON_PROJECT, priority: TaskPriority.HIGH, targetDate: "2026-10-15", reason, ...extras });
+
+  it("retains one durable task identity and canonical evidence on retry and rejects changed details", async () => {
+    await fixture(async f => {
+      const key = randomUUID(), input = taskInput("Verify task creation identity", { idempotencyKey: key, ownerEmployeeId: f.employeeId });
+      const first = await f.tasks.create(f.ownerActor, input), replay = await f.tasks.create(f.ownerActor, input);
+      expect(replay.id).toBe(first.id);
+      expect(await f.tx.taskCreationReceipt.count({ where: { organizationId: f.organizationId, actorId: f.ownerId, key } })).toBe(1);
+      expect(await f.tx.taskStatusChange.count({ where: { taskId: first.id } })).toBe(1);
+      expect(await f.tx.auditEvent.count({ where: { organizationId: f.organizationId, subjectId: first.id, eventKey: "task.created" } })).toBe(1);
+      await expect(f.tasks.create(f.ownerActor, { ...input, title: "Different command" })).rejects.toThrow("different task details");
+      // Existing savepoint wrapper rolls back rejected commands before the fixture continues.
+      const failedKey = randomUUID();
+      await expect(f.tasks.create(f.ownerActor, { ...input, idempotencyKey: failedKey, type: TaskType.PROJECT, projectId: undefined })).rejects.toThrow();
+      expect(await f.tx.taskCreationReceipt.count({ where: { key: failedKey } })).toBe(0);
+      await f.tx.$executeRaw`SAVEPOINT task_receipt_immutability`;
+      await expect(f.tx.taskCreationReceipt.updateMany({ where: { key }, data: { payloadHash: "a".repeat(64) } })).rejects.toThrow("immutable");
+      await f.tx.$executeRaw`ROLLBACK TO SAVEPOINT task_receipt_immutability`;
+      await f.tx.$executeRaw`RELEASE SAVEPOINT task_receipt_immutability`;
+    });
+  });
+
+  async function subtaskProject(f: Parameters<Parameters<typeof fixture>[0]>[0]) {
+    const project = await f.tx.project.create({ data: { organizationId: f.organizationId, branchId: f.branchId, title: `Subtask project ${randomUUID()}`, deliveryType: "DESIGN", createdById: f.ownerId } });
+    await f.tx.projectScope.create({ data: { organizationId: f.organizationId, projectId: project.id, name: "Delivery", normalizedName: "delivery" } });
+    await f.tx.employeePermissionOverride.create({ data: { organizationId: f.organizationId, employeeId: f.managerEmployeeId, permissionKey: "project.view", effect: PermissionEffect.ALLOW, scopeKind: PermissionScopeKind.BRANCH, branchId: f.branchId, reason: "Subtask owner project access" } });
+    await f.tx.employeePermissionOverride.create({ data: { organizationId: f.organizationId, employeeId: f.managerEmployeeId, permissionKey: "project.manage", effect: PermissionEffect.ALLOW, scopeKind: PermissionScopeKind.BRANCH, branchId: f.branchId, reason: "Subtask fixture lead eligibility" } });
+    await f.workflow.assignment(f.ownerActor, project.id, { employeeId: f.managerEmployeeId, expectedVersion: 1, reason: "Assign the subtask owner" });
+    await f.workflow.lead(f.ownerActor, project.id, { employeeId: f.managerEmployeeId, expectedVersion: 2, reason: "Appoint subtask project lead" });
+    await f.workflow.status(f.ownerActor, project.id, { toStatus: "ACTIVE", expectedVersion: 3, reason: "Activate the subtask project" });
+    return project.id;
+  }
+
+  it("recovers the same child after the parent version advanced without adding a link or increment", async () => {
+    await fixture(async f => {
+      const projectId = await subtaskProject(f);
+      const parent = await f.tasks.create(f.managerActor, taskInput("Create retry parent", { type: TaskType.PROJECT, projectId }));
+      const command = { ...taskInput("Create retry child", { type: TaskType.PROJECT, projectId }), expectedParentVersion: parent.version, idempotencyKey: randomUUID() };
+      const first = await f.tasks.createSubtask(f.managerActor, parent.id, command);
+      const replay = await f.tasks.createSubtask(f.managerActor, parent.id, command);
+      expect(replay.task.id).toBe(first.task.id); expect(replay.parentVersion).toBe(first.parentVersion);
+      expect(await f.tx.taskSubtaskLink.count({ where: { parentTaskId: parent.id } })).toBe(1);
+      expect((await f.tx.task.findUniqueOrThrow({ where: { id: parent.id } })).version).toBe(parent.version + 1);
+      expect(await f.tx.taskCreationReceipt.count({ where: { taskId: first.task.id, parentTaskId: parent.id } })).toBe(1);
+      await expect(f.tasks.createSubtask(f.managerActor, parent.id, { ...command, title: "Changed child details" })).rejects.toThrow("different task details");
+    });
+  });
+
+  it("filters priority/collaborators and description before real count/page/order without widening visibility", async () => {
+    await fixture(async f => {
+      const marker = `query-${randomUUID()}`;
+      const input = (title: string, priority: TaskPriority, targetDate: string) => taskInput("Verify scoped query refinements", { title, description: marker, priority, targetDate, ownerEmployeeId: f.employeeId, collaborators: [{ employeeId: f.managerEmployeeId }] });
+      const high = await f.tasks.create(f.ownerActor, input("High task", TaskPriority.HIGH, "2026-10-18"));
+      const criticalLate = await f.tasks.create(f.ownerActor, input("Critical late", TaskPriority.CRITICAL, "2026-10-20"));
+      const criticalEarly = await f.tasks.create(f.ownerActor, input("Critical early", TaskPriority.CRITICAL, "2026-10-17"));
+      await f.tasks.create(f.ownerActor, taskInput("Unrelated owner task", { title: "Not a collaborator", description: marker, ownerEmployeeId: f.employeeId, priority: TaskPriority.CRITICAL }));
+      const filters = { q: marker, priorities: [TaskPriority.HIGH, TaskPriority.CRITICAL], collaboratorEmployeeIds: [f.managerEmployeeId], sort: "priority_desc" as const };
+      const pages = await Promise.all([0, 1, 2].map(offset => f.tasks.list(f.managerActor, "personal", offset, 1, filters)));
+      expect(pages.map(page => page.total)).toEqual([3, 3, 3]); expect(pages.map(page => page.items[0]?.id)).toEqual([criticalEarly.id, criticalLate.id, high.id]);
+      await expect(f.tasks.list(f.outsiderActor, "personal", 0, 50, filters)).resolves.toMatchObject({ total: 0, items: [] });
+      await expect(f.tasks.list(f.managerActor, "personal", 0, 50, { ...filters, collaboratorEmployeeIds: [randomUUID()] })).resolves.toMatchObject({ total: 0, items: [] });
+      await expect(f.tasks.list(f.ownerActor, "personal", 0, 50, filters)).resolves.toMatchObject({ total: 0, items: [] });
+    });
+  });
+
+  it("searches linked canonical stage labels and loses those results after project access is revoked", async () => {
+    await fixture(async f => {
+      const stageLabel = `Query stage ${randomUUID()}`;
+      const definition = { deliveryType: "DESIGN" as const, scopes: ["Design"], stages: [{ key: "QUERY", label: stageLabel }], milestones: [], folders: [] };
+      const { template } = await f.templates.create(f.ownerActor, { name: `Query template ${randomUUID()}`, definition, reason: "Create canonical query plan fixture" });
+      const created = await f.projects.create(f.ownerActor, { branchId: f.branchId, title: "Stage query project", deliveryType: "DESIGN", scopes: definition.scopes, templateVersionId: template.versions[0]!.id, idempotencyKey: randomUUID(), reason: "Apply the canonical query plan" });
+      await f.tx.employeePermissionOverride.create({ data: { organizationId: f.organizationId, employeeId: f.managerEmployeeId, permissionKey: "project.view", effect: PermissionEffect.ALLOW, scopeKind: PermissionScopeKind.BRANCH, branchId: f.branchId, reason: "Query fixture project access" } });
+      await f.workflow.assignment(f.ownerActor, created.project.id, { employeeId: f.managerEmployeeId, expectedVersion: created.project.version, reason: "Assign the query fixture owner" });
+      const stage = await f.tx.projectPlanItem.findFirstOrThrow({ where: { projectId: created.project.id, kind: "STAGE" } });
+      const task = await f.tasks.create(f.ownerActor, taskInput("Create stage-linked task", { title: "Ordinary title", type: TaskType.PROJECT, ownerEmployeeId: f.managerEmployeeId, projectId: created.project.id, planItemId: stage.id }));
+      await expect(f.tasks.list(f.managerActor, "personal", 0, 50, { q: stageLabel })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: task.id })] });
+      const beforeRevoke = await f.tx.project.findUniqueOrThrow({ where: { id: created.project.id } });
+      await f.workflow.revokeAssignment(f.ownerActor, created.project.id, f.managerEmployeeId, { expectedVersion: beforeRevoke.version, reason: "Revoke query fixture project access" });
+      await expect(f.tasks.list(f.managerActor, "personal", 0, 50, { q: stageLabel })).resolves.toMatchObject({ total: 0, items: [] });
+      const beforeRestore = await f.tx.project.findUniqueOrThrow({ where: { id: created.project.id } });
+      await f.workflow.assignment(f.ownerActor, created.project.id, { employeeId: f.managerEmployeeId, expectedVersion: beforeRestore.version, reason: "Restore query fixture project access" });
+      await expect(f.tasks.list(f.managerActor, "personal", 0, 50, { q: stageLabel })).resolves.toMatchObject({ total: 1, items: [expect.objectContaining({ id: task.id })] });
+    });
+  });
+
+  it("persists independent one-level subtasks and gates parent completion until all children complete", async () => {
+    await fixture(async f => {
+      const projectId = await subtaskProject(f);
+      const input = taskInput("Create ordinary parent", { type: TaskType.PROJECT, projectId, ownerEmployeeId: f.managerEmployeeId });
+      const parent = await f.tasks.create(f.ownerActor, input);
+      const created = await f.tasks.createSubtask(f.managerActor, parent.id, { ...input, title: "Independent child", targetDate: "2026-10-16", expectedParentVersion: 1 });
+      // Force commit-time evidence in this rollback fixture rather than pretending rollback validates it.
+      await f.tx.$executeRaw`SET CONSTRAINTS task_subtask_evidence_guard IMMEDIATE`;
+      await f.tx.$executeRaw`SET CONSTRAINTS task_subtask_evidence_guard DEFERRED`;
+      expect(created.parentVersion).toBe(2);
+      expect(created.task.targetDate.toISOString().slice(0, 10)).toBe("2026-10-16");
+      await expect(f.tasks.createSubtask(f.ownerActor, parent.id, { ...input, expectedParentVersion: 1 })).rejects.toThrow("Task changed");
+      await expect(f.tasks.createSubtask(f.ownerActor, created.task.id, { ...input, expectedParentVersion: 1 })).rejects.toThrow();
+      await f.tasks.transition(f.managerActor, parent.id, { toState: "IN_PROGRESS", expectedVersion: 2, reason: "Begin the parent" });
+      await expect(f.tasks.transition(f.managerActor, parent.id, { toState: "COMPLETED", expectedVersion: 3, reason: "Cannot bypass unfinished child" })).rejects.toThrow("Complete all subtasks");
+      await f.tx.$executeRaw`SAVEPOINT subtask_raw_completion`;
+      await expect(f.tx.task.update({ where: { id: parent.id }, data: { status: TaskStatus.COMPLETED, version: { increment: 1 } } })).rejects.toThrow("Complete all subtasks");
+      await f.tx.$executeRaw`ROLLBACK TO SAVEPOINT subtask_raw_completion`;
+      const projection = await f.tasks.subtasks(f.managerActor, parent.id);
+      expect(projection).toMatchObject({ completionBlocked: true, canCreate: true, taskVersion: 3, items: [expect.objectContaining({ id: created.task.id, title: "Independent child" })] });
+      const page = await f.tasks.list(f.managerActor, "personal", 0, 50);
+      expect(page.items.find(item => item.id === created.task.id)).toMatchObject({ isSubtask: true });
+      expect(page.items.find(item => item.id === created.task.id)).not.toHaveProperty("parentTaskId");
+      await f.tasks.transition(f.managerActor, created.task.id, { toState: "IN_PROGRESS", expectedVersion: 1, reason: "Begin child work" });
+      await f.tasks.transition(f.managerActor, created.task.id, { toState: "COMPLETED", expectedVersion: 2, reason: "Finish child work" });
+      await f.tasks.transition(f.managerActor, parent.id, { toState: "COMPLETED", expectedVersion: 3, reason: "Every child is complete" });
+      expect(await f.tx.task.findUniqueOrThrow({ where: { id: parent.id } })).toMatchObject({ status: TaskStatus.COMPLETED, version: 4 });
+      const link = await f.tx.taskSubtaskLink.findUniqueOrThrow({ where: { childTaskId_organizationId: { childTaskId: created.task.id, organizationId: f.organizationId } } });
+      await f.tx.$executeRaw`SAVEPOINT subtask_raw_detach`;
+      await expect(f.tx.taskSubtaskLink.delete({ where: { id: link.id } })).rejects.toThrow("immutable");
+      await f.tx.$executeRaw`ROLLBACK TO SAVEPOINT subtask_raw_detach`;
+    });
+  });
+
+  it("rejects direct and indirect dependency cycles through parent completion edges while allowing sibling dependencies", async () => {
+    await fixture(async f => {
+      const projectId = await subtaskProject(f);
+      const input = taskInput("Create dependency-aware parent", { type: TaskType.PROJECT, projectId, ownerEmployeeId: f.managerEmployeeId });
+      const parent = await f.tasks.create(f.ownerActor, input);
+      const first = await f.tasks.createSubtask(f.ownerActor, parent.id, { ...input, title: "First child", expectedParentVersion: 1 });
+      const second = await f.tasks.createSubtask(f.ownerActor, parent.id, { ...input, title: "Second child", expectedParentVersion: 2 });
+      const middle = await f.tasks.create(f.ownerActor, { ...input, title: "Intermediate task" });
+      await f.tx.$executeRaw`SET CONSTRAINTS task_subtask_evidence_guard IMMEDIATE`;
+      await f.tx.$executeRaw`SET CONSTRAINTS task_subtask_evidence_guard DEFERRED`;
+      await expect(f.tasks.addDependency(f.ownerActor, first.task.id, { predecessorTaskId: parent.id, expectedVersion: 1, reason: "Direct completion cycle" })).rejects.toThrow("cycle");
+      await f.tasks.addDependency(f.ownerActor, first.task.id, { predecessorTaskId: middle.id, expectedVersion: 1, reason: "Child waits for intermediate work" });
+      await expect(f.tasks.addDependency(f.ownerActor, middle.id, { predecessorTaskId: parent.id, expectedVersion: 1, reason: "Indirect completion cycle" })).rejects.toThrow("cycle");
+      await f.tasks.addDependency(f.ownerActor, first.task.id, { predecessorTaskId: second.task.id, expectedVersion: 2, reason: "Valid sibling sequence" });
+      await f.tx.$executeRaw`SAVEPOINT subtask_raw_cycle`;
+      await expect(f.tx.taskDependency.create({ data: { organizationId: f.organizationId, dependentTaskId: second.task.id, predecessorTaskId: parent.id, addedById: f.ownerId, addReason: "Raw SQL completion cycle", addedTaskVersion: 2 } })).rejects.toThrow("cycle");
+      await f.tx.$executeRaw`ROLLBACK TO SAVEPOINT subtask_raw_cycle`;
+    });
+  });
 
   it("does not list standalone tasks owned by a same-team non-report peer", async () => {
     await fixture(async ({ tx, organizationId, managerActor, outsiderActor, ownerActor, tasks }) => {

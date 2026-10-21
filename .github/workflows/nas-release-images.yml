@@ -1,0 +1,80 @@
+name: NAS release candidate images
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Verified full 40-character source commit (S01 quality must have passed)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: nas-release-candidate
+  cancel-in-progress: false
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    environment: nas-release
+    permissions:
+      contents: read
+      actions: read
+      packages: write
+    env:
+      RELEASE_COMMIT: ${{ inputs.commit }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Require successful whole-candidate quality evidence
+        shell: bash
+        run: |
+          [[ "$RELEASE_COMMIT" =~ ^[a-f0-9]{40}$ ]] || exit 1
+          gh run list --repo "$GITHUB_REPOSITORY" --workflow s01-quality.yml --commit "$RELEASE_COMMIT" --status success --limit 100 --json conclusion,headSha > /tmp/nas-quality.json
+          jq -e --arg commit "$RELEASE_COMMIT" 'any(.[]; .headSha == $commit and .conclusion == "success")' /tmp/nas-quality.json
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.commit }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: node --test scripts/nas/operations.test.mjs
+      - run: node scripts/nas/verify-compose.mjs
+      - run: pnpm --filter @sense/contracts build && pnpm --filter @sense/web build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: node scripts/nas/verify-phone-delivery.mjs
+      - name: Build the exact candidate images on the runner
+        shell: bash
+        run: |
+          docker build --build-arg "VCS_REF=$RELEASE_COMMIT" --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" --file infra/Dockerfile.api --tag sense-nas-ci-api:candidate .
+          docker build --build-arg "VCS_REF=$RELEASE_COMMIT" --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" --file infra/Dockerfile.web --target production --tag sense-nas-ci-web:candidate .
+      - run: node scripts/nas/verify-container-proxy.mjs --api-image sense-nas-ci-api:candidate --web-image sense-nas-ci-web:candidate
+      - name: Publish the tested images and record immutable digests
+        shell: bash
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          image_base="ghcr.io/${GITHUB_REPOSITORY,,}"
+          mkdir -p .artifacts/nas/release
+          for service in api web; do
+            image="$image_base/$service:$RELEASE_COMMIT"
+            docker tag "sense-nas-ci-$service:candidate" "$image"
+            docker push "$image"
+            docker image inspect "$image" --format '{{index .RepoDigests 0}}' >> .artifacts/nas/release/image-digests.txt
+          done
+          printf '%s\n' "$RELEASE_COMMIT" > .artifacts/nas/release/source-commit.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nas-candidate-${{ inputs.commit }}
+          path: .artifacts/nas/
+          if-no-files-found: warn

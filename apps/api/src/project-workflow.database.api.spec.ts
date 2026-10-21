@@ -6,6 +6,7 @@ import { AuthorizationService } from "./authorization.service.js";
 import { ApprovalService } from "./approval.service.js";
 import { ProjectService, type ProjectActor } from "./project.service.js";
 import { ProjectWorkflowService } from "./project-workflow.service.js";
+import { ProjectTemplateService } from "./project-template.service.js";
 import type { RuntimeConfig } from "./config.js";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -25,7 +26,7 @@ databaseDescribe("S07 project workflow database integration", () => {
   async function fixture(run: (value: {
     tx: Prisma.TransactionClient; organizationId: string; branchId: string; otherBranchId: string;
     ownerId: string; approverId: string; approverActor: ProjectActor; service: ProjectService; workflow: ProjectWorkflowService;
-    actor: ProjectActor;
+    actor: ProjectActor; db: DatabaseService;
   }) => Promise<void>) {
     try {
       await database.prisma.$transaction(async (tx) => {
@@ -33,7 +34,7 @@ databaseDescribe("S07 project workflow database integration", () => {
         const suffix = randomUUID();
         const branch = await tx.branch.create({ data: { organizationId: organization.id, name: `S07 workflow ${suffix}` } });
         const otherBranch = await tx.branch.create({ data: { organizationId: organization.id, name: `S07 workflow other ${suffix}` } });
-        const owner = await tx.account.create({ data: { normalizedEmail: `s07-workflow-${suffix}@example.test`, kind: AccountKind.OWNER, state: AccountState.ACTIVE } });
+        const owner = await tx.account.findFirst({ where: { kind: AccountKind.OWNER, state: AccountState.ACTIVE } }) ?? await tx.account.create({ data: { normalizedEmail: `s07-workflow-${suffix}@example.test`, kind: AccountKind.OWNER, state: AccountState.ACTIVE } });
         const approver = await tx.account.create({ data: { normalizedEmail: `s07-workflow-approver-${suffix}@example.test`, kind: AccountKind.STAFF, state: AccountState.ACTIVE } });
         const proxy = new Proxy(tx, { get(target, key) {
           if (key === "$transaction") return async (callback: (inner: Prisma.TransactionClient) => Promise<unknown>) => {
@@ -48,11 +49,38 @@ databaseDescribe("S07 project workflow database integration", () => {
         const workflow = new ProjectWorkflowService(db, new AuthorizationService(db), new ApprovalService(db));
         const actor: ProjectActor = { accountId: owner.id, organizationId: organization.id, kind: AccountKind.OWNER };
         const approverActor: ProjectActor = { accountId: approver.id, organizationId: organization.id, kind: AccountKind.STAFF };
-        await run({ tx, organizationId: organization.id, branchId: branch.id, otherBranchId: otherBranch.id, ownerId: owner.id, approverId: approver.id, approverActor, service, workflow, actor });
+        await run({ tx, organizationId: organization.id, branchId: branch.id, otherBranchId: otherBranch.id, ownerId: owner.id, approverId: approver.id, approverActor, service, workflow, actor, db });
         throw new FixtureRollback();
       }, { timeout: 30_000 });
     } catch (error) { if (!(error instanceof FixtureRollback)) throw error; }
   }
+
+  it("keeps batched directory rows, totals and plan metadata inside current assignment and explicit-deny scope", async () => {
+    await fixture(async ({ tx, organizationId, branchId, otherBranchId, approverId, approverActor, service, workflow, actor, db }) => {
+      const team = await tx.team.create({ data: { organizationId, branchId, name: `Directory ${randomUUID()}` } });
+      const employee = await tx.employee.create({ data: { organizationId, accountId: approverId, homeBranchId: branchId, homeTeamId: team.id, hiredAt: new Date("2026-01-01") } });
+      await tx.employeePermissionOverride.create({ data: { organizationId, employeeId: employee.id, permissionKey: "project.view", effect: "ALLOW", scopeKind: "ORGANIZATION", reason: "Directory fixture visibility grant" } });
+      const templates = new ProjectTemplateService(db, new AuthorizationService(db));
+      const { template } = await templates.create(actor, { name: `Private directory plan ${randomUUID()}`, definition: { deliveryType: "DESIGN", scopes: ["Design"], stages: [{ key: "PRIVATE_STAGE", label: "Private stage label" }], milestones: [], folders: [] }, reason: "Preserve protected plan metadata" });
+      const local = (await service.create(actor, { branchId, title: "Directory visible local", deliveryType: "DESIGN", scopes: ["Design"], templateVersionId: template.versions[0]!.id, idempotencyKey: randomUUID(), reason: "Create local directory fixture with protected metadata" })).project;
+      const unassigned = (await service.create(actor, { branchId, title: "Directory unassigned private", deliveryType: "DESIGN", scopes: ["Design"], reason: "Create membership-negative fixture" })).project;
+      const foreign = (await service.create(actor, { branchId: otherBranchId, title: "Directory cross-branch", deliveryType: "DESIGN", scopes: ["Design"], reason: "Create foreign directory fixture" })).project;
+      for (const project of [local, foreign]) await workflow.assignment(actor, project.id, { employeeId: employee.id, expectedVersion: project.version, reason: "Explicit directory fixture assignment" });
+      const beforeDeny = await workflow.list(approverActor, undefined, 0, 50);
+      expect(beforeDeny.total).toBe(2); expect(beforeDeny.items.map(project => project.id).sort()).toEqual([local.id, foreign.id].sort()); expect(beforeDeny.stageKeys).toEqual(["PRIVATE_STAGE"]);
+      expect(beforeDeny.items.some(project => project.id === unassigned.id)).toBe(false);
+      await tx.employeePermissionOverride.create({ data: { organizationId, employeeId: employee.id, permissionKey: "project.view", effect: "DENY", scopeKind: "BRANCH", branchId, reason: "Matching home-Branch deny must defeat the organization allow" } });
+      const page = await workflow.list(approverActor, undefined, 0, 1, { sort: "name", direction: "asc" });
+      expect(page.total).toBe(1); expect(page.items.map(project => project.id)).toEqual([foreign.id]); expect(page.stageKeys).toEqual([]);
+      expect(await workflow.list(approverActor, branchId, 0, 50, { stageKey: "PRIVATE_STAGE" })).toMatchObject({ total: 0, items: [], stageKeys: [] });
+      expect(await workflow.list(approverActor, undefined, 0, 50, { q: local.title })).toMatchObject({ total: 0, items: [], stageKeys: [] });
+      const current = await tx.project.findUniqueOrThrow({ where: { id: foreign.id } });
+      await workflow.revokeAssignment(actor, foreign.id, employee.id, { expectedVersion: current.version, reason: "Current cross-Branch directory access must follow revocation" });
+      expect(await workflow.list(approverActor, undefined, 0, 50)).toMatchObject({ total: 0, items: [], stageKeys: [] });
+      await tx.account.update({ where: { id: approverId }, data: { state: "SUSPENDED" } });
+      await expect(workflow.list(approverActor, undefined, 0, 50)).rejects.toMatchObject({ status: 403 });
+    });
+  });
 
   it("persists assignment and lead decisions, approves named scope changes, transfers access, and keeps cancellation fail-closed", async () => {
     await fixture(async ({ tx, organizationId, branchId, otherBranchId, ownerId, approverId, approverActor, service, workflow, actor }) => {

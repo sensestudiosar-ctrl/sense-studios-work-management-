@@ -1,0 +1,10 @@
+.my-work-filter-chips{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;padding:0 19px 13px;background:#fff;border-bottom:1px solid #e8e8e2}
+.my-work-filter-chips-list{display:flex;align-items:center;flex-wrap:wrap;gap:7px;min-width:0;max-width:100%}
+.my-work-filter-chip{display:inline-flex;align-items:center;gap:5px;min-width:0;max-width:100%;padding:3px 4px 3px 11px;border:1px solid #dce9dd;border-radius:30px;background:#f0f4ef;color:#3f6753;font-size:12px;line-height:1.25}
+.my-work-filter-chip-text{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.my-work-filter-chip button,.my-work-filter-clear{display:inline-grid;place-items:center;flex:0 0 auto;min-width:44px;min-height:44px;border:0;border-radius:24px;background:transparent;color:#3f6753;cursor:pointer;font:inherit}
+.my-work-filter-chip button{font-size:19px;line-height:1}
+.my-work-filter-clear{padding:0 10px;font-size:12px;font-weight:650;white-space:nowrap}
+.my-work-filter-chip button:hover,.my-work-filter-clear:hover{background:#e4eee4}
+.my-work-filter-chip button:focus-visible,.my-work-filter-clear:focus-visible{outline:3px solid #78a98d;outline-offset:2px}
+@media(max-width:700px){.my-work-filter-chips{padding:0 12px 13px;align-items:flex-start}.my-work-filter-chips-list{flex:1 1 auto}.my-work-filter-clear{align-self:flex-start}}

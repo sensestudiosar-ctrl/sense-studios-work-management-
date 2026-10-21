@@ -2,10 +2,12 @@ import { BadRequestException, ConflictException, ForbiddenException, Injectable,
 import { AccountKind, AccountState, EmployeeState, InternalReviewSeverity, InternalReviewStatus, NotificationChannel, Prisma, ProjectStatus, RevisionApprovalKind, TaskPriority, TaskReviewRequirement, TaskStatus, TaskType } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
 import { AuthorizationService } from "./authorization.service.js";
+import { withAuthorizationReadTime } from "./authorization-read-context.js";
 import { DocumentService } from "./document.service.js";
 import { RevisionService } from "./revision.service.js";
 import { NotificationsService } from "./notifications.service.js";
 import { recordProjectEvent } from "./project-events.js";
+import { assertSubtasksCompleted } from "./task-subtask-policy.js";
 import type { ProjectActor } from "./project.service.js";
 
 type Tx = Prisma.TransactionClient;
@@ -151,6 +153,47 @@ export class ReviewService {
       await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "review.category_changed", subjectType: "review_category", subjectId: id, reason: input.reason, before: { active: row.active }, after: { categoryId: id, name: row.name, active: input.active } });
       return updated;
     });
+  }
+  /** Named, current review obligations; generic task review phases are not obligations. */
+  async actionable(actor: ProjectActor, offset = 0, limit = 25) {
+    return this.db.$transaction(async tx => {
+      const organization = await tx.organization.findUniqueOrThrow({ where: { id: actor.organizationId }, select: { timezone: true } });
+      const readAt = new Date();
+      const result = await withAuthorizationReadTime(tx, readAt, () => this.actionableInTransaction(tx, actor, readAt, organization.timezone));
+      return { ...result, items: result.items.slice(offset, offset + limit), offset, limit };
+    }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, timeout: 30_000 });
+  }
+
+  async actionableInTransaction(tx: Prisma.TransactionClient, actor: ProjectActor, readAt: Date, _timezone: string) {
+      void _timezone;
+      const account = await this.account(tx, actor);
+      const items = [];
+      if (actor.kind === AccountKind.STAFF && account.employee) {
+        const rounds = await tx.reviewRound.findMany({ where: { organizationId: actor.organizationId,
+          reviewerEmployeeId: account.employee.id, status: { in: [InternalReviewStatus.SUBMITTED, InternalReviewStatus.IN_REVIEW] }
+        } });
+        for (const candidate of rounds) {
+          try {
+            const { row, project, round, submission } = await this.round(tx, actor, candidate.id);
+            if (project.status !== ProjectStatus.ACTIVE || row.requiresReassignment) continue;
+            if (round.status === InternalReviewStatus.SUBMITTED ? row.status !== TaskStatus.SUBMITTED_INTERNAL_REVIEW : round.status !== InternalReviewStatus.IN_REVIEW || row.status !== TaskStatus.IN_INTERNAL_REVIEW) continue;
+            const [latest, assignment] = await Promise.all([
+              tx.reviewSubmission.findFirst({ where: { organizationId: actor.organizationId, taskId: row.id }, orderBy: [{ roundNumber: "desc" }, { id: "desc" }], select: { id: true } }),
+              tx.reviewAssignment.findUnique({ where: { taskId: row.id } })
+            ]);
+            if (latest?.id !== submission.id || assignment?.reviewerEmployeeId !== round.reviewerEmployeeId) continue;
+            await this.reviewerAuthority(tx, actor, project, round, submission.submittedById, row.primaryOwnerEmployeeId, account);
+            items.push({ source: "review" as const, sourceId: round.id, roundId: round.id, taskId: row.id,
+              title: row.title, project: { id: project.id, title: project.title }, responsibility: "assigned_reviewer" as const,
+              reason: round.status === InternalReviewStatus.SUBMITTED ? "review_start_required" as const : "review_decision_required" as const,
+              deadline: row.committedDueDate ?? row.targetDate,
+              destination: `/reviews?taskId=${encodeURIComponent(row.id)}&roundId=${encodeURIComponent(round.id)}`, readAt });
+          } catch (error) { if (!(error instanceof ForbiddenException || error instanceof NotFoundException || error instanceof ConflictException)) throw error; }
+        }
+      }
+      items.sort((a, b) => a.deadline.getTime() - b.deadline.getTime() || a.sourceId.localeCompare(b.sourceId));
+      return { source: "review" as const, total: items.length, items, readAt };
+
   }
   async inbox(actor: ProjectActor, offset = 0, limit = 50, personal = false, filters: { historical?: boolean; projectId?: string; scope?: "mine" | "accessible"; queue?: "waiting" | "corrections" | "resubmitted" | "history"; q?: string; sort?: "project" | "due" } = {}) {
     return this.transaction(async (tx) => {
@@ -541,6 +584,7 @@ export class ReviewService {
         const submitter = await tx.employee.findUnique({ where: { accountId: latest.submittedById } });
         if (submitter?.state !== EmployeeState.EXITED || submitter.id === row.primaryOwnerEmployeeId || !this.approvedScopeMatches(row, latest.taskSnapshot)) throw new ConflictException("Exit-reassigned work differs from its approved submission; submit a new round");
       }
+      await assertSubtasksCompleted(tx, actor.organizationId, taskId);
       await this.taskState(tx, actor, row, TaskStatus.COMPLETED, input.reason);
     });
     return this.detail(actor, taskId);

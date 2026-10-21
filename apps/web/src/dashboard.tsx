@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./dashboard.css";
+import "./dashboard-widgets.css";
 
 const API = "/api/v1";
 type Cell = string | number | null;
@@ -36,6 +37,12 @@ async function request<T>(path: string, csrf: string, init: RequestInit = {}): P
 const format = (v: unknown) => v === null || v === undefined || v === "" ? "—" : typeof v === "object" ? JSON.stringify(v) : String(v);
 const dateLabel = (v: string | undefined) => v && /^\d{4}-\d{2}-\d{2}/.test(v) ? v.slice(0, 10) : v ?? "";
 const dateRangeOkay = (from: string, to: string) => Boolean(from && to && from <= to);
+
+function HealthScore({ row }: { row: DashRow }): React.JSX.Element {
+  const scale = row.scoreScale;
+  const hasScale = scale && Number.isFinite(scale.min) && Number.isFinite(scale.max) && scale.max > scale.min;
+  return <span className="dashboard-health-meter">Health score {row.score} · {hasScale ? `Scale ${scale.min}–${scale.max}` : "Scale unavailable"}</span>;
+}
 
 export function DashboardWorkspace({ csrfToken, owner, initialTab = "dashboard", focused = false }: { csrfToken: string; owner: boolean; initialTab?: "dashboard" | "summaries" | "reports" | "schedules"; focused?: boolean }): React.JSX.Element {
   const [tab, setTab] = useState<"dashboard" | "summaries" | "reports" | "schedules">(initialTab);
@@ -160,22 +167,191 @@ export function DashboardWorkspace({ csrfToken, owner, initialTab = "dashboard",
     && (ruleKind !== "SUMMARY" || summaryKind !== "WEEKLY" || weekdayValues.length > 0)
     && (ruleKind !== "SUMMARY" || summaryKind !== "MONTHLY" || dayOfMonth.trim())
     && (ruleKind !== "EVENT_NOTICE" || eventNames.length > 0 && validEventNames));
+
+  // Counts belong to their exact authorized source and section. Overlapping
+  // sections are not a unique work total; unavailable reads are not empty.
+  const openDecisionCount = useMemo(() => (sourceData.decisions?.decisions?.items ?? []).filter(item => {
+    const row = typeof item === "object" && item !== null ? item as Record<string, unknown> : {};
+    return row.canDecide !== false;
+  }).length, [sourceData.decisions]);
+  const healthRows = useMemo(() => {
+    const state = sourceData.health;
+    if (!state || state.loading || state.error) return [];
+    return state.sections.filter(section => !section.unavailable).flatMap(s => s.rows).filter(row => typeof row.score === "number" && Number.isFinite(row.score));
+  }, [sourceData.health]);
+  const tasksState = sourceData.tasks;
+  const healthState = sourceData.health;
+  const decisionsState = sourceData.decisions;
+  const sourceCount = (state: DashboardSourceState | undefined, count: number): string => !state || state.loading ? "Loading…"
+    : state.error || state.sections.some(section => section.unavailable) ? "Unavailable" : String(count);
+  const taskSectionNote = (key: string): string | null => !tasksState || tasksState.loading ? "Reading task source…"
+    : tasksState.error ? "Task source unavailable."
+      : tasksState.sections.find(section => section.key === key)?.unavailable
+        ?? (tasksState.sections.some(section => section.key === key) ? null : "This task summary is unavailable.");
+  const taskSectionCount = (key: string): string => !tasksState || tasksState.loading ? "Loading…"
+    : taskSectionNote(key) ? "Unavailable" : String(tasksState.sections.find(section => section.key === key)!.rows.length);
+  const taskTodayRows = tasksState?.sections.find(s => s.key === "today")?.rows ?? [];
+  const taskOverdueRows = tasksState?.sections.find(s => s.key === "overdue")?.rows ?? [];
+  const taskAttentionRows = tasksState?.sections.find(s => s.key === "attention")?.rows ?? [];
+  const taskPriorityRows = tasksState?.sections.find(s => s.key === "priority")?.rows ?? [];
+  const taskBlockedRows = tasksState?.sections.find(s => s.key === "waiting")?.rows ?? [];
+  const taskReviewRows = tasksState?.sections.find(s => s.key === "reviews")?.rows ?? [];
+
+  const kpiTiles = [
+    { label: "Open decisions", value: sourceCount(decisionsState, openDecisionCount), cls: "", ic: "decisions", col: "#2563eb", route: "/decisions", sub: "Awaiting your action" },
+    { label: "Needs attention", value: taskSectionCount("attention"), cls: "dn", ic: "attention", col: "#dc2626", route: "/tasks", sub: "Critical or overdue" },
+    { label: "Health tracked", value: sourceCount(healthState, healthRows.length), cls: "", ic: "health", col: "#d97706", route: "/project-health", sub: "Projects with a persisted score" },
+    { label: "Overdue tasks", value: taskSectionCount("overdue"), cls: taskOverdueRows.length ? "dn" : "", ic: "overdue", col: "#dc2626", route: "/tasks", sub: "Past due and incomplete" },
+    { label: "Blocked / waiting", value: taskSectionCount("waiting"), cls: taskBlockedRows.length ? "dn" : "", ic: "blocked", col: "#7c3aed", route: "/tasks", sub: "Waiting or blocker" },
+  ];
   return <section className="identity-section dashboard-workspace" aria-labelledby="dashboard-heading">
-    <div className="dashboard-heading"><div><div className="eyebrow">{initialTab === "reports" ? "INSIGHTS" : "WORKSPACE OVERVIEW"}</div><h2 id="dashboard-heading">{initialTab === "reports" ? "Reports" : "Dashboard & reports"}</h2><p>{initialTab === "reports" ? "Preview current report data or open an immutable retained snapshot." : "Role-scoped source updates, reminders and frozen reports."}</p></div><button type="button" className="secondary-action" onClick={() => void load(true)} disabled={busy}>Refresh</button></div>
+    <div className="dashboard-heading"><div><div className="eyebrow">{initialTab === "reports" ? "INSIGHTS" : "WORKSPACE OVERVIEW"}</div><h2 id="dashboard-heading">{initialTab === "reports" ? "Reports" : "Dashboard"}</h2><p>{initialTab === "reports" ? "Preview current report data or open an immutable retained snapshot." : "A current view of decisions, tasks and project updates available to your account."}</p></div><button type="button" className="secondary-action" onClick={() => void load(true)} disabled={busy}>Refresh</button></div>
     {!focused && <nav className="dashboard-tabs" aria-label="Dashboard sections">{([['dashboard', 'Overview'], ['summaries', 'Scheduled summaries'], ['reports', 'Reports'], ['schedules', 'Reminders & schedules']] as const).map(([key, label]) => <button type="button" key={key} aria-pressed={tab === key} onClick={() => setTab(key)}>{label}</button>)}</nav>}
     {error && <p className="auth-error" role="alert">{error} <button type="button" className="secondary-action" onClick={() => void load(true)}>Retry supporting data</button></p>}{notice && <p className="notice" role="status">{notice}</p>}
     {loading && tab !== "dashboard" && <p role="status">Loading reports, summaries, reminders, and schedules…</p>}
     {tab === "dashboard" && <>
       <div className="dashboard-summary"><span><small>Organization date</small><strong>{organizationDateLabel}</strong></span><span><small>Account type</small><strong>{dash.role}</strong></span></div>
-      <div className="dashboard-overview-grid"><div className="dashboard-sections">{dashboardSourceNames.filter(source => source !== "decisions").flatMap(source => {
+      <div className="dashboard-kpi-strip" aria-label="Dashboard KPI tiles">
+        {kpiTiles.map(tile => (
+          <div key={tile.label} className={`dashboard-kpi ${tile.cls}`}>
+            <div className="dashboard-kpi-head">
+              <span className="dashboard-kpi-icon" style={{ color: tile.col }} aria-hidden="true">{tile.ic === "decisions" ? "◈" : tile.ic === "attention" ? "!" : tile.ic === "health" ? "●" : tile.ic === "overdue" ? "⏰" : "⊘"}</span>
+              <span className="dashboard-kpi-title">{tile.label}</span>
+            </div>
+            <div className="dashboard-kpi-value">{tile.value}</div>
+            <div className={`dashboard-kpi-trend ${tile.cls}`}>{tile.sub}</div>
+            {tile.route && <Link className="dashboard-kpi-link" to={tile.route}>View →</Link>}
+          </div>
+        ))}
+      </div>
+
+      {/* Demo-style two-column body: left = project health + milestone work, right = attention + priority */}
+      <div className="dashboard-split">
+        <div className="dashboard-split-left">
+          <section className="dashboard-panel" aria-label="Project health">
+            <div className="dashboard-panel-head">
+              <div><h3>Project status</h3><p className="dashboard-panel-sub">Authorized persisted health snapshots</p></div>
+              <Link className="dashboard-panel-link" to="/projects">View projects →</Link>
+            </div>
+            <div className="dashboard-prow-list">
+              {!healthState || healthState.loading ? <p role="status" className="dashboard-read-time">Reading project health…</p>
+                : healthState.error || healthState.sections.some(section => section.unavailable) ? <p role="status">Project health source unavailable.</p>
+                : healthRows.length > 0 ? healthRows.slice(0, 6).map(row => (
+                  <div key={row.id} className="dashboard-prow">
+                    <span className="dashboard-prow-dot" aria-hidden="true"></span>
+                    <div className="dashboard-prow-text">
+                      <div className="dashboard-prow-name">{row.label}</div>
+                      <div className="dashboard-prow-sub">{[row.status, row.value].filter(v => v && v !== "—").join(" · ")}</div>
+                    </div>
+                    <div className="dashboard-prow-meter">
+                      <HealthScore row={row} />
+                    </div>
+                    {row.route && <Link className="dashboard-panel-link" to={row.route}>Open</Link>}
+                  </div>
+                )) : <p className="identity-note">No authorized project-health snapshot is available yet.</p>}
+            </div>
+          </section>
+
+          <section className="dashboard-panel" aria-label="Today's due tasks">
+            <div className="dashboard-panel-head">
+              <div><h3>Tasks due today</h3><p className="dashboard-panel-sub">Committed date when present, otherwise Target</p></div>
+              <Link className="dashboard-panel-link" to="/tasks">My Work →</Link>
+            </div>
+            <div className="dashboard-timeline">
+              {taskSectionNote("today") ? <p role="status" className="dashboard-read-time">{taskSectionNote("today")}</p>
+                : taskTodayRows.length > 0 ? taskTodayRows.slice(0, 8).map(row => (
+                  <div key={row.id} className="dashboard-tl-item">
+                    <div className="dashboard-tl-rail"><span className={`dashboard-tl-node ${row.status?.includes("COMPLETE") ? "done" : "cur"}`}>{row.status?.includes("COMPLETE") ? "✓" : "●"}</span></div>
+                    <div>
+                      <div className="dashboard-tl-title">{row.label}</div>
+                      <div className="dashboard-tl-sub">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
+                    </div>
+                    {row.route && <Link className="dashboard-panel-link" to={row.route}>Open</Link>}
+                  </div>
+                )) : <p className="identity-note">No due work on today's calendar.</p>}
+            </div>
+          </section>
+
+        </div>
+
+        <div className="dashboard-split-right">
+          <section className="dashboard-panel" aria-label="Needs your attention">
+            <div className="dashboard-panel-head">
+              <div><h3>Needs your attention</h3><p className="dashboard-panel-sub">{taskSectionNote("attention") ?? `${taskAttentionRows.length} task items`}</p></div>
+              <Link className="dashboard-panel-link" to="/decisions">Open decisions →</Link>
+            </div>
+            <ul className="dashboard-attn-list">
+              {taskSectionNote("attention") ? <li role="status" className="dashboard-read-time">{taskSectionNote("attention")}</li>
+                : taskAttentionRows.length > 0 ? taskAttentionRows.slice(0, 6).map(row => (
+                  <li key={row.id} className="dashboard-attn">
+                    <span className={`dashboard-attn-ic ${row.status?.includes("BLOCK") ? "warn" : "ok"}`} aria-hidden="true">{row.status?.includes("BLOCK") ? "!" : "✓"}</span>
+                    <div className="dashboard-attn-text">
+                      <div className="dashboard-attn-title">{row.label}</div>
+                      <div className="dashboard-attn-sub">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
+                    </div>
+                    {row.date && <span className="dashboard-attn-due">{row.date}</span>}
+                  </li>
+                )) : <li className="identity-note">No task attention items in this source.</li>}
+            </ul>
+          </section>
+
+          <section className="dashboard-panel" aria-label="Priority work">
+            <div className="dashboard-panel-head">
+              <div><h3>Priority work</h3><p className="dashboard-panel-sub">High and critical priority</p></div>
+            </div>
+            <ul className="dashboard-attn-list">
+              {taskSectionNote("priority") ? <li role="status" className="dashboard-read-time">{taskSectionNote("priority")}</li>
+                : taskPriorityRows.length > 0 ? taskPriorityRows.slice(0, 5).map(row => (
+                  <li key={row.id} className="dashboard-attn">
+                    <span className="dashboard-attn-ic ok" aria-hidden="true">◆</span>
+                    <div className="dashboard-attn-text">
+                      <div className="dashboard-attn-title">{row.label}</div>
+                      <div className="dashboard-attn-sub">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
+                    </div>
+                    {row.route && <Link className="dashboard-panel-link" to={row.route}>Open</Link>}
+                  </li>
+                )) : <li className="identity-note">No high or critical priority items.</li>}
+            </ul>
+          </section>
+
+          <section className="dashboard-panel" aria-label="Task reviews and corrections">
+            <div className="dashboard-panel-head">
+              <div><h3>Task reviews and corrections</h3><p className="dashboard-panel-sub">Current task states and due dates</p></div>
+            </div>
+            <div className="dashboard-activity-list">
+              {taskSectionNote("reviews") ? <p role="status">{taskSectionNote("reviews")}</p>
+                : taskReviewRows.length > 0 ? taskReviewRows.slice(0, 8).map(row => (
+                <div key={row.id} className="dashboard-act-row">
+                  <div className="dashboard-act-box">
+                    <div className="dashboard-act-text"><b>{row.label}</b></div>
+                    <div className="dashboard-act-time">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
+                    {row.route && <Link className="dashboard-panel-link" to={row.route}>Open</Link>}
+                  </div>
+                </div>
+              )) : <p className="identity-note">No review or correction tasks in this source.</p>}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <div className="dashboard-overview-grid"><div className="dashboard-sections">
+      {sourceData.decisions?.error ? <article className="dashboard-panel dashboard-source-card dashboard-source-decisions"><h3>Decision center</h3><p className="dashboard-unavailable" role="status">This source is unavailable: {sourceData.decisions.error}</p><button type="button" className="secondary-action" onClick={() => void loadSource("decisions")}>Retry decision center</button></article> : sourceData.decisions?.loading || !sourceData.decisions ? <article className="dashboard-panel dashboard-source-card dashboard-source-decisions"><h3>Decision center</h3><p role="status">Reading this source…</p></article> : <article className="dashboard-panel dashboard-source-card dashboard-source-decisions"><h3>Decision center</h3>{sourceData.decisions.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(sourceData.decisions.readCompletedAt).toLocaleString()}</p>}{(sourceData.decisions.decisions?.items ?? []).length > 0 ? <ul>{(sourceData.decisions.decisions?.items ?? []).map((item, index) => { const row = typeof item === "object" && item !== null ? item as Record<string, unknown> : { value: item }; const route = typeof row.route === "string" ? row.route : null; return <li key={String(row.id ?? index)}><div><strong>{format(row.title ?? row.label ?? row.kind ?? "Decision")}</strong><small>{[row.requesterLabel, row.levelLabel, row.typeKey].map(format).filter(v => v !== "—").join(" · ")}</small></div><span>{format(row.summary ?? row.description)}</span>{route && <Link to={route}>Open</Link>}</li>; })}</ul> : <p className="identity-note">No current decisions.</p>}</article>}
+      {dashboardSourceNames.filter(source => source === "tasks").flatMap(source => {
         const state = sourceData[source];
         const sections = state?.sections ?? [];
         if (!state || state.loading) return [<article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={`${source}-loading`}><h3>{sourceLabels[source]}</h3><p role="status">Reading this source…</p></article>];
         if (state?.error) return [<article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={`${source}-error`}><h3>{sourceLabels[source]}</h3><p className="dashboard-unavailable" role="status">This source is unavailable: {state.error}</p><button type="button" className="secondary-action" onClick={() => void loadSource(source)}>Retry {sourceLabels[source].toLowerCase()}</button></article>];
         if (sections.length === 0) return [<article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={`${source}-empty`}><h3>{sourceLabels[source]}</h3>{state?.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(state.readCompletedAt).toLocaleString()}</p>}<p className="identity-note">No current items.</p></article>];
-        return sections.map(section => <article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={section.key}><h3>{section.label}</h3>{state?.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(state.readCompletedAt).toLocaleString()}</p>}{section.unavailable && <p className="dashboard-unavailable">{section.unavailable}</p>}{section.rows.length ? <ul>{section.rows.map(row => <li key={row.id}><div><strong>{row.label}</strong><small>{[row.status, row.date].filter(Boolean).join(" · ")}</small>{typeof row.score === "number" && Number.isFinite(row.score) && row.scoreScale && <label className="dashboard-health-meter">Project health {row.score} of {row.scoreScale.max}<progress aria-label={`${row.label} health score`} value={row.score} max={row.scoreScale.max} /></label>}</div><span>{format(row.value)}</span>{row.route && <Link to={row.route}>Open</Link>}</li>)}</ul> : !section.unavailable && <p className="identity-note">No current items.</p>}</article>);
+        return sections.map(section => <article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={section.key}><h3>{section.label}</h3>{state?.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(state.readCompletedAt).toLocaleString()}</p>}{section.unavailable && <p className="dashboard-unavailable">{section.unavailable}</p>}{section.rows.length ? <ul>{section.rows.map(row => <li key={row.id}><div><strong>{row.label}</strong><small>{[row.status, row.date].filter(Boolean).join(" · ")}</small>{typeof row.score === "number" && Number.isFinite(row.score) && <HealthScore row={row} />}</div><span>{format(row.value)}</span>{row.route && <Link to={row.route}>Open</Link>}</li>)}</ul> : !section.unavailable && <p className="identity-note">No current items.</p>}</article>);
       })}</div>
-      {sourceData.decisions?.error ? <article className="dashboard-panel dashboard-source-card dashboard-source-decisions"><h3>Decision center</h3><p className="dashboard-unavailable" role="status">This source is unavailable: {sourceData.decisions.error}</p><button type="button" className="secondary-action" onClick={() => void loadSource("decisions")}>Retry decision center</button></article> : sourceData.decisions?.loading || !sourceData.decisions ? <article className="dashboard-panel dashboard-source-card dashboard-source-decisions"><h3>Decision center</h3><p role="status">Reading this source…</p></article> : <article className="dashboard-panel dashboard-source-card dashboard-source-decisions"><h3>Decision center</h3>{sourceData.decisions.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(sourceData.decisions.readCompletedAt).toLocaleString()}</p>}{(sourceData.decisions.decisions?.items ?? []).length > 0 ? <ul>{(sourceData.decisions.decisions?.items ?? []).map((item, index) => { const row = typeof item === "object" && item !== null ? item as Record<string, unknown> : { value: item }; const route = typeof row.route === "string" ? row.route : null; return <li key={String(row.id ?? index)}><div><strong>{format(row.title ?? row.label ?? row.kind ?? "Decision")}</strong><small>{[row.requesterLabel, row.levelLabel, row.typeKey].map(format).filter(v => v !== "—").join(" · ")}</small></div><span>{format(row.summary ?? row.description)}</span>{route && <Link to={route}>Open</Link>}</li>; })}</ul> : <p className="identity-note">No current decisions.</p>}</article>}</div>
+      {dashboardSourceNames.filter(source => source !== "decisions" && source !== "tasks").flatMap(source => {
+        const state = sourceData[source];
+        const sections = state?.sections ?? [];
+        if (!state || state.loading) return [<article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={`${source}-loading`}><h3>{sourceLabels[source]}</h3><p role="status">Reading this source…</p></article>];
+        if (state?.error) return [<article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={`${source}-error`}><h3>{sourceLabels[source]}</h3><p className="dashboard-unavailable" role="status">This source is unavailable: {state.error}</p><button type="button" className="secondary-action" onClick={() => void loadSource(source)}>Retry {sourceLabels[source].toLowerCase()}</button></article>];
+        if (sections.length === 0) return [<article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={`${source}-empty`}><h3>{sourceLabels[source]}</h3>{state?.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(state.readCompletedAt).toLocaleString()}</p>}<p className="identity-note">No current items.</p></article>];
+        return sections.map(section => <article className={`dashboard-panel dashboard-source-card dashboard-source-${source}`} key={section.key}><h3>{section.label}</h3>{state?.readCompletedAt && <p className="dashboard-read-time">Read at {new Date(state.readCompletedAt).toLocaleString()}</p>}{section.unavailable && <p className="dashboard-unavailable">{section.unavailable}</p>}{section.rows.length ? <ul>{section.rows.map(row => <li key={row.id}><div><strong>{row.label}</strong><small>{[row.status, row.date].filter(Boolean).join(" · ")}</small>{typeof row.score === "number" && Number.isFinite(row.score) && <HealthScore row={row} />}</div><span>{format(row.value)}</span>{row.route && <Link to={row.route}>Open</Link>}</li>)}</ul> : !section.unavailable && <p className="identity-note">No current items.</p>}</article>);
+      })}</div>
     </>}
     {tab === "summaries" && !loading && <div className="dashboard-report-layout">
       <article className="dashboard-panel"><h3>Scheduled summaries</h3><p>Only summaries available under your current source access appear here.</p>{summaries.length === 0 ? <p className="identity-note" role="status">No generated summaries are available.</p> : <ul>{summaries.map(item => <li key={item.id} data-summary-id={item.id}><div><strong>{item.summary.kind} summary</strong><small>{item.summary.from ?? ""}{item.summary.from ? " — " : ""}{item.summary.to ?? ""} · {new Date(item.summary.generatedAt || item.createdAt).toLocaleString()}</small></div><button type="button" className="secondary-action" aria-pressed={selectedSummaryId === item.id} onClick={() => setSelectedSummaryId(item.id)}>{selectedSummaryId === item.id ? "Selected" : "View summary"}</button></li>)}</ul>}</article>

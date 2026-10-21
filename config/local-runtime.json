@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "apiPort": 59442,
+  "webPort": 59443,
+  "webOrigin": "http://localhost:59443",
+  "database": {
+    "host": "127.0.0.1",
+    "port": 45434,
+    "name": "sense_latest_retained_20261014_test",
+    "user": "sense_demo",
+    "oid": "145606",
+    "system": "7693570241708228348",
+    "migrations": 119
+  },
+  "nasRoot": ".env.checkpoint-tools/latest-retained-20261014/nas",
+  "activeManifest": ".env.local-runtime-tools/active.json",
+  "environmentFile": ".env.local-runtime",
+  "toolchain": {
+    "pnpmEntry": "C:/Users/HI/AppData/Local/node/corepack/v1/pnpm/11.19.0/bin/pnpm.cjs"
+  }
+}

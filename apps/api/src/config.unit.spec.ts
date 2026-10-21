@@ -44,4 +44,21 @@ describe("runtime configuration", () => {
     expect(() => parseRuntimeConfig({ ...valid, BREVO_API_KEY: "x", BREVO_SENDER_EMAIL: "notifications@example.test", BREVO_SENDER_NAME: "Sense Studios" }))
       .toThrow("Invalid configuration: EMAIL_VERIFICATION_SECRET");
   });
+
+  it("bounds pool size and trusts only an explicitly configured single private proxy", () => {
+    expect(parseRuntimeConfig(valid)).toMatchObject({ databasePoolMax: 10, trustProxyHops: 0 });
+    expect(parseRuntimeConfig({ ...valid, DATABASE_POOL_MAX: "4", TRUST_PROXY_HOPS: "1" })).toMatchObject({ databasePoolMax: 4, trustProxyHops: 1 });
+    for (const DATABASE_POOL_MAX of ["0", "51", "1.5", "NaN"]) expect(() => parseRuntimeConfig({ ...valid, DATABASE_POOL_MAX })).toThrow("DATABASE_POOL_MAX");
+    expect(() => parseRuntimeConfig({ ...valid, TRUST_PROXY_HOPS: "2" })).toThrow("TRUST_PROXY_HOPS");
+  });
+
+  it("fails production startup without storage/encryption and rejects a noncanonical origin", () => {
+    const production = { ...valid, NODE_ENV: "production", WEB_ORIGIN: "https://work.example.test", NAS_ROOT: process.cwd(), EXTERNAL_SHARE_SECRET: "x".repeat(32) };
+    expect(parseRuntimeConfig(production).nodeEnv).toBe("production");
+    expect(() => parseRuntimeConfig({ ...production, NAS_ROOT: "" })).toThrow("NAS_ROOT");
+    expect(() => parseRuntimeConfig({ ...production, EXTERNAL_SHARE_SECRET: "" })).toThrow("EXTERNAL_SHARE_SECRET");
+    for (const WEB_ORIGIN of ["https://work.example.test/path", "https://secret@work.example.test", "https://work.example.test/?secret=value", "https://work.example.test/#fragment"]) {
+      expect(() => parseRuntimeConfig({ ...production, WEB_ORIGIN })).toThrow("WEB_ORIGIN");
+    }
+  });
 });

@@ -24,6 +24,7 @@ import { NotificationWorker, OperationalRecipientPredicate, PersistedVerifiedAdd
 import { recordProjectEvent } from "./project-events.js";
 import type { BrevoEmailAdapter } from "./brevo-email.js";
 import type { RuntimeConfig } from "./config.js";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "./s27-disposable-test-target.js";
 import { DOCUMENT_CHUNK_SIZE } from "./document-file-policy.js";
 
 const databaseUrl = process.env.S21_DATABASE_URL;
@@ -179,11 +180,15 @@ databaseDescribe("S21 external portal PostgreSQL/API acceptance", () => {
     const s21 = /^sense_s21_[a-z0-9_]*_test$/.test(dbName) && parsed.port === "56433";
     const s25 = process.env.S25_E2E_ENABLED === "1" && /^sense_s21_s25_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
     const s26 = process.env.S26_E2E_ENABLED === "1" && /^sense_s21_s26_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
-    const s27 = process.env.S27_E2E_ENABLED === "1" && /^sense_s21_s27_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    const s27Legacy = process.env.S27_E2E_ENABLED === "1" && /^sense_s21_s27_[a-z0-9_]+_test$/.test(dbName) && parsed.port === "57433";
+    const s27Disposable = isS27DisposableTestTarget("S21_DATABASE_URL", databaseUrl);
+    const s27 = s27Legacy || s27Disposable;
     if ((!s21 && !s25 && !s26 && !s27) || !["127.0.0.1", "localhost"].includes(parsed.hostname)) throw new Error("External portal integration requires an isolated S21 or explicitly enabled exact S21/S25/S26/S27 loopback database");
     nasRoot = await mkdtemp(join(tmpdir(), "sense-s21-external-"));
     database = new DatabaseService({ ...config, databaseUrl, nasRoot });
     await database.check();
+    const actual = (await database.prisma.$queryRaw<Array<{ name: string; port: number }>>`SELECT current_database() AS name, inet_server_port() AS port`)[0]!;
+    if (s27Disposable && !matchesS27DisposableServer(databaseUrl, actual.name, actual.port)) throw new Error("S21 disposable server mismatch");
   });
   afterAll(async () => { await database?.onModuleDestroy(); });
 

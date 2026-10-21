@@ -1,0 +1,18 @@
+.pwa-update { padding: 1rem max(1rem, env(safe-area-inset-right)) 1rem max(1rem, env(safe-area-inset-left)); border-bottom: 1px solid var(--sense-border); background: var(--sense-surface); color: var(--sense-ink); font-family: var(--sense-font-ui); }
+.pwa-update p { margin: .35rem 0 .75rem; max-width: 65ch; line-height: 1.5; }
+.pwa-update label { display: flex; align-items: center; gap: .6rem; min-height: 44px; }
+.pwa-update input { width: 20px; height: 20px; flex: none; }
+.pwa-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: .75rem; }
+.pwa-actions button, .phone-install button, .phone-install .home-link { min-height: 44px; }
+.pwa-actions .pwa-secondary { background: transparent; color: var(--sense-ink); border-color: var(--sense-border); }
+.pwa-update [role="alert"] { color: #853d33; }
+.phone-install { width: min(100%, 760px); margin-inline: auto; padding: clamp(1rem, 4vw, 3rem); padding-bottom: max(3rem, env(safe-area-inset-bottom)); font-family: var(--sense-font-ui); }
+.phone-install-brand { display: inline-flex; gap: .8rem; align-items: center; min-height: 48px; text-decoration: none; font-weight: 650; }
+.phone-install h1 { font: 650 clamp(1.9rem, 5vw, 2.7rem)/1.15 var(--sense-font-ui); letter-spacing: -.035em; }
+.phone-install-intro { font-size: 1.05rem; color: var(--sense-ink-muted); line-height: 1.65; }
+.phone-install section { padding-block: 1rem; border-top: 1px solid var(--sense-border); margin-top: 1.5rem; }
+.phone-install h2 { font-size: 1.15rem; margin: 0 0 .8rem; }
+.phone-install p, .phone-install li { line-height: 1.65; overflow-wrap: anywhere; }
+.phone-install ol { padding-left: 1.4rem; }
+.phone-install li + li { margin-top: .5rem; }
+.phone-install .home-link { display: inline-flex; align-items: center; margin-top: 1rem; }

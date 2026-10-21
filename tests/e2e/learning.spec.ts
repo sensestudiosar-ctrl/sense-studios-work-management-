@@ -1,10 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
 import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { s18ScreenshotPath } from "./s18-screenshot.js";
 
 const fixtureUrl = process.env.DATABASE_URL;
+const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27DisposableTestTarget("DATABASE_URL", process.env.DATABASE_URL));
 const suffix = randomUUID();
 const digest = (value: string) => createHash("sha256").update(value).digest("hex");
 type PgClient = {
@@ -18,7 +20,7 @@ test("Skills catalogue, Owner rating, employee request and named manager approva
   page.setDefaultTimeout(10_000);
   if (!fixtureUrl) throw new Error("DATABASE_URL must point to the same dedicated local test database used by the API; Skills browser acceptance never skips silently");
   const parsed = new URL(fixtureUrl);
-  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1));
+  const localFixture = ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "57433" && /^[a-z0-9_]+_test$/.test(parsed.pathname.slice(1)) || disposableS27Database;
   const ciFixture = process.env.CI === "true" && ["localhost", "127.0.0.1"].includes(parsed.hostname) && parsed.port === "56433" && /^sense_[a-z0-9_]+_ci_test$/.test(parsed.pathname.slice(1));
   if (!localFixture && !ciFixture) throw new Error("Skills browser acceptance requires a dedicated local or CI PostgreSQL test database");
   const require = createRequire(resolve("apps/api/package.json"));
@@ -33,6 +35,10 @@ test("Skills catalogue, Owner rating, employee request and named manager approva
   let ownerAccountId: string, organizationId: string;
   let catalogueId: string, ratingId: string, changeRequestId: string;
   await db.connect();
+  if (disposableS27Database) {
+    const identity = await db.query<{ database: string; port: number }>("SELECT current_database() AS database, inet_server_port() AS port");
+    if (!matchesS27DisposableServer(process.env.DATABASE_URL!, identity.rows[0]!.database, identity.rows[0]!.port)) throw new Error("Connected PostgreSQL server does not match the guarded S27 disposable target");
+  }
   try {
     await db.query("BEGIN");
     await db.query("SELECT pg_advisory_xact_lock(61001804)");
