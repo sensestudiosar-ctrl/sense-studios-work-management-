@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { LibraryWorkspace } from "./library-workspace.js";
 
 const recordId = "00000000-0000-4000-8000-000000000001";
@@ -16,6 +16,37 @@ const json = (body: unknown, status = 200) => new Response(JSON.stringify(body),
 afterEach(() => vi.unstubAllGlobals());
 
 describe("LibraryWorkspace", () => {
+  it("hides the previous record's actions until the newly selected record has loaded", async () => {
+    const nextId = "00000000-0000-4000-8000-000000000004", nextVersion = "00000000-0000-4000-8000-000000000005";
+    const nextItem = { ...item, id: nextId, title: "Second safety policy" };
+    const nextDetail = { ...detail(false), record: nextItem, versions: [{ ...detail(false).versions[1], id: nextVersion, version: 3, content: { blocks: [{ type: "TEXT", text: "Selected policy content." }] } }], publications: [{ ...detail(false).publications[1], versionId: nextVersion }] };
+    let resolveNext!: (response: Response) => void;
+    let nextLoads = 0;
+    const delayedNext = new Promise<Response>(resolve => { resolveNext = resolve; });
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/setup")) return json(setup);
+      if (url === "/api/v1/library") return json({ items: [item, nextItem] });
+      if (url === `/api/v1/library/${recordId}`) return json(detail(false));
+      if (url === `/api/v1/library/${nextId}`) return ++nextLoads === 1 ? delayedNext : json(nextDetail);
+      return json({});
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    render(<LibraryWorkspace csrfToken="library-csrf" />);
+    await screen.findByText("Lift slowly.");
+    fireEvent.click(screen.getByRole("button", { name: /Second safety policy/ }));
+    expect(screen.queryByText("Lift slowly.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Acknowledge version 1" })).not.toBeInTheDocument();
+    expect(screen.getByText("Loading selected Library record…")).toBeInTheDocument();
+    expect(document.querySelector(".library-workspace")).toHaveAttribute("aria-busy", "true");
+    await act(async () => { resolveNext(json(nextDetail)); });
+    await screen.findByText("Selected policy content.");
+    fireEvent.click(screen.getByRole("button", { name: "Acknowledge version 3" }));
+    await waitFor(() => expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith(`/versions/${nextVersion}/acknowledgements`))).toBe(true));
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith(`/versions/${version1}/acknowledgements`))).toBe(false);
+    await screen.findByText("Acknowledgement recorded for this exact version.");
+  });
+
   it("retains exact published history, hides answer-key fields in the view, and acknowledges the older version ID", async () => {
     let acknowledged = false;
     const calls: Array<[string, RequestInit | undefined]> = [];
