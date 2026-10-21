@@ -8,7 +8,7 @@ import { dirname, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { recoveryTestSource, loadRecoveryTestTarget, verifyRecoveryTestDatabase } from '../../apps/api/src/recovery-test-target.ts';
-import { approval, adminUser, runtimeUser, ports, suiteKeys, recoveryKeys, pathsFor, assertContained, targetName, quoteDatabase, cleanEnvironment, toolEnvironmentPath, connectionUrl, assertUrl, assertSource, redact, verifyIdentity, freePort } from './native-acceptance-lib.mjs';
+import { approval, adminUser, runtimeUser, ports, suiteKeys, recoveryKeys, pathsFor, assertContained, targetName, quoteDatabase, cleanEnvironment, toolEnvironmentPath, connectionUrl, assertUrl, assertSource, redact, redactTree, verifyIdentity, freePort } from './native-acceptance-lib.mjs';
 import { assertNoSkipped, jestCounts, vitestCounts, playwrightCounts } from '../ci/test-report-utils.mjs';
 
 const root = resolve(fileURLToPath(new URL('../..', import.meta.url)));
@@ -255,7 +255,7 @@ async function testCommand(stage, program, args, cwd, env, format) {
   const result = await run(program, parameters, { cwd, env, log: resolve(output, 'command.log'), acceptedCodes: [0, 1] });
   const parsed = JSON.parse(readFileSync(report, 'utf8'));
   const counts = format === 'jest' ? jestCounts(parsed) : format === 'vitest' ? vitestCounts(parsed) : playwrightCounts(parsed);
-  writeJson(report, JSON.parse(safe(JSON.stringify(parsed)))); writeJson(resolve(output, 'summary.json'), { source: manifest.source.hash, exitCode: result.code, counts });
+  writeJson(report, redactTree(parsed,secretValues)); writeJson(resolve(output, 'summary.json'), { source: manifest.source.hash, exitCode: result.code, counts });
   assert.equal(result.code, 0, `${stage} failed; see private structured report`); assertNoSkipped(stage, counts); assertCurrent();
   process.stdout.write(`${JSON.stringify({ stage, ...counts })}\n`);
 }

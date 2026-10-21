@@ -73,6 +73,12 @@ export function redact(value, secrets = []) {
   for (const secret of secrets.filter(Boolean)) result = result.replaceAll(secret, '[REDACTED]');
   return result.replace(/postgres(?:ql)?:\/\/[^\s'"<>]+/gi, '[database URL redacted]');
 }
+export function redactTree(value, secrets = []) {
+  if(typeof value==='string')return redact(value,secrets);
+  if(Array.isArray(value))return value.map(item=>redactTree(item,secrets));
+  if(value && typeof value==='object')return Object.fromEntries(Object.entries(value).map(([key,item])=>[key,redactTree(item,secrets)]));
+  return value;
+}
 export function verifyIdentity(actual, expected, database = expected.database) {
   assert.equal(actual.database, database, 'Unexpected recovery database'); assert.equal(actual.address, '127.0.0.1', 'Recovery requires IPv4 loopback');
   assert.equal(actual.port, expected.port, 'Unexpected actual PostgreSQL listener');

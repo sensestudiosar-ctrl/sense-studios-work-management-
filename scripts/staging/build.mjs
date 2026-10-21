@@ -25,6 +25,18 @@ export function buildRelease(root, revision) {
   run('build');
   fs.mkdirSync(release,{recursive:true});
   run('--filter','@sense/api','deploy','--prod','--legacy','--offline',path.join(release,'api'));
+  // Legacy pnpm deployment preserves workspace junctions into the build export.
+  // Seal the two known workspace links inside the artifact; reject every other escape below.
+  const contracts=path.join(release,'api/node_modules/.sense-workspace/contracts');fs.mkdirSync(contracts,{recursive:true});
+  for(const file of ['dist','package.json'])fs.cpSync(path.join(source,'packages/contracts',file),path.join(contracts,file),{recursive:true,errorOnExist:true});
+  for(const [link,expected,target] of [
+    [path.join(release,'api/node_modules/@sense/contracts'),path.join(source,'packages/contracts'),contracts],
+    [path.join(release,'api/node_modules/.pnpm/node_modules/@sense/api'),path.join(source,'apps/api'),path.join(release,'api')]
+  ]) {
+    assert.ok(fs.lstatSync(link).isSymbolicLink(),'Expected workspace junction');
+    assert.equal(fs.realpathSync(link).toLowerCase(),fs.realpathSync(expected).toLowerCase(),'Unexpected workspace dependency target');
+    fs.unlinkSync(link);fs.symlinkSync(target,link,'junction');
+  }
   fs.cpSync(path.join(source,'apps/web/dist'),path.join(release,'web'),{recursive:true,errorOnExist:true});
   const runtime=path.join(release,'runtime');fs.mkdirSync(runtime);
   for(const file of ['manifest.mjs','server.mjs','windows.mjs','process-policy.mjs','supervisor.mjs','bootstrap.mjs','claim-lock.ps1'])fs.copyFileSync(path.join(source,'scripts/staging',file),path.join(runtime,file));

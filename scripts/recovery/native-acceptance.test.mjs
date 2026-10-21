@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { delimiter, resolve } from 'node:path';
-import { approval, adminUser, runtimeUser, ports, suiteKeys, recoveryKeys, pathsFor, assertContained, targetName, quoteDatabase, cleanEnvironment, toolEnvironmentPath, connectionUrl, assertUrl, assertSource, redact, verifyIdentity } from './native-acceptance-lib.mjs';
+import { approval, adminUser, runtimeUser, ports, suiteKeys, recoveryKeys, pathsFor, assertContained, targetName, quoteDatabase, cleanEnvironment, toolEnvironmentPath, connectionUrl, assertUrl, assertSource, redact, redactTree, verifyIdentity } from './native-acceptance-lib.mjs';
 
 const root = resolve(import.meta.dirname, '../..'), runId = '1792530000000-a1b2c3d4e5f6';
 test('native fixture names remain distinct, bounded and compatible with existing S27 suite guards', () => {
@@ -67,4 +67,10 @@ test('diagnostics remove generated credentials and complete connection URLs', ()
   const secret = 'inert-generated-secret', message = `failure ${secret} postgresql://user:password@127.0.0.1:45434/saved_test`;
   const result = redact(message, [secret]);
   assert.ok(!result.includes(secret) && !result.includes('password') && !result.includes('45434'));
+});
+test('structured reports redact strings before serialization without breaking escaped JSON',()=>{
+  const original={message:'URL postgresql://user:password@host/test\\" end',nested:[{secret:'generated-secret',count:507}],success:true};
+  const result=redactTree(original,['generated-secret']);
+  assert.deepEqual(JSON.parse(JSON.stringify(result)),result);assert.equal(result.nested[0].count,507);assert.equal(result.success,true);
+  assert.ok(!JSON.stringify(result).includes('password') && !JSON.stringify(result).includes('generated-secret'));
 });
