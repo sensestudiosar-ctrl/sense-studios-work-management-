@@ -64,7 +64,9 @@ test("Training assignment, authored assessment, named review, effectiveness and 
       const trainingSetup = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/training/setup");
       await page.goto("/learning");
       const response = await trainingSetup;
-      expect(response.ok(), `Training setup: ${await response.text()}`).toBe(true);
+      // Status is available even if Chromium evicts a response body during
+      // navigation. The workspace and persisted facts are asserted below.
+      expect(response.ok(), `Training setup HTTP ${response.status()}`).toBe(true);
     };
     const moduleTitle = `Studio safety module ${suffix.slice(0, 8)}`;
     const created = await api(ownerSecret, ownerCsrf, "/library", "POST", {
