@@ -275,7 +275,7 @@ async function executeStage(stage) {
       for (const task of ['typecheck', 'lint']) await run(process.execPath, [pnpmCli, task], { log: resolve(paths.reports, `${task}.log`) });
       await testCommand('api-unit', process.execPath, [...jestArgs, '--config', 'jest.config.cjs'], apiRoot, environment(), 'jest');
       await testCommand('web-unit', process.execPath, [resolve(webRoot, 'node_modules/vitest/vitest.mjs'), 'run'], webRoot, environment(), 'vitest');
-      await run(process.execPath, [pnpmCli, 'build'], { log: resolve(paths.reports, 'build.log') });
+      await run(process.execPath, [pnpmCli, 'build'], { env:environment({NODE_ENV:'production'}), log: resolve(paths.reports, 'build.log') });
       await run(process.execPath, ['--test', 'scripts/local-runtime.test.mjs', 'scripts/nas/operations.test.mjs'], { log: resolve(paths.reports, 'runtime-nas.log') });
     };
     const postgres = () => withReceiver(() => testCommand('postgres-integration', process.execPath, [...jestArgs, '--config', 'jest.integration.config.cjs', '--runInBand'], apiRoot, environment(), 'jest'));
