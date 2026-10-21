@@ -340,6 +340,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await page.setViewportSize(viewport);
           await expectPage(page.locator(".dv-widget-grid")).toBeVisible();
           await capture(page, viewport, `v10-${identity.key}`);
+          expect(await page.locator(".workspace-mobile-nav").isVisible()).toBe(viewport.width < 768);
           expect(await page.locator(".dv-attention-body > a").count()).toBeLessThanOrEqual(2);
           expect(await page.locator(".dashboard-overview-grid").count()).toBe(0);
         }
@@ -370,6 +371,10 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await page.setViewportSize(viewports[0]!); await expectPage(page.getByRole("heading", { name: "Time tracking", exact: true })).toBeVisible();
           await page.getByRole("button", { name: "Edit widgets", exact: true }).click();
           const timeHandle = page.getByRole("button", { name: "Drag to move Time tracking", exact: true });
+          const storageKey = `sense-dashboard-layout-v2:${encodeURIComponent(f.owner.id)}:desktop`;
+          const beforeCancel = await page.evaluate(key => localStorage.getItem(key), storageKey);
+          await timeHandle.focus(); await page.keyboard.press("Space"); await page.keyboard.press("ArrowDown"); await page.keyboard.press("Escape");
+          expect(await page.evaluate(key => localStorage.getItem(key), storageKey)).toBe(beforeCancel);
           await page.locator(".dv-widget-grid").evaluate(element => element.scrollIntoView({ block: "start" }));
           const start = await timeHandle.boundingBox(), target = await page.getByRole("button", { name: "Drag to move Decisions & assigned reviews", exact: true }).boundingBox();
           expect(start).not.toBeNull(); expect(target).not.toBeNull();
@@ -403,6 +408,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
       } finally { await session.close(); }
     }
     expect(serverErrors).toEqual([]);
+    expect(diagnostics.filter(row => row.event === "pageerror")).toEqual([]);
   }, 240000);
 
   it.each(viewports)("runs persisted task/Project/recovery/authorization workflows at $width pixels", async viewport => {

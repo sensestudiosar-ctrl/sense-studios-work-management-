@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   DndContext, closestCenter, PointerSensor, KeyboardSensor,
-  useSensor, useSensors, useDroppable, type DragOverEvent,
+  useSensor, useSensors, useDroppable, type DragEndEvent,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove, useSortable, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -290,7 +290,6 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   const [layout, setLayout] = useState<DashboardLayout>(() => loadLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode));
   const [editing, setEditing] = useState(false), [galleryOpen, setGalleryOpen] = useState(false), [queueExpanded, setQueueExpanded] = useState(false);
   const [layoutNotice, setLayoutNotice] = useState("");
-  const beforeDrag = useRef<DashboardLayout | null>(null);
   const visitLayouts = useRef(new Map<string, DashboardLayout>());
   const visitLayoutKey = `${accountId}:${mode}`;
   const longPress = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -354,7 +353,9 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   const attentionRows = queueExpanded ? attentionBaseRows : attentionBaseRows.slice(0, 2);
   const queueIncomplete = Boolean(tasksState && !tasksState.loading && !tasksState.error && ["overdue", "waiting", "priority", "attention", "reviews", "today"].some(key => !tasksState.sections.some(section => section.key === key && !section.unavailable)));
 
-  const onDragOver = (event: DragOverEvent): void => {
+  // Commit once on drop. Updating lane order during collision measurement can
+  // move the collision target beneath the pointer and recursively reorder it.
+  const commitDrag = (event: DragEndEvent): void => {
     const from = String(event.active.id), to = event.over ? String(event.over.id) : undefined;
     if (!to || from === to) return;
     if (mode === "mobile" && to === "lane-right") return;
@@ -536,10 +537,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
-        onDragOver={onDragOver}
-        onDragStart={() => { beforeDrag.current = layout; }}
-        onDragCancel={() => { if (beforeDrag.current) updateLayout(beforeDrag.current); beforeDrag.current = null; }}
-        onDragEnd={() => { beforeDrag.current = null; }}
+        onDragEnd={commitDrag}
       >
         <div className={`dv-widget-grid${editing ? " is-editing" : ""}`} onPointerDown={event => { if (event.pointerType === "touch" && !editing && !(event.target as HTMLElement).closest("button, input, select, textarea, a")) longPress.current = setTimeout(() => setEditing(true), 600); }} onPointerUp={cancelLongPress} onPointerCancel={cancelLongPress} onPointerMove={cancelLongPress}>
           <WidgetLane id="lane-left">
