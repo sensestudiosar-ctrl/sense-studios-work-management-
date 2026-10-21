@@ -1129,7 +1129,7 @@ function DashboardRoute({ initialTab = "dashboard", focused = false }: { initial
   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view your dashboard</h1><Link to="/">Return to sign in</Link></section></main>;
   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
   const reportsHome = initialTab === "reports";
-  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>{reportsHome ? "Reports" : "Dashboard"}</span><span>{session.account.email}</span></div>{reportsHome && <InsightsNavigation />}<DashboardWorkspace csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
+  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>{reportsHome ? "Reports" : "Dashboard"}</span><span>{session.account.email}</span></div>{reportsHome && <InsightsNavigation />}<DashboardWorkspace accountId={session.account.id} csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
 }
 
 function IntegrationsRoute(): React.JSX.Element {

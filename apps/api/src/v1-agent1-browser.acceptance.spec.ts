@@ -298,6 +298,101 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     expect(await database.prisma.reviewRound.count({ where: { taskId: task.id } })).toBe(2);
     await capture(ownerPage, viewport, "archived-project");
   }
+  it("accepts V10 Dashboard for six real account contexts at four widths with retained customization and timer persistence", async () => {
+    const f = await fixture(1010);
+    const createPerson = async (key: string, branchId = f.branch.id, teamId = f.worker.employee.homeTeamId) => {
+      const account = await database.prisma.account.create({ data: { kind: "STAFF", state: "ACTIVE", normalizedEmail: `${key}-${randomUUID()}@example.test` } });
+      const employee = await database.prisma.employee.create({ data: { accountId: account.id, organizationId: f.organization.id, homeBranchId: branchId, homeTeamId: teamId, hiredAt: new Date("2026-01-01") } });
+      const secret = randomBytes(32).toString("base64url"), csrf = createHmac("sha256", secret).update("csrf").digest("base64url");
+      await database.prisma.session.create({ data: { accountId: account.id, tokenHash: hash(secret), csrfTokenHash: hash(csrf), expiresAt: new Date(Date.now() + 3600000) } });
+      return { account, employee, secret, csrf };
+    };
+    const leader = await createPerson("v10-leader"), site = await createPerson("v10-site");
+    await database.prisma.employee.update({ where: { id: f.worker.employee.id }, data: { reportsToId: leader.employee.id } });
+    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "performance.manage", effect: "ALLOW", scopeKind: "TEAM", teamId: leader.employee.homeTeamId, reason: "Explicit scoped V10 Team Leader fixture" } });
+    const otherBranch = await database.prisma.branch.create({ data: { organizationId: f.organization.id, name: `V10 other ${randomUUID()}` } });
+    const otherTeam = await database.prisma.team.create({ data: { organizationId: f.organization.id, branchId: otherBranch.id, name: "Other team" } });
+    const cross = await createPerson("v10-cross", otherBranch.id, otherTeam.id);
+    const siteProject = (await app!.get(ProjectService).create(f.actor, { branchId: f.branch.id, title: `V10 site ${randomUUID()}`, deliveryType: "TURNKEY", scopes: ["Site delivery"], reason: "V10 authorized site source fixture" })).project;
+    for (const [person, projectId, permissions] of [[site, siteProject.id, ["project.view", "site.view"]], [cross, f.project.id, ["project.view"]]] as const) {
+      for (const permissionKey of permissions) await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: person.employee.id, permissionKey, effect: "ALLOW", scopeKind: "BRANCH", branchId: f.branch.id, reason: "Explicit V10 project source access" } });
+      const current = await database.prisma.project.findUniqueOrThrow({ where: { id: projectId } });
+      await f.workflow.assignment(f.actor, projectId, { employeeId: person.employee.id, expectedVersion: current.version, reason: "Explicit V10 account project assignment" });
+    }
+    const identities = [{ key: "owner", secret: f.ownerSession.secret }, { key: "leader", secret: leader.secret }, { key: "employee", secret: f.worker.secret }, { key: "site", secret: site.secret }, { key: "reviewer", secret: f.reviewer.secret }, { key: "cross-branch", secret: cross.secret }];
+    for (const identity of identities) {
+      const session = await context(identity.secret, viewports[0]!);
+      const page = await session.newPage();
+      const scoreReads: string[] = [];
+      page.on("request", request => { if (/\/performance\/employees\//.test(request.url())) scoreReads.push(request.url()); });
+      try {
+        await page.goto("/dashboard");
+        await expectPage(page.locator(".dv-summary-card")).toHaveCount(5);
+        await expectPage(page.locator(".dv-widget").filter({ has: page.getByRole("heading", { name: "Time tracking", exact: true }) })).toBeVisible();
+        await expectPage(page.getByText(/Task source read at/)).toBeVisible();
+        await expectPage(page.locator(".dv-summary-count").first()).toBeVisible();
+        if (identity.key === "owner") { await expectPage(page.getByText(/no employee record/)).toBeVisible(); await expectPage(page.getByRole("button", { name: "Start timer", exact: true })).toHaveCount(0); }
+        if (identity.key === "leader") { await expectPage(page.getByRole("heading", { name: "Performance", exact: true })).toBeVisible(); await expectPage(page.getByRole("button", { name: "Teams", exact: true })).toHaveCount(0); await expectPage(page.getByLabel("Employee", { exact: true }).locator("option")).toHaveCount(2); }
+        if (identity.key === "site") await expectPage(page.getByRole("heading", { name: "Site delivery", exact: true })).toBeVisible();
+        if (identity.key === "reviewer") await expectPage(page.locator(".dv-review-rounds")).toContainText(f.reviewTask.title);
+        if (identity.key !== "owner") await expectPage(page.locator(".dv-attention-queue")).not.toContainText(f.privateTask.title);
+        for (const viewport of viewports) {
+          await page.setViewportSize(viewport);
+          await expectPage(page.locator(".dv-widget-grid")).toBeVisible();
+          await capture(page, viewport, `v10-${identity.key}`);
+          expect(await page.locator(".dv-attention-body > a").count()).toBeLessThanOrEqual(2);
+          expect(await page.locator(".dashboard-overview-grid").count()).toBe(0);
+        }
+        if (!["owner", "leader"].includes(identity.key)) expect(scoreReads).toEqual([]);
+        if (identity.key === "employee") {
+          await page.getByPlaceholder("What are you working on?").fill("V10 real persisted timer");
+          const started = page.waitForResponse(r => new URL(r.url()).pathname === "/api/v1/time/timers" && r.request().method() === "POST");
+          await page.getByRole("button", { name: "Start timer", exact: true }).click(); expect((await started).status()).toBe(201);
+          await expectPage(page.getByRole("button", { name: "Pause", exact: true })).toBeVisible();
+          await page.reload(); await expectPage(page.getByText(/V10 real persisted timer/)).toBeVisible();
+          await page.getByRole("button", { name: "Pause", exact: true }).click();
+          await expectPage(page.getByRole("button", { name: "Resume", exact: true })).toBeVisible();
+          await page.getByRole("button", { name: "Resume", exact: true }).click();
+          await expectPage(page.getByRole("button", { name: "Pause", exact: true })).toBeVisible();
+          page.once("dialog", dialog => dialog.accept("V10 timer completed"));
+          await page.getByRole("button", { name: "Stop & save", exact: true }).click();
+          await expectPage(page.getByRole("button", { name: "Start timer", exact: true })).toBeVisible();
+          const entries = await database.prisma.timeEntry.findMany({ where: { employeeId: f.worker.employee.id } });
+          expect(entries.some(entry => (entry.data as { workNote?: string }).workNote === "V10 real persisted timer")).toBe(true);
+        }
+        if (identity.key === "owner") {
+          await page.getByRole("button", { name: "Edit widgets", exact: true }).click();
+          await page.getByRole("button", { name: "Hide Time tracking widget", exact: true }).click();
+          await page.getByRole("button", { name: "Done", exact: true }).click();
+          await page.reload(); await expectPage(page.getByRole("heading", { name: "Time tracking", exact: true })).toHaveCount(0);
+          await page.setViewportSize(viewports[0]!); await expectPage(page.getByRole("heading", { name: "Time tracking", exact: true })).toBeVisible();
+          await page.getByRole("button", { name: "Edit widgets", exact: true }).click();
+          const timeHandle = page.getByRole("button", { name: "Drag to move Time tracking", exact: true });
+          await timeHandle.dragTo(page.getByRole("button", { name: "Drag to move Decisions & assigned reviews", exact: true }));
+          await expectPage(page.locator(".dv-widget-col").nth(1).locator('[data-widget-id="time"]')).toBeVisible();
+          await page.getByRole("button", { name: "Reset layout", exact: true }).click();
+          await page.getByRole("button", { name: "Add widgets", exact: true }).click();
+          await page.getByRole("button", { name: /Training.*Add/ }).click();
+          await expectPage(page.getByRole("heading", { name: "Training", exact: true })).toBeVisible();
+          await capture(page, viewports[0]!, "v10-owner-edit-gallery");
+          await page.getByRole("button", { name: "Reset layout", exact: true }).click();
+          await expectPage(page.getByRole("heading", { name: "Training", exact: true })).toHaveCount(0);
+          await page.getByRole("button", { name: "Move Time tracking to other column", exact: true }).click();
+          await page.getByRole("button", { name: "Done", exact: true }).click();
+          await page.reload(); expect(await page.locator(".dv-widget-col").nth(1).getByRole("heading", { name: "Time tracking", exact: true }).count()).toBe(1);
+          await page.getByRole("button", { name: "Collapse sidebar", exact: true }).click(); await capture(page, viewports[0]!, "v10-owner-collapsed");
+          await page.keyboard.press("Control+k"); await expectPage(page.getByLabel("Search pages", { exact: true })).toBeVisible(); await page.keyboard.press("Escape");
+          await page.setViewportSize(viewports[2]!); await page.getByRole("button", { name: /^More/ }).click(); await expectPage(page.getByRole("heading", { name: "More destinations", exact: true })).toBeVisible(); await page.getByRole("button", { name: "Close navigation", exact: true }).click();
+          await page.locator(".dv-widget-head").first().dispatchEvent("pointerdown", { pointerType: "touch" });
+          await expectPage(page.getByRole("button", { name: "Done", exact: true })).toBeVisible();
+          await page.locator(".dv-widget-head").first().dispatchEvent("pointerup", { pointerType: "touch" });
+          await capture(page, viewports[2]!, "v10-owner-mobile-edit");
+        }
+      } finally { await session.close(); }
+    }
+    expect(serverErrors).toEqual([]);
+  }, 240000);
+
   it.each(viewports)("runs persisted task/Project/recovery/authorization workflows at $width pixels", async viewport => {
     const f = await fixture(viewport.width), workerContext = await context(f.worker.secret, viewport);
     const ownerContext = await context(f.ownerSession.secret, viewport), outsiderContext = await context(f.outsider.secret, viewport);

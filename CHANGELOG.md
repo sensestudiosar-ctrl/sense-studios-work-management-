@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.2] - 2026-10-21
+
+### Changed
+
+- Complete the V10 Dashboard in the existing application: fixed factual task summaries, customizable account-specific desktop/mobile widgets, and a deduplicated attention queue.
+- Connect timer controls to existing persistent Time commands with recoverable command identities and visible failures. Restrict performance to authorized management scope and supplied scores.
+- Preserve existing reports, summaries, schedules, access rules and data. No new schema or migration.
+
+V10 staging acceptance is in progress; the currently deployed recovery release still serves the earlier Dashboard.
+
 ## [0.2.1] - 2026-10-21
 
 ### Changed
