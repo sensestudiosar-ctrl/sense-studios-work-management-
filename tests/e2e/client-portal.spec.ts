@@ -149,7 +149,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     expect(replaced.rowCount).toBe(1);
 
     await page.getByLabel("One-time code").fill(testCode);
-    await page.getByRole("button", { name: "Verify code" }).click();
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Client portal account" })).toBeVisible();
     await expect(page.getByText(clientEmail, { exact: true })).toBeVisible();
     await page.reload();
@@ -208,6 +208,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await page.getByRole("button", { name: "Record final approval", exact: true }).click();
     await expect.poll(async () => (await db.query('SELECT id FROM client_final_approvals WHERE "packageId"=$1 AND "accountId"=$2', [reviewPackage.id, clientAccountId])).rows.length).toBe(1);
     await page.reload();
+    await page.getByRole("button", { name: "Open project reviews", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Client review", exact: true })).toBeVisible();
     await page.getByRole("button", { name: /Design approval brief/ }).click();
     await expect(page.getByText("Final overall approval", { exact: true })).not.toBeVisible();

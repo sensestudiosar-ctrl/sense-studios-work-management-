@@ -1,12 +1,30 @@
 import { createConnection, createServer } from "node:net";
-import { mkdir } from "node:fs/promises";
-import { resolve } from "node:path";
+import { mkdir, readFile, realpath } from "node:fs/promises";
+import { resolve, relative, isAbsolute } from "node:path";
 import { spawn } from "node:child_process";
 import { assertNoSkipped, playwrightCounts, readJson, redact, reportDirectory, writeJson, writeSummary } from "./test-report-utils.mjs";
 
 if (process.env.GITHUB_ACTIONS !== "true" || process.env.NODE_ENV !== "test" || process.env.S27_E2E_ENABLED !== "1") {
   throw new Error("Full browser acceptance requires the guarded GitHub CI environment.");
 }
+const fixtureRoot=await realpath(resolve('.env.s27-tools'));
+const fixtureFile=await realpath(resolve(process.env.SENSE_CI_BROWSER_ENV_FILE??''));
+const fixtureName=relative(fixtureRoot,fixtureFile);
+if(isAbsolute(fixtureName)||!/^s27-fresh-[0-9]+_[a-f0-9]+\.test$/.test(fixtureName))throw new Error('Exact generated browser fixture file required');
+const browserEnvironment={};
+for(const line of (await readFile(fixtureFile,'utf8')).split(/\r?\n/)){
+  if(!line)continue;const match=/^([A-Z][A-Z0-9_]+)=(.*)$/.exec(line);
+  if(!match||Object.hasOwn(browserEnvironment,match[1]))throw new Error('Invalid browser fixture environment');
+  browserEnvironment[match[1]]=match[2];
+}
+if(browserEnvironment.NODE_ENV!=='test'||browserEnvironment.S27_E2E_ENABLED!=='1'||browserEnvironment.S27_TEST_ENV_FILE!==process.env.SENSE_CI_BROWSER_ENV_FILE)throw new Error('Browser fixture activation differs');
+const {isS27DisposableTestTarget}=await import('../../apps/api/src/s27-disposable-test-target.ts');
+const browserUrls=Object.entries(browserEnvironment).filter(([key])=>/^S\d+_(?:SECURITY_|PARITY_)?DATABASE_URL$|^DATABASE_URL$/.test(key));
+if(browserUrls.length!==22)throw new Error('All distinct browser suite targets required');
+for(const [key,value]of browserUrls){
+  if(!isS27DisposableTestTarget(key,value,browserEnvironment))throw new Error('Browser fixture URL does not match its exact manifest');
+}
+Object.assign(process.env,browserEnvironment);
 const reports = reportDirectory();
 const reportFile = resolve(reports, "playwright.json");
 const receiverPort = Number(process.env.S16_TEST_RECEIVER_PORT);
@@ -21,9 +39,8 @@ if (e2eMainDatabase.hostname !== "127.0.0.1" || e2eMainDatabase.port !== "58440"
     !/^\/sense_s27_main_s27_[a-z0-9_]+_test$/.test(e2eMainDatabase.pathname)) {
   throw new Error("The browser compatibility database must be the generated disposable S27 main target on loopback port 58440.");
 }
-// One legacy browser guard requires 57433. CI maps that loopback alias to this
-// exact disposable PostgreSQL server; keep all API/Jest and PWA service URLs on 58440.
-e2eMainDatabase.port = "57433";
+// All suites use the fresh browser manifest and its exact live server port.
+// Preserve the manifest-bound server port for all browser and PWA services.
 const playwrightEnv = {
   ...process.env,
   CI: "true",

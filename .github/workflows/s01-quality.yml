@@ -61,6 +61,8 @@ jobs:
       - name: Run API, PostgreSQL, and web suites with no-skips acceptance
         run: node scripts/ci/run-api-web-tests.mjs
       - run: pnpm build
+        env:
+          NODE_ENV: production
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm nas:check:phones
       - run: mkdir -p "$E2E_NAS_ROOT"

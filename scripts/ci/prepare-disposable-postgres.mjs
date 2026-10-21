@@ -1,4 +1,4 @@
-import { randomBytes } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { appendFile, mkdir, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { createServer } from "node:net";
@@ -203,7 +203,7 @@ try {
     runId,
     suffix,
     targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 119 })),
-    e2eCompatibilityAlias: `The GitHub-only loopback port ${mainCompatibilityPort} maps to this run's disposable main server listening on ${mainPort}; DATABASE_URL uses that alias for the existing E2E target contract. Other suite URLs use their guard-approved host ports; S14 uses ${s14Port}.`,
+    e2eCompatibilityAlias: `The retained GitHub-only loopback alias ${mainCompatibilityPort} maps to this run's disposable main server listening on ${mainPort}. All current manifest-bound suite URLs use actual server ports ${mainPort}/${s14Port}.`,
     runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} USAGE and CREATE on schema public and transfers audit_events ownership for its injected-trigger rollback test.`,
     identityChecks: "Each server and database name was checked before fixture creation; accepted local databases are not referenced."
   };
@@ -248,6 +248,13 @@ try {
         }
         finally { await s22.end(); }
       }
+      if (target.key === "S27_PARITY_DATABASE_URL") {
+        const parity = await connectVerified(databaseUrl(database,mainPort,adminUser,adminPassword),database,mainPort);
+        try {
+          await parity.query('INSERT INTO organizations(id,name,"updatedAt") VALUES($1,$2,CURRENT_TIMESTAMP)',[randomUUID(),"CI parity isolated fixture"]);
+          await parity.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES($1,$2,\'OWNER\',\'ACTIVE\',CURRENT_TIMESTAMP)',[randomUUID(),`ci-parity-${suffix}@example.test`]);
+        } finally { await parity.end(); }
+      }
     }
   } finally { await admin.end(); }
 
@@ -267,6 +274,34 @@ try {
     } finally { await targetClient.end(); }
   }
 
+  // Keep committed API evidence intact. Browser enrollment uses new pristine
+  // clones; no API database is reset or restored over an existing target.
+  const browserSuffix = `${Date.now()}_${randomBytes(3).toString("hex")}`;
+  const browserEnvName = `s27-fresh-${browserSuffix}.test`;
+  const browserEnvironment = {...environment,S27_TEST_ENV_FILE:`.env.s27-tools/${browserEnvName}`,S27_RUN_ID:`${runId}-browser`};
+  const browserTargets=[];
+  for (const [database,target] of databaseNames) {
+    const name=database.replace(`_s27_${suffix}_test`,`_s27_${browserSuffix}_test`);
+    if(name===database)throw new Error("Distinct browser target suffix required");
+    const template=target.key==="S14_DATABASE_URL"?s14Database:mainDatabase;
+    const browserAdmin=await connectVerified(databaseUrl("postgres",target.serverPort,adminUser,adminPassword),"postgres",target.serverPort);
+    try {
+      if((await browserAdmin.query("SELECT 1 FROM pg_database WHERE datname=$1",[name])).rowCount!==0)throw new Error("Browser fixture already exists; refusing reuse");
+      await browserAdmin.query(`CREATE DATABASE ${quoteIdentifier(name)} WITH TEMPLATE ${quoteIdentifier(template)} OWNER ${quoteRole(adminUser)}`);
+    } finally { await browserAdmin.end(); }
+    browserEnvironment[target.key]=databaseUrl(name,target.port);
+    const verified=await connectVerified(browserEnvironment[target.key],name,target.serverPort);
+    try {
+      const ledger=await verified.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS n,count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
+      if(ledger.rows[0].n!==119||ledger.rows[0].incomplete!==0)throw new Error("Browser fixture schema mismatch");
+      const accounts=await verified.query("SELECT count(*)::int AS n FROM accounts");
+      if(accounts.rows[0].n!==0)throw new Error("Browser fixture must be pristine before enrollment");
+    } finally { await verified.end(); }
+    browserTargets.push({database:name,key:target.key,port:target.port,migrations:119,pristine:true});
+  }
+  await writeFile(resolve(toolsDir,browserEnvName),`${Object.entries(browserEnvironment).map(([key,value])=>`${key}=${value}`).join("\n")}\n`,{flag:"wx",mode:0o600});
+  await writeFile(resolve(reportDir,"browser-fixtures.json"),JSON.stringify({provider:"github-actions-disposable-postgres",runId,targets:browserTargets,apiFixturesPreserved:true},null,2),{flag:"wx",mode:0o600});
+  environment.SENSE_CI_BROWSER_ENV_FILE=`.env.s27-tools/${browserEnvName}`;
   await mkdir(environment.NAS_ROOT, { recursive: true });
   await mkdir(resolve(environment.NAS_ROOT, 'parity'), { recursive: true });
   for (const path of [environment.S18_SCREENSHOT_DIR, environment.S24_SCREENSHOT_DIR, environment.S25_SCREENSHOT_DIR, environment.S26_SCREENSHOT_DIR, environment.S27_SCREENSHOT_DIR]) {
