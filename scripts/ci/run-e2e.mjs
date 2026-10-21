@@ -3,6 +3,7 @@ import { mkdir, readFile, realpath } from "node:fs/promises";
 import { resolve, relative, isAbsolute } from "node:path";
 import { spawn } from "node:child_process";
 import { progressLines } from './browser-progress.mjs';
+import { startFixture, stopFixture } from './fixture-process.mjs';
 import { assertNoSkipped, playwrightCounts, readJson, redact, reportDirectory, writeJson, writeSummary } from "./test-report-utils.mjs";
 
 if (process.env.GITHUB_ACTIONS !== "true" || process.env.NODE_ENV !== "test" || process.env.S27_E2E_ENABLED !== "1") {
@@ -76,17 +77,6 @@ function run(program, args, options = {}) {
   });
 }
 
-function startProcess(name, program, args, env) {
-  const child = spawn(program, args, {
-    cwd: process.cwd(), env, shell: false, windowsHide: true, stdio: ["ignore", "pipe", "pipe"]
-  });
-  const service = { name, child, logs: [], startError: null };
-  child.stdout.on("data", (chunk) => service.logs.push(chunk));
-  child.stderr.on("data", (chunk) => service.logs.push(chunk));
-  child.once("error", (error) => { service.startError = error; });
-  return service;
-}
-
 async function waitForService(service, probe, label) {
   for (let attempt = 0; attempt < 60; attempt += 1) {
     if (service.startError || service.child.exitCode !== null) throw new Error(`${label} exited before it became ready.`);
@@ -97,16 +87,6 @@ async function waitForService(service, probe, label) {
     await new Promise((resolveWait) => setTimeout(resolveWait, 250));
   }
   throw new Error(`${label} did not become ready on its guarded loopback endpoint.`);
-}
-
-async function stopService(service) {
-  if (!service || service.child.exitCode !== null || service.child.signalCode !== null) return;
-  service.child.kill("SIGTERM");
-  const closed = await Promise.race([
-    new Promise((resolveClose) => service.child.once("close", resolveClose)),
-    new Promise((resolveTimeout) => setTimeout(() => resolveTimeout(null), 5000))
-  ]);
-  if (closed === null) service.child.kill("SIGKILL");
 }
 
 const services = [];
@@ -130,7 +110,7 @@ try {
   for (const port of [58323, 58324, receiverPort]) {
     if (!await portIsFree(port)) throw new Error(`Refusing to use occupied CI fixture port ${port}.`);
   }
-  const pwaApi = startProcess("production PWA API", process.execPath, ["apps/api/dist/main.js"], {
+  const pwaApi = startFixture("production PWA API", process.execPath, ["apps/api/dist/main.js"], {
     ...process.env,
     PORT: "58324",
     WEB_ORIGIN: "http://localhost:58323",
@@ -141,13 +121,13 @@ try {
   services.push(pwaApi);
   await waitForService(pwaApi, "http://127.0.0.1:58324/api/v1/health/ready", "Production PWA API");
 
-  const pwaWeb = startProcess("production PWA preview", "pnpm", [
-    "--filter", "@sense/web", "preview", "--host", "127.0.0.1", "--port", "58323", "--strictPort"
-  ], { ...process.env, API_PROXY_TARGET: "http://127.0.0.1:58324" });
+  const pwaWeb = startFixture("production PWA preview", process.execPath, [
+    resolve("apps/web/node_modules/vite/bin/vite.js"), "preview", "--host", "127.0.0.1", "--port", "58323", "--strictPort"
+  ], { ...process.env, API_PROXY_TARGET: "http://127.0.0.1:58324" }, { cwd: resolve("apps/web") });
   services.push(pwaWeb);
   await waitForService(pwaWeb, "http://127.0.0.1:58323/", "Production PWA preview");
 
-  const receiver = startProcess("accounting receiver", process.execPath, ["scripts/s16-accounting-test-receiver.mjs"], process.env);
+  const receiver = startFixture("accounting receiver", process.execPath, ["scripts/s16-accounting-test-receiver.mjs"], process.env);
   services.push(receiver);
   await receiverReady(receiver);
   const runResult = await run(process.execPath, [
@@ -169,7 +149,11 @@ try {
 } catch (error) {
   failure = error;
 } finally {
-  for (const service of services.reverse()) await stopService(service);
+  for (const service of services.reverse()) {
+    process.stdout.write(`Stopping CI fixture: ${service.name}\n`);
+    try { await stopFixture(service); process.stdout.write(`Stopped CI fixture: ${service.name}\n`); }
+    catch (error) { failure ??= error; }
+  }
 }
 if (failure) {
   for (const service of services) {

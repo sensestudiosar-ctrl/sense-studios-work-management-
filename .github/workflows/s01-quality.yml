@@ -46,6 +46,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:nas
+      - run: node --test scripts/ci/fixture-process.test.mjs scripts/ci/browser-progress.test.mjs
       - run: pnpm nas:check:compose
       - run: pnpm db:generate
       - run: pnpm db:migrate:deploy
