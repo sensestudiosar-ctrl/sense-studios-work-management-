@@ -1130,6 +1130,12 @@
 /* ─── Responsive ─────────────────────────────────────────────────── */
 
 /* Tablet: 1024px */
+@media (max-width: 767px) {
+  .app-shell:has(.dashboard-workspace) .workspace-layout:has(.workspace-sidebar.is-collapsed) { margin-left: 0; }
+  .app-shell:has(.dashboard-workspace) .workspace-mobile-nav { display: flex; }
+  .dv-edit-toolbar { display: grid; }
+  .dv-edit-actions { flex-wrap: wrap; }
+}
 @media (max-width: 1260px) {
   .dv-summary-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .dv-widget-grid { grid-template-columns: minmax(0, 1fr) minmax(300px, 0.88fr); }
