@@ -333,7 +333,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
         await expectPage(page.getByText(/Task source read at/)).toBeVisible();
         await expectPage(page.locator(".dv-summary-count").first()).toBeVisible();
         if (identity.key === "owner") { await expectPage(page.getByText(/no employee record/)).toBeVisible(); await expectPage(page.getByRole("button", { name: "Start timer", exact: true })).toHaveCount(0); }
-        if (identity.key === "leader") { await expectPage(page.getByRole("heading", { name: "Performance", exact: true })).toBeVisible(); await expectPage(page.getByRole("button", { name: "Teams", exact: true })).toHaveCount(0); await expectPage(page.getByLabel("Employee", { exact: true }).locator("option")).toHaveCount(2); }
+        if (identity.key === "leader") { await expectPage(page.getByRole("heading", { name: "Performance", exact: true })).toBeVisible(); await expectPage(page.getByRole("button", { name: "Teams", exact: true })).toHaveCount(0); const selection = page.getByRole("combobox", { name: /^Employee/ }); await expectPage(selection.locator("option")).toHaveCount(2); await expectPage(selection).toHaveValue(f.worker.employee.id); }
         if (identity.key === "site") await expectPage(page.getByRole("heading", { name: "Site delivery", exact: true })).toBeVisible();
         if (identity.key === "reviewer") await expectPage(page.locator(".dv-review-rounds")).toContainText(f.reviewTask.title);
         if (identity.key !== "owner") await expectPage(page.locator(".dv-attention-queue")).not.toContainText(f.privateTask.title);
