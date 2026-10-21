@@ -278,7 +278,7 @@ try {
   // clones; no API database is reset or restored over an existing target.
   const browserSuffix = `${Date.now()}_${randomBytes(3).toString("hex")}`;
   const browserEnvName = `s27-fresh-${browserSuffix}.test`;
-  const browserEnvironment = {...environment,S27_TEST_ENV_FILE:`.env.s27-tools/${browserEnvName}`,S27_RUN_ID:`${runId}-browser`};
+  const browserEnvironment = {...environment,S27_TEST_ENV_FILE:`.env.s27-tools/${browserEnvName}`,S27_RUN_ID:`${runId}-browser`,S27_SCREENSHOT_DIR:`.env.s27-tools/runs/${runId}-browser/screenshots`};
   const browserTargets=[];
   for (const [database,target] of databaseNames) {
     const name=database.replace(`_s27_${suffix}_test`,`_s27_${browserSuffix}_test`);
