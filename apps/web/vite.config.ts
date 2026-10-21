@@ -14,6 +14,8 @@ export default defineConfig({
     {
       name: "reserve-canonical-staging-port",
       configResolved(config) {
+        config.server.strictPort = true;
+        config.preview.strictPort = true;
         if (config.server.port === 59443 || config.preview.port === 59443) {
           throw new Error("Port 59443 is reserved for immutable canonical Sense staging. Use a separate port for Vite development or experimental previews.");
         }

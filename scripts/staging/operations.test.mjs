@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import http from 'node:http';
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { PassThrough } from 'node:stream';
 import test from 'node:test';
@@ -11,6 +11,25 @@ import { inventory, verifyRelease, loadActive, atomicJson, fileHash } from './ma
 import { safeStaticPath, createStagingServer } from './server.mjs';
 import { childFinished, observeChildExit, restartDelay, captureLog } from './process-policy.mjs';
 import { claimSupervisorLock, processIdentity } from './windows.mjs';
+import { hiddenTaskLauncher, taskAction } from './task-launcher.mjs';
+
+test('scheduled launcher hides the console, waits for bootstrap and preserves its exit status',()=>{
+  const root=path.resolve('workspace with spaces'),bootstrap=path.join(root,'.env.staging/bootstrap');
+  const source=hiddenTaskLauncher(bootstrap,root),action=taskAction(bootstrap);
+  assert.ok(source.includes('-WindowStyle Hidden -PassThru\r\n$null=$process.Handle\r\n$process.WaitForExit()\r\nexit $process.ExitCode'));
+  assert.ok(source.includes('"'+path.join(bootstrap,'bootstrap.mjs')+'" "'+root+'"'));
+  assert.equal(action.arguments,'-NoProfile -NonInteractive -WindowStyle Hidden -ExecutionPolicy RemoteSigned -File "'+path.join(bootstrap,'launch-hidden.ps1')+'"');
+  assert.equal(path.basename(action.execute),'powershell.exe');
+});
+
+test('Windows hidden launcher propagates a fast child failure', {skip:process.platform!=='win32'},t=>{
+  const root=fixture(t),bootstrap=path.join(root,'bootstrap');fs.mkdirSync(bootstrap);
+  fs.copyFileSync(process.execPath,path.join(bootstrap,'node.exe'));
+  fs.writeFileSync(path.join(bootstrap,'bootstrap.mjs'),'process.exit(7);');
+  fs.writeFileSync(path.join(bootstrap,'launch-hidden.ps1'),hiddenTaskLauncher(bootstrap,root));
+  const result=spawnSync(taskAction(bootstrap).execute,['-NoProfile','-NonInteractive','-WindowStyle','Hidden','-ExecutionPolicy','RemoteSigned','-File',path.join(bootstrap,'launch-hidden.ps1')],{windowsHide:true,encoding:'utf8',timeout:20000});
+  assert.equal(result.error,undefined);assert.equal(result.status,7,result.stderr);
+});
 
 function fixture(t) {
   const dir=fs.mkdtempSync(path.join(os.tmpdir(),'sense-staging-test-'));
