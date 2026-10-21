@@ -67,6 +67,7 @@ jobs:
       - run: pnpm nas:check:phones
       - run: mkdir -p "$E2E_NAS_ROOT"
       - name: Run browser suites with loopback accounting receiver and no-skips acceptance
+        timeout-minutes: 30
         run: node scripts/ci/run-e2e.mjs
       - name: Upload structured test reports
         if: always()

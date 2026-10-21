@@ -2,6 +2,7 @@ import { createConnection, createServer } from "node:net";
 import { mkdir, readFile, realpath } from "node:fs/promises";
 import { resolve, relative, isAbsolute } from "node:path";
 import { spawn } from "node:child_process";
+import { progressLines } from './browser-progress.mjs';
 import { assertNoSkipped, playwrightCounts, readJson, redact, reportDirectory, writeJson, writeSummary } from "./test-report-utils.mjs";
 
 if (process.env.GITHUB_ACTIONS !== "true" || process.env.NODE_ENV !== "test" || process.env.S27_E2E_ENABLED !== "1") {
@@ -61,7 +62,8 @@ function run(program, args, options = {}) {
     const child = spawn(program, args, { cwd: process.cwd(), env: process.env, shell: false, windowsHide: true, ...options });
     const stdout = [];
     const stderr = [];
-    child.stdout?.on("data", (chunk) => stdout.push(chunk));
+    const progress = progressLines(line => process.stdout.write(line), redact);
+    child.stdout?.on("data", (chunk) => { stdout.push(chunk); progress(chunk); });
     child.stderr?.on("data", (chunk) => stderr.push(chunk));
     child.once("error", rejectRun);
     child.once("close", (code) => {
@@ -149,7 +151,7 @@ try {
   services.push(receiver);
   await receiverReady(receiver);
   const runResult = await run(process.execPath, [
-    "node_modules/@playwright/test/cli.js", "test", "--reporter=github,json"
+    "node_modules/@playwright/test/cli.js", "test", "--global-timeout=1500000", "--reporter=github,json,./scripts/ci/browser-progress.mjs"
   ], { env: playwrightEnv });
   let report;
   try { report = await readJson(reportFile); }
