@@ -1,0 +1,2 @@
+# Prisma records exact migration bytes. Windows exports/checkouts must retain LF.
+apps/api/prisma/migrations/**/migration.sql text eol=lf
