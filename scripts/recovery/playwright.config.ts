@@ -18,5 +18,6 @@ export default defineConfig({
   forbidOnly: true,
   retries: 0,
   workers: 1,
-  webServer: servers.map((server, index) => ({ ...server, cwd: root, command: index === 0 ? apiCommand : webCommand, reuseExistingServer: false })),
+  webServer: servers.map((server, index) => ({ ...server, cwd: index === 0 ? root : resolve(root,"apps/web"), command: index === 0 ? apiCommand : webCommand, reuseExistingServer: false,
+    ...(index===1?{env:{...server.env,API_PROXY_TARGET:"http://127.0.0.1:58430"}}:{}) })),
 });
