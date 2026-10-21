@@ -33,7 +33,7 @@ async function request<T>(url: string, csrf: string, init: RequestInit = {}): Pr
 const stateLabel: Record<string, string> = { ASSIGNED: "Assigned", SUBMITTED: "Submitted for review", CHANGES_REQUIRED: "Changes required", COMPLETED: "Completed" };
 const asText = (value: unknown) => typeof value === "string" ? value : "";
 
-export function TrainingWorkspace({ csrfToken }: { csrfToken: string }): React.JSX.Element {
+export function TrainingWorkspace({ csrfToken, preserveEmployeeQuery = false }: { csrfToken: string; preserveEmployeeQuery?: boolean }): React.JSX.Element {
   const [searchParams, setSearchParams] = useWindowSearchParams();
   const queryEmployeeId = searchParams.get("employeeId") ?? "", queryAssignmentId = searchParams.get("assignmentId") ?? "";
   const [setup, setSetup] = useState<Setup | null>(null), [selectedEmployeeId, setSelectedEmployeeIdState] = useState(queryEmployeeId), [selectedAssignmentId, setSelectedAssignmentIdState] = useState(queryAssignmentId);
@@ -60,9 +60,11 @@ export function TrainingWorkspace({ csrfToken }: { csrfToken: string }): React.J
     const assignmentId = requestedAssignmentId ? (result.assignments.some(item => item.id === requestedAssignmentId) ? requestedAssignmentId : "") : preferredAssignment && result.assignments.some(item => item.id === preferredAssignment) ? preferredAssignment : result.assignments[0]?.id ?? "";
     setSelectedEmployeeIdState(employeeId);
     setSelectedAssignmentIdState(assignmentId);
-    updateTrainingQuery({ employeeId, assignmentId }, true);
+    // Skills has its own authorized employee selection on the legacy combined
+    // page; background Training setup must not replace that shared URL value.
+    updateTrainingQuery({ ...(preserveEmployeeQuery ? {} : { employeeId }), assignmentId }, true);
     return result;
-  }, [csrfToken, setSelectedAssignmentId, setSelectedEmployeeId]);
+  }, [csrfToken, preserveEmployeeQuery, updateTrainingQuery]);
   const loadDetail = useCallback(async (id: string) => {
     const seq = ++detailSequence.current;
     if (!id) { setDetail(null); setDetailLoading(false); return; }

@@ -12,6 +12,33 @@ const json = (body: unknown, status = 200) => new Response(JSON.stringify(body),
 afterEach(() => vi.unstubAllGlobals());
 
 describe("SkillsWorkspace", () => {
+  it("keeps the chosen Skills employee when late legacy Training setup cannot view that employee", async () => {
+    const managerId = "00000000-0000-4000-8000-000000000009";
+    const manager = { ...ownSetup.employees[0], id: managerId, label: "Manager" };
+    const setup = { ...ownSetup, employees: [manager, ...ownSetup.employees] };
+    let resolveTraining!: (response: Response) => void;
+    const delayedTraining = new Promise<Response>(resolve => { resolveTraining = resolve; });
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith("/training/setup")) return delayedTraining;
+      if (url.endsWith("/skills/setup")) return json(setup);
+      if (url.endsWith(`/employees/${employeeId}`)) return json(ownProfile);
+      if (url.endsWith(`/employees/${managerId}`)) return json({ ...ownProfile, ratings: [], capabilities: { ...ownProfile.capabilities, currentAccountId: managerId } });
+      return json({});
+    }));
+    render(<SkillsTrainingWorkspace csrfToken="csrf" />);
+    await screen.findByText("No official skill ratings yet.");
+    const picker = screen.getByLabelText("Employee profile");
+    fireEvent.change(picker, { target: { value: employeeId } });
+    await screen.findByText("Intermediate · Version 3");
+    await act(async () => { resolveTraining(json({ ...trainingSetup, employees: [manager] })); });
+    await screen.findByText("No training assignments are available to you.");
+    expect(new URLSearchParams(window.location.search).get("employeeId")).toBe(employeeId);
+    fireEvent.click(within(screen.getByRole("heading", { name: "Skills", exact: true }).closest("section")!).getByRole("button", { name: "Refresh" }));
+    await waitFor(() => expect(picker).toHaveValue(employeeId));
+    expect(await screen.findByText("Intermediate · Version 3")).toBeInTheDocument();
+  });
+
   it("submits a version-bound request, sends CSRF and reloads persisted ratings without optimistic promotion", async () => {
     const calls: Array<[string, RequestInit | undefined]> = [];
     const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
