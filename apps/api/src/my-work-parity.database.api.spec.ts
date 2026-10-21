@@ -424,7 +424,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     const after = await f.tasks.setup(worker.actor);
     expect(after.creationProfile).toMatchObject({ variant: "SITE", resolution: "CONFIGURED_ROLE" });
     expect(after.canAssign).toBe(before.canAssign);
-    expect(await f.prisma.jobRolePermission.count({ where: { jobRoleId: { in: [site.id, leader.id] } } })).toBe(0);
+    expect(await f.prisma.rolePermission.count({ where: { roleId: { in: [site.id, leader.id] } } })).toBe(0);
     await organization.setEmployeeJobRoles(f.owner.accountId, worker.employee.id, { organizationId: f.org.id, jobRoleIds: [site.id, leader.id], reason: why });
     expect((await f.tasks.setup(worker.actor)).creationProfile).toMatchObject({ variant: "EMPLOYEE", resolution: "AMBIGUOUS" });
     expect((await f.tasks.setup(f.owner)).creationProfile).toMatchObject({ variant: "OWNER", resolution: "ACCOUNT_KIND" });

@@ -40,7 +40,7 @@ dbDescribe("Current subtask commit and deferred evidence acceptance", () => {
       const team=await tx.team.create({data:{organizationId:org.id,branchId:branch.id,name:`Commit team ${suffix}`}});
       const account=await tx.account.create({data:{normalizedEmail:`commit-worker-${suffix}@example.test`,kind:"STAFF",state:"ACTIVE"}});
       const employee=await tx.employee.create({data:{organizationId:org.id,accountId:account.id,homeBranchId:branch.id,homeTeamId:team.id,hiredAt:new Date("2026-01-01")}});
-      await tx.employeePermissionOverride.create({data:{organizationId:org.id,employeeId:employee.id,permissionKey:"project.view",effect:"ALLOW",scopeKind:"BRANCH",branchId:branch.id,reason:"Committed fixture explicit view"}});
+      for(const permissionKey of ["project.view","project.manage"])await tx.employeePermissionOverride.create({data:{organizationId:org.id,employeeId:employee.id,permissionKey,effect:"ALLOW",scopeKind:"BRANCH",branchId:branch.id,reason:"Committed fixture explicit lead eligibility"}});
       return {org,owner,employee,branch};
     });
     const actor={organizationId:seeded.org.id,accountId:seeded.owner.id,kind:AccountKind.OWNER};
