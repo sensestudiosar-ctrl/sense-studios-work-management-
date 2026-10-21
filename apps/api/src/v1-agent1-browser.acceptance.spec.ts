@@ -315,7 +315,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     const cross = await createPerson("v10-cross", otherBranch.id, otherTeam.id);
     const siteProject = (await app!.get(ProjectService).create(f.actor, { branchId: f.branch.id, title: `V10 site ${randomUUID()}`, deliveryType: "TURNKEY", scopes: ["Site delivery"], reason: "V10 authorized site source fixture" })).project;
     for (const [person, projectId, permissions] of [[site, siteProject.id, ["project.view", "site.view"]], [cross, f.project.id, ["project.view"]]] as const) {
-      for (const permissionKey of permissions) await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: person.employee.id, permissionKey, effect: "ALLOW", scopeKind: "BRANCH", branchId: f.branch.id, reason: "Explicit V10 project source access" } });
+      for (const permissionKey of permissions) await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: person.employee.id, permissionKey, effect: "ALLOW", ...(person.employee.homeBranchId === f.branch.id ? { scopeKind: "BRANCH", branchId: f.branch.id } as const : { scopeKind: "ORGANIZATION" } as const), reason: "Explicit V10 project source access; cross-branch project assignment remains required" } });
       const current = await database.prisma.project.findUniqueOrThrow({ where: { id: projectId } });
       await f.workflow.assignment(f.actor, projectId, { employeeId: person.employee.id, expectedVersion: current.version, reason: "Explicit V10 account project assignment" });
     }
