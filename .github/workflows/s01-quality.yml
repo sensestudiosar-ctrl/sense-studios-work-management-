@@ -37,6 +37,10 @@ jobs:
           --health-retries 12
     steps:
       - uses: actions/checkout@v4
+      # pnpm11 requires Node>=22.13; runner defaults may still be Node20.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.19.0
       - uses: pnpm/action-setup@v4
         with:
           version: 11.19.0
