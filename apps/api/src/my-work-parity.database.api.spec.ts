@@ -32,10 +32,12 @@ import { MW_I02_URL, assertMWI02LiveIdentity, loadMWI02Target, type MWI02Target 
 import { loadRecoveryTestTarget, verifyRecoveryTestDatabase, type RecoveryTestBinding } from "./recovery-test-target.js";
 import type { RuntimeConfig } from "./config.js";
 import type { ProjectActor } from "./project.service.js";
+import { isS27DisposableTestTarget } from "./s27-disposable-test-target.js";
 
 // Prepared source only. Never infer authorization from Jest invocation or an
 // arbitrary *_test name; the exact approved run and live identity are required.
-const parityDescribe = process.env.SENSE_RECOVERY_TEST_MANIFEST || process.env.MW_I02_ENABLED === "1" ? describe : describe.skip;
+const ciParity = process.env.GITHUB_ACTIONS === "true" && /^\d+$/.test(process.env.GITHUB_RUN_ID ?? "") && process.env.S27_EXPECTED_MIGRATIONS === "119";
+const parityDescribe = process.env.SENSE_RECOVERY_TEST_MANIFEST || process.env.MW_I02_ENABLED === "1" || ciParity ? describe : describe.skip;
 jest.setTimeout(60_000);
 const why = "MW-I02 isolated parity persistence acceptance";
 const dayAfter = (day: string) => new Date(new Date(`${day}T00:00:00Z`).getTime() + 86_400_000).toISOString().slice(0, 10);
@@ -56,6 +58,7 @@ function transactionDatabase(tx: Prisma.TransactionClient): DatabaseService {
 parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants", () => {
   let database: DatabaseService, target: MWI02Target, config: RuntimeConfig, pool: Pool;
   let recovery: RecoveryTestBinding | undefined;
+  let ciIdentity: Record<string, unknown> | undefined;
   let queryCount = 0, queryDurationMs = 0, observedActive = 0, observedWaiting = 0;
   const observePool = () => {
     observedActive = Math.max(observedActive, pool.totalCount - pool.idleCount);
@@ -63,6 +66,14 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
   };
   async function verifyTarget() {
     if (recovery) { await verifyRecoveryTestDatabase(database.prisma, recovery); return; }
+    if (ciParity) {
+      assert.ok(isS27DisposableTestTarget("S27_PARITY_DATABASE_URL", process.env.S27_PARITY_DATABASE_URL), "Exact CI parity manifest required");
+      const rows = await database.prisma.$queryRaw<Array<Record<string, unknown>>>`SELECT current_database() AS database,current_user AS username,inet_server_port() AS port,(SELECT oid::text FROM pg_database WHERE datname=current_database()) AS oid,pg_postmaster_start_time()::text AS started`;
+      const url = new URL(process.env.S27_PARITY_DATABASE_URL!);
+      assert.equal(rows[0]?.database,url.pathname.slice(1));assert.equal(rows[0]?.port,Number(url.port));assert.equal(rows[0]?.username,url.username);
+      if (ciIdentity) assert.deepEqual(rows[0],ciIdentity,"CI parity server identity changed"); else ciIdentity=rows[0];
+      return;
+    }
     const current = loadMWI02Target();
     assert.deepEqual(current, target, "Manifest or created marker changed during the parity stage");
     const identity = await database.prisma.$queryRaw<Array<Record<string, unknown>>>`
@@ -74,9 +85,10 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
   }
   beforeAll(async () => {
     if (process.env.SENSE_RECOVERY_TEST_MANIFEST) recovery = loadRecoveryTestTarget(process.env, resolve(process.cwd(), "../.."), "RECOVERY_PARITY_DATABASE_URL");
+    else if (ciParity) assert.ok(isS27DisposableTestTarget("S27_PARITY_DATABASE_URL", process.env.S27_PARITY_DATABASE_URL), "Exact CI parity manifest required before connection");
     else target = loadMWI02Target(); // Filesystem checks precede even a connection.
-    const databaseUrl = recovery?.url ?? MW_I02_URL;
-    const nasRoot = recovery ? resolve(process.env.SENSE_RECOVERY_TEST_MANIFEST!, "../files/parity") : resolve(target.runDir, "nas", "parity");
+    const databaseUrl = recovery?.url ?? (ciParity ? process.env.S27_PARITY_DATABASE_URL! : MW_I02_URL);
+    const nasRoot = recovery ? resolve(process.env.SENSE_RECOVERY_TEST_MANIFEST!, "../files/parity") : ciParity ? resolve(process.env.NAS_ROOT!, "parity") : resolve(target.runDir, "nas", "parity");
     config = { nodeEnv: "test", databaseUrl, port: 59542, webOrigin: "http://localhost:59543", nasRoot, emailVerificationSecret: "mw-i02-inert-email-no-provider" } as RuntimeConfig;
     // Real adapter instrumentation is restricted to this exact disposable suite.
     // Query text, parameters, titles, credentials and evidence are never logged.
@@ -89,7 +101,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     const migrations = await database.prisma.$queryRaw<Array<{ migration_name: string; checksum: string; finished_at: Date | null; rolled_back_at: Date | null }>>`SELECT migration_name, checksum, finished_at, rolled_back_at FROM _prisma_migrations ORDER BY migration_name`;
     const root = resolve(process.cwd(), "prisma/migrations");
     const source = readdirSync(root, { withFileTypes: true }).filter(entry => entry.isDirectory()).map(entry => entry.name).sort();
-    expect(source).toHaveLength(recovery ? 119 : 118); expect(migrations.map(row => row.migration_name)).toEqual(source);
+    expect(source).toHaveLength(recovery || ciParity ? 119 : 118); expect(migrations.map(row => row.migration_name)).toEqual(source);
     for (const migration of migrations) {
       expect(migration.finished_at).not.toBeNull(); expect(migration.rolled_back_at).toBeNull();
       expect(migration.checksum).toBe(createHash("sha256").update(readFileSync(resolve(root, migration.migration_name, "migration.sql"))).digest("hex"));

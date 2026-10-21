@@ -3,7 +3,7 @@ import { dirname, relative, resolve, isAbsolute } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const workspace = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
-const suiteKeys = new Set(["DATABASE_URL", "S12_DATABASE_URL", "S13_DATABASE_URL", "S14_DATABASE_URL", "S15_DATABASE_URL", "S16_DATABASE_URL", "S17_DATABASE_URL", "S18_DATABASE_URL", "S19_DATABASE_URL", "S20_DATABASE_URL", "S21_DATABASE_URL", "S22_DATABASE_URL", "S23_DATABASE_URL", "S24_DATABASE_URL", "S24_SECURITY_DATABASE_URL", "S25_DATABASE_URL", "S25_SECURITY_DATABASE_URL", "S26_DATABASE_URL", "S26_SECURITY_DATABASE_URL", "S27_DATABASE_URL", "S27_SECURITY_DATABASE_URL"]);
+const suiteKeys = new Set(["DATABASE_URL", "S12_DATABASE_URL", "S13_DATABASE_URL", "S14_DATABASE_URL", "S15_DATABASE_URL", "S16_DATABASE_URL", "S17_DATABASE_URL", "S18_DATABASE_URL", "S19_DATABASE_URL", "S20_DATABASE_URL", "S21_DATABASE_URL", "S22_DATABASE_URL", "S23_DATABASE_URL", "S24_DATABASE_URL", "S24_SECURITY_DATABASE_URL", "S25_DATABASE_URL", "S25_SECURITY_DATABASE_URL", "S26_DATABASE_URL", "S26_SECURITY_DATABASE_URL", "S27_DATABASE_URL", "S27_SECURITY_DATABASE_URL", "S27_PARITY_DATABASE_URL"]);
 
 /** Test-only alternative to legacy guards; never grants application authority. */
 export function isS27DisposableTestTarget(key: string, connectionString: string | undefined, environment: NodeJS.ProcessEnv = process.env): boolean {
@@ -25,7 +25,7 @@ export function isS27DisposableTestTarget(key: string, connectionString: string 
     if (entries.get("NODE_ENV") !== "test" || entries.get("S27_E2E_ENABLED") !== "1" || entries.get(key) !== connectionString) return false;
     const suffix = /^s27-fresh-([0-9]+_[a-f0-9]+)\.test$/.exec(inside)![1]!;
     const url = new URL(connectionString);
-    const id = key === "DATABASE_URL" ? "sense_s27_main" : `sense_s${/^S([0-9]+)/.exec(key)![1]}${key.includes("_SECURITY_") ? "_security" : ""}`;
+    const id = key === "DATABASE_URL" ? "sense_s27_main" : `sense_s${/^S([0-9]+)/.exec(key)![1]}${key.includes("_SECURITY_") ? "_security" : key.includes("_PARITY_") ? "_parity" : ""}`;
     return ["postgres:", "postgresql:"].includes(url.protocol) && ["127.0.0.1", "localhost"].includes(url.hostname) && url.port === (key === "S14_DATABASE_URL" ? "58441" : "58440") && url.pathname === `/${id}_s27_${suffix}_test`;
   } catch { return false; }
 }

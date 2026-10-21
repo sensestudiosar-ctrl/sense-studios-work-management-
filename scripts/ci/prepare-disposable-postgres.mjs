@@ -27,9 +27,9 @@ const runtimeUser = "sense_app_runtime";
 const adminPassword = randomBytes(32).toString("base64url");
 const runtimePassword = randomBytes(32).toString("base64url");
 const clusterNames = { main: `sense-ci-pg-main-${runId}`, s14: `sense-ci-pg-s14-${runId}` };
-const mainPort = 57433;
-const s14Port = 56436;
-const mainCompatibilityPort = 58440;
+const mainPort = 58440;
+const s14Port = 58441;
+const mainCompatibilityPort = 57433;
 const clusters = [
   { name: clusterNames.main, port: mainPort },
   { name: clusterNames.s14, port: s14Port }
@@ -39,7 +39,7 @@ const suiteKeys = [
   "S16_DATABASE_URL", "S17_DATABASE_URL", "S18_DATABASE_URL", "S19_DATABASE_URL", "S20_DATABASE_URL",
   "S21_DATABASE_URL", "S22_DATABASE_URL", "S23_DATABASE_URL", "S24_DATABASE_URL", "S24_SECURITY_DATABASE_URL",
   "S25_DATABASE_URL", "S25_SECURITY_DATABASE_URL", "S26_DATABASE_URL", "S26_SECURITY_DATABASE_URL",
-  "S27_DATABASE_URL", "S27_SECURITY_DATABASE_URL"
+  "S27_DATABASE_URL", "S27_SECURITY_DATABASE_URL", "S27_PARITY_DATABASE_URL"
 ];
 
 function runDocker(args, options = {}) {
@@ -129,13 +129,11 @@ try {
   const generated = {};
   const databaseNames = new Map();
   for (const key of suiteKeys) {
-    const suiteNumber = key === "DATABASE_URL" ? "s27_main" : `s${/^S(\d+)/.exec(key)[1]}${key.includes("_SECURITY_") ? "_security" : ""}`;
+    const suiteNumber = key === "DATABASE_URL" ? "s27_main" : `s${/^S(\d+)/.exec(key)[1]}${key.includes("_SECURITY_") ? "_security" : key.includes("_PARITY_") ? "_parity" : ""}`;
     const name = `sense_${suiteNumber}_s27_${suffix}_test`;
     const port = key === "S14_DATABASE_URL"
       ? s14Port
-      : key === "DATABASE_URL"
-        ? mainCompatibilityPort
-        : mainPort;
+      : mainPort;
     const serverPort = key === "S14_DATABASE_URL" ? s14Port : mainPort;
     if (databaseNames.has(name)) throw new Error("Generated CI database targets must be unique.");
     databaseNames.set(name, { key, port, serverPort });
@@ -270,6 +268,7 @@ try {
   }
 
   await mkdir(environment.NAS_ROOT, { recursive: true });
+  await mkdir(resolve(environment.NAS_ROOT, 'parity'), { recursive: true });
   for (const path of [environment.S18_SCREENSHOT_DIR, environment.S24_SCREENSHOT_DIR, environment.S25_SCREENSHOT_DIR, environment.S26_SCREENSHOT_DIR, environment.S27_SCREENSHOT_DIR]) {
     await mkdir(resolve(workspace, path), { recursive: true });
   }

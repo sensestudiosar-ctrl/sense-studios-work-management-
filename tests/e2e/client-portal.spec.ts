@@ -135,7 +135,6 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await page.screenshot({ path: testInfo.outputPath("s14-client-portal-sign-in.png") });
 
     await page.getByLabel("Email address").fill(clientEmail);
-    await page.getByRole("button", { name: "Email me a sign-in code" }).click();
     await page.getByRole("button", { name: "Send sign-in code" }).click();
     await expect(page.getByRole("status")).toContainText("If this address has access, a code has been sent.");
 

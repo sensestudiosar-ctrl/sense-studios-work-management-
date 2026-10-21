@@ -46,3 +46,15 @@ it("fails closed for duplicate manifest entries", () => {
   try { expect(isS27DisposableTestTarget("S18_DATABASE_URL", primary, environment)).toBe(false); }
   finally { writeFileSync(manifest, contents); }
 });
+
+it("keeps the CI parity target distinct from the main and security databases", () => {
+  const parity = `postgresql://fixture@127.0.0.1:58440/sense_s27_parity_s27_${suffix}_test`;
+  writeFileSync(manifest, contents + `S27_PARITY_DATABASE_URL=${parity}\n`);
+  try {
+    expect(isS27DisposableTestTarget("S27_PARITY_DATABASE_URL", parity, {...environment,S27_PARITY_DATABASE_URL:parity})).toBe(true);
+    for (const invalid of [parity.replace("_parity_","_security_"),parity.replace("58440","57433"),primary]) {
+      writeFileSync(manifest, contents + `S27_PARITY_DATABASE_URL=${invalid}\n`);
+      expect(isS27DisposableTestTarget("S27_PARITY_DATABASE_URL", invalid, {...environment,S27_PARITY_DATABASE_URL:invalid})).toBe(false);
+    }
+  } finally { writeFileSync(manifest,contents); }
+});
