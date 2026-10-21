@@ -290,6 +290,7 @@ try {
       await browserAdmin.query(`CREATE DATABASE ${quoteIdentifier(name)} WITH TEMPLATE ${quoteIdentifier(template)} OWNER ${quoteRole(adminUser)}`);
     } finally { await browserAdmin.end(); }
     browserEnvironment[target.key]=databaseUrl(name,target.port);
+    if(target.key==="DATABASE_URL")browserEnvironment.MIGRATION_DATABASE_URL=databaseUrl(name,target.serverPort,adminUser,adminPassword);
     const verified=await connectVerified(browserEnvironment[target.key],name,target.serverPort);
     try {
       const ledger=await verified.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS n,count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
@@ -299,6 +300,7 @@ try {
     } finally { await verified.end(); }
     browserTargets.push({database:name,key:target.key,port:target.port,migrations:119,pristine:true});
   }
+  if(new URL(browserEnvironment.MIGRATION_DATABASE_URL).pathname!==new URL(browserEnvironment.DATABASE_URL).pathname)throw new Error("Browser runtime and migration fixtures must identify the same fresh database");
   await writeFile(resolve(toolsDir,browserEnvName),`${Object.entries(browserEnvironment).map(([key,value])=>`${key}=${value}`).join("\n")}\n`,{flag:"wx",mode:0o600});
   await writeFile(resolve(reportDir,"browser-fixtures.json"),JSON.stringify({provider:"github-actions-disposable-postgres",runId,targets:browserTargets,apiFixturesPreserved:true},null,2),{flag:"wx",mode:0o600});
   environment.SENSE_CI_BROWSER_ENV_FILE=`.env.s27-tools/${browserEnvName}`;
