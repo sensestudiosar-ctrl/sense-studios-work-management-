@@ -370,7 +370,13 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await page.setViewportSize(viewports[0]!); await expectPage(page.getByRole("heading", { name: "Time tracking", exact: true })).toBeVisible();
           await page.getByRole("button", { name: "Edit widgets", exact: true }).click();
           const timeHandle = page.getByRole("button", { name: "Drag to move Time tracking", exact: true });
-          await timeHandle.dragTo(page.getByRole("button", { name: "Drag to move Decisions & assigned reviews", exact: true }));
+          await page.locator(".dv-widget-grid").evaluate(element => element.scrollIntoView({ block: "start" }));
+          const start = await timeHandle.boundingBox(), target = await page.getByRole("button", { name: "Drag to move Decisions & assigned reviews", exact: true }).boundingBox();
+          expect(start).not.toBeNull(); expect(target).not.toBeNull();
+          await page.mouse.move(start!.x + start!.width / 2, start!.y + start!.height / 2); await page.mouse.down();
+          await page.mouse.move(start!.x + start!.width / 2 + 8, start!.y + start!.height / 2, { steps: 3 });
+          await page.mouse.move(target!.x + target!.width / 2, target!.y + target!.height / 2, { steps: 15 });
+          await page.mouse.move(target!.x + target!.width / 2 + 2, target!.y + target!.height / 2, { steps: 2 }); await page.mouse.up();
           await expectPage(page.locator(".dv-widget-col").nth(1).locator('[data-widget-id="time"]')).toBeVisible();
           await page.getByRole("button", { name: "Reset layout", exact: true }).click();
           await page.getByRole("button", { name: "Add widgets", exact: true }).click();
@@ -381,7 +387,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await expectPage(page.getByRole("heading", { name: "Training", exact: true })).toHaveCount(0);
           await page.getByRole("button", { name: "Move Time tracking to other column", exact: true }).click();
           await page.getByRole("button", { name: "Done", exact: true }).click();
-          await page.reload(); expect(await page.locator(".dv-widget-col").nth(1).getByRole("heading", { name: "Time tracking", exact: true }).count()).toBe(1);
+          await page.reload(); await expectPage(page.locator(".dv-widget-col").nth(1).getByRole("heading", { name: "Time tracking", exact: true })).toHaveCount(1);
           await page.getByRole("button", { name: "Collapse sidebar", exact: true }).click(); await capture(page, viewports[0]!, "v10-owner-collapsed");
           await page.keyboard.press("Control+k"); await expectPage(page.getByLabel("Search pages", { exact: true })).toBeVisible(); await page.keyboard.press("Escape");
           await page.setViewportSize(viewports[2]!); await page.getByRole("button", { name: /^More/ }).click(); await expectPage(page.getByRole("heading", { name: "More destinations", exact: true })).toBeVisible(); await page.getByRole("button", { name: "Close navigation", exact: true }).click();
@@ -390,6 +396,10 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await page.locator(".dv-widget-head").first().dispatchEvent("pointerup", { pointerType: "touch" });
           await capture(page, viewports[2]!, "v10-owner-mobile-edit");
         }
+      } catch (error) {
+        await page.screenshot({ path: resolve(base, `browser/v10-${identity.key}-failure.png`), fullPage: true }).catch(() => undefined);
+        writeFileSync(resolve(base, `browser/v10-${identity.key}-failure.json`), JSON.stringify({ context: identity.key, message: error instanceof Error ? error.message : "Unknown V10 acceptance failure" }, null, 2));
+        throw error;
       } finally { await session.close(); }
     }
     expect(serverErrors).toEqual([]);
