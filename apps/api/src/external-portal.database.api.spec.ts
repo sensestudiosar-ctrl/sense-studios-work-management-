@@ -16,6 +16,7 @@ import { RevisionService } from "./revision.service.js";
 import { ClientPortalScopeService } from "./client-portal-scope.service.js";
 import { ExternalPortalIdentityService, type ActiveExternalPortalSession } from "./external-portal-identity.service.js";
 import { ExternalPortalService } from "./external-portal.service.js";
+import { externalEvidence } from "./external-portal-policy.js";
 import { TurnkeyService } from "./turnkey.service.js";
 import { WorkforceService } from "./workforce.service.js";
 import { NotificationsService } from "./notifications.service.js";
@@ -676,14 +677,18 @@ databaseDescribe("S21 external portal PostgreSQL/API acceptance", () => {
     const f = await fixture(database, nasRoot);
     const before = await database.prisma.externalPortalRecord.count({ where: { projectId: f.projectId } });
     const session = await database.prisma.externalPortalSession.findUniqueOrThrow({ where: { id: f.consultantActor.sessionId } });
-    await database.prisma.externalPortalSession.update({ where: { id: session.id }, data: { expiresAt: new Date(Date.now() + 1_000) } });
-    await new Promise((resolve) => setTimeout(resolve, 1_100));
+    await database.prisma.$executeRaw`UPDATE external_portal_sessions SET "createdAt" = clock_timestamp() - interval '2 days', "expiresAt" = clock_timestamp() - interval '1 day' WHERE id = ${session.id}::uuid`;
     await expect(f.external.submit(f.consultantActor, f.projectId, { grantId: f.consultantGrant.id, kind: "COMMENT", title: "Expired session", body: "Must not be retained", revisionId: f.revisionId, reason: "Expired exact session" }, randomUUID())).rejects.toMatchObject({ status: 403 });
     expect(await database.prisma.externalPortalRecord.count({ where: { projectId: f.projectId } })).toBe(before);
     const grant = await database.prisma.externalPortalGrant.findUniqueOrThrow({ where: { id: f.consultantGrant.id } });
-    await f.external.changeGrant(f.owner, grant.id, { expectedVersion: grant.version, expiresAt: new Date(Date.now() + 1000).toISOString(), reason: "Set brief external access expiry" });
+    // Test the valid and expired states explicitly; a short wall-clock window races slow CI queries.
+    const [{ expiresAt }] = await database.prisma.$queryRaw<Array<{ expiresAt: Date }>>`SELECT clock_timestamp() + interval '1 day' AS "expiresAt"`;
+    await f.external.changeGrant(f.owner, grant.id, { expectedVersion: grant.version, expiresAt: expiresAt.toISOString(), reason: "Set future external access expiry" });
     expect(await database.prisma.$queryRaw<Array<{ usable: boolean }>>`SELECT s21_grant_usable(${grant.id}::uuid) AS usable`).toEqual([{ usable: true }]);
-    await new Promise((resolve) => setTimeout(resolve, 1_100));
+    await database.prisma.$transaction(async (tx) => {
+      const [expired] = await tx.$queryRaw<Array<{ version: number }>>`UPDATE external_portal_grants SET "expiresAt" = clock_timestamp() - interval '1 day', version = version + 1 WHERE id = ${grant.id}::uuid RETURNING version`;
+      await externalEvidence(tx, f.owner.accountId, "external_portal_grants", grant.id, expired.version, "Set expired grant fixture with retained evidence");
+    });
     expect(await database.prisma.$queryRaw<Array<{ usable: boolean }>>`SELECT s21_grant_usable(${grant.id}::uuid) AS usable`).toEqual([{ usable: false }]);
   });
 
