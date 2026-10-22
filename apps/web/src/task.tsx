@@ -24,6 +24,11 @@ import "./my-work-visual.css";
 import "./my-work/my-work-visual-overrides.css";
 import "./my-work/my-work-parity.css";
 
+/** Field-help fragments stay within the current document and do not discard drafts. */
+function isInPageAnchor(anchor: HTMLAnchorElement): boolean {
+  return !!anchor.hash && anchor.origin === window.location.origin && anchor.pathname === window.location.pathname && anchor.search === window.location.search;
+}
+
 /** Renders a structured empty-state with an optional Clear filters action button. */
 function TaskEmptyState({ message, showClearFilters, onClearFilters }: { message: string; showClearFilters: boolean; onClearFilters: () => void }): React.JSX.Element {
   return (
@@ -883,7 +888,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
     {selected.projectId ? <><p>Open this task's internal review to see or submit its evidence.</p><a className="task-review-link" href={`/reviews?taskId=${encodeURIComponent(detail?.linkedReviewTaskId || selected.id)}`} onClick={event => { if (!leaveDrawerTask()) event.preventDefault(); }}>{detail?.linkedReviewTaskId ? "Open correction instructions in internal review" : "Open internal review"}</a></> : <p>No review evidence workflow is linked to this task.</p>}
   </section> : null;
   const creationRecovery = uncertainCreation ? <section className="task-capacity-warning task-create-recovery" aria-label="Unconfirmed creation"><p>The submitted details are locked while this result is unconfirmed. Checking uses the same request and cannot create a second copy.</p><button type="button" data-task-creation-recovery disabled={busy} onClick={() => void performCreation(uncertainCreation.body, uncertainCreation.parentId)}>{busy ? "Checking…" : "Check creation result"}</button></section> : null;
-  const taskDetailView = <article className="task-detail" aria-label="Task details" onClickCapture={event => { if ((personalOnly || projectContext) && event.target instanceof Element && event.target.closest("a[href]") && !leaveDrawerTask()) event.preventDefault(); }}>{creationRecovery}{selected ? <>{!personalOnly && <div className="task-detail-heading"><div>{listFirst && <button type="button" className="task-back" onClick={() => { if (!leaveDrawerTask()) return; clearWaitingForm(); if (window.history.state?.taskWorkspaceSelection) window.history.back(); else { const url = new URL(window.location.href); url.searchParams.delete(taskUrlKey("taskId", projectContext)); window.history.replaceState(null, "", url); setUrlTaskId(""); } }}>Back to task list</button>}<p className="task-eyebrow">{stateLabel(selected.type)}{selected.projectId ? " · Project task" : " · No project"}</p><h3>{selected.title}</h3></div><span className={`task-state task-state-${selected.status.toLowerCase()}`}>{stateLabel(selected.status)}</span></div>}
+  const taskDetailView = <article className="task-detail" aria-label="Task details" onClickCapture={event => { if ((personalOnly || projectContext) && event.target instanceof Element && event.target.closest("a[href]") instanceof HTMLAnchorElement && !isInPageAnchor(event.target.closest("a[href]") as HTMLAnchorElement) && !leaveDrawerTask()) event.preventDefault(); }}>{creationRecovery}{selected ? <>{!personalOnly && <div className="task-detail-heading"><div>{listFirst && <button type="button" className="task-back" onClick={() => { if (!leaveDrawerTask()) return; clearWaitingForm(); if (window.history.state?.taskWorkspaceSelection) window.history.back(); else { const url = new URL(window.location.href); url.searchParams.delete(taskUrlKey("taskId", projectContext)); window.history.replaceState(null, "", url); setUrlTaskId(""); } }}>Back to task list</button>}<p className="task-eyebrow">{stateLabel(selected.type)}{selected.projectId ? " · Project task" : " · No project"}</p><h3>{selected.title}</h3></div><span className={`task-state task-state-${selected.status.toLowerCase()}`}>{stateLabel(selected.status)}</span></div>}
       {selected.projectId && detail.linkedReviewTaskId && <p><a className="task-review-link" href={`/reviews?taskId=${encodeURIComponent(detail.linkedReviewTaskId)}`}>Open correction instructions in internal review</a></p>}
       {selected.projectId && !detail.linkedReviewTaskId && <p><a className="task-review-link" href={`/reviews?taskId=${encodeURIComponent(selected.id)}`}>Open internal review</a></p>}
         {selected.requiresReassignment && <p className="task-reassignment-alert" role="status">Needs reassignment after employee exit. A manager must reassign this task before it can resume.</p>}
@@ -954,7 +959,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
     const navigate = (event: MouseEvent): void => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const anchor = event.target instanceof Element ? event.target.closest("a[href]") : null;
-      if (!(anchor instanceof HTMLAnchorElement) || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
+      if (!(anchor instanceof HTMLAnchorElement) || anchor.target === "_blank" || anchor.hasAttribute("download") || isInPageAnchor(anchor)) return;
       if (!leaveProjectRef.current()) { event.preventDefault(); event.stopPropagation(); }
     };
     window.addEventListener("beforeunload", beforeUnload); document.addEventListener("click", navigate, true);
