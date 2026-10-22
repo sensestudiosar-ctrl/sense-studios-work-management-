@@ -222,7 +222,8 @@
 /* Mobile 5-tab fixed bottom bar */
 .workspace-mobile-nav {
   position: fixed; z-index: 15; inset-inline: 0; bottom: 0;
-  display: flex; align-items: stretch;
+  /* Display follows the shared 768px breakpoint above. */
+  align-items: stretch;
   padding: .35rem max(.4rem, env(safe-area-inset-right)) calc(.45rem + env(safe-area-inset-bottom)) max(.4rem, env(safe-area-inset-left));
   border-top: 1px solid var(--sense-border, #d9d8cd);
   background: var(--sense-surface, #fffdf7);

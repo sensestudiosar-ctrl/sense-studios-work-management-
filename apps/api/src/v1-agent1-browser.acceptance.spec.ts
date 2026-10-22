@@ -177,6 +177,11 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
   }
   async function capture(page: Page, viewport: { width: number; height: number }, state: string): Promise<void> {
     const noOverflow = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
+    // Shared shell must select one navigation mode on every authenticated page.
+    if (await page.locator(".workspace-mobile-nav").count()) {
+      expect(await page.locator(".workspace-mobile-nav").isVisible()).toBe(viewport.width < 768);
+      expect(await page.locator(".workspace-sidebar").isVisible()).toBe(viewport.width >= 768);
+    }
     if (state.startsWith("v10-")) {
       const queueContentsFit = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>(".dv-attention-queue .dv-attention-row > *, .dv-attention-queue .dv-attention-foot > *, .dv-attention-actions a, .dv-attention-actions button")]
         .every(element => {
