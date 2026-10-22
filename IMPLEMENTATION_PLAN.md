@@ -473,3 +473,7 @@ Owner explicitly approved correcting the failed backup command, backing up the s
 
 REC-01–REC-07 are authorized in `docs/operations/RECOVERY_CONSOLIDATION_PLAN_2026-10-21.md`: preserve first; consolidate accepted Sense source on `codex/sense-integration`; defer unaccepted client passwords/migration120; verify migration119 compatibility; establish immutable matched releases and supervised localhost59443; test and record exact results. Existing business authority, data, historical branches/archives and operational/production limits remain intact. Owner approved Codex reviewer substitution for this recovery. Status IN PROGRESS; no deployment or acceptance is claimed by this plan entry.
 
+
+## V10 data presentation refinement — Owner authorized 2026-10-21
+
+IN PROGRESS. R-073.a–c/R-074.a–b and R-100–102. Match the existing V10 handoff's compact hierarchy, paper cards, factual visual summaries, grouped decisions and natural widget columns. Reuse existing source authorization and timer/performance contracts. Add task status distributions only from each fully available source section; never total overlapping cards or fabricate scores. No API/schema/business-rule or retained-data change. Preserve preexisting uncommitted edits separately. Verify component data/empty/unavailable states, full web/type/lint/build, isolated real role/responsive journeys and exact selected artifact before controlled staging.

@@ -8,6 +8,8 @@ import { SortableContext, arrayMove, useSortable, sortableKeyboardCoordinates } 
 import { CSS } from "@dnd-kit/utilities";
 import "./dashboard.css";
 import "./dashboard-widgets.css";
+import "./dashboard-data.css";
+import { DashboardDataIcon, DashboardTaskMix, DashboardProjectOverview } from "./dashboard-data-visuals.js";
 import {
   WIDGET_INFO,
   type WidgetId, type DashboardLayout, type LayoutMode,
@@ -98,7 +100,7 @@ function SortableWidget({
   return (
     <section ref={setNodeRef} data-widget-id={id} className={`dv-widget${isDragging ? " is-dragging" : ""}${editing ? " is-editing" : ""}`} style={style}>
       <div className="dv-widget-head">
-        <div><h3>{info?.label ?? id}</h3><p>{info?.desc ?? ""}</p></div>
+        <div className="dv-widget-heading"><span className="dv-widget-mark"><DashboardDataIcon name={id} /></span><div><h3>{info?.label ?? id}</h3><p>{info?.desc ?? ""}</p></div></div>
         {editing && (
           <div className="dv-widget-tools">
             <button type="button" className="dv-edit-hbtn" title="Hide widget" aria-label={`Hide ${info?.label ?? id} widget`} onClick={() => onHide(id)}>−</button>
@@ -266,11 +268,11 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   const taskBlockedRows = tasksState?.sections.find(s => s.key === "waiting")?.rows ?? [];
 
   const kpiTiles = [
-    { label: "Overdue", value: taskSectionCount("overdue"), cls: "dn", route: "/tasks", sub: "Past due and incomplete" },
-    { label: "Due today", value: taskSectionCount("today"), cls: "", route: "/tasks", sub: "Committed date when present, otherwise Target" },
-    { label: "High priority", value: taskSectionCount("priority"), cls: "dn", route: "/tasks", sub: "High and critical priority" },
-    { label: "Waiting / blocked", value: taskSectionCount("waiting"), cls: taskBlockedRows.length ? "dn" : "", route: "/tasks", sub: "Waiting state and blockers" },
-    { label: "Review / corrections", value: taskSectionCount("reviews"), cls: "", route: "/tasks", sub: "Task states only" },
+    { key: "overdue", label: "Overdue", value: taskSectionCount("overdue"), cls: "dn", route: "/tasks", sub: "Past due and incomplete" },
+    { key: "today", label: "Due today", value: taskSectionCount("today"), cls: "", route: "/tasks", sub: "Committed date when present, otherwise Target" },
+    { key: "priority", label: "High priority", value: taskSectionCount("priority"), cls: "dn", route: "/tasks", sub: "High and critical priority" },
+    { key: "waiting", label: "Waiting / blocked", value: taskSectionCount("waiting"), cls: taskBlockedRows.length ? "dn" : "", route: "/tasks", sub: "Waiting state and blockers" },
+    { key: "reviews", label: "Review / corrections", value: taskSectionCount("reviews"), cls: "", route: "/tasks", sub: "Task states only" },
   ];
 
   const kind: "OWNER" | "STAFF" = owner ? "OWNER" : "STAFF";
@@ -402,6 +404,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                     <div className="dv-decisions-chip"><strong>{(sourceData.decisions?.decisions?.items ?? []).length}</strong><span className="dv-decisions-chip-label">Approval requests</span></div>
                     <div className="dv-decisions-chip review"><strong>{taskSectionCount("reviews")}</strong><span className="dv-decisions-chip-label">Task reviews</span></div>
                   </div>
+                  <div className="dv-decisions-section-label">Approval obligations</div>
                   {(sourceData.decisions?.decisions?.items ?? []).slice(0, 3).map((item, i) => {
                     const row = typeof item === "object" && item !== null ? item as Record<string, unknown> : {};
                     const route = typeof row.route === "string" ? row.route : "/decisions";
@@ -440,9 +443,11 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
       case "projects":
         return (
           <div className="dv-widget-body">
-            {healthState?.loading ? <div className="dv-source-loading">Reading projects…</div>
+            {!healthState || healthState.loading ? <div className="dv-source-loading">Reading projects…</div>
               : healthState?.error ? <div className="dv-source-error"><strong>Project source unavailable</strong><button type="button" onClick={() => void loadSource("health")}>Retry</button></div>
               : (
+                <>
+                <DashboardProjectOverview available={healthState.sections.some(section => section.key === "health" && !section.unavailable)} rows={healthRows} />
                 <div className="dv-projects-grid">
                   {healthRows.slice(0, 4).map(row => (
                     <Link key={row.id} to={row.route ?? "/projects"} className="dv-project-card">
@@ -450,7 +455,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                         <span className="dv-project-name">{row.label}</span>
                         {typeof row.score === "number" && Number.isFinite(row.score)
                           ? <span className="dv-project-signal other">{row.status ?? "Recorded score"}</span>
-                          : <span className="dv-project-signal other">{row.status ?? "Unrated"}</span>}
+                          : <span className="dv-project-signal other">{row.status === "UNAVAILABLE" ? "Evidence needed" : row.status?.replace(/_/g, " ") ?? "Unrated"}</span>}
                       </div>
                       <div className="dv-project-meta">{[row.status, row.value].filter(v => v && v !== "—").join(" · ")}</div>{typeof row.score === "number" && Number.isFinite(row.score) && <HealthScore row={row} />}
                       <span className="dv-project-link">Open workspace →</span>
@@ -458,7 +463,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                   ))}
                   {healthState?.sections.filter(section => section.unavailable).map(section => <p key={section.key}>{section.unavailable}</p>)}
                   {healthRows.length === 0 && !healthState?.sections.some(section => section.unavailable) && <div className="dv-source-loading">No authorized project snapshots yet.</div>}
-                </div>
+                </div></>
               )}
           </div>
         );
@@ -494,11 +499,12 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
     {error && <p className="auth-error" role="alert">{error} <button type="button" className="secondary-action" onClick={() => void load(true)}>Retry supporting data</button></p>}{notice && <p className="notice" role="status">{notice}</p>}
     {loading && tab !== "dashboard" && <p role="status">Loading reports, summaries, reminders, and schedules…</p>}
     {tab === "dashboard" && <>
-      <div className="dashboard-summary"><span><small>Organization date</small><strong>{organizationDateLabel}</strong></span><span><small>Account type</small><strong>{dash.role}</strong></span></div>
+      <div className="dashboard-summary" aria-label="Dashboard source context"><span><small>Organization date</small><strong>{organizationDateLabel}</strong></span><span><small>Account type</small><strong>{dash.role}</strong></span></div>
 
       {/* V10 fixed summary strip — non-draggable, non-hidable.
           Five independent task summaries; counts overlap and must not
           be summed into a total (V10 §G.1). */}
+      <div className="dv-section-heading"><h3>Today at a glance</h3><span>Independent task summaries</span></div>
       <div className="dv-summary-strip" aria-label="Five independent task summaries; counts overlap and must not be summed">
         {kpiTiles.map(tile => {
           const loading = !tasksState || tasksState.loading;
@@ -507,20 +513,22 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
             <Link
               key={tile.label}
               to={tile.route}
-              className={`dv-summary-card${loading ? " is-loading" : ""}`}
+              className={`dv-summary-card dv-summary-${tile.key}${loading ? " is-loading" : ""}`}
               data-summary={tile.label.toLowerCase().replace(/\s+/g, "-")}
               aria-label={`${tile.label} · ${loading ? "source loading" : unavailable ? "source unavailable" : tile.value + " matching tasks"}`}
+              aria-describedby={!loading && !unavailable ? `dashboard-task-mix-${tile.key}` : undefined}
             >
               <div className="dv-summary-top">
                 <strong>{tile.label}</strong>
-                <span className="dv-summary-icon" aria-hidden="true"></span>
+                <span className="dv-summary-icon"><DashboardDataIcon name={tile.key} /></span>
               </div>
               {loading
                 ? <><div className="dv-summary-skeleton"></div><div className="dv-summary-cue">Loading…</div></>
                 : unavailable
                   ? <div className="dv-summary-unavailable">Unavailable</div>
                   : <><div className="dv-summary-count" data-summary={tile.label.toLowerCase().replace(/\s+/g, "-")}>{tile.value}</div><div className="dv-summary-cue">{tile.sub}</div></>}
-              <span className="dv-summary-footer">Open task workspace →</span>
+              {!loading && !unavailable && <DashboardTaskMix descriptionId={`dashboard-task-mix-${tile.key}`} rows={tasksState?.sections.find(section => section.key === tile.key)?.rows ?? []} />}
+              <span className="dv-summary-arrow" aria-hidden="true">→</span>
             </Link>
           );
         })}

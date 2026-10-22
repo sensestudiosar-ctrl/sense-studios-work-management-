@@ -177,6 +177,16 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
   }
   async function capture(page: Page, viewport: { width: number; height: number }, state: string): Promise<void> {
     const noOverflow = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth);
+    if (state.startsWith("v10-")) {
+      const queueContentsFit = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>(".dv-attention-queue .dv-attention-row > *, .dv-attention-queue .dv-attention-foot > *, .dv-attention-actions a, .dv-attention-actions button")]
+        .every(element => {
+          const card = element.closest(".dv-attention-queue");
+          if (!card) return false;
+          const bounds = element.getBoundingClientRect(), parent = card.getBoundingClientRect();
+          return bounds.left >= parent.left - 1 && bounds.right <= parent.right + 1;
+        }));
+      expect(queueContentsFit).toBe(true);
+    }
     const targets = await page.evaluate(() => [...document.querySelectorAll<HTMLElement>('[data-task-creation-recovery], .task-form button[type="submit"], .project-section-nav button, .project-resource-summary :is(a, button), .project-section-links a, .my-work-review-inbox-link, .my-work-decisions-link, .actionable-work__header button, .actionable-work__controls :is(button, select), .actionable-work > nav a, .actionable-work__pager button, .actionable-work__row > :is(a, button)')]
       .filter(element => element.getBoundingClientRect().width > 0 && element.getBoundingClientRect().height > 0)
       .map(element => ({ height: element.getBoundingClientRect().height, minimum: element.closest(".project-section-nav") && innerWidth > 760 ? 40 : 44 })));
