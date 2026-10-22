@@ -41,6 +41,14 @@ describe("reviewed usability improvements", () => {
     expect(screen.getByText("revoked").closest("details")).toBe(screen.getByText("expired").closest("details"));
   });
 
+  it("focuses the editable type for an incompatible fixed-project draft", () => {
+    render(<TaskComposerFields draft={{ ...draft, title: "Prepare layout", type: "NON_PROJECT", projectId: "project" }} fixedProject={{ id: "project", title: "Studio" }} onChange={vi.fn()} projects={[]} planItems={[]} options={undefined} optionsError={undefined} retryOptions={vi.fn()} compact={false} busy={false} validationAttempt={1} />);
+    fireEvent.click(within(screen.getByRole("alert")).getByRole("link", { name: /Non project tasks cannot use a project/ }));
+    expect(screen.getByLabelText("Type")).toHaveFocus();
+    expect(screen.getByLabelText("Type")).toHaveAccessibleDescription("Non project tasks cannot use a project. Choose a project task type for this context.");
+    expect(screen.getByLabelText("Task project")).toHaveValue("Studio");
+  });
+
   it("focuses page context and offers a keyboard bypass without stealing dialog focus", async () => {
     const scroll = vi.fn(); Object.defineProperty(HTMLElement.prototype, "scrollIntoView", { configurable: true, value: scroll });
     render(<MemoryRouter><RouteAccessibility /><main><h1>Projects</h1></main></MemoryRouter>);
