@@ -4,6 +4,8 @@
 
 ### Changed
 
+- Refine Dashboard data presentation from the V10 demo and prevent mobile bottom navigation overlapping the desktop sidebar.
+
 - Complete the V10 Dashboard in the existing application: fixed factual task summaries, customizable account-specific desktop/mobile widgets, and a deduplicated attention queue.
 - Connect timer controls to existing persistent Time commands with recoverable command identities and visible failures. Restrict performance to authorized management scope and supplied scores.
 - Preserve existing reports, summaries, schedules, access rules and data. No new schema or migration.

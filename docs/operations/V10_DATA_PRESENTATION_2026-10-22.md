@@ -1,6 +1,6 @@
 # Dashboard data presentation refinement — 22 October 2026
 
-Status: IN PROGRESS. Owner requested closer data presentation to the existing V10 demo. R-073.a–c/R-074.a–b and R-100–102; no API/schema/business-rule changes.
+Status: COMPLETE for Owner-authorized development/local staging; see V10_DATA_NAVIGATION_ACCEPTANCE_2026-10-22.md for exact deployed identity, successful checks and preserved failures. Hosted acceptance remains blocked by account billing. Owner requested closer data presentation to the existing V10 demo. R-073.a–c/R-074.a–b and R-100–102; no API/schema/business-rule changes.
 
 Primary reference: demos/Sense_Studios_Codex_Dashboard_V10_Handoff/reference/Sense_Studios_Dashboard_V10_Refined_Shell.html and1440/1024/390/320 screenshots. Lock: cream canvas/paper cards, compact sans hierarchy, Today at a glance strip, narrower Time/Projects lane and wider Decisions/Performance lane, final fixed queue. Existing Refero Linear/Asana/Wrike locks remain. Supplementary Refero Perplexity style b95e58ce-d00e-4de1-ad6b-6f1c7d7a5593 informed only compact text hierarchy/subtle surface separation; its monochrome/pill tokens do not override the Owner's pine/paper design.
 

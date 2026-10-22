@@ -56,3 +56,7 @@ Time tracking uses ordinary Time commands and persistence. Select a project/task
 Performance shows only authorized management subjects and persisted scores. Owner Teams view uses the existing API's comparable employee-score cohort average for the selected employee's team, policy and period. Separate Team metric averages are unavailable; no browser calculation supplies them. Ordinary employees use the existing Performance workspace for their own authorized evidence.
 
 The page finder searches known workspace destinations with Ctrl/Cmd+K; it does not search protected task/project content. New task opens the existing permission-checked task dialog. Confirm the current matched release footer after an upgrade; save work before any explicit reload and never clear browser storage to force an update.
+
+## Shared navigation breakpoint and Dashboard refinement
+
+The mobile bottom bar belongs below768px. The shared desktop sidebar takes over at768px, regardless of collapsed preference. Keep later decorative rules free of unconditional display overrides. Run node scripts/recovery/navigation-responsive.mjs from the repository root after shell styling changes. Summary bars use only each readable source section; overlapping task cards are not a combined total. Unavailable evidence remains unavailable. Current exact local/hosted boundaries are recorded in V10_DATA_NAVIGATION_ACCEPTANCE_2026-10-22.md.
