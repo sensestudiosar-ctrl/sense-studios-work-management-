@@ -17,7 +17,7 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
     const ready = page.waitForResponse(response => new URL(response.url()).pathname === "/api/v1/dashboard/sources/tasks" && response.request().method() === "GET", { timeout: 60_000 });
     if (reload) await page.reload(); else await page.goto("/dashboard");
     expect((await ready).status()).toBe(200);
-    await expect(page.getByRole("heading", { name: "Dashboard", exact: true, level: 2 })).toBeVisible({ timeout: 60_000 });
+    await expect(page.getByRole("heading", { name: "Dashboard", exact: true, level: 1 })).toBeVisible({ timeout: 60_000 });
     console.info(`[s24-e2e] dashboard load ${Date.now() - startedAt}ms`);
   };
   test.skip((process.env.S24_E2E_ENABLED !== "1" && process.env.S25_E2E_ENABLED !== "1" && process.env.S27_E2E_ENABLED !== "1") || !fixtureUrl, "Set an approved isolated S24, S25, or S27 database acceptance flag");

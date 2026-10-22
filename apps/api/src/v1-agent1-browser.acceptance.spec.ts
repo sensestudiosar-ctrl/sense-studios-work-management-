@@ -438,6 +438,15 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
       await page.goto("/my-work"); const workspace = page.locator(".task-workspace").first();
       await workspace.getByRole("button", { name: "Create task", exact: true }).first().click();
       let form = page.getByRole("form", { name: "Create task", exact: true }); const title = `Personal browser ${viewport.width} ${randomUUID()}`;
+      await expectPage(workspace.getByRole("heading", { name: "My work", level: 1, exact: true })).toBeVisible();
+      await expectPage(page.getByRole("link", { name: "Skip to main content", exact: true })).toHaveCount(1);
+      await page.locator("dialog.task-create-dialog[open]").getByRole("button", { name: "Create task", exact: true }).click();
+      await expectPage(form.locator(".task-error-summary")).toBeFocused();
+      await expectPage(form.getByLabel("Task name", { exact: true })).toHaveAttribute("aria-invalid", "true");
+      await form.locator(".task-error-summary").getByRole("link", { name: "Task name must be between 2 and 160 characters.", exact: true }).click();
+      await expectPage(form.getByLabel("Task name", { exact: true })).toBeFocused();
+      expect(await database.prisma.task.count({ where: { title } })).toBe(0);
+      await capture(page, viewport, "ux22-task-errors");
       await fillTask(form, title); await form.getByRole("combobox", { name: "Priority", exact: true }).selectOption("CRITICAL");
       const optional = form.getByText("Optional planning", { exact: true }); if (await optional.count()) await optional.click();
       const needle = `description-${randomUUID()}`; await form.getByLabel(/Description/).fill(needle);
@@ -543,6 +552,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
 
       const ownerPage = await ownerContext.newPage(); await ownerPage.goto("/projects?q=PreviouslyExisting");
       await ownerPage.getByLabel("Project branch", { exact: true }).selectOption(f.branch.id);
+      await ownerPage.getByText("Project template (optional)", { exact: true }).click();
       await ownerPage.getByLabel("Project template", { exact: true }).selectOption(f.templateVersionId);
       const projectForm = ownerPage.getByRole("form", { name: "Create project", exact: true }); const projectTitle = `Confirmed draft ${randomUUID()}`;
       await projectForm.getByLabel("Project title", { exact: true }).fill(projectTitle);
