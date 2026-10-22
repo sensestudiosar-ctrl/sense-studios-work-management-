@@ -68,8 +68,8 @@ describe("shared empty states and create form grouping", () => {
   it("renders a structured empty state without clear-filters for an employee-less Owner", async () => {
     installApi({ actorEmployeeId: null, total: 1 });
     render(<TaskWorkspace csrfToken="csrf" owner listFirst personalOnly />);
-    await screen.findByText("No personal tasks are available because this Owner account has no active employee identity.");
-    const emptyState = screen.getByText("No personal tasks are available because this Owner account has no active employee identity.").closest(".task-empty-state")!;
+    await screen.findByText("This Owner account is not linked to an employee. Open organization work to manage tasks.");
+    const emptyState = screen.getByText("This Owner account is not linked to an employee. Open organization work to manage tasks.").closest(".task-empty-state")!;
     expect(emptyState).toHaveAttribute("role", "status");
     expect(screen.queryByRole("button", { name: "Clear filters" })).not.toBeInTheDocument();
   });
@@ -105,7 +105,7 @@ describe("shared empty states and create form grouping", () => {
     const planningSummary = within(form).getByText("Optional planning", { selector: "summary" });
     const planningDetails = planningSummary.closest("details")!;
     expect(planningDetails).toBeInTheDocument();
-    expect(within(planningDetails).getByLabelText("Description (optional)")).toBeInTheDocument();
+    expect(within(form).getByLabelText("Description (optional)").closest("details")).toBeNull();
     expect(within(planningDetails).getByLabelText("Tags")).toBeInTheDocument();
     expect(planningDetails).not.toHaveAttribute("open");
   });

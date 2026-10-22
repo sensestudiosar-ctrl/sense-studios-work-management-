@@ -23,12 +23,12 @@ describe("shared task composer validation and fields", () => {
   it("clears incompatible participants/planning when the project context changes", () => {
     const onChange = vi.fn();
     render(<TaskComposerFields draft={draft} onChange={onChange} projects={[{ id: "project", title: "Studio", status: "ACTIVE" }]} planItems={[]} options={undefined} optionsError={undefined} retryOptions={() => undefined} compact={false} busy={false} />);
-    fireEvent.change(screen.getByLabelText("Project (optional)"), { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText("Project"), { target: { value: "" } });
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ projectId: "", ownerId: "", collaboratorIds: [], planItemId: "", type: "NON_PROJECT", reviewRequirement: "NONE" }));
   });
   it("uses self ownership when the current context denies assignment despite a previous assignment draft", () => {
     render(<TaskComposerFields draft={draft} onChange={() => undefined} projects={[]} planItems={[]} options={{ actorEmployeeId: "self", project: null, canAssign: false, canCreate: true, owners: [{ id: "self", name: "Self", homeBranchId: "branch" }], collaborators: [], readAt: "" }} optionsError={undefined} retryOptions={() => undefined} compact={false} busy={false} />);
-    expect(screen.getByText("This will be created as your self-task.")).toBeInTheDocument();
+    expect(screen.getByText("Assigned to you.")).toBeInTheDocument();
     expect(screen.queryByLabelText("Primary owner")).not.toBeInTheDocument();
   });
 });

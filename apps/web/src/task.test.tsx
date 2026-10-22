@@ -206,14 +206,17 @@ describe("TaskWorkspace", () => {
     fireEvent.click(open);
     const form = screen.getByRole("form", { name: "Create task" });
     await waitFor(() => expect(within(form).queryByText("Loading eligible task participants…")).not.toBeInTheDocument());
-    expect(within(form).queryByText("This will be created as your self-task.")).not.toBeInTheDocument();
+    expect(within(form).queryByText("Assigned to you.")).not.toBeInTheDocument();
     const ownerField = await within(form).findByLabelText("Primary owner");
     expect(ownerField).toBeRequired();
     fireEvent.change(within(form).getByLabelText("Task name"), { target: { value: "Coordinate test delivery" } });
     fireEvent.change(within(form).getByLabelText("Target date"), { target: { value: "2026-10-20" } });
     fireEvent.change(within(form).getByLabelText("Reason"), { target: { value: "Assign to the existing active employee" } });
     const create = within(screen.getByRole("dialog")).getByRole("button", { name: "Create task" });
-    expect(create).toBeDisabled();
+    expect(create).toBeEnabled();
+    fireEvent.click(create);
+    expect(ownerField).toHaveAttribute("aria-invalid", "true");
+    expect(fetchMock.mock.calls.some(([, init]) => init?.method === "POST")).toBe(false);
     fireEvent.change(ownerField, { target: { value: "employee-2" } });
     expect(create).toBeEnabled();
     fireEvent.click(create);
@@ -244,7 +247,7 @@ describe("TaskWorkspace", () => {
     const oversized = "x".repeat(2001);
     fireEvent.change(descriptionInput, { target: { value: oversized } });
     fireEvent.submit(form);
-    await within(screen.getByRole("dialog")).findByText("Description must be 2000 characters or fewer.");
+    await waitFor(() => expect(descriptionInput).toHaveAccessibleDescription("Description must be 2000 characters or fewer."));
     expect(fetchMock.mock.calls.filter(([url, init]) => String(url) === "/api/v1/tasks" && init?.method === "POST")).toHaveLength(0);
     expect(descriptionInput).toHaveValue(oversized);
     expect(descriptionInput).toHaveAttribute("maxlength", "2000");
@@ -287,7 +290,8 @@ describe("TaskWorkspace", () => {
     const oversized = "x".repeat(2001);
     fireEvent.change(input, { target: { value: oversized } });
     fireEvent.submit(form);
-    await within(dialog).findByText("Description must be 2000 characters or fewer.");
+    if (mode === "subtask") await waitFor(() => expect(input).toHaveAccessibleDescription("Description must be 2000 characters or fewer."));
+    else await within(dialog).findByText("Description must be 2000 characters or fewer.");
     expect(fetchMock.mock.calls.filter(([url, init]) => String(url) === commandPath && init?.method === method)).toHaveLength(0);
     expect(input).toHaveValue(oversized);
     expect(input).toHaveAttribute("maxlength", "2000");
@@ -323,11 +327,9 @@ describe("TaskWorkspace", () => {
     expect(within(form).getByLabelText("Target date")).toBeRequired();
     expect(within(form).getByLabelText("Reason")).toBeRequired();
     const optionalPlanning = within(form).queryByText("Optional planning", { selector: "summary" });
-    if (_label === "EMPLOYEE" || _label === "SITE" || _label === "missing profile" || _label === "unknown variant" || _label === "unsupported profile version" || _label === "non-Owner with Owner hint") {
-      expect(optionalPlanning).toBeInTheDocument();
-      expect(optionalPlanning!.closest("details")).not.toHaveAttribute("open");
-      expect(optionalPlanning!.closest("details")!.querySelectorAll("[required]")).toHaveLength(0);
-    } else expect(optionalPlanning).not.toBeInTheDocument();
+    expect(optionalPlanning).toBeInTheDocument();
+    expect(optionalPlanning!.closest("details")).not.toHaveAttribute("open");
+    expect(optionalPlanning!.closest("details")!.querySelectorAll("[required]")).toHaveLength(0);
     if (_label === "LEADER") {
       expect(within(form).queryByLabelText("Primary owner")).not.toBeInTheDocument();
       expect(within(form).queryByText("Assign to an employee")).not.toBeInTheDocument();
@@ -639,7 +641,7 @@ describe("TaskWorkspace", () => {
       const query = new URL(url, "http://localhost").searchParams;
       return url.includes("/api/v1/tasks?") && query.get("scope") === "personal" && query.get("q") === "authorized work" && query.get("status") === "IN_PROGRESS";
     })).toBe(true));
-    expect(screen.getAllByText(/personal task count is 0/)).toHaveLength(1);
+    expect(screen.getAllByText(/This Owner account is not linked to an employee/)).toHaveLength(1);
     expect(screen.queryByRole("button", { name: /Open task:/ })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Create task" })).toBeEnabled();
     expect(obligations).toHaveBeenCalledWith({ employeeLessOwner: true, onActionCounts: expect.any(Function) });
@@ -648,7 +650,7 @@ describe("TaskWorkspace", () => {
     expect(management.compareDocumentPosition(filterForm) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0);
     expect(filterForm.compareDocumentPosition(personalEmpty) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0);
     expect(management.compareDocumentPosition(personalEmpty) & Node.DOCUMENT_POSITION_FOLLOWING).not.toBe(0);
-    expect(screen.getByRole("link", { name: "Open Tasks to browse authorized organization work" })).toHaveAttribute("href", "/tasks");
+    expect(screen.getByRole("link", { name: "Open organization work" })).toHaveAttribute("href", "/tasks");
   });
 
   it("does not classify a denied setup response as an employee-less Owner", async () => {
@@ -1091,7 +1093,7 @@ describe("TaskWorkspace", () => {
     render(<TaskWorkspace csrfToken="task-csrf" owner={false} />);
     await screen.findByText("No primary tasks match these filters.");
     fireEvent.click(screen.getByRole("button", { name: "Create task" }));
-    await screen.findByText("This will be created as your self-task.");
+    await screen.findByText("Assigned to you.");
     fireEvent.change(screen.getByLabelText("Task name"), { target: { value: "Call supplier" } });
     fireEvent.change(screen.getByLabelText("Target date"), { target: { value: "2026-10-15" } });
     fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Needed for project setup" } });
@@ -1148,7 +1150,7 @@ describe("TaskWorkspace", () => {
     render(<TaskWorkspace csrfToken="csrf-test" owner={false} />);
     await screen.findByText("No primary tasks match these filters.");
     fireEvent.click(screen.getByRole("button", { name: "Create task" }));
-    await screen.findByText("This will be created as your self-task.");
+    await screen.findByText("Assigned to you.");
     fireEvent.change(screen.getByLabelText("Task name"), { target: { value: "Call supplier" } });
     fireEvent.change(screen.getByLabelText("Target date"), { target: { value: "2026-10-15" } });
     fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Needed for project setup" } });

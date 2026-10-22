@@ -3,6 +3,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { Link, Navigate, NavLink, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { NotificationCenter } from "./notifications.js";
 import { SignInHub, StaffRecovery } from "./auth-flow.js";
+import { SessionGroups } from "./session-groups.js";
 import { AuditRetentionCenter } from "./audit-retention.js";
 import { ApprovalQueue } from "./approval-queue.js";
 import { MyWorkManagement } from "./my-work-attention.js";
@@ -449,8 +450,8 @@ function Identity({ session, onLogout, busy, error, settingsSection, peopleMode 
         {sessionsError && <div className="sessions-error"><p role="alert" className="auth-error">{sessionsError}</p><button className="secondary-action" type="button" onClick={() => void loadDeviceSessions()}>Try again</button></div>}
         {!sessionsLoading && !sessionsError && deviceSessions?.length === 0 && <p className="identity-note" role="status">No sessions are available.</p>}
         {!sessionsLoading && !sessionsError && deviceSessions && deviceSessions.length > 0 && (
-          <ul className="session-list">
-            {deviceSessions.map((item) => {
+          <SessionGroups sessions={deviceSessions}>
+            {(item) => {
               const expired = new Date(item.expiresAt).getTime() <= Date.now();
               const status = item.current ? "Current device" : item.revokedAt ? "Revoked" : expired ? "Expired" : "Active";
               return <li className="session-item" key={item.id}>
@@ -461,8 +462,8 @@ function Identity({ session, onLogout, busy, error, settingsSection, peopleMode 
                 </div>
                 {!item.current && !item.revokedAt && !expired && <button className="secondary-action" type="button" disabled={revokingSessionId !== undefined} onClick={() => void revokeDeviceSession(item)}>{revokingSessionId === item.id ? "Revoking…" : "Revoke"}</button>}
               </li>;
-            })}
-          </ul>
+            }}
+          </SessionGroups>
         )}
       </section>
       </>}

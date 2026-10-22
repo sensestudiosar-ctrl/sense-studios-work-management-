@@ -1,3 +1,4 @@
+import { workDate, workState } from "./work-labels";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
@@ -430,7 +431,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                           <span className="dv-attention-stripe review" aria-hidden="true"></span>
                           <div className="dv-attention-main">
                             <div className="dv-attention-title">{round.taskTitle}{round.revisionLabel ? ` · ${round.revisionLabel}` : ""}</div>
-                            <div className="dv-attention-meta">{[round.projectTitle, `Round ${round.roundNumber}`, round.status.replace(/_/g, " "), round.dueDate].filter(Boolean).join(" · ")}</div>
+                            <div className="dv-attention-meta">{[round.projectTitle, `Round ${round.roundNumber}`, workState(round.status), round.dueDate ? workDate(round.dueDate) : ""].filter(Boolean).join(" · ")}</div>
                           </div>
                         </Link>
                       )) : <div className="dv-source-loading">No assigned review rounds in the authorized review source.</div>}
@@ -494,7 +495,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   };
 
   return <section className="identity-section dashboard-workspace" aria-labelledby="dashboard-heading">
-    <div className="dashboard-heading"><div><div className="eyebrow">{initialTab === "reports" ? "INSIGHTS" : "WORKSPACE OVERVIEW"}</div><h2 id="dashboard-heading">{initialTab === "reports" ? "Reports" : "Dashboard"}</h2><p>{initialTab === "reports" ? "Preview current report data or open an immutable retained snapshot." : "A current view of decisions, tasks and project updates available to your account."}</p></div><button type="button" className="secondary-action" onClick={() => { void load(true); setAccessRefresh(value => value + 1); }} disabled={busy}>Refresh</button></div>
+    <div className="dashboard-heading"><div><div className="eyebrow">{initialTab === "reports" ? "INSIGHTS" : "WORKSPACE OVERVIEW"}</div><h1 id="dashboard-heading">{initialTab === "reports" ? "Reports" : "Dashboard"}</h1><p>{initialTab === "reports" ? "Preview current report data or open a saved report." : "A current view of decisions, tasks and project updates available to your account."}</p></div><button type="button" className="secondary-action" onClick={() => { void load(true); setAccessRefresh(value => value + 1); }} disabled={busy}>Refresh</button></div>
     {!focused && <nav className="dashboard-tabs" aria-label="Dashboard sections">{([['dashboard', 'Overview'], ['summaries', 'Scheduled summaries'], ['reports', 'Reports'], ['schedules', 'Reminders & schedules']] as const).map(([key, label]) => <button type="button" key={key} aria-pressed={tab === key} onClick={() => setTab(key)}>{label}</button>)}</nav>}
     {error && <p className="auth-error" role="alert">{error} <button type="button" className="secondary-action" onClick={() => void load(true)}>Retry supporting data</button></p>}{notice && <p className="notice" role="status">{notice}</p>}
     {loading && tab !== "dashboard" && <p role="status">Loading reports, summaries, reminders, and schedules…</p>}
@@ -639,8 +640,8 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                 <div className="dv-attention-meta">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
               </div>
               <div className="dv-attention-right">
-                <span className={`dv-attention-due${row.date && dash.today && row.date < dash.today ? " overdue" : ""}`}>{row.date ?? ""}</span>
-                <span className={`dv-attention-chip ${row.status?.includes("WAITING") ? "waiting" : ""}`}>{row.status?.replace(/_/g, " ") ?? ""}</span>
+                <span className={`dv-attention-due${row.date && dash.today && row.date < dash.today ? " overdue" : ""}`}>{row.date ? workDate(row.date) : ""}</span>
+                <span className={`dv-attention-chip ${row.status?.includes("WAITING") ? "waiting" : ""}`}>{row.status ? workState(row.status) : ""}</span>
               </div>
             </Link>
           )) : (
