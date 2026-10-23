@@ -99,7 +99,7 @@ function SortableWidget({
   const style: React.CSSProperties = { transform: CSS.Transform.toString(transform), transition };
   const info = WIDGET_INFO[id as WidgetId];
   return (
-    <section ref={setNodeRef} data-widget-id={id} className={`dv-widget${isDragging ? " is-dragging" : ""}${editing ? " is-editing" : ""}`} style={style}>
+    <section ref={setNodeRef} data-widget-id={id} data-widget={id} className={`dv-widget${isDragging ? " is-dragging" : ""}${editing ? " is-editing" : ""}`} style={style}>
       <div className="dv-widget-head">
         <div className="dv-widget-heading"><span className="dv-widget-mark"><DashboardDataIcon name={id} /></span><div><h3>{info?.label ?? id}</h3><p>{info?.desc ?? ""}</p></div></div>
         {editing && (
@@ -120,9 +120,9 @@ function SortableWidget({
   );
 }
 
-function WidgetLane({ id, children }: { id: string; children: React.ReactNode }): React.JSX.Element {
-  const { setNodeRef, isOver } = useDroppable({ id });
-  return <div ref={setNodeRef} className={`dv-widget-col${isOver ? " is-over" : ""}`}>{children}</div>;
+function WidgetLane({ id, droppable, children }: { id: string; droppable: boolean; children: React.ReactNode }): React.JSX.Element {
+  const { setNodeRef, isOver } = useDroppable({ id, disabled: !droppable });
+  return <div ref={setNodeRef} className={`dv-widget-col${droppable && isOver ? " is-over" : ""}`}>{children}</div>;
 }
 
 export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "dashboard", focused = false }: { csrfToken: string; accountId: string; owner: boolean; initialTab?: "dashboard" | "summaries" | "reports" | "schedules"; focused?: boolean }): React.JSX.Element {
@@ -266,14 +266,13 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   const taskSectionCount = (key: string): string => !tasksState || tasksState.loading ? "Loading…"
     : taskSectionNote(key) ? "Unavailable" : String(tasksState.sections.find(section => section.key === key)!.rows.length);
   const taskAttentionRows = tasksState?.sections.find(s => s.key === "attention")?.rows ?? [];
-  const taskBlockedRows = tasksState?.sections.find(s => s.key === "waiting")?.rows ?? [];
 
   const kpiTiles = [
-    { key: "overdue", label: "Overdue", value: taskSectionCount("overdue"), cls: "dn", route: "/tasks", sub: "Past due and incomplete" },
-    { key: "today", label: "Due today", value: taskSectionCount("today"), cls: "", route: "/tasks", sub: "Committed date when present, otherwise Target" },
-    { key: "priority", label: "High priority", value: taskSectionCount("priority"), cls: "dn", route: "/tasks", sub: "High and critical priority" },
-    { key: "waiting", label: "Waiting / blocked", value: taskSectionCount("waiting"), cls: taskBlockedRows.length ? "dn" : "", route: "/tasks", sub: "Waiting state and blockers" },
-    { key: "reviews", label: "Review / corrections", value: taskSectionCount("reviews"), cls: "", route: "/tasks", sub: "Task states only" },
+    { key: "overdue", label: "Overdue", value: taskSectionCount("overdue"), route: "/tasks", sub: "Past due and incomplete" },
+    { key: "today", label: "Due today", value: taskSectionCount("today"), route: "/tasks", sub: "Committed date when present, otherwise Target" },
+    { key: "priority", label: "High priority", value: taskSectionCount("priority"), route: "/tasks", sub: "High and critical priority" },
+    { key: "waiting", label: "Waiting / blocked", value: taskSectionCount("waiting"), route: "/tasks", sub: "Waiting state and blockers" },
+    { key: "reviews", label: "Review / corrections", value: taskSectionCount("reviews"), route: "/tasks", sub: "Task states only" },
   ];
 
   const kind: "OWNER" | "STAFF" = owner ? "OWNER" : "STAFF";
@@ -310,7 +309,15 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
-  const updateLayout = (next: DashboardLayout): void => { visitLayouts.current.set(visitLayoutKey, next); setLayout(next); setLayoutNotice(saveLayout(accountId, next, mode) ? "Layout saved on this device." : "Layout changed for this visit; browser storage is unavailable."); };
+  const updateLayout = (next: DashboardLayout): void => {
+    // Resolve the device key from the current window size (not the render-time
+    // `mode` closure) so a resize between drag-end and the layout write cannot
+    // persist this layout under the wrong device preset.
+    const currentMode: LayoutMode = window.innerWidth <= 760 ? "mobile" : "desktop";
+    visitLayouts.current.set(`${accountId}:${currentMode}`, next);
+    setLayout(next);
+    setLayoutNotice(saveLayout(accountId, next, currentMode) ? "Layout saved on this device." : "Layout changed for this visit; browser storage is unavailable.");
+  };
   const hideWidget = (id: string): void => {
     const wid = id as WidgetId;
     updateLayout({ ...layout, hidden: [...layout.hidden, wid], leftOrder: layout.leftOrder.filter(w => w !== wid), rightOrder: layout.rightOrder.filter(w => w !== wid) });
@@ -549,7 +556,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
         onDragEnd={commitDrag}
       >
         <div className={`dv-widget-grid${editing ? " is-editing" : ""}`} onPointerDown={event => { if (event.pointerType === "touch" && !editing && !(event.target as HTMLElement).closest("button, input, select, textarea, a")) longPress.current = setTimeout(() => setEditing(true), 600); }} onPointerUp={cancelLongPress} onPointerCancel={cancelLongPress} onPointerMove={cancelLongPress}>
-          <WidgetLane id="lane-left">
+          <WidgetLane id="lane-left" droppable>
             {editing && (
               <div className="dv-edit-toolbar">
                 <p><strong>Customize widgets.</strong> Drag to reposition, hide optional widgets, or add from the gallery. Top summary cards and the bottom Attention Queue stay fixed.</p>
@@ -592,7 +599,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
               </div>
             )}
           </WidgetLane>
-          <WidgetLane id="lane-right">
+          <WidgetLane id="lane-right" droppable={mode === "desktop"}>
             <SortableContext items={visibleRight}>
               {visibleRight.map(id => (
                 <SortableWidget
