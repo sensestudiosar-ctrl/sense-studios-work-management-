@@ -78,7 +78,7 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
 
     // Standalone Tasks register uses the same persisted task and guarded commands.
     // Verify actual cell/People layout at full width and beside the detail panel.
-    for (const width of [1280, 390]) {
+    for (const width of [1440, 1280, 1024, 783, 390, 320]) {
       await page.setViewportSize({ width, height: 844 });
       await page.goto("/tasks?scope=mine");
       const open = workspace.getByRole("button", { name: `Open task: ${title}`, exact: true });
@@ -93,12 +93,20 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       };
       await assertLayout();
+      const titleBounds = await open.locator("strong").first().boundingBox();
+      expect(titleBounds!.y + titleBounds!.height).toBeLessThan(844 - (width < 700 ? 76 : 0));
+      const searchPadding = await workspace.getByLabel("Search tasks").evaluate(element => Number.parseFloat(getComputedStyle(element).paddingLeft));
+      expect(searchPadding).toBeGreaterThanOrEqual(30);
       await page.screenshot({ path: testInfo.outputPath(`tasks-register-list-${width}.png`), fullPage: true });
       await open.click();
       const next = workspace.getByRole("region", { name: "Next step" });
       await expect(next.getByRole("button", { name: "Start task", exact: true })).toBeDisabled();
       await expect(next.getByText(/Enter a reason of at least 3 characters/)).toBeVisible();
       if (width >= 1024) await assertLayout();
+      const titleBounds = await open.locator("strong").first().boundingBox();
+      expect(titleBounds!.y + titleBounds!.height).toBeLessThan(844 - (width < 700 ? 76 : 0));
+      const searchPadding = await workspace.getByLabel("Search tasks").evaluate(element => Number.parseFloat(getComputedStyle(element).paddingLeft));
+      expect(searchPadding).toBeGreaterThanOrEqual(30);
       await page.screenshot({ path: testInfo.outputPath(`tasks-register-detail-${width}.png`), fullPage: true });
       await workspace.getByRole("button", { name: "Back to task list" }).click();
       await expect(open).toBeVisible();
