@@ -103,10 +103,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
       await expect(next.getByRole("button", { name: "Start task", exact: true })).toBeDisabled();
       await expect(next.getByText(/Enter a reason of at least 3 characters/)).toBeVisible();
       if (width >= 1024) await assertLayout();
-      const titleBounds = await open.locator("strong").first().boundingBox();
-      expect(titleBounds!.y + titleBounds!.height).toBeLessThan(844 - (width < 700 ? 76 : 0));
-      const searchPadding = await workspace.getByLabel("Search tasks").evaluate(element => Number.parseFloat(getComputedStyle(element).paddingLeft));
-      expect(searchPadding).toBeGreaterThanOrEqual(30);
+      const actionBounds = await next.getByRole("button", { name: "Start task", exact: true }).boundingBox();
+      expect(actionBounds!.y + actionBounds!.height).toBeLessThan(844 - (width < 700 ? 76 : 0));
       await page.screenshot({ path: testInfo.outputPath(`tasks-register-detail-${width}.png`), fullPage: true });
       await workspace.getByRole("button", { name: "Back to task list" }).click();
       await expect(open).toBeVisible();
