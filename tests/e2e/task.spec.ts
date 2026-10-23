@@ -78,6 +78,7 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
 
     // Standalone Tasks register uses the same persisted task and guarded commands.
     // Verify actual cell/People layout at full width and beside the detail panel.
+    const originalViewport = page.viewportSize();
     for (const width of [1440, 1280, 1024, 783, 390, 320]) {
       await page.setViewportSize({ width, height: 844 });
       await page.goto("/tasks?scope=mine");
@@ -119,6 +120,8 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
     const changed = await db.query<{ status: string; version: number; changeCount: string }>(`SELECT t.status::text,t.version,(SELECT count(*) FROM task_status_changes c WHERE c."taskId"=t.id)::text AS "changeCount" FROM tasks t WHERE t.id=$1`, [taskId]);
     expect(changed.rows[0]).toEqual({ status: "IN_PROGRESS", version: 2, changeCount: "2" });
 
+    // Keep the existing legacy-route journey at its original project viewport.
+    if (originalViewport) await page.setViewportSize(originalViewport);
     await page.goto(`/workspace?taskId=${taskId}`);
     await expect(workspace.locator(".task-detail-heading .task-state")).toHaveText("In progress");
     const waitingForm = workspace.getByRole("form", { name: "Wait on task" });
