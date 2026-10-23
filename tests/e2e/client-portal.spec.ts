@@ -284,6 +284,15 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await staffReviews.getByLabel("Active project").selectOption(project.project.id);
     await expect(staffReviews.getByText("Design approval brief", { exact: true })).toBeVisible();
     await expect(staffReviews.getByRole("button", { name: "Complete approved task" })).not.toBeVisible();
+    await page.goto(`/projects?projectId=${encodeURIComponent(project.project.id)}&projectSection=documents`);
+    const confirmed = page.getByRole("region", { name: "Confirmed drawings", exact: true });
+    await expect(confirmed.getByText("Design approval brief", { exact: true })).toBeVisible();
+    await expect(confirmed.getByText(/Approved link/)).toBeVisible();
+    await expect(confirmed.getByRole("link", { name: "Open approved link" })).toHaveAttribute("target", "_blank");
+    await expect(confirmed.getByText("External content may change; the approved URL is preserved.")).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)).toBe(false);
+    await page.screenshot({ path: testInfo.outputPath("review-confirmed-approved-link.png"), fullPage: true });
+
   } finally {
     if (cdp) await cdp.detach();
     await db.end();
