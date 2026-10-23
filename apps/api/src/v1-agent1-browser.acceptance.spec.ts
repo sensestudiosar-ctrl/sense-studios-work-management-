@@ -320,6 +320,40 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     expect(await database.prisma.reviewRound.count({ where: { taskId: task.id } })).toBe(2);
     await capture(ownerPage, viewport, "archived-project");
   }
+  it("accepts My Work management scopes for Owner and authorized Leader with employee isolation", async () => {
+    const f = await fixture(1023);
+    const task = await app!.get(TaskService).create(f.workerActor, { title: `Scoped personal work ${randomUUID()}`, type: "NON_PROJECT", priority: "HIGH", targetDate: date, reason: "My Work real management scope acceptance" });
+    const account = await database.prisma.account.create({ data: { kind: "STAFF", state: "ACTIVE", normalizedEmail: `management-leader-${randomUUID()}@example.test` } });
+    const employee = await database.prisma.employee.create({ data: { accountId: account.id, organizationId: f.organization.id, homeBranchId: f.branch.id, homeTeamId: f.worker.employee.homeTeamId, hiredAt: new Date("2026-01-01") } });
+    await database.prisma.employee.update({ where: { id: f.worker.employee.id }, data: { reportsToId: employee.id } });
+    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: employee.id, permissionKey: "task.assign", effect: "ALLOW", scopeKind: "TEAM", branchId: f.branch.id, teamId: employee.homeTeamId, reason: "Explicit current reporting-tree management grant" } });
+    const secret = randomBytes(32).toString("base64url"), csrf = createHmac("sha256", secret).update("csrf").digest("base64url");
+    await database.prisma.session.create({ data: { accountId: account.id, tokenHash: hash(secret), csrfTokenHash: hash(csrf), expiresAt: new Date(Date.now() + 3600000) } });
+    for (const identity of [{ key: "owner", secret: f.ownerSession.secret }, { key: "leader", secret }, { key: "employee", secret: f.worker.secret }]) {
+      const session = await context(identity.secret, viewports[0]!); const page = await session.newPage();
+      try {
+        await page.goto("/my-work?scope=personal&phase=active");
+        if (identity.key !== "employee") {
+          await page.getByRole("button", { name: "All teams", exact: true }).click();
+          await page.getByRole("combobox", { name: "Work team", exact: true }).selectOption(employee.homeTeamId);
+          await page.getByRole("combobox", { name: "Work employee", exact: true }).selectOption(f.worker.employee.id);
+          await expectPage(page.locator(".my-work-demo-row").filter({ hasText: task.title })).toBeVisible();
+          expect(new URL(page.url()).searchParams.get("scope")).toBe("all");
+          expect(new URL(page.url()).searchParams.get("ownerEmployeeId")).toBe(f.worker.employee.id);
+        } else {
+          await expectPage(page.locator(".my-work-demo-row").filter({ hasText: task.title })).toBeVisible();
+          await expectPage(page.getByRole("button", { name: "All teams", exact: true })).toHaveCount(0);
+        }
+        for (const viewport of [...viewports, { width: 783, height: 884 }]) { await page.setViewportSize(viewport); await capture(page, viewport, `management-${identity.key}-drilldown`); }
+        if (identity.key !== "employee") {
+          await page.getByRole("button", { name: "My Work", exact: true }).click();
+          await expectPage(page.getByRole("combobox", { name: "Work team", exact: true })).toHaveCount(0);
+          expect(new URL(page.url()).searchParams.has("ownerEmployeeId")).toBe(false);
+        }
+      } finally { await session.close(); }
+    }
+    expect(serverErrors).toEqual([]); expect(diagnostics.filter(row => row.event === "pageerror")).toEqual([]);
+  }, 120000);
   it("accepts V10 Dashboard for six real account contexts at four widths with retained customization and timer persistence", async () => {
     const f = await fixture(1010);
     const timerTask = await app!.get(TaskService).create(f.workerActor, { title: `V10 internal time task ${randomUUID()}`, type: "NON_PROJECT", priority: "LOW", targetDate: date, reason: "Verify existing non-project task time contract" });
