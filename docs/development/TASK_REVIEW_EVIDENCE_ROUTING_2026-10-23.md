@@ -99,3 +99,8 @@ At task creation, select Internal review required and/or Client review required.
 Internal approval commits before client delivery. Automatic delivery uses the exact approved submission. If a Primary Client, current authorization or permitted evidence is unavailable, routing displays a blocked reason; an authorized publisher can resolve the cause and retry. Revoke disables that authorization; reauthorization is explicit and retains history. Corrected work needs a new submission and approval.
 
 After the Primary Client's formal final approval, open Projects, select the project, then Documents to find Confirmed drawings. Approved links are labelled and open separately; the URL is preserved while external content may change. Existing file visibility and Confidential controls still apply. This feature is not yet live on canonical staging.
+
+
+## Final candidate checkpoint
+
+Candidate9f1da4b is accepted for activation, with exact evidence and remaining Owner migration/deployment decision recorded in TASK_REVIEW_ROUTING_CANDIDATE_ACCEPTANCE_2026-10-23.md. Earlier pending-check language above is historical. Overall feature/recovery remains IN PROGRESS until the retained upgrade and matched live release are verified.
