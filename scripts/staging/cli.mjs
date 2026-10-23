@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { loadSettings, loadActive, scoped, fileHash, verifyRelease, atomicJson, promoteRelease, repositoryRoot } from './manifest.mjs';
+import { loadSettings, loadActive, scoped, fileHash, atomicJson, promoteRelease, repositoryRoot } from './manifest.mjs';
 import { powershell, psQuote, processIdentity, sameIdentity, listeners, ownsListeners } from './windows.mjs';
 import { hiddenTaskLauncher, taskAction } from './task-launcher.mjs';
 
