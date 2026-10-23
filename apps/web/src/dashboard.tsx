@@ -11,6 +11,7 @@ import "./dashboard.css";
 import "./dashboard-widgets.css";
 import "./dashboard-data.css";
 import { DashboardDataIcon, DashboardTaskMix, DashboardProjectOverview } from "./dashboard-data-visuals.js";
+import { DashboardPanel } from "./dashboard-panel.js";
 import {
   WIDGET_INFO,
   type WidgetId, type DashboardLayout, type LayoutMode,
@@ -129,6 +130,8 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   const [tab, setTab] = useState<"dashboard" | "summaries" | "reports" | "schedules">(initialTab);
   const [dash, setDash] = useState<Dash>({ today: null, role: owner ? "Owner account" : "Staff account" });
   const [sourceData, setSourceData] = useState<Partial<Record<DashboardSource, DashboardSourceState>>>({});
+  const [panel, setPanel] = useState<{ source: DashboardSource; title: string; sectionKey?: string; rowId?: string } | null>(null);
+  useEffect(() => { setPanel(null); }, [accountId, csrfToken]);
   const [context, setContext] = useState<Context | null>(null);
   const [schedules, setSchedules] = useState<Schedules | null>(null);
   const [reminders, setReminders] = useState<Reminders | null>(null);
@@ -396,7 +399,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
 
   const renderSourceWidget = (source: DashboardSource): React.JSX.Element => {
     const state = sourceData[source];
-    return <div className="dv-widget-body">{!state || state.loading ? <p role="status">Reading {sourceLabels[source].toLowerCase()}…</p> : state.error ? <div className="dv-source-error" role="alert"><strong>{state.error}</strong><button type="button" onClick={() => void loadSource(source)}>Retry {sourceLabels[source].toLowerCase()}</button></div> : <>{state.sections.map(section => <div key={section.key}><h4>{section.label}</h4>{section.unavailable ? <p>{section.unavailable}</p> : section.rows.length ? section.rows.slice(0, 5).map(row => <div className="dv-site-row" key={row.id}><div className="dv-site-main"><strong>{row.label}</strong><small>{[row.status, row.date, row.value].filter(v => v !== undefined && v !== null).join(" · ")}</small>{typeof row.score === "number" && Number.isFinite(row.score) && <HealthScore row={row} />}{row.route && <Link to={row.route}>Open →</Link>}</div></div>) : <p>No current items.</p>}</div>)}{!state.sections.length && <p>No current items.</p>}<div className="dv-widget-foot">Read at {state.readCompletedAt ? new Date(state.readCompletedAt).toLocaleString() : "Unavailable"}</div></>}</div>;
+    return <div className="dv-widget-body">{!state || state.loading ? <p role="status">Reading {sourceLabels[source].toLowerCase()}…</p> : state.error ? <div className="dv-source-error" role="alert"><strong>{state.error}</strong><button type="button" onClick={() => void loadSource(source)}>Retry {sourceLabels[source].toLowerCase()}</button></div> : <>{state.sections.map(section => <div key={section.key}><h4>{section.label}</h4>{section.unavailable ? <p>{section.unavailable}</p> : section.rows.length ? section.rows.slice(0, 5).map(row => <div className="dv-site-row" key={row.id}><div className="dv-site-main"><strong>{row.label}</strong><small>{[row.status, row.date, row.value].filter(v => v !== undefined && v !== null).join(" · ")}</small>{typeof row.score === "number" && Number.isFinite(row.score) && <HealthScore row={row} />}<button type="button" aria-haspopup="dialog" onClick={() => setPanel({ source, sectionKey: section.key, rowId: row.id, title: row.label })}>View details →</button></div></div>) : <p>No current items.</p>}</div>)}{!state.sections.length && <p>No current items.</p>}<div className="dv-widget-foot"><button type="button" aria-haspopup="dialog" onClick={() => setPanel({ source, title: sourceLabels[source] })}>View all details</button>Read at {state.readCompletedAt ? new Date(state.readCompletedAt).toLocaleString() : "Unavailable"}</div></>}</div>;
   };
   const renderWidget = (id: WidgetId): React.JSX.Element | null => {
     switch (id) {
@@ -458,7 +461,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                 <DashboardProjectOverview available={healthState.sections.some(section => section.key === "health" && !section.unavailable)} rows={healthRows} />
                 <div className="dv-projects-grid">
                   {healthRows.slice(0, 4).map(row => (
-                    <Link key={row.id} to={row.route ?? "/projects"} className="dv-project-card">
+                    <button type="button" key={row.id} aria-haspopup="dialog" onClick={() => setPanel({ source: "health", rowId: row.id, title: row.label })} className="dv-project-card">
                       <div className="dv-project-top">
                         <span className="dv-project-name">{row.label}</span>
                         {typeof row.score === "number" && Number.isFinite(row.score)
@@ -466,8 +469,8 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                           : <span className="dv-project-signal other">{row.status === "UNAVAILABLE" ? "Evidence needed" : row.status?.replace(/_/g, " ") ?? "Unrated"}</span>}
                       </div>
                       <div className="dv-project-meta">{[row.status, row.value].filter(v => v && v !== "—").join(" · ")}</div>{typeof row.score === "number" && Number.isFinite(row.score) && <HealthScore row={row} />}
-                      <span className="dv-project-link">Open workspace →</span>
-                    </Link>
+                      <span className="dv-project-link">View details →</span>
+                    </button>
                   ))}
                   {healthState?.sections.filter(section => section.unavailable).map(section => <p key={section.key}>{section.unavailable}</p>)}
                   {healthRows.length === 0 && !healthState?.sections.some(section => section.unavailable) && <div className="dv-source-loading">No authorized project snapshots yet.</div>}
@@ -480,13 +483,13 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
         return (
           <div className="dv-widget-body">
             {!tasksState || tasksState.loading ? <p role="status">Reading task source…</p> : taskSectionNote("attention") ? <div className="dv-source-error" role="alert"><strong>{taskSectionNote("attention")}</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry tasks</button></div> : taskAttentionRows[0] ? (
-              <Link to={taskAttentionRows[0].route ?? "/my-work"} className="dv-nextaction">
+              <button type="button" aria-haspopup="dialog" onClick={() => setPanel({ source: "tasks", sectionKey: "attention", rowId: taskAttentionRows[0]!.id, title: taskAttentionRows[0]!.label })} className="dv-nextaction">
                 <div className="dv-nextaction-icon" aria-hidden="true">→</div>
                 <div className="dv-nextaction-main">
                   <div className="dv-nextaction-title">{taskAttentionRows[0].label}</div>
                   <div className="dv-nextaction-meta">{[taskAttentionRows[0].status, taskAttentionRows[0].date].filter(Boolean).join(" · ")}</div>
                 </div>
-              </Link>
+              </button>
             ) : <div className="dv-source-loading">No next action in the authorized task source.</div>}
           </div>
         );
@@ -502,6 +505,16 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
   };
 
   return <section className="identity-section dashboard-workspace" aria-labelledby="dashboard-heading">
+    {panel && (() => {
+      const state = sourceData[panel.source];
+      let sections = (state?.sections ?? []).filter(section => !panel.sectionKey || section.key === panel.sectionKey)
+        .map(section => ({ ...section, rows: panel.rowId ? section.rows.filter(row => row.id === panel.rowId) : section.rows }))
+        .filter(section => !panel.rowId || section.rows.length > 0 || Boolean(panel.sectionKey && section.unavailable));
+      if (panel.rowId && !panel.sectionKey) sections = sections.slice(0, 1);
+      return <DashboardPanel key={`${panel.source}:${panel.sectionKey ?? ""}:${panel.rowId ?? ""}`} title={panel.rowId ? "Item details" : panel.title} sections={sections}
+        loading={!state || state.loading} error={state?.error ?? (panel.sectionKey && !state?.loading && !sections.length ? "This summary is unavailable in the current source." : undefined)}
+        readAt={state?.readCompletedAt ?? null} dateLabel={panel.source === "tasks" ? "Due" : "Date"} onRetry={() => void loadSource(panel.source)} onClose={() => setPanel(null)} />;
+    })()}
     <div className="dashboard-heading"><div><div className="eyebrow">{initialTab === "reports" ? "INSIGHTS" : "WORKSPACE OVERVIEW"}</div><h1 id="dashboard-heading">{initialTab === "reports" ? "Reports" : "Dashboard"}</h1><p>{initialTab === "reports" ? "Preview current report data or open a saved report." : "A current view of decisions, tasks and project updates available to your account."}</p></div><button type="button" className="secondary-action" onClick={() => { void load(true); setAccessRefresh(value => value + 1); }} disabled={busy}>Refresh</button></div>
     {!focused && <nav className="dashboard-tabs" aria-label="Dashboard sections">{([['dashboard', 'Overview'], ['summaries', 'Scheduled summaries'], ['reports', 'Reports'], ['schedules', 'Reminders & schedules']] as const).map(([key, label]) => <button type="button" key={key} aria-pressed={tab === key} onClick={() => setTab(key)}>{label}</button>)}</nav>}
     {error && <p className="auth-error" role="alert">{error} <button type="button" className="secondary-action" onClick={() => void load(true)}>Retry supporting data</button></p>}{notice && <p className="notice" role="status">{notice}</p>}
@@ -518,9 +531,10 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
           const loading = !tasksState || tasksState.loading;
           const unavailable = tile.value === "Unavailable";
           return (
-            <Link
+            <button type="button"
               key={tile.label}
-              to={tile.route}
+              onClick={() => setPanel({ source: "tasks", sectionKey: tile.key, title: tile.label })}
+              aria-haspopup="dialog"
               className={`dv-summary-card dv-summary-${tile.key}${loading ? " is-loading" : ""}`}
               data-summary={tile.label.toLowerCase().replace(/\s+/g, "-")}
               aria-label={`${tile.label} · ${loading ? "source loading" : unavailable ? "source unavailable" : tile.value + " matching tasks"}`}
@@ -537,7 +551,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                   : <><div className="dv-summary-count" data-summary={tile.label.toLowerCase().replace(/\s+/g, "-")}>{tile.value}</div><div className="dv-summary-cue">{tile.sub}</div></>}
               {!loading && !unavailable && <DashboardTaskMix descriptionId={`dashboard-task-mix-${tile.key}`} rows={tasksState?.sections.find(section => section.key === tile.key)?.rows ?? []} />}
               <span className="dv-summary-arrow" aria-hidden="true">→</span>
-            </Link>
+            </button>
           );
         })}
       </div>
@@ -640,7 +654,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
           ) : tasksState.error ? (
             <div className="dv-source-error"><strong>Task source unavailable.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry</button></div>
           ) : attentionRows.length > 0 ? attentionRows.map(row => (
-            <Link key={row.id} to={row.route ?? "/my-work"} className="dv-attention-row">
+            <button type="button" key={row.id} aria-haspopup="dialog" onClick={() => setPanel({ source: "tasks", rowId: row.id, title: row.label })} className="dv-attention-row">
               <span className={`dv-attention-stripe ${row.status?.includes("WAITING") ? "waiting" : row.date && dash.today && row.date < dash.today ? "overdue" : "default"}`} aria-hidden="true"></span>
               <div className="dv-attention-main">
                 <div className="dv-attention-title">{row.label}</div>
@@ -650,7 +664,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
                 <span className={`dv-attention-due${row.date && dash.today && row.date < dash.today ? " overdue" : ""}`}>{row.date ? workDate(row.date) : ""}</span>
                 <span className={`dv-attention-chip ${row.status?.includes("WAITING") ? "waiting" : ""}`}>{row.status ? workState(row.status) : ""}</span>
               </div>
-            </Link>
+            </button>
           )) : (
             <div className="dv-source-loading">{queueIncomplete ? "No complete task preview is available." : "No tasks in this scope."}</div>
           )}

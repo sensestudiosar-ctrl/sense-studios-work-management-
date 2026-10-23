@@ -64,6 +64,72 @@ function tile(label: string): HTMLElement {
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); localStorage.clear(); });
 
 describe("DashboardWorkspace", () => {
+  it.each([["Overdue", "overdue"], ["Due today", "today"], ["High priority", "priority"], ["Waiting / blocked", "waiting"], ["Review / corrections", "reviews"]])("opens every %s source row in a contextual panel without navigating", async (label, key) => {
+    const sections = ["overdue", "today", "priority", "waiting", "reviews"].map(bucket => ({ key: bucket, label: bucket, rows: Array.from({ length: 8 }, (_, i) => ({ id: `${bucket}-${i}`, label: `${bucket} task ${i}`, status: "IN_PROGRESS", date: "2026-10-05", route: `/tasks?taskId=${bucket}-${i}` })) }));
+    mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, sections) : undefined });
+    renderWorkspace(true);
+    await waitFor(() => expect(within(tile(label!)).getByText("8", { exact: true })).toBeInTheDocument());
+    const trigger = tile(label!); trigger.focus(); fireEvent.click(trigger);
+    const panel = screen.getByRole("dialog", { name: label! });
+    expect(within(panel).getAllByRole("listitem")).toHaveLength(8);
+    expect(within(panel).getByText(`${key} task 7`)).toBeInTheDocument();
+    expect(within(panel).getAllByRole("link")[7]).toHaveAttribute("href", `/tasks?taskId=${key}-7`);
+    expect(within(panel).getByRole("button", { name: "Close dashboard details" })).toHaveFocus();
+    fireEvent.click(within(panel).getByRole("button", { name: "Close dashboard details" }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument(); expect(trigger).toHaveFocus();
+    expect(screen.getByRole("heading", { name: "Dashboard", exact: true })).toBeInTheDocument();
+  });
+
+  it("replaces open panel evidence during refresh and denied reads", async () => {
+    let denied = false;
+    mockFetch({ sourceResponse: source => source === "tasks" ? denied ? json({ message: "Access revoked" }, 403) : sourcePage(source, [{ key: "today", label: "Today", rows: [{ id: "t1", label: "Confidential task", route: "/tasks?taskId=t1" }] }]) : undefined });
+    renderWorkspace(true);
+    await waitFor(() => expect(within(tile("Due today")).getByText("1", { exact: true })).toBeInTheDocument());
+    fireEvent.click(tile("Due today"));
+    expect(within(screen.getByRole("dialog")).getByText("Confidential task")).toBeInTheDocument();
+    denied = true; fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Refresh details" }));
+    await waitFor(() => expect(within(screen.getByRole("dialog")).getByRole("alert")).toHaveTextContent("Access revoked"));
+    expect(within(screen.getByRole("dialog")).queryByText("Confidential task")).not.toBeInTheDocument();
+  });
+
+  it("clears a revoked row title and selects its valid bucket over an earlier unavailable section", async () => {
+    let denied = false;
+    mockFetch({ sourceResponse: source => source === "tasks" ? denied ? json({ message: "Access revoked" }, 403) : sourcePage(source, [{ key: "attention", label: "Attention", rows: [], unavailable: "Unrelated bucket unavailable" }, { key: "today", label: "Today", rows: [{ id: "secret", label: "Private drawing package", route: "/tasks?taskId=secret" }] }]) : undefined });
+    renderWorkspace(true);
+    const trigger = await screen.findByRole("button", { name: /Private drawing package/ });
+    fireEvent.click(trigger);
+    expect(within(screen.getByRole("dialog")).getByText("Private drawing package")).toBeInTheDocument();
+    expect(within(screen.getByRole("dialog")).queryByText("Unrelated bucket unavailable")).not.toBeInTheDocument();
+    denied = true; fireEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Refresh details" }));
+    await waitFor(() => expect(within(screen.getByRole("dialog")).getByRole("alert")).toHaveTextContent("Access revoked"));
+    expect(screen.getByRole("dialog")).not.toHaveTextContent("Private drawing package");
+  });
+
+  it("distinguishes empty and unavailable panels and supports Escape dismissal", async () => {
+    mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [{ key: "today", label: "Today", rows: [] }, { key: "overdue", label: "Overdue", rows: [], unavailable: "Evidence unavailable" }]) : undefined });
+    renderWorkspace(true);
+    await waitFor(() => expect(within(tile("Due today")).getByText("0", { exact: true })).toBeInTheDocument());
+    fireEvent.click(tile("Due today"));
+    expect(within(screen.getByRole("dialog")).getByText("No matching items in your current access scope.")).toBeInTheDocument();
+    fireEvent(screen.getByRole("dialog"), new Event("cancel", { cancelable: true }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    fireEvent.click(tile("Overdue"));
+    expect(within(screen.getByRole("dialog")).getByText("Evidence unavailable")).toBeInTheDocument();
+    expect(within(screen.getByRole("dialog")).queryByText("0 items")).not.toBeInTheDocument();
+  });
+
+  it("previews project evidence with neutral dates and an explicit workspace link", async () => {
+    mockFetch({ sourceResponse: source => source === "health" ? sourcePage(source, [{ key: "health", label: "Project health", rows: [{ id: "p1", label: "Harbor House", status: "SCORED", date: "2026-10-05", score: 72, scoreScale: { min: 0, max: 100 }, route: "/performance?projectId=p1" }] }]) : undefined });
+    renderWorkspace(true);
+    fireEvent.click(await screen.findByRole("button", { name: /Harbor House/ }));
+    const panel = screen.getByRole("dialog", { name: "Item details" });
+    expect(within(panel).getByText("Harbor House")).toBeInTheDocument();
+    expect(within(panel).getByText(/Date /)).toBeInTheDocument();
+    expect(within(panel).queryByText(/Due /)).not.toBeInTheDocument();
+    expect(within(panel).getByText("Health score 72 · Scale 0–100")).toBeInTheDocument();
+    expect(within(panel).getByRole("link", { name: "Open workspace →" })).toHaveAttribute("href", "/performance?projectId=p1");
+  });
+
   it("keeps visit-only layout edits across a source refresh when storage fails", async () => {
     mockFetch({ owner: true });
     vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("Storage full"); });
@@ -99,8 +165,8 @@ describe("DashboardWorkspace", () => {
   it("uses the source organization date for overdue presentation instead of the device UTC date", async () => {
     mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [{ key: "overdue", label: "Overdue", rows: [{ id: "org-date", label: "Source overdue task", date: "2026-10-04", status: "IN_PROGRESS" }] }, { key: "today", label: "Due today", rows: [{ id: "org-today", label: "Source today task", date: "2026-10-05", status: "IN_PROGRESS" }] }]) : undefined });
     renderWorkspace(true);
-    const overdue = await screen.findByRole("link", { name: /Source overdue task/ });
-    const current = screen.getByRole("link", { name: /Source today task/ });
+    const overdue = await screen.findByRole("button", { name: /Source overdue task/ });
+    const current = screen.getByRole("button", { name: /Source today task/ });
     expect(overdue.querySelector(".dv-attention-due")).toHaveClass("overdue");
     expect(current.querySelector(".dv-attention-due")).not.toHaveClass("overdue");
   });
@@ -148,7 +214,8 @@ describe("DashboardWorkspace", () => {
        (GAP 11), so query all occurrences. */
     expect((await screen.findAllByText("Review floor plan")).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText("CORRECTIONS_REQUIRED · 2026-09-01")).toBeInTheDocument();
-    const reviewLinks = screen.getAllByRole("link");
+    fireEvent.click(tile("Review / corrections"));
+    const reviewLinks = within(screen.getByRole("dialog")).getAllByRole("link");
     expect(reviewLinks.some(l => l.getAttribute("href") === "/tasks?taskId=task-review")).toBe(true);
     expect(screen.queryByText("Last 14 days")).not.toBeInTheDocument();
     expect(screen.queryByText("Due work in the next 30 days")).not.toBeInTheDocument();
