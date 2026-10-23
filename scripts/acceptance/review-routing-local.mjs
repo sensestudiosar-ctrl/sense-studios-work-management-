@@ -99,7 +99,7 @@ if (action === 'stop-incomplete') {
   const adminPassword = randomBytes(32).toString('hex'), runtimePassword = randomBytes(32).toString('hex');
   const pw = resolve(base, 'init-password'); writeFileSync(pw, adminPassword, { flag: 'wx' });
   const url = (port, database, runtime = false) => `postgresql://${runtime ? 'sense_app_runtime' : 'sense_review_admin'}:${runtime ? runtimePassword : adminPassword}@127.0.0.1:${port}/${database}`;
-  state.environment = { ...env, SENSE_REVIEW_ROUTING_TEST_RUN: runId, S27_E2E_ENABLED: '1', S27_EXPECTED_MIGRATIONS: '120', API_TEST_WORKERS: '2', VITEST_WORKERS: '2', PLAYWRIGHT_WORKERS: '1', TEMP: resolve(base, 'tmp'), TMP: resolve(base, 'tmp'), NAS_ROOT: resolve(baselineRepository, `.env.review-files-${runId}`), BREVO_API_KEY: '', BREVO_SENDER_EMAIL: '', OWNER_BOOTSTRAP_EMAIL: '', OWNER_BOOTSTRAP_SECRET: '' };
+  state.environment = { ...env, SENSE_REVIEW_ROUTING_TEST_RUN: runId, S27_E2E_ENABLED: '1', S25_E2E_ENABLED: '1', S27_EXPECTED_MIGRATIONS: '120', API_TEST_WORKERS: '2', VITEST_WORKERS: '2', PLAYWRIGHT_WORKERS: '1', TEMP: resolve(base, 'tmp'), TMP: resolve(base, 'tmp'), NAS_ROOT: resolve(baselineRepository, `.env.review-files-${runId}`), BREVO_API_KEY: '', BREVO_SENDER_EMAIL: '', BREVO_SENDER_NAME: '', OWNER_BOOTSTRAP_EMAIL: '', OWNER_BOOTSTRAP_SECRET: '' };
   mkdirSync(state.environment.TEMP); mkdirSync(state.environment.NAS_ROOT);
   for (const [clusterName, port] of [['main', 58440], ['client', 58441]]) {
     const data = resolve(base, clusterName, 'data'); mkdirSync(dirname(data));
@@ -167,6 +167,10 @@ if (action === 'stop-incomplete') {
     for (const key of ['S02_E2E_BOOTSTRAP_SECRET', 'EMAIL_VERIFICATION_SECRET', 'EXTERNAL_SHARE_SECRET', 'S16_TEST_RECEIVER_TOKEN']) testEnv[key] = randomBytes(32).toString('hex');
     testEnv.PLAYWRIGHT_JSON_OUTPUT_NAME = resolve(base, `browser-${Date.now()}.json`);
     testEnv.S22_PWA_PREVIEW_URL = 'http://localhost:58323';
+    testEnv.S27_RUN_ID = 'review-' + runId.replace('_', '-');
+    testEnv.S27_SCREENSHOT_DIR = resolve(root, '.env.s27-tools/runs', testEnv.S27_RUN_ID, 'screenshots');
+    testEnv.S18_SCREENSHOT_DIR = resolve(root, '.env.s18-tools/runs', testEnv.S27_RUN_ID, 'screenshots');
+    testEnv.S26_SCREENSHOT_DIR = resolve(base, 'automation-screenshots');
     const stamp = Date.now();
     const check = (args, name) => run(process.execPath, [pnpm, ...args], root, resolve(base, `${name}-${stamp}.log`), testEnv);
     const receiver = () => service([resolve(root, 'scripts/s16-accounting-test-receiver.mjs')], testEnv, root, resolve(base, `receiver-${stamp}.log`), 'tcp://127.0.0.1:58432');
