@@ -102,11 +102,10 @@ describe("shared empty states and create form grouping", () => {
     expect(within(form).getByLabelText("Task name")).toBeInTheDocument();
     expect(within(form).getByLabelText("Target date")).toBeInTheDocument();
     expect(within(form).getByLabelText("Reason")).toBeInTheDocument();
-    const planningSummary = within(form).getByText("Optional planning", { selector: "summary" });
-    const planningDetails = planningSummary.closest("details")!;
-    expect(planningDetails).toBeInTheDocument();
-    expect(within(form).getByLabelText("Description (optional)").closest("details")).toBeNull();
-    expect(within(planningDetails).getByLabelText("Tags")).toBeInTheDocument();
-    expect(planningDetails).not.toHaveAttribute("open");
+    // EMPLOYEE variant renders the compact composer: Optional planning and
+    // Collaborator sections are omitted, but the always-visible primary fields remain.
+    expect(within(form).queryByText("Optional planning", { selector: "summary" })).toBeNull();
+    expect(within(form).queryAllByText(/Collaborators \(optional\)/)).toHaveLength(0);
+    expect(within(form).getByLabelText("Description (optional)")).toBeInTheDocument();
   });
 });

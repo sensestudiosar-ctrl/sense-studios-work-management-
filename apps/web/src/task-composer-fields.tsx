@@ -52,9 +52,16 @@ type Props = {
   compact: boolean; busy: boolean; subtask?: boolean; fixedProject?: { id: string; title: string }; validationAttempt?: number;
 };
 const label = (value: string): string => value.toLowerCase().replaceAll("_", " ").replace(/^./, letter => letter.toUpperCase());
+const PRIORITIES: string[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+const TASK_TYPES = ["PROJECT", "NON_PROJECT", "RECURRING", "CORRECTION", "SITE", "TRAINING_PRACTICAL"] as const;
+const PRIORITY_RANK: Record<string, number> = { LOW: 0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
 
-/** Shared fields for ordinary and child tasks. Domain commands stay with TaskWorkspace. */
-export function TaskComposerFields({ draft: d, onChange: change, projects, planItems, options, optionsError, retryOptions, busy, subtask = false, fixedProject, validationAttempt = 0 }: Props): React.JSX.Element {
+/**
+ * Shared fields for ordinary and child tasks. Domain commands stay with TaskWorkspace.
+ * When `compact` is true the optional planning and collaborator sections are hidden so
+ * the form stays fast for non-owner variants (EMPLOYEE/SITE).
+ */
+export function TaskComposerFields({ draft: d, onChange: change, projects, planItems, options, optionsError, retryOptions, busy, subtask = false, fixedProject, compact = false, validationAttempt = 0 }: Props): React.JSX.Element {
   const prefix = useId();
   const summary = useRef<HTMLDivElement>(null);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -79,20 +86,59 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
     <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder={"[ ] Confirm brief\n[x] Collect references"} rows={3} /></label>{error("checklistText")}
     <div className="task-form-grid"><label>Start date (optional)<input {...attrs("startDate")} type="date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} />{error("startDate")}</label><label>Estimated hours (optional)<input {...attrs("estimatedHours")} type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} />{error("estimatedHours")}</label></div>
   </>;
+  /**
+   * Quick-capture row: the five decisions that matter on the first pass.
+   * Priority cycles LOW → MEDIUM → HIGH → CRITICAL with a single click; the
+   * native select is kept inline for screen readers and direct selection.
+   */
+  const cyclePriority = (): void => {
+    const next = ((PRIORITY_RANK[d.priority] ?? 1) + 1) % PRIORITIES.length;
+    change({ priority: PRIORITIES[next] ?? "MEDIUM" });
+  };
+  const projectTypes = ["PROJECT", "CORRECTION", "SITE"];
+  const todayISO = new Date().toISOString().slice(0, 10);
+  const projectField = fixedProject
+    ? <input {...attrs("projectId")} aria-label={subtask ? "Parent project" : "Task project"} readOnly value={fixedProject.title} disabled />
+    : <select {...attrs("projectId")} aria-label="Project" required={projectTypes.includes(d.type)} value={d.projectId} onChange={event => chooseProject(event.target.value)} disabled={busy}>
+        <option value="">{projectTypes.includes(d.type) ? "Choose a project" : "No project"}</option>
+        {projects.filter(project => project.status === "DRAFT" || project.status === "ACTIVE").map(project => <option key={project.id} value={project.id}>{project.title}</option>)}
+      </select>;
+  const ownerValue = options?.canAssign && explicit
+    ? <select {...attrs("ownerId")} aria-label="Primary owner" value={d.ownerId}
+        onChange={event => change({ ownerId: event.target.value, collaboratorIds: d.collaboratorIds.filter(id => id !== event.target.value) })}
+        required disabled={busy || !options.canCreate}>
+        <option value="">Choose an employee</option>
+        {options.owners.map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)}
+      </select>
+    : <span className="task-chip__value">{options?.canAssign && !explicit ? "You" : "Choose an owner"}</span>;
+  const quickCapture = <div className="task-quick-capture">
+    <label className="task-field task-field--title">Task name *<input {...attrs("title")} aria-label="Task name" value={d.title} onChange={event => change({ title: event.target.value })} minLength={2} maxLength={160} required placeholder="What needs to happen?" /></label>{error("title")}
+    <div className="task-quick-capture__row" role="group" aria-label="Task essentials">
+      <div className="task-chip"><span className="task-chip__label">Priority</span>
+        <div className="task-priority-toggle">
+          <button type="button" className={`task-priority-toggle__button${errors.priority ? " task-priority-toggle__button--error" : ""}`} aria-label={`Priority ${label(d.priority)}. Press to change.`} onClick={cyclePriority} disabled={busy}>
+            <span className={`task-priority-dot task-priority-dot--${d.priority.toLowerCase()}`} aria-hidden="true" />{label(d.priority)}
+          </button>
+          <select className="task-priority-select" aria-label="Priority select" value={d.priority} onChange={event => change({ priority: event.target.value })} disabled={busy}>{PRIORITIES.map(value => <option key={value} value={value}>{label(value)}</option>)}</select>
+        </div>
+      </div>
+      <label className="task-field">Type *<select {...attrs("type")} aria-label="Type" value={d.type} onChange={event => change({ type: event.target.value })} disabled={busy}>{TASK_TYPES.map(type => <option key={type} value={type}>{label(type)}</option>)}</select>{error("type")}</label>
+      <label className="task-field">Target date *<input {...attrs("targetDate")} aria-label="Target date" type="date" value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} required disabled={busy} min={todayISO} />{error("targetDate")}</label>
+      <div className="task-chip"><span className="task-chip__label">Project</span>{projectField}{error("projectId")}</div>
+      <div className="task-chip task-chip--owner"><span className="task-chip__label">Owner</span>{ownerValue}{error("ownerId")}</div>
+    </div>
+  </div>;
   return <fieldset disabled={busy} className="task-composer-lock" onBlur={event => { if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) { const name = event.target.name; setTouched(value => ({ ...value, [name]: true })); } }}><legend className="task-sr-only">Task details</legend>
     {validationAttempt > 0 && Object.keys(errors).length > 0 && <div ref={summary} tabIndex={-1} role="alert" className="task-error-summary"><strong>Check these details</strong><ul>{Object.entries(errors).map(([field, message]) => <li key={field}><a href={`#${prefix}-${field}`} onClick={event => { event.preventDefault(); const control = document.getElementById(`${prefix}-${field}`); const disclosure = control?.closest("details"); if (disclosure) disclosure.open = true; control?.focus(); }}>{message}</a></li>)}</ul></div>}
-    <p className="task-form-note">Fields marked * are required.</p>
-    <label>Task name *<input {...attrs("title")} aria-label="Task name" value={d.title} onChange={event => change({ title: event.target.value })} minLength={2} maxLength={160} required /></label>{error("title")}
-    <label>Description (optional)<textarea {...attrs("description")} value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={3} /></label>{error("description")}
-    <div className="task-form-grid"><label>Type *<select {...attrs("type")} aria-label="Type" value={d.type} onChange={event => change({ type: event.target.value })}>{["PROJECT", "NON_PROJECT", "RECURRING", "CORRECTION", "SITE", "TRAINING_PRACTICAL"].map(type => <option key={type} value={type}>{label(type)}</option>)}</select>{error("type")}</label><label>Priority *<select aria-label="Priority" value={d.priority} onChange={event => change({ priority: event.target.value })}>{["LOW", "MEDIUM", "HIGH", "CRITICAL"].map(value => <option key={value} value={value}>{label(value)}</option>)}</select></label><label>Target date *<input {...attrs("targetDate")} aria-label="Target date" type="date" value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} required />{error("targetDate")}</label></div>
-    {fixedProject ? <label>Project<input {...attrs("projectId")} aria-label={subtask ? "Parent project" : "Task project"} readOnly value={fixedProject.title} />{error("projectId")}</label> : <label>{["PROJECT", "CORRECTION", "SITE"].includes(d.type) ? "Project *" : "Project (optional)"}<select {...attrs("projectId")} aria-label="Project" required={["PROJECT", "CORRECTION", "SITE"].includes(d.type)} value={d.projectId} onChange={event => chooseProject(event.target.value)}><option value="">{["PROJECT", "CORRECTION", "SITE"].includes(d.type) ? "Choose a project" : "No project"}</option>{projects.filter(project => project.status === "DRAFT" || project.status === "ACTIVE").map(project => <option key={project.id} value={project.id}>{project.title}</option>)}</select>{error("projectId")}</label>}
+    {quickCapture}
+    <label>Description (optional)<textarea {...attrs("description")} value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={2} placeholder="Add any detail that helps the person doing this." /></label>{error("description")}
     {contextNotice && <p role="status" className="task-form-note">{contextNotice}</p>}
     {optionsError ? <div role="alert"><p>{optionsError}</p><button type="button" onClick={retryOptions} disabled={busy}>Retry participants</button></div> : !options ? <p role="status">Loading eligible task participants…</p> : !options.canCreate ? <p role="status">No eligible primary owner is available in this context. Review employee membership and project assignments.</p> : <>
-      <fieldset className="task-assignment"><legend>Ownership</legend>{options.canAssign && options.actorEmployeeId && <label className="task-inline"><input type="checkbox" checked={d.assignTo} onChange={event => change({ assignTo: event.target.checked, ownerId: "", collaboratorIds: [], collaboratorHours: {} })} /> Assign to an employee</label>}{explicit ? <><label>Find primary owner<input type="search" value={ownerSearch} onChange={event => setOwnerSearch(event.target.value)} placeholder="Search eligible people" /></label><label>Primary owner *<select {...attrs("ownerId")} aria-label="Primary owner" value={d.ownerId} onChange={event => change({ ownerId: event.target.value, collaboratorIds: d.collaboratorIds.filter(id => id !== event.target.value) })} required><option value="">Choose an employee</option>{options.owners.filter(person => person.id === d.ownerId || person.name.toLowerCase().includes(ownerSearch.toLowerCase())).map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)}</select>{error("ownerId")}</label>{ownerSearch && !options.owners.some(person => person.name.toLowerCase().includes(ownerSearch.toLowerCase())) && <p role="status">No eligible people match this search.</p>}</> : <p>Assigned to you.</p>}</fieldset>
+      <fieldset className="task-assignment"><legend>Ownership</legend>{options.canAssign && options.actorEmployeeId && <label className="task-inline"><input type="checkbox" checked={d.assignTo} onChange={event => change({ assignTo: event.target.checked, ownerId: "", collaboratorIds: [], collaboratorHours: {} })} /> Assign to an employee</label>}{explicit ? <>{ownerSearch && <label>Find primary owner<input type="search" value={ownerSearch} onChange={event => setOwnerSearch(event.target.value)} placeholder="Search eligible people" /></label>}<p role="status" className="task-owner-summary">Primary owner: {options.owners.find(person => person.id === d.ownerId)?.name ?? "Not set yet — choose in the owner field above."}</p>{ownerSearch && !options.owners.some(person => person.name.toLowerCase().includes(ownerSearch.toLowerCase())) && <p role="status">No eligible people match this search.</p>}</> : <p>Assigned to you.</p>}</fieldset>
     </>}
     {d.projectId && <fieldset className="task-review-requirements" aria-describedby={`${prefix}-review-help`}><legend>Review requirements</legend><label><input type="checkbox" checked={d.reviewRequirement !== "NONE"} disabled={d.reviewRequirement === "BOTH" || d.reviewRequirement === "CLIENT"} onChange={event => change({ reviewRequirement: event.target.checked ? "INTERNAL" : "NONE" })} />Internal review required</label><label><input type="checkbox" checked={d.reviewRequirement === "BOTH" || d.reviewRequirement === "CLIENT"} onChange={event => change({ reviewRequirement: event.target.checked ? "BOTH" : "INTERNAL" })} />Client review required</label><small id={`${prefix}-review-help`}>Client review also requires internal approval. Submit a file or link when the work is ready. An authorized publisher must enable client review.</small></fieldset>}
-    <label>Why is this task needed? *<input {...attrs("reason")} aria-label="Reason" value={d.reason} onChange={event => change({ reason: event.target.value })} minLength={3} maxLength={1000} required /><small>Recorded in the task history.</small>{error("reason")}</label>
-    {options?.canAssign && <details className="task-optional-planning"><summary>Collaborators (optional) · {d.collaboratorIds.length} selected</summary><label>Find collaborators<input type="search" value={collaboratorSearch} onChange={event => setCollaboratorSearch(event.target.value)} placeholder="Search eligible people" /></label><fieldset {...attrs("collaboratorIds")} tabIndex={-1} className="task-assignment"><legend>Collaborators (optional)</legend>{options.collaborators.filter(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId) && (d.collaboratorIds.includes(person.id) || person.name.toLowerCase().includes(collaboratorSearch.toLowerCase()))).map(employee => <div className="task-collaborator-choice" key={employee.id}><label className="task-inline"><input type="checkbox" checked={d.collaboratorIds.includes(employee.id)} onChange={event => change({ collaboratorIds: event.target.checked ? [...d.collaboratorIds, employee.id] : d.collaboratorIds.filter(id => id !== employee.id) })} /> {employee.name}</label>{d.collaboratorIds.includes(employee.id) && <label>Estimated hours<input aria-label={`${employee.name} estimated hours`} type="number" min="0" max="100000" step="0.25" value={d.collaboratorHours[employee.id] ?? ""} onChange={event => change({ collaboratorHours: { ...d.collaboratorHours, [employee.id]: event.target.value } })} /></label>}</div>)}{!options.collaborators.some(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId) && person.name.toLowerCase().includes(collaboratorSearch.toLowerCase())) && <p role="status">No eligible collaborators match this search.</p>}{error("collaboratorIds")}</fieldset></details>}
-    <details className="task-optional-planning"><summary>Optional planning</summary>{planning}</details>
+    <label>Why is this task needed? *<input {...attrs("reason")} aria-label="Reason" value={d.reason} onChange={event => change({ reason: event.target.value })} minLength={3} maxLength={1000} required placeholder="One short sentence — recorded in the task history." /><small>Recorded in the task history.</small>{error("reason")}</label>
+    {!compact && <details className="task-optional-planning"><summary>Optional planning</summary>{planning}</details>}
+    {options?.canAssign && !compact && <details className="task-optional-planning"><summary>Collaborators (optional) · {d.collaboratorIds.length} selected</summary><label>Find collaborators<input type="search" value={collaboratorSearch} onChange={event => setCollaboratorSearch(event.target.value)} placeholder="Search eligible people" /></label><fieldset {...attrs("collaboratorIds")} tabIndex={-1} className="task-assignment"><legend>Collaborators (optional)</legend>{options.collaborators.filter(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId) && (d.collaboratorIds.includes(person.id) || person.name.toLowerCase().includes(collaboratorSearch.toLowerCase()))).map(employee => <div className="task-collaborator-choice" key={employee.id}><label className="task-inline"><input type="checkbox" checked={d.collaboratorIds.includes(employee.id)} onChange={event => change({ collaboratorIds: event.target.checked ? [...d.collaboratorIds, employee.id] : d.collaboratorIds.filter(id => id !== employee.id) })} /> {employee.name}</label>{d.collaboratorIds.includes(employee.id) && <label>Estimated hours<input aria-label={`${employee.name} estimated hours`} type="number" min="0" max="100000" step="0.25" value={d.collaboratorHours[employee.id] ?? ""} onChange={event => change({ collaboratorHours: { ...d.collaboratorHours, [employee.id]: event.target.value } })} /></label>}</div>)}{!options.collaborators.some(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId) && person.name.toLowerCase().includes(collaboratorSearch.toLowerCase())) && <p role="status">No eligible collaborators match this search.</p>}{error("collaboratorIds")}</fieldset></details>}
   </fieldset>;
 }

@@ -326,10 +326,19 @@ describe("TaskWorkspace", () => {
     expect(within(form).getByLabelText("Task name")).toBeRequired();
     expect(within(form).getByLabelText("Target date")).toBeRequired();
     expect(within(form).getByLabelText("Reason")).toBeRequired();
+    // compactOptionalPlanning = creationVariant === "EMPLOYEE" || === "SITE".
+    // "non-Owner with Owner hint", "missing profile", "unknown variant" and
+    // "unsupported profile version" all fall through to creationVariant "EMPLOYEE"
+    // because owner=false and the profile doesn't resolve to OWNER/LEADER.
     const optionalPlanning = within(form).queryByText("Optional planning", { selector: "summary" });
-    expect(optionalPlanning).toBeInTheDocument();
-    expect(optionalPlanning!.closest("details")).not.toHaveAttribute("open");
-    expect(optionalPlanning!.closest("details")!.querySelectorAll("[required]")).toHaveLength(0);
+    const expectsPlanning = _label === "OWNER" || _label === "LEADER";
+    if (expectsPlanning) {
+      expect(optionalPlanning).toBeInTheDocument();
+      expect(optionalPlanning!.closest("details")).not.toHaveAttribute("open");
+      expect(optionalPlanning!.closest("details")!.querySelectorAll("[required]")).toHaveLength(0);
+    } else {
+      expect(optionalPlanning).toBeNull();
+    }
     if (_label === "LEADER") {
       expect(within(form).queryByLabelText("Primary owner")).not.toBeInTheDocument();
       expect(within(form).queryByText("Assign to an employee")).not.toBeInTheDocument();
@@ -1154,14 +1163,17 @@ describe("TaskWorkspace", () => {
     fireEvent.change(screen.getByLabelText("Task name"), { target: { value: "Call supplier" } });
     fireEvent.change(screen.getByLabelText("Target date"), { target: { value: "2026-10-15" } });
     fireEvent.change(screen.getByLabelText("Reason"), { target: { value: "Needed for project setup" } });
-    fireEvent.change(screen.getByLabelText("Tags"), { target: { value: "Design, Review" } });
-    fireEvent.change(screen.getByLabelText("Checklist"), { target: { value: "[ ] Confirm brief\n[x] Collect references" } });
+    // The self-task scenario renders the EMPLOYEE variant (owner={false}), which
+    // runs the composer in compact mode — Tags/Checklist are hidden inside
+    // "Optional planning" (not rendered). The assertions below confirm no
+    // ownerEmployeeId is sent and that CSRF is attached.
     fireEvent.click(screen.getAllByRole("button", { name: "Create task" }).at(-1)!);
     await waitFor(() => expect(fetchMock.mock.calls.some(([url, init]) => String(url) === "/api/v1/tasks" && init?.method === "POST")).toBe(true));
     const call = fetchMock.mock.calls.find(([url, init]) => String(url) === "/api/v1/tasks" && init?.method === "POST");
     expect(call?.[1]?.headers).toMatchObject({ "X-CSRF-Token": "csrf-test" });
-    expect(JSON.parse(String(call?.[1]?.body))).not.toHaveProperty("ownerEmployeeId");
-    expect(JSON.parse(String(call?.[1]?.body))).toMatchObject({ tags: ["Design", "Review"], checklist: [{ label: "Confirm brief", checked: false }, { label: "Collect references", checked: true }] });
+    const body = JSON.parse(String(call?.[1]?.body)) as Record<string, unknown>;
+    expect(body).not.toHaveProperty("ownerEmployeeId");
+    expect(body).toMatchObject({ title: "Call supplier", reason: "Needed for project setup" });
   });
 
   it("shows explicit assignment controls only when the setup endpoint permits assignment", async () => {
