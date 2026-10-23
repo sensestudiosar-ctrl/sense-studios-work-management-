@@ -64,3 +64,7 @@ The mobile bottom bar belongs below768px. The shared desktop sidebar takes over 
 ## Approved task-review schema120 activation — 23 October2026
 
 The Owner explicitly approved migration20261023000000_task_review_work_routing and matched release9f1da4b140c005586dc909810ba267a2c156c500. Canonical runtime now requires120 with profile task-review-work-routing-20261023; web/API build9f1da4b140c0-1792732431728 and retained identity/readiness are verified. This is separate from the excluded client-password120. The installed bootstrap manifest supports the reviewed profile; predecessor/config/task backups are preserved. Do not point the120 retained database at a119 artifact or run an automatic down-migration. Future migrations still require their own authorization. Exact preservation and browser/production limits are recorded in docs/development/TASK_REVIEW_ROUTING_COMPLETION_2026-10-23.md.
+
+## My Work team/employee scopes
+
+My Work contains personal obligations; All teams reads existing authorized tasks with primary-owner current-home-Team and employee filters. Team changes clear the employee; scope changes clear personal metrics and preserve the existing unsaved-drawer guard. Owner scope is organization-wide; Leader/manager scope never expands beyond current grants/reporting/project visibility. Production rules and task-review120 remain unchanged. Exact local acceptance and failed-run boundaries: MY_WORK_MANAGEMENT_SCOPES_2026-10-23.md.
