@@ -158,7 +158,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     let reviewCurrent = await database.prisma.task.findUniqueOrThrow({ where: { id: reviewTask.id } });
     await tasks.transition(workerActor, reviewTask.id, { toState: "IN_PROGRESS", expectedVersion: reviewCurrent.version, reason: "Begin fixture design work" });
     reviewCurrent = await database.prisma.task.findUniqueOrThrow({ where: { id: reviewTask.id } });
-    await reviews.submit(workerActor, reviewTask.id, { expectedVersion: reviewCurrent.version, reason: "Submit fixture package for internal review" });
+    await reviews.submit(workerActor, reviewTask.id, { expectedVersion: reviewCurrent.version, reviewUrl: `https://files.sensestudios.com/acceptance/${reviewTask.id}`, reason: "Submit exact fixture link evidence for internal review" });
     const round = await database.prisma.reviewRound.findFirstOrThrow({ where: { taskId: reviewTask.id } });
     const documents = app!.get(DocumentService);
     const folder = await documents.createFolder(actor, project.id, { name: `Evidence ${width}`, confidential: false, reason: "Own isolated browser file fixture" });
