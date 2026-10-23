@@ -1,3 +1,4 @@
+import { verifyDashboardSummaryLayout } from "./dashboard-summary-layout.js";
 import { expect, test } from "@playwright/test";
 import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";

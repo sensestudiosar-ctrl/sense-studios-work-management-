@@ -256,3 +256,47 @@
   .workspace-page .dashboard-workspace .dv-attention-foot { flex-direction: column; align-items: flex-start; }
   .workspace-page .dashboard-workspace .dv-attention-actions { flex-direction: column; align-items: flex-start; }
 }
+
+/* DASH-RESP: content-width reflow overrides the older five-column and phone
+   carousel rules. Keep all five independent summaries and their full evidence. */
+#root .dashboard-workspace .dv-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  grid-auto-flow: row;
+  grid-auto-columns: auto;
+  gap: 12px;
+  overflow: visible;
+  scroll-snap-type: none;
+  align-items: stretch;
+}
+#root .dashboard-workspace .dv-summary-card {
+  min-width: 0;
+  min-height: 176px;
+  height: auto;
+  padding: 16px;
+  scroll-snap-align: none;
+}
+#root .dashboard-workspace .dv-summary-top strong { font-size: 14px; line-height: 1.4; }
+#root .dashboard-workspace .dv-summary-cue,
+#root .dashboard-workspace .dv-task-mix-label { font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+#root .dashboard-workspace .dv-task-mix-label { padding-right: 24px; }
+#root .dashboard-workspace .dv-summary-arrow { right: 16px; bottom: 16px; }
+@media (max-width: 600px) {
+  #root .dashboard-workspace .dv-summary-strip { grid-template-columns: minmax(0, 1fr); }
+  #root .dashboard-workspace .dv-summary-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title count" "cue count" "mix mix";
+    align-content: start;
+    align-items: start;
+    gap: 6px 12px;
+    min-height: 120px;
+    padding: 14px;
+  }
+  #root .dashboard-workspace .dv-summary-top { grid-area: title; justify-content: flex-start; gap: 8px; }
+  #root .dashboard-workspace .dv-summary-count { grid-area: count; margin: 0; font-size: 32px; line-height: 1.15; text-align: right; }
+  #root .dashboard-workspace .dv-summary-cue { grid-area: cue; }
+  #root .dashboard-workspace .dv-task-mix { grid-area: mix; margin-top: 0; padding-top: 0; min-width: 0; }
+  #root .dashboard-workspace .dv-summary-unavailable { grid-area: count; font-size: 14px; max-width: 7rem; }
+  #root .dashboard-workspace .dv-summary-skeleton { grid-area: count; margin: 0; }
+}
