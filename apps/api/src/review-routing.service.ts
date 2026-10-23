@@ -1,5 +1,5 @@
 import { approvedWorkMatches, submittedEvidence } from "./review-work-evidence.js";
-import { ConflictException, ForbiddenException, Injectable } from "@nestjs/common";
+import { ConflictException, ForbiddenException, Injectable, type OnModuleInit, type OnModuleDestroy } from "@nestjs/common";
 import { AccountKind, Prisma, TaskReviewRequirement, TaskStatus } from "./generated/prisma/client.js";
 import { DatabaseService } from "./database.service.js";
 import { ClientReviewService } from "./client-review.service.js";
@@ -13,7 +13,21 @@ class RoutingBlocked extends Error {
 
 /** A failed publication never rolls back a valid internal review decision. */
 @Injectable()
-export class ReviewRoutingService {
+export class ReviewRoutingService implements OnModuleInit, OnModuleDestroy {
+  private deliveryTimer: ReturnType<typeof setInterval> | undefined;
+  private delivering = false;
+  onModuleInit() {
+    // Canonical staging runs the API without the separate general worker.
+    // This dispatcher handles only persisted, approved client routing intents.
+    this.deliveryTimer = setInterval(() => {
+      if (this.delivering) return;
+      this.delivering = true;
+      void this.runBatch().catch(() => console.error("Review routing delivery failed")).finally(() => { this.delivering = false; });
+    }, 5_000);
+    this.deliveryTimer.unref();
+  }
+  onModuleDestroy() { if (this.deliveryTimer) clearInterval(this.deliveryTimer); }
+
   constructor(private readonly database: DatabaseService, private readonly clients: ClientReviewService, private readonly scope: ClientPortalScopeService) {}
 
   async configure(actor: ProjectActor, taskId: string, input: { expectedVersion: number; internal: boolean; client: boolean; reason: string }) {
