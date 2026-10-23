@@ -54,6 +54,22 @@ test('release approval rejects file, migration, private manifest and target chan
   const altered={...manifest,database:{...manifest.database,name:'other_retained'}};atomicJson(path.join(release,'private-manifest.json'),altered);assert.throws(()=>loadActive(root),/pointer differs/);
   atomicJson(path.join(root,'.env.staging/active-release.json'),{commit:manifest.commit,manifestSha256:fileHash(path.join(release,'private-manifest.json'))});assert.throws(()=>loadActive(root),/different database/);
 });
+test('review120 release requires exact migration profile and explicit runtime approval',t=>{
+  const root=fixture(t),{release,manifest}=makeRelease(root);
+  const added={name:'20261023000000_task_review_work_routing',checksum:'b'.repeat(64)};
+  const review={...manifest,migrationProfile:'task-review-work-routing-20261023',migrations:[...manifest.migrations,added]};
+  assert.equal(verifyRelease(release,review).migrations.length,120);
+  assert.throws(()=>verifyRelease(release,{...review,migrationProfile:'client-password'}));
+  assert.throws(()=>verifyRelease(release,{...review,migrations:[...manifest.migrations,{...added,name:'20261023000000_client_password'}]}));
+  atomicJson(path.join(release,'private-manifest.json'),review);
+  atomicJson(path.join(root,'.env.staging/active-release.json'),{commit:review.commit,manifestSha256:fileHash(path.join(release,'private-manifest.json'))});
+  assert.throws(()=>loadActive(root),/explicit runtime configuration approval/);
+  const runtimePath=path.join(root,'config/local-runtime.json'),runtime=JSON.parse(fs.readFileSync(runtimePath));
+  runtime.database.migrations=120;atomicJson(runtimePath,runtime);
+  assert.throws(()=>loadActive(root));
+  runtime.database.migrationProfile='task-review-work-routing-20261023';atomicJson(runtimePath,runtime);
+  assert.equal(loadActive(root).manifest.migrations.length,120);
+});
 test('dependency links cannot leave the release and their exact targets are recorded',t=>{
   const root=fixture(t);fs.mkdirSync(path.join(root,'one'));fs.mkdirSync(path.join(root,'two'));fs.symlinkSync(path.join(root,'one'),path.join(root,'link'),'junction');
   const before=inventory(root);fs.unlinkSync(path.join(root,'link'));fs.symlinkSync(path.join(root,'two'),path.join(root,'link'),'junction');assert.notDeepEqual(inventory(root),before);

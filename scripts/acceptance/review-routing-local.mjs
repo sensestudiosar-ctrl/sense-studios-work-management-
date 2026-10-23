@@ -99,7 +99,7 @@ if (action === 'stop-incomplete') {
   const adminPassword = randomBytes(32).toString('hex'), runtimePassword = randomBytes(32).toString('hex');
   const pw = resolve(base, 'init-password'); writeFileSync(pw, adminPassword, { flag: 'wx' });
   const url = (port, database, runtime = false) => `postgresql://${runtime ? 'sense_app_runtime' : 'sense_review_admin'}:${runtime ? runtimePassword : adminPassword}@127.0.0.1:${port}/${database}`;
-  state.environment = { ...env, SENSE_REVIEW_ROUTING_TEST_RUN: runId, S27_E2E_ENABLED: '1', S27_EXPECTED_MIGRATIONS: '120', API_TEST_WORKERS: '2', VITEST_WORKERS: '2', PLAYWRIGHT_WORKERS: '1', TEMP: resolve(base, 'tmp'), TMP: resolve(base, 'tmp'), NAS_ROOT: resolve(base, 'files'), BREVO_API_KEY: '', BREVO_SENDER_EMAIL: '', OWNER_BOOTSTRAP_EMAIL: '', OWNER_BOOTSTRAP_SECRET: '' };
+  state.environment = { ...env, SENSE_REVIEW_ROUTING_TEST_RUN: runId, S27_E2E_ENABLED: '1', S27_EXPECTED_MIGRATIONS: '120', API_TEST_WORKERS: '2', VITEST_WORKERS: '2', PLAYWRIGHT_WORKERS: '1', TEMP: resolve(base, 'tmp'), TMP: resolve(base, 'tmp'), NAS_ROOT: resolve(baselineRepository, `.env.review-files-${runId}`), BREVO_API_KEY: '', BREVO_SENDER_EMAIL: '', OWNER_BOOTSTRAP_EMAIL: '', OWNER_BOOTSTRAP_SECRET: '' };
   mkdirSync(state.environment.TEMP); mkdirSync(state.environment.NAS_ROOT);
   for (const [clusterName, port] of [['main', 58440], ['client', 58441]]) {
     const data = resolve(base, clusterName, 'data'); mkdirSync(dirname(data));

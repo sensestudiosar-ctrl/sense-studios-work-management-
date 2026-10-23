@@ -1,3 +1,4 @@
+import { approveFixtureWork } from "./review-work-fixture.js";
 import { expect, test } from "@playwright/test";
 import { isS27DisposableTestTarget, matchesS27DisposableServer } from "../../apps/api/src/s27-disposable-test-target.js";
 import { createHash, createHmac, randomBytes, randomUUID } from "node:crypto";
@@ -120,7 +121,8 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await command(`/api/v1/projects/${project.project.id}/status`, { toStatus: "ACTIVE", expectedVersion: 3, reason: "Activate browser Design client review" });
     const task = await command("/api/v1/tasks", { projectId: project.project.id, ownerEmployeeId: workerEmployeeId, title: "Design approval brief", type: "PROJECT", priority: "MEDIUM", targetDate: "2026-12-31", reviewRequirement: "CLIENT", reason: "Create browser client approval brief" }) as { id: string; version: number };
     await command(`/api/v1/tasks/${task.id}/state`, { toState: "IN_PROGRESS", expectedVersion: task.version, reason: "Start browser client brief" });
-    const reviewPackage = await command(`/api/v1/client-reviews/projects/${project.project.id}/packages`, { title: "Design brief approval", reason: "Publish browser client approval brief", items: [{ taskId: task.id, expectedTaskVersion: 2, label: "Design approval brief" }] }) as { id: string };
+    const approvedWork = await approveFixtureWork({ page, db, origin: baseURL!, ownerHeaders, projectId: project.project.id, taskId: task.id, workerAccountId, workerEmployeeId, manualPublication: true });
+    const reviewPackage = await command(`/api/v1/client-reviews/projects/${project.project.id}/packages`, { title: "Design brief approval", reason: "Publish browser client approval brief", items: [{ taskId: task.id, expectedTaskVersion: approvedWork.version, workSubmissionId: approvedWork.submissionId, label: "Design approval brief" }] }) as { id: string };
 
     page.on("request", (request) => {
       const path = new URL(request.url()).pathname;

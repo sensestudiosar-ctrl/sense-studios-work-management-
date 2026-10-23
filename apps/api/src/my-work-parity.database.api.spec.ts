@@ -168,7 +168,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     await f.reviews.assignReviewer(f.person("manager").actor, id, { employeeId: f.person("reviewer").employee.id, expectedVersion: task.version, reason: why });
     await start(f, id, f.person("worker").actor);
     task = await f.prisma.task.findUniqueOrThrow({ where: { id } });
-    const detail = await f.reviews.submit(f.person("worker").actor, id, { expectedVersion: task.version, ...(revisionId ? { revisionId } : {}), reason: why });
+    const detail = await f.reviews.submit(f.person("worker").actor, id, { expectedVersion: task.version, ...(revisionId ? { revisionId } : { reviewUrl: `https://files.sensestudios.com/parity/${id}` }), reason: why });
     return detail.rounds.at(-1)!.id;
   }
   async function approve(f: Fixture, roundId: string) {

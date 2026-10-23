@@ -103,7 +103,7 @@ jest.setTimeout(40_000);
     const submission = await submit(started.version, 1);
     await reviews.createPackage(owner, project.id, { title: "Scoped brief package", reason: "Publish exact client brief", items: [{ taskId: task.id, expectedTaskVersion: (await database.prisma.task.findUniqueOrThrow({ where: { id: task.id } })).version, workSubmissionId: submission.id, label: "Brief" }] });
     const item = await database.prisma.clientReviewItem.findFirstOrThrow({ where: { taskId: task.id } });
-    return { project, primary, item, grant: appointed.grant, submit };
+    return { project: await database.prisma.project.findUniqueOrThrow({ where: { id: project.id } }), primary, item, grant: appointed.grant, submit };
   }
   it("Primary invitations give no item access until explicit delegation, with immutable grants and no project leakage", async () => {
     const f = await fixture();
