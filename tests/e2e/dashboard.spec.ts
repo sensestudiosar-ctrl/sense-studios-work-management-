@@ -66,6 +66,18 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
   await mkdir(screenshotDirectory, { recursive: true });
   await context.addCookies([{ name: "sense_sid", value: ownerSecret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
   await openDashboard();
+  const summaryViewport = page.viewportSize()!;
+  for (const summaryWidth of [1440, 1024, 859, 783, 600, 390, 320]) {
+    await page.setViewportSize({ width: summaryWidth, height: 884 });
+    await verifyDashboardSummaryLayout(page, testInfo, summaryWidth);
+    const summaryTrigger = page.locator("button.dv-summary-overdue");
+    await summaryTrigger.focus(); await summaryTrigger.press("Enter");
+    const summaryPanel = page.getByRole("dialog", { name: "Overdue", exact: true });
+    await expect(summaryPanel).toBeVisible();
+    await page.keyboard.press("Escape"); await expect(summaryPanel).not.toBeVisible();
+    await expect(summaryTrigger).toBeFocused();
+  }
+  await page.setViewportSize(summaryViewport);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: resolve(screenshotDirectory, `dashboard-${testInfo.project.name}-overview.png`), fullPage: false });
 
