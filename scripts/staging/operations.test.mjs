@@ -7,7 +7,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { PassThrough } from 'node:stream';
 import test from 'node:test';
-import { inventory, verifyRelease, loadActive, atomicJson, fileHash } from './manifest.mjs';
+import { inventory, verifyRelease, loadActive, atomicJson, fileHash, promoteRelease } from './manifest.mjs';
 import { safeStaticPath, createStagingServer } from './server.mjs';
 import { childFinished, observeChildExit, restartDelay, captureLog } from './process-policy.mjs';
 import { claimSupervisorLock, processIdentity } from './windows.mjs';
@@ -107,4 +107,20 @@ test('missing OS process recovers before its exit event, but a reused PID is ref
 });
 test('OS mutex serializes claims and refuses a live supervisor lock', {skip:process.platform!=='win32'},t=>{
   const root=fixture(t),file=path.join(root,'supervisor.lock.json'),identity=processIdentity(process.pid);claimSupervisorLock(file,identity,'first');assert.throws(()=>claimSupervisorLock(file,identity,'second'));assert.equal(JSON.parse(fs.readFileSync(file)).token,'first');
+});
+
+test('promotion rejects unapproved review schema before touching the active pointer', t => {
+  const root=fixture(t), {release,manifest}=makeRelease(root);
+  const pointer=path.join(root,'.env.staging/active-release.json'), before=fs.readFileSync(pointer);
+  const review={...manifest,migrationProfile:'task-review-work-routing-20261023',migrations:[...manifest.migrations,{name:'20261023000000_task_review_work_routing',checksum:'b'.repeat(64)}]};
+  const manifestFile=path.join(release,'private-manifest.json');atomicJson(manifestFile,review);
+  const evidence={status:'PASS',commit:review.commit,manifestSha256:fileHash(manifestFile)};
+  assert.throws(()=>promoteRelease(root,review.commit,evidence),/explicit runtime configuration approval/);
+  assert.deepEqual(fs.readFileSync(pointer),before);
+  assert.equal(fs.readdirSync(path.dirname(pointer)).filter(name=>name.includes('.preserved-')).length,0);
+  const runtimeFile=path.join(root,'config/local-runtime.json'),runtime=JSON.parse(fs.readFileSync(runtimeFile));
+  runtime.database.migrations=120;runtime.database.migrationProfile=review.migrationProfile;atomicJson(runtimeFile,runtime);
+  assert.equal(promoteRelease(root,review.commit,evidence).promoted,review.commit);
+  assert.equal(loadActive(root).manifest.migrations.length,120);
+  assert.equal(fs.readdirSync(path.dirname(pointer)).filter(name=>name.includes('.preserved-')).length,1);
 });

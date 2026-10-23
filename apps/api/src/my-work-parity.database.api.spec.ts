@@ -2,7 +2,7 @@ import { reviewRoutingTestTarget, verifyReviewRoutingTestDatabase } from "./revi
 import "reflect-metadata";
 import assert from "node:assert/strict";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, mkdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { jest } from "@jest/globals";
 import { UnauthorizedException } from "@nestjs/common";
@@ -94,6 +94,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     else target = loadMWI02Target(); // Filesystem checks precede even a connection.
     const databaseUrl = reviewBinding?.url ?? recovery?.url ?? (ciParity ? process.env.S27_PARITY_DATABASE_URL! : MW_I02_URL);
     const nasRoot = reviewBinding ? resolve(process.env.NAS_ROOT!, "parity") : recovery ? resolve(process.env.SENSE_RECOVERY_TEST_MANIFEST!, "../files/parity") : ciParity ? resolve(process.env.NAS_ROOT!, "parity") : resolve(target.runDir, "nas", "parity");
+    if (reviewBinding) mkdirSync(nasRoot, { recursive: true });
     config = { nodeEnv: "test", databaseUrl, port: 59542, webOrigin: "http://localhost:59543", nasRoot, emailVerificationSecret: "mw-i02-inert-email-no-provider" } as RuntimeConfig;
     // Real adapter instrumentation is restricted to this exact disposable suite.
     // Query text, parameters, titles, credentials and evidence are never logged.

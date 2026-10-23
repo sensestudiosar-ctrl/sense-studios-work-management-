@@ -86,3 +86,25 @@ export function atomicJson(file, value) {
   fs.writeFileSync(temporary, JSON.stringify(value, null, 2), { flag: 'wx' });
   fs.renameSync(temporary, file);
 }
+
+export function promoteRelease(root, commit, evidence) {
+  const setting = loadSettings(root);
+  assert.match(commit ?? '', /^[a-f0-9]{40}$/);
+  assert.equal(evidence.status, 'PASS', 'Passing explicit release acceptance required');
+  assert.equal(evidence.commit, commit);
+  const release = scoped(root, path.join(setting.releaseRoot, commit));
+  const manifestFile = path.join(release, 'private-manifest.json');
+  assert.equal(fs.realpathSync(release).toLowerCase(), release.toLowerCase(), 'Release path is redirected');
+  const manifest = verifyRelease(release, JSON.parse(fs.readFileSync(manifestFile)));
+  assert.equal(manifest.commit, commit);
+  assert.equal(manifest.migrations.length, setting.runtime.database.migrations, 'Release schema requires explicit runtime configuration approval');
+  if (manifest.migrations.length === 120) assert.equal(manifest.migrationProfile, setting.runtime.database.migrationProfile);
+  const {name,user,host,port,oid,system} = setting.runtime.database;
+  assert.deepEqual(manifest.database, {name,user,host,port,oid,system}, 'Release targets a different database');
+  const manifestSha256 = fileHash(manifestFile);
+  assert.equal(evidence.manifestSha256, manifestSha256, 'Acceptance covers a different artifact');
+  const pointer = scoped(root, setting.activePointer);
+  if (fs.existsSync(pointer)) fs.copyFileSync(pointer, pointer + '.preserved-' + Date.now(), fs.constants.COPYFILE_EXCL);
+  atomicJson(pointer, {commit, manifestSha256});
+  return {promoted: commit, buildId: manifest.buildId};
+}
