@@ -31,4 +31,16 @@ describe("shared task composer validation and fields", () => {
     expect(screen.getByText("Assigned to you.")).toBeInTheDocument();
     expect(screen.queryByLabelText("Primary owner")).not.toBeInTheDocument();
   });
+  it("requires internal approval when client review is selected and normalizes recovered CLIENT drafts", () => {
+    const onChange = vi.fn();
+    const props = { onChange, projects: [], planItems: [], options: undefined, optionsError: undefined, retryOptions: () => undefined, compact: false, busy: false };
+    const view = render(<TaskComposerFields {...props} draft={draft} />);
+    fireEvent.click(screen.getByRole("checkbox", { name: "Client review required" }));
+    expect(onChange).toHaveBeenCalledWith({ reviewRequirement: "BOTH" });
+    view.rerender(<TaskComposerFields {...props} draft={{ ...draft, reviewRequirement: "BOTH" }} />);
+    expect(screen.getByRole("checkbox", { name: "Internal review required" })).toBeChecked();
+    expect(screen.getByRole("checkbox", { name: "Internal review required" })).toBeDisabled();
+    expect(taskCreateBody({ ...draft, reviewRequirement: "CLIENT" }, { canAssign: false, actorEmployeeId: "owner" } as never).reviewRequirement).toBe("BOTH");
+  });
+
 });

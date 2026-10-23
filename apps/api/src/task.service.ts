@@ -1,3 +1,4 @@
+import { ClientPortalScopeService } from "./client-portal-scope.service.js";
 import { actionableTaskReasons } from "./actionable-work-policy.js";
 import { taskCreateHash } from "./task-create-identity.js";
 import type { TaskCreationOptions, TaskReadRefinements, TaskListSort } from "@sense/contracts";
@@ -611,14 +612,18 @@ export class TaskService {
         else await this.employee(tx, actor, collaborator.employeeId);
         if (actor.kind !== AccountKind.OWNER) await this.managedEmployee(tx, actor, await tx.employee.findUniqueOrThrow({ where: { id: collaborator.employeeId } }), project);
       }
+      const reviewRequirement = input.reviewRequirement === TaskReviewRequirement.CLIENT ? TaskReviewRequirement.BOTH : input.reviewRequirement ?? TaskReviewRequirement.NONE;
+      if (reviewRequirement === TaskReviewRequirement.BOTH && !project) throw new ConflictException("Review requires a project");
+      if (reviewRequirement === TaskReviewRequirement.BOTH) await new ClientPortalScopeService(this.database, this.authorization).staffAuthority(tx, actor, project!.id, "manage");
       const targetDate = new Date(`${input.targetDate}T00:00:00.000Z`);
       if (this.workforce && !input.acknowledgeOverload) for (const employeeId of [ownerId,...collaboratorIds]) if (await this.workforce.assignmentWarning(tx,actor,employeeId)) throw new ConflictException("Overload warning: review employee capacity and acknowledge before assigning work");
       const startDate = input.startDate ? new Date(`${input.startDate}T00:00:00.000Z`) : undefined;
       if (Number.isNaN(targetDate.getTime()) || startDate && startDate > targetDate) throw new ConflictException("Task dates are invalid");
-      const row = await tx.task.create({ data: { organizationId: actor.organizationId, ...(project ? { projectId: project.id } : {}), ...(input.planItemId ? { planItemId: input.planItemId } : {}), tags: input.tags ?? [], checklist: input.checklist ?? [], title: input.title, ...(input.description === undefined ? {} : { description: input.description }), type: input.type, priority: input.priority, targetDate, ...(startDate ? { startDate } : {}), ...(input.estimatedHours === undefined ? {} : { estimatedHours: input.estimatedHours }), primaryOwnerEmployeeId: ownerId, createdById: actor.accountId, reviewRequirement: input.reviewRequirement ?? TaskReviewRequirement.NONE } });
+      const row = await tx.task.create({ data: { organizationId: actor.organizationId, ...(project ? { projectId: project.id } : {}), ...(input.planItemId ? { planItemId: input.planItemId } : {}), tags: input.tags ?? [], checklist: input.checklist ?? [], title: input.title, ...(input.description === undefined ? {} : { description: input.description }), type: input.type, priority: input.priority, targetDate, ...(startDate ? { startDate } : {}), ...(input.estimatedHours === undefined ? {} : { estimatedHours: input.estimatedHours }), primaryOwnerEmployeeId: ownerId, createdById: actor.accountId, reviewRequirement } });
       await tx.taskStatusChange.create({ data: { organizationId: actor.organizationId, taskId: row.id, toStatus: TaskStatus.NOT_STARTED, actorId: actor.accountId, reason: input.reason, taskVersion: 1 } });
       for (const collaborator of input.collaborators ?? []) await tx.taskCollaborator.create({ data: { organizationId: actor.organizationId, taskId: row.id, employeeId: collaborator.employeeId, ...(collaborator.estimatedHours === undefined ? {} : { estimatedHours: collaborator.estimatedHours }), addedById: actor.accountId } });
-      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.created", subjectType: "task", subjectId: row.id, reason: input.reason, after: { taskId: row.id, projectId: project?.id ?? null, ownerEmployeeId: ownerId, type: row.type, priority: row.priority, targetDate: input.targetDate, version: row.version, planItemId: row.planItemId, tags: row.tags, checklist: row.checklist, ...(parentTaskId ? { parentTaskId } : {}) } });
+      const routingAuthorization = reviewRequirement === TaskReviewRequirement.BOTH ? await tx.taskReviewRoutingAuthorization.create({ data: { organizationId: actor.organizationId, projectId: project!.id, taskId: row.id, authorizedById: actor.accountId, reason: input.reason } }) : null;
+      await recordProjectEvent(tx, { organizationId: actor.organizationId, actorId: actor.accountId, eventName: "task.created", subjectType: "task", subjectId: row.id, reason: input.reason, after: { taskId: row.id, projectId: project?.id ?? null, routingAuthorizationId: routingAuthorization?.id ?? null, reviewRequirement, ownerEmployeeId: ownerId, type: row.type, priority: row.priority, targetDate: input.targetDate, version: row.version, planItemId: row.planItemId, tags: row.tags, checklist: row.checklist, ...(parentTaskId ? { parentTaskId } : {}) } });
       return row;
   }
 

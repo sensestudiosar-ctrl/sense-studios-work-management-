@@ -17,6 +17,7 @@ describe("ProjectWorkspace", () => {
       if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
       if (url === `/api/v1/projects/${project.id}`) return response({ project, capabilities: {} });
       if (url === `/api/v1/documents/projects/${project.id}`) return response({ project: { id: project.id }, files: [{ id: "file-1", fileName: "Specification.pdf", viewOnly: false }] });
+      if (url.endsWith("/confirmed-drawings")) return response({ items: [] });
       if (url.startsWith("/api/v1/reviews/inbox?")) return response({ total: 0, items: [] });
       return response({}, 404);
     }));
@@ -27,7 +28,8 @@ describe("ProjectWorkspace", () => {
     fireEvent.click(screen.getByRole("button", { name: "Documents" }));
     await screen.findByText("Specification.pdf");
     expect(screen.getByRole("link", { name: "Open documents" })).toHaveAttribute("href", `/documents?projectId=${project.id}`);
-    expect(calls.filter(url => url.includes("/reviews/"))).toHaveLength(0);
+    expect(calls.filter(url => url.includes("/reviews/inbox"))).toHaveLength(0);
+    expect(calls.filter(url => url.endsWith("/confirmed-drawings"))).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: "Reviews" }));
     await screen.findByText("No waiting internal review rounds available to you in this project.");
     expect(screen.queryByText("Specification.pdf")).not.toBeInTheDocument();
