@@ -104,3 +104,8 @@ After the Primary Client's formal final approval, open Projects, select the proj
 ## Final candidate checkpoint
 
 Candidate9f1da4b is accepted for activation, with exact evidence and remaining Owner migration/deployment decision recorded in TASK_REVIEW_ROUTING_CANDIDATE_ACCEPTANCE_2026-10-23.md. Earlier pending-check language above is historical. Overall feature/recovery remains IN PROGRESS until the retained upgrade and matched live release are verified.
+
+
+## Owner-approved activation completed
+
+The Owner accepted the explicit migration120 and9f1da4b activation request. The matched web/API release is live and READY on canonical local staging, with original174 tables/1,048 rows preserved before and after startup. See TASK_REVIEW_ROUTING_COMPLETION_2026-10-23.md for final evidence, independent acceptance and current-browser/production limits. Earlier pending-activation statements are retained historical checkpoints.

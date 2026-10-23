@@ -60,3 +60,7 @@ The page finder searches known workspace destinations with Ctrl/Cmd+K; it does n
 ## Shared navigation breakpoint and Dashboard refinement
 
 The mobile bottom bar belongs below768px. The shared desktop sidebar takes over at768px, regardless of collapsed preference. Keep later decorative rules free of unconditional display overrides. Run node scripts/recovery/navigation-responsive.mjs from the repository root after shell styling changes. Summary bars use only each readable source section; overlapping task cards are not a combined total. Unavailable evidence remains unavailable. Current exact local/hosted boundaries are recorded in V10_DATA_NAVIGATION_ACCEPTANCE_2026-10-22.md.
+
+## Approved task-review schema120 activation — 23 October2026
+
+The Owner explicitly approved migration20261023000000_task_review_work_routing and matched release9f1da4b140c005586dc909810ba267a2c156c500. Canonical runtime now requires120 with profile task-review-work-routing-20261023; web/API build9f1da4b140c0-1792732431728 and retained identity/readiness are verified. This is separate from the excluded client-password120. The installed bootstrap manifest supports the reviewed profile; predecessor/config/task backups are preserved. Do not point the120 retained database at a119 artifact or run an automatic down-migration. Future migrations still require their own authorization. Exact preservation and browser/production limits are recorded in docs/development/TASK_REVIEW_ROUTING_COMPLETION_2026-10-23.md.

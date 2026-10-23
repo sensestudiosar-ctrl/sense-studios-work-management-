@@ -1,6 +1,6 @@
-## Task work evidence and client routing — 2026-10-23, IN PROGRESS
+## Task work evidence and client routing — 2026-10-23, COMPLETE for controlled local staging
 
-REV owns immutable submitted work evidence and routing authorization/attempts; TSK captures client publishing authorization at task creation; S14 retains item/final approval authority and signature boundaries; DOC retains private bytes and file/Confidential access. Project Files composes a permission-checked Confirmed drawings projection of final-approved exact evidence, with labelled links and no implicit issue action. Candidate migration20261023000000_task_review_work_routing is tested only in owned fixtures; full acceptance and retained deployment remain pending. See docs/development/TASK_REVIEW_EVIDENCE_ROUTING_2026-10-23.md.
+REV owns immutable submitted evidence and durable publishing authorization/attempts; TSK captures current client-publishing authority at creation; S14 retains item/final approvals and signature rules; DOC retains private bytes and file/Confidential controls. Project Documents composes exact final-approved Confirmed drawings with labelled links and no implicit issue action. Owner-approved migration20261023000000_task_review_work_routing is deployed at120 on matched9f1da4b, with174 original tables/1,048 rows preserved and canonical readiness verified. See docs/development/TASK_REVIEW_ROUTING_COMPLETION_2026-10-23.md for candidate/deployment evidence and explicit limits.
 
 # Planned module registry
 

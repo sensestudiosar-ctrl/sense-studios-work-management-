@@ -1,5 +1,8 @@
 # Task review routing — accepted candidate, activation pending
 
+Activation follow-up: the Owner accepted this candidate and its reviewed migration/activation request. The matched release is now verified on canonical local staging. See TASK_REVIEW_ROUTING_COMPLETION_2026-10-23.md; pending-activation wording below is the preserved earlier checkpoint.
+
+
 The Owner-authorized feature is implemented and accepted for the controlled activation step. Overall recovery/feature work remains IN PROGRESS until the retained upgrade and matched deployed release are verified. The feature is not live.
 
 Selected commit: `9f1da4b140c005586dc909810ba267a2c156c500`.
