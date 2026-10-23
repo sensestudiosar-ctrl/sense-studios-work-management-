@@ -50,7 +50,7 @@ describe("standalone task register clarity", () => {
   it("makes phase shortcuts clear conflicting granular status filters through the existing query", async () => {
     const fetcher = install(); window.history.replaceState(null, "", "/tasks?scope=mine&status=IN_PROGRESS"); render(<TaskWorkspace csrfToken="csrf" owner={false} listFirst />);
     const phases = await screen.findByRole("navigation", { name: "Task phase" });
-    fireEvent.click(within(phases).getByRole("button", { name: "In review", exact: true }));
+    fireEvent.click(within(phases).getByRole("button", { name: "In review" }));
     await waitFor(() => expect(fetcher.mock.calls.some(([input]) => { const url = new URL(String(input), "http://localhost"); return url.pathname === "/api/v1/tasks" && url.searchParams.get("phase") === "review" && !url.searchParams.has("status"); })).toBe(true));
     expect(screen.getByLabelText("Task scope")).toHaveTextContent("Assigned to me");
   });
@@ -58,7 +58,7 @@ describe("standalone task register clarity", () => {
     install(); render(<TaskWorkspace csrfToken="csrf" owner listFirst />);
     const phases = await screen.findByRole("navigation", { name: "Task phase" });
     fireEvent.change(screen.getByLabelText("Search tasks"), { target: { value: "Pending search" } });
-    fireEvent.click(within(phases).getByRole("button", { name: "Active", exact: true }));
+    fireEvent.click(within(phases).getByRole("button", { name: "Active" }));
     expect(screen.getByLabelText("Search tasks")).toHaveValue("Pending search");
     expect(screen.getByText(/Filters changed/)).toBeInTheDocument();
     expect(new URL(window.location.href).searchParams.get("q")).toBeNull();
@@ -85,7 +85,7 @@ describe("standalone task register clarity", () => {
     expect(fireEvent.click(screen.getByRole("link", { name: "Open correction instructions in internal review" }))).toBe(false);
     expect(confirm).toHaveBeenCalledWith("Discard unsaved task changes?");
     expect(within(next).getByLabelText("Reason for change")).toHaveValue("Unsaved reason");
-    fireEvent.click(within(screen.getByRole("navigation", { name: "Task phase" })).getByRole("button", { name: "Active", exact: true }));
+    fireEvent.click(within(screen.getByRole("navigation", { name: "Task phase" })).getByRole("button", { name: "Active" }));
     expect(within(next).getByLabelText("Reason for change")).toHaveValue("Unsaved reason");
     confirm.mockRestore();
   });
