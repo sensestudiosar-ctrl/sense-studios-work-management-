@@ -1,3 +1,7 @@
+## TUX-01–06 Tasks clarity — Owner authorized all findings, 2026-10-23
+
+IN PROGRESS. Requirement slice: R-018.a–b/R-019.a–c task ownership and visible context; R-021.a–b/R-023.a/R-024.a–b existing task state/date gates; R-027–029/R-037 exact review sequencing; R-099.a–f access; R-100–102 regressions/accessibility/responsive behavior. Implement docs/ui/TASKS_UI_UX_REVIEW_2026-10-23.md findings in the existing standalone Tasks route: repair overlapping rows, nearby primary action/reason, disclose management forms, compact toolbar/filters, disambiguated personal scope, understandable phase/review guidance, readable people/date metadata. Preserve My Work and Project embeddings, existing commands/capabilities/audit reasons, distinct dates and review state machine. No backend/schema/migration/new permission/default data filtering or retained fixture writes. Existing Sense visual system/screens lock the design target; ui-ux-pro-max checklist and observed audit guide hierarchy. Acceptance: meaningful action/payload/filter regressions, source-isolated CSS, desktop/mobile long-content list/detail/keyboard/back checks, pinned source gates/build, applicable browser regression, independent review and exact matched app-only staging with data preservation. Concurrent Dashboard/Time edits and pre-existing plan edits must remain preserved/excluded.
+
 <!-- Exact final V10 acceptance is recorded in V10_COMPLETION_REPORT_2026-10-21.md; historical plan checkpoints below remain preserved. -->
 ## Task review evidence and automatic routing — Owner request, 2026-10-23
 

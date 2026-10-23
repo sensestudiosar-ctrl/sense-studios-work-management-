@@ -1000,15 +1000,15 @@ describe("TaskWorkspace", () => {
     const firstRow = first.closest(".task-queue-row")!;
     const secondRow = screen.getByRole("button", { name: "Open task: Queue task 1" }).closest(".task-queue-row")!;
     expect(firstRow).toHaveTextContent("Asha");
-    expect(firstRow).toHaveTextContent("LOW");
+    expect(firstRow).toHaveTextContent("Low");
     expect(firstRow).toHaveTextContent("Concept");
-    expect(firstRow).toHaveTextContent("Not committed");
-    expect(firstRow).toHaveTextContent("2026-10-12");
-    expect(secondRow).toHaveTextContent("2026-10-20");
+    expect(firstRow.querySelector(".task-queue-committed strong")).toHaveTextContent("\u2014");
+    expect(firstRow).toHaveTextContent("12 Oct 2026");
+    expect(secondRow).toHaveTextContent("20 Oct 2026");
     expect(first).toHaveAccessibleDescription(/Primary owner: Asha\. Priority: LOW\. Status: Not started/);
     expect(secondRow).toHaveTextContent("Task owner");
     expect(secondRow).toHaveTextContent("Needs reassignment after employee exit");
-    for (const priority of priorities) expect(screen.getAllByText(priority, { selector: ".task-priority" }).length).toBeGreaterThan(0);
+    for (const priority of priorities) expect(screen.getAllByText(priority.toLowerCase().replace(/^./, letter => letter.toUpperCase()), { selector: ".task-priority" }).length).toBeGreaterThan(0);
     for (const status of statuses) expect(screen.getByText(status.toLowerCase().replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase()), { selector: ".task-state" })).toBeInTheDocument();
     expect(screen.queryByText("Dev", { selector: ".task-queue-cell" })).not.toBeInTheDocument();
     expect(fetchMock.mock.calls.some(([url]) => String(url).includes("/api/v1/tasks/queue-"))).toBe(false);
@@ -1029,7 +1029,7 @@ describe("TaskWorkspace", () => {
     const scope = screen.getByLabelText("Task scope");
     // Owner role is offered the demo's two scopes; both are existing backend
     // scopes (`mine` and `all`), only the labels follow the demo.
-    expect(within(scope).getAllByRole("option").map((option) => option.textContent)).toEqual(["My Work", "Organization"]);
+    expect(within(scope).getAllByRole("option").map((option) => option.textContent)).toEqual(["Assigned to me", "Organization"]);
     const display = screen.getByLabelText("Task display mode");
     fireEvent.change(display, { target: { value: "timeline" } });
     expect(new URL(window.location.href).searchParams.get("view")).toBe("timeline");
