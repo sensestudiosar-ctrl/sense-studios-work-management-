@@ -20,17 +20,24 @@ import { ProjectTemplateService } from "./project-template.service.js";
 import { TaskService } from "./task.service.js";
 import { ReviewService } from "./review.service.js";
 import { DocumentService } from "./document.service.js";
-import { AccountKind, PrismaClient } from "./generated/prisma/client.js";
+import { AccountKind, PrismaClient, type Prisma } from "./generated/prisma/client.js";
 import { AuthorizationService } from "./authorization.service.js";
 import { ApprovalService } from "./approval.service.js";
 import { loadAgent1BrowserTarget, verifyAgent1BrowserDatabase } from "./v1-agent1-browser-target.js";
 import { loadRecoveryTestTarget } from "./recovery-test-target.js";
+import { reviewRoutingTestTarget, verifyReviewRoutingTestDatabase } from "./review-routing-test-target.js";
 
 // Operator-only: standard unit/integration/e2e discovery does not match this filename.
 // Real session fixtures exercise ordinary guards; passkey/onboarding acceptance is separate.
 const root = resolve(process.cwd(), "../..");
 const recoveryBrowser = process.env.SENSE_RECOVERY_TEST_MANIFEST ? loadRecoveryTestTarget(process.env, root, "RECOVERY_BROWSER_DATABASE_URL") : undefined;
-const base = recoveryBrowser ? resolve(dirname(process.env.SENSE_RECOVERY_TEST_MANIFEST!), "agent1-browser") : resolve(root, ".artifacts/v1/20261016-agent1-browser");
+const reviewBrowser = process.env.SENSE_REVIEW_ROUTING_TEST_RUN ? reviewRoutingTestTarget(root, "S27_PARITY_DATABASE_URL") : undefined;
+const base = reviewBrowser ? resolve(reviewBrowser.state.base, "management-browser") : recoveryBrowser ? resolve(dirname(process.env.SENSE_RECOVERY_TEST_MANIFEST!), "agent1-browser") : resolve(root, ".artifacts/v1/20261016-agent1-browser");
+function browserTarget() { return reviewBrowser ? { url: reviewBrowser.url, manifest: { storage: resolve(base, "files") } } : loadAgent1BrowserTarget(process.env, root); }
+async function verifyBrowserDatabase(client: Prisma.TransactionClient): Promise<void> {
+  if (reviewBrowser) await verifyReviewRoutingTestDatabase(client, reviewBrowser);
+  else await verifyAgent1BrowserDatabase(client, loadAgent1BrowserTarget(process.env, root).manifest);
+}
 const apiPort = recoveryBrowser?.target.apiPort ?? 59752, webPort = recoveryBrowser?.target.webPort ?? 59753;
 const webOrigin = `http://127.0.0.1:${webPort}`;
 const hash = (value: string | Buffer): string => createHash("sha256").update(value).digest("hex");
@@ -47,11 +54,11 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
   const serverErrors: Array<{ path: string; name?: string; code?: string; detail: string }> = [];
   let directoryRead: { projects: number; returned: number; queries: number; elapsedMs: number } | undefined;
   beforeAll(async () => {
-    const target = loadAgent1BrowserTarget(process.env, root); // Must fail before any connection/startup.
+    const target = browserTarget(); // Must fail before any connection/startup.
     const config: RuntimeConfig = { nodeEnv: "test", databaseUrl: target.url, port: apiPort, webOrigin,
       nasRoot: target.manifest.storage, ownerBootstrapEmail: undefined, ownerBootstrapSecret: undefined };
     guardDatabase = new DatabaseService(config);
-    await verifyAgent1BrowserDatabase(guardDatabase.prisma, target.manifest);
+    await verifyBrowserDatabase(guardDatabase.prisma);
     for (const port of [apiPort, webPort]) await new Promise<void>((done, reject) => {
       const server = createServer(); server.once("error", reject); server.listen(port, "127.0.0.1", () => server.close(error => error ? reject(error) : done()));
     });
@@ -70,7 +77,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     app.useGlobalInterceptors(observer); // Observes errors; preserves ordinary exception handling.
     app.enableCors({ origin: webOrigin, credentials: true }); app.use(express.json({ limit: "1mb" })); app.setGlobalPrefix("api/v1");
     await app.listen(apiPort, "127.0.0.1"); database = app.get(DatabaseService);
-    await verifyAgent1BrowserDatabase(database.prisma, target.manifest);
+    await verifyBrowserDatabase(database.prisma);
     const webLog = createWriteStream(resolve(base, "web.log"), { flags: "a" });
     web = spawn(process.execPath, [resolve(root, "apps/web/node_modules/vite/bin/vite.js"), "--host", "127.0.0.1", "--port", String(webPort), "--strictPort"], {
       cwd: resolve(root, "apps/web"), env: { ...process.env, API_PROXY_TARGET: `http://127.0.0.1:${apiPort}` }, shell: false, windowsHide: true, stdio: ["ignore", "pipe", "pipe"]
@@ -624,11 +631,11 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
   }, 180000);
 
   it("bounds the real Project directory query independently of accumulated fixture rows", async () => {
-    const target = loadAgent1BrowserTarget(process.env, root);
+    const target = browserTarget();
     const measured = new PrismaClient({ adapter: new PrismaPg({ connectionString: target.url, options: "-c timezone=UTC" }), log: [{ emit: "event", level: "query" }] });
     let queries = 0; measured.$on("query", () => { queries++; });
     try {
-      await verifyAgent1BrowserDatabase(measured, target.manifest);
+      await verifyBrowserDatabase(measured);
       const owner = await measured.account.findFirstOrThrow({ where: { kind: "OWNER", state: "ACTIVE" } });
       const db = { prisma: measured } as unknown as DatabaseService;
       const actor = await new ProjectService(db).actor(owner.id), projects = await measured.project.count({ where: { organizationId: actor.organizationId } });
