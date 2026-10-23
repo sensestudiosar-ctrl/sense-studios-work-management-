@@ -1,0 +1,13 @@
+# My Work management scopes
+
+Status: IN PROGRESS. Owner requested the demo's Owner/Leader scope switching and team/employee drill-down on the existing My Work route. Requirement/slice boundary: MW-ROLE in IMPLEMENTATION_PLAN.md.
+
+Reference lock: docs/design/my-work-prototype/main.tsx and docs/design/my-work-review/06-leader-owner-work.md separate personal work from management oversight. Reuse the existing pine/paper shell and My Work list, drawers and filters. Adopt the context switch and direct team/employee selectors; do not import synthetic people, management commands or invented progress percentages.
+
+My Work remains the primary-owner/collaborator personal queue with personal actions, review and decision counts. All teams is organization-scoped for Owner and the existing authorized reporting/project union for staff. A configured Leader presentation or existing server canAssign projection exposes the management entry; neither grants new access. Ordinary employees remain personal unless they have current management authority. Team and employee filters intersect canonical task authorization before counting/pagination. Current primary-owner home Team determines grouping; it does not infer a project Team or historical Team.
+
+Setup adds homeTeamId/name only to the already-authorized employee projection. Selectors are based on those current active eligible employees. Organization tasks with exited owners remain visible in All teams under existing visibility, even if that owner is no longer a selector candidate. No team roster expansion, new permission, schema/migration, task mutation or retained fixture write is introduced. Task-review migration120 remains unchanged.
+
+Scope switches clear personal temporary metrics, row selection, paging and filters after the existing drawer leave guard. Team changes clear employee selection. Management preserves search/filter/sort/status, display modes, Refresh, task creation and ordinary exact-task actions. Personal saved views/customization remain in personal context. Management totals are exact server-filtered task totals; displayed grouping applies only to the current page. Personal review/decision counts are never labeled team totals.
+
+Acceptance in progress: focused scope/bookmark/saved-view tests; real PostgreSQL Owner/manager/unmanaged-peer intersections; authenticated Owner/Leader screenshots at1440/1024/783/390/320; selected-source quality gates, independent source/visual review and exact matched canonical staging verification. Unrelated Time/composer work remains preserved and excluded. No hosted or production completion claim.

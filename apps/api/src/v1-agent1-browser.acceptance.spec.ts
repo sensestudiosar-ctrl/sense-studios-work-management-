@@ -325,6 +325,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
     };
     const leader = await createPerson("v10-leader"), site = await createPerson("v10-site");
     await database.prisma.employee.update({ where: { id: f.worker.employee.id }, data: { reportsToId: leader.employee.id } });
+    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "task.assign", effect: "ALLOW", scopeKind: "TEAM", branchId: f.branch.id, teamId: leader.employee.homeTeamId, reason: "Explicit reporting-tree management for My Work scope acceptance" } });
     await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "performance.manage", effect: "ALLOW", scopeKind: "TEAM", branchId: f.branch.id, teamId: leader.employee.homeTeamId, reason: "Explicit scoped V10 Team Leader fixture" } });
     const otherBranch = await database.prisma.branch.create({ data: { organizationId: f.organization.id, name: `V10 other ${randomUUID()}` } });
     const otherTeam = await database.prisma.team.create({ data: { organizationId: f.organization.id, branchId: otherBranch.id, name: "Other team" } });
@@ -343,6 +344,22 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
       const scoreReads: string[] = [];
       page.on("request", request => { if (/\/performance\/employees\//.test(request.url())) scoreReads.push(request.url()); });
       try {
+        if (identity.key === "owner" || identity.key === "leader") {
+          await page.goto("/my-work?scope=personal&phase=active");
+          await page.getByRole("button", { name: "All teams", exact: true }).click();
+          await expectPage(page.getByRole("combobox", { name: "Work team", exact: true })).toBeVisible();
+          await page.getByRole("combobox", { name: "Work team", exact: true }).selectOption(f.worker.employee.homeTeamId);
+          await page.getByRole("combobox", { name: "Work employee", exact: true }).selectOption(f.worker.employee.id);
+          await expectPage(page.locator(".my-work-queue-heading")).toContainText(identity.key === "owner" ? "Organization queue" : "Authorized team queue");
+          await expectPage(page.locator(".my-work-demo-row").first()).toBeVisible();
+          for (const viewport of [...viewports, { width: 783, height: 884 }]) {
+            await page.setViewportSize(viewport);
+            await capture(page, viewport, `management-${identity.key}-drilldown`);
+          }
+          await page.getByRole("button", { name: "My Work", exact: true }).click();
+          await expectPage(page.getByRole("combobox", { name: "Work team", exact: true })).toHaveCount(0);
+        }
+        await page.setViewportSize(viewports[0]!);
         await page.goto("/dashboard");
         await expectPage(page.locator(".dv-summary-card")).toHaveCount(5);
         await expectPage(page.locator(".dv-widget").filter({ has: page.getByRole("heading", { name: "Time tracking", exact: true }) })).toBeVisible();

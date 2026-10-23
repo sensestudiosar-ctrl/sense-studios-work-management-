@@ -155,6 +155,22 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     return { prisma, org, owner, person, authorization, approvals, workflows, tasks, documents, revisions, reviews, work, token, today, input };
   }
   type Fixture = Awaited<ReturnType<typeof fixture>>;
+  it("intersects team and employee drill-down with current authorized task visibility", async () => {
+    const f = await fixture();
+    const task = await f.tasks.create(f.owner, f.input);
+    const worker = f.person("worker"), outsider = f.person("outsider");
+    const teamId = worker.employee.homeTeamId;
+    const ownerView = await f.tasks.list(f.owner, "all", 0, 50, { teamId, ownerEmployeeId: worker.employee.id });
+    expect(ownerView.items.some(row => row.id === task.id)).toBe(true);
+    const otherTeam = await f.prisma.team.create({ data: { organizationId: f.org.id, branchId: worker.employee.homeBranchId, name: `${f.token} other team` } });
+    expect((await f.tasks.list(f.owner, "all", 0, 50, { teamId: otherTeam.id, ownerEmployeeId: worker.employee.id })).total).toBe(0);
+    // Same Team and project membership alone do not grant another person's task.
+    expect((await f.tasks.list(outsider.actor, "all", 0, 50, { teamId, ownerEmployeeId: worker.employee.id })).total).toBe(0);
+    const manager = f.person("manager");
+    expect((await f.tasks.list(manager.actor, "all", 0, 50, { teamId, ownerEmployeeId: worker.employee.id })).items.some(row => row.id === task.id)).toBe(true);
+    const setup = await f.tasks.setup(f.owner);
+    expect(setup.employees.find(row => row.id === worker.employee.id)).toMatchObject({ homeTeamId: teamId });
+  });
   async function start(f: Fixture, id: string, actor = f.owner) {
     const task = await f.prisma.task.findUniqueOrThrow({ where: { id } });
     return f.tasks.transition(actor, id, { toState: "IN_PROGRESS", expectedVersion: task.version, reason: why });
