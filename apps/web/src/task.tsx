@@ -685,7 +685,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
   const creationHeading = creationVariant === "OWNER" ? "Create or assign a task" : creationVariant === "LEADER" ? "Assign work" : creationVariant === "SITE" ? "Create site work" : "Create my task";
   const compactOptionalPlanning = creationVariant === "EMPLOYEE" || creationVariant === "SITE";
   const hasTaskCommands = !!detail && (Object.values(detail.capabilities ?? {}).some(Boolean) || !!detail.extensions?.some(item => item.canDecide || item.canWithdraw) || !!recurrence && Object.values(recurrence.capabilities ?? {}).some(Boolean));
-  const taskListTitle = projectContext ? "Project tasks" : personalOnly ? scope === "all" ? "Team and employee tasks" : "My tasks" : !listFirst ? owner ? "Organization tasks" : scope === "mine" ? "My tasks" : "Assigned tasks" : owner && (scope === "mine" || scope === "assigned") ? "Organization tasks (legacy scope)" : scope === "mine" ? "My primary tasks" : scope === "assigned" ? "Collaborating or managed tasks" : scope === "owned" ? "Owned by me" : scope === "created" ? "Created by me" : scope === "collaborating" ? "Collaborating" : owner ? "All organization tasks" : "All visible tasks";
+  const taskListTitle = projectContext ? "Project tasks" : personalOnly ? scope === "all" ? "Team and employee tasks" : "My tasks" : !listFirst ? owner ? "Organization tasks" : scope === "mine" ? "My tasks" : "Assigned tasks" : owner && (scope === "mine" || scope === "assigned") ? registerMode ? "All organization tasks" : "Organization tasks (legacy scope)" : scope === "mine" ? "My primary tasks" : scope === "assigned" ? "Collaborating or managed tasks" : scope === "owned" ? "Owned by me" : scope === "created" ? "Created by me" : scope === "collaborating" ? "Collaborating" : owner ? "All organization tasks" : "All visible tasks";
   /**
    * Scope tabs follow the server-derived presentation role, matching the
    * demo's role-dependent scope bar. Every value here is an existing
@@ -702,7 +702,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
   const visibleScopeOptions = (() => {
     if (projectContext) return [{ scope: "all" as Scope, label: "Project tasks" }];
     const mine = { scope: "mine" as Scope, label: registerMode ? "Assigned to me" : "My Work" };
-    if (owner) return [mine, { scope: "all" as Scope, label: "Organization" }];
+    if (owner) return registerMode ? [{ scope: "all" as Scope, label: "Organization" }] : [mine, { scope: "all" as Scope, label: "Organization" }];
     if (creationVariant === "LEADER") return [mine, { scope: "assigned" as Scope, label: "My Team" }];
     if (creationVariant === "SITE") return [mine, { scope: "all" as Scope, label: "Site work" }];
     return [mine];

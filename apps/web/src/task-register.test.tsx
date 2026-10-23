@@ -48,7 +48,7 @@ describe("standalone task register clarity", () => {
     expect(screen.getByText("Reassign owner", { selector: "summary" }).closest("details")).not.toHaveAttribute("open");
   });
   it("makes phase shortcuts clear conflicting granular status filters through the existing query", async () => {
-    const fetcher = install(); window.history.replaceState(null, "", "/tasks?scope=all&status=IN_PROGRESS"); render(<TaskWorkspace csrfToken="csrf" owner listFirst />);
+    const fetcher = install(); window.history.replaceState(null, "", "/tasks?scope=mine&status=IN_PROGRESS"); render(<TaskWorkspace csrfToken="csrf" owner={false} listFirst />);
     const phases = await screen.findByRole("navigation", { name: "Task phase" });
     fireEvent.click(within(phases).getByRole("button", { name: "In review", exact: true }));
     await waitFor(() => expect(fetcher.mock.calls.some(([input]) => { const url = new URL(String(input), "http://localhost"); return url.pathname === "/api/v1/tasks" && url.searchParams.get("phase") === "review" && !url.searchParams.has("status"); })).toBe(true));

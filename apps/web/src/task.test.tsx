@@ -1029,7 +1029,7 @@ describe("TaskWorkspace", () => {
     const scope = screen.getByLabelText("Task scope");
     // Owner role is offered the demo's two scopes; both are existing backend
     // scopes (`mine` and `all`), only the labels follow the demo.
-    expect(within(scope).getAllByRole("option").map((option) => option.textContent)).toEqual(["Assigned to me", "Organization"]);
+    expect(within(scope).getAllByRole("option").map((option) => option.textContent)).toEqual(["Organization"]);
     const display = screen.getByLabelText("Task display mode");
     fireEvent.change(display, { target: { value: "timeline" } });
     expect(new URL(window.location.href).searchParams.get("view")).toBe("timeline");
