@@ -2,7 +2,7 @@ import { expect, type Page, type TestInfo } from "@playwright/test";
 
 export async function verifyDashboardSummaryLayout(page: Page, info: TestInfo, width: number): Promise<void> {
   const strip = page.locator(".dv-summary-strip");
-  await expect(strip.locator("button.dv-summary-card")).toHaveCount(5);
+  await expect(strip.locator("a.dv-summary-card")).toHaveCount(5);
   const layout = await strip.evaluate(element => {
     const bounds = element.getBoundingClientRect();
     return { width: bounds.width, left: bounds.left, right: bounds.right, overflow: element.scrollWidth > element.clientWidth + 1,
