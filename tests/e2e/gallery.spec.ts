@@ -113,7 +113,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     const drawing = await revisions.createDrawing(owner, projectId, { documentNumber: `S15-${suffix.slice(0, 8)}`, title: "Approved presentation elevation", fileId: source.id, reason: "Register exact initial R0" });
     const task = await tasks.create(owner, { projectId, ownerEmployeeId: staff[1]!.employee.id, title: `S15 approved task ${suffix.slice(0, 8)}`, type: "PROJECT", priority: "HIGH", targetDate: "2026-12-31", reviewRequirement: TaskReviewRequirement.BOTH, reason: "Create exact-revision review task" });
     await new ReviewRoutingService(database, clientReviews, scope).revoke(owner, task.id, "Preserve explicit manual publication for the gallery regression");
-    await reviews.assignReviewer(manager, task.id, { employeeId: staff[2]!.employee.id, expectedVersion: task.version, reason: "Assign independent S15 reviewer" });
+    await reviews.assignReviewer(manager, task.id, { employeeId: staff[2]!.employee.id, expectedVersion: (await database.prisma.task.findUniqueOrThrow({ where: { id: task.id } })).version, reason: "Assign independent S15 reviewer" });
     let taskVersion = (await database.prisma.task.findUniqueOrThrow({ where: { id: task.id } })).version;
     await tasks.transition(submitter, task.id, { toState: "IN_PROGRESS", expectedVersion: taskVersion, reason: "Start exact-revision task" });
     taskVersion = (await database.prisma.task.findUniqueOrThrow({ where: { id: task.id } })).version;

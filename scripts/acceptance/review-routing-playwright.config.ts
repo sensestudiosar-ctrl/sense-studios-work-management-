@@ -21,6 +21,7 @@ export default defineConfig({
   webServer: servers.map((server, index) => ({
     ...server,
     reuseExistingServer: false,
+    cwd: index === 0 ? root : resolve(root, "apps/web"),
     command: index === 0
       ? `${quote(process.execPath)} ${quote(resolve(root, "apps/api/dist/main.js"))}`
       : `${quote(process.execPath)} ${quote(resolve(root, "apps/web/node_modules/vite/bin/vite.js"))} preview --host 127.0.0.1 --port 58431 --strictPort`
