@@ -11,7 +11,7 @@ import { TaskRefinementFields } from "./task-refinement-fields.js";
 import { taskRefinementError, selectionValues } from "./task-query-refinements.js";
 import { TaskCreateDialog } from "./task-create-dialog.js";
 import { TaskDetailDrawer } from "./task-detail-drawer.js";
-import { MyWorkTopCards, overdueTaskFilters } from "./my-work-metrics.js";
+import { MyWorkTopCards, overdueTaskFilters, previousCalendarDay } from "./my-work-metrics.js";
 import { MyWorkMetricFocus } from "./my-work-metric-focus.js";
 import type { OverdueCalendar } from "./my-work-metrics.js";
 import { MyWorkQueuePreferences } from "./my-work-queue-preferences.js";
@@ -170,6 +170,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
   const [urlTaskId, setUrlTaskId] = useState(initialUrlState.taskId);
   const [temporaryPhase, setTemporaryPhase] = useState(initialUrlState.temporaryPhase);
   const [overdueCalendar, setOverdueCalendar] = useState<OverdueCalendar>({ status: "loading" });
+  const [managementToday, setManagementToday] = useState<string>();
   const workspaceRef = useRef<HTMLElement>(null);
   const queueHeadingRef = useRef<HTMLHeadingElement>(null);
   const displayOptionsRef = useRef<HTMLDetailsElement>(null);
@@ -680,7 +681,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
   const creationVariant: CreationProfile["variant"] = owner ? "OWNER" : profileIsValid && profile.variant !== "OWNER" ? profile.variant : "EMPLOYEE";
   const siteSummaryPresentation = !owner && !!setup?.actorEmployeeId && profileIsValid && profile.variant === "SITE" && profile.resolution === "CONFIGURED_ROLE";
   const creationHeading = creationVariant === "OWNER" ? "Create or assign a task" : creationVariant === "LEADER" ? "Assign work" : creationVariant === "SITE" ? "Create site work" : "Create my task";
-  const compactOptionalPlanning = creationVariant !== "OWNER" && creationVariant !== "LEADER";
+  const compactOptionalPlanning = creationVariant === "EMPLOYEE" || creationVariant === "SITE";
   const hasTaskCommands = !!detail && (Object.values(detail.capabilities ?? {}).some(Boolean) || !!detail.extensions?.some(item => item.canDecide || item.canWithdraw) || !!recurrence && Object.values(recurrence.capabilities ?? {}).some(Boolean));
   const taskListTitle = projectContext ? "Project tasks" : personalOnly ? scope === "all" ? "Team and employee tasks" : "My tasks" : !listFirst ? owner ? "Organization tasks" : scope === "mine" ? "My tasks" : "Assigned tasks" : owner && (scope === "mine" || scope === "assigned") ? "Organization tasks (legacy scope)" : scope === "mine" ? "My primary tasks" : scope === "assigned" ? "Collaborating or managed tasks" : scope === "owned" ? "Owned by me" : scope === "created" ? "Created by me" : scope === "collaborating" ? "Collaborating" : owner ? "All organization tasks" : "All visible tasks";
   /**
@@ -713,6 +714,15 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
    */
   const activeScopeOption = visibleScopeOptions.some(option => option.scope === scope) ? scope : visibleScopeOptions[0]?.scope ?? "mine";
   const managementWork = personalOnly && scope === "all";
+  useEffect(() => {
+    if (!managementWork) return;
+    let current = true; setManagementToday(undefined);
+    void fetch("/api/v1/dashboard/sources/tasks", { credentials: "include", cache: "no-store" })
+      .then(response => json<{ today: string }>(response))
+      .then(calendar => { previousCalendarDay(calendar.today); if (current) setManagementToday(calendar.today); })
+      .catch(() => { if (current) setManagementToday(undefined); });
+    return () => { current = false; };
+  }, [managementWork, summaryRevision]);
   const canOverseeWork = owner || creationVariant === "LEADER" || setup?.canAssign === true;
   const managementTeams = [...new Map((setup?.employees ?? []).filter(employee => employee.homeTeamId).map(employee => [employee.homeTeamId!, { id: employee.homeTeamId!, name: employee.homeTeamName ?? "Team", branchId: employee.homeBranchId }])).values()];
   const managementEmployees = (setup?.employees ?? []).filter(employee => !filters.teamId || employee.homeTeamId === filters.teamId);
@@ -1002,7 +1012,7 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
    * earliest target date on the page stands in so rows still group; the
    * `my-work-parity-page-note` line keeps the page boundary honest.
    */
-  const parityToday = overdueCalendar.before ?? (visiblePage?.items ?? []).map((task) => task.targetDate.slice(0, 10)).sort()[0] ?? "";
+  const parityToday = managementWork ? managementToday ?? "" : overdueCalendar.before ?? (visiblePage?.items ?? []).map((task) => task.targetDate.slice(0, 10)).sort()[0] ?? "";
   /** Open a parity row through the same guarded path the legacy rows use. */
   const openParityTask = useCallback((taskId: string) => {
     if ((personalOnly || projectContext) && taskId !== selectedId && !leaveDrawerTask()) return;
@@ -1061,7 +1071,8 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner, 
     {listFirst && view === "board" && <section className="task-board" aria-label="Tasks grouped by status"><h3>Kanban <span>Counts show tasks on this page only.</span></h3><div className="task-board-columns">{TASK_STATUSES.map((status) => { const tasks = visiblePage.items.filter((task) => task.status === status); return <section className="task-board-column" key={status}><h4>{stateLabel(status)} <span>{tasks.length}</span></h4>{tasks.length ? tasks.map((task) => renderTaskButton(task, " task-board-card")) : <TaskEmptyState message="No tasks on this page." showClearFilters={true} onClearFilters={resetFilters} />}</section>; })}</div></section>}
     {listFirst && view === "timeline" && <section className="task-timeline" aria-label="Task dates timeline"><h3>Timeline <span>Recorded dates are shown separately; duration is not calculated.</span></h3>{visiblePage.items.length === 0 ? <TaskEmptyState message="No tasks on this page." showClearFilters={true} onClearFilters={resetFilters} /> : <ol>{visiblePage.items.map((task) => <li key={task.id}>{renderTaskButton(task, " task-timeline-task")}<dl><div><dt>Start date</dt><dd>{task.startDate?.slice(0, 10) ?? "Not set"}</dd></div><div><dt>Target date</dt><dd>{task.targetDate.slice(0, 10)}</dd></div><div><dt>Committed date</dt><dd>{task.committedDueDate?.slice(0, 10) ?? "Not committed"}</dd></div></dl></li>)}</ol>}</section>}
     {parityEnabled && view === "list" && visiblePage.items.length > 0 && <div className="my-work-parity-queue">
-      <MyWorkParityList rows={parityRows} today={parityToday} groupBy="due" selectedId={selectedId} loading={loading} {...(denied ? { error: "You do not have access to these tasks." } : {})} onOpenTask={openParityTask} />
+      <MyWorkParityList rows={parityRows} today={parityToday} groupBy={managementWork && !managementToday ? "priority" : "due"} selectedId={selectedId} loading={loading} {...(denied ? { error: "You do not have access to these tasks." } : {})} onOpenTask={openParityTask} />
+      {managementWork && !managementToday && <p className="my-work-parity-page-note">Organization calendar unavailable or loading. Grouped by priority; overdue comparison is unavailable.</p>}
       <p className="my-work-parity-page-note">Grouping and &ldquo;Show more&rdquo; apply to this page only.</p>
     </div>}
     {(!listFirst || view === "list" || !!selected && !personalOnly) && <div className={`task-columns${listFirst && view === "list" && (!selected || personalOnly) ? " task-queue-no-selection" : ""}`}><nav className={`task-list${listFirst && view === "list" ? " task-queue-list" : ""}`} aria-label={taskListTitle}>{!(parityEnabled && view === "list") && <><h3>{taskListTitle}<span>{visiblePage.total}</span></h3>{listFirst && view === "list" && <div className="task-queue-header" aria-hidden="true"><span>Task</span><span>People · Primary owner</span><span>Priority</span><span>Status</span><span>Target</span><span>Committed</span><span>Next action</span></div>}</>}{visiblePage.items.length === 0 ? <TaskEmptyState message={managementWork ? "No authorized tasks match this team, employee and filters." : personalOnly ? employeeLessOwnerPersonal ? "This Owner account is not linked to an employee. Open organization work to manage tasks." : "No tasks are assigned to you or include you as a collaborator." : owner && scope !== "owned" && scope !== "created" && scope !== "collaborating" ? "No organization tasks match these filters." : scope === "mine" ? "No primary tasks match these filters." : scope === "owned" ? "No tasks are owned by you." : scope === "created" ? "No tasks were created by you that match these filters." : scope === "collaborating" ? "No tasks include you as a collaborator." : scope === "assigned" ? "No collaborating or managed tasks match these filters." : "No visible tasks match these filters."} showClearFilters={!employeeLessOwnerPersonal} onClearFilters={resetFilters} /> : !(parityEnabled && view === "list") && visiblePage.items.map((task) => renderTaskButton(task))}</nav>

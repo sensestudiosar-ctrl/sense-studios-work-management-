@@ -338,6 +338,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
           await page.getByRole("combobox", { name: "Work team", exact: true }).selectOption(employee.homeTeamId);
           await page.getByRole("combobox", { name: "Work employee", exact: true }).selectOption(f.worker.employee.id);
           await expectPage(page.locator(".my-work-demo-row").filter({ hasText: task.title })).toBeVisible();
+          await expectPage(page.locator(".my-work-group-head").filter({ hasText: "Today" })).toHaveCount(0);
           expect(new URL(page.url()).searchParams.get("scope")).toBe("all");
           expect(new URL(page.url()).searchParams.get("ownerEmployeeId")).toBe(f.worker.employee.id);
         } else {
