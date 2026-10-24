@@ -1,3 +1,7 @@
+## SHELL-REL-24 — Owner deployment: controlled local staging, 2026-10-24
+
+COMPLETE for controlled local staging. Selected70b047cd57af5d4a755e45c5c99b06e4039a46c8 is live with matched web/API build70b047cd57af-1792849822919 and READY status. Exact-export685 web unit,12 staging-operation,57/57 full browser and224 sealed layout checks passed; cache/draft/capture, independent review and retained-data checks recorded. FND SC-00/SC-01, existing R-005/R-006/R-007/R-071, R-100–R-102. No retained migration/seed, production or remote merge/push; concurrent changes excluded. See docs/development/SHARED_SHELL_STAGING_2026-10-24.md.
+
 ## SHELL-MARK-24 — marked Dashboard header/title/gutters, 2026-10-24
 
 Bounded frontend implementation verified; release/whole-checkout acceptance IN PROGRESS. FND SC-00/SC-01, R-005/R-006 unchanged session/navigation, R-071 responsive presentation, R-100–R-102 accessibility/regression. Shared top bar/Dashboard gutters remain; common route-title typography and removal of the automatic gold outline are implemented, with assistive route/skip focus and control rings preserved. Skills/Library failed-read headings and replacement markers are included. Final41 focused tests, web typecheck/scoped lint/build and224 production synthetic layout checks passed. Exact source/reference/evidence and limits: docs/ui/SHELL_MARKED_FEEDBACK_2026-10-24.md. No backend/schema/retained data, independent or canonical promotion acceptance. Concurrent edits remain excluded.
