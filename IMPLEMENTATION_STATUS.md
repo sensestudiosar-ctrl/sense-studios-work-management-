@@ -1,3 +1,7 @@
+## Marked Dashboard shell feedback — frontend verified, 2026-10-24
+
+Owner comments1–3 are implemented in source: shared top bar and page gutters, one route-title style, no static heading box. The box was the automatic2px gold focus outline; programmatic route/skip focus and interactive focus rings remain. Skills/Library failed-read titles and asynchronous replacement markers are covered. Final41 focused tests, web typecheck/scoped lint/build and224 production synthetic layout checks (28 pages ×8 widths including1395×884) passed. No whole-checkout, real-session/independent acceptance or canonical staging promotion is claimed; localhost59443 remains the prior release. See docs/ui/SHELL_MARKED_FEEDBACK_2026-10-24.md. Concurrent work/data are preserved.
+
 ## Dashboard shell applied across internal pages — frontend verified, 2026-10-24
 
 The Owner selected Dashboard as the visual source. All28 internal pages now use its cream/paper palette, dark pine navigation, page gutters, open heading/frame treatment and underline section navigation.25 focused tests, web typecheck/scoped lint/build and196 production synthetic browser checks passed; representative desktop/phone captures were inspected. Prior broader composer failures remain recorded; no whole-checkout, real-session, independent or canonical deployment acceptance is claimed. Concurrent work and retained data are preserved. See docs/ui/DASHBOARD_SHELL_APP_WIDE_2026-10-24.md.

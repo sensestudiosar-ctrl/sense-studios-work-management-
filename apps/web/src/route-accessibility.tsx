@@ -14,13 +14,14 @@ export function RouteAccessibility(): React.JSX.Element {
       main.tabIndex = -1;
       setTarget(main.id);
       const heading = main.querySelector<HTMLElement>("h1,h2");
-      if (!heading || resolved) return;
+      if (!heading) return;
+      heading.setAttribute("data-sense-page-title", "");
+      if (resolved) return;
       resolved = true;
       if (!document.querySelector("dialog[open]")) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
       }
-      observer.disconnect();
     };
     const observer = new MutationObserver(identify);
     observer.observe(document.body, { childList: true, subtree: true });

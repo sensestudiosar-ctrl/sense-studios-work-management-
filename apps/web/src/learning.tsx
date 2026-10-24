@@ -132,7 +132,7 @@ export function SkillsWorkspace({ csrfToken }: { csrfToken: string }): React.JSX
   };
 
   if (loading) return <section className="learning-workspace" aria-busy="true"><p role="status">Loading Skills…</p></section>;
-  if (error && !setup) return <section className="learning-workspace"><div className="learning-alert" role="alert">{error}</div><button type="button" onClick={() => { setLoading(true); void loadSetup().catch(cause => setError(cause instanceof Error ? cause.message : "Couldn’t load Skills.")).finally(() => setLoading(false)); }}>Retry</button></section>;
+  if (error && !setup) return <section className="learning-workspace"><h2>Skills</h2><div className="learning-alert" role="alert">{error}</div><button type="button" onClick={() => { setLoading(true); void loadSetup().catch(cause => setError(cause instanceof Error ? cause.message : "Couldn’t load Skills.")).finally(() => setLoading(false)); }}>Retry</button></section>;
   if (!setup || setup.employees.length === 0) return <section className="learning-workspace"><header className="learning-heading"><div><h2>Skills</h2><p>Official skills are recorded through a reasoned request and approval.</p></div></header><p className="learning-empty" role="status">No active employee profiles are available to you.</p></section>;
 
   return <section className="learning-workspace" aria-busy={pending || profileLoading}>

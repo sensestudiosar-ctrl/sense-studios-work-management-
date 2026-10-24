@@ -93,6 +93,19 @@
   letter-spacing: -.85px;
 }
 
+/* The route landmark also identifies early/error headings outside a module's
+   usual header wrapper, so every page title follows the same contract. */
+.app-shell .workspace-layout--studio .workspace-page main :is(h1, h2)[data-sense-page-title] {
+  margin: 0 0 6px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  outline: none;
+  color: var(--sense-pine);
+  font: 700 27px/1.2 var(--sense-font-ui);
+  letter-spacing: -.85px;
+}
+
 /* Section navigation adopts Dashboard's underline treatment; filters and
    state/phase selectors keep their own selected/pressed affordances. */
 .workspace-layout--studio .workspace-page :is(
