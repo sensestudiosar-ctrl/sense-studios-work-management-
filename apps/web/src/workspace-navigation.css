@@ -192,7 +192,7 @@
 
 /* Collapsed rail */
 .workspace-sidebar.is-collapsed {
-  width: 4.5rem !important;
+  width: 4.5rem;
   padding: .75rem .35rem;
 }
 .workspace-sidebar.is-collapsed .workspace-sidebar-title,
