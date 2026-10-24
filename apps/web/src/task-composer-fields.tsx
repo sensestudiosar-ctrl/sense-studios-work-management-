@@ -1,5 +1,6 @@
 import { TASK_DESCRIPTION_MAX_LENGTH, type TaskCreationOptions } from "@sense/contracts";
 import { useEffect, useId, useRef, useState } from "react";
+import "./task-composer-v15.css";
 
 export type TaskComposerDraft = {
   title: string; type: string; priority: string; targetDate: string; description: string; projectId: string;
@@ -44,6 +45,7 @@ export function taskCreateBody(d: TaskComposerDraft, options: TaskCreationOption
     ...(d.reviewRequirement !== "NONE" ? { reviewRequirement: d.reviewRequirement === "CLIENT" ? "BOTH" : d.reviewRequirement } : {}), reason: d.reason.trim() };
 }
 
+type Person = { id: string; name: string; homeBranchId: string };
 type Props = {
   draft: TaskComposerDraft; onChange: (patch: Partial<TaskComposerDraft>) => void;
   projects: Array<{ id: string; title: string; status: string }>;
@@ -54,20 +56,53 @@ type Props = {
 const label = (value: string): string => value.toLowerCase().replaceAll("_", " ").replace(/^./, letter => letter.toUpperCase());
 const PRIORITIES: string[] = ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
 const TASK_TYPES = ["PROJECT", "NON_PROJECT", "RECURRING", "CORRECTION", "SITE", "TRAINING_PRACTICAL"] as const;
-const PRIORITY_RANK: Record<string, number> = { LOW: 0, MEDIUM: 1, HIGH: 2, CRITICAL: 3 };
+const REVIEW_OPTIONS = [
+  { value: "NONE", label: "No review", help: "No review route is recorded." },
+  { value: "INTERNAL", label: "Internal", help: "Internal approval before completion." },
+  { value: "BOTH", label: "Internal + Client", help: "Internal approval precedes client review." },
+] as const;
+const initials = (value: string): string => {
+  const clean = value.trim().split(/[\s._@+-]+/).filter(Boolean);
+  if (!clean.length) return "?";
+  return clean.length === 1 ? clean[0]!.slice(0, 2).toUpperCase() : `${clean[0]![0]!}${clean[clean.length - 1]![0]!}`.toUpperCase();
+};
 
 /**
  * Shared fields for ordinary and child tasks. Domain commands stay with TaskWorkspace.
  * When `compact` is true the optional planning and collaborator sections are hidden so
  * the form stays fast for non-owner variants (EMPLOYEE/SITE).
+ *
+ * V15 layout (docs/v1-demo "Task creation refinement" target): an editing canvas
+ * on the left — Task name, Description, Why needed, optional planning disclosure,
+ * post-creation discussion/files affordances — and a bounded
+ * "Assignment & timing" card on the right (context header + status, Type,
+ * Project, Primary owner, Target & Start dates, Priority, Assign to,
+ * Review requirement, Tags, More task settings). Mobile stacks the same two
+ * zones in a single column.
  */
+/** Crisp 14px stroke icons replace the legacy text glyphs so property rows
+    read cleanly at both column widths. */
+type IconName = "type" | "project" | "owner" | "target" | "calendar" | "priority";
+const ROW_ICONS: Record<IconName, React.JSX.Element> = {
+  type: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h10M4 17h6" /></svg>,
+  project: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2" /><path d="M4 10h16M9 3v4M15 3v4" /></svg>,
+  owner: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5" /><path d="M5.5 19.5c.9-3.2 3.4-5 6.5-5s5.6 1.8 6.5 5" /></svg>,
+  target: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3.2 2.2" /></svg>,
+  calendar: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="15" rx="2" /><path d="M4 10h16M9 3.5v4M15 3.5v4" /></svg>,
+  priority: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 3 5 13h5l-1 8 8-10h-5l1-8Z" /></svg>,
+};
+const RowIcon = ({ name }: { name: IconName }) => (
+  <span className="task-row-icon" aria-hidden="true">{ROW_ICONS[name]}</span>
+);
+
 export function TaskComposerFields({ draft: d, onChange: change, projects, planItems, options, optionsError, retryOptions, busy, subtask = false, fixedProject, compact = false, validationAttempt = 0 }: Props): React.JSX.Element {
   const prefix = useId();
   const summary = useRef<HTMLDivElement>(null);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [ownerSearch, setOwnerSearch] = useState("");
-  const [collaboratorSearch, setCollaboratorSearch] = useState("");
-  const [contextNotice, setContextNotice] = useState("");
+  const [peopleSearch, setPeopleSearch] = useState("");
+  const [peopleMenuOpen, setPeopleMenuOpen] = useState(false);
+  const [planningOpen, setPlanningOpen] = useState(false);
+  const [tagDraft, setTagDraft] = useState("");
   const explicit = options?.actorEmployeeId === null || !!options?.canAssign && d.assignTo;
   const errors = taskDraftErrors(d);
   if (options?.canCreate && explicit && !options.owners.some(person => person.id === d.ownerId)) errors.ownerId = "Choose an eligible primary owner.";
@@ -76,33 +111,82 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
   const error = (field: string) => visible(field) ? <p className="task-field-error" id={`${prefix}-${field}-error`}>{visible(field)}</p> : null;
   useEffect(() => { if (validationAttempt > 0) summary.current?.focus(); }, [validationAttempt]);
   const chooseProject = (projectId: string): void => {
-    setOwnerSearch(""); setCollaboratorSearch(""); setContextNotice("Project changed. Available people and planning choices are being updated; previous selections were cleared.");
+    setPeopleMenuOpen(false); setPeopleSearch("");
     change({ projectId, planItemId: "", ownerId: "", collaboratorIds: [], collaboratorHours: {}, reviewRequirement: projectId ? d.reviewRequirement : "NONE",
       type: projectId && d.type === "NON_PROJECT" ? "PROJECT" : !projectId && ["PROJECT", "CORRECTION", "SITE"].includes(d.type) ? "NON_PROJECT" : d.type });
   };
-  const planning = <>
-    <label>Stage or milestone (optional)<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
-    <label>Tags (optional, comma separated)<input {...attrs("tagsText")} aria-label={subtask ? "Subtask tags" : "Tags"} value={d.tagsText} onChange={event => change({ tagsText: event.target.value })} placeholder="Concept, client feedback" /></label>{error("tagsText")}
-    <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder={"[ ] Confirm brief\n[x] Collect references"} rows={3} /></label>{error("checklistText")}
-    <div className="task-form-grid"><label>Start date (optional)<input {...attrs("startDate")} type="date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} />{error("startDate")}</label><label>Estimated hours (optional)<input {...attrs("estimatedHours")} type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} />{error("estimatedHours")}</label></div>
-  </>;
-  /**
-   * Quick-capture row: the five decisions that matter on the first pass.
-   * Priority cycles LOW → MEDIUM → HIGH → CRITICAL with a single click; the
-   * native select is kept inline for screen readers and direct selection.
-   */
-  const cyclePriority = (): void => {
-    const next = ((PRIORITY_RANK[d.priority] ?? 1) + 1) % PRIORITIES.length;
-    change({ priority: PRIORITIES[next] ?? "MEDIUM" });
-  };
   const projectTypes = ["PROJECT", "CORRECTION", "SITE"];
   const todayISO = new Date().toISOString().slice(0, 10);
+  const addTag = (): void => {
+    const value = tagDraft.trim();
+    if (!value) return;
+    const tags = [...d.tagsText.split(",").map(item => item.trim()).filter(Boolean), value];
+    if (new Set(tags.map(item => item.toLowerCase())).size !== tags.length) { setTouched(current => ({ ...current, tagsText: true })); setTagDraft(""); return; }
+    change({ tagsText: tags.join(", ") }); setTagDraft("");
+  };
+  const removeTag = (tag: string): void => {
+    const tags = d.tagsText.split(",").map(item => item.trim()).filter(Boolean).filter(item => item !== tag);
+    change({ tagsText: tags.join(", ") });
+  };
+  const tags = d.tagsText.split(",").map(item => item.trim()).filter(Boolean);
+
+  // Ordered people: first avatar = primary owner (ownerId), remaining = collaborators.
+  const ownerPerson: Person | undefined = options?.owners.find(person => person.id === d.ownerId);
+  const orderedPeople: Array<{ person: Person; role: "owner" | "collaborator"; key: string }> = [
+    ...(ownerPerson ? [{ person: ownerPerson, role: "owner" as const, key: "owner" }] : []),
+    ...d.collaboratorIds.map(id => options?.collaborators.find(person => person.id === id)).filter((person): person is Person => !!person)
+      .map(person => ({ person, role: "collaborator" as const, key: person.id })),
+  ];
+  const eligibleAdd = options?.collaborators.filter(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId ?? "")) ?? [];
+  const searchedPeople = peopleSearch.trim()
+    ? [...options?.owners ?? [], ...eligibleAdd].filter(person => !d.collaboratorIds.includes(person.id) && person.name.toLowerCase().includes(peopleSearch.trim().toLowerCase()))
+    : eligibleAdd.filter(person => !d.collaboratorIds.includes(person.id)).slice(0, 8);
+  const addCollaborator = (id: string): void => {
+    if (d.collaboratorIds.length >= 30 || d.collaboratorIds.includes(id) || id === (explicit ? d.ownerId : options?.actorEmployeeId ?? "")) return;
+    change({ collaboratorIds: [...d.collaboratorIds, id] });
+  };
+  const removeCollaborator = (id: string): void => {
+    change({ collaboratorIds: d.collaboratorIds.filter(value => value !== id), collaboratorHours: Object.fromEntries(Object.entries(d.collaboratorHours).filter(([key]) => key !== id)) });
+  };
+  const reviewValue = d.reviewRequirement === "CLIENT" ? "BOTH" : d.reviewRequirement;
+
+  // Left canvas: directly edited fields in V15 order. Subtask and checklist rows are
+  // visual companions — subtask drafts are staged separately by TaskWorkspace after
+  // parent success, so they are shown here as a read-only count when editing a subtask.
+  const canvas = <div className="task-composer__brief" aria-label="Task details">
+    <label className="task-field task-field--title"><span className="task-field__label">Task name <span className="task-field__req" aria-hidden="true">*</span></span>
+      <input {...attrs("title")} className="task-field--title-input" aria-label="Task name" value={d.title} onChange={event => change({ title: event.target.value })} minLength={2} maxLength={160} required placeholder="e.g. Revise the bedroom lighting plan" />
+      {error("title")}
+    </label>
+    <label className="task-field"><span className="task-field__label">Task brief <span className="task-field__optional">· optional</span></span>
+      <textarea {...attrs("description")} aria-label="Description (optional)" value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={4} placeholder="What needs to be delivered? Add scope, context and the expected result." />
+      <small className="task-field__helper">A useful brief helps the next person start without another conversation.</small>
+      {error("description")}
+    </label>
+    <label className="task-field"><span className="task-field__label">Why is this task needed? <span className="task-field__req" aria-hidden="true">*</span></span>
+      <input {...attrs("reason")} aria-label="Reason" value={d.reason} onChange={event => change({ reason: event.target.value })} minLength={3} maxLength={1000} required placeholder="e.g. Incorporate the agreed client feedback" />
+      <small className="task-field__helper">Kept with the task's creation history.</small>
+      {error("reason")}
+    </label>
+    {!compact && <details className="task-optional-planning">
+      <summary>Optional planning</summary>
+      <label>Stage or milestone (optional)<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
+      <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder={"[ ] Confirm brief\n[x] Collect references"} rows={3} /></label>{error("checklistText")}
+      <label>Estimated hours (optional)<input {...attrs("estimatedHours")} type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} /><span className="task-effort-unit" aria-hidden="true">h</span>{error("estimatedHours")}</label>
+    </details>}
+    <div className="task-post-creation" aria-label="After creation">
+      <p className="task-post-creation__item"><span aria-hidden="true">◇</span> Discussion<span className="task-post-creation__note">Comment after creation</span></p>
+      <p className="task-post-creation__item"><span aria-hidden="true">◇</span> Files<span className="task-post-creation__note">Attach after creation</span></p>
+    </div>
+  </div>;
+
   const projectField = fixedProject
-    ? <input {...attrs("projectId")} aria-label={subtask ? "Parent project" : "Task project"} readOnly value={fixedProject.title} disabled />
-    : <select {...attrs("projectId")} aria-label="Project" required={projectTypes.includes(d.type)} value={d.projectId} onChange={event => chooseProject(event.target.value)} disabled={busy}>
+    ? <input {...attrs("projectId")} aria-label={subtask ? "Parent project" : "Project"} readOnly value={fixedProject.title} disabled />
+    : <select {...attrs("projectId")} aria-label={subtask ? "Subtask project" : "Project"} required={projectTypes.includes(d.type)} value={d.projectId} onChange={event => chooseProject(event.target.value)} disabled={busy}>
         <option value="">{projectTypes.includes(d.type) ? "Choose a project" : "No project"}</option>
         {projects.filter(project => project.status === "DRAFT" || project.status === "ACTIVE").map(project => <option key={project.id} value={project.id}>{project.title}</option>)}
       </select>;
+
   const ownerValue = options?.canAssign && explicit
     ? <select {...attrs("ownerId")} aria-label="Primary owner" value={d.ownerId}
         onChange={event => change({ ownerId: event.target.value, collaboratorIds: d.collaboratorIds.filter(id => id !== event.target.value) })}
@@ -110,35 +194,177 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
         <option value="">Choose an employee</option>
         {options.owners.map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)}
       </select>
-    : <span className="task-chip__value">{options?.canAssign && !explicit ? "You" : "Choose an owner"}</span>;
-  const quickCapture = <div className="task-quick-capture">
-    <label className="task-field task-field--title">Task name *<input {...attrs("title")} aria-label="Task name" value={d.title} onChange={event => change({ title: event.target.value })} minLength={2} maxLength={160} required placeholder="What needs to happen?" /></label>{error("title")}
-    <div className="task-quick-capture__row" role="group" aria-label="Task essentials">
-      <div className="task-chip"><span className="task-chip__label">Priority</span>
-        <div className="task-priority-toggle">
-          <button type="button" className={`task-priority-toggle__button${errors.priority ? " task-priority-toggle__button--error" : ""}`} aria-label={`Priority ${label(d.priority)}. Press to change.`} onClick={cyclePriority} disabled={busy}>
-            <span className={`task-priority-dot task-priority-dot--${d.priority.toLowerCase()}`} aria-hidden="true" />{label(d.priority)}
-          </button>
-          <select className="task-priority-select" aria-label="Priority select" value={d.priority} onChange={event => change({ priority: event.target.value })} disabled={busy}>{PRIORITIES.map(value => <option key={value} value={value}>{label(value)}</option>)}</select>
-        </div>
-      </div>
-      <label className="task-field">Type *<select {...attrs("type")} aria-label="Type" value={d.type} onChange={event => change({ type: event.target.value })} disabled={busy}>{TASK_TYPES.map(type => <option key={type} value={type}>{label(type)}</option>)}</select>{error("type")}</label>
-      <label className="task-field">Target date *<input {...attrs("targetDate")} aria-label="Target date" type="date" value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} required disabled={busy} min={todayISO} />{error("targetDate")}</label>
-      <div className="task-chip"><span className="task-chip__label">Project</span>{projectField}{error("projectId")}</div>
-      <div className="task-chip task-chip--owner"><span className="task-chip__label">Owner</span>{ownerValue}{error("ownerId")}</div>
+    : <p className="task-owner-summary" role="status">{options?.canAssign && !explicit ? "Assigned to you." : "Choose an owner"}</p>;
+
+  const assignSection = options ? (
+    <div className="task-composer__assign">
+      <p className="task-composer__section-title">Assign to</p>
+      {optionsError
+        ? <div className="task-options-retry" role="alert"><p>{optionsError}</p><button type="button" onClick={retryOptions} disabled={busy}>Retry participants</button></div>
+        : <div className="task-avatar-strip" aria-label="Assigned people">
+            {orderedPeople.map((entry) => (
+              <button type="button" key={entry.key}
+                className={`task-avatar${entry.role === "owner" ? " task-avatar--main" : ""}`}
+                aria-label={entry.role === "owner" ? `Main assignee: ${entry.person.name}` : `${entry.person.name}, collaborator. Press to manage.`}
+                title={entry.role === "owner" ? `Main: ${entry.person.name}` : entry.person.name}
+                onClick={() => { if (entry.role !== "owner") setPeopleMenuOpen(open => !open); }}>
+                <span className="task-avatar__initials" aria-hidden="true">{initials(entry.person.name)}</span>
+                {entry.role === "owner" && <span className="task-avatar__badge" aria-hidden="true">Main</span>}
+              </button>
+            ))}
+            {explicit ? (
+              <button type="button" className="task-avatar-add" aria-label={peopleMenuOpen ? "Close people search" : "Add people"} aria-expanded={peopleMenuOpen} onClick={() => setPeopleMenuOpen(open => !open)}>+</button>
+            ) : <p className="task-avatar-self" role="status">{options?.actorEmployeeId ? "Assigned to you." : "Choose an owner"}</p>}
+          </div>}
+      {peopleMenuOpen && explicit && <div className="task-people-menu" role="listbox" aria-label="Find collaborators">
+        <label className="task-people-menu__search"><input type="search" aria-label="Search eligible people" placeholder="Find a collaborator..." value={peopleSearch} onChange={event => setPeopleSearch(event.target.value)} autoFocus /></label>
+        {searchedPeople.length ? searchedPeople.map(person => (
+          <div key={person.id} className="task-people-menu__row" role="option" aria-selected={d.collaboratorIds.includes(person.id)}>
+            <span className="task-avatar__initials task-avatar__initials--sm" aria-hidden="true">{initials(person.name)}</span>
+            <span className="task-people-menu__name">{person.name}</span>
+            <button type="button" className="task-people-menu__add" aria-label={`Add ${person.name}`} onClick={() => addCollaborator(person.id)}>+</button>
+          </div>
+        )) : <p className="task-people-menu__empty">No eligible people match this search.</p>}
+      </div>}
+      {d.collaboratorIds.length > 0 && <ul className="task-collaborator-list" aria-label="Selected collaborators">
+        {d.collaboratorIds.map(id => {
+          const person = options?.collaborators.find(value => value.id === id);
+          return <li key={id} className="task-collaborator-row">
+            <span className="task-avatar__initials task-avatar__initials--sm" aria-hidden="true">{initials(person?.name ?? "?")}</span>
+            <span className="task-collaborator-row__name">{person?.name ?? "Unavailable"}</span>
+            <button type="button" className="task-small-remove" aria-label={`Remove ${person?.name ?? "collaborator"}`} onClick={() => removeCollaborator(id)}>×</button>
+          </li>;
+        })}
+      </ul>}
+      {error("ownerId")}
+      {error("collaboratorIds")}
     </div>
+  ) : <p role="status" className="task-options-loading" aria-label="Loading eligible task participants…">Loading eligible task participants…</p>;
+
+  const reviewSection = <div className="task-composer__review">
+    <p className="task-composer__section-title">Reviews</p>
+    {d.projectId ? <div className="task-review-cards" role="radiogroup" aria-label="Review routing">
+      {REVIEW_OPTIONS.map(option => (
+        <button key={option.value} type="button" role="radio" aria-checked={reviewValue === option.value}
+          className={`task-review-card${reviewValue === option.value ? " task-review-card--selected" : ""}`}
+          disabled={busy}
+          onClick={() => change({ reviewRequirement: option.value })}>
+          <span className="task-review-card__label">{option.label}</span>
+          <span className="task-review-card__help">{option.help}</span>
+        </button>
+      ))}
+      {reviewValue === "BOTH" && <div className="task-review-sequence" aria-label="Review sequence">
+        <span className="task-review-node">Internal</span><span aria-hidden="true">→</span><span className="task-review-node">Client</span>
+        <span className="task-review-sequence-note" role="note">Internal approval precedes client review.</span>
+      </div>}
+      {/* Legacy checkbox contract: existing tests and API normalise CLIENT → BOTH.
+          Hidden visually (sr-only) but kept for the strict payload mapping. */}
+      <label className="task-review-legacy task-sr-only"><input type="checkbox" checked={["INTERNAL", "BOTH"].includes(reviewValue)} disabled={busy || reviewValue === "BOTH"} onChange={event => change({ reviewRequirement: event.target.checked ? "INTERNAL" : "NONE" })} aria-label="Internal review required" /></label>
+      <label className="task-review-legacy task-sr-only"><input type="checkbox" checked={reviewValue === "BOTH"} disabled={busy} onChange={event => change({ reviewRequirement: event.target.checked ? "BOTH" : "INTERNAL" })} aria-label="Client review required" /></label>
+    </div>
+      : <div className="task-info-strip"><span className="task-info-strip__body"><b>Review routing needs a project.</b>Client and internal review routes require a project context with publishing authority.</span></div>}
+    <p className="task-feature-gate" role="note">Named reviewer selection and repeat schedules are proposals — not saved by the current task create endpoint. Only the supported review route and task type are submitted.</p>
   </div>;
-  return <fieldset disabled={busy} className="task-composer-lock" onBlur={event => { if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) { const name = event.target.name; setTouched(value => ({ ...value, [name]: true })); } }}><legend className="task-sr-only">Task details</legend>
-    {validationAttempt > 0 && Object.keys(errors).length > 0 && <div ref={summary} tabIndex={-1} role="alert" className="task-error-summary"><strong>Check these details</strong><ul>{Object.entries(errors).map(([field, message]) => <li key={field}><a href={`#${prefix}-${field}`} onClick={event => { event.preventDefault(); const control = document.getElementById(`${prefix}-${field}`); const disclosure = control?.closest("details"); if (disclosure) disclosure.open = true; control?.focus(); }}>{message}</a></li>)}</ul></div>}
-    {quickCapture}
-    <label>Description (optional)<textarea {...attrs("description")} value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={2} placeholder="Add any detail that helps the person doing this." /></label>{error("description")}
-    {contextNotice && <p role="status" className="task-form-note">{contextNotice}</p>}
-    {optionsError ? <div role="alert"><p>{optionsError}</p><button type="button" onClick={retryOptions} disabled={busy}>Retry participants</button></div> : !options ? <p role="status">Loading eligible task participants…</p> : !options.canCreate ? <p role="status">No eligible primary owner is available in this context. Review employee membership and project assignments.</p> : <>
-      <fieldset className="task-assignment"><legend>Ownership</legend>{options.canAssign && options.actorEmployeeId && <label className="task-inline"><input type="checkbox" checked={d.assignTo} onChange={event => change({ assignTo: event.target.checked, ownerId: "", collaboratorIds: [], collaboratorHours: {} })} /> Assign to an employee</label>}{explicit ? <>{ownerSearch && <label>Find primary owner<input type="search" value={ownerSearch} onChange={event => setOwnerSearch(event.target.value)} placeholder="Search eligible people" /></label>}<p role="status" className="task-owner-summary">Primary owner: {options.owners.find(person => person.id === d.ownerId)?.name ?? "Not set yet — choose in the owner field above."}</p>{ownerSearch && !options.owners.some(person => person.name.toLowerCase().includes(ownerSearch.toLowerCase())) && <p role="status">No eligible people match this search.</p>}</> : <p>Assigned to you.</p>}</fieldset>
-    </>}
-    {d.projectId && <fieldset className="task-review-requirements" aria-describedby={`${prefix}-review-help`}><legend>Review requirements</legend><label><input type="checkbox" checked={d.reviewRequirement !== "NONE"} disabled={d.reviewRequirement === "BOTH" || d.reviewRequirement === "CLIENT"} onChange={event => change({ reviewRequirement: event.target.checked ? "INTERNAL" : "NONE" })} />Internal review required</label><label><input type="checkbox" checked={d.reviewRequirement === "BOTH" || d.reviewRequirement === "CLIENT"} onChange={event => change({ reviewRequirement: event.target.checked ? "BOTH" : "INTERNAL" })} />Client review required</label><small id={`${prefix}-review-help`}>Client review also requires internal approval. Submit a file or link when the work is ready. An authorized publisher must enable client review.</small></fieldset>}
-    <label>Why is this task needed? *<input {...attrs("reason")} aria-label="Reason" value={d.reason} onChange={event => change({ reason: event.target.value })} minLength={3} maxLength={1000} required placeholder="One short sentence — recorded in the task history." /><small>Recorded in the task history.</small>{error("reason")}</label>
-    {!compact && <details className="task-optional-planning"><summary>Optional planning</summary>{planning}</details>}
-    {options?.canAssign && !compact && <details className="task-optional-planning"><summary>Collaborators (optional) · {d.collaboratorIds.length} selected</summary><label>Find collaborators<input type="search" value={collaboratorSearch} onChange={event => setCollaboratorSearch(event.target.value)} placeholder="Search eligible people" /></label><fieldset {...attrs("collaboratorIds")} tabIndex={-1} className="task-assignment"><legend>Collaborators (optional)</legend>{options.collaborators.filter(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId) && (d.collaboratorIds.includes(person.id) || person.name.toLowerCase().includes(collaboratorSearch.toLowerCase()))).map(employee => <div className="task-collaborator-choice" key={employee.id}><label className="task-inline"><input type="checkbox" checked={d.collaboratorIds.includes(employee.id)} onChange={event => change({ collaboratorIds: event.target.checked ? [...d.collaboratorIds, employee.id] : d.collaboratorIds.filter(id => id !== employee.id) })} /> {employee.name}</label>{d.collaboratorIds.includes(employee.id) && <label>Estimated hours<input aria-label={`${employee.name} estimated hours`} type="number" min="0" max="100000" step="0.25" value={d.collaboratorHours[employee.id] ?? ""} onChange={event => change({ collaboratorHours: { ...d.collaboratorHours, [employee.id]: event.target.value } })} /></label>}</div>)}{!options.collaborators.some(person => person.id !== (explicit ? d.ownerId : options.actorEmployeeId) && person.name.toLowerCase().includes(collaboratorSearch.toLowerCase())) && <p role="status">No eligible collaborators match this search.</p>}{error("collaboratorIds")}</fieldset></details>}
+
+  const tagsSection = <div className="task-composer__tags">
+    <p className="task-composer__section-title">Tags <span className="task-field__optional">Optional · max 10</span></p>
+    <div className="task-tag-area">
+      {tags.map(tag => (
+        <span key={tag} className="task-tag-chip"><span>{tag}</span><button type="button" aria-label={`Remove tag ${tag}`} onClick={() => removeTag(tag)}>×</button></span>
+      ))}
+      <input className="task-tag-input" aria-label="Add tag" placeholder="+ Add tag" value={tagDraft}
+        onChange={event => setTagDraft(event.target.value)}
+        onKeyDown={event => { if (event.key === "Enter") { event.preventDefault(); addTag(); } }}
+        onBlur={addTag} />
+    </div>
+    {error("tagsText")}
+  </div>;
+
+  const planningSection = <div className="task-composer__planning">
+    <button type="button" className="task-accordion-toggle" aria-expanded={planningOpen} onClick={() => setPlanningOpen(open => !open)}>
+      <span>More task settings</span><span className="task-accordion-toggle__hint">{compact ? "Stage, dates and hours" : "Stage, checklist and optional planning"}</span>
+      <span className="task-accordion-toggle__chevron" aria-hidden="true">{planningOpen ? "▴" : "▾"}</span>
+    </button>
+    {planningOpen && <div className="task-accordion-content">
+      <label>Stage or milestone (optional)<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
+      <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder="One item per line" rows={3} /><small className="task-field__helper">Checklist progress does not complete the task automatically.</small>{error("checklistText")}</label>
+      <details className="task-collaborator-details" open={planningOpen}>
+        <div role="group" className="task-collaborator-group" aria-label="Collaborators (optional)">
+          <p className="task-composer__section-title">Collaborators <span className="task-field__optional">· optional</span></p>
+          {(options?.collaborators ?? []).filter(person => person.id !== (explicit ? d.ownerId : options?.actorEmployeeId ?? "")).map(person => (
+            <div key={person.id} className="task-collaborator-row">
+              <span className="task-avatar__initials task-avatar__initials--sm" aria-hidden="true">{initials(person.name)}</span>
+              <span className="task-collaborator-row__name">{person.name}</span>
+              <label className="task-collaborator-row__hours"><span>Estimated hours</span>
+                <input aria-label={`${person.name} estimated hours`} type="number" min="0" max="100000" step="0.25" value={d.collaboratorHours[person.id] ?? ""} onChange={event => change({ collaboratorHours: { ...d.collaboratorHours, [person.id]: event.target.value } })} />
+              </label>
+            </div>
+          ))}
+          {error("collaboratorIds")}
+        </div>
+      </details>
+    </div>}
+  </div>;
+
+  return <fieldset disabled={busy} className="task-composer-lock task-composer-v15" onBlur={event => { if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || event.target instanceof HTMLSelectElement) { const name = event.target.name; setTouched(value => ({ ...value, [name]: true })); } }}><legend className="task-sr-only">Task details</legend>
+    {validationAttempt > 0 && Object.keys(errors).length > 0 && <div ref={summary} tabIndex={-1} role="alert" className="task-error-summary"><strong>Check these details</strong><ul>{Object.entries(errors).map(([field, message]) => <li key={field}><a href={`#${prefix}-${field}`} onClick={event => { event.preventDefault(); const control = document.getElementById(`${prefix}-${field}`); if (!control) return; if (field === "tagsText" || field === "checklistText" || field === "collaboratorIds") setPlanningOpen(true); control.focus(); }}>{message}</a></li>)}</ul></div>}
+    <div className="task-composer__core">
+      {canvas}
+      <aside className="task-composer__context task-composer__aside" aria-label="Task assignment">
+        <div className="task-composer__context-header">
+          <strong>Assignment &amp; timing</strong>
+          <span className="task-composer__status" data-state={busy ? "loading" : optionsError ? "error" : "idle"}>{busy ? "Saving" : "To do"}</span>
+        </div>
+        <div className="task-property-row">
+          <span className="task-property-row__label"><RowIcon name="type" /> Type <span className="task-field__req" aria-hidden="true">*</span></span>
+          <select {...attrs("type")} aria-label="Type" value={d.type} onChange={event => change({ type: event.target.value })} disabled={busy}>{TASK_TYPES.map(type => <option key={type} value={type}>{label(type)}</option>)}</select>
+          {error("type")}
+        </div>
+        <div className="task-property-row">
+          <span className="task-property-row__label"><RowIcon name="project" /> Project{fixedProject ? " · locked" : ""}{!fixedProject && projectTypes.includes(d.type) ? <span className="task-field__req" aria-hidden="true">*</span> : null}</span>
+          {projectField}{error("projectId")}
+          {(fixedProject || d.projectId) && <p className="task-form-note">{fixedProject ? "Project is fixed for this task context." : projects.find(project => project.id === d.projectId)?.title}</p>}
+        </div>
+        {explicit && <div className="task-property-row">
+          <span className="task-property-row__label"><RowIcon name="owner" /> Primary owner <span className="task-field__req" aria-hidden="true">*</span></span>
+          {ownerValue}
+          <small className="task-field__helper">One person is accountable for this task.</small>
+          {error("ownerId")}
+        </div>}
+        <div className="task-property-row">
+          <span className="task-property-row__label"><RowIcon name="target" /> Target date <span className="task-field__req" aria-hidden="true">*</span></span>
+          <input {...attrs("targetDate")} type="date" aria-label="Target date" required value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} disabled={busy} min={todayISO} />
+          {error("targetDate")}
+        </div>
+        <div className="task-property-row task-property-row--pair">
+          <label>Start date <span className="task-field__optional">· optional</span><input {...attrs("startDate")} type="date" aria-label="Start date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} /></label>
+          {error("startDate")}
+          <label>Estimated hours <span className="task-field__optional">· optional</span>
+            <div className="task-effort-input"><button type="button" aria-label="Clear estimated effort" disabled={!d.estimatedHours || busy} onClick={() => change({ estimatedHours: "" })}>−</button>
+              <input {...attrs("estimatedHours")} aria-label="Estimated hours" type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} />
+              <span className="task-effort-unit" aria-hidden="true">h</span>
+              <button type="button" aria-label="Increment estimated effort" disabled={busy} onClick={() => change({ estimatedHours: String(Number(d.estimatedHours || 0) + 1) })}>+</button>
+            </div>
+          </label>
+          {error("estimatedHours")}
+          <p className="task-form-note">An estimate does not automatically create a dated capacity allocation.</p>
+        </div>
+        <div className="task-property-row task-property-row--priority">
+          <span className="task-property-row__label"><RowIcon name="priority" /> Priority</span>
+          <div className={`task-priority-picker tone-${d.priority.toLowerCase()}`} aria-label={`Priority ${label(d.priority)}`}>
+            <span className="task-priority-picker__dot" aria-hidden="true" />
+            <select aria-label="Priority" value={d.priority} onChange={event => change({ priority: event.target.value })} disabled={busy}>
+              {PRIORITIES.map(value => <option key={value} value={value}>{label(value)}</option>)}
+            </select>
+            <span className="task-priority-picker__chevron" aria-hidden="true">▾</span>
+          </div>
+          <p className="task-priority-hint">{label(d.priority)} is the selected priority. Colour communicates the current selection.</p>
+        </div>
+        {assignSection}
+        {reviewSection}
+        {tagsSection}
+        {!compact && planningSection}
+      </aside>
+    </div>
   </fieldset>;
 }

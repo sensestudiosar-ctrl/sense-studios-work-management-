@@ -33,12 +33,9 @@ export function TaskCreateDialog({ title, variant, children, onRequestClose, bus
     suppressCloseRef.current = false;
     body.style.overflow = "hidden";
     if (typeof dialog.showModal === "function" && !dialog.open) dialog.showModal();
-    const headingTarget = headingRef.current ?? dialog;
-    // On mobile the dialog is a bottom sheet; move focus to the first meaningful control
-    // so the virtual keyboard doesn't cover the heading the user already sees.
-    const sheetMode = window.matchMedia?.("(max-width: 700px)").matches;
-    const firstField = sheetMode ? (dialog.querySelector<HTMLElement>(".task-quick-capture input, .task-quick-capture select, .task-quick-capture textarea") ?? headingTarget) : headingTarget;
-    firstField.focus({ preventScroll: true });
+    // V15: the large title input leads the composition on every width, so focus
+    // the heading target — on mobile the sheet already places it near the top.
+    headingRef.current?.focus({ preventScroll: true });
     return () => {
       suppressCloseRef.current = true;
       if (dialog.open) dialog.close();

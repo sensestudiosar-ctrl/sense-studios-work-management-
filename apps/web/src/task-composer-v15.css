@@ -1,0 +1,211 @@
+/* V15-RC1 task composer: Programa-style two-column surface inside the existing
+   .task-create-dialog. Desktop >= 701px: left editing canvas + right properties
+   inspector. Mobile <= 700px: single column, field order
+   Task name -> Description -> Assign to -> Target -> Reason -> More settings. */
+
+.task-composer-v15 { margin: 0; padding: 0; border: 0; min-width: 0; }
+.task-composer-v15 .task-error-summary { border: 1px solid #e8bdb8; background: #fcf3f1; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; }
+.task-composer-v15 .task-error-summary strong { font-size: 12px; color: #9c4140; }
+.task-composer-v15 .task-error-summary ul { margin: 8px 0 0; padding-left: 18px; }
+.task-composer-v15 .task-error-summary li { font-size: 12px; margin: 5px 0; }
+.task-composer-v15 .task-error-summary a { color: #9d4742; }
+
+/* Two-column grid at desktop widths. Each column scrolls independently so the
+   sticky Create footer in the dialog stays reachable. These rules must fully
+   override task-create-dialog.css (loaded earlier at equal or lower
+   specificity): the legacy file sets display:grid + gap + a full border +
+   grid-area on .task-composer__context / .task-composer__aside, and flex
+   layout on .task-field, so every relevant property is restated here. */
+@media (min-width: 701px) {
+  .task-composer-v15 .task-composer__core { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); grid-template-areas: "brief aside"; column-gap: 28px; row-gap: 18px; align-items: start; min-height: 0; }
+  .task-composer-v15 .task-composer__brief { grid-area: brief; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 20px 26px 30px 0; min-width: 0; background: transparent; }
+  .task-composer-v15 .task-composer__aside { grid-area: aside; display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; align-content: start; background: #f8f8f6; border: 0; border-left: 1px solid #e8ebe6; border-radius: 0; padding: 20px 22px 30px; min-width: 0; }
+}
+
+.task-composer-v15 .task-composer__context-line { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.task-composer-v15 .task-composer__context-label { font-size: 11px; font-weight: 700; color: #7a877c; }
+.task-composer-v15 .task-fixed-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; font-weight: 650; color: #4e715c; background: #eef4ee; border: 1px solid #e2ecec; border-radius: 7px; padding: 5px 10px; }
+
+/* Direct-edit title: large, borderless by default, outlined on focus.
+   The legacy file styles .task-field--title input at a 3-class selector
+   (font-size 21px, 2px underline, radius 0), so the V15 rules here need the
+   same 3-class depth to win: .task-composer-v15 .task-field .task-field--title */
+.task-composer-v15 .task-field.task-field--title { display: block; margin: 0 0 18px; }
+.task-composer-v15 .task-field.task-field--title .task-field__label { display: block; font-size: 11px; font-weight: 700; color: #8a988e; margin: 0 0 5px; text-transform: none; letter-spacing: 0; }
+/* Targeted at the title input's own class (4-class depth) so it beats both the
+   legacy 3-class underline rule and the V15 generic 3-class 13px control rule. */
+.task-composer-v15 .task-field.task-field--title .task-field--title-input { width: 100%; font-size: 24px; font-weight: 650; letter-spacing: -.028em; color: #2b2e2b; background: transparent; border: 1px solid transparent; border-radius: 8px; padding: 6px 8px; min-height: 48px; font-family: inherit; transition: none; }
+.task-composer-v15 .task-field--title .task-field--title-input:hover { background: #f8faf7; border-color: #e2e8e0; }
+.task-composer-v15 .task-field--title .task-field--title-input:focus { background: #fff; border-color: #a4c4ae; outline: none; box-shadow: 0 0 0 3px #e7f2e9; }
+.task-composer-v15 .task-field--title .task-field--title-input::placeholder { color: #b9bbb7; font-size: 24px; font-weight: 400; letter-spacing: normal; }
+
+/* task-field: the legacy file sets display:flex on .task-field at the same
+   specificity, so every layout property the V15 presentation relies on must be
+   restated here (grid + row gap + margin) or the legacy flex column wins. */
+.task-composer-v15 .task-field { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; margin: 0 0 16px; font-size: 12px; font-weight: 650; color: #4f6055; }
+.task-composer-v15 .task-field__label { display: block; font-size: 12px; font-weight: 740; color: #4f6055; }
+.task-composer-v15 .task-field__req { color: #ad655a; margin-left: 2px; }
+.task-composer-v15 .task-field__optional { font-size: 11px; font-weight: 500; color: #98a49b; margin-left: 4px; }
+.task-composer-v15 .task-field__helper { font-size: 11px; font-weight: 400; color: #87958a; line-height: 1.5; }
+.task-composer-v15 .task-field textarea, .task-composer-v15 .task-composer__brief .field-input { width: 100%; min-height: 52px; border: 1px solid #e0e6df; border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; background: #fff; color: #283b30; font-family: inherit; resize: vertical; }
+.task-composer-v15 .task-field textarea::placeholder, .task-composer-v15 .task-field input::placeholder { color: #a1aba3; }
+.task-composer-v15 .task-field input[type="number"] { width: 100%; min-height: 41px; border: 1px solid #e0e6df; border-radius: 8px; padding: 8px 10px; font-size: 12px; background: #fff; color: #283b30; font-family: inherit; }
+.task-composer-v15 .task-field select, .task-composer-v15 .task-property-row select { width: 100%; min-height: 41px; border: 1px solid #e0e6df; border-radius: 8px; padding: 8px 10px; font-size: 12px; font-weight: 400; background: #fff; color: #283b30; font-family: inherit; }
+.task-composer-v15 .task-field input:focus, .task-composer-v15 .task-field textarea:focus, .task-composer-v15 .task-field select:focus { border-color: #789987; outline: 2px solid #d1e2d6; outline-offset: 0; }
+.task-composer-v15 .task-field input[aria-invalid="true"], .task-composer-v15 .task-field select[aria-invalid="true"], .task-composer-v15 .task-field textarea[aria-invalid="true"] { border-color: #c97f7b; background: #fffafa; }
+
+/* Reason field sits in the left canvas after description. */
+.task-composer-v15 .task-composer__brief .task-field { margin-bottom: 14px; }
+.task-composer-v15 .task-composer__brief .task-field .task-field__label { display: flex; align-items: center; gap: 4px; }
+/* Title is excluded: it keeps its large direct-edit treatment from the
+   .task-field--title-input rules above. */
+.task-composer-v15 .task-composer__brief .task-field input:not(.task-field--title-input) { width: 100%; min-height: 52px; border: 1px solid #e0e6df; border-radius: 8px; padding: 10px 12px; font-size: 13px; font-weight: 400; background: #fcfcfa; color: #283b30; font-family: inherit; }
+
+/* Inline subtask / checklist placeholder rows. */
+.task-composer-v15 .task-inline-section { border-top: 1px solid #e9ede7; padding: 12px 0; }
+.task-composer-v15 .task-inline-section__title { font-size: 12px; font-weight: 650; color: #617b69; margin: 0 0 3px; }
+.task-composer-v15 .task-inline-section__title span { color: #838b82; margin-right: 2px; }
+.task-composer-v15 .task-inline-section__hint { font-size: 11px; color: #98a49b; margin: 0; font-weight: 400; }
+
+/* Post-create affordances (files + discussion are separate workflows). */
+.task-composer-v15 .task-post-creation { margin-top: 14px; border-top: 1px solid #e9ede7; padding-top: 12px; display: grid; gap: 8px; }
+.task-composer-v15 .task-post-creation__item { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 650; color: #5c6d61; margin: 0; }
+.task-composer-v15 .task-post-creation__item span:first-child { color: #9ba99c; }
+.task-composer-v15 .task-post-creation__note { font-size: 11px; font-weight: 400; color: #98a49b; margin-left: auto; }
+
+/* Right property rows: aligned icon + label, compact controls. */
+.task-composer-v15 .task-composer__aside .task-composer__section-title { font-size: 12px; font-weight: 740; color: #4f6055; margin: 0 0 10px; }
+.task-composer-v15 .task-composer__aside .task-composer__section-title .task-field__optional { font-size: 11px; font-weight: 500; color: #98a49b; margin-left: 6px; }
+.task-composer-v15 .task-property-row { display: grid; grid-template-columns: minmax(86px, 34%) minmax(0, 1fr); align-items: center; gap: 4px 10px; padding: 13px 0 14px; border-bottom: 1px solid #e6eae4; margin-bottom: 0; }
+.task-composer-v15 .task-property-row:last-child { border-bottom: 0; }
+.task-composer-v15 .task-property-row__label { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 740; color: #536556; }
+.task-composer-v15 .task-property-row__label > span:first-child { color: #7e8f82; font-size: 12px; width: 14px; text-align: center; }
+.task-composer-v15 .task-property-row--pair { grid-template-columns: 1fr 1fr; }
+.task-composer-v15 .task-property-row--pair label { display: grid; gap: 5px; font-size: 11px; font-weight: 740; color: #536556; }
+.task-composer-v15 .task-property-row--pair .task-field__req { color: #ad655a; margin-left: 2px; }
+.task-composer-v15 .task-property-row--pair .task-field-error { grid-column: 1 / -1; margin: 0; }
+.task-composer-v15 .task-property-row > .task-field-error { grid-column: 1 / -1; margin: 0; }
+
+/* Effort stepper (minus, number, "h", plus). */
+.task-composer-v15 .task-effort-input { display: grid; grid-template-columns: 44px minmax(0, 1fr) 20px 44px; align-items: center; gap: 6px; }
+.task-composer-v15 .task-effort-input button { min-height: 35px; min-width: 35px; border: 1px solid #e0e6df; border-radius: 8px; background: #fff; color: #536556; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; }
+.task-composer-v15 .task-effort-input button:disabled { opacity: .45; cursor: not-allowed; }
+.task-composer-v15 .task-effort-unit { display: grid; place-items: center; font-size: 11px; color: #87958a; font-weight: 600; }
+
+/* Priority: colour tone selected via CSS variables. */
+.task-composer-v15 .task-priority-picker { position: relative; --tone: #8c6b21; --fill: #fff7e6; --edge: #e0c995; }
+.task-composer-v15 .task-priority-picker.tone-low { --tone: #36775a; --fill: #eaf6ef; --edge: #a0cbb0; }
+.task-composer-v15 .task-priority-picker.tone-medium { --tone: #8c6b21; --fill: #fff7e6; --edge: #e0c995; }
+.task-composer-v15 .task-priority-picker.tone-high { --tone: #9e552b; --fill: #fff0e5; --edge: #dfb38c; }
+.task-composer-v15 .task-priority-picker.tone-critical { --tone: #a73744; --fill: #fff0ef; --edge: #e3abb0; }
+.task-composer-v15 .task-priority-picker__dot { position: absolute; top: 50%; left: 12px; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 50%; background: var(--tone); pointer-events: none; z-index: 1; }
+.task-composer-v15 .task-priority-picker select { width: 100%; min-height: 41px; padding: 9px 30px 9px 28px; border: 1px solid var(--edge); border-radius: 8px; background: var(--fill); color: var(--tone); font-size: 12px; font-weight: 750; cursor: pointer; font-family: inherit; appearance: auto; }
+.task-composer-v15 .task-priority-picker__chevron { position: absolute; top: 50%; right: 10px; transform: translateY(-50%); color: var(--tone); pointer-events: none; font-size: 11px; }
+.task-composer-v15 .task-priority-hint { grid-column: 1 / -1; margin: 2px 0 0; font-size: 10px; color: #98a49b; font-weight: 400; }
+
+/* Assign to: horizontal avatar strip + inline people menu. */
+.task-composer-v15 .task-composer__assign { padding: 4px 0 14px; border-bottom: 1px solid #e6eae4; }
+.task-composer-v15 .task-avatar-strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.task-composer-v15 .task-avatar { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid #e0e6df; background: #e7eee3; color: #153f35; font-size: 11px; font-weight: 750; cursor: pointer; padding: 0; font-family: inherit; }
+.task-composer-v15 .task-avatar:hover { border-color: #80a08c; }
+.task-composer-v15 .task-avatar--main { border: 2px solid #244f43; }
+.task-composer-v15 .task-avatar__badge { position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%); font-size: 8px; font-weight: 750; background: #153f35; color: #fff; padding: 1px 5px; border-radius: 4px; white-space: nowrap; }
+.task-composer-v15 .task-avatar__initials { font-size: 11px; }
+.task-composer-v15 .task-avatar__initials--sm { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #eef4ee; color: #2f614c; font-size: 9px; font-weight: 750; flex: 0 0 26px; }
+.task-composer-v15 .task-avatar-add { display: grid; place-items: center; width: 44px; height: 44px; min-width: 44px; border-radius: 50%; border: 1px dashed #8faa95; background: transparent; color: #4f6055; font-size: 20px; font-weight: 300; cursor: pointer; font-family: inherit; }
+.task-composer-v15 .task-avatar-add:hover { background: #eef4ee; border-color: #4f6055; }
+.task-composer-v15 .task-avatar-self { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #536556; }
+
+.task-composer-v15 .task-people-menu { margin-top: 10px; border: 1px solid #d8e3d8; background: #fff; border-radius: 9px; overflow: hidden; }
+.task-composer-v15 .task-people-menu__search { padding: 10px 12px; border-bottom: 1px solid #eef0ec; }
+.task-composer-v15 .task-people-menu__search input { width: 100%; min-height: 38px; border: 1px solid #d6dfd5; border-radius: 7px; padding: 8px 10px; font-size: 12px; font-family: inherit; color: #283b30; }
+.task-composer-v15 .task-people-menu__row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-bottom: 1px solid #f3f5f1; }
+.task-composer-v15 .task-people-menu__row:hover { background: #f8faf6; }
+.task-composer-v15 .task-people-menu__row:last-child { border-bottom: 0; }
+.task-composer-v15 .task-people-menu__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 500; color: #283b30; }
+.task-composer-v15 .task-people-menu__add { display: grid; place-items: center; width: 30px; height: 30px; min-width: 30px; border-radius: 50%; border: 1px solid #cdd8cc; background: #fff; color: #38674e; font-size: 15px; cursor: pointer; font-family: inherit; }
+.task-composer-v15 .task-people-menu__add:hover { background: #eef4ee; border-color: #80a08c; }
+.task-composer-v15 .task-people-menu__empty { font-size: 11px; color: #87958a; padding: 10px 12px; margin: 0; }
+
+.task-composer-v15 .task-collaborator-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.task-composer-v15 .task-collaborator-row { display: flex; align-items: center; gap: 9px; padding: 7px 9px; background: #fff; border: 1px solid #e4eae2; border-radius: 8px; min-width: 0; }
+.task-composer-v15 .task-collaborator-row__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 500; color: #283b30; }
+.task-composer-v15 .task-collaborator-row__hours { display: grid; gap: 3px; font-size: 10px; color: #839287; }
+.task-composer-v15 .task-collaborator-row__hours input { width: 74px; min-height: 34px; padding: 5px 8px; border: 1px solid #e0e6df; border-radius: 7px; font-size: 11px; font-family: inherit; color: #283b30; }
+.task-composer-v15 .task-small-remove { display: grid; place-items: center; width: 32px; height: 32px; min-width: 32px; border: 0; border-radius: 6px; background: transparent; color: #8c9a8f; font-size: 16px; cursor: pointer; font-family: inherit; }
+.task-composer-v15 .task-small-remove:hover { background: #f4eae9; color: #b04445; }
+
+/* Review cards: segmented single-row selector; only selected state is tinted. */
+.task-composer-v15 .task-review-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; }
+.task-composer-v15 .task-review-card { display: grid; gap: 3px; align-items: start; border: 1px solid #dce5db; background: #fff; border-radius: 8px; padding: 9px 8px; min-height: 58px; cursor: pointer; text-align: left; font-family: inherit; }
+.task-composer-v15 .task-review-card:hover { background: #f8faf6; }
+.task-composer-v15 .task-review-card--selected { border-color: #7ba58e; background: #eef6f0; }
+.task-composer-v15 .task-review-card__label { font-size: 11px; font-weight: 750; color: #304638; }
+.task-composer-v15 .task-review-card--selected .task-review-card__label { color: #1e4b39; }
+.task-composer-v15 .task-review-card__help { font-size: 10px; color: #849389; line-height: 1.3; }
+.task-composer-v15 .task-review-card:disabled { opacity: .55; cursor: not-allowed; }
+.task-composer-v15 .task-review-sequence { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+.task-composer-v15 .task-review-node { display: inline-grid; place-items: center; min-width: 76px; padding: 5px 10px; border: 1px solid #cdd8cc; background: #eef4ee; color: #153f35; font-size: 10px; font-weight: 750; border-radius: 20px; text-align: center; }
+.task-composer-v15 .task-review-footnote { grid-column: 1 / -1; margin: 0; font-size: 10px; color: #819087; }
+.task-composer-v15 .task-info-strip { display: flex; gap: 8px; border: 1px solid #dfebdf; background: #f2f7f2; border-radius: 9px; padding: 11px 12px; font-size: 11px; line-height: 1.5; color: #496251; }
+.task-composer-v15 .task-info-strip__body b { display: block; margin-bottom: 3px; font-size: 11px; }
+.task-composer-v15 .task-feature-gate { margin: 10px 0 0; padding: 9px 11px; border: 1px solid #ebddb8; background: #fbf7eb; border-radius: 8px; font-size: 10px; line-height: 1.5; color: #7c622b; font-weight: 400; }
+
+/* Collaborator hours group (rendered inside the properties accordion). */
+.task-composer-v15 .task-collaborator-details { margin: 8px 0; border: 0; padding: 0; }
+.task-composer-v15 .task-collaborator-details summary { font-size: 11px; font-weight: 740; color: #536556; padding: 5px 0; cursor: pointer; list-style-position: inside; }
+.task-composer-v15 .task-collaborator-group { display: grid; gap: 6px; padding: 4px 0; }
+.task-composer-v15 .task-review-sequence-note { font-size: 10px; color: #819087; margin: 4px 0 0; line-height: 1.4; }
+/* Legacy contract checkboxes sit visually beside the card selector but stay tiny. */
+.task-composer-v15 .task-review-legacy { display: inline-flex; align-items: center; gap: 5px; font-size: 10px; color: #849389; margin: 5px 0 0; }
+.task-composer-v15 .task-review-legacy input { width: 13px; height: 13px; accent-color: var(--create-pine, #244f43); }
+
+/* Tags: visible chips with inline add. */
+.task-composer-v15 .task-tag-area { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border: 1px solid #e1e8df; border-radius: 9px; padding: 7px 9px; }
+.task-composer-v15 .task-tag-chip { display: inline-flex; align-items: center; gap: 4px; border: 1px solid #ccddcf; background: #edf5ee; color: #38674e; border-radius: 6px; padding: 4px 5px 4px 8px; font-size: 11px; font-weight: 670; max-width: 100%; overflow: hidden; }
+.task-composer-v15 .task-tag-chip button { display: grid; place-items: center; width: 22px; height: 22px; border: 0; border-radius: 4px; background: transparent; color: #648972; font-size: 14px; cursor: pointer; font-family: inherit; }
+.task-composer-v15 .task-tag-chip button:hover { background: #d6e8d8; }
+.task-composer-v15 .task-tag-input { flex: 1; min-width: 120px; border: 0; background: transparent; font-size: 12px; font-family: inherit; color: #283b30; padding: 4px; min-height: 30px; }
+.task-composer-v15 .task-tag-input:focus { outline: 2px solid #d1e2d6; border-radius: 4px; }
+
+/* More settings accordion. */
+.task-composer-v15 .task-accordion-toggle { width: 100%; display: grid; grid-template-columns: auto minmax(0,1fr) 16px; align-items: center; gap: 10px; min-height: 52px; border: 0; border-bottom: 1px solid #e5e9e3; background: transparent; text-align: left; padding: 10px 0 12px; font-family: inherit; }
+.task-composer-v15 .task-accordion-toggle > span:first-child { font-size: 12px; font-weight: 760; color: #354e3d; }
+.task-composer-v15 .task-accordion-toggle__hint { font-size: 10px; color: #8a988d; font-weight: 400; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task-composer-v15 .task-accordion-toggle__chevron { color: #7e8f82; font-size: 11px; }
+.task-composer-v15 .task-accordion-content { padding: 13px 0 4px; display: grid; gap: 12px; }
+.task-composer-v15 .task-accordion-content label { display: grid; gap: 5px; font-size: 11px; font-weight: 650; color: #536556; }
+.task-composer-v15 .task-accordion-content .task-form-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+.task-composer-v15 .task-accordion-content .task-form-grid label { display: flex; gap: 8px; align-items: center; }
+.task-composer-v15 .task-accordion-content .task-form-grid label > span:first-child { flex: 1; }
+
+/* Options loading / retry. */
+.task-composer-v15 .task-options-loading { font-size: 12px; color: #87958a; }
+.task-composer-v15 .task-options-retry { display: grid; gap: 8px; border: 1px solid #eccac4; background: #fdf4f1; border-radius: 9px; padding: 11px 12px; font-size: 12px; color: #914845; }
+.task-composer-v15 .task-options-retry p { margin: 0; line-height: 1.5; }
+.task-composer-v15 .task-options-retry button { justify-self: start; min-height: 34px; padding: 0 12px; border: 1px solid #c97f7b; border-radius: 7px; background: #fff; color: #9c4140; font-size: 11px; font-weight: 650; cursor: pointer; font-family: inherit; }
+
+/* ============================================================
+   Mobile presentation (<= 700px): single column, V15 order.
+   Task name -> Description -> Assign to -> Target -> Reason ->
+   More task settings. Sticky Create comes from the dialog footer.
+   ============================================================ */
+@media (max-width: 700px) {
+  .task-composer-v15 .task-composer__core { display: block; grid-template-areas: none; column-gap: 0; row-gap: 0; align-items: auto; }
+  .task-composer-v15 .task-composer__brief, .task-composer-v15 .task-composer__aside { display: block; grid-area: auto; grid-template-columns: none; gap: 0; padding: 0; background: #fff; border: 0; border-radius: 0; min-width: 0; }
+  .task-composer-v15 .task-composer__brief { display: grid; gap: 14px; padding: 14px 0 0; }
+  .task-composer-v15 .task-composer__aside { display: grid; gap: 13px; border-top: 1px solid #e4e8e0; padding: 8px 0 0; }
+  /* Reorder: properties rows follow the mobile order from docs/01 section C. */
+  .task-composer-v15 .task-composer__aside .task-property-row { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); gap: 8px; padding: 13px 0 14px; }
+  .task-composer-v15 .task-composer__aside .task-property-row--pair { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); }
+  .task-composer-v15 .task-composer__aside .task-property-row--pair label { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); display: grid; align-items: center; }
+  .task-composer-v15 .task-composer__aside .task-property-row--pair .task-field-error { grid-column: 1 / -1; }
+  .task-composer-v15 .task-field.task-field--title .task-field--title-input { font-size: 21px; min-height: 44px; }
+  /* Touch targets. */
+  .task-composer-v15 .task-avatar, .task-composer-v15 .task-avatar-add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+  .task-composer-v15 .task-people-menu__add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+  .task-composer-v15 .task-small-remove { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
+  .task-composer-v15 .task-effort-input button { min-height: 44px; min-width: 44px; }
+  .task-composer-v15 .task-review-cards { grid-template-columns: 1fr; }
+  .task-composer-v15 .task-review-card { min-height: 62px; }
+}

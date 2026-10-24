@@ -34,11 +34,13 @@ describe("shared task composer validation and fields", () => {
   it("hides optional planning and collaborator sections for compact (non-owner) variants", () => {
     const props = { onChange: () => undefined, projects: [{ id: "project", title: "Studio", status: "ACTIVE" as const }], planItems: [{ id: "stage", projectId: "project", kind: "STAGE", label: "Design" }], options: { actorEmployeeId: null, project: null, canAssign: true, canCreate: true, owners: [{ id: "owner", name: "Owner", homeBranchId: "branch" }], collaborators: [{ id: "helper", name: "Helper", homeBranchId: "branch" }], readAt: "" }, optionsError: undefined, retryOptions: () => undefined, busy: false };
     const view = render(<TaskComposerFields draft={draft} compact={false} {...props} />);
+    // Open the "More task settings" accordion first so the collaborator section becomes visible.
+    fireEvent.click(screen.getByRole("button", { name: /More task settings/ }));
     expect(screen.getByText("Optional planning", { selector: "summary" })).toBeInTheDocument();
-    expect(screen.getByText(/^Collaborators \(optional\)/, { selector: "summary" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Collaborators (optional)" })).toBeInTheDocument();
     view.rerender(<TaskComposerFields draft={draft} compact={true} {...props} />);
     expect(screen.queryByText("Optional planning", { selector: "summary" })).not.toBeInTheDocument();
-    expect(screen.queryByText(/^Collaborators \(optional\)/, { selector: "summary" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: "Collaborators (optional)" })).not.toBeInTheDocument();
   });
   it("requires internal approval when client review is selected and normalizes recovered CLIENT drafts", () => {
     const onChange = vi.fn();
