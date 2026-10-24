@@ -1,0 +1,26 @@
+# Dashboard shell across internal pages — 2026-10-24
+
+Status: bounded frontend implementation verified; whole-checkout/release acceptance remains IN PROGRESS. The Owner clarified that Dashboard is the visual source to apply to all other internal pages. This refines the previous generic studio-shell direction.
+
+Requirement slice: FND SC-00/SC-01, existing R-005/R-006/R-007 account/navigation boundaries, R-071 responsive presentation and R-100–R-102 verification. In scope: Dashboard's cream/paper palette, dark pine navigation, page width/gutters, open page headings, top-level cardless workspace frame, paper content panels and underline section navigation. Existing routes, data, module content/actions, semantic statuses, permissions and review workflows remain. No schema, API, retained data, migration or runtime promotion.
+
+Reference lock: the current Dashboard CSS and its approved V10 design lock at demos/Sense_Studios_Codex_Dashboard_V10_Handoff/docs/DESIGN_LOCK_AND_WIDGETS.md. Primary palette roles: canvas #f4f1e9, paper #fffdf7, muted paper #faf8f2, pine #182c29/#29463d, text #20332e, muted #61736b, border #d9d8cd;14px panels and9px controls. Preserve the accessible darkened focus token #8c6b30. The existing shared header and768px navigation boundary stay; domain widgets are not copied to other pages. This is direct implementation of the Owner-selected product reference, not a new visual exploration. Previously loaded ui-ux-pro-max consistency/breakpoint/focus guidance and the established Refero reference research supplement this target.
+
+Implementation boundary: one final authenticated-only stylesheet, loaded after the existing shell. Strip only explicitly named top-level module containers; retain actual content cards, nested project/task embeddings, forms, dialogs and semantic feedback. Do not restyle public/auth/client/external shells. Preserve concurrent Dashboard/Time/composer work.
+
+Acceptance: existing focused shell/account/navigation tests, web typecheck, changed-source lint and production build; synthetic read-only browser checks across28 routes at320/390/767/768/783/1024/1440; assert Dashboard palette and page frames match, header controls/navigation remain reachable, no overflow, keyboard navigation and responsive behavior. Inspect representative rendered pages against Dashboard. Record the prior broader-suite composer failures separately; no whole-checkout or deployed acceptance without corresponding evidence. Current Codex performs implementation/review; no independent model review is claimed.
+
+## Implemented and verified
+
+dashboard-shell.css is the final authenticated shell stylesheet. It reuses Dashboard's palette/type/panel tokens, paper header, dark pine sidebar with mint/gold active links,1560px page maximum,36/26/23/14/10px responsive gutters,27px headings, cardless top-level module frames and underline section navigation. Actual content cards, filters/phase selectors, nested embeddings, semantic states and existing commands remain. Public/login/client/external shells are outside its selectors. Only main.tsx and the new stylesheet change application source; concurrent Dashboard/Time/composer work is excluded.
+
+Current-session checks using Node24.19.0/pnpm11.19.0:
+
+- 25/25 focused tests passed across workspace-navigation, app.shell and design-system suites.
+- Web typecheck exited0; changed-source ESLint exited0; production web build exited0. Existing bundle/dynamic-import warnings remain.
+- Production synthetic browser checks passed196/196 (28 routes ×7 widths). Asserted cream canvas on every route, matching responsive gutters, transparent/borderless/shadowless top-level module frames where applicable, exactly one header/navigation mode, correct sidebar offsets,44px header targets, no clipped actions or document overflow. Page finder keyboard navigation, collapsed route continuity, More/Escape focus restoration, phone account access and sticky header passed. No unexpected writes or page errors. All API requests were intercepted, with an authorized empty-project response for Site; this is not real-session/populated workflow acceptance.
+- Representative screenshots were captured; Tasks1440, Projects390, Time1440 and Reviews390 were visually inspected against the Dashboard reference. Local evidence:.env.dashboard-shell-20261024/browser.mjs, production-browser.json, focused.log and screenshots. Typecheck/lint/build logs are .env.shell-consistency-20261024/dashboard-{typecheck,lint,build}.log.
+
+The final staff External access heading-card removal was checked separately at all7 widths after rebuilding; all7 layout checks and the keyboard/navigation interactions passed. The updated390px staff capture was inspected. Evidence:external-browser.mjs, production-browser-external.json and final-build.log in the same evidence directory. Public external portals remain outside these selectors.
+
+The earlier full web result683 passed/8 composer-related failures is retained in SHARED_SHELL_CONSISTENCY_2026-10-24.md; it was not rerun or claimed passing for this CSS-only follow-up. No API/database/schema/retained-data operation, canonical staging promotion, real-session acceptance, independent reviewer or production acceptance is claimed. Current Codex implemented and inspected the change. Temporary preview only; no personal-browser storage was cleared.

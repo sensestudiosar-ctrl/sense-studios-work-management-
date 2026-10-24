@@ -1,3 +1,7 @@
+## Dashboard shell applied across internal pages — frontend verified, 2026-10-24
+
+The Owner selected Dashboard as the visual source. All28 internal pages now use its cream/paper palette, dark pine navigation, page gutters, open heading/frame treatment and underline section navigation.25 focused tests, web typecheck/scoped lint/build and196 production synthetic browser checks passed; representative desktop/phone captures were inspected. Prior broader composer failures remain recorded; no whole-checkout, real-session, independent or canonical deployment acceptance is claimed. Concurrent work and retained data are preserved. See docs/ui/DASHBOARD_SHELL_APP_WIDE_2026-10-24.md.
+
 ## Shared shell consistency — bounded frontend verified, 2026-10-24
 
 All28 internal tab routes now share one global header, page context/actions/account access, paper canvas, gutters and sidebar offsets. Dashboard competing shell rules and duplicate page account strips were removed; collapse survives tab navigation. Final affected117/117, web typecheck/scoped lint/build,196 development and196 production synthetic browser layout checks passed. Full web683 passed/8 concurrent composer-related failures; an isolated baseline reproduced4 and did not reproduce4. No whole-checkout/full-verify, real-session/independent acceptance or canonical deployment is claimed. Retained data/schema and unrelated Dashboard/Time/composer work are preserved. See docs/ui/SHARED_SHELL_CONSISTENCY_2026-10-24.md.

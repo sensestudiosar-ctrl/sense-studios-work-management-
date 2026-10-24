@@ -1,0 +1,152 @@
+/* Owner-selected Dashboard V10 frame, shared by internal pages only.
+   Module panels, semantic states and embedded workspaces retain their structure. */
+:is(.app-shell:has(.workspace-layout--studio), .workspace-layout--studio .workspace-page) {
+  --sense-font-ui: Inter, "Segoe UI", system-ui, sans-serif;
+  --sense-canvas: #f4f1e9;
+  --sense-surface: #fffdf7;
+  --sense-surface-muted: #faf8f2;
+  --sense-surface-active: #e3eadf;
+  --sense-pine: #182c29;
+  --sense-pine-2: #29463d;
+  --sense-pine-hover: #35534a;
+  --sense-ink: #20332e;
+  --sense-ink-strong: #182c29;
+  --sense-ink-muted: #61736b;
+  --sense-border: #d9d8cd;
+  --sense-border-soft: #e7e5dc;
+  --sense-active: #e3eadf;
+  --sense-focus: #8c6b30;
+  --sense-radius-control: 9px;
+  --sense-radius-panel: 14px;
+  --sense-shadow-panel: 0 9px 28px rgb(34 51 44 / 5.5%);
+  --sense-content-max: 1560px;
+  --sense-page-gutter: 36px;
+  color: var(--sense-ink);
+  background: var(--sense-canvas);
+  font-family: var(--sense-font-ui);
+}
+
+.app-shell:has(.workspace-layout--studio) :is(.workspace-layout--studio, .workspace-page) { background: var(--sense-canvas); }
+.app-shell:has(.workspace-layout--studio) .site-header { background: var(--sense-canvas); border-color: var(--sense-border); }
+.app-shell:has(.workspace-layout--studio) .workspace-header { background: transparent; }
+.app-shell:has(.workspace-layout--studio) .workspace-sidebar { background: #162f29; }
+.app-shell:has(.workspace-layout--studio) .workspace-nav a[aria-current="page"] {
+  background: var(--sense-surface-active);
+  color: #1e3a2e;
+  box-shadow: inset 3px 0 #d4b365;
+}
+.app-shell:has(.workspace-layout--studio) .workspace-nav a[aria-current="page"] .workspace-route-icon { color: #214a37; }
+.app-shell:has(.workspace-layout--studio) .workspace-header-new-task { background: var(--sense-pine-2); }
+.app-shell:has(.workspace-layout--studio) .workspace-header-notifications,
+.app-shell:has(.workspace-layout--studio) .site-header-logout,
+.app-shell:has(.workspace-layout--studio) .workspace-mobile-nav { background: var(--sense-surface); border-color: var(--sense-border); }
+
+/* Dashboard's page content sits on the canvas, with cards inside the page. */
+.app-shell .workspace-layout--studio .workspace-page > main.identity-content {
+  padding: 27px var(--sense-page-gutter) 65px;
+}
+.workspace-layout--studio .workspace-page > main.identity-content > :is(
+  .dashboard-workspace, .task-workspace, .project-workspace, .document-workspace,
+  .revision-workspace, .review-workspace, .client-review-workspace, .turnkey-workspace,
+  .workforce, .time-workspace, .learning-workspace, .training-workspace, .library-workspace,
+  .integrations-workspace, .automation-workspace, .ai-assist, .performance, .site-workspace,
+  .notification-center, .external-portal
+) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.workspace-layout--studio .workspace-page > main.identity-content > .external-portal > .external-shell {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.workspace-layout--studio .workspace-page > main.identity-content > .external-portal .external-header {
+  margin: 0 0 19px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.workspace-layout--studio .workspace-page :is(
+  .dashboard-heading, .task-header, .project-heading, .document-header, .revision-header, .review-header,
+  .client-review-header, .turnkey-header, .wf-heading, .time-heading, .learning-heading,
+  .training-heading, .library-heading, .integrations-heading, .automation-heading,
+  .ai-assist-heading, .perf-heading, .site-workspace-header, .people-route-heading,
+  .settings-shell-heading, .decisions-home-heading, .external-header
+) > :is(h1, h2),
+.workspace-layout--studio .workspace-page :is(
+  .dashboard-heading, .task-header, .project-heading, .document-header, .revision-header, .review-header,
+  .client-review-header, .turnkey-header, .wf-heading, .time-heading, .learning-heading,
+  .training-heading, .library-heading, .integrations-heading, .automation-heading,
+  .ai-assist-heading, .perf-heading, .site-workspace-header, .external-header
+) > div > :is(h1, h2),
+.workspace-layout--studio .workspace-page > main.identity-content > .notification-center > .sessions-heading-row h2 {
+  margin: 0 0 6px;
+  color: var(--sense-pine);
+  font: 700 27px/1.2 var(--sense-font-ui);
+  letter-spacing: -.85px;
+}
+
+/* Section navigation adopts Dashboard's underline treatment; filters and
+   state/phase selectors keep their own selected/pressed affordances. */
+.workspace-layout--studio .workspace-page :is(
+  .perf-tabs, .project-section-nav, .wf-home-nav, .settings-section-navigation,
+  .insights-navigation
+) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--sense-border);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.workspace-layout--studio .workspace-page :is(
+  .perf-tabs, .project-section-nav, .wf-home-nav, .settings-section-navigation,
+  .insights-navigation
+) > :is(a, button) {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--sense-ink-muted);
+  font: 600 12px/1.5 var(--sense-font-ui);
+  text-decoration: none;
+  box-shadow: none;
+}
+.workspace-layout--studio .workspace-page :is(
+  .perf-tabs, .project-section-nav, .wf-home-nav, .settings-section-navigation,
+  .insights-navigation
+) > :is(a, button):is([aria-current="page"], [aria-selected="true"], [aria-pressed="true"]) {
+  color: var(--sense-pine-2);
+  background: transparent;
+  box-shadow: inset 0 -2px var(--sense-pine-2);
+}
+.workspace-layout--studio .workspace-page :is(
+  .perf-tabs, .project-section-nav, .wf-home-nav, .settings-section-navigation,
+  .insights-navigation
+) > :is(a, button):hover:not(:disabled) { color: var(--sense-pine); }
+
+@media (max-width: 1260px) {
+  :is(.app-shell:has(.workspace-layout--studio), .workspace-layout--studio .workspace-page) { --sense-page-gutter: 26px; }
+}
+@media (max-width: 1100px) {
+  :is(.app-shell:has(.workspace-layout--studio), .workspace-layout--studio .workspace-page) { --sense-page-gutter: 23px; }
+}
+@media (max-width: 767px) {
+  :is(.app-shell:has(.workspace-layout--studio), .workspace-layout--studio .workspace-page) { --sense-page-gutter: 14px; }
+  .app-shell .workspace-layout--studio .workspace-page > main.identity-content { padding: 20px var(--sense-page-gutter) 32px; }
+}
+@media (max-width: 355px) {
+  :is(.app-shell:has(.workspace-layout--studio), .workspace-layout--studio .workspace-page) { --sense-page-gutter: 10px; }
+}

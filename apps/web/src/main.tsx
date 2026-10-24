@@ -10,6 +10,7 @@ import { RouteAccessibility } from "./route-accessibility.js";
 import "./ux-usability.css";
 // Load the shared shell after module styles so every internal route uses one frame.
 import "./my-work-shell.css";
+import "./dashboard-shell.css";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Application root is missing.");
