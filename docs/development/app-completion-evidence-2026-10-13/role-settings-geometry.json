@@ -1,0 +1,146 @@
+{
+  "fixture": "synthetic current-component; no server, authentication or database",
+  "sourceFingerprint": {
+    "apps/web/src/app.tsx": "74b06f17989816499f5c5b245cb3ea3361abc2440ef5fd5bfa7293b6b5c5d0d2",
+    "apps/web/src/styles.css": "3c662c41e1698979a30426dffb51138a7ac6983a903f133edcbf19f90488ce3c",
+    "apps/web/src/studio-theme.css": "c9c2d5590c31fffdd761f5bbb07c13e9a8f87b9d04cc7defdc8a69938d4a6429"
+  },
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "form": {
+        "width": 672,
+        "left": 351.78125,
+        "right": 1023.78125
+      },
+      "controls": [
+        {
+          "tag": "SELECT",
+          "width": 426.40625,
+          "height": 43.375,
+          "left": 597.375,
+          "right": 1023.78125
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 426.40625,
+          "height": 58.375,
+          "left": 597.375,
+          "right": 1023.78125
+        },
+        {
+          "tag": "BUTTON",
+          "width": 168.5,
+          "height": 47,
+          "left": 597.375,
+          "right": 765.875
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "form": {
+        "width": 672,
+        "left": 172.3125,
+        "right": 844.3125
+      },
+      "controls": [
+        {
+          "tag": "SELECT",
+          "width": 426.40625,
+          "height": 43.375,
+          "left": 417.90625,
+          "right": 844.3125
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 426.40625,
+          "height": 58.375,
+          "left": 417.90625,
+          "right": 844.3125
+        },
+        {
+          "tag": "BUTTON",
+          "width": 168.5,
+          "height": 47,
+          "left": 417.90625,
+          "right": 586.40625
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "form": {
+        "width": 248,
+        "left": 71,
+        "right": 319
+      },
+      "controls": [
+        {
+          "tag": "SELECT",
+          "width": 248,
+          "height": 44,
+          "left": 71,
+          "right": 319
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 248,
+          "height": 58.375,
+          "left": 71,
+          "right": 319
+        },
+        {
+          "tag": "BUTTON",
+          "width": 248,
+          "height": 47,
+          "left": 71,
+          "right": 319
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "form": {
+        "width": 178,
+        "left": 71,
+        "right": 249
+      },
+      "controls": [
+        {
+          "tag": "SELECT",
+          "width": 178,
+          "height": 44,
+          "left": 71,
+          "right": 249
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 178,
+          "height": 58.375,
+          "left": 71,
+          "right": 249
+        },
+        {
+          "tag": "BUTTON",
+          "width": 178,
+          "height": 47,
+          "left": 71,
+          "right": 249
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    }
+  ]
+}

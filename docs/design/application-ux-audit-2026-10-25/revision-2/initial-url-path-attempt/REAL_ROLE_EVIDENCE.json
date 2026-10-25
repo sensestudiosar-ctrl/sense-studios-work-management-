@@ -1,0 +1,5461 @@
+{
+  "at": "2026-10-25T06:40:21.524Z",
+  "origin": "http://localhost:59443",
+  "authMethod": "Existing enrolled test passkeys via hardware emulation; normal backend login and current persisted account/employee roles. No mocked sessions/API responses.",
+  "roles": [
+    {
+      "key": "leader1",
+      "role": "Team Leader",
+      "accountId": "473d501d-b547-4329-a30d-bacbfa064747",
+      "employeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "pages": [
+        {
+          "label": "/dashboard",
+          "width": 1440,
+          "screenshot": "evidence/leader1-dashboard-1440.png",
+          "url": "/dashboard",
+          "text": "Dashboard\n\nA current view of decisions, tasks and project updates available to your account.\n\nRefresh\nOverview\nScheduled summaries\nReports\nReminders & schedules\nOrganization date\nLoading…\nAccount type\nStaff account\nToday at a glance\nIndependent task summaries\nOverdue\nLoading…\n→\nDue today\nLoading…\n→\nHigh priority\nLoading…\n→\nWaiting / blocked\nLoading…\n→\nReview / corrections\nLoading…\n→\nTask summaries have not been read. Counts overlap.\nYour essentials\n\nOnly selected widgets appear here · long-press to edit on mobile.\n\nEdit widgets\nTime tracking\n\nStart work and record time\n\nReading time source…\n\nTime source not read\nTime log & manual entry →\nProjects at a glance\n\nAuthorized project snapshots and recorded signals\n\nReading projects…\nNext action\n\nYour current authorized task preview\n\nReading task source…\n\nDecisions & assigned reviews\n\nApproval requests and independent review rounds are separate\n\nReading decisions…\nAttention queue\n\nAuthorized task preview · one row per task, even with multiple reasons\n\nFIXED\nReading attention items…",
+          "headings": [
+            "Dashboard",
+            "Today at a glance",
+            "Your essentials",
+            "Time tracking",
+            "Projects at a glance",
+            "Next action",
+            "Decisions & assigned reviews",
+            "Attention queue"
+          ],
+          "links": [
+            {
+              "label": "Overdue\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Due today\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "High priority\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Waiting / blocked\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Review / corrections\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Time log & manual entry →",
+              "href": "/time"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Overview",
+              "disabled": false
+            },
+            {
+              "label": "Scheduled summaries",
+              "disabled": false
+            },
+            {
+              "label": "Reports",
+              "disabled": false
+            },
+            {
+              "label": "Reminders & schedules",
+              "disabled": false
+            },
+            {
+              "label": "Edit widgets",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1283
+        },
+        {
+          "label": "/dashboard",
+          "width": 783,
+          "screenshot": "evidence/leader1-dashboard-783.png",
+          "url": "/dashboard",
+          "text": "Dashboard\n\nA current view of decisions, tasks and project updates available to your account.\n\nRefresh\nOverview\nScheduled summaries\nReports\nReminders & schedules\nOrganization date\nLoading…\nAccount type\nStaff account\nToday at a glance\nIndependent task summaries\nOverdue\nLoading…\n→\nDue today\nLoading…\n→\nHigh priority\nLoading…\n→\nWaiting / blocked\nLoading…\n→\nReview / corrections\nLoading…\n→\nTask summaries have not been read. Counts overlap.\nYour essentials\n\nOnly selected widgets appear here · long-press to edit on mobile.\n\nEdit widgets\nTime tracking\n\nStart work and record time\n\nReading time source…\n\nTime source not read\nTime log & manual entry →\nProjects at a glance\n\nAuthorized project snapshots and recorded signals\n\nReading projects…\nNext action\n\nYour current authorized task preview\n\nReading task source…\n\nDecisions & assigned reviews\n\nApproval requests and independent review rounds are separate\n\nReading decisions…\nAttention queue\n\nAuthorized task preview · one row per task, even with multiple reasons\n\nFIXED\nReading attention items…",
+          "headings": [
+            "Dashboard",
+            "Today at a glance",
+            "Your essentials",
+            "Time tracking",
+            "Projects at a glance",
+            "Next action",
+            "Decisions & assigned reviews",
+            "Attention queue"
+          ],
+          "links": [
+            {
+              "label": "Overdue\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Due today\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "High priority\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Waiting / blocked\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Review / corrections\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Time log & manual entry →",
+              "href": "/time"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Overview",
+              "disabled": false
+            },
+            {
+              "label": "Scheduled summaries",
+              "disabled": false
+            },
+            {
+              "label": "Reports",
+              "disabled": false
+            },
+            {
+              "label": "Reminders & schedules",
+              "disabled": false
+            },
+            {
+              "label": "Edit widgets",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1489
+        },
+        {
+          "label": "/dashboard",
+          "width": 390,
+          "screenshot": "evidence/leader1-dashboard-390.png",
+          "url": "/dashboard",
+          "text": "Dashboard\n\nA current view of decisions, tasks and project updates available to your account.\n\nRefresh\nOverview\nScheduled summaries\nReports\nReminders & schedules\nOrganization date\nLoading…\nAccount type\nStaff account\nToday at a glance\nOverdue\nLoading…\n→\nDue today\nLoading…\n→\nHigh priority\nLoading…\n→\nWaiting / blocked\nLoading…\n→\nReview / corrections\nLoading…\n→\nTask summaries have not been read. Counts overlap.\nYour essentials\n\nOnly selected widgets appear here · long-press to edit on mobile.\n\nEdit widgets\nTime tracking\n\nStart work and record time\n\nReading time source…\n\nTime source not read\nTime log & manual entry →\nNext action\n\nYour current authorized task preview\n\nReading task source…\n\nProjects at a glance\n\nAuthorized project snapshots and recorded signals\n\nReading projects…\nDecisions & assigned reviews\n\nApproval requests and independent review rounds are separate\n\nReading decisions…\nAttention queue\n\nAuthorized task preview · one row per task, even with multiple reasons\n\nFIXED\nReading attention items…",
+          "headings": [
+            "Dashboard",
+            "Today at a glance",
+            "Your essentials",
+            "Time tracking",
+            "Next action",
+            "Projects at a glance",
+            "Decisions & assigned reviews",
+            "Attention queue"
+          ],
+          "links": [
+            {
+              "label": "Overdue\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Due today\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "High priority\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Waiting / blocked\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Review / corrections\nLoading…\n→",
+              "href": "/tasks"
+            },
+            {
+              "label": "Time log & manual entry →",
+              "href": "/time"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Overview",
+              "disabled": false
+            },
+            {
+              "label": "Scheduled summaries",
+              "disabled": false
+            },
+            {
+              "label": "Reports",
+              "disabled": false
+            },
+            {
+              "label": "Reminders & schedules",
+              "disabled": false
+            },
+            {
+              "label": "Edit widgets",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 2184
+        },
+        {
+          "label": "/my-work",
+          "width": 1440,
+          "screenshot": "evidence/leader1-my-work-1440.png",
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\n◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts\n◷\nOverdue\nLoading…\nPast Target · unfinished\n↗\n◇\nReviews\nLoading…\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\nLoading…\nWaiting tasks only\n↗\nManagement\nLoading\nWork queue\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\nTasks loading\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n\nLoading tasks…\n\nLoading current page…\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Management: employee-exit reassignment",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\nLoading…\nPast Target · unfinished\n↗",
+              "disabled": true
+            },
+            {
+              "label": "◇\nReviews\nLoading…\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\nLoading…\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "Management\nLoading",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": true
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/my-work",
+          "width": 783,
+          "screenshot": "evidence/leader1-my-work-783.png",
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\n◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts\n◷\nOverdue\nLoading…\nPast Target · unfinished\n↗\n◇\nReviews\nLoading…\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\nLoading…\nWaiting tasks only\n↗\nManagement\nLoading\nWork queue\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\nTasks loading\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n\nLoading tasks…\n\nLoading current page…\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Management: employee-exit reassignment",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\nLoading…\nPast Target · unfinished\n↗",
+              "disabled": true
+            },
+            {
+              "label": "◇\nReviews\nLoading…\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\nLoading…\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "Management\nLoading",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": true
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1042
+        },
+        {
+          "label": "/my-work",
+          "width": 390,
+          "screenshot": "evidence/leader1-my-work-390.png",
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\n◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts\n◷\nOverdue\nLoading…\nPast Target · unfinished\n↗\n◇\nReviews\nLoading…\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\nLoading…\nWaiting tasks only\n↗\nManagement\nLoading\nWork queue\n＋\nCreate task\nSearch tasks\nFilters\nMore\ndisplay and refresh options\n\nLoading tasks…\n\nLoading current page…\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Management: employee-exit reassignment",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\nLoading…\nPast Target · unfinished\n↗",
+              "disabled": true
+            },
+            {
+              "label": "◇\nReviews\nLoading…\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\nLoading…\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "Management\nLoading",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": true
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/tasks",
+          "width": 1440,
+          "screenshot": "evidence/leader1-tasks-1440.png",
+          "url": "/tasks?scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\n\nBrowse tasks across your authorized scope. Use My Work for your daily actions.\n\nCreate task\nTask scope\nAssigned to me\nView options\nAll tasks\nActive\nWaiting\nIn review\nCompleted\nSearch tasks\nFilters\nApply filters\nReset filters\nLoading current page…\nPrevious\nNext\n\nLoading tasks…",
+          "headings": [
+            "Tasks"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": true
+            },
+            {
+              "label": "View options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "All tasks",
+              "disabled": false
+            },
+            {
+              "label": "Active",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "In review",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "Apply filters",
+              "disabled": true
+            },
+            {
+              "label": "Reset filters",
+              "disabled": true
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/tasks",
+          "width": 783,
+          "screenshot": "evidence/leader1-tasks-783.png",
+          "url": "/tasks?scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\n\nBrowse tasks across your authorized scope. Use My Work for your daily actions.\n\nCreate task\nTask scope\nAssigned to me\nView options\nAll tasks\nActive\nWaiting\nIn review\nCompleted\nSearch tasks\nFilters\nApply filters\nReset filters\nLoading current page…\nPrevious\nNext\n\nLoading tasks…",
+          "headings": [
+            "Tasks"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": true
+            },
+            {
+              "label": "View options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "All tasks",
+              "disabled": false
+            },
+            {
+              "label": "Active",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "In review",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "Apply filters",
+              "disabled": true
+            },
+            {
+              "label": "Reset filters",
+              "disabled": true
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/tasks",
+          "width": 390,
+          "screenshot": "evidence/leader1-tasks-390.png",
+          "url": "/tasks?scope=mine",
+          "text": "Tasks\nCreate task\nTask scope\nAssigned to me\nView options\nAll tasks\nActive\nWaiting\nIn review\nCompleted\nSearch tasks\nFilters\nApply filters\nReset filters\nLoading current page…\nPrevious\nNext\n\nLoading tasks…",
+          "headings": [
+            "Tasks"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": true
+            },
+            {
+              "label": "View options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "All tasks",
+              "disabled": false
+            },
+            {
+              "label": "Active",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "In review",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "Apply filters",
+              "disabled": true
+            },
+            {
+              "label": "Reset filters",
+              "disabled": true
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/projects",
+          "width": 1440,
+          "screenshot": "evidence/leader1-projects-1440.png",
+          "url": "/projects",
+          "text": "DELIVERY\nProjects\n\nReview projects available to you, including delivery scopes and history.\n\n0 total\n\nLoading project setup…",
+          "headings": [
+            "Projects"
+          ],
+          "links": [],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/projects",
+          "width": 783,
+          "screenshot": "evidence/leader1-projects-783.png",
+          "url": "/projects",
+          "text": "DELIVERY\nProjects\n\nReview projects available to you, including delivery scopes and history.\n\n0 total\n\nLoading project setup…",
+          "headings": [
+            "Projects"
+          ],
+          "links": [],
+          "controls": [],
+          "overflow": false,
+          "height": 1000
+        },
+        {
+          "label": "/projects",
+          "width": 390,
+          "screenshot": "evidence/leader1-projects-390.png",
+          "url": "/projects",
+          "text": "DELIVERY\nProjects\n\nReview projects available to you, including delivery scopes and history.\n\n0 total\n\nLoading project setup…",
+          "headings": [
+            "Projects"
+          ],
+          "links": [],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/people",
+          "width": 1440,
+          "screenshot": "evidence/leader1-people-1440.png",
+          "url": "/people",
+          "text": "WORKSPACE\n\nPeople\n\nYour account and permitted reporting team. Team records require an explicit grant.\n\nMy Work\nMy account & devices\nWorkforce\nLearning\nMy employee profile\n\nLoading your membership…\n\nPermitted reporting team\n\nThis list includes only active employees in your reporting team. Reporting changes require an explicit team-scoped grant and a reason.\n\nRefresh team\n\nLoading managed team…",
+          "headings": [
+            "People",
+            "My employee profile",
+            "Permitted reporting team"
+          ],
+          "links": [
+            {
+              "label": "My Work",
+              "href": "/my-work"
+            },
+            {
+              "label": "My account & devices",
+              "href": "/settings?section=account"
+            },
+            {
+              "label": "Workforce",
+              "href": "/workforce"
+            },
+            {
+              "label": "Learning",
+              "href": "/learning"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh team",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/people",
+          "width": 783,
+          "screenshot": "evidence/leader1-people-783.png",
+          "url": "/people",
+          "text": "WORKSPACE\n\nPeople\n\nYour account and permitted reporting team. Team records require an explicit grant.\n\nMy Work\nMy account & devices\nWorkforce\nLearning\nMy employee profile\n\nLoading your membership…\n\nPermitted reporting team\n\nThis list includes only active employees in your reporting team. Reporting changes require an explicit team-scoped grant and a reason.\n\nRefresh team\n\nLoading managed team…",
+          "headings": [
+            "People",
+            "My employee profile",
+            "Permitted reporting team"
+          ],
+          "links": [
+            {
+              "label": "My Work",
+              "href": "/my-work"
+            },
+            {
+              "label": "My account & devices",
+              "href": "/settings?section=account"
+            },
+            {
+              "label": "Workforce",
+              "href": "/workforce"
+            },
+            {
+              "label": "Learning",
+              "href": "/learning"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh team",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/people",
+          "width": 390,
+          "screenshot": "evidence/leader1-people-390.png",
+          "url": "/people",
+          "text": "WORKSPACE\n\nPeople\n\nYour account and permitted reporting team. Team records require an explicit grant.\n\nMy Work\nMy account & devices\nWorkforce\nLearning\nMy employee profile\n\nLoading your membership…\n\nPermitted reporting team\n\nThis list includes only active employees in your reporting team. Reporting changes require an explicit team-scoped grant and a reason.\n\nRefresh team\n\nLoading managed team…",
+          "headings": [
+            "People",
+            "My employee profile",
+            "Permitted reporting team"
+          ],
+          "links": [
+            {
+              "label": "My Work",
+              "href": "/my-work"
+            },
+            {
+              "label": "My account & devices",
+              "href": "/settings?section=account"
+            },
+            {
+              "label": "Workforce",
+              "href": "/workforce"
+            },
+            {
+              "label": "Learning",
+              "href": "/learning"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh team",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1093
+        },
+        {
+          "label": "/settings",
+          "width": 1440,
+          "screenshot": "evidence/leader1-settings-1440.png",
+          "url": "/settings",
+          "text": "WORKSPACE\n\nSettings\n\nManage your account and workspace preferences.\n\nPERSONAL\nAccount & devices\nNotifications\nORGANIZATION & ADMINISTRATION\nTeam workspace\nPeople management\nIntegrations\nAutomation & reports\nAccount & devices\nIDENTITY\nT\nAccount\n\ntask-test-20261012@example.test\n\nStaff account\nSign out\nDEVICES\nActive sessions\nRefresh\n\nLoading your sessions…\n\nRefresh session\n\nYour sign-in is checked again when you return to this page.",
+          "headings": [
+            "Settings",
+            "Personal",
+            "Organization & administration",
+            "Account & devices",
+            "Account",
+            "Active sessions",
+            "Team workspace"
+          ],
+          "links": [
+            {
+              "label": "Account & devices",
+              "href": "/settings?section=account"
+            },
+            {
+              "label": "Notifications",
+              "href": "/settings?section=notifications"
+            },
+            {
+              "label": "Team workspace",
+              "href": "/settings?section=team"
+            },
+            {
+              "label": "People management",
+              "href": "/people"
+            },
+            {
+              "label": "Integrations",
+              "href": "/integrations"
+            },
+            {
+              "label": "Automation & reports",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Sign out",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": true
+            },
+            {
+              "label": "Refresh session",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/settings",
+          "width": 783,
+          "screenshot": "evidence/leader1-settings-783.png",
+          "url": "/settings",
+          "text": "WORKSPACE\n\nSettings\n\nManage your account and workspace preferences.\n\nPERSONAL\nAccount & devices\nNotifications\nORGANIZATION & ADMINISTRATION\nTeam workspace\nPeople management\nIntegrations\nAutomation & reports\nAccount & devices\nIDENTITY\nT\nAccount\n\ntask-test-20261012@example.test\n\nStaff account\nSign out\nDEVICES\nActive sessions\nRefresh\n\nLoading your sessions…\n\nRefresh session\n\nYour sign-in is checked again when you return to this page.",
+          "headings": [
+            "Settings",
+            "Personal",
+            "Organization & administration",
+            "Account & devices",
+            "Account",
+            "Active sessions",
+            "Team workspace"
+          ],
+          "links": [
+            {
+              "label": "Account & devices",
+              "href": "/settings?section=account"
+            },
+            {
+              "label": "Notifications",
+              "href": "/settings?section=notifications"
+            },
+            {
+              "label": "Team workspace",
+              "href": "/settings?section=team"
+            },
+            {
+              "label": "People management",
+              "href": "/people"
+            },
+            {
+              "label": "Integrations",
+              "href": "/integrations"
+            },
+            {
+              "label": "Automation & reports",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Sign out",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": true
+            },
+            {
+              "label": "Refresh session",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/settings",
+          "width": 390,
+          "screenshot": "evidence/leader1-settings-390.png",
+          "url": "/settings",
+          "text": "WORKSPACE\n\nSettings\n\nManage your account and workspace preferences.\n\nPERSONAL\nAccount & devices\nNotifications\nORGANIZATION & ADMINISTRATION\nTeam workspace\nPeople management\nIntegrations\nAutomation & reports\nAccount & devices\nIDENTITY\nT\nAccount\n\ntask-test-20261012@example.test\n\nStaff account\nSign out\nDEVICES\nActive sessions\nRefresh\n\nLoading your sessions…\n\nRefresh session\n\nYour sign-in is checked again when you return to this page.",
+          "headings": [
+            "Settings",
+            "Personal",
+            "Organization & administration",
+            "Account & devices",
+            "Account",
+            "Active sessions",
+            "Team workspace"
+          ],
+          "links": [
+            {
+              "label": "Account & devices",
+              "href": "/settings?section=account"
+            },
+            {
+              "label": "Notifications",
+              "href": "/settings?section=notifications"
+            },
+            {
+              "label": "Team workspace",
+              "href": "/settings?section=team"
+            },
+            {
+              "label": "People management",
+              "href": "/people"
+            },
+            {
+              "label": "Integrations",
+              "href": "/integrations"
+            },
+            {
+              "label": "Automation & reports",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Sign out",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": true
+            },
+            {
+              "label": "Refresh session",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1306
+        },
+        {
+          "label": "/decisions",
+          "width": 1440,
+          "screenshot": "evidence/leader1-decisions-1440.png",
+          "url": "/decisions",
+          "text": "WORKSPACE\n\nDecisions\n\nReview requests that need your attention. Approving or declining a request is completed in the workflow that owns it, where its context and authorization are checked.\n\nMANAGEMENT\nPending decisions\nRefreshing…\n\nPending actions from your authorized work areas appear here.\n\nLoading pending decisions…",
+          "headings": [
+            "Decisions",
+            "Pending decisions"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refreshing…",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/decisions",
+          "width": 783,
+          "screenshot": "evidence/leader1-decisions-783.png",
+          "url": "/decisions",
+          "text": "WORKSPACE\n\nDecisions\n\nReview requests that need your attention. Approving or declining a request is completed in the workflow that owns it, where its context and authorization are checked.\n\nMANAGEMENT\nPending decisions\nRefreshing…\n\nPending actions from your authorized work areas appear here.\n\nLoading pending decisions…",
+          "headings": [
+            "Decisions",
+            "Pending decisions"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refreshing…",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/decisions",
+          "width": 390,
+          "screenshot": "evidence/leader1-decisions-390.png",
+          "url": "/decisions",
+          "text": "WORKSPACE\n\nDecisions\n\nReview requests that need your attention. Approving or declining a request is completed in the workflow that owns it, where its context and authorization are checked.\n\nMANAGEMENT\nPending decisions\nRefresh\n\nPending actions from your authorized work areas appear here.\n\nNo pending decisions in this list.",
+          "headings": [
+            "Decisions",
+            "Pending decisions"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/notifications",
+          "width": 1440,
+          "screenshot": "evidence/leader1-notifications-1440.png",
+          "url": "/notifications",
+          "text": "INBOX & PREFERENCES\nNotifications\nClose\n\nLoading notifications…\n\nEmail delivery\n\nChecking email verification…\n\nNo email notifications have been queued.\n\nOptional channel preferences\n\nRequired business notices remain enabled. Leave a category unset to use its configured delivery defaults.\n\nNo optional preferences are saved.\n\nCategory\nChannel\nEmail\nIn app\nEnable this optional category and channel\nSave preference\nQuiet hours\n\nTimes use your selected time zone. Critical notices can bypass quiet hours.\n\nStart\nEnd\nIANA time zone\nSave quiet hours",
+          "headings": [
+            "Notifications",
+            "Email delivery",
+            "Optional channel preferences",
+            "Quiet hours"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Close",
+              "disabled": false
+            },
+            {
+              "label": "Save preference",
+              "disabled": true
+            },
+            {
+              "label": "Save quiet hours",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1072
+        },
+        {
+          "label": "/notifications",
+          "width": 783,
+          "screenshot": "evidence/leader1-notifications-783.png",
+          "url": "/notifications",
+          "text": "INBOX & PREFERENCES\nNotifications\nClose\n\nLoading notifications…\n\nEmail delivery\n\nChecking email verification…\n\nNo email notifications have been queued.\n\nOptional channel preferences\n\nRequired business notices remain enabled. Leave a category unset to use its configured delivery defaults.\n\nNo optional preferences are saved.\n\nCategory\nChannel\nEmail\nIn app\nEnable this optional category and channel\nSave preference\nQuiet hours\n\nTimes use your selected time zone. Critical notices can bypass quiet hours.\n\nStart\nEnd\nIANA time zone\nSave quiet hours",
+          "headings": [
+            "Notifications",
+            "Email delivery",
+            "Optional channel preferences",
+            "Quiet hours"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Close",
+              "disabled": false
+            },
+            {
+              "label": "Save preference",
+              "disabled": true
+            },
+            {
+              "label": "Save quiet hours",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1108
+        },
+        {
+          "label": "/notifications",
+          "width": 390,
+          "screenshot": "evidence/leader1-notifications-390.png",
+          "url": "/notifications",
+          "text": "INBOX & PREFERENCES\nNotifications\nClose\n\nLoading notifications…\n\nEmail delivery\n\nChecking email verification…\n\nNo email notifications have been queued.\n\nOptional channel preferences\n\nRequired business notices remain enabled. Leave a category unset to use its configured delivery defaults.\n\nNo optional preferences are saved.\n\nCategory\nChannel\nEmail\nIn app\nEnable this optional category and channel\nSave preference\nQuiet hours\n\nTimes use your selected time zone. Critical notices can bypass quiet hours.\n\nStart\nEnd\nIANA time zone\nSave quiet hours",
+          "headings": [
+            "Notifications",
+            "Email delivery",
+            "Optional channel preferences",
+            "Quiet hours"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Close",
+              "disabled": false
+            },
+            {
+              "label": "Save preference",
+              "disabled": true
+            },
+            {
+              "label": "Save quiet hours",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1695
+        },
+        {
+          "label": "/documents",
+          "width": 1440,
+          "screenshot": "evidence/leader1-documents-1440.png",
+          "url": "/documents",
+          "text": "PROJECT RECORDS\n\nDocuments\n\nProject files are stored and served through the authorized document service.\n\nRefresh\n\nLoading project document access…",
+          "headings": [
+            "Documents"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/documents",
+          "width": 783,
+          "screenshot": "evidence/leader1-documents-783.png",
+          "url": "/documents",
+          "text": "PROJECT RECORDS\n\nDocuments\n\nProject files are stored and served through the authorized document service.\n\nRefresh\n\nLoading project document access…",
+          "headings": [
+            "Documents"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/documents",
+          "width": 390,
+          "screenshot": "evidence/leader1-documents-390.png",
+          "url": "/documents",
+          "text": "PROJECT RECORDS\n\nDocuments\n\nProject files are stored and served through the authorized document service.\n\nRefresh\n\nLoading project document access…",
+          "headings": [
+            "Documents"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/revisions",
+          "width": 1440,
+          "screenshot": "evidence/leader1-revisions-1440.png",
+          "url": "/revisions",
+          "text": "DESIGN CONTROL\n\nDrawing register\n\nRevision files are retained as immutable, checksum-bound project records.\n\nRefresh\n\nLoading project drawing access…",
+          "headings": [
+            "Drawing register"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/revisions",
+          "width": 783,
+          "screenshot": "evidence/leader1-revisions-783.png",
+          "url": "/revisions",
+          "text": "DESIGN CONTROL\n\nDrawing register\n\nRevision files are retained as immutable, checksum-bound project records.\n\nRefresh\n\nLoading project drawing access…",
+          "headings": [
+            "Drawing register"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1000
+        },
+        {
+          "label": "/revisions",
+          "width": 390,
+          "screenshot": "evidence/leader1-revisions-390.png",
+          "url": "/revisions",
+          "text": "DESIGN CONTROL\n\nDrawing register\n\nRevision files are retained as immutable, checksum-bound project records.\n\nRefresh\n\nLoading project drawing access…",
+          "headings": [
+            "Drawing register"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/reviews",
+          "width": 1440,
+          "screenshot": "evidence/leader1-reviews-1440.png",
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\n\nLoading review inbox…",
+          "headings": [
+            "Internal work review"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/reviews",
+          "width": 783,
+          "screenshot": "evidence/leader1-reviews-783.png",
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\n\nLoading review inbox…",
+          "headings": [
+            "Internal work review"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/reviews",
+          "width": 390,
+          "screenshot": "evidence/leader1-reviews-390.png",
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\n\nLoading review inbox…",
+          "headings": [
+            "Internal work review"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/client-reviews",
+          "width": 1440,
+          "screenshot": "evidence/leader1-client-reviews-1440.png",
+          "url": "/client-reviews",
+          "text": "INTERNAL WORKSPACE\n\nClient reviews\n\nPublish exact task and revision snapshots, then track client outcomes.\n\nActive project\nChoose a project\n\nLoading projects and review details…",
+          "headings": [
+            "Client reviews"
+          ],
+          "links": [],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/client-reviews",
+          "width": 783,
+          "screenshot": "evidence/leader1-client-reviews-783.png",
+          "url": "/client-reviews",
+          "text": "INTERNAL WORKSPACE\n\nClient reviews\n\nPublish exact task and revision snapshots, then track client outcomes.\n\nActive project\nChoose a project\n\nLoading projects and review details…",
+          "headings": [
+            "Client reviews"
+          ],
+          "links": [],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/client-reviews",
+          "width": 390,
+          "screenshot": "evidence/leader1-client-reviews-390.png",
+          "url": "/client-reviews",
+          "text": "INTERNAL WORKSPACE\n\nClient reviews\n\nPublish exact task and revision snapshots, then track client outcomes.\n\nActive project\nChoose a project\n\nLoading projects and review details…",
+          "headings": [
+            "Client reviews"
+          ],
+          "links": [],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/external-access",
+          "width": 1440,
+          "screenshot": "evidence/leader1-external-access-1440.png",
+          "url": "/external-access",
+          "text": "S21 · STAFF MANAGEMENT\n\nExternal project access\n\nManage exact consultant and vendor/factory access.\n\nProject ID\nOpen project access",
+          "headings": [
+            "External project access"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Open project access",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1156
+        },
+        {
+          "label": "/external-access",
+          "width": 783,
+          "screenshot": "evidence/leader1-external-access-783.png",
+          "url": "/external-access",
+          "text": "S21 · STAFF MANAGEMENT\n\nExternal project access\n\nManage exact consultant and vendor/factory access.\n\nProject ID\nOpen project access",
+          "headings": [
+            "External project access"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Open project access",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1156
+        },
+        {
+          "label": "/external-access",
+          "width": 390,
+          "screenshot": "evidence/leader1-external-access-390.png",
+          "url": "/external-access",
+          "text": "S21 · STAFF MANAGEMENT\n\nExternal project access\n\nManage exact consultant and vendor/factory access.\n\nProject ID\nOpen project access",
+          "headings": [
+            "External project access"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Open project access",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1205
+        },
+        {
+          "label": "/turnkey",
+          "width": 1440,
+          "screenshot": "evidence/leader1-turnkey-1440.png",
+          "url": "/turnkey",
+          "text": "TURNKEY OPERATIONS\n\nBOQ and production\n\nTrack approved design inputs, operational materials, procurement and factory progress.\n\nRefresh\n\nLoading Turnkey projects…",
+          "headings": [
+            "BOQ and production"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/turnkey",
+          "width": 783,
+          "screenshot": "evidence/leader1-turnkey-783.png",
+          "url": "/turnkey",
+          "text": "TURNKEY OPERATIONS\n\nBOQ and production\n\nTrack approved design inputs, operational materials, procurement and factory progress.\n\nRefresh\n\nLoading Turnkey projects…",
+          "headings": [
+            "BOQ and production"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/turnkey",
+          "width": 390,
+          "screenshot": "evidence/leader1-turnkey-390.png",
+          "url": "/turnkey",
+          "text": "TURNKEY OPERATIONS\n\nBOQ and production\n\nTrack approved design inputs, operational materials, procurement and factory progress.\n\nRefresh\n\nLoading Turnkey projects…",
+          "headings": [
+            "BOQ and production"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/time",
+          "width": 1440,
+          "screenshot": "evidence/leader1-time-1440.png",
+          "url": "/time",
+          "text": "WORK LOG\nTime\n\nRecord project and non-project work, then review its history and accounting delivery.\n\nRefresh\nView\nMy time\nManaged time\nYour entries are shown by default.\nStart a timer\nProject\nNon-project activity\nLocal Test Project A\nTask\nNo task\nTEST Team Leader 1 01 · Plan weekly priorities\nTEST Team Leader 1 04 · Follow up material information\nTEST Team Leader 1 09 · Prepare handover index\nStage\nNo stage\nActivity label\nWork note\nLocation\nOffice\nSite\nRemote\nBillable\nStart timer\nLog time manually\nProject\nNon-project activity\nLocal Test Project A\nTask\nNo task\nTEST Team Leader 1 01 · Plan weekly priorities\nTEST Team Leader 1 04 · Follow up material information\nTEST Team Leader 1 09 · Prepare handover index\nStage\nNo stage\nActivity label\nDate\nStart time\nEnd time\nDuration (seconds)\nWork location\nOffice\nSite\nRemote\nBillable\nWork note\nEvidence file ID (optional)\nSave time entry\nEntry history\n\n0 entries\n\nProject\nAll projects\nLocal Test Project A\nStatus\nAll\nOpen\nApproved\nLocked\nSearch\n\nNo time entries match this view.",
+          "headings": [
+            "Time",
+            "Start a timer",
+            "Log time manually",
+            "Entry history"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Start timer",
+              "disabled": true
+            },
+            {
+              "label": "Save time entry",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1368
+        },
+        {
+          "label": "/time",
+          "width": 783,
+          "screenshot": "evidence/leader1-time-783.png",
+          "url": "/time",
+          "text": "WORK LOG\nTime\n\nRecord project and non-project work, then review its history and accounting delivery.\n\nRefresh\nView\nMy time\nManaged time\nYour entries are shown by default.\nStart a timer\nProject\nNon-project activity\nLocal Test Project A\nTask\nNo task\nTEST Team Leader 1 01 · Plan weekly priorities\nTEST Team Leader 1 04 · Follow up material information\nTEST Team Leader 1 09 · Prepare handover index\nStage\nNo stage\nActivity label\nWork note\nLocation\nOffice\nSite\nRemote\nBillable\nStart timer\nLog time manually\nProject\nNon-project activity\nLocal Test Project A\nTask\nNo task\nTEST Team Leader 1 01 · Plan weekly priorities\nTEST Team Leader 1 04 · Follow up material information\nTEST Team Leader 1 09 · Prepare handover index\nStage\nNo stage\nActivity label\nDate\nStart time\nEnd time\nDuration (seconds)\nWork location\nOffice\nSite\nRemote\nBillable\nWork note\nEvidence file ID (optional)\nSave time entry\nEntry history\n\n0 entries\n\nProject\nAll projects\nLocal Test Project A\nStatus\nAll\nOpen\nApproved\nLocked\nSearch\n\nNo time entries match this view.",
+          "headings": [
+            "Time",
+            "Start a timer",
+            "Log time manually",
+            "Entry history"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Start timer",
+              "disabled": true
+            },
+            {
+              "label": "Save time entry",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1368
+        },
+        {
+          "label": "/time",
+          "width": 390,
+          "screenshot": "evidence/leader1-time-390.png",
+          "url": "/time",
+          "text": "WORK LOG\nTime\n\nRecord project and non-project work, then review its history and accounting delivery.\n\nRefresh\nView\nMy time\nManaged time\nYour entries are shown by default.\nStart a timer\nProject\nNon-project activity\nLocal Test Project A\nTask\nNo task\nTEST Team Leader 1 01 · Plan weekly priorities\nTEST Team Leader 1 04 · Follow up material information\nTEST Team Leader 1 09 · Prepare handover index\nStage\nNo stage\nActivity label\nWork note\nLocation\nOffice\nSite\nRemote\nBillable\nStart timer\nLog time manually\nProject\nNon-project activity\nLocal Test Project A\nTask\nNo task\nTEST Team Leader 1 01 · Plan weekly priorities\nTEST Team Leader 1 04 · Follow up material information\nTEST Team Leader 1 09 · Prepare handover index\nStage\nNo stage\nActivity label\nDate\nStart time\nEnd time\nDuration (seconds)\nWork location\nOffice\nSite\nRemote\nBillable\nWork note\nEvidence file ID (optional)\nSave time entry\nEntry history\n\n0 entries\n\nProject\nAll projects\nLocal Test Project A\nStatus\nAll\nOpen\nApproved\nLocked\nSearch\n\nNo time entries match this view.",
+          "headings": [
+            "Time",
+            "Start a timer",
+            "Log time manually",
+            "Entry history"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Start timer",
+              "disabled": true
+            },
+            {
+              "label": "Save time entry",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 2569
+        },
+        {
+          "label": "/workforce",
+          "width": 1440,
+          "screenshot": "evidence/leader1-workforce-1440.png",
+          "url": "/workforce",
+          "text": "PEOPLE & CAPACITY\nWorkforce\n\nSchedules, leave, attendance and dated task capacity.\n\nRefresh\nReason for this action (required)\nWorkforce setup required\n\nNo leave policy or workload thresholds are active. Owner configuration is required before leave can be requested.\n\nLeave & WFH\nAttendance\nSchedule & capacity\nLeave & WFH\nRequest leave or WFH\n\nLeave requests are unavailable until an Owner configures a policy and approval routing.\n\nLeave requests and history\n\nNo leave requests in this period.\n\nA pending or denied cancellation changes no balance or capacity. Approved cancellation reverses only future unused dates and preserves the original decision and handover history.\n\nLeave balances\ntask-test-20261012@example.test · 2026\n\nAllocated 0.00 days · Used 0.00 days · Remaining setup required · Carry-forward 0.00 days\n\nAllowance ledger (0 entries)",
+          "headings": [
+            "Workforce",
+            "Leave & WFH",
+            "Request leave or WFH",
+            "Attendance",
+            "Workload",
+            "Leave requests and history",
+            "Attendance records",
+            "Leave balances"
+          ],
+          "links": [
+            {
+              "label": "Leave & WFH",
+              "href": "#wf-leave"
+            },
+            {
+              "label": "Attendance",
+              "href": "#wf-attendance"
+            },
+            {
+              "label": "Schedule & capacity",
+              "href": "#wf-capacity"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Allowance ledger (0 entries)",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1008
+        },
+        {
+          "label": "/workforce",
+          "width": 783,
+          "screenshot": "evidence/leader1-workforce-783.png",
+          "url": "/workforce",
+          "text": "PEOPLE & CAPACITY\nWorkforce\n\nSchedules, leave, attendance and dated task capacity.\n\nRefresh\nReason for this action (required)\nWorkforce setup required\n\nNo leave policy or workload thresholds are active. Owner configuration is required before leave can be requested.\n\nLeave & WFH\nAttendance\nSchedule & capacity\nLeave & WFH\nRequest leave or WFH\n\nLeave requests are unavailable until an Owner configures a policy and approval routing.\n\nLeave requests and history\n\nNo leave requests in this period.\n\nA pending or denied cancellation changes no balance or capacity. Approved cancellation reverses only future unused dates and preserves the original decision and handover history.\n\nLeave balances\ntask-test-20261012@example.test · 2026\n\nAllocated 0.00 days · Used 0.00 days · Remaining setup required · Carry-forward 0.00 days\n\nAllowance ledger (0 entries)",
+          "headings": [
+            "Workforce",
+            "Leave & WFH",
+            "Request leave or WFH",
+            "Attendance",
+            "Workload",
+            "Leave requests and history",
+            "Attendance records",
+            "Leave balances"
+          ],
+          "links": [
+            {
+              "label": "Leave & WFH",
+              "href": "#wf-leave"
+            },
+            {
+              "label": "Attendance",
+              "href": "#wf-attendance"
+            },
+            {
+              "label": "Schedule & capacity",
+              "href": "#wf-capacity"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Allowance ledger (0 entries)",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1047
+        },
+        {
+          "label": "/workforce",
+          "width": 390,
+          "screenshot": "evidence/leader1-workforce-390.png",
+          "url": "/workforce",
+          "text": "PEOPLE & CAPACITY\nWorkforce\n\nSchedules, leave, attendance and dated task capacity.\n\nRefresh\nReason for this action (required)\nWorkforce setup required\n\nNo leave policy or workload thresholds are active. Owner configuration is required before leave can be requested.\n\nLeave & WFH\nAttendance\nSchedule & capacity\nLeave & WFH\nRequest leave or WFH\n\nLeave requests are unavailable until an Owner configures a policy and approval routing.\n\nLeave requests and history\n\nNo leave requests in this period.\n\nA pending or denied cancellation changes no balance or capacity. Approved cancellation reverses only future unused dates and preserves the original decision and handover history.\n\nLeave balances\ntask-test-20261012@example.test · 2026\n\nAllocated 0.00 days · Used 0.00 days · Remaining setup required · Carry-forward 0.00 days\n\nAllowance ledger (0 entries)",
+          "headings": [
+            "Workforce",
+            "Leave & WFH",
+            "Request leave or WFH",
+            "Attendance",
+            "Workload",
+            "Leave requests and history",
+            "Attendance records",
+            "Leave balances"
+          ],
+          "links": [
+            {
+              "label": "Leave & WFH",
+              "href": "#wf-leave"
+            },
+            {
+              "label": "Attendance",
+              "href": "#wf-attendance"
+            },
+            {
+              "label": "Schedule & capacity",
+              "href": "#wf-capacity"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Allowance ledger (0 entries)",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1276
+        },
+        {
+          "label": "/learning",
+          "width": 1440,
+          "screenshot": "evidence/leader1-learning-1440.png",
+          "url": "/learning",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Skills…\n\nLoading Training…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning",
+          "width": 783,
+          "screenshot": "evidence/leader1-learning-783.png",
+          "url": "/learning",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Skills…\n\nLoading Training…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning",
+          "width": 390,
+          "screenshot": "evidence/leader1-learning-390.png",
+          "url": "/learning",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Skills…\n\nLoading Training…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/learning/skills",
+          "width": 1440,
+          "screenshot": "evidence/leader1-learning-skills-1440.png",
+          "url": "/learning/skills",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Skills…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning/skills",
+          "width": 783,
+          "screenshot": "evidence/leader1-learning-skills-783.png",
+          "url": "/learning/skills",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Skills…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning/skills",
+          "width": 390,
+          "screenshot": "evidence/leader1-learning-skills-390.png",
+          "url": "/learning/skills",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Skills…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/learning/training",
+          "width": 1440,
+          "screenshot": "evidence/leader1-learning-training-1440.png",
+          "url": "/learning/training",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Training…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning/training",
+          "width": 783,
+          "screenshot": "evidence/leader1-learning-training-783.png",
+          "url": "/learning/training",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Training…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning/training",
+          "width": 390,
+          "screenshot": "evidence/leader1-learning-training-390.png",
+          "url": "/learning/training",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Training…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/learning/library",
+          "width": 1440,
+          "screenshot": "evidence/leader1-learning-library-1440.png",
+          "url": "/learning/library",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Library…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning/library",
+          "width": 783,
+          "screenshot": "evidence/leader1-learning-library-783.png",
+          "url": "/learning/library",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Library…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/learning/library",
+          "width": 390,
+          "screenshot": "evidence/leader1-learning-library-390.png",
+          "url": "/learning/library",
+          "text": "Skills\nTraining\nLibrary\n\nLoading Library…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Skills",
+              "href": "/learning?panel=skills"
+            },
+            {
+              "label": "Training",
+              "href": "/learning?panel=training"
+            },
+            {
+              "label": "Library",
+              "href": "/learning?panel=library"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/performance",
+          "width": 1440,
+          "screenshot": "evidence/leader1-performance-1440.png",
+          "url": "/performance",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\n\nLoading performance…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/performance",
+          "width": 783,
+          "screenshot": "evidence/leader1-performance-783.png",
+          "url": "/performance",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\n\nLoading performance…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/performance",
+          "width": 390,
+          "screenshot": "evidence/leader1-performance-390.png",
+          "url": "/performance",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\n\nLoading performance…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 1093
+        },
+        {
+          "label": "/project-health",
+          "width": 1440,
+          "screenshot": "evidence/leader1-project-health-1440.png",
+          "url": "/project-health",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\n\nLoading performance…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/project-health",
+          "width": 783,
+          "screenshot": "evidence/leader1-project-health-783.png",
+          "url": "/project-health",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\n\nLoading performance…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/project-health",
+          "width": 390,
+          "screenshot": "evidence/leader1-project-health-390.png",
+          "url": "/project-health",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\n\nLoading performance…",
+          "headings": [],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/reports",
+          "width": 1440,
+          "screenshot": "evidence/leader1-reports-1440.png",
+          "url": "/reports",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\nReports\n\nPreview current report data or open a saved report.\n\nRefresh\n\nLoading reports, summaries, reminders, and schedules…",
+          "headings": [
+            "Reports"
+          ],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1001
+        },
+        {
+          "label": "/reports",
+          "width": 783,
+          "screenshot": "evidence/leader1-reports-783.png",
+          "url": "/reports",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\nReports\n\nPreview current report data or open a saved report.\n\nRefresh\n\nLoading reports, summaries, reminders, and schedules…",
+          "headings": [
+            "Reports"
+          ],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1001
+        },
+        {
+          "label": "/reports",
+          "width": 390,
+          "screenshot": "evidence/leader1-reports-390.png",
+          "url": "/reports",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\nReports\n\nPreview current report data or open a saved report.\n\nRefresh\n\nLoading reports, summaries, reminders, and schedules…",
+          "headings": [
+            "Reports"
+          ],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1070
+        },
+        {
+          "label": "/integrations",
+          "width": 1440,
+          "screenshot": "evidence/leader1-integrations-1440.png",
+          "url": "/integrations",
+          "text": "CONNECTED WORK\nCalendar\n\nExport authorized deadlines, milestones, reviews and your entered events.\n\nRefresh calendar\nDownload .ics\n\nLoading calendar settings…",
+          "headings": [
+            "Calendar"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh calendar",
+              "disabled": false
+            },
+            {
+              "label": "Download .ics",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/integrations",
+          "width": 783,
+          "screenshot": "evidence/leader1-integrations-783.png",
+          "url": "/integrations",
+          "text": "CONNECTED WORK\nCalendar\n\nExport authorized deadlines, milestones, reviews and your entered events.\n\nRefresh calendar\nDownload .ics\n\nLoading calendar settings…",
+          "headings": [
+            "Calendar"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh calendar",
+              "disabled": false
+            },
+            {
+              "label": "Download .ics",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1000
+        },
+        {
+          "label": "/integrations",
+          "width": 390,
+          "screenshot": "evidence/leader1-integrations-390.png",
+          "url": "/integrations",
+          "text": "CONNECTED WORK\nCalendar\n\nExport authorized deadlines, milestones, reviews and your entered events.\n\nRefresh calendar\nDownload .ics\n\nLoading calendar settings…",
+          "headings": [
+            "Calendar"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh calendar",
+              "disabled": false
+            },
+            {
+              "label": "Download .ics",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/automation",
+          "width": 1440,
+          "screenshot": "evidence/leader1-automation-1440.png",
+          "url": "/automation",
+          "text": "MANAGEMENT\nAutomation & reports\n\nBuild scoped reports and event rules. Actions run only for authorized recipients.\n\nRefresh\n\nLoading automation settings…",
+          "headings": [
+            "Automation & reports"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/automation",
+          "width": 783,
+          "screenshot": "evidence/leader1-automation-783.png",
+          "url": "/automation",
+          "text": "MANAGEMENT\nAutomation & reports\n\nBuild scoped reports and event rules. Actions run only for authorized recipients.\n\nRefresh\n\nLoading automation settings…",
+          "headings": [
+            "Automation & reports"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/automation",
+          "width": 390,
+          "screenshot": "evidence/leader1-automation-390.png",
+          "url": "/automation",
+          "text": "MANAGEMENT\nAutomation & reports\n\nBuild scoped reports and event rules. Actions run only for authorized recipients.\n\nRefresh\n\nLoading automation settings…",
+          "headings": [
+            "Automation & reports"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/saved-reports",
+          "width": 1440,
+          "screenshot": "evidence/leader1-saved-reports-1440.png",
+          "url": "/saved-reports",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\nINSIGHTS\nSaved reports\n\nCreate, preview and manage versioned report definitions using your current access.\n\nRefresh\n\nLoading automation settings…",
+          "headings": [
+            "Saved reports"
+          ],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/saved-reports",
+          "width": 783,
+          "screenshot": "evidence/leader1-saved-reports-783.png",
+          "url": "/saved-reports",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\nINSIGHTS\nSaved reports\n\nCreate, preview and manage versioned report definitions using your current access.\n\nRefresh\n\nLoading automation settings…",
+          "headings": [
+            "Saved reports"
+          ],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/saved-reports",
+          "width": 390,
+          "screenshot": "evidence/leader1-saved-reports-390.png",
+          "url": "/saved-reports",
+          "text": "Performance\nProject Health\nReports\nSaved Reports\nAutomation settings\nINSIGHTS\nSaved reports\n\nCreate, preview and manage versioned report definitions using your current access.\n\nRefresh\n\nLoading automation settings…",
+          "headings": [
+            "Saved reports"
+          ],
+          "links": [
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Project Health",
+              "href": "/project-health"
+            },
+            {
+              "label": "Reports",
+              "href": "/reports"
+            },
+            {
+              "label": "Saved Reports",
+              "href": "/saved-reports"
+            },
+            {
+              "label": "Automation settings",
+              "href": "/automation"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/assistance",
+          "width": 1440,
+          "screenshot": "evidence/leader1-assistance-1440.png",
+          "url": "/assistance",
+          "text": "INTERNAL WORKSPACE\n\nEvidence assistance\n\nDeterministic evidence summaries and explainable candidates, using only your currently authorized records.\n\nRefresh\n\nProvider-independent deterministic assistance · no live inference or external data transmission. Suggestions never finalize assignments, reviews, deadlines, skills, publications, or other business actions.\n\nLoading current permissions and saved assistance…",
+          "headings": [
+            "Evidence assistance"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/assistance",
+          "width": 783,
+          "screenshot": "evidence/leader1-assistance-783.png",
+          "url": "/assistance",
+          "text": "INTERNAL WORKSPACE\n\nEvidence assistance\n\nDeterministic evidence summaries and explainable candidates, using only your currently authorized records.\n\nRefresh\n\nProvider-independent deterministic assistance · no live inference or external data transmission. Suggestions never finalize assignments, reviews, deadlines, skills, publications, or other business actions.\n\nLoading current permissions and saved assistance…",
+          "headings": [
+            "Evidence assistance"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/assistance",
+          "width": 390,
+          "screenshot": "evidence/leader1-assistance-390.png",
+          "url": "/assistance",
+          "text": "INTERNAL WORKSPACE\n\nEvidence assistance\n\nDeterministic evidence summaries and explainable candidates, using only your currently authorized records.\n\nRefresh\n\nProvider-independent deterministic assistance · no live inference or external data transmission. Suggestions never finalize assignments, reviews, deadlines, skills, publications, or other business actions.\n\nLoading current permissions and saved assistance…",
+          "headings": [
+            "Evidence assistance"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/site",
+          "width": 1440,
+          "screenshot": "evidence/leader1-site-1440.png",
+          "url": "/site",
+          "text": "TURNKEY · SITE DELIVERY\n\nSite progress and daily work\n\nRecord site observations, retain named decisions, and review current evidence.\n\nRefresh\nActive Turnkey project\nChoose a project\n\nLoading current site records…",
+          "headings": [
+            "Site progress and daily work"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/site",
+          "width": 783,
+          "screenshot": "evidence/leader1-site-783.png",
+          "url": "/site",
+          "text": "TURNKEY · SITE DELIVERY\n\nSite progress and daily work\n\nRecord site observations, retain named decisions, and review current evidence.\n\nRefresh\nActive Turnkey project\nChoose a project\n\nLoading current site records…",
+          "headings": [
+            "Site progress and daily work"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 999
+        },
+        {
+          "label": "/site",
+          "width": 390,
+          "screenshot": "evidence/leader1-site-390.png",
+          "url": "/site",
+          "text": "TURNKEY · SITE DELIVERY\n\nSite progress and daily work\n\nRecord site observations, retain named decisions, and review current evidence.\n\nRefresh\nActive Turnkey project\nChoose a project\n\nLoading current site records…",
+          "headings": [
+            "Site progress and daily work"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1068
+        },
+        {
+          "label": "/workspace",
+          "width": 1440,
+          "screenshot": "evidence/leader1-workspace-1440.png",
+          "url": "/workspace",
+          "text": "IDENTITY\nYou’re signed in.\n\nYour account is authenticated. Workspace access will appear as approved capabilities are added.\n\nT\nAccount\n\ntask-test-20261012@example.test\n\nStaff account\nSign out\nDashboard\nTime\nWorkforce\nLearning\nPerformance\nSite delivery\nProject documents\nDrawing register\nInternal reviews\nClient reviews\nExternal access\nTurnkey operations\nMANAGEMENT\nNeeds your attention\nRefreshing…\n\nPending actions from your authorized work areas appear here.\n\nLoading pending decisions…\n\nCUSTOMER RELATIONSHIPS\nLeads and clients\n\nFollow each enquiry from first contact through its recorded outcome.\n\nBranch\nChoose a branch\n\nLoading CRM…\n\nDELIVERY\nProjects\n\nReview projects available to you, including delivery scopes and history.\n\n0 total\n\nLoading project setup…\n\nWORK MANAGEMENT\n\nTasks\n\nTrack your work, collaborators and progress.\n\nCreate task\nMy tasks\nAssigned tasks\nRefresh\n\nLoading tasks…\n\nDEVICES\nActive sessions\nRefresh\n\nLoading your sessions…\n\nINBOX & PREFERENCES\nNotifications\nOpen notifications\n\nYour private inbox and delivery preferences.\n\nTEAM\nTeam workspace\nOpen team workspace\nRefresh session\n\nYour sign-in is checked again when you return to this page.",
+          "headings": [
+            "You’re signed in.",
+            "Account",
+            "Needs your attention",
+            "Leads and clients",
+            "Projects",
+            "Tasks",
+            "Active sessions",
+            "Notifications",
+            "Team workspace"
+          ],
+          "links": [
+            {
+              "label": "Dashboard",
+              "href": "/dashboard"
+            },
+            {
+              "label": "Time",
+              "href": "/time"
+            },
+            {
+              "label": "Workforce",
+              "href": "/workforce"
+            },
+            {
+              "label": "Learning",
+              "href": "/learning"
+            },
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Site delivery",
+              "href": "/site"
+            },
+            {
+              "label": "Project documents",
+              "href": "/documents"
+            },
+            {
+              "label": "Drawing register",
+              "href": "/revisions"
+            },
+            {
+              "label": "Internal reviews",
+              "href": "/reviews"
+            },
+            {
+              "label": "Client reviews",
+              "href": "/client-reviews"
+            },
+            {
+              "label": "External access",
+              "href": "/external-access"
+            },
+            {
+              "label": "Turnkey operations",
+              "href": "/turnkey"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Sign out",
+              "disabled": false
+            },
+            {
+              "label": "Refreshing…",
+              "disabled": true
+            },
+            {
+              "label": "Create task",
+              "disabled": true
+            },
+            {
+              "label": "My tasks",
+              "disabled": false
+            },
+            {
+              "label": "Assigned tasks",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": true
+            },
+            {
+              "label": "Open notifications",
+              "disabled": false
+            },
+            {
+              "label": "Open team workspace",
+              "disabled": false
+            },
+            {
+              "label": "Refresh session",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1961
+        },
+        {
+          "label": "/workspace",
+          "width": 783,
+          "screenshot": "evidence/leader1-workspace-783.png",
+          "url": "/workspace",
+          "text": "IDENTITY\nYou’re signed in.\n\nYour account is authenticated. Workspace access will appear as approved capabilities are added.\n\nT\nAccount\n\ntask-test-20261012@example.test\n\nStaff account\nSign out\nDashboard\nTime\nWorkforce\nLearning\nPerformance\nSite delivery\nProject documents\nDrawing register\nInternal reviews\nClient reviews\nExternal access\nTurnkey operations\nMANAGEMENT\nNeeds your attention\nRefreshing…\n\nPending actions from your authorized work areas appear here.\n\nLoading pending decisions…\n\nCUSTOMER RELATIONSHIPS\nLeads and clients\n\nFollow each enquiry from first contact through its recorded outcome.\n\nBranch\nChoose a branch\n\nLoading CRM…\n\nDELIVERY\nProjects\n\nReview projects available to you, including delivery scopes and history.\n\n0 total\n\nLoading project setup…\n\nWORK MANAGEMENT\n\nTasks\n\nTrack your work, collaborators and progress.\n\nCreate task\nMy tasks\nAssigned tasks\nRefresh\n\nLoading tasks…\n\nDEVICES\nActive sessions\nRefresh\n\nLoading your sessions…\n\nINBOX & PREFERENCES\nNotifications\nOpen notifications\n\nYour private inbox and delivery preferences.\n\nTEAM\nTeam workspace\nOpen team workspace\nRefresh session\n\nYour sign-in is checked again when you return to this page.",
+          "headings": [
+            "You’re signed in.",
+            "Account",
+            "Needs your attention",
+            "Leads and clients",
+            "Projects",
+            "Tasks",
+            "Active sessions",
+            "Notifications",
+            "Team workspace"
+          ],
+          "links": [
+            {
+              "label": "Dashboard",
+              "href": "/dashboard"
+            },
+            {
+              "label": "Time",
+              "href": "/time"
+            },
+            {
+              "label": "Workforce",
+              "href": "/workforce"
+            },
+            {
+              "label": "Learning",
+              "href": "/learning"
+            },
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Site delivery",
+              "href": "/site"
+            },
+            {
+              "label": "Project documents",
+              "href": "/documents"
+            },
+            {
+              "label": "Drawing register",
+              "href": "/revisions"
+            },
+            {
+              "label": "Internal reviews",
+              "href": "/reviews"
+            },
+            {
+              "label": "Client reviews",
+              "href": "/client-reviews"
+            },
+            {
+              "label": "External access",
+              "href": "/external-access"
+            },
+            {
+              "label": "Turnkey operations",
+              "href": "/turnkey"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Sign out",
+              "disabled": false
+            },
+            {
+              "label": "Refreshing…",
+              "disabled": true
+            },
+            {
+              "label": "Create task",
+              "disabled": true
+            },
+            {
+              "label": "My tasks",
+              "disabled": false
+            },
+            {
+              "label": "Assigned tasks",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": true
+            },
+            {
+              "label": "Open notifications",
+              "disabled": false
+            },
+            {
+              "label": "Open team workspace",
+              "disabled": false
+            },
+            {
+              "label": "Refresh session",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1983
+        },
+        {
+          "label": "/workspace",
+          "width": 390,
+          "screenshot": "evidence/leader1-workspace-390.png",
+          "url": "/workspace",
+          "text": "IDENTITY\nYou’re signed in.\n\nYour account is authenticated. Workspace access will appear as approved capabilities are added.\n\nT\nAccount\n\ntask-test-20261012@example.test\n\nStaff account\nSign out\nDashboard\nTime\nWorkforce\nLearning\nPerformance\nSite delivery\nProject documents\nDrawing register\nInternal reviews\nClient reviews\nExternal access\nTurnkey operations\nMANAGEMENT\nNeeds your attention\nRefreshing…\n\nPending actions from your authorized work areas appear here.\n\nLoading pending decisions…\n\nCUSTOMER RELATIONSHIPS\nLeads and clients\n\nFollow each enquiry from first contact through its recorded outcome.\n\nBranch\nChoose a branch\n\nLoading CRM…\n\nDELIVERY\nProjects\n\nReview projects available to you, including delivery scopes and history.\n\n0 total\n\nLoading project setup…\n\nWORK MANAGEMENT\n\nTasks\n\nTrack your work, collaborators and progress.\n\nCreate task\nMy tasks\nAssigned tasks\nRefresh\n\nLoading tasks…\n\nDEVICES\nActive sessions\nRefresh\n\nLoading your sessions…\n\nINBOX & PREFERENCES\nNotifications\nOpen notifications\n\nYour private inbox and delivery preferences.\n\nTEAM\nTeam workspace\nOpen team workspace\nRefresh session\n\nYour sign-in is checked again when you return to this page.",
+          "headings": [
+            "You’re signed in.",
+            "Account",
+            "Needs your attention",
+            "Leads and clients",
+            "Projects",
+            "Tasks",
+            "Active sessions",
+            "Notifications",
+            "Team workspace"
+          ],
+          "links": [
+            {
+              "label": "Dashboard",
+              "href": "/dashboard"
+            },
+            {
+              "label": "Time",
+              "href": "/time"
+            },
+            {
+              "label": "Workforce",
+              "href": "/workforce"
+            },
+            {
+              "label": "Learning",
+              "href": "/learning"
+            },
+            {
+              "label": "Performance",
+              "href": "/performance"
+            },
+            {
+              "label": "Site delivery",
+              "href": "/site"
+            },
+            {
+              "label": "Project documents",
+              "href": "/documents"
+            },
+            {
+              "label": "Drawing register",
+              "href": "/revisions"
+            },
+            {
+              "label": "Internal reviews",
+              "href": "/reviews"
+            },
+            {
+              "label": "Client reviews",
+              "href": "/client-reviews"
+            },
+            {
+              "label": "External access",
+              "href": "/external-access"
+            },
+            {
+              "label": "Turnkey operations",
+              "href": "/turnkey"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Sign out",
+              "disabled": false
+            },
+            {
+              "label": "Refreshing…",
+              "disabled": true
+            },
+            {
+              "label": "Create task",
+              "disabled": true
+            },
+            {
+              "label": "My tasks",
+              "disabled": false
+            },
+            {
+              "label": "Assigned tasks",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Refresh",
+              "disabled": true
+            },
+            {
+              "label": "Open notifications",
+              "disabled": false
+            },
+            {
+              "label": "Open team workspace",
+              "disabled": false
+            },
+            {
+              "label": "Refresh session",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 2692
+        },
+        {
+          "label": "create-form",
+          "width": 1440,
+          "screenshot": "evidence/leader1-create-form-1440.png",
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\nMy Work\nAll teams\n◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts\n◷\nOverdue\nLoading…\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n\n10 tasks · Personal queue\n\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\n10 tasks\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n▾\nToday\n1\nTASK\nPROJECT / STAGE\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nTEST Team Leader 1 01 · Plan weekly priorities\nNORMAL\nNo project\nNext: Open task\nNo project\n—\ntask-test-20261012@example.test\n2026-10-14\nNot started\nNORMAL\nOpen task\n▾\nThis week\n7\nTASK\nPROJECT / STAGE\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-21\nNot started\nURGENT\nOpen task\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-21\nCorrections required\nURGENT\nOpen correction\nTEST Team Leader 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-20\nSubmitted internal review\nHIGH\nReview pending\nTEST Team Leader 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-18\nWaiting\nHIGH\nOpen task\nTEST Team Leader 1 04 · Follow up material information\nNORMAL\nNo project\nNext: Open task\nNo project\n—\ntask-test-20261012@example.test\n2026-10-17\nWaiting\nNORMAL\nOpen task\nTEST Team Leader 1 03 · Update coordinated drawings\nHIGH\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-16\nIn progress\nHIGH\nOpen task\nShow 1 more of 7 ▾\n▾\nNext week\n2\nTASK\nPROJECT / STAGE\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nq3rf\nNORMAL\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-22\nNot started\nNORMAL\nOpen task\nTEST Team Leader 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\nNo project\n—\ntask-test-20261012@example.test\n2026-10-22\nIn progress\nNORMAL\nOpen task\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–10 of 10 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "My Work",
+              "disabled": false
+            },
+            {
+              "label": "All teams",
+              "disabled": false
+            },
+            {
+              "label": "◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\nLoading…\nPast Target · unfinished\n↗",
+              "disabled": true
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "▾\nToday\n1",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "▾\nThis week\n7",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 1 more of 7 ▾",
+              "disabled": false
+            },
+            {
+              "label": "▾\nNext week\n2",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 2033
+        },
+        {
+          "label": "create-form",
+          "width": 390,
+          "screenshot": "evidence/leader1-create-form-390.png",
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\nMy Work\nAll teams\n◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts\n◷\nOverdue\n10\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n＋\nCreate task\nSearch tasks\nFilters\nMore\ndisplay and refresh options\n\nLoading your work…\n\nGrouping and “Show more” apply to this page only.\n\nRefreshing current page…\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "My Work",
+              "disabled": false
+            },
+            {
+              "label": "All teams",
+              "disabled": false
+            },
+            {
+              "label": "◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n10\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1193
+        }
+      ],
+      "reads": [
+        {
+          "path": "/api/v1/auth/session",
+          "status": 401
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 401
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/project-templates",
+          "status": 403
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/project-templates",
+          "status": 403
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/org/self",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/org/team/employees",
+          "status": 403
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/org/self",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/org/team/employees",
+          "status": 403
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/org/self",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/org/team/employees",
+          "status": 403
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/sessions",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/sessions",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/sessions",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/approvals/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/approvals/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/approvals/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/email-status",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/email-status",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/preferences",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/email-status",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/documents/project-picker",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/documents/project-picker",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/documents/project-picker",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/turnkey/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/turnkey/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/turnkey/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/workforce/",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/workforce/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/workforce/",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/workforce/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/workforce/",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/workforce/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/training/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/skills/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/skills/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/training/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/training/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/training/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/library",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/library",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/library",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/performance/context",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/health",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/automation/context",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/ai/runs",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/site/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/site/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/site/projects",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/approvals/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/sessions",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/crm/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/approvals/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/sessions",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/projects/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/crm/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/approvals/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/sessions",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        }
+      ],
+      "interactions": [],
+      "errors": [],
+      "loginStatus": 201,
+      "setupStatus": 200,
+      "setup": {
+        "actorEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+        "canAssign": true,
+        "creationProfile": {
+          "version": 1,
+          "variant": "EMPLOYEE",
+          "resolution": "GENERIC_FALLBACK"
+        },
+        "projects": [
+          {
+            "id": "af49ff6b-f305-46bb-9651-d800ceff9173",
+            "title": "Local Test Project A"
+          }
+        ]
+      },
+      "selfStatus": 200,
+      "self": {
+        "employee": {
+          "id": "a922f509-7161-4353-9acd-16c1aacbcee2",
+          "state": "ACTIVE",
+          "employeeCode": "LOCAL-TASK-001",
+          "hiredAt": "2026-10-12T00:00:00.000Z",
+          "homeBranch": {
+            "id": "79a6a68e-e2ba-41e7-b6ef-aad1fdb0fc60",
+            "name": "Local Test Branch"
+          },
+          "homeTeam": {
+            "id": "622064e0-521f-432b-9a3d-1dd4d5592aa4",
+            "name": "Local Test Team"
+          },
+          "reportsTo": null,
+          "jobRoleAssignments": [
+            {
+              "jobRole": {
+                "id": "bd801a6b-a4b5-4cc3-96e7-f3c2ee1483ea",
+                "name": "Team Leader"
+              }
+            }
+          ]
+        }
+      },
+      "personal": {
+        "total": 11,
+        "taskIds": [
+          "023bd29c-db95-45cd-9f2e-8d2fe1fab981",
+          "906a6fe6-9ca8-4c2c-b455-9b82047c9dd5",
+          "1fbd4bba-e5a3-4e7a-8569-5d8a744f4379",
+          "ef48c65e-7424-41d2-b4c6-16e6391ed81a",
+          "d25697fd-2385-4929-81af-be0da39db4ce",
+          "4b9050fb-9d82-4bc9-8b8e-0ce6268d6200",
+          "fda4084c-b7c8-49b2-b63b-6af84ea1f118",
+          "d70d3ee8-e42c-434e-a298-1945c85636eb",
+          "72bae0fa-7715-47c5-8678-6434cd534fbe",
+          "90ccdb4c-58df-4959-bef9-91f552338796",
+          "b1ef34e5-fe97-433a-ae1d-ec603b620b51"
+        ]
+      }
+    }
+  ],
+  "blockedWrites": [],
+  "release": {
+    "/release.json": {
+      "service": "web",
+      "mode": "release",
+      "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+      "buildId": "70b047cd57af-1792849822919",
+      "builtAt": "2026-10-24T13:50:22.919Z",
+      "migrations": 120
+    },
+    "/api/v1/health/release": {
+      "service": "api",
+      "mode": "release",
+      "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+      "buildId": "70b047cd57af-1792849822919",
+      "builtAt": "2026-10-24T13:50:22.919Z",
+      "migrations": 120
+    },
+    "/api/v1/health/ready": {
+      "status": "ready",
+      "service": "api",
+      "dependencies": {
+        "database": "ready"
+      },
+      "checkedAt": "2026-10-25T06:40:22.249Z"
+    }
+  }
+}

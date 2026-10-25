@@ -1,0 +1,54 @@
+{
+  "kind": "synthetic-current-source-component",
+  "authenticatedAcceptance": false,
+  "viewports": [
+    {
+      "body": null,
+      "bodyOverflow": "visible",
+      "drawer": null,
+      "drawerHorizontalOverflow": false,
+      "footer": null,
+      "header": null,
+      "height": 900,
+      "horizontalOverflow": false,
+      "tabs": [],
+      "width": 1440
+    },
+    {
+      "body": null,
+      "bodyOverflow": "visible",
+      "drawer": null,
+      "drawerHorizontalOverflow": false,
+      "footer": null,
+      "header": null,
+      "height": 900,
+      "horizontalOverflow": false,
+      "tabs": [],
+      "width": 1024
+    },
+    {
+      "body": null,
+      "bodyOverflow": "visible",
+      "drawer": null,
+      "drawerHorizontalOverflow": false,
+      "footer": null,
+      "header": null,
+      "height": 844,
+      "horizontalOverflow": false,
+      "tabs": [],
+      "width": 390
+    },
+    {
+      "body": null,
+      "bodyOverflow": "visible",
+      "drawer": null,
+      "drawerHorizontalOverflow": false,
+      "footer": null,
+      "header": null,
+      "height": 740,
+      "horizontalOverflow": false,
+      "tabs": [],
+      "width": 320
+    }
+  ]
+}

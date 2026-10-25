@@ -1,0 +1,16 @@
+{
+  "replacement": {
+    "afterReplacementUrl": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=overdue",
+    "focus": "Work queue",
+    "result": "0 tasks · OverdueOrganization day cutoff: 2026-10-11× Clear widget filter",
+    "selected": [
+      "Overdue: 0"
+    ]
+  },
+  "afterClear": {
+    "focus": "Work queue",
+    "resultPresent": false,
+    "selected": 0,
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active"
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "at": "2026-10-25T06:12:17.609Z",
+  "origin": "http://localhost:59443",
+  "mode": "Public live pages; synthetic Owner/Staff shell with all domain reads denied. NOT authenticated role or populated workflow acceptance.",
+  "release": {
+    "/release.json": {
+      "status": 200,
+      "body": {
+        "service": "web",
+        "mode": "release",
+        "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+        "buildId": "70b047cd57af-1792849822919",
+        "builtAt": "2026-10-24T13:50:22.919Z",
+        "migrations": 120
+      }
+    },
+    "/api/v1/health/release": {
+      "status": 200,
+      "body": {
+        "service": "api",
+        "mode": "release",
+        "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+        "buildId": "70b047cd57af-1792849822919",
+        "builtAt": "2026-10-24T13:50:22.919Z",
+        "migrations": 120
+      }
+    },
+    "/api/v1/health/ready": {
+      "status": 200,
+      "body": {
+        "status": "ready",
+        "service": "api",
+        "dependencies": {
+          "database": "ready"
+        },
+        "checkedAt": "2026-10-25T06:12:17.689Z"
+      }
+    }
+  },
+  "pages": [
+    {
+      "mode": "live-anonymous",
+      "route": "/",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/workspace",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/workspace\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/sign-in",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/sign-in\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/staff/sign-in",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/staff/sign-in\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/owner/sign-in",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/owner/sign-in\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/staff/recovery",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/staff/recovery\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/bootstrap",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/bootstrap\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/enroll",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/enroll\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/owner-recovery",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/owner-recovery\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/install",
+      "width": 1440,
+      "screenshot": "screenshots/live-anonymous-_install-1440.png",
+      "title": "Sense Studios | Work Management",
+      "headings": [
+        "Your work, on your phone",
+        "Android",
+        "iPhone",
+        "Before going to a site",
+        "Keep access secure"
+      ],
+      "text": "Skip to main content\nSense Studios\nYour work, on your phone\n\nEmployees, site workers and the Owner use the same app. Your own account controls what you can see and do.\n\nAndroid\nOpen this address in Chrome.\nOpen the browser menu and choose Install app or Add to Home screen.\nOpen Sense Studios from your home screen, then sign in with your own passkey.\niPhone\nOpen this address in Safari.\nChoose Share → Add to Home Screen. Enable Open as Web App if shown, then tap Add.\nOpen the new icon and sign in. If you cannot sign in, ask the Owner for account recovery.\nBefore going to a site\n\nWhile online, open your assigned site and prepare its offline capture context. Supported notes, new photos, report drafts, snags and progress can be saved locally. Reopen the app online to synchronize and resolve any conflicts.\n\nCheck that captures show Synchronized before clearing browser storage, reinstalling or changing phones. Pending captures exist only on this device. Approvals and other unsupported actions need an online connection.\n\nKeep access secure\n\nUse your own account and a phone screen lock. Report a lost phone to the Owner promptly. Launch alerts are available in the app and by configured email; installation alone does not enable lock-screen notifications.\n\nOpen Sense Studios\nRelease 70b047cd · API 70b047cd",
+      "links": [
+        {
+          "label": "Skip to main content",
+          "href": "#sense-main"
+        },
+        {
+          "label": "Sense Studios",
+          "href": "/"
+        },
+        {
+          "label": "Open Sense Studios",
+          "href": "/"
+        }
+      ],
+      "fields": [],
+      "overflow": false,
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "smallControls": []
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/install",
+      "width": 390,
+      "screenshot": "screenshots/live-anonymous-_install-390.png",
+      "title": "Sense Studios | Work Management",
+      "headings": [
+        "Your work, on your phone",
+        "Android",
+        "iPhone",
+        "Before going to a site",
+        "Keep access secure"
+      ],
+      "text": "Skip to main content\nSense Studios\nYour work, on your phone\n\nEmployees, site workers and the Owner use the same app. Your own account controls what you can see and do.\n\nAndroid\nOpen this address in Chrome.\nOpen the browser menu and choose Install app or Add to Home screen.\nOpen Sense Studios from your home screen, then sign in with your own passkey.\niPhone\nOpen this address in Safari.\nChoose Share → Add to Home Screen. Enable Open as Web App if shown, then tap Add.\nOpen the new icon and sign in. If you cannot sign in, ask the Owner for account recovery.\nBefore going to a site\n\nWhile online, open your assigned site and prepare its offline capture context. Supported notes, new photos, report drafts, snags and progress can be saved locally. Reopen the app online to synchronize and resolve any conflicts.\n\nCheck that captures show Synchronized before clearing browser storage, reinstalling or changing phones. Pending captures exist only on this device. Approvals and other unsupported actions need an online connection.\n\nKeep access secure\n\nUse your own account and a phone screen lock. Report a lost phone to the Owner promptly. Launch alerts are available in the app and by configured email; installation alone does not enable lock-screen notifications.\n\nOpen Sense Studios\nRelease 70b047cd · API 70b047cd",
+      "links": [
+        {
+          "label": "Skip to main content",
+          "href": "#sense-main"
+        },
+        {
+          "label": "Sense Studios",
+          "href": "/"
+        },
+        {
+          "label": "Open Sense Studios",
+          "href": "/"
+        }
+      ],
+      "fields": [],
+      "overflow": false,
+      "documentWidth": 390,
+      "viewport": 390,
+      "smallControls": []
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/client-portal",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/client-portal\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/external-portal",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/external-portal\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/portfolio",
+      "width": 1440,
+      "screenshot": "screenshots/live-anonymous-_portfolio-1440.png",
+      "title": "Sense Studios | Work Management",
+      "headings": [
+        "Portfolio"
+      ],
+      "text": "Skip to main content\nS\nSENSE STUDIOS\n\nSELECTED WORK\n\nPortfolio\n\nSelected projects by Sense Studios.\n\nNo portfolio work is currently published.\n\nSense Studios\nRelease 70b047cd · API 70b047cd",
+      "links": [
+        {
+          "label": "Skip to main content",
+          "href": "#sense-main"
+        },
+        {
+          "label": "S\nSENSE STUDIOS",
+          "href": "/"
+        }
+      ],
+      "fields": [],
+      "overflow": false,
+      "documentWidth": 1440,
+      "viewport": 1440,
+      "smallControls": []
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/portfolio",
+      "width": 390,
+      "screenshot": "screenshots/live-anonymous-_portfolio-390.png",
+      "title": "Sense Studios | Work Management",
+      "headings": [
+        "Portfolio"
+      ],
+      "text": "Skip to main content\nS\nSENSE STUDIOS\n\nSELECTED WORK\n\nPortfolio\n\nSelected projects by Sense Studios.\n\nNo portfolio work is currently published.\n\nSense Studios\nRelease 70b047cd · API 70b047cd",
+      "links": [
+        {
+          "label": "Skip to main content",
+          "href": "#sense-main"
+        },
+        {
+          "label": "S\nSENSE STUDIOS",
+          "href": "/"
+        }
+      ],
+      "fields": [],
+      "overflow": false,
+      "documentWidth": 390,
+      "viewport": 390,
+      "smallControls": []
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/audit-nonexistent-route",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/audit-nonexistent-route\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/dashboard",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/dashboard\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/my-work",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/my-work\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    {
+      "mode": "live-anonymous",
+      "route": "/tasks",
+      "error": "page.goto: Timeout 20000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:59443/tasks\", waiting until \"networkidle\"\u001b[22m\n"
+    }
+  ],
+  "interactions": [],
+  "blockedWrites": [],
+  "errors": [],
+  "source": {
+    "apps/web/src/main.tsx": "d48db3bb8873b44fd9c671faa3cc8bbfe688679f0a05c58bc2827393a50de8ff",
+    "apps/web/src/app.tsx": "0b6a7da3bfb2b2608c8345fc5221218bccd708830c6ae352f57aa4d8f6364121",
+    "apps/web/src/workspace-navigation.tsx": "dfec9a945c0759e389abe0228c631ca8f062b8b5545fb7204ac5914b91dace5f"
+  },
+  "checkout": "acc98be4f20374b52bf60fee5afd0b5d8bf1c6c6"
+}

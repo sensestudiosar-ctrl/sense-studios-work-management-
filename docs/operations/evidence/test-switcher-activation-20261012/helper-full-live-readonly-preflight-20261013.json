@@ -1,0 +1,108 @@
+{
+  "state": "PASS",
+  "kind": "read-only helper completion preflight",
+  "manifest": {
+    "version": 1,
+    "mode": "retained-preview-recovery",
+    "state": "PASS",
+    "root": "D:/app/sensestudios work management app",
+    "runId": "cf12966a-2211-45c0-a63d-a386b5da759e",
+    "runDir": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\runs\\retained-preview-recovery-cf12966a-2211-45c0-a63d-a386b5da759e",
+    "database": "sense_local_preview_20261008_1791474390772_test",
+    "databaseOid": "32768",
+    "databasePort": 45434,
+    "systemIdentifier": "7693570241708228348",
+    "dataDirectory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+    "url": "http://localhost:59223",
+    "apiUrl": "http://127.0.0.1:59224",
+    "sourceEnvironmentFile": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\runs\\local-preview-1791474390772\\server.env.test",
+    "processes": {
+      "api": {
+        "pid": 18408,
+        "creationTime": "2026-10-13T05:31:30.925Z",
+        "executable": "C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "commandLine": "\"C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe\" apps/api/dist/main.js",
+        "owner": "DESKTOP-7U1I620\\HI",
+        "parentPid": 35168
+      },
+      "web": {
+        "pid": 16368,
+        "creationTime": "2026-10-13T05:31:34.376Z",
+        "executable": "C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+        "commandLine": "\"C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe\" node_modules/vite/bin/vite.js --host 127.0.0.1 --port 59223 --strictPort",
+        "owner": "DESKTOP-7U1I620\\HI",
+        "parentPid": 35168
+      },
+      "supervisor": {
+        "pid": 35168,
+        "creationTime": "2026-10-13T05:31:17.761Z",
+        "executable": "C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+        "commandLine": "\"C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoLogo -NoProfile -File \"D:/app/sensestudios work management app/.env.checkpoint-tools/test-personas/restore-preview.ps1\" -Execute -RunId cf12966a-2211-45c0-a63d-a386b5da759e -D \"D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9\" -h 127.0.0.1 -p 45434 -NoStartup",
+        "owner": "DESKTOP-7U1I620\\HI",
+        "parentPid": 42764
+      }
+    }
+  },
+  "fixtures": {
+    "state": "PASS",
+    "readOnly": true,
+    "checkedAt": "2026-10-13T06:05:15.068Z",
+    "identity": {
+      "database": "sense_local_preview_20261008_1791474390772_test",
+      "host": "127.0.0.1",
+      "port": 45434,
+      "directory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+      "system": "7693570241708228348"
+    },
+    "databaseOid": "32768",
+    "migrations": {
+      "count": 115,
+      "latest": "20261007060000_s27_assistance"
+    },
+    "counts": {
+      "employees": 5,
+      "tasks": 50,
+      "projects": 2,
+      "job_roles": 3,
+      "role_permissions": 7,
+      "employee_job_role_assignments": 5,
+      "employee_permission_overrides": 0,
+      "review_categories": 1
+    },
+    "employeeTasks": [
+      {
+        "persona": "leader1",
+        "count": 10,
+        "exactTaskIdsPreserved": true
+      },
+      {
+        "persona": "leader2",
+        "count": 10,
+        "exactTaskIdsPreserved": true
+      },
+      {
+        "persona": "designer1",
+        "count": 10,
+        "exactTaskIdsPreserved": true
+      },
+      {
+        "persona": "designer2",
+        "count": 10,
+        "exactTaskIdsPreserved": true
+      },
+      {
+        "persona": "site",
+        "count": 10,
+        "exactTaskIdsPreserved": true
+      }
+    ],
+    "ownerCredentialsPreserved": true,
+    "ownerRecoveryPreserved": true,
+    "ownerEmployeeCount": 0,
+    "otherCatalogPreserved": true,
+    "priorBackupHashVerified": true,
+    "sourceEnvironmentHash": "cc5207584fb8f895fd4e187071b4c3c746dec7b6ed39af49dec6f99baba858c5"
+  },
+  "writeOperations": 0,
+  "helperLaunches": 0
+}

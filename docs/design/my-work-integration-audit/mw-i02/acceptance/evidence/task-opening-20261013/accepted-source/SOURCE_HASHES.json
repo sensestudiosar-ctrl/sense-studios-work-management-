@@ -1,0 +1,32 @@
+[
+  {
+    "Algorithm": "SHA256",
+    "Hash": "9F3A2DDA145546DE01640012DB92533EA53657E2A9BE7D3F01E188ACA965C9E1",
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.tsx"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "7660E241EF1EF25C11CFCAB2523B77E415F8A9B3BBFCA9CDA0B308EBAE0B5F52",
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task-detail-drawer.tsx"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "5516D2B417372645388951E190B19DFF85AC843BB8BDFD67B8FB07ECD0CBA8F0",
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task-detail-drawer.css"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "5564ED27630C9FCA861B6C6C7B83F335D960C86E129A846C4806B62E5547A7A3",
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.test.tsx"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "B6277BFABCA288DF4D2DD8966196D76D70BAF889CAED8FD9986486EFDD2EA1C9",
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task-detail-drawer.test.tsx"
+  },
+  {
+    "Algorithm": "SHA256",
+    "Hash": "D0D753A245C28D081D0FAD50029FF18D86EA72A50539794E16EAE28EE0CE0B01",
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task-my-work-drawer.test.tsx"
+  }
+]

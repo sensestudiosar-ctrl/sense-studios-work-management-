@@ -1,0 +1,13 @@
+{
+  "state": "PASS",
+  "recordedAt": "2026-10-13T06:20:04Z",
+  "operation": "single-authorized-designer1-controller-activation",
+  "controllerUrl": "http://127.0.0.1:57753/MzYZ5li34slIyqNByPG9BQueVve-nzD5",
+  "observedButton": "Designer 1 Synthetic Designer 1 task-test-03-20261012@example.test 10 personal tasks",
+  "observedFeedback": "Persona activated in the separate test Chromium window. Your Codex Owner session is unchanged.",
+  "activationAttempts": 1,
+  "screenshot": "designer1-activation-success-20261013.png",
+  "actualStaffWindowScreenshotCaptured": false,
+  "fullMyWorkVisualAcceptance": false,
+  "helperCompletionEvidence": "D:/app/sensestudios work management app/.env.checkpoint-tools/runs/helper-completion-73cfb9f7-2c20-4508-b957-06f8d7461d20/result.json"
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.css",
+    "Hash": "276736E18F89EF31D1133DF455B4EC23179F01095C875B963287255FE6D1FE0A"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.tsx",
+    "Hash": "FB617E8CB048DB2856700D6C22903E3C52DC8CE804EA7601B63171EEFBD6EF51"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-attention.css",
+    "Hash": "0DB274B117DF720752473B8B044DE4CB51735BED942A4353A229B025B9D5D5D0"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-attention.tsx",
+    "Hash": "459DE613378AD2EEA5FAE90A6E8D4C66A4319AA69F3FC2E70832A3BABC2A5C4C"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-attention.test.tsx",
+    "Hash": "68056C104609B92A845889D34126DF7CE0E0DAE378C787FC5FA09E77A9156F4B"
+  }
+]

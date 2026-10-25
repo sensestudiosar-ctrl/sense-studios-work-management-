@@ -1,0 +1,203 @@
+{
+  "scope": "Isolated fixture color revision only",
+  "recordedAt": "2026-10-08T19:18:58.483Z",
+  "desktopBefore": [
+    {
+      "height": 45,
+      "selector": "work-tabs",
+      "width": 749,
+      "x": 260,
+      "y": 194.890625
+    },
+    {
+      "height": 116,
+      "selector": "filterbar",
+      "width": 749,
+      "x": 260,
+      "y": 331.28125
+    },
+    {
+      "height": 103.1875,
+      "selector": "task-row-TSK-2420",
+      "width": 747,
+      "x": 261,
+      "y": 522.21875
+    },
+    {
+      "height": 103.1875,
+      "selector": "task-row-TSK-2473",
+      "width": 747,
+      "x": 261,
+      "y": 625.40625
+    },
+    {
+      "height": 103.1875,
+      "selector": "task-row-TSK-2481",
+      "width": 747,
+      "x": 261,
+      "y": 728.59375
+    },
+    {
+      "height": 102.1875,
+      "selector": "task-row-TSK-2466",
+      "width": 747,
+      "x": 261,
+      "y": 831.78125
+    },
+    {
+      "height": 1000,
+      "selector": "detail-pane",
+      "width": 388,
+      "x": 1037,
+      "y": 0
+    }
+  ],
+  "desktopAfter": [
+    {
+      "height": 45,
+      "selector": "work-tabs",
+      "width": 749,
+      "x": 260,
+      "y": 194.890625
+    },
+    {
+      "height": 116,
+      "selector": "filterbar",
+      "width": 749,
+      "x": 260,
+      "y": 331.28125
+    },
+    {
+      "height": 103.1875,
+      "selector": "task-row-TSK-2420",
+      "width": 747,
+      "x": 261,
+      "y": 522.21875
+    },
+    {
+      "height": 103.1875,
+      "selector": "task-row-TSK-2473",
+      "width": 747,
+      "x": 261,
+      "y": 625.40625
+    },
+    {
+      "height": 103.1875,
+      "selector": "task-row-TSK-2481",
+      "width": 747,
+      "x": 261,
+      "y": 728.59375
+    },
+    {
+      "height": 102.1875,
+      "selector": "task-row-TSK-2466",
+      "width": 747,
+      "x": 261,
+      "y": 831.78125
+    },
+    {
+      "height": 1000,
+      "selector": "detail-pane",
+      "width": 388,
+      "x": 1037,
+      "y": 0
+    }
+  ],
+  "layoutUnchanged": true,
+  "mobile": {
+    "labels": [
+      "Active11",
+      "Overdue1",
+      "Due today1",
+      "Waiting2",
+      "Reviews5",
+      "Upcoming9"
+    ],
+    "scrollWidth": 375,
+    "width": 390
+  },
+  "selected": {
+    "border": "rgb(24, 44, 41)",
+    "label": "rgb(49, 91, 123)"
+  },
+  "completed": {
+    "evidenceColor": "rgb(80, 100, 91)",
+    "overdue": false,
+    "pillBg": "rgb(245, 246, 241)",
+    "pillColor": "rgb(80, 100, 91)"
+  },
+  "semanticRendering": {
+    "documentWidth": 1425,
+    "rows": [
+      {
+        "accent": "rgb(133, 61, 51)",
+        "date": "Overdue",
+        "dateColor": "rgb(133, 61, 51)",
+        "id": "task-row-TSK-2420",
+        "status": "In progress",
+        "statusBg": "rgb(241, 247, 239)",
+        "statusColor": "rgb(49, 89, 71)"
+      },
+      {
+        "accent": "rgb(177, 129, 41)",
+        "date": "Due today",
+        "dateColor": "rgb(117, 80, 24)",
+        "id": "task-row-TSK-2473",
+        "status": "In progress",
+        "statusBg": "rgb(241, 247, 239)",
+        "statusColor": "rgb(49, 89, 71)"
+      },
+      {
+        "accent": "rgb(133, 61, 51)",
+        "date": "Due Oct 9, 2026",
+        "dateColor": "rgb(83, 97, 106)",
+        "id": "task-row-TSK-2481",
+        "status": "Corrections required",
+        "statusBg": "rgb(255, 241, 237)",
+        "statusColor": "rgb(133, 61, 51)"
+      },
+      {
+        "accent": "rgb(177, 129, 41)",
+        "date": "Due Oct 10, 2026",
+        "dateColor": "rgb(83, 97, 106)",
+        "id": "task-row-TSK-2466",
+        "status": "Waiting",
+        "statusBg": "rgb(255, 244, 214)",
+        "statusColor": "rgb(117, 80, 24)"
+      }
+    ],
+    "tabs": [
+      {
+        "color": "rgb(49, 89, 71)",
+        "countBg": "rgb(241, 247, 239)",
+        "text": "Active11"
+      },
+      {
+        "color": "rgb(133, 61, 51)",
+        "countBg": "rgb(255, 241, 237)",
+        "text": "Overdue1"
+      },
+      {
+        "color": "rgb(117, 80, 24)",
+        "countBg": "rgb(255, 244, 214)",
+        "text": "Due today1"
+      },
+      {
+        "color": "rgb(117, 80, 24)",
+        "countBg": "rgb(255, 244, 214)",
+        "text": "Waiting2"
+      },
+      {
+        "color": "rgb(49, 91, 123)",
+        "countBg": "rgb(237, 243, 248)",
+        "text": "Reviews5"
+      },
+      {
+        "color": "rgb(83, 97, 106)",
+        "countBg": "rgb(241, 243, 243)",
+        "text": "Upcoming9"
+      }
+    ],
+    "viewportWidth": 1440
+  }
+}

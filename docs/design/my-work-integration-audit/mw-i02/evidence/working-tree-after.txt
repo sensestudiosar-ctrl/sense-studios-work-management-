@@ -1,0 +1,169 @@
+ M CURRENT_STATE.md
+ M IMPLEMENTATION_PLAN.md
+ M IMPLEMENTATION_STATUS.md
+ M apps/api/src/ai-assistance-security.database.api.spec.ts
+ M apps/api/src/ai-assistance.database.api.spec.ts
+ M apps/api/src/automation-security.database.api.spec.ts
+ M apps/api/src/automation.database.api.spec.ts
+ M apps/api/src/client-review.database.api.spec.ts
+ M apps/api/src/dashboard-security.database.api.spec.ts
+ M apps/api/src/dashboard.database.api.spec.ts
+ M apps/api/src/external-portal.database.api.spec.ts
+ M apps/api/src/gallery.database.api.spec.ts
+ M apps/api/src/integration-security.database.api.spec.ts
+ M apps/api/src/integration.database.api.spec.ts
+ M apps/api/src/performance-security.database.api.spec.ts
+ M apps/api/src/performance.database.api.spec.ts
+ M apps/api/src/s18-test-fixture.ts
+ M apps/api/src/skills.database.api.spec.ts
+ M apps/api/src/time.database.api.spec.ts
+ M apps/api/src/workforce-worker.database.api.spec.ts
+ M apps/api/src/workforce.database.api.spec.ts
+ M apps/web/src/app.tsx
+ M apps/web/src/dashboard.css
+ M apps/web/src/dashboard.tsx
+ M apps/web/src/styles.css
+ M apps/web/src/task.css
+ M apps/web/src/task.test.tsx
+ M apps/web/src/task.tsx
+ M apps/web/src/workspace-navigation.css
+ M apps/web/src/workspace-navigation.tsx
+ M tests/e2e/ai-assistance.spec.ts
+ M tests/e2e/automation.spec.ts
+ M tests/e2e/client-portal.spec.ts
+ M tests/e2e/client-review-staff.spec.ts
+ M tests/e2e/dashboard.spec.ts
+ M tests/e2e/external-portal.spec.ts
+ M tests/e2e/gallery.spec.ts
+ M tests/e2e/integrations.spec.ts
+ M tests/e2e/learning.spec.ts
+ M tests/e2e/library.spec.ts
+ M tests/e2e/offline-site.spec.ts
+ M tests/e2e/performance.spec.ts
+ M tests/e2e/review.spec.ts
+ M tests/e2e/site.spec.ts
+ M tests/e2e/time.spec.ts
+ M tests/e2e/training.spec.ts
+ M tests/e2e/turnkey.spec.ts
+ M tests/e2e/workforce.spec.ts
+?? apps/api/src/s27-disposable-test-target.ts
+?? apps/api/src/s27-disposable-test-target.unit.spec.ts
+?? docs/design/01-repository-ux-baseline.md
+?? docs/design/02-refero-research.md
+?? docs/design/03-module-roadmap.md
+?? docs/design/04-design-system-proposal.md
+?? docs/design/05-journey-contracts.md
+?? docs/design/06-validation-and-approval.md
+?? docs/design/APPROVAL_2026-10-08.md
+?? docs/design/README.md
+?? docs/design/evidence/contrast-calculations.json
+?? docs/design/evidence/delivery-checks.json
+?? docs/design/evidence/refero-completion-2026-10-08.json
+?? docs/design/evidence/refero-research-2026-10-08.json
+?? docs/design/evidence/refero-supplement-2026-10-08.json
+?? docs/design/evidence/roadmap-priorities.json
+?? docs/design/my-work-integration-audit/README.md
+?? docs/design/my-work-integration-audit/mw-i01/REPORT.md
+?? docs/design/my-work-integration-audit/mw-i01/SPEC.md
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/FINAL_REVIEW.md
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/PLAN.md
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/REPORT.md
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/.last-run.json
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-designer-desktop-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-designer-desktop.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-desktop-cards-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-desktop-cards.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-desktop-list-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-desktop-list.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-detail-desktop.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-leader-desktop-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-leader-desktop.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-320-cards-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-320-detail.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-320-list-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-320-list.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-320-queue-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-320.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-390-cards-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-390-detail.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-390-list-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-390-list.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-390-queue-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-mobile-390.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-site-employee-desktop-viewport.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-site-employee-desktop.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-site-employee-my-work.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/artifacts/acceptance-MW-I01-authenti-76536-mmands-and-responsive-shell-mw-i01-chromium/tasks-team-leader-tasks.png
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/current-failures.txt
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/final-task-source.json
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/resumed-task-source.json
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/task-source-after.json
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/task-source-before.json
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/verification-tool-hashes.json
+?? docs/design/my-work-integration-audit/mw-i01/acceptance/evidence/working-tree-before.txt
+?? docs/design/my-work-integration-audit/mw-i01/evidence/after-actual-signed-out.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/after-component-320.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/after-component-desktop-detail.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/after-component-desktop.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/after-component-mobile.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/after-component-tablet.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/baseline-failures.txt
+?? docs/design/my-work-integration-audit/mw-i01/evidence/before-actual-signed-out.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/before-component-desktop.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/before-component-mobile.jpg
+?? docs/design/my-work-integration-audit/mw-i01/evidence/diff-stat-before.txt
+?? docs/design/my-work-integration-audit/mw-i01/evidence/final-failures.txt
+?? docs/design/my-work-integration-audit/mw-i01/evidence/task-source-before.json
+?? docs/design/my-work-integration-audit/mw-i01/evidence/task-source-final.json
+?? docs/design/my-work-integration-audit/mw-i01/evidence/working-tree-before.txt
+?? docs/design/my-work-integration-audit/mw-i02/evidence/focused-source-diff-stat.txt
+?? docs/design/my-work-integration-audit/mw-i02/evidence/source-hashes-after.json
+?? docs/design/my-work-integration-audit/mw-i02/evidence/source-hashes-before.json
+?? docs/design/my-work-integration-audit/mw-i02/evidence/tracked-diff-stat-before.txt
+?? docs/design/my-work-integration-audit/mw-i02/evidence/working-tree-before.txt
+?? docs/design/my-work-integration-audit/package-manifest.json
+?? docs/design/my-work-prototype/index.html
+?? docs/design/my-work-prototype/main.tsx
+?? docs/design/my-work-prototype/prototype.css
+?? docs/design/my-work-prototype/start-preview.ps1
+?? docs/design/my-work-prototype/tsconfig.json
+?? docs/design/my-work-prototype/vite.config.ts
+?? docs/design/my-work-review/01-current-validation.md
+?? docs/design/my-work-review/02-comparison-and-traceability.md
+?? docs/design/my-work-review/03-proposed-implementation.md
+?? docs/design/my-work-review/04-acceptance-checklist.md
+?? docs/design/my-work-review/05-color-emphasis.md
+?? docs/design/my-work-review/06-leader-owner-work.md
+?? docs/design/my-work-review/README.md
+?? docs/design/my-work-review/evidence/browser-verification.json
+?? docs/design/my-work-review/evidence/close-position-refined.jpg
+?? docs/design/my-work-review/evidence/close-position-verification.json
+?? docs/design/my-work-review/evidence/color-browser-verification.json
+?? docs/design/my-work-review/evidence/color-contrast.json
+?? docs/design/my-work-review/evidence/color-desktop.jpg
+?? docs/design/my-work-review/evidence/color-mobile.jpg
+?? docs/design/my-work-review/evidence/current-my-work-mobile.jpg
+?? docs/design/my-work-review/evidence/desktop-plain-close.jpg
+?? docs/design/my-work-review/evidence/final-source-preservation.json
+?? docs/design/my-work-review/evidence/prototype-action-preview.jpg
+?? docs/design/my-work-review/evidence/prototype-desktop.jpg
+?? docs/design/my-work-review/evidence/prototype-geometry.json
+?? docs/design/my-work-review/evidence/prototype-mobile-detail.jpg
+?? docs/design/my-work-review/evidence/prototype-mobile-list.jpg
+?? docs/design/my-work-review/evidence/role-assignment-receipt.jpg
+?? docs/design/my-work-review/evidence/role-browser-verification.json
+?? docs/design/my-work-review/evidence/role-final-fingerprint.json
+?? docs/design/my-work-review/evidence/role-fullwidth-closed.jpg
+?? docs/design/my-work-review/evidence/role-leader-desktop.jpg
+?? docs/design/my-work-review/evidence/role-leader-mobile-detail.jpg
+?? docs/design/my-work-review/evidence/role-leader-mobile-list.jpg
+?? docs/design/my-work-review/evidence/role-owner-desktop.jpg
+?? docs/design/my-work-review/evidence/role-owner-mobile.jpg
+?? docs/design/my-work-review/evidence/role-reassignment-receipt.jpg
+?? docs/design/my-work-review/evidence/role-refero-records.json
+?? docs/design/my-work-review/evidence/source-baseline.json
+?? docs/design/my-work-review/evidence/tablet-single-close.jpg
+?? docs/design/tokens.proposed.json
+?? docs/ui/UX_DASHBOARD_REFERO_2026-10-08.md
+?? docs/ui/UX_MOBILE_SHELL_REFERO_2026-10-08.md
+?? docs/ui/UX_SIDEBAR_REFERO_2026-10-08.md

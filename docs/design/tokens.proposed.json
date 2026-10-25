@@ -1,0 +1,176 @@
+{
+  "status": "PROPOSED — approval required; documentation artifact, not imported by application",
+  "date": "2026-10-08",
+  "version": "0.1",
+  "primitive": {
+    "color": {
+      "canvas": "#f4f1e9",
+      "surface": "#fffdf7",
+      "surfaceMuted": "#faf8f2",
+      "surfaceActive": "#e3eadf",
+      "ink": "#182c29",
+      "inkStrong": "#29463d",
+      "inkMuted": "#61736b",
+      "border": "#d9d8cd",
+      "borderSoft": "#e2e1d8",
+      "pine": "#182c29",
+      "pineHover": "#35534a",
+      "gold": "#e7c680",
+      "focusLegacy": "#b98f49",
+      "focus": "#29463d",
+      "controlBorder": "#7c887f",
+      "success": "#315947",
+      "successBg": "#f1f7ef",
+      "warning": "#755018",
+      "warningBg": "#fff4d6",
+      "danger": "#853d33",
+      "dangerBg": "#fff1ed",
+      "info": "#29463d",
+      "infoBg": "#e3eadf",
+      "inkMutedProposed": "#50645b"
+    },
+    "spacing": {
+      "unit": 4,
+      "steps": [
+        0,
+        4,
+        8,
+        12,
+        16,
+        20,
+        24,
+        32,
+        40,
+        48,
+        64
+      ]
+    },
+    "radius": {
+      "small": 4,
+      "control": 8.8,
+      "panel": 12.8,
+      "pill": 9999
+    },
+    "font": {
+      "ui": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+      "brand": "Georgia, serif",
+      "mono": "ui-monospace, SFMono-Regular, Consolas, monospace"
+    }
+  },
+  "semantic": {
+    "canvas": "primitive.color.canvas",
+    "surface": "primitive.color.surface",
+    "surfaceSecondary": "primitive.color.surfaceMuted",
+    "selection": "primitive.color.surfaceActive",
+    "textPrimary": "primitive.color.ink",
+    "textSecondary": "primitive.color.inkMutedProposed",
+    "actionPrimary": "primitive.color.pine",
+    "actionHover": "primitive.color.pineHover",
+    "focus": "primitive.color.focus",
+    "borderDecoration": "primitive.color.border",
+    "borderControl": "primitive.color.controlBorder",
+    "brandAccent": "primitive.color.gold",
+    "successText": "primitive.color.success",
+    "successSurface": "primitive.color.successBg",
+    "warningText": "primitive.color.warning",
+    "warningSurface": "primitive.color.warningBg",
+    "dangerText": "primitive.color.danger",
+    "dangerSurface": "primitive.color.dangerBg"
+  },
+  "component": {
+    "button": {
+      "heightDefault": 40,
+      "heightTouch": 44,
+      "heightCompact": 32,
+      "radius": "primitive.radius.control",
+      "primaryFill": "semantic.actionPrimary",
+      "primaryText": "#ffffff",
+      "focus": "semantic.focus"
+    },
+    "input": {
+      "height": 44,
+      "radius": "primitive.radius.control",
+      "border": "semantic.borderControl"
+    },
+    "workRow": {
+      "heightMinimumDesktop": 44,
+      "paddingInline": 12,
+      "paddingBlock": 8,
+      "mobileHeight": "content driven"
+    },
+    "panel": {
+      "radius": "primitive.radius.panel",
+      "padding": 16
+    },
+    "dialog": {
+      "widthDefault": 560,
+      "widthEvidence": 960,
+      "gap": 16
+    },
+    "navigation": {
+      "sidebarWidth": 240,
+      "mobileTouchTarget": 44
+    }
+  },
+  "typography": {
+    "metadata": {
+      "size": 12,
+      "lineHeight": 18,
+      "weight": 400
+    },
+    "compact": {
+      "size": 14,
+      "lineHeight": 20,
+      "weight": 400
+    },
+    "body": {
+      "size": 16,
+      "lineHeight": 24,
+      "weight": 400
+    },
+    "section": {
+      "size": 20,
+      "lineHeight": 28,
+      "weight": 600
+    },
+    "page": {
+      "size": 28,
+      "lineHeight": 34,
+      "weight": 600
+    },
+    "pageMobile": {
+      "size": 24,
+      "lineHeight": 30,
+      "weight": 600
+    }
+  },
+  "responsive": {
+    "small": {
+      "from": 320,
+      "to": 639,
+      "gutter": 16
+    },
+    "medium": {
+      "from": 640,
+      "to": 1023,
+      "gutter": 20
+    },
+    "large": {
+      "from": 1024,
+      "gutter": 24
+    },
+    "contentMax": 1600,
+    "proseMaxCharacters": 72
+  },
+  "motion": {
+    "feedbackMs": 120,
+    "panelMs": 180,
+    "reducedMotion": "no translation/animation required for meaning"
+  },
+  "notes": [
+    "Values are plain proposal JSON, not a validated DTCG-conformant export.",
+    "Existing approved palette preserved; stronger secondary text, focus and input border are proposals.",
+    "Compact32px controls require sufficient spacing/target area; mobile44px product target.",
+    "No status color may map automatically to a domain state or authorization decision."
+  ]
+}

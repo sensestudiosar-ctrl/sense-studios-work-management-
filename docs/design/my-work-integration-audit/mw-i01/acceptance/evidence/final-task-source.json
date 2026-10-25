@@ -1,0 +1,14 @@
+[
+  {
+    "path": "apps/web/src/task.tsx",
+    "sha256": "84776DA710C9677A5869EC3720D26CED15ABF0663D0EFFC311D40CE700861C44"
+  },
+  {
+    "path": "apps/web/src/task.css",
+    "sha256": "8A988A040F110E97F42E2735367948E71E135B9527775A1071D9029B32A3318E"
+  },
+  {
+    "path": "apps/web/src/task.test.tsx",
+    "sha256": "AD0151ABA6A9F9F2CF07FED77EF825319A6F07CD3A50B5D5C1B158AE755B34D3"
+  }
+]

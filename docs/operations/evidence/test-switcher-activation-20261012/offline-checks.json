@@ -1,0 +1,9 @@
+{
+  "state": "OFFLINE_PASS_RUNTIME_PENDING",
+  "tests": 28,
+  "inertProcessCases": 35,
+  "parserChecks": 19,
+  "noDatabaseAccess": true,
+  "noBrowserAuthentication": true,
+  "noRuntimeLifecycle": true
+}

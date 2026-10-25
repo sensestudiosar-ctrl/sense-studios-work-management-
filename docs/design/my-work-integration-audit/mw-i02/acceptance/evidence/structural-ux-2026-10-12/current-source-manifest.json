@@ -1,0 +1,14 @@
+{
+  "capturedAt": "2026-10-12",
+  "purpose": "Current approved MW-I02 frontend source pin for subsequent readiness checks; historical manifests remain unchanged.",
+  "files": {
+    "apps/web/src/app.tsx": "c4f6193065f6f66c40c5085b49c8cc12cc3105862eccb600052752464c6c795e",
+    "apps/web/src/task.tsx": "0966ae0af4920739afa8f4dd1d5a21195a51819cb30ad8450b34472bf0fadd5e",
+    "apps/web/src/task.css": "2b498da1477042f4bc922eca9f9f7d50059f53f71e38909a24e87c4a2b7451af",
+    "apps/web/src/task.test.tsx": "d00ed8b32b21b5a5f8bc9145e1696e2760edc9647b828c92f20d6044b3965dd9",
+    "apps/web/src/my-work-attention.tsx": "490689773d400a6a1382c3cb337055257902e2b50720885808b24173cd9d24a8",
+    "apps/web/src/my-work-attention.css": "b497f51b56f3e32349c95dd85cec2711e4369ee25882838c91c9380d734629ed",
+    "apps/web/src/my-work-attention.test.tsx": "0f468249ab39bfa20dd9df2c75fb5ee94bad6a9b5a1596cdaa884c0a1b1632e9",
+    "apps/web/src/styles.css": "3c662c41e1698979a30426dffb51138a7ac6983a903f133edcbf19f90488ce3c"
+  }
+}

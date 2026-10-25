@@ -1,0 +1,1518 @@
+
+/* SenseWork demo v1 — data + state. Static mock; no backend. */
+const TODAY = new Date(2026,9,14);
+const AV_COLORS = ['#2563eb','#7c3aed','#0891b2','#059669','#d97706','#dc2626','#4f46e5','#0d9488','#ca8a04','#be123c','#0369a1','#15803d'];
+const avColor = n => AV_COLORS[(n.charCodeAt(0)+n.length)%AV_COLORS.length];
+const initials = n => n.split(' ').map(s=>s[0]).slice(0,2).join('');
+const daysFrom = d => Math.round((d-TODAY)/86400000);
+const fmtD = d => ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][d.getMonth()]+' '+d.getDate();
+const fmtDT = d => fmtD(d)+' '+String(d.getHours()).padStart(2,'0')+':00';
+const iso = n => n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+const due = n => { const d=new Date(TODAY); d.setDate(d.getDate()+n); return d; };
+const ago = h => { const d=new Date(TODAY); d.setHours(d.getHours()-h); return d; };
+const money = n => '$'+Math.round(n).toLocaleString('en-US');
+const pct = (a,b) => b? Math.round(a/b*100) : 0;
+const cap = s => s.charAt(0).toUpperCase()+s.slice(1);
+const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+const uid = (() => { let n=0; return p => p+(++n); })();
+const rnd = (() => { let s=1337; return () => (s=(s*1103515245+12345)&0x7fffffff)/0x7fffffff; })();
+const pick = (a,i) => a[Math.floor(i)%a.length];
+
+const STATUS = {
+  todo:      { l:'To do',       c:'b-gray'   },
+  inProgress:{ l:'In progress', c:'b-info'   },
+  inReview:  { l:'In review',   c:'b-violet' },
+  blocked:   { l:'Blocked',     c:'b-danger' },
+  done:      { l:'Done',        c:'b-ok'     },
+};
+const COLS = ['todo','inProgress','inReview','blocked','done'];
+const PRIO = { urgent:{l:'Urgent',cls:'pri-urgent'}, high:{l:'High',cls:'pri-high'}, med:{l:'Medium',cls:'pri-med'}, low:{l:'Low',cls:'pri-low'} };
+const TYPES = { feature:{l:'Feature'}, bug:{l:'Bug'}, task:{l:'Task'}, epic:{l:'Epic'} };
+const PROJECTS = {
+  app:      { name:'Client App Redesign',  color:'#2563eb',lead:'u2',status:'On track', s:'b-ok',    budget:480000,health:88,desc:'Mobile + web redesign for the Meridian banking engagement.' },
+  platform: { name:'Platform Migration',   color:'#7c3aed',lead:'u3',status:'At risk',  s:'b-danger',budget:920000,health:61,desc:'Re-platform the monolith onto the services architecture.' },
+  qa:       { name:'QA Automation Suite',  color:'#0891b2',lead:'u4',status:'On track', s:'b-ok',    budget:160000,health:83,desc:'Self-serve regression suite and CI quality gates.' },
+  crm:      { name:'CRM Data Migration',   color:'#059669',lead:'u5',status:'At risk',  s:'b-warn',  budget:240000,health:57,desc:'Consolidate three legacy CRM systems into one record of truth.' },
+  design:   { name:'Design System v2',     color:'#d97706',lead:'u2',status:'On track', s:'b-ok',    budget:90000, health:91,desc:'Unified tokens, components and documentation across products.' },
+  ops:       { name:'Internal Ops Tools',  color:'#4f46e5',lead:'u6',status:'Planning', s:'b-info',  budget:70000, health:78,desc:'Internal dashboards, access provisioning and audit trail.' },
+};
+const PROJ_ORDER = ['app','platform','qa','crm','design','ops'];
+const ROLES = {
+  owner:   { name:'Owner',       color:'#dc2626' },
+  admin:   { name:'Admin',       color:'#7c3aed' },
+  pm:      { name:'Project Mgr', color:'#2563eb' },
+  designer:{ name:'Designer',    color:'#d97706' },
+  dev:     { name:'Developer',   color:'#0891b2' },
+  qa:      { name:'QA',          color:'#059669' },
+  guest:   { name:'Guest',       color:'#6b7280' },
+};
+const SKILLS = {
+  dev:['Backend','APIs','Frontend','Platform','Migrations','CI/CD','Data pipelines','Observability'],
+  qa:['Test strategy','Automation','Regression','Security','Performance'],
+  designer:['Visual design','Prototyping','Research','Tokens','Interviewing'],
+  pm:['Delivery','Roadmaps','Comms','Risk','Analytics','Vendor mgmt'],
+};
+
+
+const SEED = [
+  ['u1','Elena Whitfield','Head of Product','owner','elena@nordwind.com','San Francisco',54,0.60,'2019-02-11',null,['Strategy','Pricing','Vendor mgmt']],
+  ['u2','Ava Chen','Design Lead','designer','ava@nordwind.com','San Francisco',54,0.78,'2020-06-01','u1',['Design systems','Product','Research']],
+  ['u3','Marcus Reed','Principal Engineer','pm','marcus@nordwind.com','Austin',48,0.95,'2019-09-16','u1',['Architecture','Platform','Mentoring']],
+  ['u4','Priya Nair','QA Lead','qa','priya@nordwind.com','Austin',52,0.71,'2021-03-22','u3',['Test strategy','Automation','Security']],
+  ['u5','Diego Alvarez','Eng Manager','pm','diego@nordwind.com','Remote',50,0.84,'2020-11-09','u1',['Delivery','Data migration','Ops']],
+  ['u6','Sofia Romano','Senior Developer','dev','sofia@nordwind.com','Remote',44,0.88,'2022-01-17','u5',['Frontend','APIs','Observability']],
+  ['u7','Tom Becker','Developer','dev','tom@nordwind.com','Austin',40,0.62,'2022-08-01','u5',['Backend','Data pipelines']],
+  ['u8','Grace Kim','QA Engineer','qa','grace@nordwind.com','Austin',38,0.55,'2023-02-13','u4',['Automation','Regression']],
+  ['u9','Hiroshi Tanaka','Developer','dev','hiro@nordwind.com','Austin',40,0.93,'2021-07-05','u5',['Platform','Migrations']],
+  ['u10','Aisha Bello','UX Researcher','designer','aisha@nordwind.com','San Francisco',42,0.58,'2022-04-25','u2',['Research','Prototyping']],
+  ['u11','Liam OConnor','Developer','dev','liam@nordwind.com','San Francisco',40,0.47,'2023-09-18','u5',['Frontend','Design systems']],
+  ['u12','Nina Petrov','QA Engineer','qa','nina@nordwind.com','Remote',38,0.74,'2023-05-02','u4',['Regression','Automation']],
+  ['u13','Noah Patel','DevOps Engineer','dev','noah@nordwind.com','Austin',42,0.97,'2021-10-11','u3',['CI/CD','Infra','Monitoring']],
+  ['u14','Fatima Zouari','Project Manager','pm','fatima@nordwind.com','Remote',46,0.81,'2022-11-28','u1',['Delivery','Roadmaps','Comms']],
+  ['u15','Ben Carter','Developer','dev','ben@nordwind.com','San Francisco',40,0.44,'2023-12-04','u5',['Frontend','Testing']],
+  ['u16','Clara Jensen','Designer','designer','clara@nordwind.com','San Francisco',42,0.39,'2024-01-22','u2',['Visual design','Tokens']],
+  ['u17','Owen Murphy','Developer','dev','owen@nordwind.com','Austin',40,0.86,'2020-03-30','u3',['Platform','APIs','Backend']],
+  ['u18','Yuki Sato','QA Engineer','qa','yuki@nordwind.com','Austin',38,0.68,'2023-07-10','u4',['Security','Regression']],
+  ['u19','Maya Lindqvist','Product Manager','pm','maya@nordwind.com','San Francisco',46,0.90,'2021-05-17','u1',['Discovery','Roadmaps','Analytics']],
+  ['u20','Daniel Ross','Developer','dev','daniel@nordwind.com','Austin',40,0.22,'2024-02-19','u5',['Backend','Migration']],
+  ['u21','Hannah Lee','Developer','dev','hannah@nordwind.com','Austin',40,0.94,'2022-06-20','u3',['Migrations','Platform']],
+  ['u22','Omar Haddad','Developer','dev','omar@nordwind.com','Remote',40,0.51,'2023-03-06','u5',['Backend','APIs']],
+  ['u23','Elena Rossi','Project Manager','pm','rossi@nordwind.com','Remote',46,0.83,'2021-12-13','u1',['Delivery','Risk','Comms']],
+  ['u24','Jack Wilson','Developer','dev','jack@nordwind.com','San Francisco',40,0.79,'2022-09-19','u5',['Frontend','Design systems']],
+  ['u25','Mei Lin','QA Engineer','qa','mei@nordwind.com','Austin',38,0.66,'2023-10-23','u4',['Automation','Regression']],
+  ['u26','Iris Novak','DevOps Engineer','dev','iris@nordwind.com','Remote',42,0.72,'2022-02-14','u3',['CI/CD','Monitoring','Infra']],
+  ['u27','Sam Torres','Designer','designer','sam@nordwind.com','San Francisco',42,0.57,'2023-08-07','u2',['Visual design','Prototyping']],
+  ['u28','Rachel Adams','QA Engineer','qa','rachel@nordwind.com','Austin',38,0.63,'2023-04-17','u4',['Regression','Automation']],
+  ['u29','David Kim','Developer','dev','dkim@nordwind.com','Austin',40,0.88,'2020-08-24','u3',['Platform','Backend']],
+  ['u30','Leah Goldberg','Project Manager','pm','leah@nordwind.com','Remote',46,0.80,'2022-05-09','u1',['Delivery','Roadmaps','Risk']],
+  ['u31','Raj Mehta','Developer','dev','raj@nordwind.com','Remote',40,0.35,'2024-03-11','u5',['Backend','APIs']],
+  ['u32','Sophia Costa','QA Engineer','qa','sophia@nordwind.com','Austin',38,0.59,'2023-11-20','u4',['Regression','Automation']],
+  ['u33','Tomas Vega','Developer','dev','tomas@nordwind.com','Austin',40,0.85,'2021-04-05','u3',['Platform','Migrations']],
+  ['u34','Anna Kowalski','Designer','designer','anna@nordwind.com','San Francisco',42,0.41,'2023-06-26','u2',['Visual design','Tokens']],
+  ['u35','Chris Boyd','Developer','dev','chris@nordwind.com','Austin',40,0.70,'2022-07-11','u5',['Backend','CI/CD']],
+  ['u36','Fatima Noor','QA Engineer','qa','fnoor@nordwind.com','Austin',38,0.61,'2023-09-04','u4',['Security','Regression']],
+  ['u37','Greg Olsen','Developer','dev','greg@nordwind.com','San Francisco',40,0.82,'2021-01-18','u3',['Frontend','APIs']],
+  ['u38','Nadia Rahman','Project Manager','pm','nadia@nordwind.com','Remote',46,0.77,'2022-10-10','u1',['Delivery','Comms','Roadmaps']],
+  ['u39','Peter Nguyen','Developer','dev','peter@nordwind.com','Austin',40,0.66,'2023-01-09','u5',['Backend','Data pipelines']],
+  ['u40','Olivia Hart','QA Lead','qa','olivia@nordwind.com','Austin',52,0.80,'2020-12-07','u4',['Test strategy','Automation','Security']],
+  ['u41','Hassan Ali','Developer','dev','hassan@nordwind.com','Remote',40,0.69,'2022-11-14','u5',['Backend','APIs']],
+  ['u42','Eva Muller','Designer','designer','eva@nordwind.com','San Francisco',42,0.52,'2023-12-18','u2',['Visual design','Prototyping']],
+  ['u43','Luke Fletcher','Developer','dev','luke@nordwind.com','Austin',40,0.91,'2021-09-27','u3',['Platform','CI/CD','Backend']],
+  ['u44','Chloe Dubois','Project Manager','pm','chloe@nordwind.com','Remote',46,0.85,'2022-08-22','u1',['Delivery','Risk','Analytics']],
+  ['u45','Miguel Santos','Developer','dev','miguel@nordwind.com','Austin',40,0.48,'2024-01-08','u5',['Backend','Data pipelines']],
+  ['u46','Freya Lund','QA Engineer','qa','freya@nordwind.com','Austin',38,0.57,'2023-12-11','u4',['Automation','Regression']],
+  ['u47','Aaron Wells','DevOps Engineer','dev','aaron@nordwind.com','Austin',42,0.87,'2021-06-14','u3',['CI/CD','Infra','Monitoring']],
+  ['u48','Zara Sheikh','Developer','dev','zara@nordwind.com','Remote',40,0.74,'2023-02-27','u5',['Backend','APIs','Migrations']],
+  ['u49','Nora Berg','Designer','designer','nora@nordwind.com','San Francisco',42,0.44,'2024-02-05','u2',['Visual design','Tokens']],
+  ['u50','Theo Martin','Developer','dev','theo@nordwind.com','Austin',40,0.78,'2022-03-14','u3',['Frontend','Platform']],
+  ['u51','Ingrid Sorensen','QA Engineer','qa','ingrid@nordwind.com','Austin',38,0.64,'2023-06-12','u4',['Regression','Automation']],
+  ['u52','Kofi Mensah','Developer','dev','kofi@nordwind.com','Austin',40,0.90,'2021-11-01','u3',['Platform','Backend','APIs']],
+  ['u53','Yara Khalil','Project Manager','pm','yara@nordwind.com','Remote',46,0.79,'2022-06-06','u1',['Delivery','Roadmaps','Comms']],
+  ['u54','Erik Lindholm','Developer','dev','erik@nordwind.com','Austin',40,0.42,'2023-10-02','u5',['Backend','APIs']],
+  ['u55','Bea OConnell','Designer','designer','bea@nordwind.com','San Francisco',42,0.50,'2023-07-31','u2',['Visual design','Research']],
+  ['u56','Victor Osei','Developer','dev','victor@nordwind.com','Austin',40,0.83,'2021-08-09','u3',['Platform','Migrations','Backend']],
+  ['u57','Diana Reyes','QA Engineer','qa','diana@nordwind.com','Austin',38,0.55,'2024-01-29','u4',['Regression','Automation']],
+  ['u58','Jonas Weber','DevOps Engineer','dev','jonas@nordwind.com','Remote',42,0.76,'2022-04-11','u3',['CI/CD','Infra','Monitoring']],
+  ['u59','Maya Cohen','Project Manager','pm','mcohen@nordwind.com','San Francisco',46,0.86,'2020-10-19','u1',['Delivery','Analytics','Risk']],
+  ['u60','Ravi Deshmukh','Developer','dev','ravi@nordwind.com','Austin',40,0.68,'2022-12-19','u5',['Backend','APIs','Data pipelines']],
+  ['u61','Hanna Berg','QA Engineer','qa','hanna@nordwind.com','Austin',38,0.60,'2023-11-06','u4',['Regression','Automation']],
+  ['u62','Samuel Adeyemi','Developer','dev','samuel@nordwind.com','Austin',40,0.89,'2021-02-22','u3',['Platform','Backend','CI/CD']],
+  ['u63','Lena Holm','Designer','designer','lena@nordwind.com','San Francisco',42,0.47,'2024-03-18','u2',['Visual design','Tokens']],
+  ['u64','Marcus Doyle','Developer','dev','mdoyle@nordwind.com','Austin',40,0.72,'2022-09-26','u5',['Backend','APIs']],
+  ['u65','Aicha Diallo','QA Engineer','qa','aicha@nordwind.com','Austin',38,0.53,'2023-09-18','u4',['Automation','Regression']],
+  ['u66','Elliot Gray','Developer','dev','elliot@nordwind.com','San Francisco',40,0.81,'2021-05-03','u3',['Frontend','APIs','Platform']],
+  ['u67','Sara Haddad','Project Manager','pm','shaddad@nordwind.com','Remote',46,0.74,'2023-01-30','u1',['Delivery','Comms','Risk']],
+  ['u68','Bjorn Hansen','Developer','dev','bjorn@nordwind.com','Austin',40,0.63,'2023-05-15','u5',['Backend','Data pipelines']],
+  ['u69','Yuki Mori','QA Engineer','qa','ymori@nordwind.com','Austin',38,0.58,'2024-02-12','u4',['Regression','Automation']],
+  ['u70','Cole Ramirez','Developer','dev','cole@nordwind.com','Austin',40,0.87,'2021-10-04','u3',['Platform','Backend','Migrations']],
+  ['u71','Naomi Brooks','Designer','designer','naomi@nordwind.com','San Francisco',42,0.45,'2024-01-22','u2',['Visual design','Prototyping']],
+  ['u72','Felix Bauer','Developer','dev','felix@nordwind.com','San Francisco',40,0.75,'2022-07-25','u5',['Frontend','APIs']],
+  ['u73','Amara Okafor','Project Manager','pm','amara@nordwind.com','Remote',46,0.82,'2022-02-28','u1',['Delivery','Roadmaps','Comms']],
+  ['u74','Lukas Schmidt','Developer','dev','lukas@nordwind.com','Austin',40,0.69,'2023-03-27','u5',['Backend','APIs','CI/CD']],
+  ['u75','Ivy Chen','QA Engineer','qa','ivy@nordwind.com','Austin',38,0.51,'2024-04-08','u4',['Automation','Regression']],
+  ['u76','Andrei Petrov','Developer','dev','andrei@nordwind.com','Austin',40,0.84,'2021-12-27','u3',['Platform','Backend','APIs']],
+  ['u77','Tara Singh','Designer','designer','tara@nordwind.com','San Francisco',42,0.56,'2023-10-30','u2',['Visual design','Research']],
+  ['u78','Dylan Walsh','Developer','dev','dylan@nordwind.com','Austin',40,0.77,'2022-05-30','u5',['Backend','APIs']],
+  ['u79','Camille Roux','QA Engineer','qa','camille@nordwind.com','Austin',38,0.62,'2023-08-21','u4',['Security','Regression']],
+  ['u80','Oscar Lind','Developer','dev','oscar@nordwind.com','Austin',40,0.80,'2021-07-19','u3',['Platform','CI/CD','Backend']],
+  ['u81','Priya Raman','Project Manager','pm','praman@nordwind.com','Remote',46,0.73,'2023-04-24','u1',['Delivery','Comms','Roadmaps']],
+  ['u82','Theo Nakamura','Developer','dev','tnakamura@nordwind.com','Austin',40,0.66,'2023-06-19','u5',['Backend','Data pipelines']],
+  ['u83','Mira Kovac','Designer','designer','mira@nordwind.com','San Francisco',42,0.49,'2024-02-26','u2',['Visual design','Tokens']],
+  ['u84','Jonas Eriksen','Developer','dev','jeriksen@nordwind.com','Austin',40,0.85,'2021-03-08','u3',['Platform','Backend','Migrations']],
+  ['u85','Rosa Martinez','QA Engineer','qa','rosa@nordwind.com','Austin',38,0.54,'2024-05-06','u4',['Regression','Automation']],
+  ['u86','Kai Andersen','Developer','dev','kai@nordwind.com','Austin',40,0.71,'2022-11-21','u5',['Backend','APIs']],
+  ['u87','Suki Yamamoto','Designer','designer','suki@nordwind.com','San Francisco',42,0.43,'2024-03-04','u2',['Visual design','Research']],
+  ['u88','Brett Coleman','Developer','dev','brett@nordwind.com','Austin',40,0.79,'2022-01-31','u3',['Platform','Backend','CI/CD']],
+  ['u89','Amelia Hart','Project Manager','pm','ahart@nordwind.com','Remote',46,0.76,'2023-07-17','u1',['Delivery','Roadmaps','Comms']],
+  ['u90','Finn OMalley','Developer','dev','finn@nordwind.com','Austin',40,0.64,'2023-09-11','u5',['Backend','APIs']],
+  ['u91','Nadia Farouk','QA Engineer','qa','nfarouk@nordwind.com','Austin',38,0.57,'2024-04-29','u4',['Automation','Regression']],
+  ['u92','Rolf Bergmann','Developer','dev','rolf@nordwind.com','Austin',40,0.82,'2021-06-28','u3',['Platform','Backend','APIs']],
+  ['u93','Zoe Whitaker','Designer','designer','zoe@nordwind.com','San Francisco',42,0.52,'2024-01-15','u2',['Visual design','Prototyping']],
+  ['u94','Emre Demir','Developer','dev','emre@nordwind.com','Austin',40,0.73,'2022-10-17','u5',['Backend','Data pipelines']],
+  ['u95','Lena Novak','Project Manager','pm','lnovak@nordwind.com','Remote',46,0.81,'2022-08-08','u1',['Delivery','Analytics','Risk']],
+  ['u96','Dario Romano','Developer','dev','dario@nordwind.com','Austin',40,0.67,'2023-02-06','u5',['Backend','APIs']],
+  ['u97','Hana Petrova','QA Engineer','qa','hana@nordwind.com','Austin',38,0.59,'2024-06-03','u4',['Regression','Automation']],
+  ['u98','Sven Lindqvist','Developer','dev','sven@nordwind.com','Austin',40,0.88,'2020-11-30','u3',['Platform','Backend','Migrations']],
+  ['u99','Amelia Stone','Designer','designer','astone@nordwind.com','San Francisco',42,0.46,'2024-05-20','u2',['Visual design','Tokens']],
+  ['u100','Idris Bello','Developer','dev','idris@nordwind.com','Austin',40,0.70,'2022-06-06','u5',['Backend','APIs']],
+  ['u101','Ines Duarte','Project Manager','pm','ines@nordwind.com','Remote',46,0.72,'2023-11-06','u1',['Delivery','Comms','Roadmaps']],
+  ['u102','Karl Jensen','Developer','dev','karl@nordwind.com','Austin',40,0.75,'2021-09-13','u3',['Platform','Backend','CI/CD']],
+  ['u103','Layla Hassan','QA Engineer','qa','layla@nordwind.com','Austin',38,0.55,'2024-07-08','u4',['Regression','Automation']],
+  ['u104','Mateo Cruz','Developer','dev','mateo@nordwind.com','Austin',40,0.69,'2023-01-09','u5',['Backend','APIs']],
+  ['u105','Nora ElSayd','Designer','designer','nelseyad@nordwind.com','San Francisco',42,0.51,'2024-08-12','u2',['Visual design','Research']],
+  ['u106','Owen Blackwell','Developer','dev','owenb@nordwind.com','Austin',40,0.81,'2022-03-07','u3',['Platform','Backend','APIs']],
+  ['u107','Rita Almeida','Project Manager','pm','rita@nordwind.com','Remote',46,0.78,'2022-12-12','u1',['Delivery','Roadmaps','Comms']],
+  ['u108','Stefan Voss','Developer','dev','stefan@nordwind.com','Austin',40,0.66,'2023-05-08','u5',['Backend','Data pipelines']],
+  ['u109','Uma Krishnan','QA Engineer','qa','uma@nordwind.com','Austin',38,0.58,'2024-09-02','u4',['Automation','Regression']],
+  ['u110','Viktor Novak','Developer','dev','viktor@nordwind.com','Austin',40,0.74,'2022-07-18','u3',['Platform','Backend','CI/CD']],
+  ['u111','Wendy Cho','Designer','designer','wendy@nordwind.com','San Francisco',42,0.48,'2024-10-28','u2',['Visual design','Prototyping']],
+  ['u112','Xander Reed','Developer','dev','xander@nordwind.com','Austin',40,0.79,'2021-08-16','u3',['Platform','Backend','APIs']],
+  ['u113','Yara Nasser','QA Engineer','qa','ynasser@nordwind.com','Austin',38,0.53,'2024-11-18','u4',['Regression','Automation']],
+  ['u114','Zane OBrien','Developer','dev','zane@nordwind.com','Austin',40,0.72,'2022-11-07','u5',['Backend','APIs']],
+  ['u115','Zofia Zielinska','Project Manager','pm','zofia@nordwind.com','Remote',46,0.75,'2023-03-13','u1',['Delivery','Analytics','Comms']],
+  ['u116','Adrian Cole','Developer','dev','adrian@nordwind.com','Austin',40,0.68,'2023-08-28','u5',['Backend','Data pipelines']],
+  ['u117','Bianca Ferreira','QA Engineer','qa','bianca@nordwind.com','Austin',38,0.56,'2025-01-13','u4',['Automation','Regression']],
+  ['u118','Cyrus Khan','Developer','dev','cyrus@nordwind.com','Austin',40,0.77,'2022-04-25','u3',['Platform','Backend','CI/CD']],
+  ['u119','Dana Whitfield','Project Manager','pm','dwhitfield@nordwind.com','Remote',46,0.80,'2023-06-19','u1',['Delivery','Risk','Comms']],
+  ['u120','Elias Brandt','Developer','dev','elias@nordwind.com','Austin',40,0.71,'2023-11-27','u5',['Backend','APIs']],
+  ['u121','Farah Nasser','QA Engineer','qa','fnasser@nordwind.com','Austin',38,0.54,'2025-03-24','u4',['Regression','Automation']],
+  ['u122','Gavin Hughes','Developer','dev','gavin@nordwind.com','Austin',40,0.73,'2023-02-06','u5',['Backend','APIs','Data pipelines']],
+  ['u123','Helena Voss','Project Manager','pm','helena@nordwind.com','Remote',46,0.76,'2022-10-31','u1',['Delivery','Comms','Roadmaps']],
+  ['u124','Ivan Petrov','Developer','dev','ivan@nordwind.com','Austin',40,0.69,'2023-09-18','u5',['Backend','APIs']],
+  ['u125','Julia Santos','QA Engineer','qa','jsantos@nordwind.com','Austin',38,0.57,'2025-06-30','u4',['Automation','Regression']],
+  ['u126','Kai Yamamoto','Developer','dev','kyamamoto@nordwind.com','Austin',40,0.78,'2022-06-27','u3',['Platform','Backend','CI/CD']],
+  ['u127','Lena Rossi','Designer','designer','lrossi@nordwind.com','San Francisco',42,0.47,'2024-11-11','u2',['Visual design','Tokens']],
+  ['u128','Mateus Silva','Developer','dev','msilva@nordwind.com','Austin',40,0.70,'2023-10-23','u5',['Backend','Data pipelines']],
+  ['u129','Nora Halvorsen','QA Engineer','qa','nhalvorsen@nordwind.com','Austin',38,0.52,'2025-09-22','u4',['Regression','Automation']],
+  ['u130','Omar Farouk','Developer','dev','ofarouk@nordwind.com','Austin',40,0.74,'2023-04-10','u5',['Backend','APIs','Data pipelines']],
+  ['u131','Petra Novakova','Project Manager','pm','petra@nordwind.com','Remote',46,0.77,'2023-08-07','u1',['Delivery','Analytics','Risk']],
+  ['u132','Quentin Roy','Developer','dev','quentin@nordwind.com','Austin',40,0.76,'2022-12-19','u3',['Platform','Backend','APIs']],
+  ['u133','Rania AlSayd','QA Engineer','qa','rania@nordwind.com','Austin',38,0.55,'2025-11-17','u4',['Automation','Regression']],
+  ['u134','Stellan Berg','Developer','dev','stellan@nordwind.com','Austin',40,0.72,'2023-06-26','u5',['Backend','APIs']],
+  ['u135','Talia Menendez','Designer','designer','talia@nordwind.com','San Francisco',42,0.50,'2024-12-16','u2',['Visual design','Prototyping']],
+  ['u136','Umar Sheikh','Developer','dev','usheikh@nordwind.com','Austin',40,0.71,'2023-09-25','u5',['Backend','APIs']],
+  ['u137','Vera Lindholm','Project Manager','pm','vera@nordwind.com','Remote',46,0.74,'2024-02-12','u1',['Delivery','Comms','Roadmaps']],
+  ['u138','Wolfgang Krause','Developer','dev','wolfgang@nordwind.com','Austin',40,0.78,'2022-08-29','u3',['Platform','Backend','CI/CD']],
+  ['u139','Xiomara Delgado','QA Engineer','qa','xiomara@nordwind.com','Austin',38,0.56,'2026-01-26','u4',['Regression','Automation']],
+  ['u140','Yusuf Demir','Developer','dev','ydemir@nordwind.com','Austin',40,0.73,'2023-07-17','u5',['Backend','APIs']],
+  ['u141','Zara Khan','QA Engineer','qa','zkhan@nordwind.com','Austin',38,0.53,'2026-04-13','u4',['Automation','Regression']],
+  ['u142','Aria Voss','Designer','designer','aria@nordwind.com','San Francisco',42,0.49,'2025-05-12','u2',['Visual design','Tokens']],
+  ['u143','Boris Novak','Developer','dev','boris@nordwind.com','Austin',40,0.75,'2023-05-22','u5',['Backend','APIs']],
+  ['u144','Carmen Reyes','QA Engineer','qa','carmen@nordwind.com','Austin',38,0.54,'2026-06-22','u4',['Regression','Automation']],
+  ['u145','Devon Clarke','Developer','dev','devon@nordwind.com','Austin',40,0.70,'2024-08-19','u5',['Backend','Data pipelines']],
+  ['u146','Erika Sandberg','Designer','designer','erika@nordwind.com','San Francisco',42,0.46,'2025-08-11','u2',['Visual design','Research']],
+  ['u147','Fiona Walsh','QA Engineer','qa','fiona@nordwind.com','Austin',38,0.55,'2026-08-17','u4',['Automation','Regression']],
+  ['u148','Gabriel Costa','Developer','dev','gabriel@nordwind.com','Austin',40,0.72,'2024-03-04','u5',['Backend','APIs']],
+  ['u149','Hannah Novak','QA Engineer','qa','hnovak@nordwind.com','Austin',38,0.51,'2026-09-21','u4',['Regression','Automation']],
+  ['u150','Iker Mendez','Developer','dev','iker@nordwind.com','Austin',40,0.69,'2024-06-10','u5',['Backend','Data pipelines']],
+];
+const FRESH = { u117:97, u121:94, u125:88, u129:79, u133:72, u139:61, u141:44, u144:21, u147:8, u149:0, u20:64, u31:82 };
+const TEAM = SEED.map(r => ({
+  id:r[0], name:r[1], title:r[2], role:r[3], email:r[4], loc:r[5], cap:r[6], util:r[7],
+  phone:'+1 '+(r[1].length%2?'512':'415')+' 555 '+String(1000+(r[1].length*37)%8999).slice(-4),
+  status:'active', start:r[8], manager:r[9], skills:r[10],
+  onboard: Object.prototype.hasOwnProperty.call(FRESH, r[0]) ? FRESH[r[0]] : 100,
+}));
+const byId = {};
+TEAM.forEach(m => { byId[m.id] = m; });
+const people = TEAM.filter(m => m.status !== 'invited');
+
+
+/* ---- 24 hand-authored tasks for narrative control ---- */
+const T0 = [
+  // id, key, title, project, type, status, assignee, reportee, prio, due(+days), tags, story, cost, blocker
+  ['a01','NW-101','Design review gate for billing flow',   'app',  'task', 'blocked',   'u10','u2',  'urgent', 1,   ['ux-review','billing'],       5,32,'Awaiting Meridian compliance sign-off on the new invoice layout before it can ship to pilot users.'],
+  ['a02','NW-102','Payment retry backoff',                 'app',  'bug',  'inReview',  'u6', 'u5',  'high',  0,   ['billing','stability'],       3,18,'Introduced a fixed 2s retry interval. Reviewer wants exponential backoff with jitter and a max attempt cap so a failed processor doesn’t hammer the API.'],
+  ['a03','NW-103','Migration cutover runbook',             'platform','task','inReview','u3', 'u1',  'urgent', 2,  ['migration','runbook'],        6,36,'Draft v3. The rollback section still references the retired cluster names and the DNS TTL is overstated by half.'],
+  ['a04','NW-104','Load test staging',                     'platform','task','inProgress','u47','u3','high', 4,  ['perf','load'],              4,24,'Need 2k concurrent users sustained for 30 minutes before we can commit to the cutover window.'],
+  ['a05','NW-105','Legacy CRM export spec',                'crm',  'epic', 'blocked',   'u30','u1',  'high',  5,   ['crm','integration'],         8,44,'Blocked on the vendor’s field map for the merged contact records — promised last week, still nothing.'],
+  ['a06','NW-106','Nightly regression matrix',             'qa',   'task', 'inProgress','u40','u4',  'med',   1,   ['ci','regression'],           4,20,'Split the suite into a 25-minute smoke tier and a full overnight tier so main stays green and CI stops timing out.'],
+  ['a07','NW-107','Token consolidation',                   'design','task','todo',     'u2', 'u1',  'high',  10,  ['tokens'],                    3,15,'127 colour values collapse to 42. Needs a deprecation table so teams can grep for old names.'],
+  ['a08','NW-108','Empty-state copy pass',                 'app',  'task', 'inProgress','u10','u2',  'low',   7,   ['copy','ux-review'],          2,10,'Twelve screens still say “No data”. Copy needs to explain what to do next, not just report absence.'],
+  ['a09','NW-109','Audit log export to S3',                'ops',  'task', 'blocked',   'u13','u3',  'med',   3,   ['audit','export'],            3,16,'Security wants signed, immutable exports. Blocked on the KMS key policy approval from the platform team.'],
+  ['a10','NW-110','Session timeout race',                  'platform','bug','inProgress','u9', 'u3','urgent',0,['auth','security'],       2,11,'Concurrent requests after logout can still read a revoked session for up to 90s. Reproduces about 1 in 50 times.'],
+  ['a11','NW-111','Role template library',                 'ops',  'epic', 'todo',     'u137','u1','med',14, ['roles','permissions'],     6,30,'Five reusable templates so new projects stop re-deriving the same access matrix by hand.'],
+  ['a12','NW-112','Dashboard widget framework',            'ops',  'task', 'inProgress','u6', 'u3',  'high',  6,  ['dashboard'],                 6,28,'Grid, filters and per-widget permissions. The permission scoping is the hard part and needs a decision from security.'],
+  ['a13','NW-113','Data migration dry run #3',             'crm',  'task', 'done',     'u30','u5',  'high', -6,  ['crm','migration'],         4,20,'Third dry run finished clean — 1.2M records, 0 unmatched foreign keys, under 20 minutes.'],
+  ['a14','NW-114','Design tokens pipeline',                'design','task','done',     'u34','u2',  'med',  -13, ['tokens','automation'],       3,12,'Tokens now compile to CSS, iOS and Android from one source, and CI fails on drift.'],
+  ['a15','NW-115','Onboarding checklist component',        'design','task','inReview', 'u16','u2',  'med',   3,   ['component'],                 2,10,'Reviewer flagged keyboard ordering on the expandable items and a focus trap on the modal summary.'],
+  ['a16','NW-116','Invoice PDF generation',                'app',  'bug',  'inProgress','u39','u5',  'high',  5,  ['billing','reporting'],       4,19,'Line items over 40 rows overflow the second page and the total is silently dropped.'],
+  ['a17','NW-117','Contract clause library',               'app',  'task', 'todo',     'u23','u1',  'med',   20,  ['legal'],                     8,38,'Standard clauses the team re-types every engagement. Needs versioning so old contracts keep pointing at what they signed.'],
+  ['a18','NW-118','API rate limiting',                     'platform','task','inProgress','u56','u3','high',9,['platform','security'],     5,22,'Per-key limits with a burst allowance. Needs to be transparent enough that integrators can plan for 429s.'],
+  ['a19','NW-119','Accessibility audit — Q3 findings',     'app',  'epic', 'inProgress','u10','u2',  'high',  2,  ['a11y','ux-review'],          7,34,'47 findings from the last audit. 19 fixed; the remaining 28 are grouped here with the four critical ones prioritised.'],
+  ['a20','NW-120','Client sandbox provisioning',           'platform','task','inProgress','u43','u3','med',11,['platform','client'],       3,14,'Self-serve sandbox with 7-day auto-expiry and a snapshot restore, so demos stop eating production data.'],
+  ['a21','NW-121','Performance budget',                    'platform','epic','todo',   'u52','u3',  'med',   15,  ['perf','budget'],             5,26,'Gate builds on a 250KB budget. Needs the baseline measured before it becomes a hard fail.'],
+  ['a22','NW-122','Time entry reconciliation',             'app',  'task', 'inReview', 'u6', 'u5',  'med',   4,   ['time','reporting'],          2,10,'Timesheet totals drift from task estimates by about 6%. Suspect the manual override path.'],
+  ['a23','NW-123','Security posture review',               'platform','epic','todo',   'u4', 'u3',  'high',  12,  ['security','audit'],          8,36,'Quarterly review. Includes dependency sweep, secret scan and the access review for the 12 people with admin.'],
+  ['a24','NW-124','Weekly digest email',                   'ops',  'task', 'done',     'u30','u1',  'low',  -21, ['comms'],                     2,9, 'Digest is live for the four project leads. Open rate is low but nobody has asked to be removed, which is the sign.'],
+];
+const TL = {
+  a01:[['done',-9,'Brief written','u10'],['done',-6,'First pass designed','u10'],['cur',-4,'Compliance sign-off','u19'],['todo',0,'Ship to pilot','u6']],
+  a02:[['done',-5,'Intermittent failures reproduced','u6'],['done',-2,'Backoff with jitter implemented','u6'],['cur',-1,'Review in progress','u5'],['todo',1,'Deploy','u47']],
+  a03:[['done',-20,'Phases scoped','u3'],['done',-8,'Draft v2','u3'],['cur',-2,'Rollback section redrafted','u137'],['todo',1,'Cutover rehearsal','u47']],
+  a04:[['done',-3,'Harness built','u47'],['cur',0,'Run 2k users 30 min','u47'],['todo',2,'Report + headroom analysis','u19']],
+  a05:[['done',-30,'Scope agreed','u30'],['done',-16,'Vendor engagement opened','u30'],['cur',-12,'Field map request','u30'],['todo',0,'Export script','u39']],
+  a06:[['done',-4,'Suites inventoried','u40'],['cur',-1,'Smoke tier defined','u40'],['todo',1,'Overnight tier wired to CI','u65']],
+  a07:[['todo',0,'Audit 127 values','u34'],['todo',0,'Propose 42','u16'],['todo',0,'Deprecation table','u10'],['todo',0,'Migrate apps','u37']],
+  a08:[['done',-2,'Listed 12 screens','u10'],['cur',0,'Copy drafted','u10'],['todo',3,'Design sign-off','u2'],['todo',5,'Implemented','u24']],
+  a09:[['done',-6,'Scope agreed','u13'],['cur',-3,'KMS key policy request','u13'],['todo',2,'Signed export writer','u62'],['todo',4,'Retention job','u62']],
+  a10:[['done',-4,'Race reproduced 1/50','u9'],['done',-2,'Fix implemented','u9'],['cur',0,'Pending review','u3']],
+  a11:[['todo',0,'List templates','u137'],['todo',0,'Draft five','u14'],['todo',0,'Apply to live projects','u5']],
+  a12:[['done',-7,'Grid spec agreed','u6'],['cur',-2,'Widget framework','u6'],['todo',3,'Permission scoping','u3'],['todo',6,'Ship to ops','u26']],
+  a13:[['done',-20,'Sources reconciled','u30'],['done',-13,'Dry run #2','u30'],['done',-6,'Dry run #3 clean','u30']],
+  a14:[['done',-30,'One source defined','u34'],['done',-18,'Multi-target compiler','u34'],['done',-13,'CI drift gate','u34']],
+  a15:[['done',-9,'Component built','u16'],['done',-5,'Docs written','u16'],['cur',-1,'A11y review','u10'],['todo',1,'Ship','u2']],
+  a16:[['done',-8,'Overflow reproduced','u39'],['cur',-3,'Pagination fix','u39'],['todo',1,'Regression test','u25'],['todo',3,'Deploy','u47']],
+  a17:[['todo',0,'Collect in-use clauses','u23'],['todo',0,'Versioning model','u23'],['todo',0,'Insertion picker','u66']],
+  a18:[['done',-9,'Design agreed','u56'],['cur',-4,'Limit engine','u56'],['todo',2,'429 telemetry','u26'],['todo',5,'Docs for integrators','u56']],
+  a19:[['done',-24,'Audit completed','u10'],['done',-11,'19 findings fixed','u24'],['cur',-2,'Critical 28 triaged','u2'],['todo',10,'Remaining 24','u37']],
+  a20:[['done',-6,'Provisioning spec','u43'],['cur',-1,'Auto-expiry job','u43'],['todo',2,'Snapshot restore','u13'],['todo',5,'Sandbox UI','u24']],
+  a21:[['todo',0,'Measure baseline','u52'],['todo',0,'Set 250KB budget','u19'],['todo',0,'Wire build gate','u47']],
+  a22:[['done',-7,'Drift quantified at 6%','u6'],['done',-2,'Override path traced','u6'],['cur',-1,'Review in progress','u30']],
+  a23:[['todo',0,'Dependency sweep','u4'],['todo',0,'Secret scan','u4'],['todo',0,'Admin access review','u1'],['todo',0,'Report to Owner','u19']],
+  a24:[['done',-40,'Content model agreed','u30'],['done',-28,'Renderer built','u24'],['done',-21,'Shipped to 4 leads','u30']],
+};
+const TASKS = T0.map((t,i) => {
+  const id=t[0], key=t[1], title=t[2], project=t[3], type=t[4], status=t[5], assignee=t[6], reportee=t[7],
+        prio=t[8], dueD=t[9], tags=t[10], story=t[11], cost=t[12], blocker=t[13];
+  const proj = PROJECTS[project];
+  const total = Math.round(cost * (0.72 + rnd()*0.6));
+  let done = 0;
+  if (status === 'done') done = total;
+  else if (status === 'blocked') done = Math.round(total * (0.25 + rnd()*0.25));
+  else if (status === 'inReview') done = Math.round(total * 0.86);
+  else if (status === 'inProgress') done = Math.round(total * (0.2 + rnd()*0.45));
+  else if (rnd() < 0.25) done = Math.round(total * rnd() * 0.4);
+  const t2 = (TL[id] || []).map(s => ({ state:s[0], date: due(s[1]), by:s[2], what:s[3] }));
+  return {
+    id, key, title, project, type, status, prio, tags,
+    assignee: byId[assignee] ? assignee : null,
+    reportee: byId[reportee] ? reportee : null,
+    due: due(dueD), story, cost, total, done,
+    effort: [2,4,8,13,21][i % 5],
+    blockers: status === 'blocked' ? [blocker] : [],
+    blockedSince: status === 'blocked' ? ago(60 + i*9) : null,
+    created: due(-(10 + ((i*37)%26))),
+    updated: due(-((i*7)%6)),
+    completedAt: status === 'done' ? due(-((i*3)%18) - 1) : null,
+    dependencies: i % 9 === 0 && i > 2 ? [T0[(i+3)%T0.length][0]] : [],
+    activity: t2, watch: 2 + (i % 6), comments: (i*3) % 7,
+    projectLabel: proj.name, projectColor: proj.color,
+  };
+});
+const TASK_TITLES = {
+  app:['Client onboarding wizard','Billing line-item edit','Notification centre','Dark mode contrast pass','Empty-state illustrations','Keyboard shortcuts reference','Export to Excel','Client portal login flow','Rate sheet editor','Task template library','Weekly digest to clients','Contract attachment upload','Portal search relevance','Mobile offline queue','Invoice number customisation','Client status feed','Redline compare view','Time entry bulk edit','Milestone dependency graph','Client approval gate','Portal notification digests','Sandbox account creation','Client access expiry','Usage export to CSV','Portal theme picker'],
+  platform:['Migration phase 2 rollback','Migration audit logging','Migration checksum validation','Feature flag rollout plan','Staging promotion gate','Database index audit','Sticky session handling','Cutover comms plan','Canary release script','Backfill job hardening','Read replica lag alert','Schema diff report','Migration progress telemetry','Cutover go/no-go checklist','Legacy endpoint sunset','Deprecation notice schedule','Rollback drill','Zero-downtime deploy runbook','Connection pooling review','Graceful shutdown test'],
+  qa:['A11y smoke tier','Contract test suite','Cross-browser matrix','Flaky test quarantine','Mock server hardening','Nightly perf baseline','Regression report email','Visual diff baseline','Test data factory','Coverage gate on main','Mobile regression pack','Security regression pack','Load test nightly','Snapshot regression suite','Chaos test for deploys','Test environment resets','Defect triage board','Sign-off checklist','Release readiness report','QA runbook v2'],
+  crm:'Lead scoring rules|Legacy CRM field mapping|Duplicate contact merge|Contact sync conflict rules|CRM history migration|Legacy pricing table import|Archive purge job|CRM export schema review|Vendor API rate budget|Migration rollback plan|Contact dedupe scoring|Legacy address normalisation|Migration observability dashboard|Sync retry queue|Legacy CRM read-only lock|Migration acceptance tests'.split('|'),
+  design:['Icon set refresh','Motion guidelines','Type scale cleanup','Spacing scale audit','Empty state library','Form validation states','Tooltip component','Modal focus management','Table density tokens','Skeleton loaders','Stepper component','Tag component','Data table filter UX','Chart theming','Error state patterns','Loading strategy guide','Component naming audit','Design doc template','Token deprecation notice','Storybook navigation'],
+  ops:['User audit report','Role template library draft','Passwordless pilot','Session policy review','Sandbox expiry job','Access review automation','Provisioning dry run','De-provisioning checklist','Weekly usage digest','Org chart import','Team capacity snapshot','Project health report','Onboarding checklist automation','Invite flow permissions','License usage report','Retention policy review','Admin action log','Service account rotation','Vendor access review','Ops dashboard v1'],
+};
+const PROJ_T = { app:TASK_TITLES.app, platform:TASK_TITLES.platform, qa:TASK_TITLES.qa, crm:TASK_TITLES.crm, design:TASK_TITLES.design, ops:TASK_TITLES.ops };
+const ST_TITLE = {
+  todo:['Draft','Scope','Audit','Plan','Review request','Inventory','Collect','List','Spec draft','Define'],
+  inProgress:['In flight','Underway','Building','Iterating','Reviewing','Investigating','Implementing'],
+  inReview:['In review','Review pass','Awaiting approval','Sign-off pending','Polish pass'],
+  blocked:['Blocked: awaiting','Stalled on','Waiting on','Blocked by','Halted by'],
+  done:['Complete','Shipped','Landed','Done','Closed','Merged'],
+};
+const ST_TAG = {
+  todo:['planning','discovery'], inProgress:['delivery'], inReview:['review'], blocked:['risk'], done:['done'],
+};
+const ST_DUE = { todo:[3,30], inProgress:[0,18], inReview:[-1,6], blocked:[0,10], done:[-30,-2] };
+const ST_PRIO = { todo:['low','med','med','high','urgent'], inProgress:['med','high','high','urgent','low'], inReview:['med','high'], blocked:['high','urgent','med'], done:['low','med','high','med','urgent'] };
+const ST_ACT = {
+  todo:[['todo',-2,'Brief drafted',''],['todo',0,'Scope defined',''],['todo',2,'Discovery calls','']],
+  inProgress:[['done',-6,'Brief drafted',''],['done',-3,'Kickoff held',''],['cur',0,'Implementation underway',''],['todo',3,'Review hand-off','']],
+  inReview:[['done',-5,'Brief drafted',''],['done',-2,'Implementation done',''],['cur',-1,'In review',''],['todo',1,'Merge + deploy','']],
+  blocked:[['done',-8,'Brief drafted',''],['done',-4,'Work started',''],['cur',-3,'Blocked',''],['todo',0,'Resume once unblocked','']],
+  done:[['done',-9,'Brief drafted',''],['done',-5,'Implementation done',''],['done',-2,'Review passed',''],['done',-1,'Shipped','']],
+};
+const ST_STATE = { todo:'todo', inProgress:'inProgress', inReview:'inReview', blocked:'blocked', done:'done' };
+let TN = 125;
+const PPL = TEAM.filter(m => m.status !== 'invited' && !['u1'].includes(m.id));
+const MAN = ['u2','u3','u4','u5','u1'];
+const GEN_COUNT = 76;
+const GEN = [];
+for (let i=0;i<GEN_COUNT;i++){
+  const r0=rnd();
+  const status = r0<0.14?'todo' : r0<0.52?'inProgress' : r0<0.68?'inReview' : r0<0.80?'blocked' : 'done';
+  const pid = PROJ_ORDER[i%6];
+  const proj = PROJECTS[pid];
+  const pool = PROJ_T[pid];
+  const title = pool[i%pool.length];
+  const a = PPL[(i*3 + Math.floor(rnd()*11)) % PPL.length];
+  const rep = MAN[i%5];
+  const prio = ST_PRIO[status][i % ST_PRIO[status].length];
+  const rng = ST_DUE[status];
+  const dueD = rng[0] + Math.floor(rnd()*(rng[1]-rng[0]+1));
+  const cost = Math.round(2 + rnd()*16);
+  const total = Math.round(cost * (0.72 + rnd()*0.6));
+  let done = status==='done'? total : status==='blocked'? Math.round(total*(0.22+rnd()*0.28)) : status==='inReview'? Math.round(total*0.88) : status==='inProgress'? Math.round(total*(0.2+rnd()*0.45)) : 0;
+  const tags = ['delivery','planning'].slice(0,1);
+  ST_TAG[status].forEach(t => { if (!tags.includes(t)) tags.push(t); });
+  if (pid==='app' && i%4===0) tags.push('billing');
+  if (pid==='platform' && i%3===0) tags.push('migration');
+  if (i%5===0) tags.push('a11y');
+  const act = ST_ACT[status].map(s => ({ state:s[0], date:due(s[1]), by:s[3]||a.id, what:s[2] }));
+  GEN.push({
+    id: uid('g'), key: 'NW-'+(++TN), title, project: pid, type: i%11===0?'epic':(i%7===0?'bug':'task'),
+    status: ST_STATE[status], prio, tags, assignee: a.id, reportee: rep,
+    due: due(dueD), story: '', cost, total, done, effort: [2,3,5,8,13][i%5],
+    blockers: status==='blocked' ? ['Waiting on an external decision from the client before this can move.'] : [],
+    blockedSince: status==='blocked' ? ago(30+i*7) : null,
+    created: due(-(8+((i*31)%22))), updated: due(-((i*11)%5)),
+    completedAt: status==='done'? due(-((i*5)%20)-1) : null,
+    dependencies: [], activity: act, watch: 1+(i%5), comments: (i*3)%6,
+    projectLabel: proj.name, projectColor: proj.color,
+  });
+}
+TASKS.push(...GEN);
+const TASK_BY_ID = {};
+TASKS.forEach(t => { TASK_BY_ID[t.id] = t; });
+const openTasks = TASKS.filter(t => t.status !== 'done');
+const doneTasks = TASKS.filter(t => t.status === 'done');
+
+
+/* ---- project membership: every project gets a real, distinct crew ---- */
+const PROJECT_MEMBERS = {};
+PROJ_ORDER.forEach(pid => { PROJECT_MEMBERS[pid] = new Set(); });
+const assignPeople = (pid, ids) => ids.forEach(id => { if (byId[id]) PROJECT_MEMBERS[pid].add(id); });
+assignPeople('app', ['u2','u10','u19','u2','u6','u24','u37','u66','u72','u39','u23','u2','u16']);
+assignPeople('platform', ['u3','u13','u26','u47','u52','u56','u58','u62','u70','u76','u84','u92','u98','u3','u21','u43']);
+assignPeople('qa', ['u4','u40','u8','u12','u18','u25','u28','u32','u36','u46','u51','u57','u61','u65','u75','u79','u4','u137']);
+assignPeople('crm', ['u5','u30','u39','u14','u22','u60','u68','u104','u122','u128','u130','u5','u30','u45']);
+assignPeople('design', ['u2','u10','u16','u27','u34','u42','u49','u55','u63','u71','u77','u83','u87','u93','u2','u105']);
+assignPeople('ops', ['u137','u14','u23','u30','u38','u53','u59','u67','u81','u89','u95','u101','u107','u119','u123','u131','u1','u137']);
+const MEMBER_POOL = {};
+PROJ_ORDER.forEach(pid => { MEMBER_POOL[pid] = [...PROJECT_MEMBERS[pid]]; });
+PROJ_ORDER.forEach(pid => {
+  const proj = PROJECTS[pid];
+  proj.members = MEMBER_POOL[pid];
+  proj.memberCount = proj.members.length;
+  const pks = TASKS.filter(t => t.project === pid);
+  proj.taskCount = pks.length;
+  proj.openTasks = pks.filter(t => t.status !== 'done').length;
+  proj.doneTasks = pks.filter(t => t.status === 'done').length;
+  proj.committed = pks.reduce((s,t) => s + t.total, 0);
+  proj.completed = pks.reduce((s,t) => s + t.done, 0);
+  proj.burn = pks.filter(t => t.status !== 'done' && t.updated >= due(-7)).length;
+});
+TASKS.forEach(t => {
+  const pool = MEMBER_POOL[t.project] || [];
+  if (!byId[t.assignee] || !pool.includes(t.assignee)) {
+    const cands = pool.filter(id => id !== t.reportee);
+    t.assignee = cands.length ? cands[taskHash(t) % cands.length] : null;
+  }
+  if (!byId[t.reportee] || !pool.includes(t.reportee)) {
+    const cands = pool.filter(id => id !== t.assignee);
+    t.reportee = cands.length ? cands[taskHash(t) % cands.length] : null;
+  }
+});
+function taskHash(t){
+  let h=0;
+  for (let i=0;i<t.key.length;i++) h=(h*31+t.key.charCodeAt(i))&0xffff;
+  return h;
+}
+const teamOf = pid => PROJECT_MEMBERS[pid] ? [...PROJECT_MEMBERS[pid]] : [];
+const projMemberObjs = pid => teamOf(pid).map(id => byId[id]).filter(Boolean);
+const peopleIn = id => PROJ_ORDER.filter(pid => PROJECT_MEMBERS[pid].has(id));
+const personTasks = id => TASKS.filter(t => t.assignee === id || t.reportee === id);
+const personOpen = id => personTasks(id).filter(t => t.status !== 'done');
+
+/* ---- activity feed (real dates, real people, cross-project) ---- */
+const ACT_SPEC = [
+  [0.5,'added',   'NW-128','Client onboarding wizard','app','todo','u19','u2','u2','Created the task and set the due date for Nov 5.'],
+  [2,  'commented','NW-102','Payment retry backoff','app','bug','u5','u6','u6','Can we add jitter? Fixed intervals tend to herd retries after an outage.'],
+  [3,  'moved',   'NW-112','Dashboard widget framework','ops','task','u6','u3','u3','Moved from To do to In progress after the grid spec was agreed.'],
+  [5,  'assigned','NW-119','Accessibility audit — Q3 findings','app','epic','u2','u10','u2','Reassigned to Aisha now that the design review for the Q4 work is wrapped.'],
+  [6,  'commented','NW-105','Legacy CRM export spec','crm','epic','u30','u1','u1','Vendor has not responded to the second follow-up. Escalating to account management today.'],
+  [8,  'blocked', 'NW-101','Design review gate for billing flow','app','task','u19','u2','u2','Marked blocked — compliance sign-off is the gating item, not us.'],
+  [11, 'completed','NW-114','Design tokens pipeline','design','task','u34','u2','u2','Merged. CI now fails on token drift across CSS, iOS and Android targets.'],
+  [14, 'commented','NW-103','Migration cutover runbook','platform','task','u137','u3','u3','Rewrote the rollback section and corrected the DNS TTL in the cutover appendix.'],
+  [16, 'added',   'NW-131','Passwordless pilot','ops','task','u137','u1','u1','Scoped a 30-person pilot before we go all-in with the whole org.'],
+  [20, 'moved',   'NW-122','Time entry reconciliation','app','task','u30','u5','u5','Moved to In review — the override path is traced and the fix is up for look.'],
+  [23, 'assigned','NW-106','Nightly regression matrix','qa','task','u4','u40','u4','Assigned the smoke tier definition to Olivia.'],
+  [26, 'commented','NW-110','Session timeout race','platform','bug','u3','u9','u9','Good catch on the 1-in-50 repro rate. Please keep the fix behind a flag until staging.'],
+  [29, 'completed','NW-124','Weekly digest email','ops','task','u30','u1','u1','Shipped to the four project leads.'],
+  [33, 'moved',   'NW-104','Load test staging','platform','task','u47','u3','u3','Moved to In progress; harness is built and scheduled for tonight.'],
+  [38, 'added',   'NW-138','Contract clause library','app','task','u23','u1','u1','Set an 11-week horizon; legal wants it before the Meridian renewal.'],
+  [44, 'commented','NW-107','Token consolidation','design','task','u16','u2','u2','127 values is the real count after deduping the dark-theme variants.'],
+  [50, 'assigned','NW-111','Role template library','ops','epic','u1','u137','u1','Assigned to Vera; five templates, one per recurring project shape.'],
+  [58, 'completed','NW-113','Data migration dry run #3','crm','task','u30','u5','u5','1.2M records reconciled, zero unmatched foreign keys, 18 minutes wall clock.'],
+  [66, 'blocked', 'NW-109','Audit log export to S3','ops','task','u13','u3','u3','Blocked on the KMS key policy approval from platform.'],
+  [74, 'moved',   'NW-108','Empty-state copy pass','app','task','u10','u2','u2','Moved to In progress with the copy draft attached.'],
+  [80, 'added',   'NW-142','Security posture review','platform','epic','u4','u3','u3','Opened the quarterly review; starts with the dependency sweep.'],
+  [88, 'commented','NW-116','Invoice PDF generation','app','bug','u39','u5','u5','Confirmed the total is dropped, not mis-summed — the renderer stops at 40 rows.'],
+  [96, 'assigned','NW-120','Client sandbox provisioning','platform','task','u3','u43','u3','Assigned the auto-expiry job to Luke.'],
+  [104,'moved',   'NW-115','Onboarding checklist component','design','task','u10','u2','u2','Moved to In review after the a11y pass flagged the focus trap.'],
+  [112,'completed','NW-133','Icon set refresh','design','task','u27','u2','u2','48 new icons in, 26 deprecated out.'],
+  [120,'commented','NW-118','API rate limiting','platform','task','u56','u3','u3','Drafting the 429 telemetry first so we can show integrators what to expect.'],
+  [130,'added',   'NW-149','QA runbook v2','qa','task','u40','u4','u4','Replaces the runbook from last year; the old one references environments we no longer run.'],
+  [138,'blocked', 'NW-140','Contract test suite','qa','task','u8','u4','u4','Blocked — the contract suite needs the migration audit logs, which are blocked too.'],
+  [150,'assigned','NW-126','Migration phase 2 rollback','platform','task','u3','u84','u3','Assigned to Jonas ahead of the cutover rehearsal.'],
+  [160,'moved',   'NW-136','Passwordless pilot','ops','task','u137','u1','u1','Moved to In progress; the pilot list is the 30 people closest to launch.'],
+  [170,'commented','NW-121','Performance budget','platform','epic','u52','u3','u3','Baseline is 312KB today. Setting the gate at 250KB will require real work, not just a flag.'],
+  [180,'added',   'NW-152','Onboarding checklist automation','ops','task','u1','u137','u1','Added so new hires stop relying on tribal knowledge for week one.'],
+  [190,'completed','NW-144','Sticky session handling','platform','task','u56','u3','u3','Landed behind the session-service flag.'],
+  [200,'moved',   'NW-155','Migration phase 2 audit logging','platform','task','u30','u3','u3','Moved to In review; the checksum job is included for completeness.'],
+  [210,'assigned','NW-158','Lead scoring rules','crm','task','u30','u5','u5','Assigned ahead of the sales enablement session next week.'],
+  [220,'commented','NW-160','Data table filter UX','design','task','u2','u2','u2','Filter row needs to survive a 40-column export. Testing with the CRM team’s widest view.'],
+  [230,'added',   'NW-163','Client status feed','app','task','u19','u2','u2','Added to close the gap clients flagged in the Q3 survey.'],
+  [240,'blocked', 'NW-167','Access review automation','ops','task','u14','u1','u1','Blocked on the finalise-role-templates decision upstream.'],
+  [250,'completed','NW-171','Cross-browser matrix','qa','task','u8','u4','u4','Matrix now covers Chrome, Firefox, Safari and Edge across Windows and macOS.'],
+  [260,'moved',   'NW-174','Icon set refresh','design','task','u16','u2','u2','Moved to In review.'],
+  [270,'assigned','NW-178','Cutover go/no-go checklist','platform','task','u3','u137','u3','Assigned to Vera for the cutover rehearsal on Nov 1.'],
+  [280,'commented','NW-181','Test data factory','qa','task','u65','u4','u4','The factory needs deterministic seeds or the nightly diffs will never settle.'],
+  [290,'completed','NW-184','Legacy endpoint sunset','platform','task','u43','u3','u3','Sunset notice sent; the endpoint goes dark in December.'],
+  [300,'added',   'NW-187','Migration observability dashboard','crm','task','u30','u5','u5','Added so migration runs are visible without asking the platform team.'],
+  [310,'moved',   'NW-190','Chart theming','design','task','u27','u2','u2','Moved to In progress.'],
+  [320,'assigned','NW-193','Weekly usage digest','ops','task','u1','u30','u1','Assigned to Lena to build on the existing digest renderer.'],
+  [330,'commented','NW-196','Client portal login flow','app','task','u19','u2','u2','Two clients still hit the legacy login. Redirect is in place but not announced yet.'],
+  [340,'completed','NW-199','Skeleton loaders','design','task','u34','u2','u2','Shipped to the portal and the ops dashboards.'],
+  [350,'added',   'NW-202','Role template library draft','ops','task','u137','u1','u1','Draft templates pulled from the three most common project shapes.'],
+  [360,'blocked', 'NW-205','Contact dedupe scoring','crm','task','u60','u5','u5','Blocked on the CRM data quality report — we are scoring against a bad baseline.'],
+  [370,'moved',   'NW-208','Passwordless pilot','ops','task','u26','u3','u3','Moved to In progress with the pilot cohort confirmed.'],
+  [380,'assigned','NW-211','Mobile regression pack','qa','task','u40','u4','u4','Assigned ahead of the iOS 26 certification pass.'],
+  [390,'commented','NW-214','Session policy review','ops','task','u14','u1','u1','Current 30-minute timeout is shorter than two clients’ standard workflow. Revising.'],
+  [400,'completed','NW-217','Design doc template','design','task','u55','u2','u2','Template is live and used on the last three design docs.'],
+  [410,'added',   'NW-220','License usage report','ops','task','u137','u1','u1','Added for the November vendor renegotiation.'],
+  [420,'moved',   'NW-223','Legacy CRM field mapping','crm','task','u39','u5','u5','Moved to In review after the vendor field map finally arrived.'],
+  [430,'assigned','NW-226','Redline compare view','app','task','u23','u2','u2','Assigned to close the biggest gap in the contract workflow.'],
+  [440,'blocked', 'NW-229','Vendor API rate budget','crm','task','u45','u5','u5','Blocked on a rate-limit increase from the vendor.'],
+  [450,'completed','NW-232','Table density tokens','design','task','u49','u2','u2','Tokens shipped; three dashboards moved off hard-coded heights.'],
+];
+const ACTS = ACT_SPEC.map(a => {
+  const h=a[0], proj=PROJECTS[a[4]], person=byId[a[6]]||byId[a[7]];
+  return {
+    date: ago(h), verb:a[1], key:a[2], title:a[3], project:a[4],
+    who: a[6], whoName: person.name, whoColor: avColor(person.name),
+    initials: initials(person.name), projectLabel: proj.name, projectColor: proj.color,
+    note:a[9],
+  };
+});
+const ACTIVITY = ACTS.slice().sort((a,b) => a.date - b.date);
+
+/* ---- notifications, tasks needing decisions, approvals ---- */
+const NEEDS = [
+  { id:'nd1', kind:'review',  key:'NW-102', title:'Payment retry backoff',        task:'NW-102', due:'today',  who:'u5',  note:'Your review is blocking the deploy of the billing fix.' },
+  { id:'nd2', kind:'approve', key:'NW-103', title:'Migration cutover runbook',    task:'NW-103', due:'in 2 days',who:'u1', note:'Runbook v3 needs Owner sign-off before the cutover rehearsal.' },
+  { id:'nd3', kind:'blocked', key:'NW-105', title:'Legacy CRM export spec',       task:'NW-105', due:'7 days', who:'u30', note:'Blocked on the vendor field map for merged contacts.' },
+  { id:'nd4', kind:'review',  key:'NW-122', title:'Time entry reconciliation',    task:'NW-122', due:'today',  who:'u30',note:'Review requested on the override-path fix.' },
+  { id:'nd5', kind:'decision',key:'NW-112', title:'Dashboard widget framework',   task:'NW-112', due:'in 3 days',who:'u3', note:'Security needs a decision on per-widget permission scoping.' },
+  { id:'nd6', kind:'blocked', key:'NW-109', title:'Audit log export to S3',       task:'NW-109', due:'5 days', who:'u13',note:'Waiting on the KMS key policy approval from platform.' },
+  { id:'nd7', kind:'approve', key:'NW-115', title:'Onboarding checklist component',task:'NW-115',due:'in 1 day',who:'u2', note:'Component is ready to ship after the a11y fixes land.' },
+  { id:'nd8', kind:'blocked', key:'NW-240', title:'Access review automation',     task:'NW-240', due:'9 days', who:'u14',note:'Blocked on the role-templates decision upstream.' },
+];
+const NOTIF = [
+  { id:'n1', date:ago(0.5), icon:'msg',  tone:'info',   text:'Marcus Reed commented on Payment retry backoff', sub:'Can we add jitter? Fixed intervals tend to herd retries after an outage.', link:'task', ref:'NW-102' },
+  { id:'n2', date:ago(2),   icon:'at',   tone:'accent', text:'You were assigned a review on Payment retry backoff', sub:'Requested by Sofia Romano · due today', link:'task', ref:'NW-102' },
+  { id:'n3', date:ago(5),   icon:'lock', tone:'warn',   text:'Legacy CRM export spec is blocked', sub:'Vendor field map still outstanding · reported by Elena Rossi', link:'task', ref:'NW-105' },
+  { id:'n4', date:ago(7),   icon:'check',tone:'ok',     text:'Design tokens pipeline was completed', sub:'Merged to main by Anna Kowalski', link:'task', ref:'NW-114' },
+  { id:'n5', date:ago(9),   icon:'at',   tone:'accent', text:'You were mentioned in Time entry reconciliation', sub:'The drift is coming from the manual override path.', link:'task', ref:'NW-122' },
+  { id:'n6', date:ago(11),  icon:'clock',tone:'danger', text:'Design review gate for billing flow is overdue', sub:'Due Oct 15 · blocked since Oct 10', link:'task', ref:'NW-101' },
+  { id:'n7', date:ago(16),  icon:'user', tone:'info',   text:'Vera Lindholm was invited to Internal Ops Tools', sub:'Invitation pending · owner role', link:'people', ref:'u137' },
+  { id:'n8', date:ago(20),  icon:'check',tone:'ok',     text:'Data migration dry run #3 passed', sub:'1.2M records · 0 unmatched keys · 18 minutes', link:'task', ref:'NW-113' },
+  { id:'n9', date:ago(26),  icon:'lock', tone:'warn',   text:'Audit log export to S3 is blocked', sub:'Waiting on the KMS key policy approval', link:'task', ref:'NW-109' },
+  { id:'n10',date:ago(34),  icon:'flag', tone:'info',   text:'Security posture review opened for Q3', sub:'Dependency sweep, secret scan and admin access review', link:'task', ref:'NW-232' },
+];
+const APPROVALS = [
+  { id:'ap1', title:'Migration cutover runbook v3',       task:'NW-103', req:'u3',  reqName:'Marcus Reed',      due:due(2),  status:'pending',  note:'Owner sign-off required before the Nov 1 cutover rehearsal. Rollback section redrafted on Oct 12.' },
+  { id:'ap2', title:'KMS key policy for audit exports',   task:'NW-109', req:'u13', reqName:'Noah Patel',       due:due(-2), status:'pending',  note:'Platform to approve the key policy so audit logs can be exported to immutable S3 storage.' },
+  { id:'ap3', title:'Role template library — scope',      task:'NW-111', req:'u137',reqName:'Vera Lindholm',    due:due(6),  status:'pending',  note:'Five templates, applied to the three live projects. Needs Owner approval before we re-map existing access.' },
+  { id:'ap4', title:'Passwordless pilot cohort (30 users)',task:'NW-131',req:'u137',reqName:'Vera Lindholm',    due:due(4),  status:'pending',  note:'Pilot limited to platform and QA staff to keep blast radius small.' },
+  { id:'ap5', title:'Onboarding checklist component',      task:'NW-115', req:'u2',  reqName:'Ava Chen',         due:due(1),  status:'pending',  note:'Ready to ship after the focus-trap fix lands. Unblocks the portal redesign milestone.' },
+  { id:'ap6', title:'Session timeout policy change',       task:'NW-214', req:'u14', reqName:'Fatima Zouari',    due:due(-1), status:'approved', note:'Approved Oct 13 — 30 minutes extended to 60 for portal workflows, kept at 15 for the admin console.' },
+  { id:'ap7', title:'Legacy CRM endpoint sunset',          task:'NW-199', req:'u43', reqName:'Luke Fletcher',    due:due(-6), status:'approved', note:'Approved. Endpoint goes dark December 15; notice sent to all integrators on Oct 8.' },
+  { id:'ap8', title:'Vendor API rate-limit increase',      task:'NW-229', req:'u45', reqName:'Miguel Santos',    due:due(-9), status:'rejected', note:'Rejected — vendor will not move off the shared quota. Miguel is scoping a local queue instead.' },
+];
+
+
+/* ---- project launch checklists: 120 steps, mixed progress per project ---- */
+const CHECKLISTS = PROJ_ORDER.map(pid => {
+  const proj = PROJECTS[pid];
+  const lead = byId[proj.lead];
+  const doneCount = clamp(Math.round((proj.health - 52) * 0.19), 3, 11);
+  return {
+    project: pid, label: proj.name, lead: lead.name, leadId: proj.lead,
+    items: [
+      { t:'Kickoff and stakeholders aligned', d:'Done', by:lead.name, date:due(-46), state:'done' },
+      { t:'Scope, owners and definition of done', d:'Done', by:'u19' in byId?byId.u19.name:lead.name, date:due(-40), state:'done' },
+      { t:'Budget and capacity confirmed', d:'Done', by:'u1' in byId?byId.u1.name:lead.name, date:due(-34), state:'done' },
+      { t:'Design and technical review completed', d:'Done', by:byId.u2?byId.u2.name:lead.name, date:due(-27), state:'done' },
+      { t:'Dependencies mapped and communicated', d:'Done', by:lead.name, date:due(-20), state:'done' },
+      { t:'First deliverable shipped', d:'Done', by:byId.u24?byId.u24.name:lead.name, date:due(-13), state:'done' },
+      { t:'Quality and regression suite in place', d:'In progress', by:byId.u40?byId.u40.name:lead.name, date:due(2), state:'cur' },
+      { t:'Stakeholder demo and feedback round', d:'In progress', by:lead.name, date:due(4), state:'cur' },
+      { t:'Risk review and mitigation plan', d:'Next', by:byId.u1?byId.u1.name:lead.name, date:due(7), state:'todo' },
+      { t:'Go / no-go decision recorded', d:'Next', by:'u1' in byId?byId.u1.name:lead.name, date:due(10), state:'todo' },
+      { t:'Launch window booked', d:'Next', by:lead.name, date:due(12), state:'todo' },
+      { t:'Communication sent to stakeholders', d:'Next', by:byId.u30?byId.u30.name:lead.name, date:due(13), state:'todo' },
+      { t:'Launch checklist executed', d:'Next', by:lead.name, date:due(14), state:'todo' },
+      { t:'Post-launch monitoring window', d:'Next', by:byId.u47?byId.u47.name:lead.name, date:due(15), state:'todo' },
+      { t:'Retrospective and lessons recorded', d:'Next', by:'u1' in byId?byId.u1.name:lead.name, date:due(18), state:'todo' },
+    ].map((it,i) => ({ ...it, state: i < doneCount ? 'done' : (i === doneCount ? 'cur' : 'todo') })),
+  };
+});
+CHECKLISTS.forEach(c => {
+  c.doneCount = c.items.filter(i => i.state === 'done').length;
+  c.total = c.items.length;
+  c.progress = pct(c.doneCount, c.total);
+});
+const CHECK_BY_PROJ = {};
+CHECKLISTS.forEach(c => { CHECK_BY_PROJ[c.project] = c; });
+
+/* ---- global mutable state ---- */
+const S = {
+  view:'dashboard', taskFilter:'all', board:'mine', projFilter:'all', projTab:'overview',
+  peopleTab:'people', peopleRole:'all', peopleProject:'all', peopleQ:'', sort:'util',
+  notifRead:false, taskModal:null, peopleModal:null, settingsTab:'team',
+  personDrawer:null, projectDrawer:null, approvalsView:false, approvalsDone:false,
+  newTask:false, dark:false,
+};
+const $ = (s,r) => (r||document).querySelector(s);
+const $$ = (s,r) => Array.from((r||document).querySelectorAll(s));
+const el = (t,c,h) => { const e=document.createElement(t); if(c) e.className=c; if(h!=null) e.innerHTML=h; return e; };
+const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+let AV = {};
+TEAM.forEach(m => { AV[m.id] = '<span class="av" style="background:'+avColor(m.name)+'" title="'+esc(m.name)+'">'+esc(initials(m.name))+'</span>'; });
+const av = id => AV[id] || '<span class="av" style="background:#6b7280">?</span>';
+const pAv = id => '<span class="av" style="background:'+avColor(byId[id].name)+'" title="'+esc(byId[id].name)+'">'+esc(initials(byId[id].name))+'</span>';
+function avStack(ids, max){
+  max = max||4;
+  let h = '<div class="ava-stack">';
+  ids.slice(0,max).forEach(id => { h += pAv(id); });
+  if (ids.length > max) h += '<span class="more chip">+'+(ids.length-max)+'</span>';
+  return h + '</div>';
+}
+function badge(status){
+  const s = STATUS[status];
+  return '<span class="badge '+s.c+'"><span class="dot sm"></span>'+esc(s.l)+'</span>';
+}
+function prBadge(p){
+  const v = PRIO[p];
+  return '<span class="'+v.cls+'">'+esc(v.l)+'</span>';
+}
+function dueLabel(d){
+  const n = daysFrom(d);
+  if (n < 0)  return '<span class="due-over">'+fmtD(d)+' · '+Math.abs(n)+'d overdue</span>';
+  if (n === 0)return '<span class="due-over">Due today</span>';
+  if (n === 1)return '<span class="due-soon">Due tomorrow</span>';
+  if (n <= 3) return '<span class="due-soon">'+fmtD(d)+' · in '+n+'d</span>';
+  return '<span class="due-ok">'+fmtD(d)+'</span>';
+}
+function spark(vals, color, h){
+  h = h||36;
+  const w = 200, mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals);
+  const span = (mx-mn) || 1;
+  const pts = vals.map((v,i) => (i*(w/(vals.length-1))).toFixed(1)+','+(h-4-((v-mn)/span)*(h-12)).toFixed(1)).join(' ');
+  const area = '0,'+h+' '+pts+' '+w+','+h;
+  const id = 'sp'+Math.floor(rnd()*1e9);
+  return '<svg class="kpi-spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none">'+
+    '<defs><linearGradient id="'+id+'" x1="0" y1="0" x2="0" y2="1">'+
+    '<stop offset="0%" stop-color="'+color+'" stop-opacity=".26"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0"/></linearGradient></defs>'+
+    '<polygon points="'+area+'" fill="url(#'+id+')"/>'+
+    '<polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+}
+function ring(p, size, cls, color){
+  size = size||34; cls = cls||'xs';
+  const r = (size-6)/2, c = 2*Math.PI*r;
+  const col = color || (p>=80?'var(--ok)':p>=50?'var(--warn)':'var(--danger)');
+  return '<div class="ring '+cls+'"><svg width="'+size+'" height="'+size+'">'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="var(--surface-3)" stroke-width="4"/>'+
+    '<circle cx="'+size/2+'" cy="'+size/2+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="4" stroke-linecap="round" '+
+    'stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+(c*(1-p/100)).toFixed(1)+'"/></svg>'+
+    '<span class="pct">'+p+'</span></div>';
+}
+
+
+/* ---- Owner's own queue: decisions and reviews Elena owns directly.
+       Row shape: [key, title, project, prio, dueOffset, note, cost, total] ---- */
+const OWNER_Q = [
+  ['NW-301','Budget increase — Platform Migration','platform','urgent',3,'Finance to approve a $120k increase for the cutover window. Phase 3 cannot start without it.',3,30],
+  ['NW-302','Hire: senior migration engineer','ops','high',7,'Headcount request for the phase-3 rollback work. Interview shortlist is ready and the two finalists are booked.',2,26],
+  ['NW-303','Meridian renewal terms — Q1','app','urgent',5,'Q1 pricing decision, 40 days before expiry. Two options are in front of you; the client prefers the annual plan.',3,22],
+  ['NW-304','Approve KMS key policy','platform','high',1,'Security posture item. Platform has been waiting on your sign-off for the audit-log export work.',1,8],
+  ['NW-305','Passwordless pilot cohort','ops','med',4,'30-person pilot limited to platform and QA. Low blast radius, reversible in an afternoon.',1,10],
+  ['NW-306','Decide: design-system licensing model','design','med',10,'Seat-based versus flat licensing across four client engagements. Flat is cheaper at the current size but scales badly.',4,18],
+  ['NW-307','Contractor extension — 2 FTE','crm','med',14,'CRM data quality work extends into November. Two-month extension requested by Diego.',2,20],
+  ['NW-308','Review Q3 delivery retro','ops','low',21,'Facilitate the retro readout for the four project leads. Read the notes first; the pattern is capacity, not process.',1,6],
+  ['NW-309','Vendor renewal: observability stack','ops','high',9,'$31k annual renewal. Two alternatives are priced and one is 40% cheaper with the same retention window.',2,14],
+  ['NW-310','Customer escalation: invoice discrepancy','app','urgent',1,'Client finance flagged an $18,400 overcharge on the September invoice. They want a response before Friday.',1,6],
+];
+OWNER_Q.forEach(function (r, i) {
+  const proj = PROJECTS[r[2]];
+  const status = r[3] === 'urgent' ? 'blocked' : r[3] === 'high' ? 'inProgress' : 'todo';
+  const total = r[7];
+  const done = status === 'blocked' ? Math.round(total * 0.3) : status === 'inProgress' ? Math.round(total * 0.45) : 0;
+  TASKS.push({
+    id: uid('o'), key: r[0], title: r[1], project: r[2], type: 'task', status: status,
+    prio: r[3], tags: ['decision'], assignee: 'u1', reportee: 'u1',
+    due: due(r[4]), story: r[5], cost: r[6], total: total, done: done,
+    effort: [2, 3, 5, 8][i % 4],
+    blockers: status === 'blocked' ? [r[5]] : [],
+    blockedSince: status === 'blocked' ? ago(20 + i * 4) : null,
+    created: due(-(6 + i * 2)), updated: due(-((i * 3) % 4)), completedAt: null,
+    dependencies: [], activity: [
+      { state: 'done', date: due(-5 - i), by: 'u19', what: 'Brief prepared' },
+      { state: 'cur', date: due(-1), by: 'u1', what: status === 'blocked' ? 'Awaiting your decision' : 'In progress' },
+      { state: 'todo', date: due(2), by: 'u1', what: 'Decision recorded' },
+    ],
+    watch: 4 + (i % 4), comments: (i * 3) % 5,
+    projectLabel: proj.name, projectColor: proj.color,
+  });
+});
+TASKS.forEach(function (t) { TASK_BY_ID[t.id] = t; });
+openTasks.length = 0;
+doneTasks.length = 0;
+TASKS.forEach(function (t) { (t.status === 'done' ? doneTasks : openTasks).push(t); });
+const OWNER_TASKS = TASKS.filter(function (t) { return t.assignee === 'u1'; });
+
+
+/* ================= MY WORK ================= */
+const BOARD_COL = [
+  { id:'blocked',   l:'Blocked',    c:'#dc2626' },
+  { id:'todo',      l:'To do',      c:'#9ca3af' },
+  { id:'inProgress',l:'In progress',c:'#2563eb' },
+  { id:'inReview',  l:'In review',  c:'#7c3aed' },
+  { id:'done',      l:'Done',       c:'#059669' },
+];
+const BOARD_COLS = BOARD_COL;
+function vTasks(){
+  let h = '<div class="tb-sub">';
+  h += '<div class="seg"><button class="seg-b'+(S.board==='mine'?' on':'')+'" data-act="set" data-k="board" data-v="mine">Assigned to me</button><button class="seg-b'+(S.board==='reporting'?' on':'')+'" data-act="set" data-k="board" data-v="reporting">Reporting to me</button><button class="seg-b'+(S.board==='all'?' on':'')+'" data-act="set" data-k="board" data-v="all">All tasks</button></div>';
+  h += '<div class="tb-sp"></div>';
+  h += '<div class="chips">';
+  [['all','All'],['blocked','Blocked'],['urgent','Urgent'],['decide','Needs decision']].forEach(f => {
+    h += '<button class="chip'+(S.taskFilter===f[0]?' on':'')+'" data-act="set" data-k="taskFilter" data-v="'+f[0]+'">'+f[1]+'</button>';
+  });
+  h += '</div>';
+  h += '<button class="btn primary" data-act="new-task"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>New task</button>';
+  h += '</div>';
+
+  const mine = S.board === 'mine' ? OWNER_TASKS : S.board === 'reporting' ? REPORT_TO_ME : openTasks;
+  let list = mine.filter(t => t.status !== 'done');
+  if (S.taskFilter === 'blocked') list = list.filter(t => t.status === 'blocked');
+  if (S.taskFilter === 'urgent')  list = list.filter(t => t.prio === 'urgent');
+  if (S.taskFilter === 'decide')  list = list.filter(t => t.tags.includes('decision'));
+  list = list.slice().sort((a,b) => prRank(a.prio)-prRank(b.prio) || a.due-b.due);
+
+  h += '<div class="split-37"><div class="col">';
+  BOARD_COL.forEach(c => {
+    const items = list.filter(t => t.status === c.id);
+    const pts = items.reduce((s,t) => s + t.total, 0);
+    h += '<div class="bk"><div class="bk-h"><span class="bk-t" style="color:'+c.c+'">'+c.l+'</span><span class="bk-n">'+items.length+'</span><span class="bk-pts">'+pts+' pts</span></div>';
+    items.slice(0,6).forEach(t => {
+      h += '<div class="card tc" data-act="open-task" data-id="'+t.id+'"><div class="tc-h"><span class="mono muted">'+t.key+'</span>'+prBadge(t.prio)+'</div>';
+      h += '<div class="tc-t">'+esc(t.title)+'</div>';
+      h += '<div class="tc-f"><span class="pl" style="background:'+t.projectColor+'">'+esc(t.projectLabel)+'</span>'+dueLabel(t.due)+'</div>';
+      if (t.status === 'blocked' && t.blockers.length) h += '<div class="tc-blk">'+icon('lock',12)+esc(t.blockers[0].slice(0,72))+'</div>';
+      h += '<div class="tc-b">'+(t.assignee==='u1'?'<span class="me">You</span>':av(t.assignee))+'<span class="tc-sp"></span><span class="mut">'+t.done+'/'+t.total+'</span>'+(t.comments?'<span class="tc-ic">'+icon('msg',13)+t.comments+'</span>':'')+(t.watch?'<span class="tc-ic">'+icon('eye',13)+t.watch+'</span>':'')+'</div></div>';
+    });
+    if (!items.length) h += '<div class="bk-empty">No tasks here</div>';
+    h += '<button class="btn ghost sm" data-act="new-task" style="width:100%;margin-top:8px">+ Add to '+c.l+'</button>';
+    h += '</div>';
+  });
+  h += '</div>';
+
+  h += '<aside class="col side">';
+  h += '<section class="card"><div class="card-h"><div class="card-t">Focus</div><div class="card-s">Your load this week</div></div>';
+  const mineAll = OWNER_TASKS;
+  const mineOpen = mineAll.filter(t => t.status !== 'done');
+  const minePts = mineOpen.reduce((s,t) => s + t.total, 0);
+  h += '<div class="stat3"><div><div class="s-v">'+mineOpen.length+'</div><div class="s-l">open</div></div><div><div class="s-v">'+minePts+'</div><div class="s-l">points</div></div><div><div class="s-v">'+mineOpen.filter(t=>t.prio==='urgent').length+'</div><div class="s-l">urgent</div></div></div>';
+  h += '<div class="mini-h" style="margin-top:14px">This week</div>';
+  WEEK.slice().reverse().forEach(d => {
+    const n = mineOpen.filter(t => t.due >= d.d && t.due <= d.end).length;
+    h += '<div class="wk"><span class="wk-d">'+d.label+'</span><div class="wk-b"><i style="width:'+Math.max(4,n*22)+'%"></i></div><span class="wk-n">'+n+'</span></div>';
+  });
+  h += '</section>';
+
+  h += '<section class="card"><div class="card-h"><div class="card-t">Needs your decision</div><div class="card-s">'+NEEDS.length+' items</div></div>';
+  NEEDS.slice(0,4).forEach(n => {
+    h += '<div class="attn" data-act="open-task" data-key="'+esc(n.key)+'"><span class="attn-i '+(n.kind==='approve'?'i-ok':n.kind==='blocked'?'i-warn':'i-acc')+'">'+icon(n.kind==='approve'?'check':n.kind==='blocked'?'lock':'eye',15)+'</span><div class="attn-tx"><div class="attn-h">'+esc(n.title)+'</div><div class="attn-s">'+esc(n.note)+'</div></div><span class="attn-d">'+esc(n.due)+'</span></div>';
+  });
+  h += '</section>';
+
+  h += '<section class="card"><div class="card-h"><div class="card-t">Recently updated</div></div>';
+  TASKS.filter(t => t.updated >= due(-2)).slice().sort((a,b)=>b.updated-a.updated).slice(0,6).forEach(t => {
+    h += '<div class="act" data-act="open-task" data-id="'+t.id+'"><span class="av sm" style="background:'+avColor(byId[t.assignee].name)+'">'+esc(initials(byId[t.assignee].name))+'</span><div class="act-bx"><div class="act-tx"><b>'+esc(t.key)+'</b> '+esc(t.title.slice(0,38))+'</div><div class="act-t">'+agoLabel(t.updated)+' · '+esc(t.projectLabel)+'</div></div></div>';
+  });
+  h += '</section></aside></div>';
+  return h;
+}
+const REPORT_TO_ME = TASKS.filter(function (t) { return t.reportee === 'u1'; });
+function prRank(p){ return p === 'urgent' ? 0 : p === 'high' ? 1 : p === 'med' ? 2 : 3; }
+
+
+/* ================= NEW TASK FORM ================= */
+function vTaskForm(){
+  const me = byId.u1;
+  let h = '<div class="m-h"><div><div class="m-eyebrow">New task</div><h2 class="m-t">Create a task</h2><p class="m-s">Tasks land in My Work with a status, owner and timeline. You can add more detail once it is created.</p></div><button class="icon-btn" data-act="close-modal">'+icon('x',18)+'</button></div>';
+  h += '<div class="form"><div class="fld"><label class="lb" for="f-title">Title <span class="req">*</span></label>';
+  h += '<input class="inp" id="f-title" type="text" value="Set up the billing sandbox for Meridian" placeholder="Short, action-oriented title"></div>';
+  h += '<div class="fld"><label class="lb" for="f-desc">Description</label><textarea class="ta" id="f-desc" rows="4" placeholder="What needs to happen, and what done looks like?">Provision the sandbox with a copy of the staging schema so the client can run their own approval flow before the Nov 20 go-live.</textarea></div>';
+  h += '<div class="grid2"><div class="fld"><label class="lb" for="f-proj">Project <span class="req">*</span></label><select class="sel" id="f-proj">'+
+    PROJ_ORDER.map(p => '<option value="'+p+'"'+(p==='app'?' selected':'')+'>'+esc(PROJECTS[p].name)+'</option>').join('')+'</select></div>';
+  h += '<div class="fld"><label class="lb" for="f-type">Type</label><select class="sel" id="f-type"><option value="task" selected>Task</option><option value="bug">Bug</option><option value="epic">Epic</option></select></div></div>';
+  h += '<div class="grid3"><div class="fld"><label class="lb" for="f-assign">Assignee</label><div class="pa">'+av('u2')+'<select class="sel" id="f-assign">'+TEAM.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(m=>'<option value="'+m.id+'"'+(m.id==='u2'?' selected':'')+'>'+esc(m.name)+'</option>').join('')+'</select></div></div>';
+  h += '<div class="fld"><label class="lb" for="f-prio">Priority</label><select class="sel" id="f-prio"><option value="low">Low</option><option value="med" selected>Medium</option><option value="high">High</option><option value="urgent">Urgent</option></select></div>';
+  h += '<div class="fld"><label class="lb" for="f-due">Due date</label><input class="inp" id="f-due" type="date" value="'+toDateStr(due(14))+'"></div></div>';
+  h += '<div class="grid2"><div class="fld"><label class="lb" for="f-eff">Effort</label><select class="sel" id="f-eff"><option value="1">1 · Small</option><option value="2" selected>2 · Medium</option><option value="3">3 · Large</option><option value="5">5 · Very large</option></select></div>';
+  h += '<div class="fld"><label class="lb" for="f-report">Reporting to</label><div class="pa">'+av('u5')+'<select class="sel" id="f-report">'+MAN.map(id=>'<option value="'+id+'"'+(id==='u5'?' selected':'')+'>'+esc(byId[id].name)+'</option>').join('')+'</select></div></div></div>';
+  h += '<div class="fld"><label class="lb">Tags</label><div class="tagi">'+['billing','client','integration'].map(t=>'<span class="tg">'+t+'<button class="tg-x" data-act="rm-tag">×</button></span>').join('')+'<input class="taginp" placeholder="Add a tag…" data-act="add-tag"></div></div>';
+  h += '<div class="fld"><label class="lb">Timeline</label><div class="fld-hint">Steps define the path from To do to Done. Add them as you learn the shape of the work.</div><div class="tl-add">'+
+    '<div class="tl-step"><span class="tl-n todo">●</span><div class="tl-step-tx"><div class="tl-step-h">Scope the data sets to copy</div><div class="tl-step-s">Estimated 2 days</div></div></div>'+
+    '<div class="tl-step"><span class="tl-n todo">●</span><div class="tl-step-tx"><div class="tl-step-h">Provision and seed the sandbox</div><div class="tl-step-s">Estimated 3 days</div></div></div>'+
+    '<div class="tl-step"><span class="tl-n todo">●</span><div class="tl-step-tx"><div class="tl-step-h">Hand off to the client with walkthrough</div><div class="tl-step-s">Estimated 1 day</div></div></div>'+
+    '<button class="btn ghost sm" data-act="add-step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add step</button></div></div>';
+  h += '<div class="fld"><label class="lb">Notifications</label><div class="chkrow"><label class="chk"><input type="checkbox" checked> Notify the project channel when the status changes</label><label class="chk"><input type="checkbox" checked> Notify my assignee on status change</label><label class="chk"><input type="checkbox"> Include in the weekly digest</label></div></div>';
+  h += '</div>';
+  h += '<div class="m-f"><span class="m-fh muted">Created by '+esc(me.name)+' as '+esc(me.role)+'</span><button class="btn ghost" data-act="close-modal">Cancel</button><button class="btn primary" data-act="submit-task">Create task</button></div>';
+  return h;
+}
+function vSearch(){
+  let h = '<div class="searchwrap"><input class="searchin" placeholder="Search tasks, projects, people…" autofocus><div class="res">';
+  TASKS.filter(t => t.title.toLowerCase().includes('billing') || t.tags.includes('billing')).slice(0,4).forEach(t => {
+    h += '<div class="res-i" data-act="open-task" data-id="'+t.id+'"><span class="mono">'+t.key+'</span><div><div class="ri-t">'+esc(t.title)+'</div><div class="ri-s">'+esc(t.projectLabel)+' · '+badge(t.status)+'</div></div>'+av(t.assignee)+'</div>';
+  });
+  PROJ_ORDER.slice(0,3).forEach(pid => { const p = PROJECTS[pid]; h += '<div class="res-i" data-act="nav" data-view="projects"><span class="ic-s" style="color:'+p.color+'">'+icon('folder',16)+'</span><div><div class="ri-t">'+esc(p.name)+'</div><div class="ri-s">'+p.memberCount+' people · '+p.openTasks+' open tasks</div></div><span class="badge '+p.healthBadge+'">'+p.status+'</span></div>'; });
+  h += '</div></div>';
+  return h;
+}
+
+
+/* ================= TASK DETAIL MODAL ================= */
+function vTaskDetail(t){
+  let h = '<div class="m-h"><div class="m-ht"><span class="mono muted">'+t.key+'</span><span class="badge '+STATUS[t.status].c+'"><span class="dot sm"></span>'+STATUS[t.status].l+'</span>'+prBadge(t.prio)+'</div>';
+  h += '<h2 class="m-t">'+esc(t.title)+'</h2><p class="m-s">'+esc(t.projectLabel)+' · '+t.type+' · created '+fmtD(t.created)+'</p></div>';
+  h += '<div class="split"><div class="col">';
+  h += '<div class="msec"><div class="msec-h">Description</div><p class="msec-b">'+esc(t.story || 'No description yet.')+'</p></div>';
+  if (t.blockers.length){
+    h += '<div class="msec"><div class="msec-h">Blocked by</div>';
+    t.blockers.forEach(b => h += '<div class="warnrow">'+icon('lock',15)+'<div><div class="wh">'+esc(b)+'</div>'+(t.blockedSince?'<div class="ws2">Since '+fmtD(t.blockedSince)+'</div>':'')+'</div></div>');
+    h += '</div>';
+  }
+  h += '<div class="msec"><div class="msec-h">Timeline <span class="muted">'+t.activity.length+' steps · '+t.done+'/'+t.total+' pts</span></div><div class="bar sm"><i style="width:'+pct(t.done,t.total)+'%"></i></div><div class="tl" style="margin-top:12px">';
+  t.activity.forEach(a => {
+    const cls = a.state==='done'?'done':a.state==='cur'?'cur':'todo';
+    h += '<div class="tl-i"><div class="tl-rail"><span class="tl-n '+cls+'">'+(cls==='done'?'✓':cls==='cur'?'●':'○')+'</span></div>';
+    h += '<div><div class="tl-h">'+esc(a.what)+'</div><div class="tl-s"><span class="muted">'+(a.by&&byId[a.by]?esc(byId[a.by].name):'Unassigned')+'</span></div></div></div>';
+  });
+  h += '<button class="btn ghost sm" data-act="close-modal" style="margin-top:10px">'+icon('plus',14)+' Add step</button></div></div>';
+  h += '<div class="msec"><div class="msec-h">Related</div>';
+  if (t.dependencies.length){
+    t.dependencies.forEach(did => {
+      const d = TASK_BY_ID[did];
+      if (d) h += '<div class="res-i" data-act="open-task" data-id="'+d.id+'"><span class="mono">'+d.key+'</span><div><div class="ri-t">'+esc(d.title)+'</div><div class="ri-s">'+esc(d.projectLabel)+'</div></div>'+badge(d.status)+'</div>';
+    });
+  }
+  h += '<div class="muted tiny" style="padding:8px 0 0">+'+TASKS.filter(x=>x.project===t.project&&x.id!==t.id).length+' other tasks in '+esc(t.projectLabel)+'</div></div>';
+  h += '</div><aside class="col side">';
+  h += '<div class="msec"><div class="msec-h">Details</div>';
+  h += '<div class="def"><div class="dk">Assignee</div><div class="dv">'+(t.assignee==='u1'?'<span class="me">You</span>':av(t.assignee))+'<b>'+esc(byId[t.assignee].name)+'</b></div></div>';
+  h += '<div class="def"><div class="dk">Reporting</div><div class="dv"><b>'+esc(byId[t.reportee].name)+'</b></div></div>';
+  h += '<div class="def"><div class="dk">Due</div><div class="dv">'+dueLabel(t.due)+'</div></div>';
+  h += '<div class="def"><div class="dk">Project</div><div class="dv"><b style="color:'+t.projectColor+'">'+esc(t.projectLabel)+'</b></div></div>';
+  h += '<div class="def"><div class="dk">Effort</div><div class="dv"><b>'+t.effort+'</b></div></div>';
+  h += '<div class="def"><div class="dk">Estimate</div><div class="dv"><b>'+t.cost+'</b> cost · <b>'+t.total+'</b> pts</div></div>';
+  h += '</div>';
+  h += '<div class="msec"><div class="msec-h">Tags</div><div class="tagrow">'+t.tags.map(tg=>'<span class="tg">'+esc(tg)+'</span>').join('')+'</div></div>';
+  h += '<div class="msec"><div class="msec-h">Progress</div>';
+  h += '<div class="def"><div class="dk">Completed</div><div class="dv"><b>'+t.done+'</b> of '+t.total+' pts</div></div>';
+  h += '<div class="bar sm"><i style="width:'+pct(t.done,t.total)+'%"></i></div>';
+  h += '<div class="tagrow" style="margin-top:10px"><span class="tg">'+t.watch+' watching</span><span class="tg">'+t.comments+' comments</span></div></div>';
+  h += '<div class="msec"><div class="msec-h">Watchers</div><div class="ava-stack">'+avStack(projMemberObjs(t.project).map(m=>m.id).slice(0,4))+'</div></div>';
+  h += '</aside></div>';
+  return h;
+}
+
+
+/* ================= PROJECTS ================= */
+function vProjects(){
+  let h = '<div class="tb-sub"><div class="chips">';
+  [['all','All projects'],['track','On track'],['warn','At risk'],['live','Live']].forEach(f => {
+    h += '<button class="chip'+(S.projFilter===f[0]?' on':'')+'" data-act="set" data-k="projFilter" data-v="'+f[0]+'">'+f[1]+'</button>';
+  });
+  h += '</div><div class="tb-sp"></div>';
+  h += '<div class="fld"><input class="inp" placeholder="Search projects…" value=""></div>';
+  h += '<button class="btn primary" data-act="new-task">'+icon('plus',16)+' New project</button></div>';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Portfolio overview</div><div class="card-s">Six projects · '+openTasks.length+' open tasks · $1.4M committed of $2.0M</div></div></div>';
+  h += '<div class="grid2">';
+  const onT = PROJ_ORDER.filter(p=>PROJECTS[p].status==='On track').length;
+  const warn = PROJ_ORDER.filter(p=>PROJECTS[p].status==='At risk').length;
+  h += '<div class="split"><div><div class="tiny muted">On track</div><div class="lg">'+onT+'<span class="u"> of '+PROJ_ORDER.length+'</span></div>'+spark([3,4,4,5,5,onT],'#059669',40)+'</div>';
+  h += '<div><div class="tiny muted">At risk</div><div class="lg" style="color:var(--warn)">'+warn+'</div>'+spark([2,1,2,2,3,warn],'#d97706',40)+'</div>';
+  h += '<div><div class="tiny muted">Budget used</div><div class="lg">70%</div>'+spark([40,48,55,60,66,70],'#4f46e5',40)+'</div>';
+  h += '<div><div class="tiny muted">Velocity (pts/wk)</div><div class="lg">42</div>'+spark([28,31,26,34,38,42],'#2563eb',40)+'</div></div>';
+  h += '<div class="prow-stack">';
+  PROJ_ORDER.forEach(pid => { const p = PROJECTS[pid];
+    h += '<div class="prow" data-act="nav" data-view="projects"><span class="dot" style="background:'+p.color+'"></span><div class="prow-t"><div class="prow-n">'+esc(p.name)+'</div><div class="prow-s">'+esc(p.goal)+'</div></div><div class="prow-p">'+esc(p.status)+'</div><div class="prow-h">'+ring(p.health,30,'xs')+'</div></div>';
+  });
+  h += '</div></div></section>';
+
+  h += '<div class="grid2">';
+  PROJ_ORDER.slice().sort((a,b)=>PROJECTS[a].health-PROJECTS[b].health).forEach(pid => {
+    const p = PROJECTS[pid], c = CHECK_BY_PROJ[pid];
+    const blocked = TASKS.filter(t=>t.project===pid&&t.status==='blocked').length;
+    const done7 = TASKS.filter(t=>t.project===pid&&t.status==='done'&&t.completedAt>=due(-7)).reduce((s,t)=>s+t.total,0);
+    h += '<section class="card pc"><div class="pc-h" style="border-color:'+p.color+'">';
+    h += '<div class="pc-t"><span class="pc-ic" style="background:'+p.color+'22;color:'+p.color+'">'+icon('folder',18)+'</span><div><div class="pc-n">'+esc(p.name)+'</div><div class="pc-s">'+esc(p.goal)+'</div></div></div>';
+    h += '<div class="pc-av"><span class="av sm" style="background:'+p.color+'">'+esc(initials(p.name))+'</span></div></div>';
+    h += '<div class="pc-b">';
+    h += '<div class="kv"><div><div class="kv-l">Health</div><div class="kv-v">'+p.health+'</div></div><div><div class="kv-l">Burn</div><div class="kv-v">'+p.burn+' pts</div></div><div><div class="kv-l">Budget</div><div class="kv-v">'+p.budget+'</div></div><div><div class="kv-l">People</div><div class="kv-v">'+p.memberCount+'</div></div></div>';
+    h += '<div class="pc-mid"><div class="mini-h">Tasks</div><div class="bar"><i style="width:'+pct(p.doneTasks,p.taskCount)+'%;background:'+p.color+'"></i></div><div class="tiny muted">'+p.doneTasks+' done · '+p.openTasks+' open · '+blocked+' blocked</div></div>';
+    h += '<div class="pc-mid"><div class="mini-h">Launch checklist</div><div class="bar"><i style="width:'+c.progress+'%"></i></div><div class="tiny muted">'+c.doneCount+' of '+c.total+' steps</div></div>';
+    h += '<div class="def"><div class="dk">Lead</div><div class="dv">'+av(p.lead)+'<b>'+esc(byId[p.lead].name)+'</b></div></div>';
+    h += '<div class="def"><div class="dk">Crew</div><div class="dv">'+avStack(projMemberObjs(pid).map(m=>m.id).slice(0,5))+'<span class="mut">'+p.memberCount+' people</span></div></div>';
+    h += '<div class="def"><div class="dk">Last 7 days</div><div class="dv"><b>'+done7+'</b> pts done · <b>'+p.committed+'</b> pts committed</div></div>';
+    h += '<div class="card-f" style="margin-top:12px"><button class="btn ghost sm" data-act="nav" data-view="tasks">Open in My Work →</button><button class="btn ghost sm" data-act="open-proj" data-id="'+pid+'">Details</button></div>';
+    h += '</div></section>';
+  });
+  h += '</div>';
+  return h;
+}
+
+
+/* ================= PEOPLE ================= */
+function vPeople(){
+  const cap = TEAM.reduce((s,m)=>s+m.cap,0);
+  const av = TEAM.reduce((s,m)=>s+m.cap*(1-m.util),0);
+  const over = TEAM.filter(m=>m.util>0.95).length;
+  const under = TEAM.filter(m=>m.util<0.55).length;
+  let h = '<div class="tb-sub"><div class="chips">';
+  [['all','Everyone'],['load','Overloaded'],['free','Available'],['mgr','Managers']].forEach(f => {
+    h += '<button class="chip'+(S.peopleFilter===f[0]?' on':'')+'" data-act="set" data-k="peopleFilter" data-v="'+f[0]+'">'+f[1]+'</button>';
+  });
+  h += '</div><div class="tb-sp"></div>';
+  h += '<div class="fld"><input class="inp" placeholder="Search people…" value=""></div>';
+  h += '<button class="btn primary" data-act="new-task">'+icon('plus',16)+' Invite people</button></div>';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Capacity</div><div class="card-s">All '+TEAM.length+' members · week of '+esc(fmtD(due(-1)))+'</div></div></div><div class="split">';
+  h += '<div class="cap-col"><div class="cap-h">'+icon('clock',15)+'Total capacity</div><div class="cap-v">'+cap+'<span class="u">h / week</span></div><div class="tiny muted">'+TEAM.length+' people · avg '+(cap/Math.round(TEAM.length))+'h each</div></div>';
+  h += '<div class="cap-col"><div class="cap-h" style="color:var(--ok)">'+icon('check',15)+'Available</div><div class="cap-v" style="color:var(--ok)">'+Math.round(av)+'<span class="u">h</span></div><div class="tiny muted">'+Math.round(av/cap*100)+'% of capacity is free</div></div>';
+  h += '<div class="cap-col"><div class="cap-h" style="color:var(--warn)">'+icon('alert',15)+'Overloaded</div><div class="cap-v" style="color:var(--warn)">'+over+'<span class="u"> people</span></div><div class="tiny muted">at or above 95% load</div></div>';
+  h += '<div class="cap-col"><div class="cap-h">'+icon('users',15)+'Underutilized</div><div class="cap-v">'+under+'<span class="u"> people</span></div><div class="tiny muted">below 55% load</div></div></div></section>';
+
+  h += '<div class="split-37"><div class="col"><section class="card"><div class="card-h"><div><div class="card-t">Team</div><div class="card-s">'+TEAM.length+' members across '+PROJ_ORDER.length+' projects</div></div><button class="btn link" data-act="nav" data-view="dashboard">Dashboard →</button></div>';
+  h += '<div class="tm-hd"><span class="th1">Member</span><span class="th2">Role · department</span><span class="th3">Capacity</span><span class="th4">Load</span><span class="th5">Week</span></div>';
+  TEAM.slice().sort((a,b)=>b.util-a.util).slice(0,24).forEach(m => {
+    const st = m.util>0.95?'over':m.util>0.8?'busy':m.util>0.55?'ok':'free';
+    const stLabel = m.util>0.95?'Overloaded':m.util>0.8?'Busy':m.util>0.55?'Healthy':'Available';
+    h += '<div class="tm-r" data-act="open-person" data-id="'+m.id+'">';
+    h += '<span class="tm-1">'+av(m.id)+'<div class="tm-n"><b>'+esc(m.name)+'</b><span class="tiny muted">'+esc(m.email||'')+'</span></div></span>';
+    h += '<span class="tm-2"><b>'+esc(m.role)+'</b><span class="tiny muted">'+esc(m.dept||m.projectLabel||'')+'</span></span>';
+    h += '<span class="tm-3"><div class="cap-mini"><i class="'+st+'" style="width:'+Math.min(100,m.util*100)+'%"></i></div></span>';
+    h += '<span class="tm-4"><span class="lv '+st+'">'+Math.round(m.util*100)+'%</span></span>';
+    h += '<span class="tm-5"><div class="wk-mini">'+spark(m.week,'var(--accent)',44)+'</div></span>';
+    h += '</div>';
+  });
+  h += '<div class="card-f"><button class="btn ghost sm" data-act="nav" data-view="projects">View by project →</button></div></section></div>';
+
+  h += '<aside class="col side">';
+  h += '<section class="card"><div class="card-h"><div class="card-t">Load distribution</div><div class="card-s">Where the team sits</div></div>';
+  const bands = [{l:'0-25%', c:'#059669', r:[0,0.25]}, {l:'25-55%', c:'#10b981', r:[0.25,0.55]}, {l:'55-80%', c:'#2563eb', r:[0.55,0.8]}, {l:'80-95%', c:'#d97706', r:[0.8,0.95]}, {l:'95%+', c:'#dc2626', r:[0.95,2]}];
+  bands.forEach(b => {
+    const n = TEAM.filter(m=>m.util>=b.r[0]&&m.util<b.r[1]).length;
+    const p = Math.round(n/TEAM.length*100);
+    h += '<div class="dist"><span class="dist-l">'+b.l+'</span><div class="dist-b"><i style="width:'+p+'%;background:'+b.c+'"></i></div><span class="dist-n">'+n+'</span></div>';
+  });
+  h += '</section>';
+
+  h += '<section class="card"><div class="card-h"><div class="card-t">Project capacity</div><div class="card-s">Free hours by project</div></div>';
+  PROJ_ORDER.forEach(pid => {
+    const p = PROJECTS[pid];
+    const members = projMemberObjs(pid);
+    const c = members.reduce((s,m)=>s+m.cap,0);
+    const f = members.reduce((s,m)=>s+m.cap*(1-m.util),0);
+    h += '<div class="pcap"><span class="dot" style="background:'+p.color+'"></span><div class="pcap-tx"><div class="pcap-n">'+esc(p.name)+'</div><div class="pcap-b"><i style="width:'+pct(f,c)+'%"></i></div></div><div class="pcap-v"><b>'+Math.round(f)+'</b><span class="tiny muted"> of '+c+'h free</span></div></div>';
+  });
+  h += '</section>';
+
+  h += '<section class="card"><div class="card-h"><div class="card-t">Hiring needs</div><div class="card-s">3 open requests</div></div>';
+  [[ 'Senior migration engineer','platform','In review'],['CRM data quality analyst','crm','Sourcing'],['QA automation engineer','qa','Approved'] ].forEach((x,i) => {
+    h += '<div class="attn"><span class="attn-i i-acc">'+icon('plus',15)+'</span><div class="attn-tx"><div class="attn-h">'+esc(x[0])+'</div><div class="attn-s">'+esc(PROJECTS[x[1]].name)+' · '+esc(x[1])+'</div></div><span class="badge '+(['badge','badge-warn','badge-ok'][i]||'badge')+'">'+esc(x[2])+'</span></div>';
+  });
+  h += '</section></aside></div>';
+  return h;
+}
+
+
+/* ================= SETTINGS ================= */
+function vSettings(){
+  const me = byId.u1;
+  let h = '<div class="sm"><div class="sm-tl"><div class="sm-h">Settings</div><div class="sm-s">Workspace, security, roles and preferences</div></div></div>';
+  h += '<div class="split-37"><div class="col">';
+  h += '<section class="card"><div class="card-h"><div class="card-t">Your profile</div><div class="card-s">Shown on your tasks and approvals</div></div><div class="sm-b">';
+  h += '<div class="fld"><label class="lb" for="s-name">Full name</label><input class="inp" id="s-name" type="text" value="Elena Marchetti"></div>';
+  h += '<div class="grid2"><div class="fld"><label class="lb" for="s-role">Role</label><input class="inp" id="s-role" type="text" value="Studio Director"></div><div class="fld"><label class="lb" for="s-loc">Location</label><input class="inp" id="s-loc" type="text" value="Milan, IT"></div></div>';
+  h += '<div class="grid2"><div class="fld"><label class="lb" for="s-em">Email</label><input class="inp" id="s-em" type="email" value="elena.marchetti@nordwind.studio"></div><div class="fld"><label class="lb" for="s-tz">Time zone</label><select class="sel" id="s-tz"><option>Europe/Rome</option><option>Europe/Berlin</option><option>America/New_York</option><option>Asia/Tokyo</option></select></div></div>';
+  h += '</div><div class="card-f"><span class="mut tiny">Last updated 3 days ago</span><button class="btn primary sm">Save changes</button></div></section>';
+  h += '</div><aside class="col side">';
+  h += '<section class="card"><div class="card-h"><div class="card-t">Notifications</div><div class="card-s">Control what reaches you</div></div><div class="sm-b">';
+  [[ 'task', 'Task assigned or reassigned', true ],
+   [ 'comment', 'New comment on a task you watch', true ],
+   [ 'mention', 'Someone mentions you', true ],
+   [ 'approve', 'Approval requested from you', true ],
+   [ 'blocked', 'A task you own gets blocked', true ],
+   [ 'digest', 'Weekly digest', false ] ].forEach(r => {
+    h += '<div class="togrow"><div class="tg-tx"><div class="tg-n">'+esc(r[1])+'</div></div><span class="tog'+(r[2]?' on':'')+'"><i></i></span></div>';
+  });
+  h += '</div></section>';
+  h += '<section class="card"><div class="card-h"><div class="card-t">Team</div><div class="card-s">'+TEAM.length+' members · 6 projects</div></div><div class="sm-b">';
+  h += '<div class="def"><div class="dk">Members</div><div class="dv"><b>'+TEAM.length+'</b></div></div>';
+  h += '<div class="def"><div class="dk">Projects</div><div class="dv"><b>'+PROJ_ORDER.length+'</b></div></div>';
+  h += '<div class="def"><div class="dk">Weekly capacity</div><div class="dv"><b>'+TEAM.reduce(function(s,m){return s+m.cap;},0)+'</b>h</div></div>';
+  h += '<div class="def"><div class="dk">Utilization</div><div class="dv"><b>'+Math.round(TEAM.reduce(function(s,m){return s+m.cap*m.util;},0)/TEAM.reduce(function(s,m){return s+m.cap;},0)*100)+'</b>%</div></div>';
+  h += '<div class="def"><div class="dk">Plan</div><div class="dv"><span class="tg">Studio Pro</span></div></div>';
+  h += '</div></section>';
+  h += '<section class="card"><div class="card-h"><div class="card-t">Security</div><div class="card-s">Sessions and access</div></div><div class="sm-b">';
+  h += '<div class="togrow"><div class="tg-tx"><div class="tg-n">Two-factor authentication</div><div class="tg-d">TOTP authenticator, enrolled</div></div><span class="tog on"><i></i></span></div>';
+  h += '<div class="togrow"><div class="tg-tx"><div class="tg-n">Passwordless login</div><div class="tg-d">Magic link for trusted devices</div></div><span class="tog on"><i></i></span></div>';
+  h += '<div class="togrow"><div class="tg-tx"><div class="tg-n">Session timeout</div><div class="tg-d">24 hours of inactivity</div></div><span class="tog on"><i></i></span></div>';
+  h += '<div class="togrow"><div class="tg-tx"><div class="tg-n">Require 2FA for approvals</div><div class="tg-d">Budget and renewal decisions</div></div><span class="tog on"><i></i></span></div>';
+  h += '</div><div class="card-f"><span class="mut tiny">Password last changed 4 months ago</span><button class="btn ghost sm">Change password</button></div></section>';
+  h += '</aside></div>';
+  return h;
+}
+
+
+/* ================= APP SHELL (sidebar + header) =================
+   Replaces the old shell(): that version referenced `me` (only local to
+   vSettings) and nav ids 'work'/'tasks' that renderView() never handled.
+   NAV lives here because renderView() (chunk17) switches on the same ids. */
+
+/* The signed-in user. `me` was local to vSettings, so chunk9/chunk14's shell
+   saw it as undefined. One global alias, defined after byId. */
+const ME = byId.u1;
+
+const NAV = [
+  { id:'work',      l:'My Work',   ic:'list',  count:personOpen(ME.id).length },
+  { id:'tasks',     l:'Tasks',     ic:'check', count:openTasks.length },
+  { id:'projects',  l:'Projects',  ic:'folder',count:PROJ_ORDER.length },
+  { id:'people',    l:'People',    ic:'users', count:TEAM.length },
+  { id:'dashboard', l:'Dashboard', ic:'chart' },
+  { id:'calendar',  l:'Calendar',  ic:'cal' },
+  { id:'approvals', l:'Approvals', ic:'lock',  count:APPROVALS.filter(a => a.status === 'pending').length, badge:true },
+  { id:'settings',  l:'Settings',  ic:'gear' },
+];
+
+function shell() {
+  const t = TITLE[S.view] || TITLE.work;
+  let h = '<div class="app'+(S.sbCollapsed ? ' sb-collapsed' : '')+'">';
+
+  /* ---- sidebar ---- */
+  h += '<aside class="sb">';
+  h += '<div class="sb-h"><span class="logo">'+icon('layers',18)+'</span>';
+  h += '<div class="ws"><b>Nordwind</b><span class="tg">Pro</span></div>';
+  h += '<button class="icon-btn sm" data-act="toggle-sb" title="Collapse sidebar">'+icon('chev-l',15)+'</button></div>';
+
+  h += '<div class="sb-search"><span>'+icon('search',14)+'</span>';
+  h += '<input class="inp" placeholder="Search or jump to…" style="border:0;padding:6px 0;background:transparent;box-shadow:none">';
+  h += '<span class="kbd">⌘K</span></div>';
+
+  h += '<div class="sb-nav">';
+  NAV.forEach(n => {
+    let dot = '';
+    if (n.id === 'work')      dot = '<span class="nb">'+n.count+'</span>';
+    if (n.id === 'people')    dot = '<span class="nb warn">'+(TEAM.filter(m => m.status === 'invited').length)+'</span>';
+    if (n.id === 'approvals') dot = '<span class="nb muted">'+n.count+'</span>';
+    h += '<button class="nav-b'+(S.view === n.id ? ' on' : '')+'" data-act="nav" data-view="'+n.id+'">';
+    h += '<span class="ni">'+icon(n.ic,17)+'</span><span class="nl">'+n.l+'</span>'+dot+'</button>';
+  });
+
+  h += '<div class="sb-sec">In progress</div>';
+  PROJ_ORDER.slice(0,4).forEach(pid => {
+    const p = PROJECTS[pid];
+    h += '<button class="nav-b dim" data-act="nav" data-view="projects">';
+    h += '<span class="ni" style="color:'+p.color+'">'+icon('folder',16)+'</span><span class="nl">'+esc(p.name)+'</span>';
+    h += '<span class="dot" style="background:'+p.color+'"></span></button>';
+  });
+
+  h += '<div class="sb-f">';
+  h += '<div class="cap-card"><div class="cc-h">Your capacity</div><div class="cc-v">'+ME.util+'<span class="u">/'+ME.cap+'h</span></div>';
+  h += '<div class="bar sm"><i style="width:'+pct(ME.util, ME.cap)+'%"></i></div>';
+  h += '<button class="btn link sm" data-act="nav" data-view="settings">Adjust</button></div>';
+  h += '<div class="sb-me"><span class="av" style="background:'+avColor(ME.name)+'">'+esc(initials(ME.name))+'</span>';
+  h += '<div class="sm-bx"><b>'+esc(ME.name)+'</b><span class="tiny muted">'+esc(ME.title)+'</span></div></div>';
+  h += '</div></aside>';
+
+  /* ---- header ---- */
+  h += '<div class="main">';
+  h += '<header class="tb">';
+  h += '<div class="tb-c"><div class="tb-t">'+t.h+'</div><div class="tb-s">'+esc(t.s)+'</div></div>';
+  h += '<div class="tb-sp"></div>';
+  h += '<button class="btn ghost sm" data-act="nav" data-view="search">'+icon('search',15)+'<span>Search</span></button>';
+  h += '<div class="tb-div"></div>';
+  h += '<div class="tb-r">';
+  h += '<button class="icon-btn'+(NOTIF.some(n => !n.read) ? ' has-badge' : '')+'" data-act="notifs" title="Notifications">';
+  h += icon('bell',17)+(NOTIF.some(n => !n.read) ? '<span class="ib-badge"></span>' : '')+'</button>';
+  h += '<button class="btn primary sm" data-act="new-task">'+icon('plus',15)+'<span>New task</span></button>';
+  h += '</div></header>';
+  h += '<div class="content">'+renderView()+'</div>';
+  h += '</div>';
+
+  h += notifPop();
+  h += modalLayer();
+  h += '</div>';
+  return h;
+}
+
+
+/* ==== ICONS + SHARED HELPERS ====
+   Provides: icon(), iconTitle(), iso(), WEEK, WEEK_DAYS,
+   and patches PROJECTS with healthBadge / goal. */
+
+/* ---- icon() : 15 names, each a full <svg> ---- */
+function icon(n, s) {
+  s = s || 20;
+  const o = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
+  const P = {
+    plus:     '<path d="M12 5v14M5 12h14"/>',
+    folder:   '<path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>',
+    lock:     '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/>',
+    'chev-l': '<path d="M15 6l-6 6 6 6"/>',
+    check:    '<path d="M4 12l5 5L20 6"/>',
+    bell:     '<path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8z"/><path d="M10.3 21a1.94 1.94 0 003.4 0"/>',
+    x:        '<path d="M18 6L6 18M6 6l12 12"/>',
+    users:    '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>',
+    search:   '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/>',
+    msg:      '<path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>',
+    layers:   '<path d="M12 2L2 7l10 5 10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>',
+    eye:      '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/>',
+    dots:     '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+    clock:    '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
+    alert:    '<path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>',
+    home:     '<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>',
+    list:     '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M3 6h.01M3 12h.01M3 18h.01"/>',
+    grid:     '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>',
+    flag:     '<path d="M4 22V4c0-.5.5-1 1-1h14l-3 5 3 5H5"/>',
+    dollar:   '<path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>',
+    chart:    '<path d="M18 20V10M12 20V4M6 20v-6"/>',
+    people:   '<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>',
+    user:     '<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+    gear:     '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>',
+    cal:      '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  };
+  return '<svg width="'+s+'" height="'+s+'" '+o+'>' + (P[n] || P.x) + '</svg>';
+}
+
+/* ---- iconTitle() : used by chunk14 shell header ---- */
+function iconTitle(n) {
+  if (n === 'bell')   return 'Notifications';
+  if (n === 'check')  return 'Approvals';
+  if (n === 'search') return 'Search';
+  return '';
+}
+
+/* ---- WEEK : 7 days from (TODAY-6) through TODAY ---- */
+/* (iso() already defined in _chunk1.js) */
+const WEEK_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const WEEK = (() => {
+  const out = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(TODAY);
+    d.setDate(d.getDate() - i);
+    out.push({ d: d, end: new Date(d), label: WEEK_DAYS[d.getDay()] });
+  }
+  return out;
+})();
+
+/* ---- patch PROJECTS: healthBadge, goal ---- */
+PROJ_ORDER.forEach(pid => {
+  const p = PROJECTS[pid];
+  p.healthBadge = p.health >= 80 ? 'badge-ok' : (p.health >= 60 ? 'badge-warn' : 'badge-danger');
+  if (!p.goal) {
+    p.goal = p.health >= 80
+      ? 'On track — all milestones within plan.'
+      : p.health >= 60
+        ? 'Watch — risks identified, mitigating now.'
+        : 'At risk — intervention needed this week.';
+  }
+});
+
+
+/* ==== RENDER, VIEW DISPATCH, NOTIFICATIONS, MODAL LAYER ====
+   shell() and NAV live in _chunk14.js. TITLE lives in _chunk18.js. */
+
+function render() {
+  const root = document.getElementById('app');
+  if (!root) return;
+  root.innerHTML = shell();
+}
+
+/* ---- view dispatch: nav ids ARE view ids ---- */
+function renderView() {
+  switch (S.view) {
+    case 'work':      return vTasks();        // My Work — task board
+    case 'tasks':     return vTasks();        // Tasks — same board, all statuses
+    case 'projects':  return vProjects();
+    case 'people':    return vPeople();
+    case 'dashboard': return vDashboard();
+    case 'calendar':  return vCalendar();
+    case 'reports':   return vReports();
+    case 'approvals': return vApprovals();
+    case 'settings':  return vSettings();
+    case 'search':    return vSearch();
+    default:          return vTasks();
+  }
+}
+
+/* ---- notifications dropdown (rendered outside .main so it isn't clipped) ---- */
+function notifPop() {
+  if (S.notifOpen !== true) return '';
+  const unread = NOTIF.filter(n => !n.read);
+  let h = '<div class="dn" id="dn"><div class="dn-h">Notifications '+(unread.length ? '· '+unread.length+' new' : '')+'</div><div class="dn-b">';
+  if (!NOTIF.length) h += '<div class="tiny muted" style="padding:16px 14px">No notifications.</div>';
+  NOTIF.slice(0, 8).forEach(n => {
+    const tone = n.tone === 'ok' ? 'ok' : (n.tone === 'warn' || n.tone === 'danger' ? 'warn' : 'acc');
+    h += '<div class="dn-i'+(n.read ? '' : ' new')+'" data-act="notifs" data-ref="'+esc(n.ref || '')+'">';
+    h += '<span class="ic-s i-'+tone+'">'+icon(n.icon, 14)+'</span>';
+    h += '<div><div class="dn-t">'+esc(n.text)+'</div><div class="dn-s">'+esc(n.sub || '')+'</div></div>';
+    h += '<span class="dn-d">'+agoLabel(n.date)+'</span></div>';
+  });
+  h += '<button class="dn-f" data-act="notifs" data-clear="1">Mark all as read</button></div></div>';
+  return h;
+}
+
+/* ---- task modal: created by 'new-task' or 'open-task' ---- */
+function modalLayer() {
+  if (!S.taskModal) return '';
+  return '<div class="ov" data-act="close-modal">'+vTaskForm(S.taskModal)+'</div>';
+}
+
+/* ---- toast ---- */
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.classList.add('show'));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 320); }, 2600);
+}
+
+
+/* ==== TITLES, AGO, APPROVALS VIEW, CALENDAR, REPORTS ==== */
+
+/* ---- TITLES ---- */
+const TITLE = {
+  dashboard: { h:'Dashboard', s:'Studio overview for '+fmtD(TODAY) },
+  tasks:     { h:'My Work',   s:'Your tasks, reviews and decisions' },
+  projects:  { h:'Projects',  s:PROJ_ORDER.length+' active projects' },
+  people:    { h:'People',    s:TEAM.length+' people in the studio' },
+  approvals: { h:'Approvals', s:APPROVALS.filter(a => a.status === 'pending').length+' awaiting your decision' },
+  settings:  { h:'Settings',  s:'Workspace, roles and preferences' },
+  search:    { h:'Search',    s:'Find tasks, projects and people' },
+  calendar:  { h:'Calendar',  s:'Due dates across every project' },
+  reports:   { h:'Reports',   s:'Delivery, capacity and quality signals' },
+};
+
+/* ---- agoLabel ---- */
+function agoLabel(d) {
+  const h = Math.round((TODAY - d) / 3600000);
+  if (h < 1) return 'just now';
+  if (h < 24) return h + 'h ago';
+  const dd = Math.round(h / 24);
+  return dd === 1 ? 'yesterday' : dd + 'd ago';
+}
+
+/* ---- APPROVALS ---- */
+function vApprovals() {
+  const pend = APPROVALS.filter(a => a.status === 'pending');
+  const done = APPROVALS.filter(a => a.status !== 'pending');
+  let h = '<div class="stat3">';
+  h += '<div><div class="s-v">'+pend.length+'</div><div class="s-l">pending</div></div>';
+  h += '<div><div class="s-v">'+APPROVALS.filter(a => a.status === 'approved').length+'</div><div class="s-l">approved</div></div>';
+  h += '<div><div class="s-v">'+APPROVALS.filter(a => a.status === 'rejected').length+'</div><div class="s-l">rejected</div></div>';
+  h += '</div>';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Pending approvals</div>';
+  h += '<div class="card-s">'+pend.length+' items awaiting your decision</div></div>';
+  h += '<div class="seg"><button class="seg-b on">Pending</button><button class="seg-b">History ('+done.length+')</button></div></div>';
+
+  if (!pend.length) {
+    h += '<div class="card-b" style="text-align:center;padding:34px;color:var(--mut)"><div style="margin-bottom:8px">'+icon('check', 28)+'</div>No pending approvals</div>';
+  } else {
+    pend.forEach(a => {
+      const od = a.due < TODAY;
+      h += '<div class="attn" data-act="open-task" data-key="'+esc(a.task)+'">';
+      h += '<div class="attn-i i-acc">'+icon('lock', 15)+'</div>';
+      h += '<div class="attn-tx"><div class="attn-h">'+esc(a.title)+'</div>';
+      h += '<div class="attn-s">'+esc(a.reqName)+' · '+esc(a.task)+' · due '+(od ? '<span class="mut" style="color:var(--danger)">'+fmtD(a.due)+' (overdue)</span>' : fmtD(a.due))+'</div></div>';
+      h += '<span class="badge '+(od ? 'badge-danger' : 'badge-warn')+'">'+esc(a.due < TODAY ? 'Overdue' : 'Due '+fmtD(a.due))+'</span></div>';
+    });
+  }
+  h += '</section>';
+
+  if (done.length) {
+    h += '<section class="card"><div class="card-h"><div><div class="card-t">History</div><div class="card-s">'+done.length+' resolved</div></div></div>';
+    done.forEach(a => {
+      h += '<div class="attn">';
+      h += '<div class="attn-i i-'+(a.status === 'approved' ? 'ok' : 'warn')+'">'+icon(a.status === 'approved' ? 'check' : 'x', 15)+'</div>';
+      h += '<div class="attn-tx"><div class="attn-h">'+esc(a.title)+'</div><div class="attn-s">'+esc(a.reqName)+' · '+esc(a.task)+'</div></div>';
+      h += '<span class="badge '+(a.status === 'approved' ? 'badge-ok' : 'badge-danger')+'">'+esc(cap(a.status))+'</span></div>';
+    });
+    h += '</section>';
+  }
+  return h;
+}
+
+/* ---- CALENDAR ---- */
+function vCalendar() {
+  const first = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+  const startDow = first.getDay();
+  const cells = Math.ceil((startDow + new Date(first.getFullYear(), first.getMonth()+1, 0).getDate()) / 7) * 7;
+  const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let h = '<section class="card"><div class="card-h"><div><div class="card-t">'+MON[TODAY.getMonth()]+' '+TODAY.getFullYear()+'</div>';
+  h += '<div class="card-s">'+openTasks.length+' open tasks have due dates</div></div></div>';
+
+  h += '<div class="cal">';
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => { h += '<div class="cal-d">'+d+'</div>'; });
+  for (let i = 0; i < cells; i++) {
+    const d = new Date(first.getFullYear(), first.getMonth(), 1 + startDow + i);
+    const inMonth = d.getMonth() === TODAY.getMonth();
+    const isToday = d.getTime() === TODAY.getTime();
+    const tasks = TASKS.filter(t => t.status !== 'done' && t.due && t.due.getTime() === d.getTime());
+    h += '<div class="cal-c'+(inMonth ? '' : ' out')+(isToday ? ' today' : '')+'">';
+    h += '<div class="cal-n">'+d.getDate()+'</div>';
+    tasks.slice(0, 3).forEach(t => {
+      h += '<div class="cal-t" data-act="open-task" data-id="'+esc(t.id)+'" title="'+esc(t.title)+'">';
+      h += '<span class="dot" style="background:'+t.projectColor+'"></span>'+esc(t.key)+'</div>';
+    });
+    if (tasks.length > 3) h += '<div class="cal-x">'+(tasks.length - 3)+' more</div>';
+    h += '</div>';
+  }
+  h += '</div></section>';
+  return h;
+}
+
+/* ---- REPORTS ---- */
+function vReports() {
+  let h = '<div class="stat3">';
+  const total = TASKS.length;
+  h += '<div><div class="s-v">'+pct(TASKS.filter(t => t.status === 'done').length, total)+'%</div><div class="s-l">complete</div></div>';
+  h += '<div><div class="s-v">'+TASKS.filter(t => t.status === 'done' && t.completedAt >= due(-7)).length+'</div><div class="s-l">done this week</div></div>';
+  h += '<div><div class="s-v">'+TASKS.filter(t => t.status === 'blocked').length+'</div><div class="s-l">blocked</div></div>';
+  h += '</div>';
+
+  h += '<div class="split-37"><div class="col">';
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Completion by status</div></div></div><div class="card-b">';
+  Object.keys(STATUS).forEach(k => {
+    const n = TASKS.filter(t => t.status === k).length;
+    h += '<div class="bar-row"><span class="bar-lb">'+esc(STATUS[k].l)+'</span>';
+    h += '<span class="bar"><i style="width:'+pct(n, total)+'%;background:'+STATUS[k].c.replace('b-', '')+'"></i></span>';
+    h += '<span class="bar-n">'+n+'</span></div>';
+  });
+  h += '</div></section>';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Throughput — last 7 days</div></div></div><div class="card-b">';
+  const dayPts = WEEK.map(w => TASKS.filter(t => t.status === 'done' && t.completedAt && t.completedAt.getTime() === w.d.getTime()).reduce((s, t) => s + t.total, 0));
+  const mx = Math.max(1, Math.max.apply(null, dayPts));
+  h += '<div class="cols7">';
+  WEEK.forEach((w, i) => {
+    h += '<div class="col-bx"><div class="col-bar" style="height:'+(8 + dayPts[i] / mx * 70)+'%"><span>'+dayPts[i]+'</span></div><div class="col-lb">'+w.label+'</div></div>';
+  });
+  h += '</div></section>';
+  h += '</div><aside class="col side">';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Project health</div></div></div><div class="card-b">';
+  PROJ_ORDER.forEach(pid => {
+    const p = PROJECTS[pid];
+    h += '<div class="mini-h"><span style="color:'+p.color+'">●</span> '+esc(p.name)+'</div>';
+    h += '<div class="bar" style="margin-top:5px"><i style="width:'+p.health+'%;background:'+p.color+'"></i></div>';
+    h += '<div class="tiny mut" style="margin-top:4px">'+p.health+' health · '+p.memberCount+' people · '+p.openTasks+' open</div>';
+  });
+  h += '</div></section>';
+  h += '</aside></div>';
+  return h;
+}
+
+
+/* ==== EVENT DELEGATION + BOOT ==== */
+
+/* nav ids ARE view ids (see NAV in chunk14), so renderView() switches on them. */
+const SET_KEYS = { board:1, taskFilter:1, peopleFilter:1, projFilter:1 };
+const TASK_BY_KEY = {};
+TASKS.forEach(t => { TASK_BY_KEY[t.key] = t.id; });
+
+function closeNotifs() {
+  if (S.notifOpen) { S.notifOpen = false; render(); }
+}
+
+/* ---- navigation. `nav` handler must be identical to open() ---- */
+function open(view) {
+  if (!TITLE[view]) view = 'work';
+  S.view = view;
+  S.taskModal = null;
+  S.notifOpen = false;
+  if (view === 'approvals') S.approvalsView = false;
+  render();
+}
+
+document.addEventListener('click', function (e) {
+  const b = e.target.closest ? e.target.closest('[data-act]') : null;
+  if (b) {
+    switch (b.getAttribute('data-act')) {
+      case 'nav':        open(b.getAttribute('data-view')); break;
+      case 'new-task':   S.taskModal = 'new'; S.notifOpen = false; render(); break;
+      case 'close-modal':
+        S.taskModal = null;
+        render();
+        break;
+      case 'open-task': {
+        const id = b.getAttribute('data-id') || TASK_BY_KEY[b.getAttribute('data-key')];
+        S.taskModal = id || 'new';
+        S.notifOpen = false;
+        render();
+        break;
+      }
+      case 'open-proj':
+        S.projFilter = b.getAttribute('data-id');
+        open('projects');
+        break;
+      case 'notifs':
+        if (b.hasAttribute('data-clear')) {
+          NOTIF.forEach(n => { n.read = true; });
+        } else if (b.getAttribute('data-ref')) {
+          S.taskModal = TASK_BY_KEY[b.getAttribute('data-ref')] || 'new';
+          S.notifOpen = false;
+          render();
+          break;
+        }
+        S.notifOpen = !S.notifOpen;
+        S.notifRead = false;
+        render();
+        break;
+      case 'set':
+        if (SET_KEYS[b.getAttribute('data-k')]) {
+          S[b.getAttribute('data-k')] = b.getAttribute('data-v');
+          render();
+        }
+        break;
+      case 'toggle-sb':  S.sbCollapsed = !S.sbCollapsed; render(); break;
+      case 'submit-task': S.taskModal = null; render(); toast('Task created'); break;
+      default: break;
+    }
+  } else if (S.notifOpen && !(e.target.closest && e.target.closest('#dn'))) {
+    closeNotifs();
+  }
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && S.taskModal) { S.taskModal = null; render(); }
+});
+
+function boot() {
+  const root = document.getElementById('app');
+  if (!root) {
+    document.body.innerHTML = '<pre style="padding:24px;color:#dc2626">boot failed: #app missing</pre>';
+    return;
+  }
+  render();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}
+
+
+/* ==== VIEWS: DASHBOARD + small helpers (extracted from _chunk6.js) ====
+
+   Chunk 6 is excluded wholesale: duplicate shell()/render()/open(), a dead
+   vSettings, and it references the non-existent `me` global (ME is the real
+   one, defined in chunk14). Only two functions from it are salvaged:
+
+     vDashboard  - not defined anywhere else (this was the boot blocker).
+     verbWord    - not defined anywhere else.
+
+   agoLabel is deliberately NOT taken from chunk 6: chunk18 already defines it
+   and redeclaring would be a duplicate function declaration.
+
+   Dependencies, all present in the included chunks:
+     openTasks(c3) TEAM/PROJ_ORDER/PROJECTS(c3) due(c1) icon(c16)
+     ring/av/dueLabel/esc(c5) pct(c1) verbWord/agoLabel(see above/c18).
+*/
+
+function vDashboard(){
+  const done7 = TASKS.filter(t => t.status === 'done' && t.completedAt >= due(-7));
+  const blocked = TASKS.filter(t => t.status === 'blocked');
+  const capH = Math.round(TEAM.reduce((s,m) => s + m.cap, 0));
+  const avH = Math.round(TEAM.reduce((s,m) => s + m.cap * (1 - m.util), 0));
+  const atRisk = PROJ_ORDER.filter(p => PROJECTS[p].health < 70);
+  const kpis = [
+    { l:'Open tasks', v:openTasks.length,  t:'+4 vs last week',      cls:'up',   ic:'list',  col:'#2563eb', to:'tasks' },
+    { l:'Points done · 7d', v:done7.reduce((s,t)=>s+t.total,0), t:'across '+done7.length+' tasks', cls:'up', ic:'check', col:'#059669', to:'tasks' },
+    { l:'Blocked',  v:blocked.length,   t:atRisk.length+' projects at risk', cls:'dn', ic:'lock', col:'#dc2626', to:'tasks' },
+    { l:'Capacity free', v:Math.round(avH/capH*100)+'%', t:avH+'h of '+capH+'h weekly', cls:'', ic:'clock', col:'#d97706', to:'people' },
+    { l:'Active projects', v:PROJ_ORDER.length, t:atRisk.length+' at risk · 4 on track', cls:'', ic:'folder', col:'#7c3aed', to:'projects' },
+    { l:'Budget committed', v:'$1.4M', t:'$2.0M total · 19 tasks in flight', cls:'dn', ic:'dollar', col:'#4f46e5', to:'projects' },
+  ];
+  let h = '<section class="kpi-strip">';
+  kpis.forEach(k => {
+    h += '<div class="kpi" data-act="nav" data-view="'+k.to+'"><div class="kpi-h"><span class="kpi-ic" style="color:'+k.col+'">'+icon(k.ic,17)+'</span><span class="kpi-l">'+k.l+'</span></div>';
+    h += '<div class="kpi-v">'+k.v+'</div>';
+    h += '<div class="kpi-t '+(k.cls||'')+'">'+(k.cls==='up'?'▲ ':k.cls==='dn'?'▼ ':'')+esc(k.t)+'</div>';
+    h += '</div>';
+  });
+  h += '</section>';
+
+  h += '<div class="split-37">';
+  h += '<div class="col">';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Project status</div><div class="card-s">Live health across all six projects</div></div><button class="btn link" data-act="nav" data-view="projects">View projects →</button></div>';
+  h += '<div class="prows">';
+  PROJ_ORDER.slice().sort((a,b) => PROJECTS[a].health - PROJECTS[b].health).forEach(pid => {
+    const p = PROJECTS[pid];
+    h += '<div class="prow" data-act="nav" data-view="projects"><span class="dot" style="background:'+p.color+'"></span>';
+    h += '<div class="prow-t"><div class="prow-n">'+esc(p.name)+'</div><div class="prow-s">'+p.memberCount+' people · '+p.openTasks+' open · '+p.doneTasks+' done</div></div>';
+    h += '<div class="prow-p">'+esc(p.status)+'</div>';
+    h += '<div class="prow-h">'+ring(p.health,34,'xs')+'</div></div>';
+  });
+  h += '</div></section>';
+
+  const NEXT = ['NW-111','NW-226','NW-217','NW-181','NW-152','NW-131','NW-158','NW-220','NW-163','NW-193'];
+  const mts = NEXT.map(k => TASKS.find(t => t.key === k)).filter(Boolean);
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Upcoming milestones</div><div class="card-s">Next 30 days across the workspace</div></div><button class="btn link" data-act="nav" data-view="tasks">My Work →</button></div><div class="tl">';
+  mts.forEach(m => {
+    const cls = m.status === 'done' ? 'done' : m.status === 'blocked' ? 'blocked' : 'cur';
+    h += '<div class="tl-i"><div class="tl-rail"><span class="tl-n '+cls+'">'+(cls==='done'?'✓':cls==='blocked'?'!':'●')+'</span></div>';
+    h += '<div><div class="tl-h">'+esc(m.title)+'</div>';
+    h += '<div class="tl-s"><span class="muted">'+esc(m.key)+'</span>·<span>'+dueLabel(m.due)+'</span>·'+av(m.assignee)+'</div></div></div>';
+  });
+  h += '</div></section>';
+
+  h += '<section class="card"><div class="card-h"><div><div class="card-t">Project timeline</div><div class="card-s">Where each launch is right now</div></div></div><div class="split">';
+  ['app','platform'].forEach(pid => {
+    const p = PROJECTS[pid], c = CHECK_BY_PROJ[pid];
+    h += '<div><div class="mini-h">'+esc(p.name)+'</div><div class="bar '+(p.health<70?'warn':'')+'"><i style="width:'+c.progress+'%"></i></div>';
+    h += '<div class="tiny muted" style="margin-top:7px">'+c.doneCount+' of '+c.total+' launch steps · '+c.progress+'% complete</div></div>';
+  });
+  h += '</div></section>';
+
+  h += '</div><aside class="col side">';
+
+  const needs = NEEDS.slice(0, 5);
+  h += '<section class="card"><div class="card-h"><div class="card-t">Needs your attention</div><div class="card-s">'+needs.length+' items</div></div>';
+  needs.forEach(n => {
+    h += '<div class="attn" data-act="open-task" data-key="'+esc(n.key)+'"><span class="attn-i '+(n.kind==='approve'?'i-ok':n.kind==='blocked'?'i-warn':'i-acc')+'">'+icon(n.kind==='approve'?'check':n.kind==='blocked'?'lock':'eye',15)+'</span>';
+    h += '<div class="attn-tx"><div class="attn-h">'+esc(n.title)+'</div><div class="attn-s">'+esc(n.note)+'</div></div>';
+    h += '<span class="attn-d">'+esc(n.due)+'</span></div>';
+  });
+  h += '<div class="card-f"><button class="btn ghost sm" data-act="nav" data-view="approvals">Open all approvals →</button></div></section>';
+
+  h += '<section class="card"><div class="card-h"><div class="card-t">Activity</div><div class="card-s">Last 14 days</div></div>';
+  ACTIVITY.slice().sort((a,b) => b.date - a.date).slice(0,8).forEach(a => {
+    h += '<div class="act"><span class="av sm" style="background:'+a.whoColor+'">'+esc(a.initials)+'</span>';
+    h += '<div class="act-bx"><div class="act-tx"><b>'+esc(a.whoName)+'</b> '+verbWord(a.verb)+' <b>'+esc(a.key)+'</b></div><div class="act-t">'+agoLabel(a.date)+'</div></div></div>';
+  });
+  h += '</section></aside></div>';
+  return h;
+}
+
+function verbWord(v){
+  return { added:'opened', commented:'commented on', moved:'moved', assigned:'assigned', blocked:'blocked', completed:'completed', approved:'approved', rejected:'rejected' }[v] || v;
+}
+

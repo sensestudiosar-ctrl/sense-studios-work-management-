@@ -1,0 +1,226 @@
+- generic [active] [ref=f1e1]:
+  - generic "Demo controls – not part of the product" [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - strong [ref=f1e5]: DEMO CONTROLS SYNTHETIC · NOT PRODUCT UI
+      - generic [ref=f1e6]: Isolated staff scenarios / fault injection
+    - generic [ref=f1e7]:
+      - text: Context
+      - combobox "Demo actor context" [ref=f1e8]:
+        - option "Owner · no Employee" [selected]
+        - option "Scoped manager"
+        - option "Employee"
+        - option "Site employee"
+        - option "Named reviewer"
+        - option "Cross-branch staff"
+    - generic [ref=f1e9]:
+      - text: Scenario
+      - combobox "Demo screen state" [ref=f1e10]:
+        - option "Ready" [selected]
+        - option "Slow loading"
+        - option "Genuine task empty"
+        - option "Tasks source error"
+        - option "Decisions source error"
+        - option "Partial source failure"
+        - option "Stale task data"
+        - option "Performance denied"
+        - option "Session expired"
+        - option "Access revoked"
+    - button "Reset fixtures" [ref=f1e11] [cursor=pointer]
+  - generic [ref=f1e13]:
+    - complementary "Application navigation" [ref=f1e14]:
+      - generic [ref=f1e15]:
+        - generic [ref=f1e16]:
+          - generic [ref=f1e17]: Sense Studios
+          - generic [ref=f1e18]: WORK MANAGEMENT
+        - button "Collapse sidebar" [expanded] [ref=f1e19] [cursor=pointer]
+      - generic "Current work context; display only, does not grant permissions" [ref=f1e22]:
+        - generic [ref=f1e26]:
+          - strong [ref=f1e27]: Sense Studios
+          - generic [ref=f1e28]: Organization overview
+        - generic [ref=f1e29]: Demo
+      - button "Find a workspace" [ref=f1e30] [cursor=pointer]:
+        - generic [ref=f1e34]: Find a page
+        - generic [ref=f1e35]: ⌘ K
+      - navigation "Workspaces" [ref=f1e36]:
+        - generic [ref=f1e37]:
+          - generic [ref=f1e38]: EVERYDAY
+          - generic [ref=f1e39]:
+            - button "Dashboard" [ref=f1e40] [cursor=pointer]
+            - button "My Work" [ref=f1e47] [cursor=pointer]
+            - button "Projects" [ref=f1e52] [cursor=pointer]
+            - button "Decisions" [ref=f1e56] [cursor=pointer]
+        - generic [ref=f1e61]:
+          - button "PROJECT DELIVERY" [ref=f1e63] [cursor=pointer]
+          - button "PEOPLE & INSIGHTS" [ref=f1e68] [cursor=pointer]
+          - button "MORE TOOLS" [ref=f1e73] [cursor=pointer]
+          - generic [ref=f1e77]:
+            - generic [ref=f1e78]: Looking for another tool?
+            - button "Browse all pages" [ref=f1e79] [cursor=pointer]
+        - button "Settings" [ref=f1e83] [cursor=pointer]
+      - button "Open account menu" [ref=f1e89] [cursor=pointer]:
+        - generic [ref=f1e90]: SO
+        - generic [ref=f1e91]:
+          - strong [ref=f1e92]: Studio Owner
+          - generic [ref=f1e93]: Owner workspace
+    - generic [ref=f1e96]:
+      - banner [ref=f1e97]:
+        - generic [ref=f1e98]:
+          - generic [ref=f1e99]:
+            - generic [ref=f1e100]: Workspace
+            - strong [ref=f1e103]: Dashboard
+          - generic [ref=f1e104]: Organization view
+        - generic [ref=f1e105]:
+          - button "Find a page" [ref=f1e106] [cursor=pointer]:
+            - generic [ref=f1e111]: ⌘ K
+          - button "New task" [ref=f1e112] [cursor=pointer]
+          - button "Notifications" [ref=f1e116] [cursor=pointer]
+          - button "Account menu" [ref=f1e119] [cursor=pointer]:
+            - generic [ref=f1e120]: SO
+            - generic [ref=f1e121]:
+              - text: Studio Owner
+              - generic [ref=f1e122]: Owner
+      - main [ref=f1e125]:
+        - generic [ref=f1e126]:
+          - generic [ref=f1e127]:
+            - generic [ref=f1e128]: Thursday · 15 October 2026
+            - heading "Dashboard" [level=1] [ref=f1e132]
+            - paragraph [ref=f1e133]: Your decisions, projects and people at a glance.
+          - generic [ref=f1e134]:
+            - generic [ref=f1e135]: Viewing
+            - combobox "Authorized dashboard scope" [ref=f1e136]:
+              - option "Organization" [selected]
+              - option "My own work"
+            - button "Customize" [ref=f1e137] [cursor=pointer]
+            - button "Refresh" [ref=f1e141] [cursor=pointer]
+        - generic [ref=f1e145]:
+          - strong [ref=f1e148]: SYNTHETIC SNAPSHOT
+          - generic [ref=f1e149]: "Context: Organization authority · no employee"
+          - generic [ref=f1e151]: "Source day: 2026-10-15 · Asia/Kolkata"
+          - generic [ref=f1e152]: Independent sources · Time not supplied
+        - generic [ref=f1e153]:
+          - heading "Today at a glance" [level=2] [ref=f1e154]
+          - paragraph [ref=f1e155]: Fixed summaries · Tap to view matching tasks
+        - group "Five independent task summaries; counts overlap; swipe horizontally on mobile" [ref=f1e156]:
+          - button "Overdue · source unavailable." [disabled] [ref=f1e157]:
+            - strong [ref=f1e159]: Overdue
+          - button "Due today · source unavailable." [disabled] [ref=f1e166]:
+            - strong [ref=f1e168]: Due today
+          - button "High priority · source unavailable." [disabled] [ref=f1e175]:
+            - strong [ref=f1e177]: High priority
+          - button "Waiting / blocked · source unavailable." [disabled] [ref=f1e184]:
+            - strong [ref=f1e186]: Waiting / blocked
+          - button "Review / corrections · source unavailable." [disabled] [ref=f1e193]:
+            - strong [ref=f1e195]: Review / corrections
+        - generic [ref=f1e202]:
+          - generic [ref=f1e203]:
+            - heading "Your essentials" [level=2] [ref=f1e204]
+            - paragraph [ref=f1e205]: Only selected widgets appear here · long-press to edit on mobile.
+          - button "Edit widgets" [ref=f1e206] [cursor=pointer]
+        - generic "Personalizable role-authorized dashboard widgets" [ref=f1e210]:
+          - generic [ref=f1e211]:
+            - region [ref=f1e213]:
+              - generic [ref=f1e214]:
+                - generic [ref=f1e220]:
+                  - text: START HERE · PERSONAL TIME
+                  - heading "Time tracking" [level=2] [ref=f1e221]
+                  - paragraph [ref=f1e222]: Start when you enter · link to a project or task
+                - generic [ref=f1e223]:
+                  - strong [ref=f1e224]: 00:00:00
+                  - generic [ref=f1e225]: Ready to start
+              - generic [ref=f1e227]:
+                - generic [ref=f1e228]:
+                  - generic [ref=f1e229]:
+                    - generic [ref=f1e230]: Project
+                    - combobox "Time entry project" [ref=f1e231]:
+                      - option "General / non-project"
+                      - option "Riverside Residence" [selected]
+                      - option "Courtyard House"
+                      - option "Eastgate Studio"
+                      - option "Nellore Private Villa"
+                  - generic [ref=f1e232]:
+                    - generic [ref=f1e233]:
+                      - text: Task
+                      - emphasis [ref=f1e234]: optional
+                    - combobox "Time entry task" [disabled] [ref=f1e235]:
+                      - option "No linked task" [selected]
+                - generic [ref=f1e236]:
+                  - button "Start timer" [ref=f1e237] [cursor=pointer]
+                  - button "Stop & save" [disabled] [ref=f1e241]
+                  - button "Add manually" [ref=f1e244] [cursor=pointer]
+              - generic [ref=f1e247]: Owner has no Employee record · project / admin time only
+              - generic [ref=f1e248]:
+                - generic [ref=f1e249]:
+                  - strong [ref=f1e250]: 00:00:00
+                  - text: logged in this demo session · 0 entries
+                - generic [ref=f1e251]: Timer rounds up to 1 minute · demo only
+            - generic [ref=f1e253]:
+              - generic [ref=f1e254]:
+                - generic [ref=f1e255]:
+                  - heading "Projects at a glance" [level=2] [ref=f1e256]
+                  - paragraph [ref=f1e259]: Milestones and recorded risk signals · no invented completion %
+                - generic [ref=f1e260]:
+                  - button "Refresh health" [ref=f1e261] [cursor=pointer]
+                  - button "All projects" [ref=f1e265] [cursor=pointer]
+              - strong [ref=f1e275]: Loading health…
+              - generic [ref=f1e278]:
+                - generic [ref=f1e279]: Updating…
+                - generic [ref=f1e280]: Signals are recorded states, not calculated ratings
+          - generic [ref=f1e281]:
+            - generic [ref=f1e283]:
+              - generic [ref=f1e284]:
+                - generic [ref=f1e285]:
+                  - heading "Decisions & assigned reviews" [level=2] [ref=f1e286]
+                  - paragraph [ref=f1e287]: Approval requests and independent review rounds are separate
+                - generic [ref=f1e288]:
+                  - button "Refresh decisions" [ref=f1e289] [cursor=pointer]
+                  - button "Refresh assigned reviews" [ref=f1e293] [cursor=pointer]
+              - generic [ref=f1e297]:
+                - generic "Approvals and review rounds from independent sources" [ref=f1e298]:
+                  - generic [ref=f1e299]:
+                    - generic [ref=f1e304]: —
+                    - generic [ref=f1e305]: Approval requests
+                  - generic [ref=f1e306]:
+                    - generic [ref=f1e311]: —
+                    - generic [ref=f1e312]: Assigned rounds
+                - generic [ref=f1e313]:
+                  - text: Approval obligations
+                  - generic [ref=f1e314]: —
+                - strong [ref=f1e321]: Loading decisions…
+                - generic [ref=f1e324]:
+                  - text: Assigned review rounds
+                  - generic [ref=f1e325]: —
+                - generic [ref=f1e326]: Loading assigned rounds…
+              - generic [ref=f1e327]:
+                - generic [ref=f1e328]: Updating…
+                - button "Decision workspace" [ref=f1e329] [cursor=pointer]
+            - region "Team and employee performance" [ref=f1e333]:
+              - generic [ref=f1e334]:
+                - generic [ref=f1e335]:
+                  - heading "Performance" [level=2] [ref=f1e336]
+                  - paragraph [ref=f1e339]: Compare teams or inspect one employee · illustrative values
+                - button "Refresh performance" [ref=f1e341] [cursor=pointer]
+              - group "Performance view" [ref=f1e345]:
+                - button "Teams" [pressed] [ref=f1e346] [cursor=pointer]
+                - button "Employees" [ref=f1e350] [cursor=pointer]
+              - region "Owner-only comparison of team sample scores" [ref=f1e355]:
+                - strong [ref=f1e363]: Loading performance…
+                - generic [ref=f1e370]:
+                  - strong [ref=f1e371]: Illustrative team scores only.
+                  - text: Arithmetic averages from fictional employees. A single-person demo team is not a reliable real-world team benchmark. The shown leads are sample reporting assignments, not permission grants. No production ratings are connected.
+                - generic [ref=f1e372]:
+                  - generic [ref=f1e373]: Updating…
+                  - generic [ref=f1e374]: Team details remain Owner-only
+        - generic [ref=f1e375]:
+          - generic [ref=f1e376]: Always available · Not movable
+          - generic [ref=f1e380]:
+            - generic [ref=f1e381]:
+              - generic [ref=f1e382]:
+                - heading "Attention queue" [level=2] [ref=f1e383]
+                - paragraph [ref=f1e384]: Authorized task preview · one row per task, even with multiple reasons
+              - button "Refresh tasks" [ref=f1e386] [cursor=pointer]
+            - strong [ref=f1e397]: Loading tasks…
+            - generic [ref=f1e400]:
+              - generic [ref=f1e401]: Updating…
+              - button "Open Tasks workspace" [ref=f1e403] [cursor=pointer]
+        - paragraph [ref=f1e406]: Synthetic illustration only. Widget arrangement is stored in your browser for this demo; no staff pilot readiness is asserted.
+  - status

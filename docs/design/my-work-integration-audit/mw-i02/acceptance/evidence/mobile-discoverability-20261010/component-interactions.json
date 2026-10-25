@@ -1,0 +1,32 @@
+[
+  {
+    "width": 390,
+    "status": "PASS",
+    "checks": [
+      "independent zero-source disclosure",
+      "search focus/draft/Enter",
+      "native filter disclosure/status/Apply",
+      "no filter/action collision",
+      "four views/no horizontal document overflow",
+      "refresh",
+      "task open/back",
+      "keyboard phase focus/selection",
+      "Owner five expanded fixture links"
+    ]
+  },
+  {
+    "width": 320,
+    "status": "PASS",
+    "checks": [
+      "independent zero-source disclosure",
+      "search focus/draft/Enter",
+      "native filter disclosure/status/Apply",
+      "no filter/action collision",
+      "four views/no horizontal document overflow",
+      "refresh",
+      "task open/back",
+      "keyboard phase focus/selection",
+      "Owner five expanded fixture links"
+    ]
+  }
+]

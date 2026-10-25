@@ -1,0 +1,342 @@
+- generic [ref=f3e1]:
+  - main [ref=f3e3]:
+    - paragraph [ref=f3e4]: Synthetic project preview · no authentication
+    - region [ref=f3e5]:
+      - generic [ref=f3e6]:
+        - generic [ref=f3e7]:
+          - generic [ref=f3e8]: DELIVERY
+          - heading "Projects" [level=1] [ref=f3e9]
+          - paragraph [ref=f3e10]: Create Draft projects and review their delivery scopes and history.
+        - generic [ref=f3e11]: 1 total
+      - region "Selected project" [ref=f3e65]:
+        - button "← Back to projects" [ref=f3e66] [cursor=pointer]
+        - article [ref=f3e67]:
+          - generic [ref=f3e68]:
+            - generic [ref=f3e69]:
+              - generic [ref=f3e70]: PROJECT DETAIL
+              - heading "Studio residence — drawing coordination and delivery" [level=3] [ref=f3e71]
+            - generic [ref=f3e72]: ACTIVE
+          - navigation "Studio residence — drawing coordination and delivery sections" [ref=f3e73]:
+            - button "Overview" [ref=f3e74] [cursor=pointer]
+            - button "Plan" [ref=f3e75] [cursor=pointer]
+            - button "Tasks" [ref=f3e76] [cursor=pointer]
+            - button "People" [ref=f3e77] [cursor=pointer]
+            - button "Documents" [ref=f3e78] [cursor=pointer]
+            - button "Reviews" [ref=f3e79] [cursor=pointer]
+            - button "Delivery" [ref=f3e80] [cursor=pointer]
+            - button "Activity" [ref=f3e81] [cursor=pointer]
+          - heading "Tasks" [level=4] [ref=f3e82]
+          - region [ref=f3e84]:
+            - generic [ref=f3e85]:
+              - generic [ref=f3e86]:
+                - paragraph [ref=f3e87]: Work management
+                - heading "Tasks" [level=2] [ref=f3e88]
+                - paragraph [ref=f3e89]: Track your work, collaborators and progress.
+              - button "Create task" [ref=f3e91] [cursor=pointer]
+            - generic [ref=f3e92]:
+              - group "Task list scope" [ref=f3e93]:
+                - button "Project tasks" [pressed] [ref=f3e94] [cursor=pointer]
+              - group "Task display" [ref=f3e95]:
+                - button "List" [pressed] [ref=f3e96] [cursor=pointer]
+                - button "Cards" [ref=f3e97] [cursor=pointer]
+                - button "Kanban" [ref=f3e98] [cursor=pointer]
+                - button "Timeline" [ref=f3e99] [cursor=pointer]
+              - button "Refresh" [ref=f3e100] [cursor=pointer]
+            - form "Task filters" [ref=f3e101]:
+              - generic [ref=f3e102]:
+                - generic [ref=f3e103]: Search tasks
+                - textbox "Search tasks" [ref=f3e107]:
+                  - /placeholder: Search tasks or projects
+              - group [ref=f3e108]:
+                - generic "Filters and sort" [ref=f3e109] [cursor=pointer]:
+                  - text: Filters
+                  - generic [ref=f3e112]: 1 applied
+                - option "All projects"
+                - option "Studio residence — drawing coordination and delivery" [selected]
+                - option "All plan items" [selected]
+                - option "All owners" [selected]
+                - option "coordination.designer.with.long.email@example.test"
+                - option "All statuses" [selected]
+                - option "Not started"
+                - option "In progress"
+                - option "Waiting"
+                - option "Submitted internal review"
+                - option "In internal review"
+                - option "Corrections required"
+                - option "Internal approved"
+                - option "Submitted client review"
+                - option "In client review"
+                - option "Client revision required"
+                - option "Client approved"
+                - option "Completed"
+                - option "Stopped due to project cancellation"
+                - option "All phases" [selected]
+                - option "Active"
+                - option "Waiting"
+                - option "Review"
+                - option "Completed"
+                - option "Recently created" [selected]
+                - option "Target date · earliest first"
+                - option "Title · A to Z"
+                - option "Primary owner · A to Z"
+                - option "Priority · highest first, then Target"
+                - option "Choose date basis" [selected]
+                - option "Target date"
+                - option "Committed date"
+              - generic [ref=f3e113]:
+                - button "Apply filters" [ref=f3e114] [cursor=pointer]
+                - button "Reset filters" [ref=f3e115] [cursor=pointer]
+            - generic [ref=f3e116]:
+              - generic [ref=f3e117]: Showing 1–6 of 6 filtered tasks
+              - generic [ref=f3e118]:
+                - button "Previous" [disabled] [ref=f3e119]
+                - button "Next" [disabled] [ref=f3e120]
+            - navigation "Project tasks" [ref=f3e123]:
+              - heading "Project tasks 6" [level=3] [ref=f3e124]:
+                - text: Project tasks
+                - generic [ref=f3e125]: "6"
+              - generic [ref=f3e126]:
+                - 'button "Open task: Coordinate the living room reflected ceiling plan with electrical layouts" [ref=f3e127] [cursor=pointer]':
+                  - generic [ref=f3e128]:
+                    - generic [ref=f3e129]: Task
+                    - strong [ref=f3e130]: Coordinate the living room reflected ceiling plan with electrical layouts
+                    - generic [ref=f3e131]: Studio residence — drawing coordination and delivery
+                  - generic [ref=f3e132]:
+                    - generic [ref=f3e133]: Priority
+                    - strong [ref=f3e134]: HIGH
+                  - generic [ref=f3e135]:
+                    - generic [ref=f3e136]: Status
+                    - generic [ref=f3e137]: Not started
+                  - generic [ref=f3e138]:
+                    - generic [ref=f3e139]: Target
+                    - strong [ref=f3e140]: 2026-10-20
+                  - generic [ref=f3e141]:
+                    - generic [ref=f3e142]: Committed
+                    - strong [ref=f3e143]: Not committed
+                  - generic [ref=f3e144]: Open task →
+                - generic [ref=f3e146]:
+                  - generic [ref=f3e147]: People · Primary owner
+                  - 'button "People on Coordinate the living room reflected ceiling plan with electrical layouts: responsible worker coordination.designer.with.long.email@example.test" [ref=f3e148] [cursor=pointer]':
+                    - generic [ref=f3e150]: CE
+                    - generic [ref=f3e151]:
+                      - strong [ref=f3e152]: coordination.designer.with.long.email@example.test
+                      - generic [ref=f3e153]: People
+                - generic [ref=f3e154]: "Primary owner: coordination.designer.with.long.email@example.test. Priority: HIGH. Status: Not started. Target date: 2026-10-20. Committed date: Not committed."
+              - generic [ref=f3e155]:
+                - 'button "Open task: Project drawing coordination 2" [ref=f3e156] [cursor=pointer]':
+                  - generic [ref=f3e157]:
+                    - generic [ref=f3e158]: Task
+                    - strong [ref=f3e159]: Project drawing coordination 2
+                    - generic [ref=f3e160]: Studio residence — drawing coordination and delivery
+                  - generic [ref=f3e161]:
+                    - generic [ref=f3e162]: Priority
+                    - strong [ref=f3e163]: MEDIUM
+                  - generic [ref=f3e164]:
+                    - generic [ref=f3e165]: Status
+                    - generic [ref=f3e166]: In progress
+                  - generic [ref=f3e167]:
+                    - generic [ref=f3e168]: Target
+                    - strong [ref=f3e169]: 2026-10-20
+                  - generic [ref=f3e170]:
+                    - generic [ref=f3e171]: Committed
+                    - strong [ref=f3e172]: Not committed
+                  - generic [ref=f3e173]: Open task →
+                - generic [ref=f3e175]:
+                  - generic [ref=f3e176]: People · Primary owner
+                  - 'button "People on Project drawing coordination 2: responsible worker coordination.designer.with.long.email@example.test" [ref=f3e177] [cursor=pointer]':
+                    - generic [ref=f3e179]: CE
+                    - generic [ref=f3e180]:
+                      - strong [ref=f3e181]: coordination.designer.with.long.email@example.test
+                      - generic [ref=f3e182]: People
+                - generic [ref=f3e183]: "Primary owner: coordination.designer.with.long.email@example.test. Priority: MEDIUM. Status: In progress. Target date: 2026-10-20. Committed date: Not committed."
+              - generic [ref=f3e184]:
+                - 'button "Open task: Project drawing coordination 3" [ref=f3e185] [cursor=pointer]':
+                  - generic [ref=f3e186]:
+                    - generic [ref=f3e187]: Task
+                    - strong [ref=f3e188]: Project drawing coordination 3
+                    - generic [ref=f3e189]: Studio residence — drawing coordination and delivery
+                  - generic [ref=f3e190]:
+                    - generic [ref=f3e191]: Priority
+                    - strong [ref=f3e192]: LOW
+                  - generic [ref=f3e193]:
+                    - generic [ref=f3e194]: Status
+                    - generic [ref=f3e195]: Waiting
+                  - generic [ref=f3e196]:
+                    - generic [ref=f3e197]: Target
+                    - strong [ref=f3e198]: 2026-10-20
+                  - generic [ref=f3e199]:
+                    - generic [ref=f3e200]: Committed
+                    - strong [ref=f3e201]: Not committed
+                  - generic [ref=f3e202]: Open task →
+                - generic [ref=f3e204]:
+                  - generic [ref=f3e205]: People · Primary owner
+                  - 'button "People on Project drawing coordination 3: responsible worker coordination.designer.with.long.email@example.test" [ref=f3e206] [cursor=pointer]':
+                    - generic [ref=f3e208]: CE
+                    - generic [ref=f3e209]:
+                      - strong [ref=f3e210]: coordination.designer.with.long.email@example.test
+                      - generic [ref=f3e211]: People
+                - generic [ref=f3e212]: "Primary owner: coordination.designer.with.long.email@example.test. Priority: LOW. Status: Waiting. Target date: 2026-10-20. Committed date: Not committed."
+              - generic [ref=f3e213]:
+                - 'button "Open task: Project drawing coordination 4" [ref=f3e214] [cursor=pointer]':
+                  - generic [ref=f3e215]:
+                    - generic [ref=f3e216]: Task
+                    - strong [ref=f3e217]: Project drawing coordination 4
+                    - generic [ref=f3e218]: Studio residence — drawing coordination and delivery
+                  - generic [ref=f3e219]:
+                    - generic [ref=f3e220]: Priority
+                    - strong [ref=f3e221]: HIGH
+                  - generic [ref=f3e222]:
+                    - generic [ref=f3e223]: Status
+                    - generic [ref=f3e224]: Not started
+                  - generic [ref=f3e225]:
+                    - generic [ref=f3e226]: Target
+                    - strong [ref=f3e227]: 2026-10-20
+                  - generic [ref=f3e228]:
+                    - generic [ref=f3e229]: Committed
+                    - strong [ref=f3e230]: Not committed
+                  - generic [ref=f3e231]: Open task →
+                - generic [ref=f3e233]:
+                  - generic [ref=f3e234]: People · Primary owner
+                  - 'button "People on Project drawing coordination 4: responsible worker coordination.designer.with.long.email@example.test" [ref=f3e235] [cursor=pointer]':
+                    - generic [ref=f3e237]: CE
+                    - generic [ref=f3e238]:
+                      - strong [ref=f3e239]: coordination.designer.with.long.email@example.test
+                      - generic [ref=f3e240]: People
+                - generic [ref=f3e241]: "Primary owner: coordination.designer.with.long.email@example.test. Priority: HIGH. Status: Not started. Target date: 2026-10-20. Committed date: Not committed."
+              - generic [ref=f3e242]:
+                - 'button "Open task: Project drawing coordination 5" [ref=f3e243] [cursor=pointer]':
+                  - generic [ref=f3e244]:
+                    - generic [ref=f3e245]: Task
+                    - strong [ref=f3e246]: Project drawing coordination 5
+                    - generic [ref=f3e247]: Studio residence — drawing coordination and delivery
+                  - generic [ref=f3e248]:
+                    - generic [ref=f3e249]: Priority
+                    - strong [ref=f3e250]: MEDIUM
+                  - generic [ref=f3e251]:
+                    - generic [ref=f3e252]: Status
+                    - generic [ref=f3e253]: In progress
+                  - generic [ref=f3e254]:
+                    - generic [ref=f3e255]: Target
+                    - strong [ref=f3e256]: 2026-10-20
+                  - generic [ref=f3e257]:
+                    - generic [ref=f3e258]: Committed
+                    - strong [ref=f3e259]: Not committed
+                  - generic [ref=f3e260]: Open task →
+                - generic [ref=f3e262]:
+                  - generic [ref=f3e263]: People · Primary owner
+                  - 'button "People on Project drawing coordination 5: responsible worker coordination.designer.with.long.email@example.test" [ref=f3e264] [cursor=pointer]':
+                    - generic [ref=f3e266]: CE
+                    - generic [ref=f3e267]:
+                      - strong [ref=f3e268]: coordination.designer.with.long.email@example.test
+                      - generic [ref=f3e269]: People
+                - generic [ref=f3e270]: "Primary owner: coordination.designer.with.long.email@example.test. Priority: MEDIUM. Status: In progress. Target date: 2026-10-20. Committed date: Not committed."
+              - generic [ref=f3e271]:
+                - 'button "Open task: Project drawing coordination 6" [ref=f3e272] [cursor=pointer]':
+                  - generic [ref=f3e273]:
+                    - generic [ref=f3e274]: Task
+                    - strong [ref=f3e275]: Project drawing coordination 6
+                    - generic [ref=f3e276]: Studio residence — drawing coordination and delivery
+                  - generic [ref=f3e277]:
+                    - generic [ref=f3e278]: Priority
+                    - strong [ref=f3e279]: LOW
+                  - generic [ref=f3e280]:
+                    - generic [ref=f3e281]: Status
+                    - generic [ref=f3e282]: Waiting
+                  - generic [ref=f3e283]:
+                    - generic [ref=f3e284]: Target
+                    - strong [ref=f3e285]: 2026-10-20
+                  - generic [ref=f3e286]:
+                    - generic [ref=f3e287]: Committed
+                    - strong [ref=f3e288]: Not committed
+                  - generic [ref=f3e289]: Open task →
+                - generic [ref=f3e291]:
+                  - generic [ref=f3e292]: People · Primary owner
+                  - 'button "People on Project drawing coordination 6: responsible worker coordination.designer.with.long.email@example.test" [ref=f3e293] [cursor=pointer]':
+                    - generic [ref=f3e295]: CE
+                    - generic [ref=f3e296]:
+                      - strong [ref=f3e297]: coordination.designer.with.long.email@example.test
+                      - generic [ref=f3e298]: People
+                - generic [ref=f3e299]: "Primary owner: coordination.designer.with.long.email@example.test. Priority: LOW. Status: Waiting. Target date: 2026-10-20. Committed date: Not committed."
+  - dialog [ref=f3e300]:
+    - generic [ref=f3e301]:
+      - banner [ref=f3e302]:
+        - generic [ref=f3e303]:
+          - generic [ref=f3e304]: OWNER · CREATE TASK
+          - heading "Create or assign a task" [active] [level=2] [ref=f3e305]
+        - button "Close create task" [ref=f3e306] [cursor=pointer]: ×
+      - form "Create task" [ref=f3e308]:
+        - paragraph [ref=f3e309]: Choose the employee responsible for this task.
+        - group "Task details" [ref=f3e310]:
+          - generic [ref=f3e312]:
+            - generic [ref=f3e313]:
+              - generic [ref=f3e314]:
+                - text: Task name *
+                - textbox "Task name" [ref=f3e315]:
+                  - /placeholder: e.g. Revise the bedroom lighting plan
+              - generic [ref=f3e316]:
+                - text: Task brief
+                - generic [ref=f3e317]: · optional
+                - textbox "Task brief · optional" [ref=f3e318]:
+                  - /placeholder: What needs to be delivered? Add scope, context and the expected result.
+              - generic [ref=f3e319]:
+                - text: Why is this task needed? *
+                - textbox "Reason" [ref=f3e320]:
+                  - /placeholder: e.g. Incorporate the agreed client feedback
+                - generic [ref=f3e321]: Recorded in the task history.
+              - generic [ref=f3e322]:
+                - heading "More details · optional" [level=3] [ref=f3e323]:
+                  - text: More details
+                  - generic [ref=f3e324]: · optional
+                - group [ref=f3e325]:
+                  - generic "Collaborators (optional) · optional" [ref=f3e326] [cursor=pointer]
+                - group [ref=f3e327]:
+                  - generic "Planning (stage, start date and effort)" [ref=f3e328] [cursor=pointer]
+                  - option "No plan item" [selected]
+            - complementary "Task assignment" [ref=f3e329]:
+              - generic [ref=f3e330]:
+                - strong [ref=f3e331]: Assignment & timing
+                - generic [ref=f3e332]: Loading
+              - paragraph [ref=f3e333]: Fields marked * are required.
+              - generic [ref=f3e334]:
+                - text: Project
+                - textbox "Task project" [ref=f3e335]: Studio residence — drawing coordination and delivery
+              - group "Ownership" [ref=f3e336]:
+                - generic [ref=f3e338]:
+                  - text: Find primary owner
+                  - searchbox "Find primary owner" [ref=f3e339]
+                - generic [ref=f3e340]:
+                  - text: Primary owner *
+                  - combobox "Primary owner" [ref=f3e341]:
+                    - option "Choose an employee" [selected]
+                    - option "coordination.designer.with.long.email@example.test"
+              - generic [ref=f3e342]:
+                - text: Target date *
+                - textbox "Target date" [ref=f3e343]
+              - generic [ref=f3e344]:
+                - generic [ref=f3e345]:
+                  - text: Type *
+                  - combobox "Type" [ref=f3e346]:
+                    - option "Project" [selected]
+                    - option "Non project"
+                    - option "Recurring"
+                    - option "Correction"
+                    - option "Site"
+                    - option "Training practical"
+                - generic [ref=f3e347]:
+                  - text: Priority *
+                  - combobox "Priority" [ref=f3e348]:
+                    - option "Low"
+                    - option "Medium" [selected]
+                    - option "High"
+                    - option "Critical"
+              - generic [ref=f3e349]:
+                - text: Review requirement
+                - combobox "Review requirement Choose reviewers and submit evidence later in the review workspace." [ref=f3e350]:
+                  - option "No review required" [selected]
+                  - option "Internal review"
+                  - option "Client review"
+                  - option "Internal and client review"
+                - generic [ref=f3e351]: Choose reviewers and submit evidence later in the review workspace.
+      - contentinfo [ref=f3e352]:
+        - button "Cancel" [ref=f3e353] [cursor=pointer]
+        - button "Create task" [ref=f3e354] [cursor=pointer]

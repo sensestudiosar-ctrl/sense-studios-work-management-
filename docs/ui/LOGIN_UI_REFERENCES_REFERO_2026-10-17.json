@@ -1,0 +1,519 @@
+{
+  "date": "2026-10-17",
+  "purpose": "Curated login UI references",
+  "styleSearch": {
+    "error": {
+      "code": "NO_RESULTS",
+      "message": "Search returned no results"
+    }
+  },
+  "screens": [
+    {
+      "use": "Owner and staff sign-in",
+      "adapt": "Single focused column, recognisable email context, one prominent passkey action and a simple Back link.",
+      "boundary": "Use “Can't sign in?” for approved recovery. Do not copy Family's staff password fallback, blue palette or low-contrast text.",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/family.co/desktop/d01856fd-402f-4839-8c5b-7b0ec54c7bdf_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/family.co/desktop/d01856fd-402f-4839-8c5b-7b0ec54c7bdf_preview.jpg",
+        "colors": [
+          [
+            4,
+            148,
+            251
+          ],
+          [
+            37,
+            37,
+            37
+          ],
+          [
+            155,
+            160,
+            161
+          ],
+          [
+            252,
+            251,
+            251
+          ],
+          [
+            96,
+            96,
+            96
+          ]
+        ],
+        "hex_colors": [
+          "0x0494FB",
+          "0x252525",
+          "0x9BA0A1",
+          "0xFCFBFB",
+          "0x606060"
+        ],
+        "uuid": "caf2b40a-491b-4ed1-ac54-fcf422a062b7",
+        "page_url": "https://app.family.co/",
+        "site": {
+          "name": " Family",
+          "domain": "family.co",
+          "description": "Your favorite crypto wallet"
+        },
+        "ux_patterns": [],
+        "ui_elements": [
+          "Button",
+          "Text Field",
+          "Full-Screen Overlay",
+          "Icon"
+        ],
+        "page_types": [
+          "Log In"
+        ],
+        "fonts": [
+          "Inter"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/caf2b40a-491b-4ed1-ac54-fcf422a062b7",
+        "content": {
+          "description": "The screen features a minimalistic login interface centered vertically and horizontally on a white background (#FFFFFF). The layout is simple and clean with ample white space for a modern and uncluttered appearance. At the top center, there is a small black icon resembling four puzzle pieces forming a square. Below it, a bold heading text \"Welcome back to Family\" uses a modern sans-serif font (likely similar to Inter or Helvetica), font weight approximately 600, size around 16-18 px, color #000000. Underneath, a smaller subtitle in gray (#6C757D or similar) reads \"Continue below to finish logging in.\" The email address \"refero.design.team@gmail.com\" is displayed in a very light gray (#CCCCCC) or placeholder style font, centered and with an 'x' icon aligned to the right within the same input field to allow clearing the email input. The primary call-to-action button is a bright blue (#007BFF) rectangle with rounded corners, approximately 120 px wide and 36-40 px high, labeled \"Login with Passkey\" in white text, likely bold and centered. The button has subtle drop shadow or elevation to indicate clickability. Beneath the button is a small text link \"or login with password\" in lighter black or dark gray (#343A40) and smaller font size (~12-14 px) that appears as a secondary action. The entire content is center aligned with vertical spacing of around 12-16 px between text lines and elements. At the bottom center of the screen, a footer contains three text links \"Developers\", \"Privacy\", and \"Terms\" spaced evenly with a very light gray color (#ADB5BD) in small font (~10-12 px). The screen includes a back arrow icon in the top left corner for navigation, small and gray (#6C757D). The overall style is focused on simplicity and clarity, following modern minimalist UI design trends with a neutral color palette dominated by white and gray, contrasted by the bright primary blue button. Typography is clean sans-serif with good readability and alignment. Interaction states such as button hover or focus are not shown, but standard effects are implied. The layout is a single column design with centered alignment, suitable for desktop or tablet screens. No animations are visible in this static screenshot.",
+          "layout": "The layout is a centered single-column vertical stack. The screen uses generous white space surrounding all elements, with content vertically stacked from top to bottom: a back arrow button aligned top-left, then spaced vertical area leading to a centered icon, followed by heading text, subtitle text, email input with embedded clear button on the right, a primary button beneath with some vertical spacing, secondary link text below that, and finally a footer with three evenly spaced links aligned horizontally at the screen bottom center. Horizontal alignment for main form elements is centered with consistent spacing. Vertical padding around each element is roughly 12-16 px. The footer is separated from the main content area by a large vertical gap and is horizontally centered within the screen width. The overall grid can be described as one column with multiple groups stacked vertically: navigation group (back arrow), branding group (icon plus title and subtitle), input group (email input plus clear button), action group (primary button plus alternative login link), and footer group (three links). Keywords describe the layout as minimalistic, centered, vertical stacking, single column, spaced groups, balanced white space, and clean arrangement.",
+          "functions": "Users can perform the specific action of logging in to an existing account by entering their email address (which appears pre-filled) and then clicking on the \"Login with Passkey\" button. The interface provides visual feedback by showing the entered email and allowing the user to clear it with the 'x' button if needed. Additionally, users have the option to switch to a traditional password login via the \"or login with password\" link. The back arrow in the top-left corner supports navigation, presumably to a previous screen. This single-screen interface supports the broader task of secure user authentication, facilitating passwordless sign-in through passkeys, which is a modern alternative to passwords aimed at increasing convenience and security. Overall, the screen helps users efficiently and clearly proceed with logging into their account, focusing on ease of use, minimal input, and clear calls to action."
+        },
+        "flows": [
+          {
+            "id": 6208,
+            "name": "Logging in",
+            "step": 4,
+            "total_steps": 7
+          },
+          {
+            "id": 6209,
+            "name": "Resetting password",
+            "step": 7,
+            "total_steps": 7
+          }
+        ]
+      }
+    },
+    {
+      "use": "Owner setup and offline recovery kit",
+      "adapt": "A dedicated recovery-code step, short explanation, clearly separated code area and explicit saved-code acknowledgement.",
+      "boundary": "Keep the existing second-passkey requirement and acknowledged offline storage. Show a real code only after protected issuance; reference/demo codes never enter our product.",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/family.co/desktop/873c3e37-d5b0-45c0-8b92-4d558c14dba2_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/family.co/desktop/873c3e37-d5b0-45c0-8b92-4d558c14dba2_preview.jpg",
+        "colors": [
+          [
+            8,
+            213,
+            211
+          ],
+          [
+            4,
+            147,
+            250
+          ],
+          [
+            39,
+            39,
+            39
+          ],
+          [
+            149,
+            154,
+            155
+          ],
+          [
+            73,
+            226,
+            227
+          ]
+        ],
+        "hex_colors": [
+          "0x08D5D3",
+          "0x0493FA",
+          "0x272727",
+          "0x959A9B",
+          "0x49E2E3"
+        ],
+        "uuid": "ca6ab003-f7ab-4bf6-96d1-3ba3fdb573c2",
+        "page_url": "https://app.family.co/account-security/backup-codes/new",
+        "site": {
+          "name": " Family",
+          "domain": "family.co",
+          "description": "Your favorite crypto wallet"
+        },
+        "ux_patterns": [
+          "Save"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Text Field",
+          "Full-Screen Overlay",
+          "Icon",
+          "Illustration",
+          "Gradient"
+        ],
+        "page_types": [
+          "Settings"
+        ],
+        "fonts": [
+          "Inter",
+          "Life Sans"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/ca6ab003-f7ab-4bf6-96d1-3ba3fdb573c2",
+        "content": {
+          "description": "This screen is a minimalistic, clean interface for setting up an account recovery code. The background is solid white, emphasizing clarity and simplicity. Centered at the top is the page title 'Setup Account Recovery' in a medium black font, sized moderately for header prominence and centrally aligned horizontally. Below the title is a section with a bold heading 'Account Recovery Code' in black, followed by a smaller grey descriptive text that explains the purpose of the recovery code and advises saving it securely, aligned center and spaced with slight vertical margin below the heading. Centrally placed beneath the text is a rectangular card with rounded corners, split horizontally into two sections: the top section in a bright turquoise (#0dd) gradient or solid fill with white text 'Account Recovery Code' and a subtle abstract icon or pattern, and the bottom section white with the actual recovery code in bold black alphanumeric text. Directly below the card is a small icon and a blue link or button text labeled 'Copy to Clipboard' in light grey or subtle blue. Below that, in smaller, lighter grey text, is a message 'You won't be able to view your recovery code again.', centered and spaced from the elements above. At the bottom center is a large, rounded rectangular button in vibrant bright blue (#007bff) with white text reading \"I've Saved My Code\". The button is full width but with comfortable horizontal margins and a height around 40-50px. The layout is vertical and center-aligned with generous white space around elements. The typography uses a clean sans-serif font with appropriate size hierarchy: title largest, headings medium bold, descriptions smaller regular weight. The interface uses a calm and trustworthy blue color palette for actionable elements and informative graphic highlighting. The screen has a back arrow icon in the top left corner, subtle and minimal in style, for navigation. There are no animations described or visible in the static screenshot.",
+          "layout": "The layout is a single column vertical stack centered horizontally on the screen. It includes roughly five distinct vertical groups: header title at top; a heading with explanatory text; a recovery code card with copy link beneath; a warning text line; and a wide action button at the bottom. The entire content aligns centrally with consistent vertical spacing between groups. Horizontal alignment is center for all textual elements and UI controls. The recovery code card is visually segmented horizontally into a colored top band containing label text and an icon, and a white bottom band containing the actual code. The page uses generous padding around the edges and substantial whitespace between elements to avoid clutter. There is a back icon anchored top-left separated from the main column content. The button at the bottom stretches across the container width with horizontal padding that leaves margins on the sides for balance.",
+          "functions": "Users can view their unique account recovery code securely displayed in a highlighted card format. They have the option to copy the code to their clipboard via a 'Copy to Clipboard' link, which presumably provides feedback or confirmation on interaction. Users are informed prominently not to lose this code as it cannot be retrieved later, encouraging them to save it offline or in a password manager. After the user confirms they have saved the code by clicking the distinctive blue \"I've Saved My Code\" button, they can proceed with their account recovery setup or flow. The interface supports secure and careful handling of recovery codes by clearly separating the code visually, warning about one-time visibility, and providing a convenient copy mechanism. The broader purpose is to help users set up a reliable fallback access method for their account by securely presenting and enabling storage of an account recovery code, thereby improving account security and access management."
+        },
+        "flows": [
+          {
+            "id": 6203,
+            "name": "Creating new recovery code",
+            "step": 2,
+            "total_steps": 3
+          }
+        ]
+      }
+    },
+    {
+      "use": "Primary and Additional Client sign-in",
+      "adapt": "Clearly labelled email/password, Show password, recovery next to the password field and strong primary/secondary action hierarchy.",
+      "boundary": "Borrow the form details only. Omit the referral/promotion column; use our proposed email-code alternative rather than importing an additional client passkey sign-in method.",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/mercury.com/desktop/94763a9a-67e9-43bf-b644-9851e421d116_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/mercury.com/desktop/94763a9a-67e9-43bf-b644-9851e421d116_preview.jpg",
+        "colors": [
+          [
+            237,
+            237,
+            243
+          ],
+          [
+            161,
+            149,
+            174
+          ],
+          [
+            75,
+            75,
+            83
+          ],
+          [
+            83,
+            101,
+            232
+          ],
+          [
+            183,
+            168,
+            189
+          ]
+        ],
+        "hex_colors": [
+          "0xEDEDF3",
+          "0xA195AE",
+          "0x4B4B53",
+          "0x5365E8",
+          "0xB7A8BD"
+        ],
+        "uuid": "94763a9a-67e9-43bf-b644-9851e421d116",
+        "page_url": "https://app.mercury.com/login",
+        "site": {
+          "name": "Mercury",
+          "domain": "mercury.com",
+          "description": "Online Business Banking For Startups, Small Businesses & Scaling Companies"
+        },
+        "ux_patterns": [
+          "Share"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Text Field",
+          "Icon",
+          "Illustration",
+          "Gradient"
+        ],
+        "page_types": [
+          "Log In"
+        ],
+        "fonts": [
+          "Arcadia Text"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/94763a9a-67e9-43bf-b644-9851e421d116",
+        "content": {
+          "description": "Overall composition\n- Full-screen pale-lavender background (#F3F1F6 approximated) with a single centered white card (rounded corners, soft shadow) sitting in the middle of the viewport. The card has a subtle 1px vertical divider between two columns. There is generous whitespace around the card; top-left shows a small circular brand mark, top-right a simple text link “Open Account >”.\n\nCard container\n- Background: solid white (#FFFFFF). Corner radius: ~12px. Subtle box-shadow: rgba(16,24,40,0.06) with blur ~24px and offset y ~8px. Thin border or inner stroke subtle (rgba(16,24,40,0.03)). Padding inside card: ~28–32px. Card width ~720–820px on desktop, height ~360–420px.\n- Layout: two-column split. Left column (auth form) occupies roughly 60% of card width; right column (referral / promo) ~40%. The columns are separated by a 1px vertical divider color #F0F1F6.\n\nLeft column (Log in form)\n- Heading: “Log in” — left-aligned, font-weight semibold (600), size ~20px, color #0F1724 (very dark gray). Margin below heading ~16px.\n- Email input: single-line text input with light rounded rectangle background (#FAFAFB) or white with border #E7E8EE, border-radius 8px, height ~40px, inner padding 12px. Placeholder/filled text ~14px regular, color #111827. Example value shown (refere.design.team@gmail.com).\n- Password input: same style as email; displays obscured characters; right side of input contains an eye icon button (icon color #9CA3AF) to toggle visibility. Space below as small “Forgot password?” link — font-size 13px, color #6B7280 (muted), left-aligned.\n- Primary CTA: “Log in” button — rounded (8–10px radius), height ~40px, horizontal padding ~20–24px. Background: vivid indigo/purple blue — approximated gradient or solid #4F46E5 (#5B4BFF is acceptable). Text: white, weight 600, font-size ~14–15px. Button has subtle shadow and hover state: slightly darker shade.\n- Secondary action: “Continue with passkey” — a full-width or wide pill-style secondary button beneath primary area, light gray background (#F6F7FA), border 1px solid #ECECF2, icon on left (passkey key icon or shield), text ~14px medium weight, color #374151. Height ~40px, rounded radius 8px. Secondary explanatory text below: small muted copy (~12px, #6B7280) describing passkey option with inline link “Learn how to set it up” underlined or colored (#4F46E5).\n- Spacing: Group inputs vertically with 12–16px gap. Section bottom padding ~20px.\n\nRight column (Referral / Share the love)\n- Heading: “Share the love” — left/top of the column or aligned to top-left of this column; font-size ~16–18px, weight 600, color #111827. Short paragraph below describing referral terms — small body copy 13–14px, color #6B7280, line-height 18px.\n- Referral link pill: a compact input or copyable pill showing a short URL (mercury.com/...), with a small copy icon on the right. Pill background ~#F5F6FA, border-radius 8px, padding 10px, font-size 13px.\n- Promo illustration card: centered in column, square / slightly rectangular image with subtle gradient background (lavender→deep purple) and two small CTA outlines “Give $250” and “Get $250” arranged vertically inside the graphic. The illustration uses a soft linear gradient (example: from #EDE7FF to #D6CCFF) with subtle curved line texture. Under illustration a small “View Disclosure” link in muted text (#9CA3AF) sized 12px.\n- Column content aligned vertically with consistent spacing between heading, link pill, illustration, and disclosure.\n\nTypography\n- Suggested typeface: modern geometric sans (Inter, SF Pro Text, or system sans). Heading weights semibold (600). Body / input text regular (400). Sizes: heading 20px, subheading 16–18px, body / inputs 14px, microcopy 12px. Line-height: headings ~24px, body ~20px.\n\nColors (approximations)\n- Page background: #F3F1F6\n- Card background: #FFFFFF\n- Primary text: #0F1724 (very dark gray)\n- Muted text/copy: #6B7280\n- Input border / subtle lines: #E7E8EE or #EEF0F4\n- Primary CTA: #4F46E5 to #5B4BFF (gradient acceptable). Text on CTA: #FFFFFF\n- Secondary button background: #F6F7FA, border #ECECF2, text #374151\n- Divider between columns: #EEF0F4\n- Illustration gradient: from #EDE7FF → #D6CCFF and accents in #8B5CF6, #6D28D9\n\nIcons and imagery\n- Small circular brand mark at top-left: simple line-mark / logo in dark gray. Top-right “Open Account >” is a text link with subtle chevron icon.\n- Eye icon inside password input (toggle). Copy icon next to referral link. Small arrow chevron in “Open Account >”.\n\nStates and interactions\n- Input states: default border #E7E8EE, focus state with 1–2px outline or glow in primary color #C7D2FE or a 1px border #4F46E5. Disabled state muted (#F3F4F6).\n- Button states: default (solid purple), hover (slightly darker), active (pressed inset), disabled (muted gray background, low opacity).\n- Copy/clipboard affordance on referral link: clicking copy briefly shows a tooltip/toast “Copied” (0.9–1.8s) — easing: ease-out.\n\nAccessibility notes\n- Sufficient contrast on primary CTA and important text. Inputs have labels or placeholders; eye icon has accessible name. Buttons reachable by keyboard; focus outline visible (2px). Copy link provides live region announcement.\n\nAnimation notes\n- Minimal micro-interactions: button hover 120–160ms ease, input focus highlight 120ms, copy-to-clipboard toast slide/fade-in 200ms ease-out. No heavy motion on main layout.\n\nOverall visual language\n- Clean, minimal, modern and friendly. Heavy use of white space and soft pastels/purples for brand accents. Rounded geometry, subtle shadows, and a two-column card that separates authentication actions from a secondary promotional referral block.",
+          "layout": "Global layout\n- Screen: single full-bleed background with a centered card container. The card is the primary focus, horizontally centered with generous side margins.\n- Card: 2-column layout divided by a vertical divider. Columns not nested; they are siblings inside the card flex container.\n\nColumns\n- Column count: 2 columns (Left: Auth Form, Right: Referral / Promo). Left column width ~60%; right column width ~40% (ratio approx 3:2). \n- Column grouping: Each column contains stacked groups (heading, form controls, CTAs on left; heading, referral link, illustration, disclosure on right). Vertical stacking uses consistent spacing (12–20px gaps) and inner paddings.\n\nRows and alignment\n- The left column uses a vertical flow with rows:\n  1) Heading row (Log in) aligned left\n  2) Email input row\n  3) Password input + forgot link row\n  4) Primary CTA row\n  5) Secondary CTA (passkey) row + microcopy row\n- The right column vertical flow:\n  1) Heading + short description\n  2) Referral link pill row\n  3) Illustration/graphic block (centered inside column)\n  4) Disclosure link row\n\nGrid-like structure\n- The card behaves like a two-column grid (1 row, 2 columns). Within each column, elements are placed using a vertical single-column stack. Spacing uses an 8px baseline grid with multiples for margins/paddings (8–32px increments).\n\nBreakpoints (responsive behavior - suggested)\n- Desktop (>=1024px): two-column card as shown.\n- Tablet (640–1024px): columns may stack vertically; promo block below auth form or become horizontally smaller; card width becomes fluid.\n- Mobile (<640px): single-column stacked layout: header, email, password, primary CTA, passkey button, then referral block; padding reduced to ~16px, control heights maintained.\n\nLayout keywords\n- center-aligned card\n- two-column split\n- vertical stack in columns\n- 3:2 column ratio\n- subtle vertical divider\n- spacious white space\n- rounded corners\n- soft shadow\n- top navigation link\n- copyable referral pill",
+          "functions": "Specific user actions (micro-level)\n- Enter email address into email text field. The input supports typed text, cursor movement, and copy/paste.\n- Enter password into password field; toggle visibility by clicking the eye icon that switches between obscured and plain text. The password field may validate length or characters on submit.\n- Click “Log in” primary button to submit credentials. On submit, the UI should provide feedback: loading indicator on the button, error messages inline under inputs if invalid, or navigation to the authenticated area on success.\n- Click “Forgot password?” link to open a recovery flow (likely a separate modal or route).\n- Click “Continue with passkey” to trigger device/native passkey authentication (platform prompt). The button provides explanatory microcopy and a link to learn how to set it up.\n- Interact with the referral link: select or click the copy icon to copy the referral URL to clipboard; a small toast or tooltip confirms copy success.\n- Click illustration CTAs or “Give $250” / “Get $250” inside the promo visual (if interactive) to view details or start referral actions.\n- Click “View Disclosure” to read legal terms — likely opens a modal or navigates to a disclosure document. \n- Click top-right “Open Account >” to navigate to the account creation flow.\n\nMedium-level tasks (workflows)\n- Authenticate and gain access: user completes the credentials fields or uses passkey, triggers validation, receives feedback, and is granted access to the account dashboard.\n- Recover account: by clicking “Forgot password?” user is guided through a password reset flow (email verification, set new password).\n- Use referral: user copies their referral link and shares externally; system tracks referrals and credits rewards when conditions are met.\n- Learn about passkey setup: the user follows the informational link to enable passwordless sign-in for future faster authentication.\n\nHigher-level goals (macro-level)\n- Primary goal: allow returning users to securely log in to their account with either password or passkey in one central, low-friction interface while presenting promotional referral incentives.\n- Secondary goal: surface a referral program and encourage users to copy/share their unique link (visibility of reward and quick-copy affordance increases referrals).\n- Tertiary goal: reduce friction for sign-in with passkeys and provide quick access to account creation for new users via the “Open Account” link.\n\nHow the UI supports goals\n- Clear separation (left column) focuses the user on signing in, while the right column provides contextual marketing without distracting the primary task.\n- Large, high-contrast primary CTA for quick recognition; secondary passkey CTA offers alternative secure flows.\n- Copyable referral pill and prominent visual reinforce the referral program; explanatory microcopy clarifies requirements (e.g., deposit conditions)."
+        },
+        "flows": [
+          {
+            "id": 11027,
+            "name": "Logging in",
+            "step": 3,
+            "total_steps": 7
+          }
+        ]
+      }
+    },
+    {
+      "use": "Client forgot password request",
+      "adapt": "One email field, one reset-request action and an obvious Back to sign in path.",
+      "boundary": "Our generic durable acknowledgement, resend/error and expired/used-link states still need specification; this single screenshot does not prove those states.",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/cal.com/desktop/1012c03c-efc8-4ced-b0ab-d14a09a0ba3c_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/cal.com/desktop/1012c03c-efc8-4ced-b0ab-d14a09a0ba3c_preview.jpg",
+        "colors": [
+          [
+            243,
+            244,
+            244
+          ],
+          [
+            26,
+            34,
+            43
+          ],
+          [
+            155,
+            159,
+            165
+          ],
+          [
+            93,
+            98,
+            107
+          ],
+          [
+            252,
+            251,
+            251
+          ]
+        ],
+        "hex_colors": [
+          "0xF3F4F4",
+          "0x1A222B",
+          "0x9B9FA5",
+          "0x5D626B",
+          "0xFCFBFB"
+        ],
+        "uuid": "48a1e812-f5d1-48ce-a9a3-655111c33289",
+        "page_url": "https://app.cal.com/auth/forgot-password",
+        "site": {
+          "name": "Cal",
+          "domain": "cal.com",
+          "description": "Open Scheduling Infrastructure"
+        },
+        "ux_patterns": [],
+        "ui_elements": [
+          "Button",
+          "Text Field"
+        ],
+        "page_types": [
+          "Reset Password"
+        ],
+        "fonts": [
+          "Inter",
+          "Cal Sans"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/48a1e812-f5d1-48ce-a9a3-655111c33289",
+        "content": {
+          "description": "The screen features a centered password recovery form on a light grayish-blue background (#f0f4f8). At the top center is a small logo reading \"Cal.com\" in black text. Below the logo, the heading \"Forgot Password?\" is displayed in dark gray (#3b3b4f) using a bold sans-serif font, size approximately 24px, with comfortable line spacing, horizontally centered. The form is a white rectangle (#ffffff) with subtle rounded corners and a soft shadow to create depth, sized to comfortably contain the input and button with padding around them. Inside the form, there is a label \"Email address\" in medium gray (#7b7b8a) aligned left and above the input field. The input field is a single-line text box with placeholder text \"john.doe@example.com\" in light gray (#b0b0b8), bordered with a thin light gray border (#d0d0d8), rounded corners, and padding inside for text comfort. Beneath the input is a full-width dark navy button (#121726) with white text \"Send reset email\" in uppercase or small caps, centered, using a clean sans-serif font around 14-16px, with smooth rounded corners. The button has a subtle hover effect that slightly changes the shade or brightness to indicate interactivity. Below the form is a small textual link \"Back to sign in\" in medium gray (#7b7b8a), centered and underlined on hover, providing navigation to the sign in page. The overall style is minimalist and clean, with ample whitespace and a balanced vertical layout, ensuring clarity and ease of use.",
+          "layout": "The layout is centered vertically and horizontally within the viewport, consisting of a single column structure. At the top is the logo, followed by a heading, then a form container with a label, input field, and button stacked vertically with consistent spacing. Below the form is a text link. The form container is visually distinct with background color and shadow for emphasis. Spacing around elements is generous, providing a clean, uncluttered appearance. The entire page uses a simple vertical flow with center alignment to guide the user focus.",
+          "functions": "Users can enter their email address into the input field to request a password reset. The input field provides a placeholder example to indicate the expected format. After entering the email, users can click the \"Send reset email\" button to submit the request. The button's dark color signifies its importance and encourages interaction. Upon submission, the system is expected to send an email with instructions for resetting the password. The \"Back to sign in\" link allows users to navigate back to the login page if they recall their password or want to abandon the reset process. This screen supports the broader goal of enabling users who have forgotten their account password to regain access securely and conveniently by initiating the reset workflow efficiently."
+        },
+        "flows": [
+          {
+            "id": 3482,
+            "name": "Resetting password",
+            "step": 2,
+            "total_steps": 8
+          }
+        ]
+      }
+    },
+    {
+      "use": "Consultant, Vendor and Factory code entry",
+      "adapt": "A clear “Check your email” step, the user-entered email context, expiry guidance and spam/help instructions.",
+      "boundary": "Keep one labelled pasteable code input, plus change-email/resend controls. Do not copy six separate focus-jumping inputs, decorative circles or unsupported resend timing.",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/dock.us/desktop/4a6d3cca-89b2-4300-9af7-c3afafed0cb3_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/dock.us/desktop/97c45dc3-e983-4c36-bea3-9c02e8017ee3_preview.jpg",
+        "colors": [
+          [
+            29,
+            32,
+            38
+          ],
+          [
+            248,
+            249,
+            251
+          ],
+          [
+            157,
+            168,
+            182
+          ],
+          [
+            54,
+            78,
+            232
+          ],
+          [
+            124,
+            124,
+            129
+          ]
+        ],
+        "hex_colors": [
+          "0x1D2026",
+          "0xF8F9FB",
+          "0x9DA8B6",
+          "0x364EE8",
+          "0x7C7C81"
+        ],
+        "uuid": "637c7ad0-39ff-4fc1-88b4-fcacf73c57d8",
+        "page_url": "https://auth.dock.us/find-your-dock/pin/nqbHgLTKZcsC",
+        "site": {
+          "name": "Dock",
+          "domain": "dock.us",
+          "description": "Makes it easy to create sales proposals, onboarding plans, client portals, and project hubs"
+        },
+        "ux_patterns": [],
+        "ui_elements": [
+          "Text Field",
+          "Dialog & Modal Window",
+          "Icon"
+        ],
+        "page_types": [
+          "Log In",
+          "Verification"
+        ],
+        "fonts": [
+          "San Francisco",
+          "Roobert"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/637c7ad0-39ff-4fc1-88b4-fcacf73c57d8",
+        "content": {
+          "description": "The screen presents a minimalistic and clean verification interface. The background is a very light off-white (#f8fbff) with faint overlapping large circular shapes in a very subtle light blue gradient, adding depth without distraction. Centrally positioned is a white rectangular card with subtle drop shadow to create elevation and visual focus. The card has rounded corners and contains text and input fields arranged vertically with balanced padding. At the top left corner of the whole screen is a small company logo featuring a blue and purple gradient graphic beside the black text \"dock\" in a modern sans-serif font. Inside the card, the main heading reads \"Check your email for a code\" in a black or very dark grey font (#121212), medium weight and size around 18-20px, centered. Below is supporting text in smaller size (~14px), grey (#666666) that instructs the user about the 6-character code sent to the email address, which is presented inline in bold for emphasis. Then there's an input area for 6 single-character fields for code entry, arranged horizontally in two groups of three separated by a dash spaced with consistent margins. Each input box is square with a thin light grey border (#CCCCCC) and subtle rounded corners. Placeholder circles or underscores indicate empty fields. The input fields highlight or focus state is not shown but presumably it changes visually when active. Beneath input boxes is a small subtle hint text reminding the user to check spam if code is not found. The entire layout uses a neat, consistent spacing, center alignment, and uses a modern sans-serif font family throughout. No animations visible in the screenshot but could be implied during typing or in error states.",
+          "layout": "The layout is minimal and centered on the screen with a large white rectangular card placed exactly at the vertical and horizontal center. The card contains vertically stacked elements: a heading, descriptive text, the verification code input fields in a single row subdivided into two groups of three inputs, and a small hint text at the bottom. The entire card has symmetrical padding and margin to keep content balanced. The background features large circular shapes layered behind the card, creating subtle depth and interest without clutter. There is one main column inside the card for text and input fields. Input fields are arranged horizontally within a subgroup inside the card, split into two subgroups separated by a dash symbol. The screen is spacious with ample whitespace around the card, emphasizing the focus area.",
+          "functions": "Users can read the instruction to check their email for a 6-character code required for verification. They can input the received code into six individual input fields arranged clearly and separately for ease of entry. The interface guides the users with a message confirming to which email the code was sent and warns about expiration. If the user can't find the code, they are prompted to check their spam folder with additional text. This screen facilitates the task of two-factor or email verification as part of a secure login or sign up/authentication flow. It ensures clarity by emphasizing the key instructions and input method, efficient by grouping input fields, and usable by providing contextual cues about the code's source and urgency. The ultimate purpose is to verify the user's identity via email to grant access or continue the authentication process, making the process secure and user-friendly."
+        }
+      }
+    },
+    {
+      "use": "Account security and active sessions",
+      "adapt": "Security settings as clean rows: title/help on the left, current status and action on the right; devices/sessions in a separate section.",
+      "boundary": "Expose only implemented, authorized features. Do not import recovery-email changes, an MFA off toggle, security checkup, location inference or every Dropbox account feature.",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/dropbox.com/desktop/6bb72ede-e9e9-4da2-a2a1-757f29547caa_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/dropbox.com/desktop/6bb72ede-e9e9-4da2-a2a1-757f29547caa_preview.jpg",
+        "colors": [
+          [
+            105,
+            103,
+            100
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            153,
+            152,
+            151
+          ],
+          [
+            26,
+            26,
+            25
+          ],
+          [
+            208,
+            94,
+            58
+          ]
+        ],
+        "hex_colors": [
+          "0x696764",
+          "0xFAFAFA",
+          "0x999897",
+          "0x1A1A19",
+          "0xD05E3A"
+        ],
+        "uuid": "6bb72ede-e9e9-4da2-a2a1-757f29547caa",
+        "page_url": "https://www.dropbox.com/account/security",
+        "site": {
+          "name": "Dropbox",
+          "domain": "dropbox.com",
+          "description": "Secure Cloud Storage"
+        },
+        "ux_patterns": [],
+        "ui_elements": [
+          "List",
+          "Button",
+          "Tabs",
+          "Switch & Toggle",
+          "Search Field",
+          "Sidebar & Drawer",
+          "Icon",
+          "Avatar"
+        ],
+        "page_types": [
+          "Settings"
+        ],
+        "fonts": [
+          "Grotesk",
+          "Slack Grotesk"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/6bb72ede-e9e9-4da2-a2a1-757f29547caa",
+        "content": {
+          "description": "A clean, minimalist account settings interface with a very light gray-white workspace and subtle dividers, strongly resembling a cloud storage product’s security preferences screen. The overall visual style is sparse, modern, and utility-focused, with a neutral palette dominated by off-white backgrounds and dark neutral text. Main background is #FAFAFA / RGB(250,250,250), side panels and separators use very light gray tints around #F1F1F1 to #E6E6E6, primary body text is near-black #1A1A19 / RGB(26,26,25), secondary labels and muted copy use medium gray tones around #696764 / RGB(105,103,100) and #999897 / RGB(153,152,151). Accent color appears as a warm orange-red #D05E3A / RGB(208,94,58) in the circular user avatar at the top right and small status highlights. The typography is a modern sans-serif system style similar to Inter, Helvetica Neue, or Arial, with a clear hierarchy: page title in larger semibold text, section labels in medium-weight small caps-like tab labels, and supporting descriptions in smaller light-to-regular weight gray text. The top bar includes a large rounded search input with a thin light-gray border, placeholder text “Search,” and a magnifying-glass icon at the left. On the far right, a text button “Invite members” is paired with a small user-add icon, followed by a small circular avatar badge with initials in white on orange-red background. The left sidebar is narrow and icon-driven on the far left, with stacked navigation icons and labels, and a second wider navigation panel showing Home and subitems such as All files, Photos, Shared, File requests, and Deleted files. Sections like Quick access and Starred are displayed with compact spacing and disclosure arrows, plus a small plus icon beside Quick access. The main content area begins with the heading “Personal account,” then a horizontal tab row: General, Security, Notifications, Apps, Branding, Refer a friend, Privacy, Sharing. The active tab “Security” is indicated by darker text and a thin underline. Below, the page is organized into full-width rows separated by fine horizontal rules. Each row has a left-aligned feature title, sometimes followed by a rounded “Recommended” pill in pale blue with blue text, and a short helper sentence beneath in smaller gray text. On the right side of each row are action controls aligned to the far edge: text links such as “Add a recovery email,” “Manage passkeys,” “Change password,” “Show,” and “Start checkup,” styled as dark text links with subtle underline on hover/active behavior implied by link-like appearance. The 2-factor authentication row includes an inline toggle switch on the right in the off state, with a dark circular knob positioned left and a light track, accompanied by the label “Off.” The Recovery email address row includes a right-aligned action link. The Passkeys row shows the action “Manage passkeys” and a small muted count “1 passkey” beneath it. Lower on the screen, a “Web browsers” section contains a bordered table with a light gray header row and columns for Browser, Location, and Most recent activity. One visible entry shows Chrome on Mac OS X, a location in Piscataway, New Jersey, United States, and current session status with a small info icon. Additional security sections continue below, such as Devices, Paper mobile devices, and Mobile contacts, each separated by ample white space and thin dividing lines. The overall spacing is generous, with left-aligned content in a centered main column, subtle card-like table boundaries, and no heavy shadows or decorative imagery, emphasizing clarity and administrative control.",
+          "layout": "Desktop settings layout with a two-panel left navigation and a large content canvas on the right. The far-left rail is a narrow icon column with vertically stacked navigation icons and labels; beside it sits a wider sidebar panel with section title Home, followed by a vertical list of navigation links and a Quick access group. The main workspace occupies the remaining width and is centered with generous margins. At the top of the main area there is a full-width search bar aligned left within the content header, and right-aligned account actions including an invite button and circular user avatar. Below the header, the page title appears above a horizontal tab strip with 8 tabs. The content is arranged as a single-column list of settings rows, each row spanning the main content width and separated by thin horizontal rules. Each row follows a two-zone structure: left zone for title and description, right zone for the action control or status. The browser section introduces a bordered table with a header row and one visible data row, laid out in 3 main columns plus subtle icon/status cell content. Lower sections continue in the same one-column stacked structure. There is no masonry or card grid; the structure is a structured settings form with tab navigation and table-based details.",
+          "functions": "Users can review and manage account security settings from this screen. At the smallest interaction level, they can toggle two-factor authentication on or off, click to add a recovery email, manage passkeys, change password, reveal recovery codes, and start a security checkup. They can also inspect signed-in browser sessions and see device-related account connections. The interface supports careful security maintenance by grouping related actions into distinct rows with explanatory helper text and clear right-aligned actions, so users can understand what each feature does before making changes. At a broader workflow level, a user can harden account security by enabling 2FA, adding recovery methods, updating authentication methods, and reviewing active sessions for suspicious access. The browser table helps them confirm where their account is currently signed in and whether a session is active. Over the larger purpose of the screen, users are able to manage the security posture of their personal account in one place, reducing risk of unauthorized access and providing recovery options if they lose access to email or phone. The page is designed for administrative self-service: it lets the user audit, configure, and verify key security protections without leaving the account settings area."
+        }
+      }
+    }
+  ],
+  "inspectedImages": [
+    {
+      "screenId": "caf2b40a-491b-4ed1-ac54-fcf422a062b7",
+      "size": "full"
+    },
+    {
+      "screenId": "ca6ab003-f7ab-4bf6-96d1-3ba3fdb573c2",
+      "size": "full"
+    },
+    {
+      "screenId": "94763a9a-67e9-43bf-b644-9851e421d116",
+      "size": "thumbnail"
+    },
+    {
+      "screenId": "48a1e812-f5d1-48ce-a9a3-655111c33289",
+      "size": "full"
+    },
+    {
+      "screenId": "637c7ad0-39ff-4fc1-88b4-fcacf73c57d8",
+      "size": "full"
+    },
+    {
+      "screenId": "6bb72ede-e9e9-4da2-a2a1-757f29547caa",
+      "size": "full"
+    }
+  ],
+  "reusedFlowIds": [
+    5727,
+    4815
+  ],
+  "priorEvidence": [
+    "LOGIN_FLOWS_REFERO_EVIDENCE_2026-10-17.json",
+    "UX_UI_FLOW_REFERO_EVIDENCE_2026-10-17.json"
+  ]
+}

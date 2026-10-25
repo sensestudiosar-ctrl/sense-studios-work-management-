@@ -1,0 +1,10 @@
+{
+  "mode": "synthetic shell; not authenticated role acceptance",
+  "checks": [
+    "click opens finder after shell ready",
+    "Control+k opens finder after shell ready",
+    "Time filtering and Enter navigation"
+  ],
+  "blockedWrites": [],
+  "status": "PASS"
+}

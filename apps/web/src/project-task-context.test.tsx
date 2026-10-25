@@ -61,7 +61,7 @@ describe("fixed project task workspace", () => {
   it("creates with fixed project and opens the canonical ID without replacing project context", async () => {
     const mock = api(); render(<TaskWorkspace csrfToken="csrf" owner listFirst projectContext={project} />);
     const { dialog, form } = await openComposer();
-    expect(within(form).getByLabelText("Task project")).toHaveValue(project.title); expect(within(form).getByLabelText("Task project")).toHaveAttribute("readonly");
+    expect(within(form).getByLabelText("Project")).toHaveValue(project.title); expect(within(form).getByLabelText("Project")).toHaveAttribute("readonly");
     expect(within(form).getByLabelText("Type")).toHaveValue("PROJECT");
     fireEvent.change(within(form).getByLabelText("Primary owner"), { target: { value: person.id } });
     fireEvent.change(within(form).getByLabelText("Task name"), { target: { value: task.title } });

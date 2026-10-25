@@ -1,0 +1,478 @@
+{
+  "before719": {
+    "cards": [
+      {
+        "bottom": 293.703125,
+        "height": 149.5,
+        "name": "◈Needs action",
+        "top": 144.203125
+      },
+      {
+        "bottom": 293.703125,
+        "height": 149.5,
+        "name": "◷Overdue",
+        "top": 144.203125
+      },
+      {
+        "bottom": 293.703125,
+        "height": 149.5,
+        "name": "◇Reviews",
+        "top": 144.203125
+      },
+      {
+        "bottom": 293.703125,
+        "height": 149.5,
+        "name": "⊘Waiting / blocked",
+        "top": 144.203125
+      }
+    ],
+    "queueTop": 305.703125,
+    "scrollY": 0,
+    "viewport": {
+      "height": 884,
+      "width": 719
+    }
+  },
+  "after": [
+    {
+      "cards": [
+        {
+          "bottom": 217.84375,
+          "height": 86.1875,
+          "left": 12,
+          "name": "◈Needs action",
+          "right": 149.5,
+          "top": 131.65625,
+          "width": 137.5
+        },
+        {
+          "bottom": 217.84375,
+          "height": 86.1875,
+          "left": 155.5,
+          "name": "◷Overdue",
+          "right": 293,
+          "top": 131.65625,
+          "width": 137.5
+        },
+        {
+          "bottom": 300.9375,
+          "height": 77.09375,
+          "left": 12,
+          "name": "◇Reviews",
+          "right": 149.5,
+          "top": 223.84375,
+          "width": 137.5
+        },
+        {
+          "bottom": 300.9375,
+          "height": 77.09375,
+          "left": 155.5,
+          "name": "⊘Waiting / blocked",
+          "right": 293,
+          "top": 223.84375,
+          "width": 137.5
+        }
+      ],
+      "controlOverlap": false,
+      "decisions": {
+        "bottom": 196.75,
+        "fontSize": "10px",
+        "height": 44,
+        "left": 104.5,
+        "nested": false,
+        "right": 148.5,
+        "top": 152.75,
+        "width": 44
+      },
+      "overflow": false,
+      "queueTop": 312.9375,
+      "scrollY": 0,
+      "sourceButton": {
+        "bottom": 216.84375,
+        "height": 84.1875,
+        "left": 15,
+        "right": 104.5,
+        "top": 132.65625,
+        "width": 89.5
+      },
+      "sourceCounts": [
+        {
+          "bottom": 179.453125,
+          "height": 19.796875,
+          "label": "Corrections: 0",
+          "left": 21,
+          "right": 94.1875,
+          "text": "0Corrections",
+          "top": 159.65625,
+          "width": 73.1875
+        },
+        {
+          "bottom": 200.25,
+          "height": 19.796875,
+          "label": "Management: 0",
+          "left": 21,
+          "right": 94.1875,
+          "text": "0Management",
+          "top": 180.453125,
+          "width": 73.1875
+        }
+      ],
+      "viewport": {
+        "height": 740,
+        "width": 320
+      }
+    },
+    {
+      "cards": [
+        {
+          "bottom": 217.84375,
+          "height": 86.1875,
+          "left": 12,
+          "name": "◈Needs action",
+          "right": 184.5,
+          "top": 131.65625,
+          "width": 172.5
+        },
+        {
+          "bottom": 217.84375,
+          "height": 86.1875,
+          "left": 190.5,
+          "name": "◷Overdue",
+          "right": 363,
+          "top": 131.65625,
+          "width": 172.5
+        },
+        {
+          "bottom": 300.9375,
+          "height": 77.09375,
+          "left": 12,
+          "name": "◇Reviews",
+          "right": 184.5,
+          "top": 223.84375,
+          "width": 172.5
+        },
+        {
+          "bottom": 300.9375,
+          "height": 77.09375,
+          "left": 190.5,
+          "name": "⊘Waiting / blocked",
+          "right": 363,
+          "top": 223.84375,
+          "width": 172.5
+        }
+      ],
+      "controlOverlap": false,
+      "decisions": {
+        "bottom": 196.75,
+        "fontSize": "10px",
+        "height": 44,
+        "left": 139.5,
+        "nested": false,
+        "right": 183.5,
+        "top": 152.75,
+        "width": 44
+      },
+      "overflow": false,
+      "queueTop": 312.9375,
+      "scrollY": 0,
+      "sourceButton": {
+        "bottom": 216.84375,
+        "height": 84.1875,
+        "left": 15,
+        "right": 139.5,
+        "top": 132.65625,
+        "width": 124.5
+      },
+      "sourceCounts": [
+        {
+          "bottom": 179.453125,
+          "height": 19.796875,
+          "label": "Corrections: 0",
+          "left": 21,
+          "right": 94.1875,
+          "text": "0Corrections",
+          "top": 159.65625,
+          "width": 73.1875
+        },
+        {
+          "bottom": 200.25,
+          "height": 19.796875,
+          "label": "Management: 0",
+          "left": 21,
+          "right": 94.1875,
+          "text": "0Management",
+          "top": 180.453125,
+          "width": 73.1875
+        }
+      ],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "cards": [
+        {
+          "bottom": 237.703125,
+          "height": 93.5,
+          "left": 12,
+          "name": "◈Needs action",
+          "right": 174.5,
+          "top": 144.203125,
+          "width": 162.5
+        },
+        {
+          "bottom": 237.703125,
+          "height": 93.5,
+          "left": 184.5,
+          "name": "◷Overdue",
+          "right": 347,
+          "top": 144.203125,
+          "width": 162.5
+        },
+        {
+          "bottom": 237.703125,
+          "height": 93.5,
+          "left": 357,
+          "name": "◇Reviews",
+          "right": 519.5,
+          "top": 144.203125,
+          "width": 162.5
+        },
+        {
+          "bottom": 237.703125,
+          "height": 93.5,
+          "left": 529.5,
+          "name": "⊘Waiting / blocked",
+          "right": 692,
+          "top": 144.203125,
+          "width": 162.5
+        }
+      ],
+      "controlOverlap": false,
+      "decisions": {
+        "bottom": 212.953125,
+        "fontSize": "10px",
+        "height": 44,
+        "left": 129.5,
+        "nested": false,
+        "right": 173.5,
+        "top": 168.953125,
+        "width": 44
+      },
+      "overflow": false,
+      "queueTop": 249.703125,
+      "scrollY": 0,
+      "sourceButton": {
+        "bottom": 234.953125,
+        "height": 88,
+        "left": 15,
+        "right": 129.5,
+        "top": 146.953125,
+        "width": 114.5
+      },
+      "sourceCounts": [
+        {
+          "bottom": 194.453125,
+          "height": 19.796875,
+          "label": "Corrections: 0",
+          "left": 25,
+          "right": 98.1875,
+          "text": "0Corrections",
+          "top": 174.65625,
+          "width": 73.1875
+        },
+        {
+          "bottom": 215.25,
+          "height": 19.796875,
+          "label": "Management: 0",
+          "left": 25,
+          "right": 98.1875,
+          "text": "0Management",
+          "top": 195.453125,
+          "width": 73.1875
+        }
+      ],
+      "viewport": {
+        "height": 884,
+        "width": 719
+      }
+    },
+    {
+      "cards": [
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 95.71875,
+          "name": "◈Needs action",
+          "right": 308.859375,
+          "top": 156.203125,
+          "width": 213.140625
+        },
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 318.859375,
+          "name": "◷Overdue",
+          "right": 532,
+          "top": 156.203125,
+          "width": 213.140625
+        },
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 542,
+          "name": "◇Reviews",
+          "right": 755.140625,
+          "top": 156.203125,
+          "width": 213.140625
+        },
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 765.140625,
+          "name": "⊘Waiting / blocked",
+          "right": 978.28125,
+          "top": 156.203125,
+          "width": 213.140625
+        }
+      ],
+      "controlOverlap": false,
+      "decisions": {
+        "bottom": 224.953125,
+        "fontSize": "10px",
+        "height": 44,
+        "left": 263.859375,
+        "nested": false,
+        "right": 307.859375,
+        "top": 180.953125,
+        "width": 44
+      },
+      "overflow": false,
+      "queueTop": 261.703125,
+      "scrollY": 0,
+      "sourceButton": {
+        "bottom": 246.953125,
+        "height": 88,
+        "left": 98.71875,
+        "right": 263.859375,
+        "top": 158.953125,
+        "width": 165.140625
+      },
+      "sourceCounts": [
+        {
+          "bottom": 206.453125,
+          "height": 19.796875,
+          "label": "Corrections: 0",
+          "left": 108.71875,
+          "right": 181.90625,
+          "text": "0Corrections",
+          "top": 186.65625,
+          "width": 73.1875
+        },
+        {
+          "bottom": 227.25,
+          "height": 19.796875,
+          "label": "Management: 0",
+          "left": 108.71875,
+          "right": 181.90625,
+          "text": "0Management",
+          "top": 207.453125,
+          "width": 73.1875
+        }
+      ],
+      "viewport": {
+        "height": 900,
+        "width": 1024
+      }
+    },
+    {
+      "cards": [
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 275.1875,
+          "name": "◈Needs action",
+          "right": 544.34375,
+          "top": 156.203125,
+          "width": 269.15625
+        },
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 554.34375,
+          "name": "◷Overdue",
+          "right": 823.5,
+          "top": 156.203125,
+          "width": 269.15625
+        },
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 833.5,
+          "name": "◇Reviews",
+          "right": 1102.65625,
+          "top": 156.203125,
+          "width": 269.15625
+        },
+        {
+          "bottom": 249.703125,
+          "height": 93.5,
+          "left": 1112.65625,
+          "name": "⊘Waiting / blocked",
+          "right": 1381.8125,
+          "top": 156.203125,
+          "width": 269.15625
+        }
+      ],
+      "controlOverlap": false,
+      "decisions": {
+        "bottom": 224.953125,
+        "fontSize": "10px",
+        "height": 44,
+        "left": 499.34375,
+        "nested": false,
+        "right": 543.34375,
+        "top": 180.953125,
+        "width": 44
+      },
+      "overflow": false,
+      "queueTop": 261.703125,
+      "scrollY": 0,
+      "sourceButton": {
+        "bottom": 246.953125,
+        "height": 88,
+        "left": 278.1875,
+        "right": 499.34375,
+        "top": 158.953125,
+        "width": 221.15625
+      },
+      "sourceCounts": [
+        {
+          "bottom": 206.453125,
+          "height": 19.796875,
+          "label": "Corrections: 0",
+          "left": 288.1875,
+          "right": 361.375,
+          "text": "0Corrections",
+          "top": 186.65625,
+          "width": 73.1875
+        },
+        {
+          "bottom": 227.25,
+          "height": 19.796875,
+          "label": "Management: 0",
+          "left": 288.1875,
+          "right": 361.375,
+          "text": "0Management",
+          "top": 207.453125,
+          "width": 73.1875
+        }
+      ],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    }
+  ]
+}

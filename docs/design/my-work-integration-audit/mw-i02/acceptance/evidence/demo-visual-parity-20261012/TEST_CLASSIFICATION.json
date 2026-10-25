@@ -1,0 +1,120 @@
+{
+  "total": 263,
+  "passed": 243,
+  "failed": 20,
+  "knownBaseline": 19,
+  "separatelyObserved": [
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/external-portal.test.tsx",
+      "name": "external portal records an Owner-created native share and exposes unconfirmed revocation blockers",
+      "baseline": false
+    }
+  ],
+  "failures": [
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell lands a ready signed-in account on My Work while retaining the accepted destinations",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell ignores a late session response after explicit session loss on /my-work",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell ignores a late session response after explicit session loss on /tasks",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell ignores a late session response after explicit session loss on /documents",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell ignores a late session response after explicit session loss on /reviews",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell ignores a late session response after explicit session loss on /projects",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell clears Learning after session loss and ignores a late refresh",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell runs options, browser assertion, verification, and restores the new session",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell shows a generic invalid response without exposing account details",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell reports network failure and passkey cancellation in generic terms",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell sends the session CSRF token on logout and confirms completion",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell returns to sign in when a refreshed session has been revoked",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell bootstraps the first Owner and completes second passkey plus recovery acknowledgment",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell accepts a staff invitation or recovery token and registers a passkey",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell recovers the Owner using the offline code and a replacement passkey",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell creates staff invitation and Owner-authorized recovery token handoffs",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell shows session loading, then a readable error with retry and empty state",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/app.test.tsx",
+      "name": "identity authentication shell labels the current device and revokes another session with CSRF, then refreshes the list",
+      "baseline": true
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/external-portal.test.tsx",
+      "name": "external portal records an Owner-created native share and exposes unconfirmed revocation blockers",
+      "baseline": false
+    },
+    {
+      "suite": "D:/app/sensestudios work management app/apps/web/src/workspace-navigation.test.tsx",
+      "name": "workspace navigation keeps the approved destinations available and marks the direct URL active",
+      "baseline": true
+    }
+  ],
+  "focused": {
+    "passed": 49,
+    "total": 49
+  },
+  "note": "The independently observed external-portal failure is not relabelled as one of the 19 historic baseline failures. No portal source/test was changed by this visual work."
+}

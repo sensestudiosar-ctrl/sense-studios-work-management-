@@ -1,0 +1,182 @@
+[
+  {
+    "bodyWidth": 1425,
+    "controls": [
+      {
+        "height": 44,
+        "left": 270,
+        "right": 485.734375,
+        "text": "All projectsHarbor House",
+        "width": 215.734375
+      },
+      {
+        "height": 44,
+        "left": 493.734375,
+        "right": 709.484375,
+        "text": "Any statusCorrections re",
+        "width": 215.75
+      },
+      {
+        "height": 44,
+        "left": 744.53125,
+        "right": 953.21875,
+        "text": "Target dateTask name",
+        "width": 208.6875
+      },
+      {
+        "height": 44,
+        "left": 961.21875,
+        "right": 999,
+        "text": "Reset",
+        "width": 37.78125
+      }
+    ],
+    "detailVisible": 388,
+    "documentWidth": 1425,
+    "width": 1440
+  },
+  {
+    "bodyWidth": 1009,
+    "controls": [
+      {
+        "height": 44,
+        "left": 240,
+        "right": 430.5,
+        "text": "All projectsHarbor House",
+        "width": 190.5
+      },
+      {
+        "height": 44,
+        "left": 438.5,
+        "right": 629,
+        "text": "Any statusCorrections re",
+        "width": 190.5
+      },
+      {
+        "height": 44,
+        "left": 267.046875,
+        "right": 583.21875,
+        "text": "Target dateTask name",
+        "width": 316.171875
+      },
+      {
+        "height": 44,
+        "left": 591.21875,
+        "right": 629,
+        "text": "Reset",
+        "width": 37.78125
+      }
+    ],
+    "detailVisible": 350,
+    "documentWidth": 1009,
+    "width": 1024
+  },
+  {
+    "bodyWidth": 753,
+    "controls": [
+      {
+        "height": 44,
+        "left": 96,
+        "right": 277.734375,
+        "text": "All projectsHarbor House",
+        "width": 181.734375
+      },
+      {
+        "height": 44,
+        "left": 285.734375,
+        "right": 467.484375,
+        "text": "Any statusCorrections re",
+        "width": 181.75
+      },
+      {
+        "height": 44,
+        "left": 502.53125,
+        "right": 673.21875,
+        "text": "Target dateTask name",
+        "width": 170.6875
+      },
+      {
+        "height": 44,
+        "left": 685.21875,
+        "right": 723,
+        "text": "Reset",
+        "width": 37.78125
+      }
+    ],
+    "detailVisible": 560,
+    "documentWidth": 753,
+    "width": 768
+  },
+  {
+    "bodyWidth": 375,
+    "controls": [
+      {
+        "height": 44,
+        "left": 25,
+        "right": 184,
+        "text": "All projectsHarbor House",
+        "width": 159
+      },
+      {
+        "height": 44,
+        "left": 191,
+        "right": 350,
+        "text": "Any statusCorrections re",
+        "width": 159
+      },
+      {
+        "height": 44,
+        "left": 75.890625,
+        "right": 184,
+        "text": "Target dateTask name",
+        "width": 108.109375
+      },
+      {
+        "height": 44,
+        "left": 191,
+        "right": 350,
+        "text": "Reset",
+        "width": 159
+      }
+    ],
+    "detailVisible": 375,
+    "documentWidth": 375,
+    "width": 390
+  },
+  {
+    "bodyWidth": 320,
+    "controls": [
+      {
+        "height": 44,
+        "left": 25,
+        "right": 156.5,
+        "text": "All projectsHarbor House",
+        "width": 131.5
+      },
+      {
+        "height": 44,
+        "left": 163.5,
+        "right": 295,
+        "text": "Any statusCorrections re",
+        "width": 131.5
+      },
+      {
+        "height": 44,
+        "left": 67.09375,
+        "right": 156.5,
+        "text": "Target dateTask name",
+        "width": 89.40625
+      },
+      {
+        "height": 44,
+        "left": 163.5,
+        "right": 295,
+        "text": "Reset",
+        "width": 131.5
+      }
+    ],
+    "detailVisible": 305,
+    "documentWidth": 320,
+    "width": 320
+  }
+]

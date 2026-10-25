@@ -1,0 +1,953 @@
+{
+  "kind": "Current-source frontend component geometry only; synthetic GET fixtures and simulated shell; no auth, PostgreSQL or writes",
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "initial": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 296,
+            "y": 108,
+            "width": 1112,
+            "height": 2766.5,
+            "bottom": 2874.5
+          },
+          "heading": {
+            "x": 296,
+            "y": 108,
+            "width": 1112,
+            "height": 42.8,
+            "bottom": 150.8
+          },
+          "phases": {
+            "x": 296,
+            "y": 157.2,
+            "width": 1112,
+            "height": 62,
+            "bottom": 219.2
+          },
+          "obligations": {
+            "x": 296,
+            "y": 227.2,
+            "width": 1112,
+            "height": 46,
+            "bottom": 273.2
+          },
+          "filters": {
+            "x": 296,
+            "y": 280.4,
+            "width": 1112,
+            "height": 87.8,
+            "bottom": 368.2
+          },
+          "queue": {
+            "x": 296,
+            "y": 373.8,
+            "width": 1112,
+            "height": 2353.9,
+            "bottom": 2727.7
+          },
+          "firstTask": {
+            "x": 313,
+            "y": 459.7,
+            "width": 1078,
+            "height": 53.6,
+            "bottom": 513.3
+          },
+          "countInformation": {
+            "x": 296,
+            "y": 2842.5,
+            "width": 1112,
+            "height": 32,
+            "bottom": 2874.5
+          },
+          "toolbar": {
+            "x": 296,
+            "y": 2734.1,
+            "width": 1112,
+            "height": 51,
+            "bottom": 2785.1
+          },
+          "pagination": {
+            "x": 296,
+            "y": 2793.9,
+            "width": 1112,
+            "height": 39.8,
+            "bottom": 2833.7
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 76,
+          "bottom": 76
+        },
+        "fixedNavigation": null,
+        "unobstructedViewport": {
+          "top": 76,
+          "bottom": 900,
+          "height": 824
+        },
+        "firstTaskVisibleAtScrollY0": 53.59375,
+        "firstTaskVisibleRatioAtScrollY0": 1,
+        "fullTaskVisibleAtScrollY0": true,
+        "document": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "horizontalOverflow": false
+        }
+      },
+      "postScroll": {
+        "scrollY": 0,
+        "taskTop": 459.7,
+        "taskBottom": 513.3,
+        "navigationTop": 900,
+        "taskBottomClearance": 386.7
+      },
+      "waitingSelected": {
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 296,
+            "y": 108,
+            "width": 1112,
+            "height": 1343,
+            "bottom": 1451
+          },
+          "heading": {
+            "x": 296,
+            "y": 108,
+            "width": 1112,
+            "height": 42.8,
+            "bottom": 150.8
+          },
+          "phases": {
+            "x": 296,
+            "y": 157.2,
+            "width": 1112,
+            "height": 139.2,
+            "bottom": 296.4
+          },
+          "obligations": {
+            "x": 296,
+            "y": 304.4,
+            "width": 1112,
+            "height": 46,
+            "bottom": 350.4
+          },
+          "filters": {
+            "x": 296,
+            "y": 357.6,
+            "width": 1112,
+            "height": 87.8,
+            "bottom": 445.4
+          },
+          "queue": {
+            "x": 296,
+            "y": 451,
+            "width": 1112,
+            "height": 853.3,
+            "bottom": 1304.3
+          },
+          "firstTask": {
+            "x": 313,
+            "y": 536.9,
+            "width": 1078,
+            "height": 53.6,
+            "bottom": 590.5
+          },
+          "countInformation": {
+            "x": 296,
+            "y": 1419,
+            "width": 1112,
+            "height": 32,
+            "bottom": 1451
+          },
+          "toolbar": {
+            "x": 296,
+            "y": 1310.6,
+            "width": 1112,
+            "height": 51,
+            "bottom": 1361.6
+          },
+          "pagination": {
+            "x": 296,
+            "y": 1370.4,
+            "width": 1112,
+            "height": 39.8,
+            "bottom": 1410.3
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 1440,
+          "height": 76,
+          "bottom": 76
+        },
+        "fixedNavigation": null,
+        "unobstructedViewport": {
+          "top": 76,
+          "bottom": 900,
+          "height": 824
+        },
+        "firstTaskVisibleAtScrollY0": 53.59375,
+        "firstTaskVisibleRatioAtScrollY0": 1,
+        "fullTaskVisibleAtScrollY0": true,
+        "document": {
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "horizontalOverflow": false
+        }
+      },
+      "waitingPostScroll": {
+        "scrollY": 0,
+        "taskTop": 536.9,
+        "taskBottom": 590.5,
+        "navigationTop": 900,
+        "taskBottomClearance": 309.5
+      },
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selectedBackground": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "searchAndStatusFilter": "PASS; fixture GET filtering; no writes",
+      "filterDisclosureAndTaskOpen": "PASS; native details + touch locator; fixture only",
+      "mobileTouch": "not applicable",
+      "ownerFiveExpanded": "PASS; synthetic links, not authenticated"
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "initial": {
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 296,
+            "y": 108,
+            "width": 696,
+            "height": 5581.9,
+            "bottom": 5689.9
+          },
+          "heading": {
+            "x": 296,
+            "y": 108,
+            "width": 696,
+            "height": 42.8,
+            "bottom": 150.8
+          },
+          "phases": {
+            "x": 296,
+            "y": 157.2,
+            "width": 696,
+            "height": 62,
+            "bottom": 219.2
+          },
+          "obligations": {
+            "x": 296,
+            "y": 227.2,
+            "width": 696,
+            "height": 46,
+            "bottom": 273.2
+          },
+          "filters": {
+            "x": 296,
+            "y": 280.4,
+            "width": 696,
+            "height": 87.8,
+            "bottom": 368.2
+          },
+          "queue": {
+            "x": 296,
+            "y": 373.8,
+            "width": 696,
+            "height": 5169.4,
+            "bottom": 5543.1
+          },
+          "firstTask": {
+            "x": 313,
+            "y": 427.7,
+            "width": 662,
+            "height": 121.4,
+            "bottom": 549.1
+          },
+          "countInformation": {
+            "x": 296,
+            "y": 5657.9,
+            "width": 696,
+            "height": 32,
+            "bottom": 5689.9
+          },
+          "toolbar": {
+            "x": 296,
+            "y": 5549.5,
+            "width": 696,
+            "height": 51,
+            "bottom": 5600.5
+          },
+          "pagination": {
+            "x": 296,
+            "y": 5609.3,
+            "width": 696,
+            "height": 39.8,
+            "bottom": 5649.1
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 1024,
+          "height": 76,
+          "bottom": 76
+        },
+        "fixedNavigation": null,
+        "unobstructedViewport": {
+          "top": 76,
+          "bottom": 900,
+          "height": 824
+        },
+        "firstTaskVisibleAtScrollY0": 121.390625,
+        "firstTaskVisibleRatioAtScrollY0": 1,
+        "fullTaskVisibleAtScrollY0": true,
+        "document": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "horizontalOverflow": false
+        }
+      },
+      "postScroll": {
+        "scrollY": 0,
+        "taskTop": 427.7,
+        "taskBottom": 549.1,
+        "navigationTop": 900,
+        "taskBottomClearance": 350.9
+      },
+      "waitingSelected": {
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 296,
+            "y": 108,
+            "width": 696,
+            "height": 2260.2,
+            "bottom": 2368.2
+          },
+          "heading": {
+            "x": 296,
+            "y": 108,
+            "width": 696,
+            "height": 42.8,
+            "bottom": 150.8
+          },
+          "phases": {
+            "x": 296,
+            "y": 157.2,
+            "width": 696,
+            "height": 139.2,
+            "bottom": 296.4
+          },
+          "obligations": {
+            "x": 296,
+            "y": 304.4,
+            "width": 696,
+            "height": 46,
+            "bottom": 350.4
+          },
+          "filters": {
+            "x": 296,
+            "y": 357.6,
+            "width": 696,
+            "height": 87.8,
+            "bottom": 445.4
+          },
+          "queue": {
+            "x": 296,
+            "y": 451,
+            "width": 696,
+            "height": 1770.4,
+            "bottom": 2221.4
+          },
+          "firstTask": {
+            "x": 313,
+            "y": 504.9,
+            "width": 662,
+            "height": 121.4,
+            "bottom": 626.3
+          },
+          "countInformation": {
+            "x": 296,
+            "y": 2336.2,
+            "width": 696,
+            "height": 32,
+            "bottom": 2368.2
+          },
+          "toolbar": {
+            "x": 296,
+            "y": 2227.8,
+            "width": 696,
+            "height": 51,
+            "bottom": 2278.8
+          },
+          "pagination": {
+            "x": 296,
+            "y": 2287.6,
+            "width": 696,
+            "height": 39.8,
+            "bottom": 2327.4
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 1024,
+          "height": 76,
+          "bottom": 76
+        },
+        "fixedNavigation": null,
+        "unobstructedViewport": {
+          "top": 76,
+          "bottom": 900,
+          "height": 824
+        },
+        "firstTaskVisibleAtScrollY0": 121.390625,
+        "firstTaskVisibleRatioAtScrollY0": 1,
+        "fullTaskVisibleAtScrollY0": true,
+        "document": {
+          "scrollWidth": 1024,
+          "clientWidth": 1024,
+          "horizontalOverflow": false
+        }
+      },
+      "waitingPostScroll": {
+        "scrollY": 0,
+        "taskTop": 504.9,
+        "taskBottom": 626.3,
+        "navigationTop": 900,
+        "taskBottomClearance": 273.7
+      },
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selectedBackground": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "searchAndStatusFilter": "PASS; fixture GET filtering; no writes",
+      "filterDisclosureAndTaskOpen": "PASS; native details + touch locator; fixture only",
+      "mobileTouch": "not applicable",
+      "ownerFiveExpanded": "PASS; synthetic links, not authenticated"
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "initial": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 16,
+            "y": 135,
+            "width": 358,
+            "height": 10078,
+            "bottom": 10213
+          },
+          "heading": {
+            "x": 16,
+            "y": 135,
+            "width": 358,
+            "height": 44,
+            "bottom": 179
+          },
+          "phases": {
+            "x": 16,
+            "y": 185.4,
+            "width": 358,
+            "height": 71.5,
+            "bottom": 256.8
+          },
+          "obligations": {
+            "x": 16,
+            "y": 264.8,
+            "width": 358,
+            "height": 60,
+            "bottom": 324.8
+          },
+          "filters": {
+            "x": 16,
+            "y": 332,
+            "width": 358,
+            "height": 62,
+            "bottom": 394
+          },
+          "queue": {
+            "x": 16,
+            "y": 399.6,
+            "width": 358,
+            "height": 9649.3,
+            "bottom": 10048.8
+          },
+          "firstTask": {
+            "x": 25.8,
+            "y": 440.7,
+            "width": 338.4,
+            "height": 228.5,
+            "bottom": 669.3
+          },
+          "countInformation": {
+            "x": 16,
+            "y": 10169,
+            "width": 358,
+            "height": 44,
+            "bottom": 10213
+          },
+          "toolbar": {
+            "x": 16,
+            "y": 10055.2,
+            "width": 358,
+            "height": 52.2,
+            "bottom": 10107.4
+          },
+          "pagination": {
+            "x": 16,
+            "y": 10116.2,
+            "width": 358,
+            "height": 44,
+            "bottom": 10160.2
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 119,
+          "bottom": 119
+        },
+        "fixedNavigation": {
+          "x": 0,
+          "y": 784,
+          "width": 390,
+          "height": 60,
+          "bottom": 844
+        },
+        "unobstructedViewport": {
+          "top": 119,
+          "bottom": 784,
+          "height": 665
+        },
+        "firstTaskVisibleAtScrollY0": 228.53125,
+        "firstTaskVisibleRatioAtScrollY0": 1,
+        "fullTaskVisibleAtScrollY0": true,
+        "document": {
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "horizontalOverflow": false
+        }
+      },
+      "postScroll": {
+        "scrollY": 0,
+        "taskTop": 440.7,
+        "taskBottom": 669.3,
+        "navigationTop": 784,
+        "taskBottomClearance": 114.8
+      },
+      "waitingSelected": {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 16,
+            "y": 135,
+            "width": 358,
+            "height": 3731.9,
+            "bottom": 3866.9
+          },
+          "heading": {
+            "x": 16,
+            "y": 135,
+            "width": 358,
+            "height": 44,
+            "bottom": 179
+          },
+          "phases": {
+            "x": 16,
+            "y": 185.4,
+            "width": 358,
+            "height": 124.2,
+            "bottom": 309.6
+          },
+          "obligations": {
+            "x": 16,
+            "y": 317.6,
+            "width": 358,
+            "height": 60,
+            "bottom": 377.6
+          },
+          "filters": {
+            "x": 16,
+            "y": 384.8,
+            "width": 358,
+            "height": 62,
+            "bottom": 446.7
+          },
+          "queue": {
+            "x": 16,
+            "y": 452.3,
+            "width": 358,
+            "height": 3250.4,
+            "bottom": 3702.7
+          },
+          "firstTask": {
+            "x": 25.8,
+            "y": 493.5,
+            "width": 338.4,
+            "height": 228.5,
+            "bottom": 722
+          },
+          "countInformation": {
+            "x": 16,
+            "y": 3822.9,
+            "width": 358,
+            "height": 44,
+            "bottom": 3866.9
+          },
+          "toolbar": {
+            "x": 16,
+            "y": 3709.1,
+            "width": 358,
+            "height": 52.2,
+            "bottom": 3761.3
+          },
+          "pagination": {
+            "x": 16,
+            "y": 3770.1,
+            "width": 358,
+            "height": 44,
+            "bottom": 3814.1
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 119,
+          "bottom": 119
+        },
+        "fixedNavigation": {
+          "x": 0,
+          "y": 784,
+          "width": 390,
+          "height": 60,
+          "bottom": 844
+        },
+        "unobstructedViewport": {
+          "top": 119,
+          "bottom": 784,
+          "height": 665
+        },
+        "firstTaskVisibleAtScrollY0": 228.53125,
+        "firstTaskVisibleRatioAtScrollY0": 1,
+        "fullTaskVisibleAtScrollY0": true,
+        "document": {
+          "scrollWidth": 390,
+          "clientWidth": 390,
+          "horizontalOverflow": false
+        }
+      },
+      "waitingPostScroll": {
+        "scrollY": 0,
+        "taskTop": 493.5,
+        "taskBottom": 722,
+        "navigationTop": 784,
+        "taskBottomClearance": 62
+      },
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selectedBackground": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "searchAndStatusFilter": "PASS; fixture GET filtering; no writes",
+      "filterDisclosureAndTaskOpen": "PASS; native details + touch locator; fixture only",
+      "mobileTouch": "PASS; search, disclosure, Apply and task open",
+      "ownerFiveExpanded": "PASS; synthetic links, not authenticated"
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "initial": {
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 16,
+            "y": 135,
+            "width": 288,
+            "height": 10400.6,
+            "bottom": 10535.6
+          },
+          "heading": {
+            "x": 16,
+            "y": 135,
+            "width": 288,
+            "height": 44,
+            "bottom": 179
+          },
+          "phases": {
+            "x": 16,
+            "y": 185.4,
+            "width": 288,
+            "height": 71.5,
+            "bottom": 256.8
+          },
+          "obligations": {
+            "x": 16,
+            "y": 264.8,
+            "width": 288,
+            "height": 99.8,
+            "bottom": 364.6
+          },
+          "filters": {
+            "x": 16,
+            "y": 371.8,
+            "width": 288,
+            "height": 106.8,
+            "bottom": 478.5
+          },
+          "queue": {
+            "x": 16,
+            "y": 484.1,
+            "width": 288,
+            "height": 9887.3,
+            "bottom": 10371.4
+          },
+          "firstTask": {
+            "x": 25.8,
+            "y": 525.3,
+            "width": 268.4,
+            "height": 228.5,
+            "bottom": 753.8
+          },
+          "countInformation": {
+            "x": 16,
+            "y": 10491.6,
+            "width": 288,
+            "height": 44,
+            "bottom": 10535.6
+          },
+          "toolbar": {
+            "x": 16,
+            "y": 10377.8,
+            "width": 288,
+            "height": 52.2,
+            "bottom": 10430
+          },
+          "pagination": {
+            "x": 16,
+            "y": 10438.8,
+            "width": 288,
+            "height": 44,
+            "bottom": 10482.8
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 119,
+          "bottom": 119
+        },
+        "fixedNavigation": {
+          "x": 0,
+          "y": 680,
+          "width": 320,
+          "height": 60,
+          "bottom": 740
+        },
+        "unobstructedViewport": {
+          "top": 119,
+          "bottom": 680,
+          "height": 561
+        },
+        "firstTaskVisibleAtScrollY0": 154.703125,
+        "firstTaskVisibleRatioAtScrollY0": 0.677,
+        "fullTaskVisibleAtScrollY0": false,
+        "document": {
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "horizontalOverflow": false
+        }
+      },
+      "postScroll": {
+        "scrollY": 86,
+        "taskTop": 439.3,
+        "taskBottom": 667.8,
+        "navigationTop": 680,
+        "taskBottomClearance": 12.2
+      },
+      "waitingSelected": {
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "scrollY": 0,
+        "sections": {
+          "component": {
+            "x": 16,
+            "y": 135,
+            "width": 288,
+            "height": 3816.5,
+            "bottom": 3951.5
+          },
+          "heading": {
+            "x": 16,
+            "y": 135,
+            "width": 288,
+            "height": 44,
+            "bottom": 179
+          },
+          "phases": {
+            "x": 16,
+            "y": 185.4,
+            "width": 288,
+            "height": 124.2,
+            "bottom": 309.6
+          },
+          "obligations": {
+            "x": 16,
+            "y": 317.6,
+            "width": 288,
+            "height": 99.8,
+            "bottom": 417.4
+          },
+          "filters": {
+            "x": 16,
+            "y": 424.5,
+            "width": 288,
+            "height": 106.8,
+            "bottom": 531.3
+          },
+          "queue": {
+            "x": 16,
+            "y": 536.9,
+            "width": 288,
+            "height": 3250.4,
+            "bottom": 3787.3
+          },
+          "firstTask": {
+            "x": 25.8,
+            "y": 578.1,
+            "width": 268.4,
+            "height": 228.5,
+            "bottom": 806.6
+          },
+          "countInformation": {
+            "x": 16,
+            "y": 3907.5,
+            "width": 288,
+            "height": 44,
+            "bottom": 3951.5
+          },
+          "toolbar": {
+            "x": 16,
+            "y": 3793.7,
+            "width": 288,
+            "height": 52.2,
+            "bottom": 3845.9
+          },
+          "pagination": {
+            "x": 16,
+            "y": 3854.7,
+            "width": 288,
+            "height": 44,
+            "bottom": 3898.7
+          }
+        },
+        "fixedHeader": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 119,
+          "bottom": 119
+        },
+        "fixedNavigation": {
+          "x": 0,
+          "y": 680,
+          "width": 320,
+          "height": 60,
+          "bottom": 740
+        },
+        "unobstructedViewport": {
+          "top": 119,
+          "bottom": 680,
+          "height": 561
+        },
+        "firstTaskVisibleAtScrollY0": 101.9375,
+        "firstTaskVisibleRatioAtScrollY0": 0.446,
+        "fullTaskVisibleAtScrollY0": false,
+        "document": {
+          "scrollWidth": 320,
+          "clientWidth": 320,
+          "horizontalOverflow": false
+        }
+      },
+      "waitingPostScroll": {
+        "scrollY": 139,
+        "taskTop": 439.1,
+        "taskBottom": 667.6,
+        "navigationTop": 680,
+        "taskBottomClearance": 12.4
+      },
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selectedBackground": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "searchAndStatusFilter": "PASS; fixture GET filtering; no writes",
+      "filterDisclosureAndTaskOpen": "PASS; native details + touch locator; fixture only",
+      "mobileTouch": "PASS; search, disclosure, Apply and task open",
+      "ownerFiveExpanded": "PASS; synthetic links, not authenticated"
+    }
+  ]
+}

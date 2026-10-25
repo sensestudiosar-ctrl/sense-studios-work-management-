@@ -1,0 +1,1042 @@
+{
+  "actualFilters": [
+    {
+      "kind": "actual Owner, no employee identity",
+      "cards": {
+        "bottom": 305.703125,
+        "height": 149.5,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 156.203125,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 156.203125
+      },
+      "counts": [
+        {
+          "box": {
+            "bottom": 229.703125,
+            "height": 39.5,
+            "left": 292.1875,
+            "right": 351.015625,
+            "top": 190.203125,
+            "width": 58.828125,
+            "x": 292.1875,
+            "y": 190.203125
+          },
+          "text": "0Corrections"
+        },
+        {
+          "box": {
+            "bottom": 229.703125,
+            "height": 39.5,
+            "left": 359.015625,
+            "right": 417.84375,
+            "top": 190.203125,
+            "width": 58.828125,
+            "x": 359.015625,
+            "y": 190.203125
+          },
+          "text": "0Management"
+        }
+      ],
+      "height": 900,
+      "main": {
+        "bottom": 706.734375,
+        "height": 642.734375,
+        "left": 232,
+        "right": 1425,
+        "top": 64,
+        "width": 1193,
+        "x": 232,
+        "y": 64
+      },
+      "nav": null,
+      "overflow": 0,
+      "queue": {
+        "bottom": 389.390625,
+        "height": 71.6875,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 317.703125,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 317.703125
+      },
+      "width": 1440,
+      "filters": {
+        "apply": {
+          "bottom": 869,
+          "height": 44,
+          "left": 743.921875,
+          "right": 877.421875,
+          "top": 825,
+          "width": 133.5,
+          "x": 743.921875,
+          "y": 825
+        },
+        "nav": [],
+        "overflow": 0,
+        "panel": {
+          "bottom": 884,
+          "height": 441.609375,
+          "left": 728.921875,
+          "right": 1048.921875,
+          "top": 442.390625,
+          "width": 320,
+          "x": 728.921875,
+          "y": 442.390625
+        },
+        "reset": {
+          "bottom": 869,
+          "height": 44,
+          "left": 885.421875,
+          "right": 1018.921875,
+          "top": 825,
+          "width": 133.5,
+          "x": 885.421875,
+          "y": 825
+        }
+      }
+    },
+    {
+      "kind": "actual Owner, no employee identity",
+      "cards": {
+        "bottom": 305.703125,
+        "height": 149.5,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 156.203125,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 156.203125
+      },
+      "counts": [
+        {
+          "box": {
+            "bottom": 229.703125,
+            "height": 39.5,
+            "left": 112.71875,
+            "right": 171.546875,
+            "top": 190.203125,
+            "width": 58.828125,
+            "x": 112.71875,
+            "y": 190.203125
+          },
+          "text": "0Corrections"
+        },
+        {
+          "box": {
+            "bottom": 229.703125,
+            "height": 39.5,
+            "left": 179.546875,
+            "right": 238.375,
+            "top": 190.203125,
+            "width": 58.828125,
+            "x": 179.546875,
+            "y": 190.203125
+          },
+          "text": "0Management"
+        }
+      ],
+      "height": 900,
+      "main": {
+        "bottom": 706.734375,
+        "height": 642.734375,
+        "left": 65,
+        "right": 1009,
+        "top": 64,
+        "width": 944,
+        "x": 65,
+        "y": 64
+      },
+      "nav": null,
+      "overflow": 0,
+      "queue": {
+        "bottom": 389.390625,
+        "height": 71.6875,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 317.703125,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 317.703125
+      },
+      "width": 1024,
+      "filters": {
+        "apply": {
+          "bottom": 869,
+          "height": 44,
+          "left": 340.390625,
+          "right": 473.890625,
+          "top": 825,
+          "width": 133.5,
+          "x": 340.390625,
+          "y": 825
+        },
+        "nav": [],
+        "overflow": 0,
+        "panel": {
+          "bottom": 884,
+          "height": 441.609375,
+          "left": 325.390625,
+          "right": 645.390625,
+          "top": 442.390625,
+          "width": 320,
+          "x": 325.390625,
+          "y": 442.390625
+        },
+        "reset": {
+          "bottom": 869,
+          "height": 44,
+          "left": 481.890625,
+          "right": 615.390625,
+          "top": 825,
+          "width": 133.5,
+          "x": 481.890625,
+          "y": 825
+        }
+      }
+    },
+    {
+      "kind": "actual Owner, no employee identity",
+      "cards": {
+        "bottom": 347.84375,
+        "height": 216.1875,
+        "left": 12,
+        "right": 363,
+        "top": 131.65625,
+        "width": 351,
+        "x": 12,
+        "y": 131.65625
+      },
+      "counts": [
+        {
+          "box": {
+            "bottom": 194.75,
+            "height": 35.09375,
+            "left": 24,
+            "right": 82.828125,
+            "top": 159.65625,
+            "width": 58.828125,
+            "x": 24,
+            "y": 159.65625
+          },
+          "text": "0Corrections"
+        },
+        {
+          "box": {
+            "bottom": 194.75,
+            "height": 35.09375,
+            "left": 90.828125,
+            "right": 149.65625,
+            "top": 159.65625,
+            "width": 58.828125,
+            "x": 90.828125,
+            "y": 159.65625
+          },
+          "text": "0Management"
+        }
+      ],
+      "height": 844,
+      "main": {
+        "bottom": 625.671875,
+        "height": 565.671875,
+        "left": 0,
+        "right": 375,
+        "top": 60,
+        "width": 375,
+        "x": 0,
+        "y": 60
+      },
+      "nav": null,
+      "overflow": 0,
+      "queue": {
+        "bottom": 399.140625,
+        "height": 39.296875,
+        "left": 12,
+        "right": 363,
+        "top": 359.84375,
+        "width": 351,
+        "x": 12,
+        "y": 359.84375
+      },
+      "width": 390,
+      "filters": {
+        "apply": {
+          "bottom": 757,
+          "height": 44,
+          "left": 21,
+          "right": 176,
+          "top": 713,
+          "width": 155,
+          "x": 21,
+          "y": 713
+        },
+        "nav": [],
+        "overflow": 0,
+        "panel": {
+          "bottom": 778,
+          "height": 702,
+          "left": 0,
+          "right": 375,
+          "top": 76,
+          "width": 375,
+          "x": 0,
+          "y": 76
+        },
+        "reset": {
+          "bottom": 757,
+          "height": 44,
+          "left": 184,
+          "right": 339,
+          "top": 713,
+          "width": 155,
+          "x": 184,
+          "y": 713
+        }
+      }
+    },
+    {
+      "kind": "actual Owner, no employee identity",
+      "cards": {
+        "bottom": 354.84375,
+        "height": 228.1875,
+        "left": 12,
+        "right": 293,
+        "top": 126.65625,
+        "width": 281,
+        "x": 12,
+        "y": 126.65625
+      },
+      "counts": [
+        {
+          "box": {
+            "bottom": 201.75,
+            "height": 47.09375,
+            "left": 24,
+            "right": 77.75,
+            "top": 154.65625,
+            "width": 53.75,
+            "x": 24,
+            "y": 154.65625
+          },
+          "text": "0Corrections"
+        },
+        {
+          "box": {
+            "bottom": 201.75,
+            "height": 47.09375,
+            "left": 85.75,
+            "right": 139.5,
+            "top": 154.65625,
+            "width": 53.75,
+            "x": 85.75,
+            "y": 154.65625
+          },
+          "text": "0Management"
+        }
+      ],
+      "height": 740,
+      "main": {
+        "bottom": 650.0625,
+        "height": 595.0625,
+        "left": 0,
+        "right": 305,
+        "top": 55,
+        "width": 305,
+        "x": 0,
+        "y": 55
+      },
+      "nav": null,
+      "overflow": 0,
+      "queue": {
+        "bottom": 406.140625,
+        "height": 39.296875,
+        "left": 12,
+        "right": 293,
+        "top": 366.84375,
+        "width": 281,
+        "x": 12,
+        "y": 366.84375
+      },
+      "width": 320,
+      "filters": {
+        "apply": {
+          "bottom": 653,
+          "height": 44,
+          "left": 21,
+          "right": 141,
+          "top": 609,
+          "width": 120,
+          "x": 21,
+          "y": 609
+        },
+        "nav": [],
+        "overflow": 0,
+        "panel": {
+          "bottom": 674,
+          "height": 598,
+          "left": 0,
+          "right": 305,
+          "top": 76,
+          "width": 305,
+          "x": 0,
+          "y": 76
+        },
+        "reset": {
+          "bottom": 653,
+          "height": 44,
+          "left": 149,
+          "right": 269,
+          "top": 609,
+          "width": 120,
+          "x": 149,
+          "y": 609
+        }
+      }
+    }
+  ],
+  "initialAndWaiting": [
+    {
+      "kind": "actual Owner initial",
+      "cards": {
+        "bottom": 305.703125,
+        "height": 149.5,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 156.203125,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 156.203125
+      },
+      "firstTask": null,
+      "height": 900,
+      "main": {
+        "bottom": 706.734375,
+        "height": 642.734375,
+        "left": 232,
+        "right": 1425,
+        "top": 64,
+        "width": 1193,
+        "x": 232,
+        "y": 64
+      },
+      "nav": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 389.390625,
+        "height": 71.6875,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 317.703125,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 317.703125
+      },
+      "scrollY": 0,
+      "width": 1440
+    },
+    {
+      "kind": "actual Owner initial",
+      "cards": {
+        "bottom": 305.703125,
+        "height": 149.5,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 156.203125,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 156.203125
+      },
+      "firstTask": null,
+      "height": 900,
+      "main": {
+        "bottom": 706.734375,
+        "height": 642.734375,
+        "left": 65,
+        "right": 1009,
+        "top": 64,
+        "width": 944,
+        "x": 65,
+        "y": 64
+      },
+      "nav": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 389.390625,
+        "height": 71.6875,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 317.703125,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 317.703125
+      },
+      "scrollY": 0,
+      "width": 1024
+    },
+    {
+      "kind": "actual Owner initial",
+      "cards": {
+        "bottom": 347.84375,
+        "height": 216.1875,
+        "left": 12,
+        "right": 363,
+        "top": 131.65625,
+        "width": 351,
+        "x": 12,
+        "y": 131.65625
+      },
+      "firstTask": null,
+      "height": 844,
+      "main": {
+        "bottom": 625.671875,
+        "height": 565.671875,
+        "left": 0,
+        "right": 375,
+        "top": 60,
+        "width": 375,
+        "x": 0,
+        "y": 60
+      },
+      "nav": {
+        "bottom": 844,
+        "height": 66,
+        "left": 0,
+        "right": 375,
+        "top": 778,
+        "width": 375,
+        "x": 0,
+        "y": 778
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 399.140625,
+        "height": 39.296875,
+        "left": 12,
+        "right": 363,
+        "top": 359.84375,
+        "width": 351,
+        "x": 12,
+        "y": 359.84375
+      },
+      "scrollY": 0,
+      "width": 390
+    },
+    {
+      "kind": "actual Owner initial",
+      "cards": {
+        "bottom": 359.84375,
+        "height": 228.1875,
+        "left": 12,
+        "right": 293,
+        "top": 131.65625,
+        "width": 281,
+        "x": 12,
+        "y": 131.65625
+      },
+      "firstTask": null,
+      "height": 740,
+      "main": {
+        "bottom": 655.0625,
+        "height": 595.0625,
+        "left": 0,
+        "right": 305,
+        "top": 60,
+        "width": 305,
+        "x": 0,
+        "y": 60
+      },
+      "nav": {
+        "bottom": 740,
+        "height": 66,
+        "left": 0,
+        "right": 305,
+        "top": 674,
+        "width": 305,
+        "x": 0,
+        "y": 674
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 411.140625,
+        "height": 39.296875,
+        "left": 12,
+        "right": 293,
+        "top": 371.84375,
+        "width": 281,
+        "x": 12,
+        "y": 371.84375
+      },
+      "scrollY": 0,
+      "width": 320
+    },
+    {
+      "kind": "synthetic populated initial",
+      "cards": {
+        "bottom": 305.703125,
+        "height": 149.5,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 156.203125,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 156.203125
+      },
+      "firstTask": {
+        "bottom": 665.640625,
+        "height": 72.546875,
+        "left": 281.1875,
+        "right": 1380.8125,
+        "top": 593.09375,
+        "width": 1099.625,
+        "x": 281.1875,
+        "y": 593.09375
+      },
+      "firstTaskVisiblePixels": 72.546875,
+      "form": {
+        "bottom": 450.59375,
+        "height": 61.203125,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 389.390625,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 389.390625
+      },
+      "height": 900,
+      "main": {
+        "bottom": 3769.203125,
+        "height": 3705.203125,
+        "left": 232,
+        "right": 1425,
+        "top": 64,
+        "width": 1193,
+        "x": 232,
+        "y": 64
+      },
+      "minimumScrollFor44pxTarget": 0,
+      "minimumScrollForFullTask": 0,
+      "nav": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 389.390625,
+        "height": 71.6875,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 317.703125,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 317.703125
+      },
+      "scrollY": 0,
+      "unobstructedBottom": 900,
+      "width": 1440
+    },
+    {
+      "kind": "synthetic Waiting selected",
+      "firstTask": {
+        "bottom": 716.03125,
+        "height": 72.546875,
+        "left": 281.1875,
+        "right": 1380.8125,
+        "top": 643.484375,
+        "width": 1099.625,
+        "x": 281.1875,
+        "y": 643.484375
+      },
+      "firstTaskVisiblePixels": 72.546875,
+      "height": 900,
+      "minimumScrollForFullTask": 0,
+      "nav": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 439.78125,
+        "height": 71.6875,
+        "left": 275.1875,
+        "right": 1381.8125,
+        "top": 368.09375,
+        "width": 1106.625,
+        "x": 275.1875,
+        "y": 368.09375
+      },
+      "scrollY": 0,
+      "selected": "true",
+      "unobstructedBottom": 900,
+      "width": 1440
+    },
+    {
+      "kind": "synthetic populated initial",
+      "cards": {
+        "bottom": 305.703125,
+        "height": 149.5,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 156.203125,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 156.203125
+      },
+      "firstTask": {
+        "bottom": 665.640625,
+        "height": 72.546875,
+        "left": 101.71875,
+        "right": 977.28125,
+        "top": 593.09375,
+        "width": 875.5625,
+        "x": 101.71875,
+        "y": 593.09375
+      },
+      "firstTaskVisiblePixels": 72.546875,
+      "form": {
+        "bottom": 450.59375,
+        "height": 61.203125,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 389.390625,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 389.390625
+      },
+      "height": 900,
+      "main": {
+        "bottom": 3769.203125,
+        "height": 3705.203125,
+        "left": 65,
+        "right": 1009,
+        "top": 64,
+        "width": 944,
+        "x": 65,
+        "y": 64
+      },
+      "minimumScrollFor44pxTarget": 0,
+      "minimumScrollForFullTask": 0,
+      "nav": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 389.390625,
+        "height": 71.6875,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 317.703125,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 317.703125
+      },
+      "scrollY": 0,
+      "unobstructedBottom": 900,
+      "width": 1024
+    },
+    {
+      "kind": "synthetic Waiting selected",
+      "firstTask": {
+        "bottom": 716.03125,
+        "height": 72.546875,
+        "left": 101.71875,
+        "right": 977.28125,
+        "top": 643.484375,
+        "width": 875.5625,
+        "x": 101.71875,
+        "y": 643.484375
+      },
+      "firstTaskVisiblePixels": 72.546875,
+      "height": 900,
+      "minimumScrollForFullTask": 0,
+      "nav": {
+        "bottom": 0,
+        "height": 0,
+        "left": 0,
+        "right": 0,
+        "top": 0,
+        "width": 0,
+        "x": 0,
+        "y": 0
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 439.78125,
+        "height": 71.6875,
+        "left": 95.71875,
+        "right": 978.28125,
+        "top": 368.09375,
+        "width": 882.5625,
+        "x": 95.71875,
+        "y": 368.09375
+      },
+      "scrollY": 0,
+      "selected": "true",
+      "unobstructedBottom": 900,
+      "width": 1024
+    },
+    {
+      "kind": "synthetic populated initial",
+      "cards": {
+        "bottom": 347.84375,
+        "height": 216.1875,
+        "left": 12,
+        "right": 363,
+        "top": 131.65625,
+        "width": 351,
+        "x": 12,
+        "y": 131.65625
+      },
+      "firstTask": {
+        "bottom": 720.3125,
+        "height": 249.171875,
+        "left": 26,
+        "right": 353,
+        "top": 471.140625,
+        "width": 327,
+        "x": 26,
+        "y": 471.140625
+      },
+      "firstTaskVisiblePixels": 249.171875,
+      "form": {
+        "bottom": 459.140625,
+        "height": 60,
+        "left": 12,
+        "right": 363,
+        "top": 399.140625,
+        "width": 351,
+        "x": 12,
+        "y": 399.140625
+      },
+      "height": 844,
+      "main": {
+        "bottom": 11653.15625,
+        "height": 11593.15625,
+        "left": 0,
+        "right": 375,
+        "top": 60,
+        "width": 375,
+        "x": 0,
+        "y": 60
+      },
+      "minimumScrollFor44pxTarget": 0,
+      "minimumScrollForFullTask": 0,
+      "nav": {
+        "bottom": 844,
+        "height": 66,
+        "left": 0,
+        "right": 375,
+        "top": 778,
+        "width": 375,
+        "x": 0,
+        "y": 778
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 399.140625,
+        "height": 39.296875,
+        "left": 12,
+        "right": 363,
+        "top": 359.84375,
+        "width": 351,
+        "x": 12,
+        "y": 359.84375
+      },
+      "scrollY": 0,
+      "unobstructedBottom": 778,
+      "width": 390
+    },
+    {
+      "kind": "synthetic Waiting selected",
+      "firstTask": {
+        "bottom": 770.703125,
+        "height": 249.171875,
+        "left": 26,
+        "right": 353,
+        "top": 521.53125,
+        "width": 327,
+        "x": 26,
+        "y": 521.53125
+      },
+      "firstTaskVisiblePixels": 249.171875,
+      "height": 844,
+      "minimumScrollForFullTask": 0,
+      "nav": {
+        "bottom": 844,
+        "height": 66,
+        "left": 0,
+        "right": 375,
+        "top": 778,
+        "width": 375,
+        "x": 0,
+        "y": 778
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 449.53125,
+        "height": 39.296875,
+        "left": 12,
+        "right": 363,
+        "top": 410.234375,
+        "width": 351,
+        "x": 12,
+        "y": 410.234375
+      },
+      "scrollY": 0,
+      "selected": "true",
+      "unobstructedBottom": 778,
+      "width": 390
+    },
+    {
+      "kind": "synthetic populated initial",
+      "cards": {
+        "bottom": 359.84375,
+        "height": 228.1875,
+        "left": 12,
+        "right": 293,
+        "top": 131.65625,
+        "width": 281,
+        "x": 12,
+        "y": 131.65625
+      },
+      "firstTask": {
+        "bottom": 747.359375,
+        "height": 264.21875,
+        "left": 26,
+        "right": 283,
+        "top": 483.140625,
+        "width": 257,
+        "x": 26,
+        "y": 483.140625
+      },
+      "firstTaskVisiblePixels": 190.859375,
+      "form": {
+        "bottom": 471.140625,
+        "height": 60,
+        "left": 12,
+        "right": 293,
+        "top": 411.140625,
+        "width": 281,
+        "x": 12,
+        "y": 411.140625
+      },
+      "height": 740,
+      "main": {
+        "bottom": 12086.46875,
+        "height": 12026.46875,
+        "left": 0,
+        "right": 305,
+        "top": 60,
+        "width": 305,
+        "x": 0,
+        "y": 60
+      },
+      "minimumScrollFor44pxTarget": 0,
+      "minimumScrollForFullTask": 73.359375,
+      "nav": {
+        "bottom": 740,
+        "height": 66,
+        "left": 0,
+        "right": 305,
+        "top": 674,
+        "width": 305,
+        "x": 0,
+        "y": 674
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 411.140625,
+        "height": 39.296875,
+        "left": 12,
+        "right": 293,
+        "top": 371.84375,
+        "width": 281,
+        "x": 12,
+        "y": 371.84375
+      },
+      "scrollY": 0,
+      "unobstructedBottom": 674,
+      "width": 320
+    },
+    {
+      "kind": "synthetic Waiting selected",
+      "firstTask": {
+        "bottom": 782.703125,
+        "height": 249.171875,
+        "left": 26,
+        "right": 283,
+        "top": 533.53125,
+        "width": 257,
+        "x": 26,
+        "y": 533.53125
+      },
+      "firstTaskVisiblePixels": 140.46875,
+      "height": 740,
+      "minimumScrollForFullTask": 108.703125,
+      "nav": {
+        "bottom": 740,
+        "height": 66,
+        "left": 0,
+        "right": 305,
+        "top": 674,
+        "width": 305,
+        "x": 0,
+        "y": 674
+      },
+      "overflow": 0,
+      "queue": {
+        "bottom": 461.53125,
+        "height": 39.296875,
+        "left": 12,
+        "right": 293,
+        "top": 422.234375,
+        "width": 281,
+        "x": 12,
+        "y": 422.234375
+      },
+      "scrollY": 0,
+      "selected": "true",
+      "unobstructedBottom": 674,
+      "width": 320
+    }
+  ]
+}

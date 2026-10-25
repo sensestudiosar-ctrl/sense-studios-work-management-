@@ -44,8 +44,12 @@
 .task-create-dialog__body { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 22px 24px; }
 .task-create-dialog .task-form { margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; }
 
-/* Refined composer: brief column on the left, assignment & timing panel on the right. */
-.task-create-dialog .task-composer__core { display: grid; grid-template-columns: minmax(0, 1fr) 280px; grid-template-areas: "brief context"; column-gap: 28px; row-gap: 18px; align-items: start; }
+/* Refined composer: brief column on the left, assignment & timing panel on the right.
+   The aside column uses minmax(300px, 340px) so labels ("Primary owner", "Estimated
+   hours") do not wrap at desktop widths. The V15-specific rules in
+   task-composer-v15.css restate the same range inside their media query; this
+   base rule keeps non-V15 composer usages inside the same dialog at the right width. */
+.task-create-dialog .task-composer__core { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); grid-template-areas: "brief context"; column-gap: 28px; row-gap: 18px; align-items: start; }
 .task-create-dialog .task-composer__brief { grid-area: brief; display: grid; gap: 16px; min-width: 0; }
 .task-create-dialog .task-composer__context, .task-create-dialog .task-composer__aside { grid-area: context; background: #f4f6f0; border: 1px solid var(--create-line); border-radius: 11px; padding: 17px; display: grid; gap: 15px; grid-template-columns: minmax(0, 1fr); min-width: 0; align-content: start; }
 .task-create-dialog .task-composer__context .task-form-note { margin: -6px 0 0; }

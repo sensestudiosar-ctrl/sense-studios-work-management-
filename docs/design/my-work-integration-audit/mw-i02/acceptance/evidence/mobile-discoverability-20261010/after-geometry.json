@@ -1,0 +1,324 @@
+[
+  {
+    "stage": "after",
+    "width": 390,
+    "state": "initial",
+    "geometry": {
+      "sections": {
+        "component": {
+          "y": 94,
+          "height": 10154.40625,
+          "bottom": 10248.40625,
+          "display": "block"
+        },
+        "header": {
+          "y": 108.59375,
+          "height": 44,
+          "bottom": 152.59375,
+          "display": "grid"
+        },
+        "obligations": {
+          "y": 161.390625,
+          "height": 99.1875,
+          "bottom": 260.578125,
+          "display": "block"
+        },
+        "phases": {
+          "y": 270.96875,
+          "height": 117.84375,
+          "bottom": 388.8125,
+          "display": "grid"
+        },
+        "aboutCounts": {
+          "y": 344.8125,
+          "height": 44,
+          "bottom": 388.8125,
+          "display": "block"
+        },
+        "widgets": {
+          "y": 270.96875,
+          "height": 71.453125,
+          "bottom": 342.421875,
+          "display": "flex"
+        },
+        "selection": null,
+        "toolbar": {
+          "y": 395.203125,
+          "height": 52.1875,
+          "bottom": 447.390625,
+          "display": "grid"
+        },
+        "filters": {
+          "y": 456.1875,
+          "height": 61.96875,
+          "bottom": 518.15625,
+          "display": "grid"
+        },
+        "pagination": {
+          "y": 10181.015625,
+          "height": 44,
+          "bottom": 10225.015625,
+          "display": "flex"
+        },
+        "queue": {
+          "y": 523.75,
+          "height": 9649.265625,
+          "bottom": 10173.015625,
+          "display": "block"
+        },
+        "firstTask": {
+          "y": 564.90625,
+          "height": 228.53125,
+          "bottom": 793.4375,
+          "display": "grid"
+        }
+      },
+      "overflow": false,
+      "viewportHeight": 844
+    }
+  },
+  {
+    "stage": "after",
+    "width": 390,
+    "state": "waiting",
+    "geometry": {
+      "sections": {
+        "component": {
+          "y": 94,
+          "height": 3808.296875,
+          "bottom": 3902.296875,
+          "display": "block"
+        },
+        "header": {
+          "y": 108.59375,
+          "height": 44,
+          "bottom": 152.59375,
+          "display": "grid"
+        },
+        "obligations": {
+          "y": 161.390625,
+          "height": 99.1875,
+          "bottom": 260.578125,
+          "display": "block"
+        },
+        "phases": {
+          "y": 270.96875,
+          "height": 170.609375,
+          "bottom": 441.578125,
+          "display": "grid"
+        },
+        "aboutCounts": {
+          "y": 397.578125,
+          "height": 44,
+          "bottom": 441.578125,
+          "display": "block"
+        },
+        "widgets": {
+          "y": 270.96875,
+          "height": 71.453125,
+          "bottom": 342.421875,
+          "display": "flex"
+        },
+        "selection": {
+          "y": 348,
+          "height": 44,
+          "bottom": 392,
+          "display": "flex"
+        },
+        "toolbar": {
+          "y": 447.96875,
+          "height": 52.1875,
+          "bottom": 500.15625,
+          "display": "grid"
+        },
+        "filters": {
+          "y": 508.953125,
+          "height": 61.96875,
+          "bottom": 570.921875,
+          "display": "grid"
+        },
+        "pagination": {
+          "y": 3834.90625,
+          "height": 44,
+          "bottom": 3878.90625,
+          "display": "flex"
+        },
+        "queue": {
+          "y": 576.515625,
+          "height": 3250.390625,
+          "bottom": 3826.90625,
+          "display": "block"
+        },
+        "firstTask": {
+          "y": 617.671875,
+          "height": 228.53125,
+          "bottom": 846.203125,
+          "display": "grid"
+        }
+      },
+      "overflow": false,
+      "viewportHeight": 844
+    }
+  },
+  {
+    "stage": "after",
+    "width": 320,
+    "state": "initial",
+    "geometry": {
+      "sections": {
+        "component": {
+          "y": 94,
+          "height": 11067.203125,
+          "bottom": 11161.203125,
+          "display": "block"
+        },
+        "header": {
+          "y": 108.59375,
+          "height": 44,
+          "bottom": 152.59375,
+          "display": "grid"
+        },
+        "obligations": {
+          "y": 161.390625,
+          "height": 99.1875,
+          "bottom": 260.578125,
+          "display": "block"
+        },
+        "phases": {
+          "y": 270.96875,
+          "height": 117.84375,
+          "bottom": 388.8125,
+          "display": "grid"
+        },
+        "aboutCounts": {
+          "y": 344.8125,
+          "height": 44,
+          "bottom": 388.8125,
+          "display": "block"
+        },
+        "widgets": {
+          "y": 270.96875,
+          "height": 71.453125,
+          "bottom": 342.421875,
+          "display": "flex"
+        },
+        "selection": null,
+        "toolbar": {
+          "y": 395.203125,
+          "height": 52.1875,
+          "bottom": 447.390625,
+          "display": "grid"
+        },
+        "filters": {
+          "y": 456.1875,
+          "height": 106.765625,
+          "bottom": 562.953125,
+          "display": "grid"
+        },
+        "pagination": {
+          "y": 11093.8125,
+          "height": 44,
+          "bottom": 11137.8125,
+          "display": "flex"
+        },
+        "queue": {
+          "y": 568.546875,
+          "height": 10517.265625,
+          "bottom": 11085.8125,
+          "display": "block"
+        },
+        "firstTask": {
+          "y": 609.703125,
+          "height": 243.53125,
+          "bottom": 853.234375,
+          "display": "grid"
+        }
+      },
+      "overflow": false,
+      "viewportHeight": 844
+    }
+  },
+  {
+    "stage": "after",
+    "width": 320,
+    "state": "waiting",
+    "geometry": {
+      "sections": {
+        "component": {
+          "y": 94,
+          "height": 4063.09375,
+          "bottom": 4157.09375,
+          "display": "block"
+        },
+        "header": {
+          "y": 108.59375,
+          "height": 44,
+          "bottom": 152.59375,
+          "display": "grid"
+        },
+        "obligations": {
+          "y": 161.390625,
+          "height": 99.1875,
+          "bottom": 260.578125,
+          "display": "block"
+        },
+        "phases": {
+          "y": 270.96875,
+          "height": 170.609375,
+          "bottom": 441.578125,
+          "display": "grid"
+        },
+        "aboutCounts": {
+          "y": 397.578125,
+          "height": 44,
+          "bottom": 441.578125,
+          "display": "block"
+        },
+        "widgets": {
+          "y": 270.96875,
+          "height": 71.453125,
+          "bottom": 342.421875,
+          "display": "flex"
+        },
+        "selection": {
+          "y": 348,
+          "height": 44,
+          "bottom": 392,
+          "display": "flex"
+        },
+        "toolbar": {
+          "y": 447.96875,
+          "height": 52.1875,
+          "bottom": 500.15625,
+          "display": "grid"
+        },
+        "filters": {
+          "y": 508.953125,
+          "height": 106.765625,
+          "bottom": 615.71875,
+          "display": "grid"
+        },
+        "pagination": {
+          "y": 4089.703125,
+          "height": 44,
+          "bottom": 4133.703125,
+          "display": "flex"
+        },
+        "queue": {
+          "y": 621.3125,
+          "height": 3460.390625,
+          "bottom": 4081.703125,
+          "display": "block"
+        },
+        "firstTask": {
+          "y": 662.46875,
+          "height": 243.53125,
+          "bottom": 906,
+          "display": "grid"
+        }
+      },
+      "overflow": false,
+      "viewportHeight": 844
+    }
+  }
+]

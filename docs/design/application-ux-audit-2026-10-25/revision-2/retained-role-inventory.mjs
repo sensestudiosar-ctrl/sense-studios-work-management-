@@ -1,0 +1,9 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createRequire} from 'node:module';
+import {loadConfig,verifyDatabase,databaseUrl,repositoryRoot} from '../../../../scripts/local-runtime.mjs';
+const config=loadConfig();await verifyDatabase(config);
+const out=path.dirname(fileURLToPath(import.meta.url));
+const {Client}=createRequire(path.resolve(repositoryRoot,'apps/api/package.json'))('pg');const db=new Client({connectionString:databaseUrl(config),connectionTimeoutMillis:5000});await db.connect();
+try{await db.query('BEGIN READ ONLY');await db.query("SET LOCAL statement_timeout='5s'");const roles=(await db.query('SELECT kind,state,count(*)::int AS count FROM accounts GROUP BY kind,state ORDER BY kind,state')).rows;const counts={};for(const table of ['client_portal_grants','external_portal_grants','client_review_packages','client_review_items','client_portal_sessions','external_portal_sessions']){counts[table]=(await db.query('SELECT count(*)::int AS count FROM "'+table+'"')).rows[0].count;}const record={at:new Date().toISOString(),mode:'READ ONLY',database:config.database.name,oid:config.database.oid,system:config.database.system,accounts:roles,counts,note:'Counts/identity only. No token, OTP, private credential or session row contents exported.'};fs.writeFileSync(path.join(out,'RETAINED_ROLE_INVENTORY.json'),JSON.stringify(record,null,2));const counters=(await db.query('SELECT p."accountId",p.counter::text FROM passkey_credentials p JOIN accounts a ON a.id=p."accountId" WHERE a.kind=\'STAFF\' AND a.state=\'ACTIVE\' AND p."revokedAt" IS NULL')).rows;fs.writeFileSync(path.join(out,'TEST_AUTHENTICATOR_COUNTERS.json'),JSON.stringify({at:record.at,note:'Public signing-counter metadata only, read without modifying server credentials. Existing private keys remain DPAPI-protected.',counters},null,2));console.log(JSON.stringify(record));await db.query('ROLLBACK');}finally{await db.end();}

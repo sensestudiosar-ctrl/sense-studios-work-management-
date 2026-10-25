@@ -1,0 +1,34 @@
+{
+  "state": "PREPARED",
+  "previousAttempt": "BLOCKED: native output pipeline after PG startup",
+  "pgLiveIdentity": "PASS",
+  "retainedTasks": {
+    "total": 50,
+    "staff": 5,
+    "each": 10,
+    "exactIdsPreserved": true
+  },
+  "ownerAndOtherCatalogPreserved": true,
+  "previousServiceLaunches": {
+    "api": 0,
+    "web": 0,
+    "helper": 0
+  },
+  "offline": {
+    "ownership": 35,
+    "manifest": 36,
+    "sequence": 45,
+    "helperAndInput": 41,
+    "parsers": 28
+  },
+  "nativeOutput": {
+    "state": "PASS",
+    "pipelineMs": 1408,
+    "exactParentWaitMs": 171,
+    "parentExitCodes": [
+      0,
+      0
+    ]
+  },
+  "retry": false
+}

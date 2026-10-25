@@ -1,0 +1,11 @@
+{
+  "reviewedAtUtc": "2026-10-12T06:43:57.5182817Z",
+  "reviewScope": "current preflight implementation and inert-only readiness; no live preflight/startup",
+  "sourceHashes": {
+    ".env.checkpoint-tools/mw-i02-acceptance/preflight.ps1": "ce7039abebf650090617dfd48cd35653a65d2d5e60e5e040d02902a7ef91165e",
+    ".env.checkpoint-tools/mw-i02-acceptance/preflight.tests.ps1": "d48f92212eefc2a7db68bde1c9283eac6f355523e2d627bf21f23edb929ca0aa",
+    ".env.checkpoint-tools/mw-i02-acceptance/readiness.mjs": "3cfad97effc644a3500509c4147809b46a9531bcfc559f47960d9910523a2d96",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/ENVIRONMENT_RECOVERY_FINAL_PLAN_2026-10-12.md": "a396012dde893c6dfb34cf62e8518ec6c5fe351e7a9db9142b4529c3edc72a9e",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/PREFLIGHT_OWNERSHIP_READINESS_2026-10-12.md": "f639e2353f5bc092d65bd614e42e826aa61e29182e8f1a715ac2cf1843e5f6e0"
+  }
+}

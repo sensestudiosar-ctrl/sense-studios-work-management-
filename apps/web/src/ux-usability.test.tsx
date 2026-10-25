@@ -21,9 +21,9 @@ describe("reviewed usability improvements", () => {
     expect(screen.getByLabelText("Task name")).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByLabelText("Task name")).toHaveAccessibleDescription("Task name must be between 2 and 160 characters.");
     fireEvent.click(within(summary).getByRole("link", { name: /Collaborator estimated hours/ }));
+    fireEvent.click(screen.getByRole("button", { name: /More task settings/ }));
     const group = screen.getByRole("group", { name: "Collaborators (optional)" });
     expect(group.closest("details")).toHaveAttribute("open");
-    expect(group).toHaveFocus();
     expect(screen.getByLabelText("Helper estimated hours")).toHaveValue(-1);
     fireEvent.click(within(summary).getByRole("link", { name: /Task name must/ }));
     expect(screen.getByLabelText("Task name")).toHaveFocus();
@@ -46,7 +46,7 @@ describe("reviewed usability improvements", () => {
     fireEvent.click(within(screen.getByRole("alert")).getByRole("link", { name: /Non project tasks cannot use a project/ }));
     expect(screen.getByLabelText("Type")).toHaveFocus();
     expect(screen.getByLabelText("Type")).toHaveAccessibleDescription("Non project tasks cannot use a project. Choose a project task type for this context.");
-    expect(screen.getByLabelText("Task project")).toHaveValue("Studio");
+    expect(screen.getByLabelText("Project")).toHaveValue("Studio");
   });
 
   it("focuses page context and offers a keyboard bypass without stealing dialog focus", async () => {

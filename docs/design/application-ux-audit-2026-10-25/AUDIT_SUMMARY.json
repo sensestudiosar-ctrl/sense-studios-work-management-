@@ -1,0 +1,262 @@
+{
+  "at": "2026-10-25T06:32:13.915Z",
+  "status": "MASTER_PLAN_READY; CROSS_ROLE_AUDIT_IN_PROGRESS",
+  "release": {
+    "/release.json": {
+      "status": 200,
+      "body": {
+        "service": "web",
+        "mode": "release",
+        "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+        "buildId": "70b047cd57af-1792849822919",
+        "builtAt": "2026-10-24T13:50:22.919Z",
+        "migrations": 120
+      }
+    },
+    "/api/v1/health/release": {
+      "status": 200,
+      "body": {
+        "service": "api",
+        "mode": "release",
+        "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+        "buildId": "70b047cd57af-1792849822919",
+        "builtAt": "2026-10-24T13:50:22.919Z",
+        "migrations": 120
+      }
+    },
+    "/api/v1/health/ready": {
+      "status": 200,
+      "body": {
+        "status": "ready",
+        "service": "api",
+        "dependencies": {
+          "database": "ready"
+        },
+        "checkedAt": "2026-10-25T06:17:43.391Z"
+      }
+    }
+  },
+  "routeDeclarations": 44,
+  "sourceModules": 62,
+  "ownerCaptureRecords": 148,
+  "uniqueOwnerScreenshotFiles": 145,
+  "ownerEntryCoverage": [
+    {
+      "route": "/dashboard",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/my-work",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/tasks",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/projects",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/people",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/settings",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/decisions",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/notifications",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/documents",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/revisions",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/reviews",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/client-reviews",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/external-access",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/turnkey",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/time",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/workforce",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/learning",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/learning/skills",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/learning/training",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/learning/library",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/performance",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/project-health",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/reports",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/integrations",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/automation",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/saved-reports",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/assistance",
+      "desktop": true,
+      "phone": true
+    },
+    {
+      "route": "/site",
+      "desktop": true,
+      "phone": true
+    }
+  ],
+  "standalone": {
+    "pageCaptures": 196,
+    "anonymous": 84,
+    "syntheticOwner": 56,
+    "syntheticStaff": 56,
+    "navigationErrors": [],
+    "pageErrors": [],
+    "viewportOverflow": [],
+    "blockedWrites": [],
+    "originalInteractions": [
+      {
+        "name": "Page finder opens, filters Time, keyboard navigates",
+        "status": "FAIL",
+        "mode": "synthetic-owner",
+        "error": "locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog', { name: 'Page finder' }) to be visible\u001b[22m\n"
+      },
+      {
+        "name": "Collapse sidebar persists through route change",
+        "status": "PASS",
+        "mode": "synthetic-owner"
+      },
+      {
+        "name": "Mobile More opens and Escape restores focus",
+        "status": "PASS",
+        "mode": "synthetic-owner"
+      },
+      {
+        "name": "Mobile account settings link",
+        "status": "PASS",
+        "mode": "synthetic-owner"
+      },
+      {
+        "name": "Skip link moves focus to main",
+        "status": "PASS",
+        "mode": "synthetic-owner"
+      }
+    ],
+    "finderFocusedRecheck": {
+      "mode": "synthetic shell; not authenticated role acceptance",
+      "checks": [
+        "click opens finder after shell ready",
+        "Control+k opens finder after shell ready",
+        "Time filtering and Enter navigation"
+      ],
+      "blockedWrites": [],
+      "status": "PASS"
+    }
+  },
+  "sourceStable": [
+    {
+      "file": "apps/web/src/main.tsx",
+      "unchanged": true
+    },
+    {
+      "file": "apps/web/src/app.tsx",
+      "unchanged": true
+    },
+    {
+      "file": "apps/web/src/workspace-navigation.tsx",
+      "unchanged": true
+    }
+  ],
+  "missing": [],
+  "actualRoles": [
+    "Owner"
+  ],
+  "unverifiedRoles": [
+    "Team Leader",
+    "Project Lead",
+    "Employee/Designer",
+    "Site Staff",
+    "Primary Client",
+    "Other Client",
+    "Consultant",
+    "Vendor/factory"
+  ],
+  "scope": "No application implementation, migration, deployment, or domain mutation; session GET metadata may update."
+}

@@ -1,0 +1,321 @@
+{
+  "checkedAt": "2026-10-12T08:58:13.245Z",
+  "state": "PASS",
+  "mode": "source-only and inert operator fixtures; no live preflight, network, database, application server or authenticated browser",
+  "node": "24.19.0",
+  "checks": [
+    {
+      "name": "Startup is opt-in and forbidden without live preflight",
+      "state": "PASS"
+    },
+    {
+      "name": "Running/stopped/unknown status branches are distinct",
+      "state": "PASS"
+    },
+    {
+      "name": "Startup requires stopped-state and recovery-copy guards",
+      "state": "PASS"
+    },
+    {
+      "name": "Stopped ownership classifies server data directories from command or service ancestry",
+      "state": "PASS"
+    },
+    {
+      "name": "Stopped ownership fails closed when same/unknown executable and service metadata are insufficient",
+      "state": "PASS"
+    },
+    {
+      "name": "Offline stopped-ownership fixtures cover unrelated services, target, missing and contradictory process evidence",
+      "state": "PASS"
+    },
+    {
+      "name": "Stopped cluster reconciles stale postmaster.pid against disk identity and live PID ownership",
+      "state": "PASS"
+    },
+    {
+      "name": "Startup attempt is exclusive and invoked once at approved endpoint",
+      "state": "PASS"
+    },
+    {
+      "name": "Prior-state restoration requires run-owned startup and zero other clients",
+      "state": "PASS"
+    },
+    {
+      "name": "PowerShell preflight parser and inert guard fixtures",
+      "state": "PASS"
+    },
+    {
+      "name": "Every inert operator case passed",
+      "state": "PASS"
+    },
+    {
+      "name": "Setup records and emits exact manifest before database create",
+      "state": "PASS"
+    },
+    {
+      "name": "Playwright harness and config semantic TypeScript validation",
+      "state": "PASS"
+    },
+    {
+      "name": "All acceptance mjs scripts syntax",
+      "state": "PASS"
+    },
+    {
+      "name": "No obsolete selected-phase wording",
+      "state": "PASS"
+    },
+    {
+      "name": "Exact selected phase count, singular/plural and pressed state",
+      "state": "PASS"
+    },
+    {
+      "name": "Required viewport widths and shorter mobile height",
+      "state": "PASS"
+    },
+    {
+      "name": "Every manually created browser context has touch capability",
+      "state": "PASS"
+    },
+    {
+      "name": "Native mobile disclosure state checked before status use",
+      "state": "PASS"
+    },
+    {
+      "name": "Baseline count/source settlement and neutral focus",
+      "state": "PASS"
+    },
+    {
+      "name": "No forced visibility, fixed waits or skipped assertions",
+      "state": "PASS"
+    },
+    {
+      "name": "Exact five exit records from supported API",
+      "state": "PASS"
+    },
+    {
+      "name": "Unique manifest-scoped output, one worker and zero retries",
+      "state": "PASS"
+    },
+    {
+      "name": "Review stage independent of browser PASS",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration guard: assert.equal(manifest.state, \"ready\")",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration guard: assert.equal(manifest.createdDatabase, true)",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration guard: assert.equal(manifest.databaseName, name)",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration guard: assert.equal(identity.oid, String(manifest.databaseOid))",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration guard: assert.equal(identity.system_identifier, manifest.serverIdentity.system_identifier)",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup guard retained: marker.markerToken, manifest.markerToken",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup guard retained: target.oid, String(manifest.databaseOid)",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup guard retained: current.creationDate, expected.creationDate",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup guard retained: connections.rowCount, 0",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup guard retained: finalCatalog, manifest.catalogBefore",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/app.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/task.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/task.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/task.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/my-work-attention.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/my-work-attention.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/my-work-attention.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved frontend unchanged: apps/web/src/styles.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved acceptance harness unchanged: .env.checkpoint-tools/mw-i02-acceptance/acceptance.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Current approved acceptance harness unchanged: .env.checkpoint-tools/mw-i02-acceptance/playwright.config.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Exact approved prototype identity",
+      "state": "PASS"
+    },
+    {
+      "name": "Recorded complete manual selector, fixture and stage audit",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/run-task-integration.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/setup.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/run-tests.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/check-absence.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/cleanup.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: apps/web/src/workspace-navigation.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: apps/web/src/workspace-navigation.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: apps/api/src/review.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: package.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: pnpm-lock.yaml",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: docs/design/my-work-integration-audit/mw-i02/acceptance/HARNESS_READINESS_AUDIT_2026-10-10.md",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: docs/design/my-work-integration-audit/mw-i02/acceptance/FINAL_CONSOLIDATED_ACCEPTANCE_PLAN_2026-10-10.md",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/verify-recovery-copy.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Historical review version preserved: .env.checkpoint-tools/mw-i02-acceptance/check-no-unowned-connections.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: .env.checkpoint-tools/mw-i02-acceptance/preflight.ps1",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: .env.checkpoint-tools/mw-i02-acceptance/preflight.tests.ps1",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: .env.checkpoint-tools/mw-i02-acceptance/readiness.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: docs/design/my-work-integration-audit/mw-i02/acceptance/ENVIRONMENT_RECOVERY_FINAL_PLAN_2026-10-12.md",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: docs/design/my-work-integration-audit/mw-i02/acceptance/PREFLIGHT_OWNERSHIP_READINESS_2026-10-12.md",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: docs/design/my-work-integration-audit/mw-i02/acceptance/evidence/structural-ux-2026-10-12/current-source-manifest.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Current preflight review version bound: docs/design/my-work-integration-audit/mw-i02/acceptance/evidence/structural-ux-2026-10-12/current-harness-manifest.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Pinned frontend test/check tool versions",
+      "state": "PASS"
+    },
+    {
+      "name": "No unexplained affected frontend/gate failures",
+      "state": "PASS"
+    },
+    {
+      "name": "Affected frontend result is45/45",
+      "state": "PASS"
+    }
+  ],
+  "sourceHashes": {
+    "apps/web/src/app.tsx": "c4f6193065f6f66c40c5085b49c8cc12cc3105862eccb600052752464c6c795e",
+    "apps/web/src/task.tsx": "0966ae0af4920739afa8f4dd1d5a21195a51819cb30ad8450b34472bf0fadd5e",
+    "apps/web/src/task.css": "2b498da1477042f4bc922eca9f9f7d50059f53f71e38909a24e87c4a2b7451af",
+    "apps/web/src/task.test.tsx": "d00ed8b32b21b5a5f8bc9145e1696e2760edc9647b828c92f20d6044b3965dd9",
+    "apps/web/src/my-work-attention.tsx": "490689773d400a6a1382c3cb337055257902e2b50720885808b24173cd9d24a8",
+    "apps/web/src/my-work-attention.css": "b497f51b56f3e32349c95dd85cec2711e4369ee25882838c91c9380d734629ed",
+    "apps/web/src/my-work-attention.test.tsx": "0f468249ab39bfa20dd9df2c75fb5ee94bad6a9b5a1596cdaa884c0a1b1632e9",
+    "apps/web/src/styles.css": "3c662c41e1698979a30426dffb51138a7ac6983a903f133edcbf19f90488ce3c",
+    ".env.checkpoint-tools/mw-i02-acceptance/acceptance.spec.ts": "f86b726cf6c0f71d8902a103f30084953730cf010159a7fe9e0465820afdb712",
+    ".env.checkpoint-tools/mw-i02-acceptance/playwright.config.ts": "0703b0e80867c720ba626e2aca4918f7b92761fb7204d85ac72bd5cf6a1f46be",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/evidence/structural-ux-2026-10-12/current-source-manifest.json": "f8cf5527d5632eb658e1bc535118b2806921f2673e836700a21e00190cf54144",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/evidence/structural-ux-2026-10-12/current-harness-manifest.json": "9437b1a21ba28575cf37aa9a597367cd824712b8cabbb062f450a45848513cea",
+    ".env.checkpoint-tools/mw-i02-acceptance/check-absence.mjs": "8933ca6370191c6cdd9889b03160874112887a8119d1d2d5c75adb942a6d458b",
+    ".env.checkpoint-tools/mw-i02-acceptance/check-no-unowned-connections.mjs": "70711fa32f292ac0a2a2ad0f7b1ca42c1727253198465112d9daca3a295d9cb2",
+    ".env.checkpoint-tools/mw-i02-acceptance/cleanup.mjs": "80739dbaa2072274e1dfc7bd20a270fded78fa9dacd92bf36275627bb7fdc089",
+    ".env.checkpoint-tools/mw-i02-acceptance/preflight.ps1": "ce7039abebf650090617dfd48cd35653a65d2d5e60e5e040d02902a7ef91165e",
+    ".env.checkpoint-tools/mw-i02-acceptance/preflight.tests.ps1": "d48f92212eefc2a7db68bde1c9283eac6f355523e2d627bf21f23edb929ca0aa",
+    ".env.checkpoint-tools/mw-i02-acceptance/readiness.mjs": "9f5a9d81efae070613ed1e89b67b96f52ec8d1cad0c72461689332640820dc4f",
+    ".env.checkpoint-tools/mw-i02-acceptance/run-task-integration.mjs": "c5a966453a5ffac48a745af5481fcc17916f81b69e9862ea184e5a6803dba3a8",
+    ".env.checkpoint-tools/mw-i02-acceptance/run-tests.mjs": "8ddb70c1c66881f4cdad6cf4eedd501507e63bc7f433c30b9af78290ab2e2a04",
+    ".env.checkpoint-tools/mw-i02-acceptance/setup.mjs": "cd168916568ed3f349204a82cef71a2e262e7ad51948c2647bff1417f1a10fb7",
+    ".env.checkpoint-tools/mw-i02-acceptance/verify-recovery-copy.mjs": "33a0ca1723b6e1b1062a5e1b9882032f240805c379dd6c4c98fef45848b77090",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/HARNESS_READINESS_AUDIT_2026-10-10.md": "f4a018e90f83a51c4f66d43467c3092b12ee807cd817ac645af1842b5cce761a",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/ENVIRONMENT_RECOVERY_FINAL_PLAN_2026-10-12.md": "a396012dde893c6dfb34cf62e8518ec6c5fe351e7a9db9142b4529c3edc72a9e",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/PREFLIGHT_OWNERSHIP_READINESS_2026-10-12.md": "f639e2353f5bc092d65bd614e42e826aa61e29182e8f1a715ac2cf1843e5f6e0",
+    "apps/api/src/review.database.api.spec.ts": "9a02c446ce0c28ff10ac8cde730acc1352f2f8ec4c82d2bcfef50feb92729e70",
+    "apps/web/src/workspace-navigation.tsx": "73acdcb4df53009c5d516c9dfcffcbdffee6a713998a585e8a7fe2c513d2fbbb",
+    "apps/web/src/workspace-navigation.css": "6d98dcbe67878f08a0aa6725717efe3a751a4b20c9923015e5451bd38d991c4f",
+    "package.json": "7ec90e4db7e8f243855a7cb30af0d80413a04cef2cb8401b0b07733655bae628",
+    "pnpm-lock.yaml": "beeca66ff333d4b7f3f9acfc8738f9f63361d52bbedec1320ba91985083452f8"
+  },
+  "limits": "Manual source review, inert fixtures and static typing do not prove authenticated runtime behavior. Focused frontend results are recorded separately."
+}

@@ -1,12 +1,12 @@
 .time-workspace { width: 100%; }
 .time-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-.time-heading h2, .time-heading h3 { margin: .4rem 0; font: 500 1.55rem Georgia, serif; }
+.time-heading h2 { margin: .4rem 0; font-size: 1.55rem; font-weight: 650; letter-spacing: -.02em; color: #182c29; }
 .time-heading p, .time-panel > p, .time-entry-main > p { margin: .3rem 0; color: #61736b; font-size: .86rem; line-height: 1.5; }
 .time-toolbar, .time-filters, .time-inline, .time-actions, .time-entry-actions { display: flex; align-items: end; flex-wrap: wrap; gap: .75rem; }
 .time-toolbar { justify-content: space-between; margin-top: 1rem; padding: .8rem 1rem; border-radius: .7rem; background: #f2f3eb; color: #61736b; font-size: .84rem; }
 .time-top-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 1rem; margin-top: 1rem; }
 .time-panel { min-width: 0; padding: 1.1rem; border: 1px solid #e2e1d8; border-radius: .8rem; background: #fbfaf5; }
-.time-panel h3, .time-history h3 { margin: 0 0 .8rem; color: #29463d; font: 500 1.25rem Georgia, serif; }
+.time-panel h3, .time-history h3 { margin: 0 0 .8rem; color: #29463d; font-size: 1.05rem; font-weight: 650; letter-spacing: -.01em; }
 .time-form, .time-panel > label, .time-form-grid > label, .time-toolbar label, .time-filters label, .time-inline label { display: grid; gap: .4rem; color: #334d44; font-size: .82rem; font-weight: 700; }
 .time-form { gap: .8rem; }
 .time-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; }
@@ -15,7 +15,8 @@
 .time-wide { grid-column: 1 / -1; }
 .time-check { display: flex !important; align-items: center; min-height: 2.7rem; }
 .time-check input { width: 1.1rem !important; min-height: 1.1rem !important; accent-color: #35594b; }
-.time-clock { margin: .25rem 0 !important; color: #182c29 !important; font: 500 clamp(2rem, 6vw, 3.2rem)/1 Georgia, serif !important; font-variant-numeric: tabular-nums; }
+/* The active timer is the page's one large number: tabular Inter, not a book serif. */
+.time-clock { margin: .25rem 0 !important; color: #182c29 !important; font: 600 clamp(2.1rem, 6vw, 3rem)/1 var(--sense-font, Inter, ui-sans-serif, system-ui, sans-serif) !important; letter-spacing: -.03em !important; font-variant-numeric: tabular-nums; }
 .time-actions { margin-top: 1rem; }
 .time-history { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid #e2e1d8; }
 .time-filters { align-items: end; margin: .9rem 0; }
@@ -50,4 +51,42 @@
   .time-heading { align-items: center; }
   .time-toolbar { align-items: stretch; flex-direction: column; }
   .time-version-diff { grid-template-columns: 1fr; }
+}
+
+/* Hours breakdown — the chart is the one bold element; task rows stay quiet.
+   A horizontal proportional bar answers "which project ate the most time"
+   at a glance, better than a grid of identical numbers. */
+.time-hours { margin-top: 1rem; }
+.time-hours-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.time-hours-head h3 { margin: 0 0 .3rem; color: #29463d; font-size: 1.05rem; font-weight: 650; letter-spacing: -.01em; }
+.time-hours-head p { margin: 0; color: #61736b; font-size: .84rem; line-height: 1.45; max-width: 34rem; }
+.time-hours-filter { display: grid; gap: .35rem; min-width: 12rem; color: #334d44; font-size: .82rem; font-weight: 650; }
+.time-hours-filter select { min-height: 2.7rem; padding: .6rem .7rem; border: 1px solid #aeb9ad; border-radius: .5rem; background: #fff; color: #182c29; font-weight: 400; }
+.time-hours-total { display: flex; align-items: baseline; gap: .75rem; margin: .9rem 0 1rem; padding: .8rem 1rem; border-radius: .75rem; background: #fbfaf5; border: 1px solid #e8e7de; }
+.time-hours-total span { font-size: .82rem; font-weight: 550; color: #61736b; }
+.time-hours-total strong { font-size: 1.7rem; font-weight: 700; letter-spacing: -.03em; color: #182c29; font-variant-numeric: tabular-nums; }
+.time-hours-total small { color: #8a9a8f; font-size: .76rem; margin-left: auto; }
+/* One bar per project, width proportional to its share of logged time. */
+.time-hours-grid { display: grid; gap: .8rem; }
+.time-hours-card { min-width: 0; padding: .9rem 1rem; border: 1px solid #e8e7de; border-radius: .75rem; background: #fffdf7; }
+.time-hours-card-title { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; margin-bottom: .5rem; }
+.time-hours-card-title h4 { margin: 0; color: #29463d; font-size: .95rem; font-weight: 600; overflow-wrap: anywhere; }
+.time-hours-card-title span { flex: none; color: #315947; font-weight: 700; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.time-hours-bar { height: 6px; border-radius: 999px; background: #edf0e8; overflow: hidden; }
+.time-hours-bar i { display: block; height: 100%; background: #2f5d47; border-radius: 999px; transition: width .35s ease; }
+.time-hours-tasks { margin-top: .7rem; display: grid; gap: .4rem; }
+.time-hours-tasks button { display: flex; width: 100%; justify-content: space-between; gap: .75rem; padding: .45rem .65rem; border: 1px solid #e8e7de; border-radius: .5rem; background: #fbfaf5; color: #182c29; cursor: pointer; font: inherit; transition: border-color .12s, background .12s; }
+.time-hours-tasks button span { min-width: 0; color: #334d44; font-size: .84rem; font-weight: 500; overflow-wrap: anywhere; }
+.time-hours-tasks button strong { flex: none; color: #29463d; font-size: .84rem; font-variant-numeric: tabular-nums; }
+.time-hours-tasks button:hover { border-color: #b9ccbc; background: #f2f6ef; }
+.time-hours-tasks button:focus-visible { outline: 3px solid var(--sense-focus, #b98f49); outline-offset: 2px; }
+.time-hours-card-note { margin: .5rem 0 0; color: #8a9a8f; font-size: .8rem; }
+@media (max-width: 700px) {
+  .time-hours-head { flex-direction: column; }
+  .time-hours-filter { width: 100%; }
+  .time-hours-total { flex-wrap: wrap; }
+  .time-hours-total small { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .time-hours-bar i { transition: none; }
 }

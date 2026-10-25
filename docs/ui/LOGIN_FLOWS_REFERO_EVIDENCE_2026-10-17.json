@@ -1,0 +1,1335 @@
+{
+  "date": "2026-10-17",
+  "purpose": "Separate login/first-time/recovery journeys for all user types; first-stage planning only",
+  "priorEvidence": "UX_UI_FLOW_REFERO_EVIDENCE_2026-10-17.json",
+  "styleDirection": "Existing approved brand/current tokens; seven prior live style searches had NO_RESULTS, not repeated.",
+  "flows": [
+    {
+      "id": 4815,
+      "platform": "web",
+      "refero_url": "https://refero.design/flows/4815",
+      "name": "Passwordless Email Sign-in to Dashboard",
+      "screens_count": 8,
+      "description": "Happy-path passwordless sign-in using an emailed verification code, starting from the public project gallery and ending at the authenticated user dashboard. Entry point: unauthenticated visitor on the public browse screen who selects Log in. Exit point: authenticated dashboard loads and displays personalized content. Assumptions: desktop device, user is not signed in, user has access to the email account they provide, the site uses passwordless email codes for authentication.",
+      "problem": "User task: sign in quickly and securely without a password by receiving and entering a verification code sent to their email. From the user perspective they expect a clear, low-friction path: navigate to sign-in, choose email sign-in, receive a code, enter it, see success or clear error messaging, and land in their dashboard. From the interface/system perspective the UI must: collect the user email, send a verification code, show the code entry UI with clear status (success, failure, resend), validate the code, and transition to an authenticated state on success. Result: user-perceived outcome is that the user is signed in and sees their personalized dashboard. System-level outcome is that the authentication attempt is validated and the session is established (user identity resolved and dashboard data returned).",
+      "site": {
+        "id": 369,
+        "domain": "contra.com",
+        "description": "The commission-free freelance network",
+        "name": "Сontra",
+        "background_url": "https://images.refero.design/backgrounds/contra.com/b87a9902-8281-4030-b591-8034a6181fb9.jpg",
+        "refero_url": "https://refero.design/websites/369",
+        "categories": [
+          "Job Search"
+        ],
+        "favicon_url": "https://images.refero.design/favicon/contra.com/7ce3d7f7-1102-4775-8ed0-291a2b0c0fc2.jpg",
+        "background_color": "6aadf0"
+      },
+      "steps": [
+        {
+          "name": "Public browse / projects",
+          "screen_id": "62d4884c-5056-4b93-b805-9eb8be7aa80d",
+          "refero_url": "https://refero.design/pages/62d4884c-5056-4b93-b805-9eb8be7aa80d",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/ebea3d23-26af-4a2f-9e9b-55e16ba75911_thumb.jpg",
+          "goal": "Discover the platform and locate the sign-in entry point",
+          "action": "User scans the showcased projects and clicks the 'Log in' link in the header",
+          "system_response": "Navigate from the public projects gallery to the sign-in screen (displaying sign-in options and email input)",
+          "page_types": [
+            "Discover",
+            "Product Page & Landing",
+            "Home Page"
+          ],
+          "ux_patterns": [
+            "Like & Reactions"
+          ],
+          "ui_elements": [
+            "Button",
+            "Tabs",
+            "Navigation Bar",
+            "Search Field",
+            "Footer",
+            "Icon",
+            "Hero Image",
+            "Avatar",
+            "Gradient",
+            "Product Image",
+            "Animation"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "The screen is a web homepage for a platform called 'Contra', designed for independent creatives and clients. The overall style is clean and modern with a predominantly white background (#FFFFFF) and black text (#000000) used for main headings and navigation. The typography features large sans-serif fonts for the main headline ('Get more creative'), sized approximately 36-48px, bold weight. The subtitle text below uses a smaller, lighter sans-serif font about 16-18px in size with normal weight, aligned left.\n\nThe top navigation bar includes the 'Contra' logo on the left in black, followed by three textual navigation links ('For independents', 'For clients', 'For partner networks') spaced evenly with about 20px margins. On the right side, there's a dark button for 'Sign up' with white text, rounded corners about 20px radius, and a simple 'Log in' text link next to it.\n\nBelow the headline is a prominent horizontal toggle area with two pill-shaped buttons: 'Hire independents' - dark background (#1F2937) with white text and shadow for a pressed effect, and 'Get hired' - white background with dark text and subtle border, both about 140px wide and consistent height (~40px). They stand out visually and are clickable.\n\nThe main content features a large hero image on the right side showing a man with a robot figure, and a small profile card overlay with an avatar circular image, a name, role label, and 'Pro' badge in the lower right corner.\n\nUnderneath is a broad search bar with a rounded rectangular text input field (about 100% width), light grey background (#F3F4F6), and placeholder text \"Search across 1M+ creatives…\" with a small search icon on the left inside the field. To the right side are two toggle tabs: 'Projects' and 'People', with 'Projects' active indicated by underline or highlight.\n\nUnder the search area is a horizontally scrollable category menu with labels such as 'Featured', 'Up & Coming', 'Brand Designer', etc. The active category is underlined or highlighted in indigo (#6366F1).\n\nBelow, there's a grid gallery of rectangular project cards arranged in a multiple-column layout (approximately 3-4 columns depending on screen width). Each card contains a thumbnail image, creator avatar, project title, and interaction stats such as likes and views with icons. Some cards have badges or labels such as 'Built with Framer' or user 'Pro' tags.\n\nAt the bottom are large call-to-action buttons centered horizontally: 'Hire creatives' (dark background, white text) and 'Get hired' (white background, dark text), similar to the top toggle.\n\nFinally, a footer with multiple columns listing links categorized by 'For Independents', 'For Clients', 'Use Cases', 'Resources', 'Hire Freelancers', and 'Company'. The footer uses small sans-serif typography in grey (#6B7280) on a white background, with social media icons aligned horizontally at the bottom right.\n\nThe layout is spacious with consistent padding and margin around elements (approximately 20-40px), a grid-based structure for the project gallery, and clear visual hierarchy with emphasis on CTAs and search functionality. The overall aesthetic relies on white space, subtle shadows for buttons and cards, rounded corners, and a neutral, professional color palette with black, white, greys and accent indigo.\n\nNo obvious animation is shown, but interactive states for buttons and hover effects on cards and links are implied by shadows and color changes.",
+            "layout": "The overall layout is structured in a vertical scroll format with several distinct horizontal sections stacked from top to bottom.\n\n1. Navigation Bar: A horizontal row at the top spanning full width. Uses left-aligned logo and navigation links, right-aligned buttons and links, with balanced horizontal padding.\n\n2. Hero Section: Divided horizontally with text and call-to-action buttons occupying left side (about 40-50% width) and a hero image on the right side occupying remaining width. Small overlay card with avatar appears near image. Adequate vertical padding surrounds this section.\n\n3. Search and Filters: Below the hero section, a horizontal search bar spans majority width, flanked on right side by toggles for Projects/People. Below this, a horizontal scroll menu or tab list of categories is presented.\n\n4. Project Gallery: A multi-column grid layout with consistent columns (likely 3 to 4 columns depending on container width), rows flow vertically with uniform gaps and spacing. Each card is rectangular with image thumbnails on top and text details below.\n\n5. Bottom Call-to-Action: Center-aligned block with two side-by-side buttons.\n\n6. Footer: A wide horizontal section with multiple columns of text links arranged in vertical stacks. Social media icons aligned at the bottom corner within the footer area.\n\nThis layout prioritizes clarity and balanced whitespace, uses grid for gallery, flexbox or CSS grid for header navigation and footer columns. The layout keywords include: vertical scroll, multi-column grid, horizontal navigation bar, split hero section, centered CTA block, multi-column footer.",
+            "functions": "Users can perform several tasks on this page starting with navigating top-level sections using the navigation links at the top. Primary actions include choosing whether to hire independent creatives or get hired themselves through toggles and call-to-action buttons present at both top and bottom of the page.\n\nThey can enter search queries in the search bar to find creatives or projects among the 1 million+ profiles, with filters provided via the category tabs (e.g., Featured, Up & Coming, specific professions). The toggles next to the search bar allow switching between viewing Projects or People, helping users focus their search.\n\nIn the project grid, users can browse visually rich cards featuring different creative works, view creator details like name, avatar, and engagement metrics (likes, views). Users may click to explore project details or creator profiles (implied by the interface structure).\n\nAt a broader level, this page functions as a marketplace or network hub connecting independent creatives working in various fields with clients or companies seeking their services. It supports discovery, engagement, and hiring processes by providing tools for search, filtering, and showcasing.\n\nThe footer provides extensive links facilitating deeper exploration of resources, case uses, company information, and legal policies, reinforcing trust and providing navigation to secondary site functions.\n\nOverall, the interface enables users to efficiently discover creative talent or projects, initiate hiring processes, and navigate a comprehensive online creative ecosystem through a clear, visually harmonious, and user-friendly design."
+          }
+        },
+        {
+          "name": "Sign-in landing",
+          "screen_id": "9630d0a7-715e-4f86-8509-62dbe456e12f",
+          "refero_url": "https://refero.design/pages/9630d0a7-715e-4f86-8509-62dbe456e12f",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/fa839e67-43b6-4d64-ab8a-c98336384d93_thumb.jpg",
+          "goal": "Choose a sign-in method and provide an email address",
+          "action": "User sees primary options (Continue with Google and an email input). They type their email address into the email field",
+          "system_response": "Email input is validated for format; the Log in control becomes enabled (ready to request a verification code)",
+          "page_types": [
+            "Log In"
+          ],
+          "ui_elements": [
+            "Button",
+            "Text Field",
+            "3d Illustration"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "The screen is a login interface for 'Contra' with a minimalist and modern design. The background is light gray (#f5f7fa) with a rounded white card container centered on the page. Inside the container, on the left side, there's the Contra logo in black at the top left corner. Below it, the text 'Welcome back to Contra' is displayed in a clean, sans-serif font (similar to Inter or Helvetica Neue, 18px, weight 500) with a waving hand emoji. Under this welcoming text, there is a prominent 'Continue with Google' button: a dark navy background (#1f2937), fully rounded corners, horizontally wide with the Google logo and text aligned center in white. A subtle dividing text 'OR' in uppercase separates this social login from the email login form below. The email input field is a simple rectangular white text input with a light gray border (#d1d5db), 14px placeholder text 'name@email.com', and standard padding. Below this input field, a disabled 'Log in' button appears light gray (#e5e7eb) and rounded. On the right side of the container is a colorful abstract, translucent 3D star-shaped illustration in pastel hues (pink, purple, yellow, light blue). At the bottom center of the container, small text reads 'New to Contra? Join our commission-free platform' in muted gray (#6b7280), followed by a subtle outlined 'Sign Up' button with black border and rounded edges. The layout is a two-column grid with left column containing login controls and right column containing the illustration. The spacing is generous with ample white space and clean alignment. There are no visible animations. The overall style is modern, clean, and welcoming with a focus on simplicity and easy access.",
+            "layout": "The layout is a centered card container with a two-column structure. The left column occupies roughly 50% width and includes the logo at the top left, a greeting message, followed by the social login button, an 'OR' separator text horizontally aligned, then an email input field and a disabled login button vertically stacked with consistent spacing (~16-20px between elements). The right column occupies the other 50% width and displays an abstract colorful 3D illustration, vertically and horizontally centered within its half. Below the login section, centered spanning both columns, there's a small text prompt about signing up and an adjacent outlined 'Sign Up' button. The columns are arranged side by side with even vertical alignment. Padding inside the card container is uniform (~40px). The card has rounded corners and a subtle shadow for elevation. The overall alignment uses center justification horizontally and vertical spacing balanced for readability and aesthetics.",
+            "functions": "Users can choose to log in using their Google account by clicking the 'Continue with Google' button which visually stands out with branding and contrasting color, providing an easy third-party authentication method. Alternatively, users can input their email address into the text field and presumably enable the 'Log in' button once a valid email is entered, allowing direct email login. The interface supports returning users to sign in quickly and securely. For new users, the interface offers a clear pathway to sign up with a 'Sign Up' button placed beneath the login options along with a brief informative text about the commission-free nature of the platform, encouraging registration. These UI elements provide visual clarity, appropriate affordance (like button states and placeholder text) and quick interaction steps to facilitate smooth user authentication workflows. Overall, the goal is to let returning users access their account and to guide new users toward account creation efficiently with minimal friction and modern appeal."
+          }
+        },
+        {
+          "name": "Submit email",
+          "screen_id": "7e1ab988-b64b-483f-a69c-c613b21795fb",
+          "refero_url": "https://refero.design/pages/7e1ab988-b64b-483f-a69c-c613b21795fb",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/354242ba-1a98-47ce-aafc-f65cdb9c29f7_thumb.jpg",
+          "goal": "Request a verification code be sent to the provided email",
+          "action": "User taps 'Log in' (or equivalent) after entering their email",
+          "system_response": "UI transitions to the 'We emailed you a code' screen and triggers sending a verification code to the provided email address",
+          "page_types": [
+            "Log In"
+          ],
+          "ui_elements": [
+            "Button",
+            "Text Field",
+            "3d Illustration"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "The screen is a clean, minimalistic login page with a white background and rounded corners framing the content. On the left side, the logo 'contra' is placed at the top left in a black serif font with a small decorative icon. Below, centered horizontally, a welcoming text says 'Welcome back to Contra' with a waving hand emoji. Underneath is a prominent black button with rounded edges that reads 'Continue with Google' accompanied by the Google icon in color, using a sans-serif font. A thin horizontal line with the text 'or' centered separates the social login from the email login section. The email input field is a wide rectangle with a subtle border, containing placeholder text or an example email in gray text. Below is an outlined, rounded rectangular 'Log in' button with black text. On the right side of the layout is a large, shiny, iridescent 3D geometric shape in purple, blue, yellow, and orange tones, rendered with a translucent material effect. At the bottom center of the page is a small sentence in light gray text reading 'New to Contra? Join our commission-free platform' with a small, outlined 'Sign Up' button next to it. The typography is consistent, mostly sans-serif, with clear hierarchy and ample white space. The overall style is modern, sleek, and user-friendly, with contrasting black and white elements accented by the colorful 3D illustration.",
+            "layout": "The layout is horizontally divided into two main sections within a centered white container with rounded corners. The left column contains the logo top-left, welcome text centered below it, then stacked vertically: a large full-width Google login button, a horizontal separator with 'or' label, an email input field, and a login button. At the bottom center below these is a smaller horizontal group with new user prompt text and sign-up button. The right column displays a large colorful 3D geometric shape vertically centered. Padding around text and form elements is generous, with consistent spacing (margins of approximately 20-30px between each element). Alignments are mostly center-based horizontally in the left column. The overall structure forms a balanced 2-column grid with left form and right illustration. The background behind the white container is a very light gray or off-white, subtly differentiating the container from the page. The layout adapts to a compact vertical structure if on smaller devices, but not visible in the screenshot.",
+            "functions": "Users can log in to their accounts by either clicking the 'Continue with Google' button to authenticate via Google OAuth or by entering their email address in the input field and clicking the 'Log in' button. The interface clearly distinguishes the two login methods using the dividing 'or' line. For new users, the interface gently prompts them to create an account by presenting a 'Sign Up' link and button at the bottom center of the screen, allowing easy navigation to the registration process. This screen primarily supports user authentication to provide secure access to the platform. Visual elements like buttons and input fields provide immediate interactive feedback through shape, contrast, and clear text labels, ensuring clarity and ease of use."
+          }
+        },
+        {
+          "name": "Code entry prompt",
+          "screen_id": "60d8c743-6cdc-4e43-b047-8adec8de4c99",
+          "refero_url": "https://refero.design/pages/60d8c743-6cdc-4e43-b047-8adec8de4c99",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/db0b1b58-7966-44ac-89c5-800f72a6b240_thumb.jpg",
+          "goal": "Enter the verification code received by email",
+          "action": "User views empty code input cells and waits for or retrieves the email, then begins entering the code",
+          "system_response": "The interface shows the email the code was sent to, displays trust/third-party indicators, and provides an editable code input with visual state for success/failure and an option to resend a code",
+          "page_types": [
+            "Log In"
+          ],
+          "ui_elements": [
+            "Button",
+            "Text Field",
+            "3d Illustration"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "This screen features a minimalist and modern design with a white content card centered on a light blue-gray background (#e9f0f6). The card has softly rounded corners and subtle shadowing to lift it from the background. In the top left corner inside the card is a black logo text 'contra' styled in a serif font with a gentle flourish. On the left side of the card is the main user interface for email verification. The heading is a bold, dark gray text 'We emailed you a code' in approximately 18-20px font size, using a geometric sans-serif font for clarity. Below is a smaller, lighter gray subtext in about 12-13px size reading \"Enter the verification code sent to:\" followed by the user's email displayed in black text with a monospace or neutral font for legibility. Next to the email is a pencil icon in muted gray indicating the ability to edit the email. Below that is a segmented input box for the verification code consisting of six equally spaced rectangular placeholders with faint borders (#cccccc), each representing one digit. Each placeholder is square with rounded corners and subtle spacing. Under the input fields is a success message area featuring a green circular checkmark icon on the left and the text 'Success!' in green (#28a745), accompanied by a small, faint Cloudflare badge on the right with minimal color. Below that is a subtle gray text line 'Didn't get your code?' followed by a small clickable link \"Send a new code\" in purple (#5a4ade) that is underlined on hover to indicate interactivity. On the right side of the card is a colorful 3D abstract geometric shape with translucent facets in pastel gradient colors (pinks, blues, yellows, purples) lending a modern and artistic tech feel. The overall layout is a horizontal split with content aligned vertically centered left and the illustration right, balanced by generous white space and padding (40px left content padding, 40-50px side padding). Typography is neat, lines spaced comfortably with left alignment for text inputs and controls. There are no visible animations, but subtle hover interactions may occur on the link. The color palette consists of white (#ffffff), black (#000000), gray shades (#666666, #999999, #cccccc), green success (#28a745), and pastel gradient colors for the illustration.",
+            "layout": "The layout uses a two-column structure inside a central content card with ample padding on all sides. The left column holds all interactive UI elements including heading text, descriptive subtext, email address with edit icon, code input fields, success message, and a text link. This column uses vertical stacking with spacing between elements, aligned left, consuming roughly 40-50% of the card width. The right column occupies about 50-60% width with a single, visually dominant 3D illustration centered vertically. The card itself is centered horizontally and vertically on the page with generous outer margin and subtle background color. The columns are separated by whitespace, ensuring balanced visual weight. Keywords for layout include: two-column, center aligned, vertical stack, sidebar content, split screen, balanced whitespace, responsive segments, padding rich, card container, and visual hierarchy.",
+            "functions": "Users can perform several tasks using this interface: They can view the email address where the verification code was sent, with the option to edit it by clicking the pencil icon. Users can input the 6-digit verification code via the segmented input fields, which visually separate each digit to help accurate entry. The success message with a green checkmark provides immediate feedback when the code is entered or verified correctly, enhancing confidence. If they did not receive the code, a link is provided to request a new code, improving the user flow in case of delivery issues. On a medium level, the interface supports the workflow of validating a user's identity or securing the account through two-factor or multi-factor authentication by tying the code entry to the emailed OTP. This process ensures only authorized users can proceed beyond this step. Broadly, this screen facilitates user verification security by confirming possession of a verified email address, thus preventing unauthorized access and enhancing account safety. The clear layout and feedback mechanisms make the process intuitive and efficient."
+          }
+        },
+        {
+          "name": "Typing verification code",
+          "screen_id": "e80fcc9b-b3a7-46b5-a5ce-994c68b1405b",
+          "refero_url": "https://refero.design/pages/e80fcc9b-b3a7-46b5-a5ce-994c68b1405b",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/542b7581-6fe4-4ebb-a062-a5a7be15d19d_thumb.jpg",
+          "goal": "Complete the code entry so it can be validated",
+          "action": "User types each digit/character into the segmented code input",
+          "system_response": "Each character fills a cell; when all required characters are entered the system attempts to validate the code (live validation/submit)",
+          "page_types": [
+            "Log In"
+          ],
+          "ui_elements": [
+            "Button",
+            "Text Field",
+            "3d Illustration"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "The screen is a minimalistic verification page designed for inputting a code emailed to the user. The page background is a very light blue (#f0f4fa). The main content is contained within a central white card with subtle rounded corners and a shadow effect, standing out from the background. On the left side inside the card, the header includes a simple logo at the top-left reading 'contra' in black serif font, medium weight. Below the logo, a bold heading in black reads 'We emailed you a code'. Underneath, there's a smaller instruction text indicating 'Enter the verification code sent to:' followed by the email address 'refero.design.team@gmail.com' in dark grey (#333333) with a small pencil icon to edit. Next, a horizontal input area for the code consists of six separate white boxes with subtle grey borders and rounded corners, each containing a single digit in a large sans-serif font, spaced evenly with comfortable padding. Below the input boxes, there's a success message line with a green checkmark icon and the text 'Success!' in green (#28a745), accompanied by a small Cloudflare badge on the right side. Beneath that is a smaller text link in purple (#6a57f2) reading 'Didn’t get your code? Send a new code' which is clickable for resending the code. On the right side of the card is a large, colorful 3D crystalline abstract illustration with iridescent pastel colors and subtle gradients, presumably decorative. The layout is organized in two main columns: left column with text and form, right column with the illustration. The text is left aligned. No visible buttons except the resend link. The overall style is modern, clean, with ample white space and a calm color palette focusing on white, black, grey, green, and pastel rainbow colors in the illustration. Typography includes a serif font for the logo, a sans-serif font for all other text, with clear hierarchy from bold headings to smaller instructions. UI elements present are multi-character code input fields, text labels, icons for success and edit, and a hyperlink for resending code.",
+            "layout": "The layout is a two-column structure inside a white card container centered on a light background. The left column (approximately 60% width) contains vertical arrangement of the text elements: logo at top left, then the main heading, smaller instruction text, the verification code input arranged horizontally as 6 distinct boxes evenly spaced with equal width, the success message and icon beneath, and below all the resend link. The right column (around 40% width) features a large decorative 3D illustration aligned center vertically. There is ample padding around all elements, keeping the layout spacious and clear. The input boxes are horizontally aligned in a single row with equal spacing. Text is left-aligned and the overall composition uses consistent margin and spacing to separate sections. The page is visually balanced with text and interactive elements on one side and a graphic visual on the other. The container card uses rounded corners and subtle drop shadow to elevate it from the background.",
+            "functions": "Users interact with this screen primarily to enter a multi-digit verification code received by email to confirm their identity as part of an authentication or security process. The input fields are visually separated to encourage entry of one digit per box, likely auto-advancing as users type. The interface provides feedback for successful code entry with the green checkmark and 'Success!' message, reassuring users that their code was accepted. The presence of an editable email address allows users to correct or update the destination address if needed, enhancing flexibility. The link to 'Send a new code' supports users in cases where the email or code did not arrive or expired, initiating a resend workflow. Collectively, this page supports the medium-level task of verifying user identity through code confirmation as part of account security or login steps. By guiding users clearly with labels, input boxes, success feedback, and options to resend, the screen facilitates a smooth verification process, contributing to a broader goal of secure user login, registration, or sensitive action authorization."
+          }
+        },
+        {
+          "name": "Invalid code error",
+          "screen_id": "b6732c7b-6159-4545-a106-e2464bdfed11",
+          "refero_url": "https://refero.design/pages/b6732c7b-6159-4545-a106-e2464bdfed11",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/5a79fa56-3f33-47c4-8308-ddd529e83a94_thumb.jpg",
+          "goal": "Inform the user when the provided code doesn't match",
+          "action": "User receives feedback (toast/banner) after the system rejects the code; they may correct it or request a resend",
+          "system_response": "A visible error toast appears ('This code does not match'), the code input remains active for correction and a 'Send a new code' option is available",
+          "page_types": [
+            "Log In"
+          ],
+          "ux_patterns": [
+            "Error"
+          ],
+          "ui_elements": [
+            "Button",
+            "Text Field",
+            "Notifications & Toast",
+            "3d Illustration"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "This screen presents a code verification interface placed on the left side, with the company's logo 'contra' at the top left corner in black font. The background is a very light gradient, soft blueish tone, creating a calm and professional atmosphere. The content area has rounded corners and subtle shadows, making it distinct from the background. The main heading is a bold, black text saying 'We emailed you a code'. Below, an instruction is given in smaller grey font: 'Enter the verification code sent to:' followed by the masked email address 'refero.design.team@gmail.com' with a subtle underline and a small pencil icon to edit. Underneath is a horizontally aligned code input field with six circular placeholders for code digits, each represented by a dot, spaced evenly. Below the input is a success badge with a green check mark and 'Success!' text next to the Cloudflare logo. There is also a link styled in soft blue saying 'Didn’t get your code? Send a new code'. On the top right side of the left block, there's a red error message inside a rounded rectangular box with an error icon reading 'This code does not match. Please check your code and try again.' The right side of the screen displays a large, colorful, translucent geometric sculpture consisting of intersecting planes creating an abstract star-like shape with pastel iridescent colors (pinks, yellows, blues, greens). The text uses a modern sans-serif font like Helvetica or similar, with sizes approximately 24px for the header, 14-16px for body text and input placeholders, and the color scheme incorporates primarily black for headers, grey for secondary text (#555555), blue (#3366CC) for links, green (#4CAF50) for success, and red (#D32F2F) for error messages. The layout is a two-column grid with left side content vertically centered and right side illustration aligned to center. The overall design is minimalistic and clean with ample whitespace, focusing attention on the verification process, conveying security and trust through visual feedback and brand presence.",
+            "layout": "The layout is a two-column grid. The left column contains textual content and input fields and occupies approximately 50% of the screen width. It’s vertically and horizontally center-aligned within a white or very light container with rounded corners and subtle shadow, offset from the background. The right column features a large, colorful abstract 3D geometric shape, visually balanced and centered vertically to the left content. There is generous whitespace around elements. On the left column, content is stacked vertically with spacing: logo at top left, followed by heading, descriptive text, code input field horizontally aligned, success badge horizontally aligned under input, and a small link below. The error message is positioned top right within the left column, in a red rounded box. The entire page background uses a light gradient or subtle color fill, and the two-column structure harmonizes text and visual illustration clearly.",
+            "functions": "Users can read the instruction to enter the verification code sent to their email address. They can view the partially masked email where the code was sent and have an option to edit this email address via the pencil icon. The main interaction is entering the verification code into the six separate input boxes. As users input digits, the interface visually updates the code placeholders. If the entered code is invalid, the red error message appears at the top right, alerting the user to check and retry, providing immediate feedback. The screen also shows a success badge when the process or a previous attempt has succeeded, signaling confirmation. Additionally, users can request a new verification code via the clickable “Send a new code” link, which would trigger another email. The right side visual element supports brand uniqueness and adds aesthetic appeal but is not interactive. Overall, the screen supports the task of verifying a user's identity via a time-sensitive code for secure account access or authentication, ensuring clarity, ease of use, and guidance in case of errors."
+          }
+        },
+        {
+          "name": "Correct code entry",
+          "screen_id": "56e6a141-337c-40f3-b50d-0a9c24570965",
+          "refero_url": "https://refero.design/pages/56e6a141-337c-40f3-b50d-0a9c24570965",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/e42c8533-5367-4c15-b5de-a133bbb8a5ac_thumb.jpg",
+          "goal": "Provide a valid verification code and finish authentication",
+          "action": "User corrects the input and submits the correct code",
+          "system_response": "System validates the code successfully and transitions the user into an authenticated session (navigates to dashboard)",
+          "page_types": [
+            "Log In"
+          ],
+          "ui_elements": [
+            "Button",
+            "Text Field",
+            "3d Illustration"
+          ],
+          "fonts": [
+            "Inter"
+          ],
+          "content": {
+            "description": "The screen features a clean, minimalistic layout with a white background and subtle rounded corners on the container. On the left side, there is a textual section with a bold heading \"We emailed you a code\" followed by a smaller instruction text prompting the user to enter the verification code sent to an email address, which is displayed below with a small edit icon next to it, indicating the user can change the email. Below the instructions, there is a code input field consisting of four separate boxes, each containing a single character (letters and numbers). Underneath the input field is a confirmation message with a green check icon and the word \"Success!\" alongside a small Cloudflare logo and links for Privacy and Terms. Below that is a small line of text with a link labeled \"Send a new code\" for users who did not receive the code. On the right side of the layout, there is a large, colorful, abstract 3D illustration with a translucent, prism-like effect in pastel hues. The typography is clean and modern, using a sans-serif font with clear hierarchy: a large heading, smaller body text, and links in blue for interactivity. The overall style is professional, user-friendly, and visually balanced, with ample white space and a soft shadow behind the main container to create depth.",
+            "layout": "The layout is a two-column grid with the left column containing the textual content and input fields, and the right column displaying a large 3D illustration. The left column is vertically stacked with the heading at the top, followed by the instruction text, email address with edit icon, code input fields arranged horizontally, success message and branding below, and a small link at the bottom. The right column is dedicated to a single large decorative illustration centered vertically. The container has generous padding and rounded corners, with a subtle drop shadow to separate it from the light gray background. The overall alignment is left-aligned for text and centered for the illustration, creating a balanced visual weight across the screen.",
+            "functions": "Users can view the email address to which the verification code was sent and have the option to edit it via the pencil icon. They can enter the received verification code into the four input boxes, which likely auto-focus as they type. The UI provides immediate feedback by displaying a success message with a green checkmark once the correct code is entered. If the user did not receive the code, they can click the \"Send a new code\" link to request a resend. This screen supports the task of verifying a user's identity through email-based two-factor or multi-factor authentication, ensuring secure access to the account or service. The interface facilitates a smooth verification process by clearly showing instructions, the current email, input fields, feedback, and recovery options, making it easy for users to complete verification efficiently and confidently."
+          }
+        },
+        {
+          "name": "Authenticated dashboard",
+          "screen_id": "5b9f4504-d0c2-4bfc-af09-ca2e7c55db0c",
+          "refero_url": "https://refero.design/pages/5b9f4504-d0c2-4bfc-af09-ca2e7c55db0c",
+          "thumbnail_url": "https://images.refero.design/screenshots/contra.com/desktop/10904e89-a97a-42e1-aa00-63011387f4a0_thumb.jpg",
+          "goal": "Present the user with their personalized dashboard and account features",
+          "action": "User sees the dashboard welcome, left navigation, rewards/milestones, jobs and profile summary",
+          "system_response": "Dashboard data loads for the authenticated user; session state is active and UI shows account-specific content and controls (e.g., projects, wallet, profile)",
+          "page_types": [
+            "Dashboard",
+            "Home Page"
+          ],
+          "ui_elements": [
+            "Cards & Tiles",
+            "Button",
+            "Sidebar & Drawer",
+            "Icon",
+            "Avatar",
+            "Side Sheet"
+          ],
+          "fonts": [
+            "Inter",
+            "Intercom"
+          ],
+          "content": {
+            "description": "This is a sophisticated freelance work dashboard page showing various metrics and actionable sections. The overall style is modern, clean, with a soft light color palette predominately whites (#FFFFFF) and light grays for background cards (#F7F7F9). The text is primarily dark gray (#262626) for high readability, with some medium gray (#868686) for subtitles and secondary text. Accent colors include purple (#7853FF) used on buttons and progress bars, and gold (#D9B600) for rewards icons. The layout uses a two-column structure: a vertical sidebar navigation panel on the left spanning about 20-25% width with icons and labels in a stacked format, background #FFFFFF, active menu item highlighted with a subtle purple background (#EEE9FF). The main content area fills the rest of the width and is vertically scrollable. The main content begins with a welcome header with a circular avatar on the left, followed by horizontally arranged cards presenting metrics such as Rewards & Milestones, Your action items, Discovery score, and Total Payouts. Cards have subtle rounded corners (about 8px radius), a white background, subtle shadow or border, and consistent horizontal padding (20-24px) and vertical padding (20-30px). The typography uses a sans-serif font, similar to Inter or Roboto, with headings sized from 24-28px, subheadings 16-18px, and body text 14-16px. Buttons have medium rounded corners, filled with a bright purple (#7853FF) and white text, with hover state darkening the purple slightly. Icons such as avatars are circular with a thin border or ring in purple for emphasis. The visual hierarchy uses large bold numbers for key stats (clients invited, rewards), smaller secondary text beneath. There are textual links such as \"View Details\" in a lighter purple link color. The top right includes user-related features such as notifications icon, chat icon, and a flashing highlight ring around a \"Contra Pro\" upgrade button in pink-purple gradient (#F8B6FF to #D276EF) with subtle glowing effect. The interface uses a modular card layout with consistent spacing and alignment, balanced white space for readability. The design avoids clutter by grouping related functions and employing subtle color signals for interactive elements. No animations are visually evident in the static screenshot but UI likely includes hover states and subtle transitions for buttons and cards.",
+            "layout": "The layout is structured with a fixed vertical navigation sidebar on the left occupying about one-fifth of the screen's width, containing stacked menu items arranged vertically, grouped under sections like Community, Identity, Leads, Projects & Payments. Each group is visually separated with spacing. The main content area uses the remaining four-fifths of horizontal space, arranged in a vertical scroll layout. At the top, a horizontal header line with a welcome message and user avatar plus some action buttons is centered horizontally. Below, a two-column card layout with equally sized cards aligned horizontally: on the left \"Rewards & Milestones\" card and on the right \"Your action items\" card. Beneath that, a full-width panel with skill matches and job discovery prompt. Further below, a horizontal row panel containing the discovery score with avatar, and accompanying buttons on the right side such as \"Start project\" and \"Send invoice.\" The bottom portion shows total payout stats. The layout emphasizes modular cards with consistent padding and margins between sections, employing grid and column arrangements within cards for metrics and text. The sidebar uses a simple one-column vertical list layout. The main content uses multiple rows, some with two columns of cards, others with single full-width panels and aligned action buttons. The overall alignment is left-aligned with generous spacing and a clean logical division of sections. Padding around and between cards is approximately 20-24px. Rounded corners for cards and buttons unify the appearance.",
+            "functions": "Users can perform several interactive tasks on this dashboard interface. They can input an email address and click the \"Invite new client\" button to send invitations, supported by a copy-icon button for easily copying the invite link. The 'Rewards & Milestones' section tracks referral rewards and shows progress via a linear progress bar, motivating users to invite more clients and track earned rewards. Users can view their action items, though in this screen it shows all tasks as complete. The interface also allows browsing and finding new job matches via skill tags and a 'Find your next job' call-to-action button. Users can monitor their 'Discovery score' and access insights by clicking \"View how you rank...\" The financial section lets users track total payouts and start new projects or send invoices, accessible by clearly labeled buttons. There are premium features indicated by \"Unlock with PRO\" for advanced analytics and discovery score details, integrating upselling into this workspace. On the left side, users can navigate across different workspace sections like Profile, Analytics, Projects, Wallet, Discover, Jobs, and Messages. The broader purpose of this screen is to provide freelancers with a centralized workspace to manage clients and projects, track rewards and earnings, discover job opportunities, and monitor overall performance. The UI components and layout are designed to offer clear, efficient access to essential metrics, easy access to starting new projects or invoicing, and smooth navigation through various work management areas, facilitating productivity and engagement within the platform."
+          }
+        }
+      ],
+      "related_queries": [
+        "Contra sign-in magic link",
+        "passwordless email verification flow",
+        "email code entry sequence",
+        "sign in with email",
+        "email verification error state",
+        "magic link login screens",
+        "onboarding to authenticated dashboard",
+        "freelancer dashboard landing",
+        "enter verification code",
+        "login code resend option"
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/e26607b0-635b-4606-9ca1-61a50da31c55_thumb.jpg",
+      "preview_url": "https://images.refero.design/screenshots/reown.com/desktop/e26607b0-635b-4606-9ca1-61a50da31c55_preview.jpg",
+      "colors": [
+        [
+          250,
+          150,
+          25
+        ],
+        [
+          39,
+          39,
+          39
+        ],
+        [
+          12,
+          139,
+          242
+        ],
+        [
+          251,
+          251,
+          251
+        ],
+        [
+          157,
+          160,
+          162
+        ]
+      ],
+      "hex_colors": [
+        "0xFA9619",
+        "0x272727",
+        "0x0C8BF2",
+        "0xFBFBFB",
+        "0x9DA0A2"
+      ],
+      "uuid": "250d498d-1f2c-431f-afed-9e58421f24d2",
+      "page_url": "https://dashboard.reown.com/sign-in",
+      "site": {
+        "name": "Reown",
+        "domain": "reown.com",
+        "description": "The onchain UX platform"
+      },
+      "ux_patterns": [],
+      "ui_elements": [
+        "Button",
+        "Text Field",
+        "Full-Screen Overlay",
+        "Icon"
+      ],
+      "page_types": [
+        "Log In"
+      ],
+      "fonts": [
+        "KH Teka"
+      ],
+      "platform": "web",
+      "refero_url": "https://refero.design/pages/250d498d-1f2c-431f-afed-9e58421f24d2",
+      "content": {
+        "description": "The screen is a minimalist sign-in page optimized for an onchain UX platform. The background is a clean white (#FFFFFF) full-screen. At the top center, there's a simple logo composed of four colored geometric shapes: a light gray square, a blue circle, a red rounded rectangle, and a yellow square. Below the logo, a centered black text tagline reads: \"The platform for building and designing onchain UX\" in a sans-serif font, medium weight, size about 20px, line height 1.4, aligned center. Beneath the tagline is a wide rectangular button with subtle rounded corners, a light gray (#F5F5F5) background, containing the Google logo on the left and text \"Continue with Google\" in black. The button is horizontally centered and uses a clean sans-serif font. Below that, separated by a thin, subtle horizontal line with the word \"or\" centered, are two input fields stacked vertically with some spacing: \"Email\" and \"Password.\" These input fields have a very light gray background (#FAFAFA), subtle border radius, and grey placeholder text, all horizontally centered and sized about 16px. Next is a wide blue (#2B71F3) rectangular button labeled \"Sign In\" in white text, center aligned, with rounded corners. Below the main buttons, there is a small link text \"Forgot password?\" in blue, horizontally centered. The footer contains faint text links \"Privacy Policy,\" \"Terms of Service,\" and \"Content Preferences,\" spaced evenly and center aligned, in very small gray font. The entire layout is vertically stacked and center aligned with generous white space. There are no visible animations. The design style is clean, modern, minimalist, with focus on clarity and ease of use.",
+        "layout": "The layout is a single column vertical stack, centered horizontally and vertically on a white background. It consists of a top logo element, followed by tagline text, then action buttons (Google sign-in and email/password sign-in), input fields stacked vertically with equal spacing, a primary sign-in button, a small password recovery link, and footer navigation links at the bottom. The spacing between elements is generous with consistent vertical padding, and all elements are center aligned. The footer is separated visually by whitespace and contains evenly spaced links horizontally. Overall, the layout is simple and uncluttered, focusing user attention on the sign-in actions and inputs.",
+        "functions": "Users interact with this interface primarily to sign into their account on the onchain UX platform. They can do so either by clicking the \"Continue with Google\" button to authenticate via Google's OAuth service or by manually entering their email and password in the input fields provided. The input fields accept user text input, with placeholders guiding the user on what information to enter. Pressing the blue \"Sign In\" button submits their credentials for authentication. Additionally, users who have forgotten their password can click the \"Forgot password?\" link to initiate a password recovery process. The footer links provide access to legal and privacy information, enhancing transparency and trust. This screen facilitates secure and straightforward user authentication, ensuring users can access the platform's features related to onchain UX design."
+      },
+      "flows": [
+        {
+          "id": 5728,
+          "name": "Logging in to new version",
+          "step": 2,
+          "total_steps": 5
+        }
+      ]
+    }
+  ],
+  "searches": [
+    {
+      "key": "login-passkey",
+      "response": {
+        "pagination": {
+          "count": 10,
+          "page": 1,
+          "next_page": 2,
+          "total_count": 1000,
+          "total_pages": 100
+        },
+        "records": [
+          {
+            "id": 11027,
+            "platform": "web",
+            "screens_count": 7,
+            "refero_url": "https://refero.design/flows/11027",
+            "name": "Sign-in to Business Dashboard",
+            "description": "Happy-path sign-in flow for a banking product: a visitor starts on the public marketing homepage, navigates to the sign-in form, submits credentials, completes a 2FA challenge, is offered optional passkey enrollment, and lands in the authenticated account dashboard. Entry point: marketing homepage (logged out). Exit point: authenticated dashboard (session established). Assumptions: user is on a desktop or large viewport, already has an account with email/password and a configured 2FA app, and the browser supports passkeys (the UI surfaces an optional passkey enrollment after successful auth).",
+            "problem": "User task: securely access their business banking dashboard.\n- From the user's perspective: they want a clear, quick path from the public site to their account, using credentials and a second factor for security, with the option to set up a simpler passkey method for future logins. They expect clear input fields, visible next actions, feedback when a step is required (e.g., enter 2FA), and an optional offer to streamline future logins.\n- From the interface/system perspective: the UI must collect credentials, validate them, trigger a second-factor challenge when required, provide options to use backup codes or reset 2FA, offer an opt-in passkey enrollment after successful authentication, and finally render the account dashboard. Each step enforces input validation and transitions only on successful verification.\nResult at the end:\n- User-perceived outcome: the user sees their personalized dashboard (welcome message and account balances) indicating they are signed in; they are shown an optional prompt to add a passkey if they haven’t already.\n- System-level outcome: credentials and 2FA are validated, an authenticated session is created, optional passkey enrollment is offered, and the dashboard data is retrieved and rendered for the user.",
+            "steps": [
+              "Public marketing landing",
+              "Login form (empty)",
+              "Login form (filled)",
+              "2FA code prompt (empty)",
+              "2FA code prompt (filled)",
+              "Passkey enrollment prompt",
+              "Authenticated dashboard"
+            ],
+            "site": {
+              "id": 857,
+              "domain": "mercury.com",
+              "description": "Online Business Banking For Startups, Small Businesses & Scaling Companies",
+              "name": "Mercury",
+              "background_url": "https://images.refero.design/backgrounds/mercury.com/e0b26a34-f67a-44ad-93c0-590fa15b2f92.jpg",
+              "refero_url": "https://refero.design/websites/857",
+              "categories": [
+                "Business",
+                "Finance"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/mercury.com/c5e9bfdd-1e06-4cd8-b690-6473e1561799.jpg",
+              "background_color": ""
+            }
+          },
+          {
+            "id": 11029,
+            "platform": "web",
+            "screens_count": 3,
+            "refero_url": "https://refero.design/flows/11029",
+            "name": "Sign-in with referral sharing",
+            "description": "Single-screen sign-in surface with an adjacent referral / 'share the love' panel. Entry: an unauthenticated user lands on this screen (desktop layout, two-column card centered on the page). Primary tasks: (a) authenticate (email + password or passkey) and (b) copy/share the referral link. Exit: successful authentication navigates the user into their account (not shown); copying the referral link updates the clipboard and shows transient feedback. Assumptions: user is logged out, on a desktop or wide viewport, and allowed to use passkey authentication if previously configured.",
+            "problem": "User task (user's perspective): The user wants to either sign in to their account or quickly copy their referral link to share with others. They expect clear input fields for email/password, an alternative passkey sign-in option, and an obvious copy affordance that confirms the link was copied.\n\nInterface task (system perspective): The UI presents a dual-purpose card: left column exposes authentication controls (email input, password input with visibility toggle, 'Forgot password?' link, primary 'Log In' CTA, and a 'Continue with passkey' alternative). Right column explains the referral offer, displays the user's referral URL and a copy icon, and shows a promotional graphic and disclosure link. The interface provides hover/focus affordance for the copy control and transient feedback when the link is copied to the clipboard.\n\nResult at the end:\n- User-perceived outcome: After clicking copy, the user sees immediate confirmation that the link was copied. After submitting credentials (or using passkey), the user expects to be signed in and taken to their account.\n- System-level outcome: Copying writes the referral URL into the OS clipboard and surfaces a transient tooltip/message. Submitting authentication triggers backend auth (validation and navigation), while passkey initiates the platform's passkey flow.",
+            "steps": [
+              "Sign-in / Referral overview",
+              "Copy affordance hover",
+              "Copy confirmation"
+            ],
+            "site": {
+              "id": 857,
+              "domain": "mercury.com",
+              "description": "Online Business Banking For Startups, Small Businesses & Scaling Companies",
+              "name": "Mercury",
+              "background_url": "https://images.refero.design/backgrounds/mercury.com/e0b26a34-f67a-44ad-93c0-590fa15b2f92.jpg",
+              "refero_url": "https://refero.design/websites/857",
+              "categories": [
+                "Business",
+                "Finance"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/mercury.com/c5e9bfdd-1e06-4cd8-b690-6473e1561799.jpg",
+              "background_color": ""
+            }
+          },
+          {
+            "id": 6209,
+            "platform": "web",
+            "screens_count": 7,
+            "refero_url": "https://refero.design/flows/6209",
+            "name": "Account Recovery and Password Reset",
+            "description": "Happy path for recovering an account password and returning to the login prompt. Entry point: user reaches a password entry screen and either attempts to enter the known password or chooses recovery. The flow guides the user through account recovery using an email/phone identifier, creating a new password (with visible requirements), confirming that password, and then returns the user to the login view where they can sign in (including via passkey). Assumptions: user is not currently authenticated and has access to the listed recovery email/phone; device has network connectivity.",
+            "problem": "User goal: regain access to their Family account when they cannot or prefer not to enter their existing password. From the user's perspective they need a clear, minimal path to verify account ownership (via email/phone), set a new secure password that meets requirements, confirm it, and be returned to a login state to finish signing in. From the interface perspective the UI must: present a fallback recovery option on the password screen, collect a recovery identifier (prefilled when available), show password requirements before creation, accept a new password and a repeat/confirmation, validate the inputs (length, character rules and match), and then navigate back to the login entry with an indication the account is recoverable and sign-in options are available. Final result: user-perceived outcome — password is reset and the user is prompted to log in (or use a passkey). System-level outcome — new password is stored / associated with the account and session returns to authentication step (ready for sign-in).",
+            "steps": [
+              "Enter Password / Recovery Link",
+              "Recover Your Family Account (Identifier)",
+              "Device Recovery — New Password (Empty)",
+              "Device Recovery — New Password Entered",
+              "Device Recovery — Repeat Password (Empty)",
+              "Device Recovery — Repeat Password Entered",
+              "Welcome Back — Login Options"
+            ],
+            "site": {
+              "id": 373,
+              "domain": "family.co",
+              "description": "Your favorite crypto wallet",
+              "name": " Family",
+              "background_url": "https://images.refero.design/backgrounds/family.co/6020341e-b523-44bb-b081-033591e25e90.jpg",
+              "refero_url": "https://refero.design/websites/373",
+              "categories": [
+                "Finance",
+                "Web3 & Crypto"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/family.co/1f968ff9-65cd-4772-aa24-f310a3bcc6d7.jpg",
+              "background_color": "3db4db"
+            }
+          },
+          {
+            "id": 10983,
+            "platform": "web",
+            "screens_count": 10,
+            "refero_url": "https://refero.design/flows/10983",
+            "name": "Free Trial Sign-In and Confirmation",
+            "description": "Happy path: an anonymous user on the streaming home screen initiates a free-trial signup. The user clicks the 'Accept Free Trial' CTA, which opens an overlay modal that loads an email-based sign-in/registration flow. After entering an email the system detects an existing Apple account and requests a password (or passkey). The user enters their password, proceeds to a subscription confirmation dialog, and confirms the 1-week free trial. After confirmation the modal shows success and the main catalog updates to a signed-in, subscribed view. Entry point: homepage hero CTA (user not signed in). Exit point: signed-in home/catalog with active subscription. Assumptions: user is on a desktop or large-screen web experience, not signed in, has network connectivity and an Apple account associated with the provided email.",
+            "problem": "User task: Start a 1-week free trial of the streaming service and get signed into their account so they can access member content. From the user perspective they expect a simple, secure path: click the free trial CTA, provide an email, authenticate (password or passkey), review subscription terms, confirm, and then see content available for subscribers. From the interface/system perspective the UI must: present an overlay sign-in flow (email → credential challenge → subscription confirmation), validate email and credentials, present clear subscription details and billing terms, and upon confirmation activate the trial and return the user to the main catalog. User-perceived outcome: user is signed in and sees subscriber content; they receive confirmation feedback that the free trial is active. System-level outcome: authentication completed for the provided email, subscription/trial record created or enabled for the account, and session established so subscriber content is available.",
+            "steps": [
+              "Homepage Hero – Start Trial",
+              "Modal Loading",
+              "Email Entry Prompt",
+              "Email Filled",
+              "Credential Choice",
+              "Password Entry",
+              "Confirm Subscription Dialog",
+              "Subscription Confirmation Success",
+              "Signed-In Homepage / Playing View",
+              "Full Catalog (Post-Login)"
+            ],
+            "site": {
+              "id": 862,
+              "domain": "https://tv.apple.com/",
+              "description": "Browse all movies, TV shows, and more from Apple TV",
+              "name": "Apple TV",
+              "background_url": "https://images.refero.design/backgrounds/https%3A//tv.apple.com//4d861b96-2854-405a-9aa5-50d4d2e683b8.jpg",
+              "refero_url": "https://refero.design/websites/862",
+              "categories": [
+                "Video Streaming",
+                "Entertainment"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/https%3A//tv.apple.com//2c813207-3a5d-4a66-b050-41c7ed4dd2b1.jpg",
+              "background_color": "6b6b6b"
+            }
+          },
+          {
+            "id": 9347,
+            "platform": "web",
+            "screens_count": 8,
+            "refero_url": "https://refero.design/flows/9347",
+            "name": "Sign-in to Admin Dashboard",
+            "description": "Happy-path sign-in from marketing to admin. Entry points: user lands on marketing homepage or navigates directly to the sign-in endpoint. The flow assumes a returning user on a desktop browser who already has an account (credentials or magic link access). The user begins at the marketing/home hero, chooses to sign in, supplies an email, then authenticates (password or verification link). After the authentication step the UI shows an inbox verification screen and a success confirmation, then the user is redirected to the Navan Admin Dashboard. Exit point: authenticated session lands on the Dashboard where travel and expense metrics are displayed.",
+            "problem": "User task: Sign in to Navan to access the Admin Dashboard and view company travel and expense metrics. From the user's perspective they need a clear path to authenticate (enter email, choose an auth method, and confirm identity) and then arrive at the dashboard where they can review data. Decisions include whether to sign in with password, passkey, or Google, and whether to use a verification link if prompted. The interface perspective: the UI sequences authentication steps into discrete screens — collect email, present additional credential input (password) or alternative methods, show verification/inbox instructions if a link is sent, and provide a final logged-in confirmation before redirecting. Result: user-perceived outcome is a confirmed login and direct access to the admin Dashboard with travel spend, adoption, and booking metrics visible. System-level outcome is an authenticated session established and the dashboard data loaded for that user’s organization.",
+            "steps": [
+              "Marketing / Home Hero",
+              "Welcome — Email Entry",
+              "Email Confirmed (inline)",
+              "Password Input",
+              "Submit Credentials",
+              "Check Your Inbox — Verification Sent",
+              "Logged-in Confirmation",
+              "Navan Admin Dashboard"
+            ],
+            "site": {
+              "id": 804,
+              "domain": "navan.com",
+              "description": "The #1 Corporate Travel Management Platform",
+              "name": "Navan",
+              "background_url": "https://images.refero.design/backgrounds/navan.com/e60ba0ac-c6d6-4e8b-8f20-bb532e857fff.jpg",
+              "refero_url": "https://refero.design/websites/804",
+              "categories": [
+                "Travel & Booking"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/navan.com/bc418dbf-35bd-4d29-bd73-93cfc7701597.jpg",
+              "background_color": "790df9"
+            }
+          },
+          {
+            "id": 8087,
+            "platform": "web",
+            "screens_count": 4,
+            "refero_url": "https://refero.design/flows/8087",
+            "name": "Account deletion with email verification",
+            "description": "Happy path: A signed-in user navigates to Account > Login settings, chooses to delete their account, completes an emailed-code verification inside a confirmation modal, and is then returned to the app's login screen. Entry point: user is signed in and viewing their account settings (Login section). Exit point: user is logged out and presented with the login / welcome modal. Assumptions: desktop browser, user has permission to delete their account (owner or allowed role), and an email address on file that can receive verification codes.",
+            "problem": "User task: Permanently delete their Canva account (or initiate deletion) and ensure any team content/ownership issues are addressed first. From the user's perspective they expect: clear warnings about data loss, a recovery window if deletion is reversible, a required verification step to prevent accidental deletion, and to be signed out after deletion is started. From the interface/system perspective the UI must: surface the Delete account action in Login/account settings; present an explicit confirmation modal that lists consequences and recovery details; require an emailed verification code to enable the final Delete button; and end the user's session after the deletion request is processed. Result at end: User-perceived outcome — the account deletion was initiated (UI shows they are logged out and must sign in to continue), with a stated 14-day restoration window. System-level outcome — deletion workflow is triggered (verification collected), and the active session is terminated; team/content ownership options are surfaced so teams are not orphaned prior to deletion.",
+            "steps": [
+              "Login settings (Account)",
+              "Delete account confirmation (empty code)",
+              "Delete account confirmation (code entered)",
+              "Logged-out / Welcome back (login)"
+            ],
+            "site": {
+              "id": 94,
+              "domain": "canva.com",
+              "description": "Visual Suite for Everyone",
+              "name": "Canva",
+              "background_url": "https://images.refero.design/backgrounds/canva.com/9a60dd30-3e21-4b44-84f4-81ef06b169ce.jpg",
+              "refero_url": "https://refero.design/websites/94",
+              "categories": [
+                "Design & Media Editing",
+                "Collaboration Tools"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/canva.com/fc31bac3-9257-40b9-aa05-3347deab4134.jpg",
+              "background_color": "24bcbc"
+            }
+          },
+          {
+            "id": 13256,
+            "platform": "web",
+            "screens_count": 10,
+            "refero_url": "https://refero.design/flows/13256",
+            "name": "Shop Account Sign-In",
+            "description": "A returning or new user starts on the Shop marketplace home while signed out and selects the sign-in control. They enter an email address, submit it, and are asked to confirm their identity using a code sent by text. The user can alternatively request the code by email or switch accounts. After entering the verification code, the system signs the user in and returns them to the marketplace home, where personalized content such as Recently viewed items is displayed. The screenshots show the happy path, with the final verification code entry visibly in progress and the authenticated home appearing afterward.",
+            "problem": "From the user's perspective, the task is to access their Shop account so they can continue shopping with their account context and personalized content. They expect to provide an email address, receive a verification code through an available channel, enter that code, and be returned to shopping without using a password.\n\nFrom the interface perspective, the system provides a signed-out marketplace home, an email-based sign-in form, a loading state during authentication, identity confirmation through a six-digit code, alternate delivery options, and an account-switching option. Once verification succeeds, the system restores the marketplace experience and displays account-specific content such as Recently viewed items.\n\nThe user-perceived outcome is successful access to Shop and a return to the shopping home. The system-level outcome is an authenticated Shop session associated with the entered email account.",
+            "steps": [
+              "Marketplace Home",
+              "Enter Email",
+              "Submit Sign-In",
+              "Phone Verification",
+              "Email Verification Option",
+              "Enter Email Code",
+              "Loading Marketplace",
+              "Signing In",
+              "Authenticated Home",
+              "Personalized Shopping Home"
+            ],
+            "site": {
+              "id": 934,
+              "domain": "shop.app",
+              "description": "Shop from top brands, earn exclusive rewards, and track your packages all in one place",
+              "name": "Shop",
+              "background_url": "https://images.refero.design/backgrounds/shop.app/fce32ce0-4a22-421b-bf1c-e82200247f7c.jpg",
+              "refero_url": "https://refero.design/websites/934",
+              "categories": [
+                "Marketplace"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/shop.app/87ece633-ea65-41b2-862c-6a6d0c98ca76.jpg",
+              "background_color": "5533eb"
+            }
+          },
+          {
+            "id": 10980,
+            "platform": "web",
+            "screens_count": 14,
+            "refero_url": "https://refero.design/flows/10980",
+            "name": "Apple TV sign-in with 2FA",
+            "description": "Happy-path sign-in for Apple TV on desktop. Entry: user starts on the Apple TV landing screen (not signed in). The user initiates sign-in (or starts a free trial) which opens a centered modal asking for email. The flow validates the email, detects an existing Apple Account, requests a password (or offer passkey), performs two-factor authentication, optionally asks whether to trust the browser, shows a short loading state, then displays a welcome confirmation. Exit: user is signed in and returns to the Apple TV landing content with user avatar present. Assumptions: user is on a desktop browser, not signed in initially, and has an existing Apple ID with two-factor authentication enabled. The screenshots show the happy path where credentials and verification succeed.",
+            "problem": "User goal: Sign in to Apple TV (or start a free trial) using their Apple ID so they can access personalized content and subscription options. From the user's perspective they expect a quick, secure sign-in: supply an email, enter password (or use passkey), complete two-factor verification, optionally mark the browser as trusted, and return to the media catalog.\n\nInterface perspective: The UI uses a modal-driven, step-by-step sign-in flow overlaying the landing content. Each step focuses the user on a single input or decision: email -> detect account -> password/passkey -> 2FA -> trust browser -> confirmation. Visual affordances include a single primary CTA per step, disabled states during validation, inline instructions/links (Forgot Password, resend code), and a loading state while the system processes authentication. At the end the user-perceived outcome is a successful sign-in and immediate access to the personalized Apple TV catalog. System-level outcome: the authentication system has verified credentials and 2FA, established a trusted device flag if requested, and returned an authenticated session (cookie/token) to the browser.",
+            "steps": [
+              "Landing - Offer Hero",
+              "Enter Email",
+              "Email Filled",
+              "Continue Button Disabled State",
+              "Account Detected — Choose Method",
+              "Password Input Shown",
+              "Password Entry Complete",
+              "Two-Factor Authentication Prompt",
+              "2FA Partial Entry",
+              "Trust This Browser Prompt",
+              "Authentication Processing",
+              "Welcome Confirmation",
+              "Post Sign-in Landing",
+              "Signed-in Home - Full Catalog"
+            ],
+            "site": {
+              "id": 862,
+              "domain": "https://tv.apple.com/",
+              "description": "Browse all movies, TV shows, and more from Apple TV",
+              "name": "Apple TV",
+              "background_url": "https://images.refero.design/backgrounds/https%3A//tv.apple.com//4d861b96-2854-405a-9aa5-50d4d2e683b8.jpg",
+              "refero_url": "https://refero.design/websites/862",
+              "categories": [
+                "Video Streaming",
+                "Entertainment"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/https%3A//tv.apple.com//2c813207-3a5d-4a66-b050-41c7ed4dd2b1.jpg",
+              "background_color": "6b6b6b"
+            }
+          },
+          {
+            "id": 6208,
+            "platform": "web",
+            "screens_count": 7,
+            "refero_url": "https://refero.design/flows/6208",
+            "name": "Sign-in to Wallets Dashboard",
+            "description": "Happy-path sign-in and entry into an authenticated wallet dashboard starting from the public marketing landing. Entry: an unauthenticated visitor lands on a marketing/home overview for Family. Exit: an authenticated user lands on the 'Wallets' dashboard showing their wallets and a primary CTA to create a new wallet. Assumptions: user is on a desktop browser, not signed in at start, and can receive/enter an email address and password (alternate passkey option is shown but not used in the happy path).",
+            "problem": "Task: The user wants to access their Family wallets (view balances, manage or create wallets). From the user's perspective: they expect a simple sign-in path from the marketing site, the ability to enter an email or phone to begin, a clear choice of authentication method (passkey or password), a password entry screen with recovery options, and then to be taken into their wallets list. From the interface/system perspective: the UI should collect the user's identifier, determine whether to initiate account creation or sign-in, present authentication method choices (passkey or password), accept and validate credentials (or route to recovery), and finally load the authenticated dashboard. Result at end: user-perceived outcome — the user is signed in and sees a list of their wallets with balances and actions (New Wallet, Import). System-level outcome — an authenticated session is established and the server returns the user's wallet list and related metadata for the dashboard.",
+            "steps": [
+              "Marketing Landing",
+              "Welcome — Identifier Entry (empty)",
+              "Identifier Submitted",
+              "Choose Password Authentication",
+              "Enter Password (empty)",
+              "Password Submitted",
+              "Wallets Dashboard"
+            ],
+            "site": {
+              "id": 373,
+              "domain": "family.co",
+              "description": "Your favorite crypto wallet",
+              "name": " Family",
+              "background_url": "https://images.refero.design/backgrounds/family.co/6020341e-b523-44bb-b081-033591e25e90.jpg",
+              "refero_url": "https://refero.design/websites/373",
+              "categories": [
+                "Finance",
+                "Web3 & Crypto"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/family.co/1f968ff9-65cd-4772-aa24-f310a3bcc6d7.jpg",
+              "background_color": "3db4db"
+            }
+          },
+          {
+            "id": 11538,
+            "platform": "web",
+            "screens_count": 9,
+            "refero_url": "https://refero.design/flows/11538",
+            "name": "Dropbox Account Access",
+            "description": "A logged-out user begins on the Dropbox marketing homepage and selects a primary call to action to try Dropbox for free. The user is taken to a combined login or sign-up screen, enters an email address, and continues to password authentication. After entering a password, the system processes the login and presents a two-factor authentication setup prompt. The user proceeds to the Dropbox file workspace, where the account dashboard is available but displays a notice that some team features are limited. The flow assumes the user has an existing Dropbox account associated with the entered email and chooses to continue past or defer the two-factor setup.",
+            "problem": "The user wants to access Dropbox and begin using its file collaboration workspace. From the user's perspective, they need to choose an authentication method, provide their email and password, and complete or defer an additional security setup step. They expect successful authentication to take them to their files.\n\nFrom the interface perspective, Dropbox first exposes multiple authentication options, including Google, Apple, Microsoft, email, and passkey login. The email path validates the entered address, requests a password, provides password recovery and remember-me controls, and shows a loading state while credentials are processed. After authentication, the system introduces two-factor authentication setup through SMS or an authenticator app, with an option to set it up later. Once the account session is established, the user reaches the All files workspace. The system-level outcome is an authenticated Dropbox session with access to the file dashboard, while a banner communicates that certain team features are unavailable under the current plan. The user-perceived outcome is successful access to their Dropbox files, with a plan-related limitation clearly surfaced.",
+            "steps": [
+              "Dropbox Homepage",
+              "Authentication Options",
+              "Email Entry",
+              "Password Entry",
+              "Submit Credentials",
+              "Two-Factor Setup",
+              "File Workspace Loading",
+              "All Files Workspace",
+              "Plan Limitation Notice"
+            ],
+            "site": {
+              "id": 2,
+              "domain": "dropbox.com",
+              "description": "Secure Cloud Storage",
+              "name": "Dropbox",
+              "background_url": "https://images.refero.design/backgrounds/dropbox.com/a6c25938-abf7-4be4-9cef-31df65424fa2.jpg",
+              "refero_url": "https://refero.design/websites/2",
+              "categories": [
+                "Collaboration Tools",
+                "Business",
+                "Productivity"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/dropbox.com/f1723519-0327-4702-b5ad-e2cb2e46f435.jpg",
+              "background_color": "6aadf0"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": "login-onboard",
+      "response": {
+        "pagination": {
+          "count": 10,
+          "page": 1,
+          "next_page": 2,
+          "total_count": 1110,
+          "total_pages": 111
+        },
+        "records": [
+          {
+            "id": 5726,
+            "platform": "web",
+            "screens_count": 4,
+            "refero_url": "https://refero.design/flows/5726",
+            "name": "Accept Team Invitation",
+            "description": "Happy path: A logged-in user on the project Dashboard opens the team controls, views a pending team invite, accepts it from a modal, and receives an on-screen success confirmation. Entry: user is authenticated and on the Dashboard with the left navigation visible. Exit: modal closes and a success toast is shown on the Dashboard. Assumption: the user has at least one pending team invite; the left-hand navigation includes team controls and a team selector.",
+            "problem": "User goal: Accept an outstanding team invitation so they can join another team. From the user's perspective they expect to locate the invite indicator, review the invite details, confirm acceptance, and get immediate feedback that the action succeeded. From the interface perspective the UI must surface the invite (via the team selector/indicator), present invite details in a focused modal with clear Accept / Reject actions, and provide ephemeral feedback (toast) after the user acts. The user-perceived outcome: the invite is accepted and a confirmation toast appears. The system-level outcome (visible in the UI): the Manage Team Invites modal closes and a success notification appears confirming acceptance.",
+            "steps": [
+              "Dashboard (default)",
+              "Open Team Selector / Invites",
+              "Manage Team Invites Modal",
+              "Confirmation Toast"
+            ],
+            "site": {
+              "id": 647,
+              "domain": "reown.com",
+              "description": "The onchain UX platform",
+              "name": "Reown",
+              "background_url": "https://images.refero.design/backgrounds/reown.com/cb79a36b-b5ef-4ee4-ab70-4d6e9ba019c5.jpg",
+              "refero_url": "https://refero.design/websites/647",
+              "categories": [
+                "Development Tools",
+                "Finance",
+                "Web3 & Crypto"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/reown.com/33adb3dc-b8b7-48ef-a9e9-3b9986f0d5cb.jpg",
+              "background_color": "6aadf0"
+            }
+          },
+          {
+            "id": 9749,
+            "platform": "web",
+            "screens_count": 2,
+            "refero_url": "https://refero.design/flows/9749",
+            "name": "Community Invitation Acceptance",
+            "description": "Happy path: A signed-in user opens the Communities area, sees a pending invitation for the \"Life events\" community, reviews the community detail card, and accepts the invitation. After accepting, the user is taken into the community channel (Posts tab) where they can read posts, create a post or announcement, browse tabs (Posts / Files / Photos), open Events, and access a \"Share join link\" control. Entry point: Communities sidebar with a pending invitation. Exit point: user becomes a community member and lands on the community's Posts feed. Assumptions: user is authenticated, has permission to join communities, and is on a desktop/browser-width layout.",
+            "problem": "User task (user perspective): The user is trying to accept an invitation to join a specific community so they can view and participate in its content (see posts, events, and share or post announcements). They expect to review basic community details (name, member count, guidelines) and then join quickly, after which they expect to see the community feed and interaction controls.\n\nInterface/system perspective: The UI surfaces a pending invite in the Communities list and a detailed community card with Accept / Decline actions. The interface must update membership state when the user accepts (remove pending state, add community under \"Your communities\") and navigate the user into the community's channel. In the channel view the UI provides tabbed content (Posts, Files, Photos), a post composer with option to create an Announcement, and top-level actions (Events, Share join link).\n\nResult at the end:\n- User-perceived outcome: The user is now a member of the community, sees the community header and feed, can post or interact with events and share the community link.\n- System-level outcome: The community invitation is resolved (accepted), the user is added to the community membership roster, the Communities list updates to reflect membership, and the Posts feed becomes accessible for reading and posting.",
+            "steps": [
+              "Community invitation details",
+              "Community channel (Posts tab)"
+            ],
+            "site": {
+              "id": 642,
+              "domain": "live.com",
+              "description": "Video Conferencing, Meetings, Calling",
+              "name": "Microsoft Teams",
+              "background_url": "https://images.refero.design/backgrounds/live.com/58688054-ca62-4131-9fc6-a336988bca8a.jpg",
+              "refero_url": "https://refero.design/websites/642",
+              "categories": [
+                "Communication Tools",
+                "Scheduling Tools"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/live.com/8317a0ce-8fd2-407d-8788-7cd120e5f4f1.jpg",
+              "background_color": "b199fa"
+            }
+          },
+          {
+            "id": 9742,
+            "platform": "web",
+            "screens_count": 6,
+            "refero_url": "https://refero.design/flows/9742",
+            "name": "Community Member Invitation",
+            "description": "Happy-path: A signed-in user on desktop opens a Community space and uses the primary CTA to invite members. The user opens an invite modal, types to search for contacts, selects one or more suggested contacts (shown as tokens), and sends the invites. The system shows a transient confirmation (toast) and later a separate acceptance notification when an invitee accepts. Entry point: Community landing/overview. Exit point: modal closed with invites sent; later a notification showing acceptance. Assumptions: user is signed in and has permission to invite members to this Community; using a desktop browser or desktop client.",
+            "problem": "User task: Add people to a Community so they can join and participate. From the user's perspective they want a quick way to find contacts (by name, email, or phone), select multiple invitees at once (up to 30), send invitations, and receive confirmation that invites were sent and accepted. From the interface perspective the UI provides a dedicated invite modal with a single input that supports search/autocomplete, selected-contact tokens with a counter, contextual CTA states (Send disabled/enabled), and toast notifications to acknowledge actions. Expected result: user-perceived outcome — tokens appear for chosen contacts, the Send button becomes active, a confirmation toast appears after sending, and an acceptance toast appears when a recipient accepts. System-level outcome — invite messages are submitted to the backend for the listed contacts and membership state updates when recipients accept (acknowledged by acceptance notification).",
+            "steps": [
+              "Community Overview",
+              "Invite Modal Open",
+              "Autocomplete Suggestions",
+              "Confirm Selections & Send",
+              "Invite Sent Confirmation",
+              "Invite Accepted Notification"
+            ],
+            "site": {
+              "id": 642,
+              "domain": "live.com",
+              "description": "Video Conferencing, Meetings, Calling",
+              "name": "Microsoft Teams",
+              "background_url": "https://images.refero.design/backgrounds/live.com/58688054-ca62-4131-9fc6-a336988bca8a.jpg",
+              "refero_url": "https://refero.design/websites/642",
+              "categories": [
+                "Communication Tools",
+                "Scheduling Tools"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/live.com/8317a0ce-8fd2-407d-8788-7cd120e5f4f1.jpg",
+              "background_color": "b199fa"
+            }
+          },
+          {
+            "id": 2143,
+            "platform": "web",
+            "screens_count": 4,
+            "refero_url": "https://refero.design/flows/2143",
+            "name": "Invite & admit participants",
+            "description": "Happy path: a host in a live \"Room\" opens the invite panel, copies the room link, receives a join request from a guest, admits that guest, and the guest appears as a second video tile. Entry point: host is already inside the Room (camera tile visible). Exit point: guest is connected and both participants' video tiles are displayed; recording controls remain available. Assumes the user is signed in and has permission to invite/admit participants.",
+            "problem": "User task (user perspective): Share access to the current Room with someone else, handle an incoming join request, and confirm that the person successfully joins. The user expects a simple way to copy a join link, a visible notification when someone requests to join, an accept / reject control, and immediate feedback when the participant appears in the room.\n\nSystem task (interface perspective): Provide an invite panel containing a shareable link and a prominent \"Copy link\" control; show visual confirmation when the link is copied; display an admit dialog listing pending joiners with accept/reject actions; on accept create a new participant video tile and adjust the room layout. The result: user-perceived outcome — the host has invited and admitted another person and sees their video tile; system-level outcome — the platform copies the link to clipboard (user feedback), surfaces a pending join request, and adds a joined participant to the room grid.",
+            "steps": [
+              "Open invite panel",
+              "Copy link confirmation",
+              "Incoming join request",
+              "Participant joins and grid updates"
+            ],
+            "site": {
+              "id": 29,
+              "domain": "descript.com",
+              "description": "Edit videos & podcasts like a doc ",
+              "name": "Descript",
+              "background_url": "https://images.refero.design/backgrounds/descript.com/84f8cbe2-6395-4c77-b9c9-6bd4b952283d.jpg",
+              "refero_url": "https://refero.design/websites/29",
+              "categories": [
+                "Collaboration Tools",
+                "Business"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/descript.com/2e264c28-b49f-4eb1-a6ae-36cf2e982e15.jpg",
+              "background_color": "81a0fe"
+            }
+          },
+          {
+            "id": 3553,
+            "platform": "web",
+            "screens_count": 3,
+            "refero_url": "https://refero.design/flows/3553",
+            "name": "Refer-a-friend invite",
+            "description": "Logged-in customer lands on a \"Refer a Friend\" landing area that communicates a dual-sided discount offer (friend gets 10% off; referrer gets 10% off after spending threshold). Happy path: user reads the offer, taps the main CTA to participate, selects a sharing method or copies a personalized referral link, and the system copies the link and confirms it has been emailed to the user. Entry point: user navigates to Refer a Friend (from header link or account menu) while signed in. Exit point: user has a personalized referral URL copied and available to share; the UI shows a 'Copied' confirmation and indicates the link was emailed. Assumptions: user is authenticated (name shown in header), browser supports copy-to-clipboard or native share, and the site will email the link as stated in copy.",
+            "problem": "User task: Invite friends so the friend receives a discount and the user qualifies for their own discount when conditions are met. From the user's perspective this means: understand the offer, get an easy way to send an invite (via message, email, social, or copy link), and receive confirmation that the invite link is ready to share. From the interface/system perspective the UI must: present the incentive clearly, surface a clear CTA to accept the offer, provide multiple share mechanisms (icons for messaging, email, social, and a copyable personalized URL), and acknowledge that the link has been generated and emailed. Result at the end: user-perceived outcome — the user has obtained a personalized referral link (button shows 'Copied') and knows it was emailed to them; system-level outcome — a unique referral URL is generated for that user and the site records/dispatches it to the user's email so it can be tracked when shared.",
+            "steps": [
+              "Referral Offer Overview",
+              "Choose Invite Method",
+              "Share Confirmation"
+            ],
+            "site": {
+              "id": 99,
+              "domain": "farfetch.com",
+              "description": "The Global Destination For Modern Luxury",
+              "name": "Farfetch",
+              "background_url": "https://images.refero.design/backgrounds/farfetch.com/4f579a89-8fec-40d3-aeb2-1f34e1bc907e.jpg",
+              "refero_url": "https://refero.design/websites/99",
+              "categories": [
+                "Marketplace"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/farfetch.com/c1e31b5f-874e-4624-a522-fe7e262f5e55.jpg",
+              "background_color": ""
+            }
+          },
+          {
+            "id": 1998,
+            "platform": "web",
+            "screens_count": 3,
+            "refero_url": "https://refero.design/flows/1998",
+            "name": "Meeting Lobby & Participant Admission",
+            "description": "Happy path: A logged-in host opens a meeting lobby on desktop, copies the meeting link to invite others, receives a join request, accepts it, and the new participant appears in gallery view. Entry point: host is inside an empty meeting (1 of 50). Exit point: a second participant has joined and both participants are visible. Assumptions: user is signed in, has host/permission to admit participants, and is on a desktop browser (full-screen layout with bottom control bar).",
+            "problem": "User task (user perspective): Invite people to join a meeting and admit them when they request to join. The user expects to easily copy a shareable link, see incoming join requests, and accept or reject requests so participants can enter the meeting.\n\nInterface task (system perspective): Provide an obvious control to copy the meeting link and display confirmation copying succeeded; show unobtrusive notifications when an attendee requests to join with clear Accept and Reject actions; update the participant gallery and participant count immediately after admission. The interface must surface meeting controls (camera, mic, share, record, leave) throughout.\n\nOutcome: User-perceived outcome — the host successfully copies a link, accepts a request, and sees the new participant appear in the meeting. System-level outcome — clipboard operation returns success confirmation, the join request event is queued and actionable, and the participant list/UI updates to reflect the new attendee (participant count increments and participant tile rendered).",
+            "steps": [
+              "Meeting lobby — copy link",
+              "Join permission requested notification",
+              "Participant admitted — gallery view"
+            ],
+            "site": {
+              "id": 129,
+              "domain": "around.co",
+              "description": "Video calls loved by extraordinary teams",
+              "name": "Around",
+              "background_url": "https://images.refero.design/backgrounds/around.co/e1d86cb4-91ef-4094-a08e-3d1866228ef2.jpg",
+              "refero_url": "https://refero.design/websites/129",
+              "categories": [
+                "Business",
+                "Communication Tools",
+                "Utility"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/around.co/9f9e0910-662f-4ef1-b7ee-5bac746e0cd9.jpg",
+              "background_color": "ec89ba"
+            }
+          },
+          {
+            "id": 117,
+            "platform": "web",
+            "screens_count": 4,
+            "refero_url": "https://refero.design/flows/117",
+            "name": "Slack workspace signup and join",
+            "description": "This flow guides new or existing users through accessing Slack workspaces. It starts with the landing page where users can sign up for Slack with email, then directs to entering their email, continuing with workspace creation or joining an existing workspace, and finally landing inside a selected workspace with channels and messages. The user is assumed to be using a web interface and can authenticate with email or via Google/Apple accounts. At the end of the flow, the user has joined or created a Slack workspace and sees the workspace interface.",
+            "problem": "From the user's perspective, the task is to start using Slack by creating a new workspace or joining an existing one after providing an email. The user decides whether to create or join based on existing invitations or previous workspaces. The interface supports these decisions by prompting for email input, showing options to create a workspace, displaying available workspaces to open, and presenting invitations to accept. The user expects to be successfully inside a functional workspace with access to channels and messages. From the system perspective, the UI validates the email, shows matching workspaces and invitations linked to that email, allows workspace creation with terms acceptance, and ensures transition to the workspace interface showing channels, messages, and workspace-specific content. The system secures user authentication and workspace access accordingly.",
+            "steps": [
+              "Landing page with signup option",
+              "Enter email for signup or login",
+              "Create or open Slack workspace",
+              "Inside Slack workspace interface"
+            ],
+            "site": {
+              "id": 27,
+              "domain": "slack.com",
+              "description": "One platform for your team and your work",
+              "name": "Slack",
+              "background_url": "https://images.refero.design/backgrounds/slack.com/ef239fb2-5040-450c-aa38-e9d9f9f21016.jpg",
+              "refero_url": "https://refero.design/websites/27",
+              "categories": [
+                "Business",
+                "Productivity",
+                "Communication Tools"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/slack.com/2da82b9a-41ea-4e6e-823a-ca9f13ee2396.jpg",
+              "background_color": "c973ce"
+            }
+          },
+          {
+            "id": 12032,
+            "platform": "web",
+            "screens_count": 4,
+            "refero_url": "https://refero.design/flows/12032",
+            "name": "Team Member Invitation",
+            "description": "Logged-in user is viewing Team Settings for the current team and can manage members. The flow starts on the team settings screen, opens an invite dialog, enters an email, and sends an invitation. The flow ends back on Team Settings with the invited person added to the member list in pending status and success feedback shown. Assumes the user has permission to invite members and view team settings on desktop.",
+            "problem": "The user wants to add someone to their team from Team Settings. From the user’s perspective, they expect to enter an email, send an invite, and see confirmation that the person has been added to the team. From the interface perspective, the screen provides a team summary, member management table, invite action, and role/status indicators that support inviting collaborators and tracking invitation state. At the end, the user sees the new teammate listed with a pending invitation status, and the system records the invitation and displays success notifications.",
+            "steps": [
+              "Team Settings Overview",
+              "Invite Member Dialog",
+              "Invitation Entry",
+              "Member Added Confirmation"
+            ],
+            "site": {
+              "id": 898,
+              "domain": "exa.ai",
+              "description": "Web Search API, AI Search Engine, & Website Crawler",
+              "name": "Exa",
+              "background_url": "https://images.refero.design/backgrounds/exa.ai/8835e620-b054-4e56-a030-4969e1624798.jpg",
+              "refero_url": "https://refero.design/websites/898",
+              "categories": [
+                "AI Tool",
+                "Development Tools",
+                "Productivity"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/exa.ai/ea460d4e-be52-4b26-92c2-5bea7d63eb25.jpg",
+              "background_color": "5573d8"
+            }
+          },
+          {
+            "id": 9716,
+            "platform": "web",
+            "screens_count": 4,
+            "refero_url": "https://refero.design/flows/9716",
+            "name": "Add meeting from chat to calendar",
+            "description": "Happy path: A signed-in desktop user opens a channel/chat thread that contains a meeting invite card, chooses to add the meeting to their calendar, confirms the action in a modal, and receives a success toast. Entry: user is in the \"Weekly Wrap-Up\" chat. Exit: the event is added to the user's calendar and a transient confirmation is shown. Assumes the user is logged in, calendar integration is enabled, and they have permission to add events to their calendar.",
+            "problem": "User goal (user perspective): Quickly add a meeting invite posted in a chat to their personal calendar so they won't miss the meeting. They expect an easy, discoverable action on the invite card, a short confirmation step, and immediate feedback that the event was added.\n\nInterface/system perspective: The chat displays an interactive meeting card with inline actions. The UI exposes an Add to calendar control (via hover/ellipsis or inline action). Selecting it opens a confirmation modal with an optional \"Don't show this again\" preference and Confirm/Cancel controls. On confirmation the system creates the calendar event and displays a transient success notification. The user-perceived outcome is the meeting appears in their calendar and they see a success toast. The system-level outcome is a calendar event record created for the user and (if selected) storage of the preference to suppress future confirmation dialogs.",
+            "steps": [
+              "Meeting invite card visible in chat",
+              "Reveal Add to calendar action",
+              "Confirm add to calendar modal",
+              "Success toast and final state"
+            ],
+            "site": {
+              "id": 642,
+              "domain": "live.com",
+              "description": "Video Conferencing, Meetings, Calling",
+              "name": "Microsoft Teams",
+              "background_url": "https://images.refero.design/backgrounds/live.com/58688054-ca62-4131-9fc6-a336988bca8a.jpg",
+              "refero_url": "https://refero.design/websites/642",
+              "categories": [
+                "Communication Tools",
+                "Scheduling Tools"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/live.com/8317a0ce-8fd2-407d-8788-7cd120e5f4f1.jpg",
+              "background_color": "b199fa"
+            }
+          },
+          {
+            "id": 1969,
+            "platform": "web",
+            "screens_count": 11,
+            "refero_url": "https://refero.design/flows/1969",
+            "name": "Guest call recording",
+            "description": "Happy-path for inviting/accepting a collaborator call and recording both local and guest voices into separate tracks inside a multitrack project. Entry: user has an open project (logged in) with the Collaborators panel visible. The user starts or accepts a collaborator call, configures where each participant's audio should be recorded, confirms monitoring preferences (headphones), then starts the project recording. Exit: the timeline shows new voice tracks (host + guest) with recorded audio and the project is actively recording.",
+            "problem": "User goal: capture a live conversation/interview with a remote collaborator directly into the project's timeline as discrete tracks so the audio can be edited and mixed later. From the user's perspective they need to: (1) bring the guest into the session (call), (2) tell the system how to map each participant's audio into the DAW (new tracks or existing), (3) confirm monitoring/headphone preference to avoid feedback, and (4) start recording and see audio appear in the timeline. From the interface perspective the UI must: expose the Collaborators panel and call controls, show incoming call affordances, provide clear modal controls to accept/decline, prompt to set up recording mapping, create labeled tracks when configured, surface a recording-ready state (countdown), and provide a visible recording/stop control. End result: user-perceived outcome is that the guest is connected, mapping is confirmed, a countdown runs, and recording begins with audio visible in new tracks. System-level outcomes visible in the UI are: new tracks created/labelled (host/guest), the call remains active, input source indicates \"Audio from chat\" where appropriate, and a recording timer/stop control is active while audio is captured into the timeline.",
+            "steps": [
+              "Open project & view Collaborators panel",
+              "Open call options",
+              "Incoming call modal",
+              "Call accepted – prompt to record",
+              "Active call and chat",
+              "Open voice track mapping",
+              "Create voice tracks",
+              "Select voice track & input preset",
+              "Headphone confirmation",
+              "Pre-record countdown",
+              "Recording in timeline"
+            ],
+            "site": {
+              "id": 77,
+              "domain": "soundtrap.com",
+              "description": "Make music online",
+              "name": "Soundtrap",
+              "background_url": "https://images.refero.design/backgrounds/soundtrap.com/8f5b7b2e-9119-4fae-83b6-317a03401c4f.jpg",
+              "refero_url": "https://refero.design/websites/77",
+              "categories": [
+                "Collaboration Tools"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/soundtrap.com/ffff43d4-9e36-4f23-a4da-d0afff764c19.jpg",
+              "background_color": "b199fa"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "key": "login-otp",
+      "response": {
+        "pagination": {
+          "count": 10,
+          "page": 1,
+          "next_page": 2,
+          "total_count": 1000,
+          "total_pages": 100
+        },
+        "records": [
+          {
+            "id": 1268,
+            "platform": "web",
+            "screens_count": 5,
+            "refero_url": "https://refero.design/flows/1268",
+            "name": "Email Code Sign-In",
+            "description": "Happy path: a signed-out user attempts to sign in with an email and password, receives a password mismatch, then switches to a temporary (one-time) email code. The user requests the code, checks their email, enters the code on the verification screen, and (on success) would be signed in and redirected to the app. Entry point: initial credential sign-in screen. Exit point: successful code verification and authenticated session (not shown). Assumptions: user is on desktop, not currently authenticated, has access to the email account they entered, and the system can send temporary codes to that email.",
+            "problem": "User task: Sign in to their account after a password attempt fails. From the user's perspective they want a quick, secure alternative to a remembered password: request a temporary login code sent to their email, enter it, and gain access. They expect clear guidance when a password is wrong, an option to receive a login code, confirmation that a code was sent, an input for that code, and feedback if the code is invalid or expired.\n\nInterface/system perspective: the UI must (1) validate password attempts and show a clear error when the password doesn't match, (2) offer an alternative authentication method (“Get a code instead”), (3) accept a request to generate and send a temporary code to the user’s email, (4) present a code entry screen with validation and a disabled/enabled continue state, and (5) show an explicit server-side error when a submitted code is not recognized or is expired.\n\nResult at the end:\n- User-perceived outcome: either they successfully sign in after entering a valid temporary code, or they see an explicit error and can request a new code. The screenshots show the error path for an invalid code.\n- System-level outcome: on success the backend creates an authenticated session / issues tokens and redirects the user to the protected area. On failure the backend returns an error and the UI displays the 'code not recognised' message and allows retry or re-request of a code.",
+            "steps": [
+              "Password attempt & error",
+              "Code request confirmation",
+              "Enter received code",
+              "Invalid code feedback",
+              "Retry with alternate code"
+            ],
+            "site": {
+              "id": 158,
+              "domain": "patreon.com",
+              "description": "Creativity powered by membership",
+              "name": "Patreon",
+              "background_url": "https://images.refero.design/backgrounds/patreon.com/d81e60bc-16fc-461c-a954-fefab675c66c.jpg",
+              "refero_url": "https://refero.design/websites/158",
+              "categories": [
+                "Social Networking",
+                "Fundraising"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/patreon.com/456e7e20-ec48-4238-9f60-ddcfbfa71418.jpg",
+              "background_color": "a0a6ba"
+            }
+          },
+          {
+            "id": 5382,
+            "platform": "web",
+            "screens_count": 3,
+            "refero_url": "https://refero.design/flows/5382",
+            "name": "Email code sign-in",
+            "description": "Desktop, logged-out user begins at an account login screen that uses passwordless authentication. The user enters their email and requests a one-time login code (sent via SMS and email). The UI validates the email and either proceeds to send a code (happy path) or shows an inline error if the address is not associated with an account. Entry point: public 'Account Login' screen. Exit points: (1) sent-code confirmation / next step to enter code (not shown) or (2) inline error directing user to place an order or contact support. Assumes user is on a desktop browser and not signed in; phone number may be associated server-side for SMS delivery but is not collected on this screen.",
+            "problem": "User goal: Sign in quickly using an email-based, code-delivery method (passwordless). The user expects to enter their email, press a single CTA, and receive a one-time code by email and/or SMS so they can complete authentication. From the interface perspective: the form provides an email input, a primary CTA labeled 'Get login code (sends SMS and email)', and a fallback link to 'log in with a password.' The UI validates the email; on success it initiates sending a code (visual confirmation or navigation to the next step is expected but not shown). On failure (email not found) the interface highlights the input in red and displays a tooltip-style error explaining the account doesn't exist and suggesting next steps (place an order to auto-create an account or contact customer support). User-perceived outcome: either a confirmation that a login code was sent or an immediate, clear error with instructions. System-level outcome: request to send one-time code is submitted to backend when the email is recognized; when not recognized, backend returns an error and the frontend surfaces that message.",
+            "steps": [
+              "Account Login (empty)",
+              "Email Entered",
+              "Email Not Found Error"
+            ],
+            "site": {
+              "id": 633,
+              "domain": "helloklean.com",
+              "description": "Beauty Solutions for your water",
+              "name": "Hello Klean ",
+              "background_url": "https://images.refero.design/backgrounds/helloklean.com/18c2695a-5a97-4380-b417-7d8f50b684eb.jpg",
+              "refero_url": "https://refero.design/websites/633",
+              "categories": [
+                "Marketplace"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/helloklean.com/d5c7bb8d-0bbf-438d-b7ec-0c2113a72d35.jpg",
+              "background_color": "8b897c"
+            }
+          },
+          {
+            "id": 4815,
+            "platform": "web",
+            "screens_count": 8,
+            "refero_url": "https://refero.design/flows/4815",
+            "name": "Passwordless Email Sign-in to Dashboard",
+            "description": "Happy-path passwordless sign-in using an emailed verification code, starting from the public project gallery and ending at the authenticated user dashboard. Entry point: unauthenticated visitor on the public browse screen who selects Log in. Exit point: authenticated dashboard loads and displays personalized content. Assumptions: desktop device, user is not signed in, user has access to the email account they provide, the site uses passwordless email codes for authentication.",
+            "problem": "User task: sign in quickly and securely without a password by receiving and entering a verification code sent to their email. From the user perspective they expect a clear, low-friction path: navigate to sign-in, choose email sign-in, receive a code, enter it, see success or clear error messaging, and land in their dashboard. From the interface/system perspective the UI must: collect the user email, send a verification code, show the code entry UI with clear status (success, failure, resend), validate the code, and transition to an authenticated state on success. Result: user-perceived outcome is that the user is signed in and sees their personalized dashboard. System-level outcome is that the authentication attempt is validated and the session is established (user identity resolved and dashboard data returned).",
+            "steps": [
+              "Public browse / projects",
+              "Sign-in landing",
+              "Submit email",
+              "Code entry prompt",
+              "Typing verification code",
+              "Invalid code error",
+              "Correct code entry",
+              "Authenticated dashboard"
+            ],
+            "site": {
+              "id": 369,
+              "domain": "contra.com",
+              "description": "The commission-free freelance network",
+              "name": "Сontra",
+              "background_url": "https://images.refero.design/backgrounds/contra.com/b87a9902-8281-4030-b591-8034a6181fb9.jpg",
+              "refero_url": "https://refero.design/websites/369",
+              "categories": [
+                "Job Search"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/contra.com/7ce3d7f7-1102-4775-8ed0-291a2b0c0fc2.jpg",
+              "background_color": "6aadf0"
+            }
+          },
+          {
+            "id": 2740,
+            "platform": "web",
+            "screens_count": 10,
+            "refero_url": "https://refero.design/flows/2740",
+            "name": "Email verification sign-in",
+            "description": "Happy-path sign-in by email from the Expedia homepage. Entry: an unsigned, desktop user lands on the homepage (search bar, deals and content). The user clicks Sign in, chooses email sign-in, enters their email, receives a 6-digit verification code by email, enters the code, and completes the sign-in. The system then prompts to add a mobile number for secure sign-in (optional). The user may skip that step and is returned to the homepage in a signed-in state (member banners/benefits shown). Assumptions: desktop/laptop device, user is not signed in initially, user has access to the email address provided, and the site supports email-based code verification and optional phone collection.",
+            "problem": "User task: Authenticate (sign in or create an account) using an email-based verification code so they can access member benefits and personalized features. From the user's perspective: they want a quick, low-friction sign-in path (social sign-in or email), clear instructions for entering the verification code, helpful error feedback if the code is invalid, and an option to add a phone number for added security or skip it. From the interface/system perspective: present sign-in entry points (Google/social and email), validate email input, send a 6-digit secure code to the provided email, accept and validate the code, show inline error states for invalid codes, offer a password sign-in fallback, then optionally collect a phone number for future secure sign-ins. Final result: user-perceived outcome — user is signed in and sees member messaging on the homepage. System-level outcome — the account/session has been authenticated (and optionally a phone number is stored if provided).",
+            "steps": [
+              "Homepage (unsigned)",
+              "Sign in / create account",
+              "Email entered (in progress)",
+              "Enter verification code",
+              "Invalid code feedback",
+              "Valid code submitted",
+              "Add mobile number (optional)",
+              "Mobile prompt (skip active)",
+              "Homepage (signed-in)",
+              "Content discovery after sign-in"
+            ],
+            "site": {
+              "id": 172,
+              "domain": "expedia.com",
+              "description": "Vacation Homes, Hotels, Car Rentals, Flights",
+              "name": "Expedia",
+              "background_url": "https://images.refero.design/backgrounds/expedia.com/bfcca274-db7c-4a4a-ba2c-fb2ae160f303.jpg",
+              "refero_url": "https://refero.design/websites/172",
+              "categories": [
+                "Travel & Booking"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/expedia.com/52906e97-2cbb-4b7e-811b-65f5adcf3275.jpg",
+              "background_color": "ffba00"
+            }
+          },
+          {
+            "id": 9877,
+            "platform": "web",
+            "screens_count": 7,
+            "refero_url": "https://refero.design/flows/9877",
+            "name": "Passwordless sign-in to analytics",
+            "description": "Happy-path sign-in using a passwordless (email verification code) flow that takes a visitor from the public product marketing entry through authentication and into the analytics dashboard. Entry point: marketing/marketing hero where a user can choose to log in. Exit point: authenticated analytics dashboard with realtime metrics. Assumptions: user is on desktop, not signed in, and has access to the email account they provide.",
+            "problem": "User task (user's perspective): Sign into the analytics product quickly and securely without a password, so they can view realtime traffic and metrics. The user expects a short flow: enter an email, receive a short verification code, enter the code, and land on the dashboard. System/UI perspective: the interface presents a clear entry from marketing to sign-in, validates an email, sends a one-time verification code, provides an input pattern for the 6-digit code (with resend option), and then, upon successful verification, loads the authenticated dashboard. Result: user-perceived outcome — user is logged in and sees realtime analytics and top-level metrics. System-level outcome — a short-lived authentication token/session is created for the email, verification code validated, and analytics data is fetched and displayed for the account.",
+            "steps": [
+              "Marketing / Entry",
+              "Sign-in (empty)",
+              "Email submitted",
+              "Verification prompt (empty)",
+              "Email with code",
+              "Verification input (filled)",
+              "Analytics dashboard (post-login)"
+            ],
+            "site": {
+              "id": 820,
+              "domain": "visitors.now",
+              "description": "Privacy-friendly Google Analytics alternative",
+              "name": "Visitors",
+              "background_url": "https://images.refero.design/backgrounds/visitors.now/3fe50ce2-c14a-483f-b288-8653bfb91723.jpg",
+              "refero_url": "https://refero.design/websites/820",
+              "categories": [
+                "Business"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/visitors.now/038bf2b2-3e38-468b-a3f2-d3c16a978a25.jpg",
+              "background_color": "928df5"
+            }
+          },
+          {
+            "id": 8277,
+            "platform": "web",
+            "screens_count": 6,
+            "refero_url": "https://refero.design/flows/8277",
+            "name": "Email verification sign-in",
+            "description": "User arrives on the Dinner Ladies homepage (logged out, desktop). From the header the user chooses to sign in and is taken to an email-based authentication flow: enter email, receive a 6-digit verification code, enter code, submit. The intended happy path results in the user being authenticated and returned to the store; however the captured session ends in a server-side login error page. Entry point: homepage header sign-in. Exit point: either successful authentication (not shown) or an error page (shown). Assumptions: user is on a desktop/laptop browser, not currently authenticated, and has access to the email account they enter.",
+            "problem": "Task: sign in with an email verification code so the user can access their account and continue shopping.\n- From the user's perspective: they want a quick passwordless sign-in. They expect to enter their email, receive a short numeric code, enter it, and be immediately signed in and returned to shopping. They may expect confirmation microcopy showing where the code was sent and an option to change email.\n- From the interface perspective: the UI provides an entry form for email (placeholder text, single input, Continue CTA), then a separate code entry form showing the destination email and a 6-digit input plus Submit. The system should validate email, send a code, verify the code on submit, and then redirect on success. If verification fails or a server error occurs, the system displays an error page with guidance and a link to return to the previous step.\n- Result: user-perceived outcome is either 'I'm signed in' or 'Something went wrong' (the capture shows the latter). System-level outcome is either creation of an authenticated session (happy path) or a server-side login error with an error page response.",
+            "steps": [
+              "Homepage / Entry",
+              "Sign in — Enter email",
+              "Sign in — Email confirmed",
+              "Enter verification code",
+              "Code entered / Submit",
+              "Login error / Recovery"
+            ],
+            "site": {
+              "id": 762,
+              "domain": "dinnerladies.com.au",
+              "description": "Meal Delivery",
+              "name": "The Dinner Ladies",
+              "background_url": "https://images.refero.design/backgrounds/dinnerladies.com.au/e954950e-48b0-4fae-bfb5-420947d50fa4.jpg",
+              "refero_url": "https://refero.design/websites/762",
+              "categories": [
+                "Food Delivery"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/dinnerladies.com.au/418540a4-7683-41b3-9466-a46bd942e959.jpg",
+              "background_color": "e50115"
+            }
+          },
+          {
+            "id": 10066,
+            "platform": "web",
+            "screens_count": 7,
+            "refero_url": "https://refero.design/flows/10066",
+            "name": "Email verification sign-in",
+            "description": "Happy-path authentication flow on desktop: a not-signed-in user starts on the Instacart homepage (store discovery and promotional content). The user triggers authentication via the Log in control which opens a modal for email entry (with alternate social/phone options). After submitting an email the modal switches to a 6-digit verification code entry screen. The user enters the code, a brief loading state appears, and on success the modal closes and the homepage refreshes into the authenticated dashboard (personalized stores, credits, cart). Entry point: homepage when not signed in. Exit point: authenticated homepage/dashboard. Assumptions: desktop browser, user is not signed in, user has access to the email address provided, cookies and network calls succeed.",
+            "problem": "User goal: Sign in quickly to access account-specific features (saved stores, credits, cart) and continue shopping. The user expects a low-friction, secure authentication flow that grants immediate access after verifying their email.\n\nFrom the interface perspective: the UI provides an in-context modal that supports multiple sign-in methods (email, Google, Facebook, phone). For the email path the UI collects an address, sends a 6-digit verification code, and prompts the user to input the code. The interface shows validation affordances (individual code inputs), a link to request a new code, and a loading indicator while the server verifies the code. On successful verification the modal closes and the main UI updates to authenticated state.\n\nEnd result:\n- User-perceived outcome: user sees themselves signed in (personalized banners, store recommendations, account affordances) and can proceed to browse and place orders.\n- System-level outcome: backend issues and validates a 6-digit code for the provided email, creates/updates session authentication state, and returns the authenticated homepage content for the user session.",
+            "steps": [
+              "Homepage — discovery & sign-in entry",
+              "Sign-in modal — enter email or choose provider",
+              "Sign-in modal — email populated",
+              "Verify email — code entry prompt",
+              "Verify email — code entered",
+              "Verification — loading state",
+              "Authenticated homepage — personalized dashboard"
+            ],
+            "site": {
+              "id": 30,
+              "domain": "instacart.com",
+              "description": "The largest online grocery marketplace in North America",
+              "name": "Instacart",
+              "background_url": "https://images.refero.design/backgrounds/instacart.com/c52da29b-13f2-4314-bef9-15776c774cc1.jpg",
+              "refero_url": "https://refero.design/websites/30",
+              "categories": [
+                "Marketplace",
+                "Food Delivery",
+                "Food & Drink"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/instacart.com/8a79fe5d-b07c-4b30-bb11-4cf954a00a2c.jpg",
+              "background_color": "ee7931"
+            }
+          },
+          {
+            "id": 11082,
+            "platform": "web",
+            "screens_count": 5,
+            "refero_url": "https://refero.design/flows/11082",
+            "name": "Passwordless email sign-in to personalized feed",
+            "description": "Happy path: An unauthenticated desktop user lands on Medium's promotional homepage and chooses to start reading. A sign-in modal appears offering a saved account and a 'Sign in with email' button (passwordless). The system sends a one-time code (or magic link) to the user's email and prompts the user to check their inbox. The user enters the 6-digit code in the modal and submits. On successful verification the modal closes and the site loads the personalized, signed-in home feed (left navigation, center article list, right rail recommendations). Entry point: public homepage. Exit point: authenticated home feed. Assumptions: desktop device, user is not signed in initially and has access to the listed email address.",
+            "problem": "User goal: Quickly authenticate with an email-based, passwordless method so they can access personalized reading recommendations and interact with content. The user expects a low-friction flow: choose account, receive a code or magic link, and be taken to their personalized feed upon verification. System perspective: present a compact sign-in modal, identify a recognizably saved account (option to change), trigger generation and delivery of a one-time code (or magic link) to the obfuscated email, provide a 6-digit input and a submit action, validate the code, then establish an authenticated session and fetch personalized content. Resulting outcome: user-perceived outcome — the modal disappears and the personalized home feed appears with the user's avatar in the header; system-level outcome — an authenticated session is created (e.g., cookie/token set) and the server returns the user's feed and follow state.",
+            "steps": [
+              "Landing / Start reading CTA",
+              "Welcome back — account selection",
+              "Check your inbox — code entry (empty)",
+              "Enter code and submit",
+              "Authenticated home feed"
+            ],
+            "site": {
+              "id": 301,
+              "domain": "medium.com",
+              "description": "Read and write stories",
+              "name": "Medium",
+              "background_url": "https://images.refero.design/backgrounds/medium.com/1b18899e-f089-4987-b32c-8ca353dc3967.jpg",
+              "refero_url": "https://refero.design/websites/301",
+              "categories": [
+                "Social Networking"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/medium.com/cad8162e-f0f3-4a49-850b-7eb51f4aebeb.jpg",
+              "background_color": "a2adcd"
+            }
+          },
+          {
+            "id": 10498,
+            "platform": "web",
+            "screens_count": 8,
+            "refero_url": "https://refero.design/flows/10498",
+            "name": "Email verification sign-in to home",
+            "description": "Happy-path sign-in using email + one-time verification code, starting from the public marketing landing screen and ending at the authenticated home (profile-selected) catalog. Entry: a logged-out desktop user who clicks the primary CTA on the marketing hero to start or sign in. Exit: user arrives at the signed-in home with a selected profile and content rows visible. Assumptions: desktop/laptop display, user is not signed in, user has access to the provided email to receive the verification code.",
+            "problem": "User task (user perspective): Authenticate quickly using an email-based, passwordless sign-in so they can access their personalized streaming catalog. They expect a clear path from marketing CTA to entering their email, receiving a short code, entering that code, selecting their profile, and then seeing their home content. Interface/system perspective: The interface guides the user from marketing hero to an email input form, validates email format, sends a temporary 4-digit code, accepts code entry with per-digit inputs, shows inline error states for invalid codes, offers a resend option and ability to change the email, then shows a profile selection screen and finally the authenticated content grid. Result: User-perceived outcome — user is signed in and sees their personalized content and profiles. System-level outcome — the system verifies code, establishes an authenticated session, associates the account with the selected profile, and renders the home content feed.",
+            "steps": [
+              "Marketing hero — start sign-in",
+              "Email entry — validation state",
+              "Email entry — valid submission",
+              "Enter verification code — empty",
+              "Verification code — invalid error",
+              "Verification code — partial entry",
+              "Profile selection",
+              "Authenticated home — content catalog"
+            ],
+            "site": {
+              "id": 131,
+              "domain": "netflix.com",
+              "description": "Watch TV Shows Online, Watch Movies Online",
+              "name": "Netflix",
+              "background_url": "https://images.refero.design/backgrounds/netflix.com/fee6c0fa-9c5e-414a-acd8-46590fcd307d.jpg",
+              "refero_url": "https://refero.design/websites/131",
+              "categories": [
+                "Entertainment",
+                "Video Streaming"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/netflix.com/a63be232-15bb-44e0-b8ec-a40eaef93da3.jpg",
+              "background_color": "ff0000"
+            }
+          },
+          {
+            "id": 3138,
+            "platform": "web",
+            "screens_count": 10,
+            "refero_url": "https://refero.design/flows/3138",
+            "name": "Email verification sign-in to canvas",
+            "description": "Happy-path: A visitor starts on the marketing/landing view and clicks the primary CTA to get started. They are taken to a split-screen sign-in flow (left: auth controls, right: decorative/testimonial panel). The user chooses email sign-in, enters their address, receives an email code (or link), enters the code, sees a success state, and is redirected into their personal infinite canvas (board). Entry point: marketing hero CTA. Exit point: authenticated infinite canvas. Assumptions: user is unauthenticated, using a desktop browser (wide, two-column layout), and has access to the provided email inbox to receive codes or links.",
+            "problem": "User goal (user perspective): Quickly authenticate with minimal friction to access and edit an infinite canvas/board. The user expects a simple sign-in option (third-party or email), clear instructions for verification, feedback for invalid codes, and direct access to their workspace after successful verification.\n\nUI/system perspective: The interface presents sign-in alternatives (Apple, Google, or email). If email is selected, the system sends a verification method (link or one-time code) and exposes an inline code-entry UI. The UI validates code input, surfaces errors and success, and routes the user to the authenticated canvas.\n\nResult at end of flow:\n- User-perceived outcome: User sees their infinite canvas with tools and content, confirming they are signed in and can continue working.\n- System-level outcome: Authenticated session is created; the app loads the user-specific board data and initializes the canvas environment and tool bar components.",
+            "steps": [
+              "Marketing hero",
+              "Sign-in entry",
+              "Email provided",
+              "Verification instruction",
+              "Choose code method",
+              "Empty code input",
+              "Partial code entry",
+              "Incorrect code feedback",
+              "Code accepted / success",
+              "Authenticated infinite canvas"
+            ],
+            "site": {
+              "id": 569,
+              "domain": "endless.io",
+              "description": "Infinite Tools, One Place",
+              "name": "Endless",
+              "background_url": "https://images.refero.design/backgrounds/endless.io/50733789-1e4a-4032-bd4d-a6beba980f07.jpg",
+              "refero_url": "https://refero.design/websites/569",
+              "categories": [
+                "Inspiration Board",
+                "Productivity"
+              ],
+              "favicon_url": "https://images.refero.design/favicon/endless.io/6643966b-a6bc-4bbb-83cf-da2091934706.jpg",
+              "background_color": ""
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "rejectedInterpretations": [
+    "Password/enrollment results are not proof of a directly matching staff passkey recovery flow.",
+    "Community/team invite management is not staff enrollment evidence.",
+    "A selected audience/route is not identity or access authority."
+  ],
+  "sourceDecisions": {
+    "internal": "C-008 passkeys and verified recovery retained.",
+    "clients": "Owner selected proposed passwords; existing OTP proposed as alternative.",
+    "external": "S21 email OTP retained; CONSULTANT and VENDOR_FACTORY grants, not a new factory identity.",
+    "public": "Published portfolio is anonymous."
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "kind": "read-only UI verification on existing authenticated Owner preview",
+  "beforeUrl": "http://localhost:59223/my-work?scope=personal&phase=active&status=IN_PROGRESS",
+  "afterUrl": "http://localhost:59223/my-work?scope=personal&phase=active",
+  "focus": "Filters and sort",
+  "operation": "Remove Status filter",
+  "viewportCaptures": [
+    "320x740",
+    "1440x900"
+  ],
+  "remainingAppliedChips": 0,
+  "databaseWrites": false
+}

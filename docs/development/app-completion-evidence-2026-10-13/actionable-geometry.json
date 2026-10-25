@@ -1,0 +1,315 @@
+{
+  "fixture": "synthetic current-component; no server, authentication or database",
+  "sourceFingerprint": {
+    "apps/web/src/actionable-work.tsx": "50c52ccf2c5408f0dc19f1cecd4ad75548bf244d0cd903c7c7288c8959a8bfef",
+    "apps/web/src/actionable-work.css": "de29c7675ef97bbbbef0f51a07b4be6e700c757dcd9de1b06dffa1b6b337fa99",
+    "apps/web/src/styles.css": "3c662c41e1698979a30426dffb51138a7ac6983a903f133edcbf19f90488ce3c",
+    "apps/web/src/studio-theme.css": "c9c2d5590c31fffdd761f5bbb07c13e9a8f87b9d04cc7defdc8a69938d4a6429"
+  },
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "form": {
+        "width": 1440,
+        "left": 0,
+        "right": 1440
+      },
+      "controls": [
+        {
+          "tag": "SUMMARY",
+          "width": 1422,
+          "height": 44,
+          "left": 9,
+          "right": 1431
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 1346.96875,
+          "right": 1427.8125
+        },
+        {
+          "tag": "A",
+          "width": 1415.625,
+          "height": 74.21875,
+          "left": 12.1875,
+          "right": 1427.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 1422,
+          "height": 44,
+          "left": 9,
+          "right": 1431
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 1346.96875,
+          "right": 1427.8125
+        },
+        {
+          "tag": "A",
+          "width": 1415.625,
+          "height": 74.21875,
+          "left": 12.1875,
+          "right": 1427.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 1422,
+          "height": 44,
+          "left": 9,
+          "right": 1431
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 1346.96875,
+          "right": 1427.8125
+        },
+        {
+          "tag": "A",
+          "width": 1415.625,
+          "height": 93.671875,
+          "left": 12.1875,
+          "right": 1427.8125
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "form": {
+        "width": 1024,
+        "left": 0,
+        "right": 1024
+      },
+      "controls": [
+        {
+          "tag": "SUMMARY",
+          "width": 1006,
+          "height": 44,
+          "left": 9,
+          "right": 1015
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 930.96875,
+          "right": 1011.8125
+        },
+        {
+          "tag": "A",
+          "width": 999.625,
+          "height": 74.21875,
+          "left": 12.1875,
+          "right": 1011.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 1006,
+          "height": 44,
+          "left": 9,
+          "right": 1015
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 930.96875,
+          "right": 1011.8125
+        },
+        {
+          "tag": "A",
+          "width": 999.625,
+          "height": 74.21875,
+          "left": 12.1875,
+          "right": 1011.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 1006,
+          "height": 44,
+          "left": 9,
+          "right": 1015
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 930.96875,
+          "right": 1011.8125
+        },
+        {
+          "tag": "A",
+          "width": 999.625,
+          "height": 93.671875,
+          "left": 12.1875,
+          "right": 1011.8125
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "form": {
+        "width": 390,
+        "left": 0,
+        "right": 390
+      },
+      "controls": [
+        {
+          "tag": "SUMMARY",
+          "width": 372,
+          "height": 44,
+          "left": 9,
+          "right": 381
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 296.96875,
+          "right": 377.8125
+        },
+        {
+          "tag": "A",
+          "width": 365.625,
+          "height": 74.21875,
+          "left": 12.1875,
+          "right": 377.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 372,
+          "height": 44,
+          "left": 9,
+          "right": 381
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 296.96875,
+          "right": 377.8125
+        },
+        {
+          "tag": "A",
+          "width": 365.625,
+          "height": 74.21875,
+          "left": 12.1875,
+          "right": 377.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 372,
+          "height": 44,
+          "left": 9,
+          "right": 381
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 296.96875,
+          "right": 377.8125
+        },
+        {
+          "tag": "A",
+          "width": 365.625,
+          "height": 110.734375,
+          "left": 12.1875,
+          "right": 377.8125
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "form": {
+        "width": 320,
+        "left": 0,
+        "right": 320
+      },
+      "controls": [
+        {
+          "tag": "SUMMARY",
+          "width": 302,
+          "height": 44,
+          "left": 9,
+          "right": 311
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 226.96875,
+          "right": 307.8125
+        },
+        {
+          "tag": "A",
+          "width": 295.625,
+          "height": 91.28125,
+          "left": 12.1875,
+          "right": 307.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 302,
+          "height": 44,
+          "left": 9,
+          "right": 311
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 226.96875,
+          "right": 307.8125
+        },
+        {
+          "tag": "A",
+          "width": 295.625,
+          "height": 108.671875,
+          "left": 12.1875,
+          "right": 307.8125
+        },
+        {
+          "tag": "SUMMARY",
+          "width": 302,
+          "height": 44,
+          "left": 9,
+          "right": 311
+        },
+        {
+          "tag": "BUTTON",
+          "width": 80.84375,
+          "height": 44,
+          "left": 226.96875,
+          "right": 307.8125
+        },
+        {
+          "tag": "A",
+          "width": 295.625,
+          "height": 128.125,
+          "left": 12.1875,
+          "right": 307.8125
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    }
+  ]
+}

@@ -1,0 +1,693 @@
+{
+  "researchDate": "2026-10-08",
+  "methodNotes": [
+    "Zelt full style retrieved to preserve the existing approved primary direction.",
+    "Six additional screen records and images inspected; with primary ten and completion three the combined count is nineteen.",
+    "Appwrite6056 final returned image still shows open palette; metadata-described navigation exit is not visually confirmed.",
+    "Notion/ClickUp reviewed searches returned adjacent references; no native interface findings claimed."
+  ],
+  "requests": [
+    {
+      "key": "zeltStyle",
+      "result": {
+        "dos": [
+          "Use Midnight Graphite (#121718) as the default for all body text and prominent interactive elements.",
+          "Apply Soft Stone (#e4e0dd) as the primary page background color for major sections to establish the warm, neutral canvas.",
+          "Utilize an Amber Glow (#ffcd6d) background for all primary call-to-action buttons, ensuring text is Midnight Graphite (#121718).",
+          "Employ a 12px border-radius for all cards and primary action buttons to maintain a consistent soft aesthetic.",
+          "Maintain a spacious feel by using 43.2px padding within cards and as vertical section gaps.",
+          "Set the base line-height for body text at 1.6 and apply the observed letter-spacing values from the typography scale to preserve visual hierarchy and legibility.",
+          "Prioritize card backgrounds of Canvas Cloud (#ffffff) or Warm Mist (#f6f3ef) for most content blocks, reserving Deep Charcoal (#2f2f2f) for distinct, darker sections."
+        ],
+        "donts": [
+          "Avoid using harsh borders or strong drop shadows; surfaces are defined by subtle color variations and soft curves.",
+          "Do not introduce new vibrant colors outside of the Amber Glow (#ffcd6d) and Soft Amber (#ffe2aa) accents.",
+          "Refrain from tight spacing between major content sections; ensure ample vertical and horizontal breathing room.",
+          "Do not use highly decorative or script fonts; stick to the sans-serif family with its defined weights and letter-spacing for all text.",
+          "Assume all links act as primary calls-to-action; many textual links should remain understated, using only Midnight Graphite (#121718) text.",
+          "Avoid making any element less than 8px border-radius, except for specific contextual text links where 0px is used.",
+          "Do not use dark backgrounds for general content sections; reserve Deep Charcoal (#2f2f2f) for distinct, limited-use blocks like footers or specific card variations."
+        ],
+        "theme": "light",
+        "colors": [
+          {
+            "hex": "#121718",
+            "name": "Midnight Graphite",
+            "role": "Primary text, icon fills, strong borders, dark surface elements",
+            "group": "neutral"
+          },
+          {
+            "hex": "#ffffff",
+            "name": "Canvas Cloud",
+            "role": "Card backgrounds, section backgrounds, main content area fills",
+            "group": "neutral"
+          },
+          {
+            "hex": "#f6f3ef",
+            "name": "Warm Mist",
+            "role": "Subtle section backgrounds, alternate card surfaces, soft dividers",
+            "group": "neutral"
+          },
+          {
+            "hex": "#e4e0dd",
+            "name": "Soft Stone",
+            "role": "Page background, large hero sections – provides a gentle, warm base layer",
+            "group": "neutral"
+          },
+          {
+            "hex": "#2f2f2f",
+            "name": "Deep Charcoal",
+            "role": "Footer background, elevated card variants – provides contrast for darker sections",
+            "group": "neutral"
+          },
+          {
+            "hex": "#444444",
+            "name": "Utility Gray",
+            "role": "Ghost button backgrounds, specific link backgrounds for subtle interaction",
+            "group": "neutral"
+          },
+          {
+            "hex": "#ffcd6d",
+            "name": "Amber Glow",
+            "role": "Primary action buttons, active navigation indicators, interactive highlights – provides the main chromatic accent",
+            "group": "accent"
+          },
+          {
+            "hex": "#ffe2aa",
+            "name": "Soft Amber",
+            "role": "Header alert background, secondary accent highlight – a lighter tint of the primary accent",
+            "group": "accent"
+          }
+        ],
+        "layout": "The page adheres to a default full-bleed layout for the hero section with a centered, dominant headline and supporting text. Content below typically follows a contained, centered model, though an explicit page max-width is not strongly defined in the data. Sections are clearly demarcated by variations in background color (Soft Stone, Warm Mist, Canvas Cloud, Deep Charcoal) creating a visual rhythm. Content within sections is often structured in centered stacks or implied multi-column arrangements where modules (like cards) sit alongside each other. Navigation is a sticky top bar, centered within a contained width, with a primary action button on the far right.",
+        "imagery": "This site prominently features abstract 3D renders with soft, diffused lighting and smooth, organic shapes, often in neutral tones (e.g., a large white spherical element at the bottom of the hero). There is an absence of traditional photography or complex illustrations. Icons are minimal, outlined, and monochromatic, usually in Midnight Graphite. The visual density is low, emphasizing purity and clean UI over rich imagery. Imagery serves as decorative atmosphere rather than direct explanatory content, creating a subtle, modern feel.",
+        "spacing": {
+          "radius": {
+            "misc": "4px",
+            "tags": "8px",
+            "cards": "12px",
+            "buttons": "12px"
+          },
+          "density": "spacious",
+          "baseUnit": 4,
+          "elementGap": "14px",
+          "sectionGap": "43px",
+          "cardPadding": "",
+          "pageMaxWidth": null
+        },
+        "industry": "saas",
+        "surfaces": [
+          {
+            "hex": "#e4e0dd",
+            "name": "Soft Stone",
+            "level": 0,
+            "purpose": "Primary page background, base canvas"
+          },
+          {
+            "hex": "#f6f3ef",
+            "name": "Warm Mist",
+            "level": 1,
+            "purpose": "Secondary background, subtle distinction for content blocks"
+          },
+          {
+            "hex": "#ffffff",
+            "name": "Canvas Cloud",
+            "level": 2,
+            "purpose": "Card backgrounds, main content area fills"
+          },
+          {
+            "hex": "#2f2f2f",
+            "name": "Deep Charcoal",
+            "level": 3,
+            "purpose": "Accented card backgrounds, footer"
+          }
+        ],
+        "northStar": "Warm beige canvas with yellow accents",
+        "typeScale": [
+          {
+            "role": "caption",
+            "size": 12,
+            "lineHeight": 1.4,
+            "letterSpacing": -0.003
+          },
+          {
+            "role": "body",
+            "size": 16,
+            "lineHeight": 1.6,
+            "letterSpacing": -0.007
+          },
+          {
+            "role": "subheading",
+            "size": 23,
+            "lineHeight": 1.2,
+            "letterSpacing": -0.012
+          },
+          {
+            "role": "heading",
+            "size": 43,
+            "lineHeight": 1.02,
+            "letterSpacing": -0.025
+          },
+          {
+            "role": "heading-lg",
+            "size": 58,
+            "lineHeight": 0.95,
+            "letterSpacing": -0.03
+          },
+          {
+            "role": "display",
+            "size": 76,
+            "lineHeight": 0.95,
+            "letterSpacing": -0.037
+          }
+        ],
+        "components": [
+          {
+            "name": "Primary Action Button",
+            "role": "Filled button for main calls to action",
+            "description": "Background: Amber Glow (#ffcd6d), Text: Midnight Graphite (#121718), Border Radius: 12px, Padding: 14px horizontal, 5-8px vertical (derived from observed button uses like 'Get started')"
+          },
+          {
+            "name": "Ghost Button",
+            "role": "Outlined button for secondary actions or links",
+            "description": "Background: rgba(0,0,0,0), Text: Midnight Graphite (#121718), Border: 1px solid Midnight Graphite (#121718), Border Radius: 0px or 12px depending on context (e.g. for link text vs. dedicated ghost button), Padding: minimal or 0px. (Based on observed link buttons)."
+          },
+          {
+            "name": "Soft Card",
+            "role": "Container for content sections with subtle elevation",
+            "description": "Background: Canvas Cloud (#ffffff), Border Radius: 12px, Box Shadow: none, Padding: 43.2px."
+          },
+          {
+            "name": "Alternate Card (Warm Mist)",
+            "role": "Subtle background card for specific content types",
+            "description": "Background: Warm Mist (#f6f3ef), Border Radius: 12px, Box Shadow: none, Padding: 0px."
+          },
+          {
+            "name": "Alternate Card (Deep Charcoal)",
+            "role": "Darker card for emphasized sections",
+            "description": "Background: Deep Charcoal (#2f2f2f), Border Radius: 12px, Box Shadow: none, Padding: 43.2px top/bottom, 72px left/right."
+          },
+          {
+            "name": "Navigation Link",
+            "role": "Interactive text link within the navigation bar",
+            "description": "Text: Midnight Graphite (#121718), no specific background unless active, minimal padding 5px horizontal / 0px vertical."
+          },
+          {
+            "name": "Header Alert Bar",
+            "role": "Banner for important announcements",
+            "description": "Background: Soft Amber (#ffe2aa), Text: Midnight Graphite (#121718), Height: 48px."
+          }
+        ],
+        "typography": [
+          {
+            "role": "The primary typeface for all text. A range of weights and adjusted letter-spacing create a clear hierarchy: tighter tracking for large headlines, normal for body text. This gives a modern and legible feel without being overly dense.",
+            "sizes": "8px, 12px, 13px, 14px, 15px, 16px, 17px, 18px, 23px, 24px, 29px, 32px, 43px, 58px, 76px, 86px, 101px",
+            "family": "sans-serif",
+            "source": "system",
+            "weight": "300, 400, 500, 700",
+            "lineHeight": "0.95, 1.00, 1.02, 1.15, 1.16, 1.20, 1.24, 1.35, 1.40, 1.60, 2.63",
+            "substitute": "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'",
+            "letterSpacing": "-0.043, -0.037, -0.03, -0.025, -0.02, -0.012, -0.01, -0.007, -0.003"
+          }
+        ],
+        "description": "Zelt embraces a soft, approachable professionalism with a warm, near-achromatic palette punctuated by a single vivid yellow. The typography is confident and spacious, featuring a clean sans-serif with subtle letter-spacing adjustments for hierarchy and visual texture. Components are light, using soft rounded corners and minimal elevation, allowing the structural beige-gray backgrounds to define visual space rather than strong borders or heavy shadows. This creates an inviting and understated user experience.",
+        "customSections": [
+          {
+            "title": "Agent Prompt Guide",
+            "content": "Quick Color Reference:\ntext: #121718\nbackground: #e4e0dd\nborder: #121718 (for outline control)\naccent: #ffcd6d\nprimary action: no distinct CTA color\n\nExample Component Prompts:\n1. Create a hero section: Soft Stone background. Headline 'HR Software for the Employee Lifecycle' using sans-serif, weight 500, size 58px, #121718, letter-spacing -0.03em, line-height 0.95. Subtext 'Get a 360° employee view across HR, Payroll and IT' using sans-serif, weight 400, size 18px, #121718, line-height 1.4.\nNo distinct primary action color was observed; use the extracted neutral button treatments instead of inventing a filled CTA color.\n3. Create a navigation bar item: Text 'Product' using sans-serif, weight 400, size 16px, #121718, with 5px left/right padding. On hover, background Soft Amber (#ffe2aa).\n4. Create a Soft Card: Background Canvas Cloud (#ffffff), border-radius 12px, box-shadow none, padding 43.2px. Inside, a heading 'Employee Benefits' using sans-serif, weight 500, size 29px, #121718."
+          }
+        ],
+        "title": "Zelt"
+      }
+    },
+    {
+      "key": "fullScreens2",
+      "result": {
+        "records": [
+          {
+            "thumbnail_url": "https://images.refero.design/screenshots/linear.app/desktop/fc3640ce-ce30-4ee8-bbfb-7d65c6b354b2_thumb.jpg",
+            "preview_url": "https://images.refero.design/screenshots/linear.app/desktop/fc3640ce-ce30-4ee8-bbfb-7d65c6b354b2_preview.jpg",
+            "colors": [
+              [
+                48,
+                48,
+                48
+              ],
+              [
+                249,
+                249,
+                249
+              ],
+              [
+                155,
+                155,
+                155
+              ],
+              [
+                92,
+                91,
+                91
+              ],
+              [
+                205,
+                205,
+                204
+              ]
+            ],
+            "hex_colors": [
+              "0x303030",
+              "0xF9F9F9",
+              "0x9B9B9B",
+              "0x5C5B5B",
+              "0xCDCDCC"
+            ],
+            "uuid": "1e0851c0-5302-485c-ab4a-98a6df5771fd",
+            "page_url": "https://linear.app/refero-design/team/REF/active",
+            "site": {
+              "name": "Linear",
+              "domain": "linear.app",
+              "description": "Plan and build products"
+            },
+            "ux_patterns": [
+              "Checklist & To Do",
+              "Select",
+              "Task"
+            ],
+            "ui_elements": [
+              "Accordion & Collapse",
+              "List",
+              "Button",
+              "Dropdown",
+              "Checkbox & Radio",
+              "Navigation Bar",
+              "Sidebar & Drawer",
+              "Icon",
+              "Avatar"
+            ],
+            "page_types": [
+              "Task Management"
+            ],
+            "fonts": [
+              "Inter"
+            ],
+            "platform": "web",
+            "refero_url": "https://refero.design/pages/1e0851c0-5302-485c-ab4a-98a6df5771fd",
+            "content": {
+              "description": "The screen presents a clean, minimalistic issue tracking interface for a project management tool. The overall style is modern and professional, using a light color palette with white (#FFFFFF) backgrounds and subtle gray (#F5F5F7, #E0E0E0) accents for separators and sidebars. The typography is simple and readable, likely using a sans-serif font such as Inter or Roboto, with font sizes ranging from 12px to 16px, and a medium font weight (500) for headings and normal weight (400) for content. The layout includes a vertical sidebar on the left with navigation items such as Inbox, My Issues, Projects, Views, and more, each with a small icon to the left. The sidebar uses a light gray background (#F9F9F9) and subtle hover or selected states. The main content area to the right displays a list of issues organized by status categories like \"In Progress\" and \"Todo.\" Each issue is displayed as a row with a circular checkbox on the left, an issue reference code (e.g., REF-1), a title in bold or semi-bold text, and a count of comments or sub-items in parentheses. Dates are aligned to the right in a lighter gray color (#9E9E9E). The top bar includes filters for issue status (All issues, Active, Backlog) and a display toggle button, plus a search or filter input. Icons for notifications and user profile are placed in the top right corner. The interface uses subtle lines and spacing to separate sections without clutter. The overall layout is a two-column grid with a fixed-width sidebar and a flexible main content area. The interface is designed for clarity, efficiency, and quick navigation with minimal distraction.",
+              "layout": "The layout is a two-column structure with a vertical sidebar on the left occupying about 20% of the width and the main content area occupying the remaining 80%. The sidebar contains multiple navigation sections grouped vertically with clear spacing and icons aligned to the left. The main content area is divided vertically into sections representing different issue statuses, each with a header and a list of items below. Items are arranged in a vertical list with left-aligned checkboxes and issue references, central aligned titles, and right-aligned dates. The top of the main content area includes a horizontal filter bar with segmented controls and a filter input on the left and display options on the right. The overall alignment is left-to-right with consistent padding and spacing around elements, using a grid layout for the sidebar and a list layout for the main content. The design uses whitespace effectively to separate sections and improve readability.",
+              "functions": "Users can navigate between different sections of the project workspace using the sidebar, such as accessing their inbox, viewing their issues, projects, or different views. They can filter issues by status using the top filter bar, selecting between all issues, active issues, and backlog. Users can expand or collapse issue groups (e.g., In Progress, Todo) to focus on relevant tasks. Each issue can be selected or marked complete using the circular checkboxes. Users can view issue details such as reference codes, titles, comment counts, and due dates, allowing them to track progress and prioritize work. The interface supports collaborative project management by organizing tasks and issues clearly, facilitating team coordination and progress tracking. The broader goal is to enable efficient task and issue management within a project, helping teams stay organized, prioritize work, and monitor progress effectively through a clean and intuitive UI."
+            },
+            "flows": [
+              {
+                "id": 6644,
+                "name": "Changing issue status",
+                "step": 4,
+                "total_steps": 4
+              }
+            ]
+          },
+          {
+            "thumbnail_url": "https://images.refero.design/screenshots/cal.com/desktop/7c4f7c25-1f96-4adc-b539-18d23fdc84e8_thumb.jpg",
+            "preview_url": "https://images.refero.design/screenshots/cal.com/desktop/7c4f7c25-1f96-4adc-b539-18d23fdc84e8_preview.jpg",
+            "colors": [
+              [
+                27,
+                27,
+                29
+              ],
+              [
+                244,
+                245,
+                245
+              ],
+              [
+                146,
+                148,
+                149
+              ],
+              [
+                63,
+                154,
+                225
+              ],
+              [
+                102,
+                102,
+                102
+              ]
+            ],
+            "hex_colors": [
+              "0x1B1B1D",
+              "0xF4F5F5",
+              "0x929495",
+              "0x3F9AE1",
+              "0x666666"
+            ],
+            "uuid": "25ea0211-37fa-4988-a983-6c930d7898db",
+            "page_url": "https://cal.com/scheduling/feature/collective",
+            "site": {
+              "name": "Cal",
+              "domain": "cal.com",
+              "description": "Open Scheduling Infrastructure"
+            },
+            "ux_patterns": [
+              "Article & Text",
+              "Video Player"
+            ],
+            "ui_elements": [
+              "Button",
+              "Dropdown",
+              "Navigation Bar",
+              "Footer",
+              "Icon",
+              "Illustration"
+            ],
+            "page_types": [
+              "Product Page & Landing"
+            ],
+            "fonts": [
+              "Matter",
+              "Inter",
+              "Cal Sans"
+            ],
+            "platform": "web",
+            "refero_url": "https://refero.design/pages/25ea0211-37fa-4988-a983-6c930d7898db",
+            "content": {
+              "description": "The screens depict a clean, professional website landing page for a calendar scheduling platform called Cal.com. The top has a minimal header with a monochrome logo, a small 'HIRING' label in green (#4CAF50), and navigation links spaced evenly across a white background (#FFFFFF) with subtle shadows. Navigation includes drop-down triggers indicated by arrows for categories Solutions, Enterprise, Developer, Resources, and Pricing, plus Sign in and a prominent black (#000000) call-to-action button labeled 'Get started' with white text. Below the header is the hero section with a white background, featuring a large bold black headline using a sans-serif font (e.g., Inter or similar) sized about 36-48px, weight 700, centered horizontally. The supporting subtext is smaller, gray (#6E6E6E), weight 400, about 16-18px, with normal line spacing and center alignment. There is a black rounded rectangular button 'Try it out' with white text below the subtext. The hero includes an abstract flowchart style illustration in muted blue (#E7EEF3) background with colored circles representing users connected by thin lines, embodying calendar sharing. The next section includes a centered embedded video player frame with YouTube content preview images showing people using laptops. On the right side is a clean event card design with icons for date and time, using green (#4CAF50) check mark circles. Below is a descriptive text block in black, left-aligned, using a smaller font (about 14-16px), describing collective event scheduling benefits. Further down, a call to action with bold headings and rating badges (medals/crowns) in grays and golds, plus a black 'Get started' button. The footer uses a light gray (#F5F5F5) background and is densely packed with columns of text links grouped logically under headings such as Solutions, Use Cases, Resources, Company. The footer also shows multiple small logos for certifications, social media icons in monochrome followed by a mission statement. Typography throughout is consistent and modern with generous padding and white space. The layout uses a grid or flex with a single column center alignment for main content, and multiple columns for footer links. Buttons are rounded rectangles with hover states (not visible but implied). The overall style is minimal, user focused and professional with a monochrome palette accented with blue and green for visual cues.",
+              "layout": "The layout starts with a single horizontal top navigation bar with a left-aligned logo and right-aligned menu items spaced evenly across, in one row. The hero content below is vertically stacked: headline, subtext, central call-to-action button, and a large centered abstract illustration with balanced margin above and below. The next content section is split horizontally or stacked vertically for the embedded video and the calendar event example card with iconography. Below that is a full-width text block aligned left with consistent padding left and right. Further below, a centered call-to-action area with rating badges and a central button. The footer uses a multi-column grid layout with four main vertical columns each containing multiple grouped sub-columns of links. The footer row is wide and uses small text. Margins and paddings are consistent, with generous whitespace separating sections vertically. The entire page uses a primarily single-column central structure for main content areas and multi-column arrangement only for footer navigation.",
+              "functions": "Users can navigate the primary categories through the header menu, including Solutions, Enterprise options, Developer resources, and Pricing information. The header also allows returning users to sign in or new users to start an account via the 'Get started' button. The hero section invites users to quickly try the core feature of cross-referencing calendars and scheduling collective events, with a clear call-to-action button 'Try it out'. The embedded video and explanations below educate users on how the platform works, including booking group meetings with mutual availability checking. Users read about benefits, explore use cases, and understand the product capabilities to make informed decisions. The footer provides extensive links for further exploration such as documentation, company info, and additional resources. Overall, the page serves to convey the value proposition of the scheduling tool, encourage trial and onboarding, and provide pathways for deeper engagement or enterprise inquiries. The clear hierarchy and focused calls-to-action facilitate effortless comprehension and conversion."
+            }
+          },
+          {
+            "thumbnail_url": "https://images.refero.design/screenshots/onmarathon.com/desktop/860a74f2-026d-43c0-9f89-4fe2f72fcf77_thumb.jpg",
+            "preview_url": "https://images.refero.design/screenshots/onmarathon.com/desktop/860a74f2-026d-43c0-9f89-4fe2f72fcf77_preview.jpg",
+            "colors": [
+              [
+                40,
+                40,
+                40
+              ],
+              [
+                230,
+                77,
+                77
+              ],
+              [
+                152,
+                151,
+                167
+              ],
+              [
+                251,
+                251,
+                251
+              ],
+              [
+                102,
+                102,
+                102
+              ]
+            ],
+            "hex_colors": [
+              "0x282828",
+              "0xE64D4D",
+              "0x9897A7",
+              "0xFBFBFB",
+              "0x666666"
+            ],
+            "uuid": "2f1843e4-9ca3-4285-aa49-29f6ce74e1b1",
+            "page_url": "https://app.onmarathon.com/ticket/BsMbDOIVXfDyXY0j?back=http://app.onmarathon.com/desk/",
+            "site": {
+              "name": "Marathon",
+              "domain": "onmarathon.com",
+              "description": "Project Management For Creatives"
+            },
+            "ux_patterns": [],
+            "ui_elements": [],
+            "page_types": [],
+            "fonts": [
+              "Noto Sans",
+              "Inter"
+            ],
+            "platform": "web",
+            "refero_url": "https://refero.design/pages/2f1843e4-9ca3-4285-aa49-29f6ce74e1b1",
+            "flows": [
+              {
+                "id": 4846,
+                "name": "Creating new ticket",
+                "step": 16,
+                "total_steps": 35
+              },
+              {
+                "id": 4857,
+                "name": "Starting timer for ticket",
+                "step": 3,
+                "total_steps": 4
+              }
+            ]
+          },
+          {
+            "thumbnail_url": "https://images.refero.design/screenshots/appwrite.io/desktop/11b27857-c60d-49b0-93b9-1f3a4f360f4c_thumb.jpg",
+            "preview_url": "https://images.refero.design/screenshots/appwrite.io/desktop/11b27857-c60d-49b0-93b9-1f3a4f360f4c_preview.jpg",
+            "colors": [
+              [
+                81,
+                80,
+                83
+              ],
+              [
+                251,
+                251,
+                251
+              ],
+              [
+                244,
+                60,
+                112
+              ],
+              [
+                163,
+                163,
+                166
+              ],
+              [
+                106,
+                163,
+                248
+              ]
+            ],
+            "hex_colors": [
+              "0x515053",
+              "0xFBFBFB",
+              "0xF43C70",
+              "0xA3A3A6",
+              "0x6AA3F8"
+            ],
+            "uuid": "5245716e-60de-4ce7-a626-45c0ae4669b4",
+            "page_url": "https://cloud.appwrite.io/console/project-fra-684995ff0000e759183f/get-started",
+            "site": {
+              "name": "Appwrite",
+              "domain": "appwrite.io",
+              "description": "Build like a team of hundreds"
+            },
+            "ux_patterns": [
+              "Searching",
+              "Shortcuts"
+            ],
+            "ui_elements": [
+              "Dialog & Modal Window",
+              "Search Field",
+              "Icon",
+              "Popover"
+            ],
+            "page_types": [],
+            "fonts": [
+              "Inter",
+              "Aeonik",
+              ""
+            ],
+            "platform": "web",
+            "refero_url": "https://refero.design/pages/5245716e-60de-4ce7-a626-45c0ae4669b4",
+            "content": {
+              "description": "The screen displays a developer dashboard interface for creating and managing projects on a cloud platform. The overall style is minimalistic and clean with a light color palette primarily consisting of white (#FFFFFF) background and light grey (#F5F5F5) elements. Accent colors include a bright pink (#FF377F) used for primary buttons and progress highlights. Typography uses a modern sans-serif font with a hierarchy: the main headings are relatively large (~24px) and bold (700 weight), body text around 14-16px with normal weight. The layout is structured with a left-side vertical navigation panel containing text links for various project and deployment sections, each spaced with consistent vertical padding. The left panel background is white with subtle borders or separation. The main content area is wide and centered with ample white space around cards and text blocks. The top bar includes dropdown menus for project selection, a clear upgrade call-to-action button in pink (#FF377F), search icon, and user avatar circle in soft blue (#AEC8F0). Interactive elements such as buttons and dropdowns show subtle shadows and border radius (approx 6-8px) for friendliness. Project setup cards are arranged in a two-column grid on larger screens, each card having minimal icons of platform logos and minimal text below them like 'Web', 'React Native', 'Apple', 'Android', 'Flutter'. The cards have subtle drop shadows and rounded corners. A progress indicator on the left side shows 33% completion with a pink progress bar. Additional UI includes a dismissible 'Dismiss this page' button on the top right of the main content area. The whole page uses a sidebar and top bar layout with a grid-based main content section. No animations are apparent from the screenshot. The interface uses clean lines, consistent spacing (16-24px margin/padding), and emphasizes clarity and ease of navigation for developers setting up new cloud projects.",
+              "layout": "The layout uses a classic three-section structure: a top bar, a left sidebar, and a main content area. The left sidebar is a vertical column aligned to the left, occupying approximately 15-20% of the width, grouping navigation links vertically under headings like 'Overview', 'Build', and 'Deploy'. The top bar stretches horizontally across the full width, containing project selection dropdowns, upgrade button, feedback, support, search icon, and avatar aligned right. The main content area occupies the remaining large right portion, arranged as a vertical column with a heading at top left ('Welcome'), followed by progress text, and a central grid section of platform selection cards. The platform cards are arranged in two columns with consistent horizontal and vertical spacing. Each card is a rectangle with rounded corners and drop shadows, aligned in a grid with about four cards shown across two rows. Margins and paddings are consistent around elements, typically 16-24px spacing. The progress sidebar uses a narrow vertical band on the left of the main content with a progress bar styled alignment. The layout can be described using keywords such as sidebar navigation, top navigation bar, two-column cards grid, vertical grouping, and consistent spacing.",
+              "functions": "Users can perform several actions on this interface starting with navigating the left sidebar to select different project components or settings like Auth, Databases, Functions, Messaging, and Storage. At the top, users can select from projects via dropdown menus, allowing switching and connecting different projects quickly. The primary action center is the 'Create project' area where users choose platforms to connect with, such as Web, React Native, Apple, Android, and Flutter. Each platform is represented by a clickable card that guides the user to configure development settings for that environment. The progress indicator visually suggests how far the user is in the project setup, motivating completion. The interface supports starting or continuing the build process through these choices, ultimately enabling users to manage and deploy cloud applications. Secondary functions include accessing upgrade options, submitting feedback, contacting support, and searching within the platform through the top bar controls. This interface facilitates a seamless end-to-end workflow for developers to create, configure, and deploy their projects on a cloud platform by guiding them through platform integration and important project settings. It ensures clarity through well-organized layout, progress feedback, and intuitive navigation controls to optimize user efficiency."
+            },
+            "flows": [
+              {
+                "id": 6056,
+                "name": "Searching for project",
+                "step": 3,
+                "total_steps": 3
+              }
+            ]
+          },
+          {
+            "thumbnail_url": "https://images.refero.design/screenshots/onmarathon.com/desktop/55e7b000-be84-452b-8e08-e05e5c89c57f_thumb.jpg",
+            "preview_url": "https://images.refero.design/screenshots/onmarathon.com/desktop/55e7b000-be84-452b-8e08-e05e5c89c57f_preview.jpg",
+            "colors": [
+              [
+                229,
+                78,
+                79
+              ],
+              [
+                39,
+                39,
+                39
+              ],
+              [
+                144,
+                138,
+                222
+              ],
+              [
+                251,
+                251,
+                251
+              ],
+              [
+                103,
+                103,
+                103
+              ]
+            ],
+            "hex_colors": [
+              "0xE54E4F",
+              "0x272727",
+              "0x908ADE",
+              "0xFBFBFB",
+              "0x676767"
+            ],
+            "uuid": "9ef8037c-fb20-46dc-a6cc-9c16eba2ee82",
+            "page_url": "https://app.onmarathon.com/ticket/BsMbDOIVXfDyXY0j?back=http://app.onmarathon.com/desk/",
+            "site": {
+              "name": "Marathon",
+              "domain": "onmarathon.com",
+              "description": "Project Management For Creatives"
+            },
+            "ux_patterns": [
+              "Timer & Clock",
+              "Task"
+            ],
+            "ui_elements": [
+              "List",
+              "Button",
+              "Floating Button",
+              "Text Field",
+              "Progress Bar",
+              "Sidebar & Drawer",
+              "Icon",
+              "Avatar",
+              "Popover",
+              "Side Sheet"
+            ],
+            "page_types": [],
+            "fonts": [
+              "Noto Sans",
+              "Inter"
+            ],
+            "platform": "web",
+            "refero_url": "https://refero.design/pages/9ef8037c-fb20-46dc-a6cc-9c16eba2ee82",
+            "content": {
+              "description": "The screen displays a time tracking interface combined with a task or project management layout. On the left side, there is a fixed vertical sidebar with a white background (#FFFFFF) and light grey text (#9B9B9B). The sidebar includes a logo at the top left, followed by a user navigation menu: 'My Desk', 'Inbox', 'Everything', and 'Track', with associated icons. Below, there is a 'Projects' section listing projects with categories: 'Cobalt', 'Spark', and 'Urban', each with zero counts. The bottom of the sidebar includes a plan information box with a red progress bar (#FF3B30) showing '3 / 3 Figma Files' usage, a message about a free plan, and a red upgrade button with white text. The main content area on the right features a white background (#FFFFFF) with black (#000000) and grey text. The page contains a heading \"Update Landing Page Typography\" in a bold font similar to 16-18px size, followed by paragraphs of descriptive text, presumably black or dark gray, in a regular, readable sans-serif font at around 14px with 1.4 line height. There are label tags for 'Cobalt' in purple (#6F53FF) and 'Done' in black with white text. The content is aligned left with consistent padding. In the top left corner of the main content area, there's a round timer with a play button, time display in bold font, and a project selector dropdown with subtle border and placeholder text. Below the timer, there are quick buttons labeled '+2m', '+5m', and '+10m' in white text on a purple background (#6F53FF) inside a rounded rectangle. Additional UI components include an unapprove button at the top right and a chat/help icon in the bottom right corner. The overall style is clean, modern, minimalist, with a focus on functionality. The font is likely a system UI sans-serif for clarity and legibility. The layout divides the screen mainly into two sections: a narrow sidebar on the left and the wider main content on the right. The left sidebar uses vertical stacking with distinct interactive elements, while the right uses vertical scrolling with clear headers and body text. The timer area includes subtle shading or border lines to separate it from the rest of the main content. The interactive elements have hover and active states indicated by color changes or shading. The interface uses plenty of white space to avoid clutter and improve readability.",
+              "layout": "The layout consists of two primary vertical columns. The left column is a fixed sidebar occupying about 20%-25% of the screen width, structured in a vertical stack format with grouped navigation links, project listings, and bottom upgrade prompt. The sidebar uses aligned text and icons with consistent vertical spacing and padding. The right main column occupies approximately 75%-80% of the width, with a top section dedicated to a floating or fixed timer component positioned near the upper left, containing buttons and dropdowns horizontally arranged. Below this is a vertical scrollable content area with headings, paragraphs, labels (tags), and action buttons aligned mainly to the left with ample margin and padding. The bottom right corner of the main column includes a fixed circular chat/help button. The layout focuses on simplicity and clear separation between navigation and content through distinct columns and spacing, using flexible vertical stacking and consistent alignment for readability and usability.",
+              "functions": "Users can interact with the timer by starting, pausing, or resetting the timer for a working session using the play button and controls. They can select a project to associate the timer session with via the dropdown 'Select Project'. Quick time increment buttons (+2m, +5m, +10m) allow users to adjust the timer duration efficiently. The left sidebar navigation enables users to switch between different views such as 'My Desk', 'Inbox', 'Everything', and to track time with 'Track'. Users can monitor project statuses and their associated task counts. The upgrade section prompts users to move from a free plan to a paid one for additional features. The main content area allows reading and editing task details, including project tags and statuses like 'Done' and 'Unapprove'. Users can also interact with the chat/help icon for support. On a broader level, users can efficiently manage and track time spent on multiple tasks or projects, improving productivity and task organization. The interface supports entering time logs tied to projects, contributes to project management workflows by integrating time tracking directly into task detail views. The layout and controls ensure ease of access to timing, task updating, and navigation without overwhelming complexity."
+            },
+            "flows": [
+              {
+                "id": 4846,
+                "name": "Creating new ticket",
+                "step": 17,
+                "total_steps": 35
+              },
+              {
+                "id": 4857,
+                "name": "Starting timer for ticket",
+                "step": 4,
+                "total_steps": 4
+              }
+            ]
+          },
+          {
+            "thumbnail_url": "https://images.refero.design/screenshots/appwrite.io/desktop/aa23cc82-6f0d-46ad-84ca-96d4828724f6_thumb.jpg",
+            "preview_url": "https://images.refero.design/screenshots/appwrite.io/desktop/aa23cc82-6f0d-46ad-84ca-96d4828724f6_preview.jpg",
+            "colors": [
+              [
+                82,
+                81,
+                83
+              ],
+              [
+                251,
+                251,
+                251
+              ],
+              [
+                244,
+                60,
+                111
+              ],
+              [
+                163,
+                163,
+                166
+              ],
+              [
+                106,
+                163,
+                248
+              ]
+            ],
+            "hex_colors": [
+              "0x525153",
+              "0xFBFBFB",
+              "0xF43C6F",
+              "0xA3A3A6",
+              "0x6AA3F8"
+            ],
+            "uuid": "d764862d-a516-41dc-8744-ef56d9ca1404",
+            "page_url": "https://cloud.appwrite.io/console/project-fra-684995ff0000e759183f/get-started",
+            "site": {
+              "name": "Appwrite",
+              "domain": "appwrite.io",
+              "description": "Build like a team of hundreds"
+            },
+            "ux_patterns": [
+              "Searching",
+              "Shortcuts"
+            ],
+            "ui_elements": [
+              "List",
+              "Dialog & Modal Window",
+              "Search Field",
+              "Icon",
+              "Popover"
+            ],
+            "page_types": [],
+            "fonts": [
+              "Inter",
+              "Aeonik",
+              ""
+            ],
+            "platform": "web",
+            "refero_url": "https://refero.design/pages/d764862d-a516-41dc-8744-ef56d9ca1404",
+            "content": {
+              "description": "The screen presents a developer or project onboarding interface for connecting platforms and starting project builds. The layout features a three-part structure: a left vertical navigation sidebar occupying about 20% width with menu items including Overview, Build section elements (Auth, Databases, Functions, Messaging, Storage), Deploy with Sites (marked New), and Settings at the bottom. This sidebar uses a simple, clean text list style with minimal icons or badges. Above the sidebar is a progress indicator with text \"Get started 33% complete\" in a compact box with a subtle pink icon. The main content area to the right is about 80% width and displays a heading \"Welcome\" with smaller text underneath and a search dropdown listing projects with options (Part, Appwrite project, Oakline). Below this is a card-like stepper or timeline with steps, the visible step is \"Connect your platform\" with a descriptive subtitle: \"Start building with your preferred web, mobile, and native frameworks.\" Next to it is a card grid showing platform options with cards for Web, React Native, Apple, Android, Flutter - each has a minimal icon or placeholder and right arrow for navigation. The interface uses a white background (#FFFFFF) with subtle grey text (#4A4A4A) and primary accent pink (#FF3B6D) for interactive elements like the upgrade button and progress indicator. Typography is modern sans-serif, likely around 14-18px sizes for headings and subtext with clear line spacing and left alignment. UI elements include buttons, dropdowns, cards with shadows or subtle borders, icons representing frameworks, and text fields with placeholder text. The top header includes user avatar circle on the right with initials, a search icon, and small pink upgrade button. The overall style is clean, minimal, and professional, focusing on developer tasks with clear steps and navigational clarity. The screen uses a two-column layout with a fixed sidebar and a flexible main content area with card grids arranged in 2 columns at least, spaced with consistent padding and margin. Shadows or borders are soft with radius around 8px.",
+              "layout": "The layout is divided primarily into two vertical columns. The left column is a vertical sidebar about 20% of the screen width containing a stacked vertical navigation menu grouped into sections: a progress/status box at the top, main navigation items grouped under headings like Build and Deploy, and a bottom Settings link. The right, larger column (about 80% width) is a flexible content area. At the top of this column is a heading with a subtext and a search dropdown overlay for projects. Below that is a vertical stepper or timeline control showing onboarding steps aligned vertically on the left with the current step's content beside it on the right. The main content under the active step is a card grid arranged in two columns showing platform framework selections, each card sized equally with consistent gaps. Padding and margins are consistent horizontally and vertically, providing balanced white space. The top of the screen also includes a horizontal utility bar with buttons and avatar on the right, spanning full width. The overall page uses a fixed sidebar and flexible main content, typical of dashboard or onboarding layouts.",
+              "functions": "Users can perform specific actions such as selecting a project from the dropdown search to switch context, navigating the sidebar menu to different build and deploy sections, viewing progress of their onboarding steps, and choosing a platform card (e.g., Web, React Native, Apple) to continue setup or integration. The UI supports input actions like clicking buttons (e.g., Upgrade, Dismiss), searching projects, and browsing the guided stepper to connect their preferred framework or platform. Medium-level tasks involve completing the onboarding workflow which includes connecting the platform, configuring build components like Auth and Databases, and deploying via Sites, thus gradually activating the project environment. The broader purpose of this screen is to facilitate initial setup and configuration of a software project within a development platform. It guides users through the connection phase enabling them to select and link web/mobile frameworks with the backend services. The design promotes clarity through step-by-step progression and easy access to relevant sections, ensuring users can efficiently start building their apps with minimal confusion."
+            },
+            "flows": [
+              {
+                "id": 6056,
+                "name": "Searching for project",
+                "step": 2,
+                "total_steps": 3
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

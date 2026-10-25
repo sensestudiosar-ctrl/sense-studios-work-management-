@@ -1,0 +1,54 @@
+{
+  "scope": "Opaque semantic pairs, no whole-product conformance claim",
+  "pairs": [
+    {
+      "role": "danger",
+      "text": "#853d33",
+      "surface": "#fff1ed",
+      "contrast": 7.03,
+      "normalText45Pass": true
+    },
+    {
+      "role": "warning",
+      "text": "#755018",
+      "surface": "#fff4d6",
+      "contrast": 6.57,
+      "normalText45Pass": true
+    },
+    {
+      "role": "review",
+      "text": "#315b7b",
+      "surface": "#edf3f8",
+      "contrast": 6.45,
+      "normalText45Pass": true
+    },
+    {
+      "role": "active",
+      "text": "#315947",
+      "surface": "#f1f7ef",
+      "contrast": 7.28,
+      "normalText45Pass": true
+    },
+    {
+      "role": "completed-pill",
+      "text": "#50645b",
+      "surface": "#f5f6f1",
+      "contrast": 5.83,
+      "normalText45Pass": true
+    },
+    {
+      "role": "completed-evidence",
+      "text": "#50645b",
+      "surface": "#f0f3eb",
+      "contrast": 5.65,
+      "normalText45Pass": true
+    },
+    {
+      "role": "neutral",
+      "text": "#53616a",
+      "surface": "#f1f3f3",
+      "contrast": 5.74,
+      "normalText45Pass": true
+    }
+  ]
+}

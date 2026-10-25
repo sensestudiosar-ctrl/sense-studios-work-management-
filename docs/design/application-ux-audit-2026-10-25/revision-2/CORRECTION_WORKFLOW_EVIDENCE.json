@@ -1,0 +1,3801 @@
+{
+  "at": "2026-10-25T07:04:38.242Z",
+  "origin": "http://localhost:59443",
+  "authMethod": "Existing enrolled test passkeys via hardware emulation; normal backend login and current persisted account/employee roles. No mocked sessions/API responses.",
+  "roles": [
+    {
+      "key": "designer1",
+      "role": "Designer",
+      "accountId": "66bbb466-7851-4ddc-8186-840ff73afec9",
+      "employeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "pages": [
+        {
+          "label": "/my-work",
+          "width": 1440,
+          "screenshot": "evidence/correction-designer1-my-work-1440.png",
+          "dialogs": [],
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\n◈\nNeeds action\n8\nTasks\n1\nReviews\n0\nDecisions\nSeparate exact source counts\n◷\nOverdue\n9\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n\n9 tasks · Personal queue\n\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\n9 tasks\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n▾\nOverdue\n9\nTASK\nPROJECT / STAGE\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nTEST Designer 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\nNo project\n—\ntask-test-03-20261012@example.test\n2026-10-22\nIn progress\nNORMAL\nOpen task\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-03-20261012@example.test\n2026-10-21\nNot started\nURGENT\nOpen task\nTEST Designer 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\nLocal Test Project A\nACTIVE\ntask-test-03-20261012@example.test\n2026-10-21\nCorrections required\nURGENT\nOpen correction\nTEST Designer 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\nLocal Test Project A\nACTIVE\ntask-test-03-20261012@example.test\n2026-10-20\nSubmitted internal review\nHIGH\nReview pending\nTEST Designer 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-03-20261012@example.test\n2026-10-18\nWaiting\nHIGH\nOpen task\nTEST Designer 1 04 · Follow up material information\nNORMAL\nNo project\nNext: Open task\nNo project\n—\ntask-test-03-20261012@example.test\n2026-10-17\nWaiting\nNORMAL\nOpen task\nShow 3 more of 9 ▾\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–9 of 9 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "◈\nNeeds action\n8\nTasks\n1\nReviews\n0\nDecisions\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n9\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "▾\nOverdue\n9",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 3 more of 9 ▾",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1495
+        },
+        {
+          "label": "/my-work",
+          "width": 783,
+          "screenshot": "evidence/correction-designer1-my-work-783.png",
+          "dialogs": [],
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\n◈\nNeeds action\n8\nTasks\n1\nReviews\n0\nDecisions\nSeparate exact source counts\n◷\nOverdue\n9\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n\n9 tasks · Personal queue\n\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\n9 tasks\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n▾\nOverdue\n9\nTASK\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nTEST Designer 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\ntask-test-03-20261012@example.test\n2026-10-22\nIn progress\nNORMAL\nOpen task\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\ntask-test-03-20261012@example.test\n2026-10-21\nNot started\nURGENT\nOpen task\nTEST Designer 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\ntask-test-03-20261012@example.test\n2026-10-21\nCorrections required\nURGENT\nOpen correction\nTEST Designer 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\ntask-test-03-20261012@example.test\n2026-10-20\nSubmitted internal review\nHIGH\nReview pending\nTEST Designer 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\ntask-test-03-20261012@example.test\n2026-10-18\nWaiting\nHIGH\nOpen task\nTEST Designer 1 04 · Follow up material information\nNORMAL\nNo project\nNext: Open task\ntask-test-03-20261012@example.test\n2026-10-17\nWaiting\nNORMAL\nOpen task\nShow 3 more of 9 ▾\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–9 of 9 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "◈\nNeeds action\n8\nTasks\n1\nReviews\n0\nDecisions\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n9\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "▾\nOverdue\n9",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 3 more of 9 ▾",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1559
+        },
+        {
+          "label": "/my-work",
+          "width": 390,
+          "screenshot": "evidence/correction-designer1-my-work-390.png",
+          "dialogs": [],
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\n◈\nNeeds action\n8\nTasks\n1\nReviews\n0\nDecisions\nSeparate exact source counts\n◷\nOverdue\n9\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n＋\nCreate task\nSearch tasks\nFilters\nMore\ndisplay and refresh options\n▾\nOverdue\n9\nTEST Designer 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\nIn progress\n2026-10-22\nOpen task\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\nNot started\n2026-10-21\nOpen task\nTEST Designer 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\nCorrections required\n2026-10-21\nOpen correction\nTEST Designer 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\nSubmitted internal review\n2026-10-20\nReview pending\nTEST Designer 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\nWaiting\n2026-10-18\nOpen task\nTEST Designer 1 04 · Follow up material information\nNORMAL\nNo project\nNext: Open task\nWaiting\n2026-10-17\nOpen task\nShow 3 more of 9 ▾\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–9 of 9 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "◈\nNeeds action\n8\nTasks\n1\nReviews\n0\nDecisions\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n9\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "▾\nOverdue\n9",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 3 more of 9 ▾",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1948
+        },
+        {
+          "label": "/reviews",
+          "width": 1440,
+          "screenshot": "evidence/correction-designer1-reviews-1440.png",
+          "dialogs": [],
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\n\nSelect a review or open a project task to see its review history.",
+          "headings": [
+            "Internal work review",
+            "Review inbox"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1308
+        },
+        {
+          "label": "/reviews",
+          "width": 783,
+          "screenshot": "evidence/correction-designer1-reviews-783.png",
+          "dialogs": [],
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\n\nSelect a review or open a project task to see its review history.",
+          "headings": [
+            "Internal work review",
+            "Review inbox"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1314
+        },
+        {
+          "label": "/reviews",
+          "width": 390,
+          "screenshot": "evidence/correction-designer1-reviews-390.png",
+          "dialogs": [],
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\n\nSelect a review or open a project task to see its review history.",
+          "headings": [
+            "Internal work review",
+            "Review inbox"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1690
+        },
+        {
+          "label": "correction-required-task",
+          "width": 1440,
+          "screenshot": "evidence/correction-designer1-correction-required-task-1440.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d&scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\nCreate task\nMy primary tasks\n10\nTEST Designer 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: MEDIUM. Status: In progress. Target date: 2026-10-22. Committed date: Not committed.\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: CRITICAL. Status: Not started. Target date: 2026-10-21. Committed date: Not committed.\nTEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: CRITICAL. Status: Corrections required. Target date: 2026-10-21. Committed date: Not committed.\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: Submitted internal review. Target date: 2026-10-20. Committed date: Not committed.\nTEST Designer 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: LOW. Status: Completed. Target date: 2026-10-19. Committed date: Not committed.\nTEST Designer 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: Waiting. Target date: 2026-10-18. Committed date: Not committed.\nTEST Designer 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: MEDIUM. Status: Waiting. Target date: 2026-10-17. Committed date: Not committed.\nTEST Designer 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: In progress. Target date: 2026-10-16. Committed date: Not committed.\nTEST Designer 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: Not started. Target date: 2026-10-15. Committed date: Not committed.\nTEST Designer 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: MEDIUM. Status: Not started. Target date: 2026-10-14. Committed date: Not committed.\nBack to task list\n\nPROJECT · PROJECT TASK\n\nTEST Designer 1 08 · Resolve drawing coordination issue\nCorrections required\nNext step\n\nRead the review feedback and submit corrected evidence through the required review workflow.\n\nOpen internal review\nDescription\n\nSynthetic local testing only. Work area: Coordination review.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-03-20261012@example.test\nDependencies\nTags\nCoordination review\nEdit task\nTechnical details\nTask history\nOwner-authorized synthetic test persona and task setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45",
+          "headings": [
+            "Tasks",
+            "My primary tasks10",
+            "TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open internal review",
+              "href": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Correct: TEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 3383
+        },
+        {
+          "label": "correction-required-task",
+          "width": 783,
+          "screenshot": "evidence/correction-designer1-correction-required-task-783.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d&scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\nCreate task\nBack to task list\n\nPROJECT · PROJECT TASK\n\nTEST Designer 1 08 · Resolve drawing coordination issue\nCorrections required\nNext step\n\nRead the review feedback and submit corrected evidence through the required review workflow.\n\nOpen internal review\nDescription\n\nSynthetic local testing only. Work area: Coordination review.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-03-20261012@example.test\nDependencies\nTags\nCoordination review\nEdit task\nTechnical details\nTask history\nOwner-authorized synthetic test persona and task setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45",
+          "headings": [
+            "Tasks",
+            "My primary tasks10",
+            "TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open internal review",
+              "href": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1559
+        },
+        {
+          "label": "correction-required-task",
+          "width": 390,
+          "screenshot": "evidence/correction-designer1-correction-required-task-390.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d&scope=mine",
+          "text": "Tasks\nCreate task\nBack to task list\n\nPROJECT · PROJECT TASK\n\nTEST Designer 1 08 · Resolve drawing coordination issue\nCorrections required\nNext step\n\nRead the review feedback and submit corrected evidence through the required review workflow.\n\nOpen internal review\nDescription\n\nSynthetic local testing only. Work area: Coordination review.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-03-20261012@example.test\nDependencies\nTags\nCoordination review\nEdit task\nTechnical details\nTask history\nOwner-authorized synthetic test persona and task setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:45",
+          "headings": [
+            "Tasks",
+            "My primary tasks10",
+            "TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open internal review",
+              "href": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1878
+        },
+        {
+          "label": "review-comments",
+          "width": 1440,
+          "screenshot": "evidence/correction-designer1-review-comments-1440.png",
+          "dialogs": [],
+          "url": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d&roundId=7808b31f-a50b-4ce2-ae69-384ccbf146dd",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\nTEST Designer 1 08 · Resolve drawing coordination issue\n\nTask 0aaa720e-2b09-4834-8863-d03b84b5645d · CORRECTIONS REQUIRED · INTERNAL\n\nReviewer: task-test-20261012@example.test\nRound 1\nCORRECTIONS REQUIRED\n\nSubmitted by task-test-03-20261012@example.test · 12/10/2026, 22:10:45 · Reviewer task-test-20261012@example.test\n\nSubmitted task snapshot\nTask version\n4\nTitle at submission\nTEST Designer 1 08 · Resolve drawing coordination issue\nPriority at submission\nCRITICAL\nCommitted date at submission\nNo committed date\n\nSynthetic coordination issue: update the recorded drawing checklist.\n\ntask-test-20261012@example.test · 12/10/2026, 22:10:45\n\nCorrections required · MODERATE · Local test coordination\nSynthetic coordination issue: update the recorded drawing checklist.",
+          "headings": [
+            "Internal work review",
+            "Review inbox",
+            "TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1308
+        },
+        {
+          "label": "review-comments",
+          "width": 390,
+          "screenshot": "evidence/correction-designer1-review-comments-390.png",
+          "dialogs": [],
+          "url": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d&roundId=7808b31f-a50b-4ce2-ae69-384ccbf146dd",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nBack to review inbox\nTEST Designer 1 08 · Resolve drawing coordination issue\n\nTask 0aaa720e-2b09-4834-8863-d03b84b5645d · CORRECTIONS REQUIRED · INTERNAL\n\nReviewer: task-test-20261012@example.test\nRound 1\nCORRECTIONS REQUIRED\n\nSubmitted by task-test-03-20261012@example.test · 12/10/2026, 22:10:45 · Reviewer task-test-20261012@example.test\n\nSubmitted task snapshot\nTask version\n4\nTitle at submission\nTEST Designer 1 08 · Resolve drawing coordination issue\nPriority at submission\nCRITICAL\nCommitted date at submission\nNo committed date\n\nSynthetic coordination issue: update the recorded drawing checklist.\n\ntask-test-20261012@example.test · 12/10/2026, 22:10:45\n\nCorrections required · MODERATE · Local test coordination\nSynthetic coordination issue: update the recorded drawing checklist.",
+          "headings": [
+            "Internal work review",
+            "Review inbox",
+            "TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Back to review inbox",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1524
+        },
+        {
+          "label": "linked-correction-task",
+          "width": 1440,
+          "screenshot": "evidence/correction-designer1-linked-correction-task-1440.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7&scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\nCreate task\nMy primary tasks\n10\nTEST Designer 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: MEDIUM. Status: In progress. Target date: 2026-10-22. Committed date: Not committed.\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: CRITICAL. Status: Not started. Target date: 2026-10-21. Committed date: Not committed.\nTEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: CRITICAL. Status: Corrections required. Target date: 2026-10-21. Committed date: Not committed.\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: Submitted internal review. Target date: 2026-10-20. Committed date: Not committed.\nTEST Designer 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: LOW. Status: Completed. Target date: 2026-10-19. Committed date: Not committed.\nTEST Designer 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: Waiting. Target date: 2026-10-18. Committed date: Not committed.\nTEST Designer 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: MEDIUM. Status: Waiting. Target date: 2026-10-17. Committed date: Not committed.\nTEST Designer 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: In progress. Target date: 2026-10-16. Committed date: Not committed.\nTEST Designer 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: HIGH. Status: Not started. Target date: 2026-10-15. Committed date: Not committed.\nTEST Designer 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-03-20261012@example.test\nPrimary owner: task-test-03-20261012@example.test. Priority: MEDIUM. Status: Not started. Target date: 2026-10-14. Committed date: Not committed.\nBack to task list\n\nCORRECTION · PROJECT TASK\n\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nNot started\nNext step\n\nStart the task when you are ready. Available actions follow your current permissions.\n\nReason for change\nStart task\n\nEnter a reason of at least 3 characters to enable the applicable action.\n\nOpen correction instructions in internal review\nDescription\n\nComplete the correction recorded in the linked internal review. Request access if the exact drawing is restricted.\n\nSubtasks\n\nLoading subtasks…\n\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-03-20261012@example.test\nDependencies\nEdit task\nTechnical details\nTask history\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:46",
+          "headings": [
+            "Tasks",
+            "My primary tasks10",
+            "Correct: TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open correction instructions in internal review",
+              "href": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Correct: TEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-03-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Start task",
+              "disabled": true
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 3383
+        },
+        {
+          "label": "linked-correction-task",
+          "width": 390,
+          "screenshot": "evidence/correction-designer1-linked-correction-task-390.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7&scope=mine",
+          "text": "Tasks\nCreate task\nBack to task list\n\nCORRECTION · PROJECT TASK\n\nCorrect: TEST Designer 1 08 · Resolve drawing coordination issue\nNot started\nNext step\n\nStart the task when you are ready. Available actions follow your current permissions.\n\nReason for change\nStart task\n\nEnter a reason of at least 3 characters to enable the applicable action.\n\nOpen correction instructions in internal review\nDescription\n\nComplete the correction recorded in the linked internal review. Request access if the exact drawing is restricted.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-03-20261012@example.test\nDependencies\nEdit task\nTechnical details\nTask history\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:46",
+          "headings": [
+            "Tasks",
+            "My primary tasks10",
+            "Correct: TEST Designer 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open correction instructions in internal review",
+              "href": "/reviews?taskId=0aaa720e-2b09-4834-8863-d03b84b5645d"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Start task",
+              "disabled": true
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1826
+        }
+      ],
+      "reads": [
+        {
+          "path": "/api/v1/auth/session",
+          "status": 401
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 401
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/time",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/my-work/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/my-work/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/my-work/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/0aaa720e-2b09-4834-8863-d03b84b5645d",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/0aaa720e-2b09-4834-8863-d03b84b5645d/subtasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/0aaa720e-2b09-4834-8863-d03b84b5645d/dependency-candidates",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/tasks/0aaa720e-2b09-4834-8863-d03b84b5645d",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7/subtasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7/dependency-candidates",
+          "status": 200
+        }
+      ],
+      "interactions": [
+        {
+          "name": "Read review comments and linked correction task; no work changed or resubmitted",
+          "status": "PASS"
+        }
+      ],
+      "errors": [],
+      "loginStatus": 201,
+      "setupStatus": 200,
+      "setup": {
+        "actorEmployeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+        "canAssign": false,
+        "creationProfile": {
+          "version": 1,
+          "variant": "EMPLOYEE",
+          "resolution": "GENERIC_FALLBACK"
+        },
+        "projects": [
+          {
+            "id": "af49ff6b-f305-46bb-9651-d800ceff9173",
+            "title": "Local Test Project A"
+          }
+        ]
+      },
+      "selfStatus": 200,
+      "self": {
+        "employee": {
+          "id": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+          "state": "ACTIVE",
+          "employeeCode": "LOCAL-TASK-003",
+          "hiredAt": "2026-10-12T00:00:00.000Z",
+          "homeBranch": {
+            "id": "79a6a68e-e2ba-41e7-b6ef-aad1fdb0fc60",
+            "name": "Local Test Branch"
+          },
+          "homeTeam": {
+            "id": "622064e0-521f-432b-9a3d-1dd4d5592aa4",
+            "name": "Local Test Team"
+          },
+          "reportsTo": {
+            "id": "a922f509-7161-4353-9acd-16c1aacbcee2",
+            "account": {
+              "normalizedEmail": "task-test-20261012@example.test"
+            }
+          },
+          "jobRoleAssignments": [
+            {
+              "jobRole": {
+                "id": "30acbdcf-445d-4bac-8f88-262b5a2456d1",
+                "name": "Designer"
+              }
+            }
+          ]
+        }
+      },
+      "personal": {
+        "total": 10,
+        "taskIds": [
+          "ec1d772c-c747-498f-ba9d-f9f5daa149bb",
+          "203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7",
+          "0aaa720e-2b09-4834-8863-d03b84b5645d",
+          "fedafdbb-e22a-41c0-93ae-99f0e2e0371e",
+          "94ec0682-59ba-46b8-a748-09c3f9554f80",
+          "d5c994b0-2803-4dba-879d-f430ebf6dfc5",
+          "f7986c95-495b-49b6-ab54-1096355490dd",
+          "f416df7e-b32f-47e7-8e4d-914b22bbaf3b",
+          "bdbe88b1-13e5-4a78-93e4-e4beb57e7758",
+          "4a10fd51-8c8d-4df8-83a7-be560fbfe4ae"
+        ],
+        "items": [
+          {
+            "id": "ec1d772c-c747-498f-ba9d-f9f5daa149bb",
+            "title": "TEST Designer 1 09 · Prepare handover index",
+            "status": "IN_PROGRESS",
+            "type": "NON_PROJECT"
+          },
+          {
+            "id": "203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7",
+            "title": "Correct: TEST Designer 1 08 · Resolve drawing coordination issue",
+            "status": "NOT_STARTED",
+            "type": "CORRECTION"
+          },
+          {
+            "id": "0aaa720e-2b09-4834-8863-d03b84b5645d",
+            "title": "TEST Designer 1 08 · Resolve drawing coordination issue",
+            "status": "CORRECTIONS_REQUIRED",
+            "type": "PROJECT"
+          },
+          {
+            "id": "fedafdbb-e22a-41c0-93ae-99f0e2e0371e",
+            "title": "TEST Designer 1 07 · Submit quality checklist",
+            "status": "SUBMITTED_INTERNAL_REVIEW",
+            "type": "PROJECT"
+          },
+          {
+            "id": "94ec0682-59ba-46b8-a748-09c3f9554f80",
+            "title": "TEST Designer 1 06 · File completed meeting notes",
+            "status": "COMPLETED",
+            "type": "NON_PROJECT"
+          },
+          {
+            "id": "d5c994b0-2803-4dba-879d-f430ebf6dfc5",
+            "title": "TEST Designer 1 05 · Confirm site measurements",
+            "status": "WAITING",
+            "type": "PROJECT"
+          },
+          {
+            "id": "f7986c95-495b-49b6-ab54-1096355490dd",
+            "title": "TEST Designer 1 04 · Follow up material information",
+            "status": "WAITING",
+            "type": "NON_PROJECT"
+          },
+          {
+            "id": "f416df7e-b32f-47e7-8e4d-914b22bbaf3b",
+            "title": "TEST Designer 1 03 · Update coordinated drawings",
+            "status": "IN_PROGRESS",
+            "type": "PROJECT"
+          },
+          {
+            "id": "bdbe88b1-13e5-4a78-93e4-e4beb57e7758",
+            "title": "TEST Designer 1 02 · Prepare design concept",
+            "status": "NOT_STARTED",
+            "type": "PROJECT"
+          },
+          {
+            "id": "4a10fd51-8c8d-4df8-83a7-be560fbfe4ae",
+            "title": "TEST Designer 1 01 · Plan weekly priorities",
+            "status": "NOT_STARTED",
+            "type": "NON_PROJECT"
+          }
+        ]
+      },
+      "correctionReviewRead": 200,
+      "correctionReview": {
+        "task": {
+          "id": "0aaa720e-2b09-4834-8863-d03b84b5645d",
+          "title": "TEST Designer 1 08 · Resolve drawing coordination issue",
+          "status": "CORRECTIONS_REQUIRED",
+          "version": 6,
+          "priority": "CRITICAL",
+          "committedDueDate": null,
+          "reviewRequirement": "INTERNAL",
+          "projectId": "af49ff6b-f305-46bb-9651-d800ceff9173"
+        },
+        "assignment": {
+          "reviewerEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+          "reviewerName": "task-test-20261012@example.test"
+        },
+        "rounds": [
+          {
+            "id": "7808b31f-a50b-4ce2-ae69-384ccbf146dd",
+            "roundNumber": 1,
+            "status": "CORRECTIONS_REQUIRED",
+            "taskVersion": 4,
+            "submittedAt": "2026-10-12T16:40:45.650Z",
+            "submittedByName": "task-test-03-20261012@example.test",
+            "taskSnapshot": {
+              "tags": [
+                "Coordination review"
+              ],
+              "title": "TEST Designer 1 08 · Resolve drawing coordination issue",
+              "priority": "CRITICAL",
+              "checklist": [],
+              "startDate": null,
+              "planItemId": null,
+              "targetDate": "2026-10-21",
+              "description": "Synthetic local testing only. Work area: Coordination review.",
+              "estimatedHours": null,
+              "ownerEmployeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+              "committedDueDate": null
+            },
+            "revisionId": null,
+            "revisionFileId": null,
+            "revisionFileMimeType": null,
+            "revisionFileName": null,
+            "revisionLabel": null,
+            "reviewerName": "task-test-20261012@example.test",
+            "comments": [
+              {
+                "id": "abe28b6e-2d14-4346-97b2-b16149955f46",
+                "authorName": "task-test-20261012@example.test",
+                "comment": "Synthetic coordination issue: update the recorded drawing checklist.",
+                "annotations": [],
+                "markupFileId": null,
+                "createdAt": "2026-10-12T16:40:45.828Z"
+              }
+            ],
+            "escalations": [],
+            "correctionTaskId": "203d1f15-5e21-4a0c-a8ab-c25e23ecd6f7",
+            "decision": {
+              "kind": "CORRECTIONS_REQUIRED",
+              "comment": "Synthetic coordination issue: update the recorded drawing checklist.",
+              "severity": "MODERATE",
+              "categoryName": "Local test coordination",
+              "decidedAt": "2026-10-12T16:40:45.828Z"
+            },
+            "withdrawal": null
+          }
+        ],
+        "categories": [
+          {
+            "id": "6494e59c-55be-4e40-b8fc-e828e58cc0ff",
+            "name": "Local test coordination"
+          }
+        ],
+        "reviewerCandidates": [],
+        "correctionOwnerCandidates": [],
+        "availableRevisions": [],
+        "availableMarkupFiles": [],
+        "routing": null,
+        "automaticClientRouting": false,
+        "capabilities": {
+          "assignReviewer": false,
+          "configureClientRouting": false,
+          "submit": false,
+          "start": false,
+          "comment": false,
+          "decide": false,
+          "escalate": false,
+          "withdraw": false,
+          "changePriority": false,
+          "changeDeadline": false,
+          "assignCorrection": false,
+          "complete": false,
+          "manageCategories": false
+        }
+      },
+      "status": "READ_ONLY_CORRECTION_PATH_CAPTURED",
+      "ownAuditLogout": 204
+    },
+    {
+      "key": "leader1",
+      "role": "Team Leader",
+      "accountId": "473d501d-b547-4329-a30d-bacbfa064747",
+      "employeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "pages": [
+        {
+          "label": "/my-work",
+          "width": 1440,
+          "screenshot": "evidence/correction-leader1-my-work-1440.png",
+          "dialogs": [],
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\nMy Work\nAll teams\n◈\nNeeds action\n9\nTasks\n2\nReviews\n0\nDecisions\nSeparate exact source counts\n◷\nOverdue\n10\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n\n10 tasks · Personal queue\n\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\n10 tasks\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n▾\nOverdue\n10\nTASK\nPROJECT / STAGE\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nq3rf\nNORMAL\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-22\nNot started\nNORMAL\nOpen task\nTEST Team Leader 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\nNo project\n—\ntask-test-20261012@example.test\n2026-10-22\nIn progress\nNORMAL\nOpen task\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-21\nNot started\nURGENT\nOpen task\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-21\nCorrections required\nURGENT\nOpen correction\nTEST Team Leader 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-20\nSubmitted internal review\nHIGH\nReview pending\nTEST Team Leader 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\nLocal Test Project A\nACTIVE\ntask-test-20261012@example.test\n2026-10-18\nWaiting\nHIGH\nOpen task\nShow 4 more of 10 ▾\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–10 of 10 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "My Work",
+              "disabled": false
+            },
+            {
+              "label": "All teams",
+              "disabled": false
+            },
+            {
+              "label": "◈\nNeeds action\n9\nTasks\n2\nReviews\n0\nDecisions\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n10\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "▾\nOverdue\n10",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 4 more of 10 ▾",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1597
+        },
+        {
+          "label": "/my-work",
+          "width": 783,
+          "screenshot": "evidence/correction-leader1-my-work-783.png",
+          "dialogs": [],
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\nMy Work\nAll teams\n◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts\n◷\nOverdue\n10\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n\n10 tasks · Personal queue\n\n＋\nCreate task\n⚙\nCustomize\nSearch tasks\nFilters\n◇\nSave view\nDefault view\nMore\ndisplay and refresh options\n10 tasks\nSort:\nRecently created\nNearest Target\nTask name\nPrimary owner\nHighest priority, then Target\nStatus colours\nNot started\nIn progress\nIn internal review\nCorrections required\nWaiting\nCompleted\nAll statuses in Filters\n▾\nOverdue\n10\nTASK\nPEOPLE\nDUE\nSTATUS\nPRIORITY\nNEXT ACTION\nq3rf\nNORMAL\nLocal Test Project A\nNext: Open task\ntask-test-20261012@example.test\n2026-10-22\nNot started\nNORMAL\nOpen task\nTEST Team Leader 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\ntask-test-20261012@example.test\n2026-10-22\nIn progress\nNORMAL\nOpen task\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\ntask-test-20261012@example.test\n2026-10-21\nNot started\nURGENT\nOpen task\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\ntask-test-20261012@example.test\n2026-10-21\nCorrections required\nURGENT\nOpen correction\nTEST Team Leader 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\ntask-test-20261012@example.test\n2026-10-20\nSubmitted internal review\nHIGH\nReview pending\nTEST Team Leader 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\ntask-test-20261012@example.test\n2026-10-18\nWaiting\nHIGH\nOpen task\nShow 4 more of 10 ▾\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–10 of 10 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "My Work",
+              "disabled": false
+            },
+            {
+              "label": "All teams",
+              "disabled": false
+            },
+            {
+              "label": "◈\nNeeds action\n…\nTasks\nLoading\n…\nReviews\nLoading\n…\nDecisions\nLoading\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n10\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "⚙\nCustomize",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "◇\nSave view",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Not started",
+              "disabled": false
+            },
+            {
+              "label": "In progress",
+              "disabled": false
+            },
+            {
+              "label": "In internal review",
+              "disabled": false
+            },
+            {
+              "label": "Corrections required",
+              "disabled": false
+            },
+            {
+              "label": "Waiting",
+              "disabled": false
+            },
+            {
+              "label": "Completed",
+              "disabled": false
+            },
+            {
+              "label": "▾\nOverdue\n10",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 4 more of 10 ▾",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1709
+        },
+        {
+          "label": "/my-work",
+          "width": 390,
+          "screenshot": "evidence/correction-leader1-my-work-390.png",
+          "dialogs": [],
+          "url": "/my-work?scope=personal&phase=active",
+          "text": "WORKSPACE / TASKS\n\nMy work\nMy Work\nAll teams\n◈\nNeeds action\n9\nTasks\n2\nReviews\n0\nDecisions\nSeparate exact source counts\n◷\nOverdue\n10\nPast Target · unfinished\n↗\n◇\nReviews\n3\nPending review / correction tasks\n↗\n⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗\nWork queue\n＋\nCreate task\nSearch tasks\nFilters\nMore\ndisplay and refresh options\n▾\nOverdue\n10\nq3rf\nNORMAL\nLocal Test Project A\nNext: Open task\nNot started\n2026-10-22\nOpen task\nTEST Team Leader 1 09 · Prepare handover index\nNORMAL\nNo project\nNext: Open task\nIn progress\n2026-10-22\nOpen task\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open task\nNot started\n2026-10-21\nOpen task\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nURGENT\nLocal Test Project A\nNext: Open correction\nCorrections required\n2026-10-21\nOpen correction\nTEST Team Leader 1 07 · Submit quality checklist\nHIGH\nLocal Test Project A\nNext: Review pending\nSubmitted internal review\n2026-10-20\nReview pending\nTEST Team Leader 1 05 · Confirm site measurements\nHIGH\nLocal Test Project A\nNext: Open task\nWaiting\n2026-10-18\nOpen task\nShow 4 more of 10 ▾\n\nGrouping and “Show more” apply to this page only.\n\nShowing 1–10 of 10 filtered tasks\nPrevious\nNext\nAbout task counts\nAssigned reviewer inboxAuthorized decisions",
+          "headings": [
+            "My work",
+            "Work queue",
+            "Filter My Work"
+          ],
+          "links": [
+            {
+              "label": "Assigned reviewer inbox",
+              "href": "/reviews?scope=mine&queue=waiting"
+            },
+            {
+              "label": "Authorized decisions",
+              "href": "/decisions"
+            }
+          ],
+          "controls": [
+            {
+              "label": "My Work",
+              "disabled": false
+            },
+            {
+              "label": "All teams",
+              "disabled": false
+            },
+            {
+              "label": "◈\nNeeds action\n9\nTasks\n2\nReviews\n0\nDecisions\nSeparate exact source counts",
+              "disabled": false
+            },
+            {
+              "label": "◷\nOverdue\n10\nPast Target · unfinished\n↗",
+              "disabled": false
+            },
+            {
+              "label": "◇\nReviews\n3\nPending review / correction tasks\n↗",
+              "disabled": false
+            },
+            {
+              "label": "⊘\nWaiting / blocked\n2\nWaiting tasks only\n↗",
+              "disabled": false
+            },
+            {
+              "label": "＋\nCreate task",
+              "disabled": false
+            },
+            {
+              "label": "Filters",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "More\ndisplay and refresh options",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "▾\nOverdue\n10",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open correction",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Review pending",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": false
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Show 4 more of 10 ▾",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "About task counts",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 2055
+        },
+        {
+          "label": "/reviews",
+          "width": 1440,
+          "screenshot": "evidence/correction-leader1-reviews-1440.png",
+          "dialogs": [],
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\n\nSelect a review or open a project task to see its review history.",
+          "headings": [
+            "Internal work review",
+            "Review inbox"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1308
+        },
+        {
+          "label": "/reviews",
+          "width": 783,
+          "screenshot": "evidence/correction-leader1-reviews-783.png",
+          "dialogs": [],
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\n\nSelect a review or open a project task to see its review history.",
+          "headings": [
+            "Internal work review",
+            "Review inbox"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1314
+        },
+        {
+          "label": "/reviews",
+          "width": 390,
+          "screenshot": "evidence/correction-leader1-reviews-390.png",
+          "dialogs": [],
+          "url": "/reviews",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\n\nSelect a review or open a project task to see its review history.",
+          "headings": [
+            "Internal work review",
+            "Review inbox"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1690
+        },
+        {
+          "label": "correction-required-task",
+          "width": 1440,
+          "screenshot": "evidence/correction-leader1-correction-required-task-1440.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a&scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\nCreate task\nMy primary tasks\n11\nq3rf\nLocal Test Project A\nPriority\nMedium\nStatus\nNot started\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: Not started. Target date: 2026-10-22. Committed date: Not committed.\nTEST Team Leader 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: In progress. Target date: 2026-10-22. Committed date: Not committed.\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: CRITICAL. Status: Not started. Target date: 2026-10-21. Committed date: Not committed.\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: CRITICAL. Status: Corrections required. Target date: 2026-10-21. Committed date: Not committed.\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: Submitted internal review. Target date: 2026-10-20. Committed date: Not committed.\nTEST Team Leader 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: LOW. Status: Completed. Target date: 2026-10-19. Committed date: Not committed.\nTEST Team Leader 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: Waiting. Target date: 2026-10-18. Committed date: Not committed.\nTEST Team Leader 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: Waiting. Target date: 2026-10-17. Committed date: Not committed.\nTEST Team Leader 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: In progress. Target date: 2026-10-16. Committed date: Not committed.\nTEST Team Leader 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: Not started. Target date: 2026-10-15. Committed date: Not committed.\nTEST Team Leader 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: Not started. Target date: 2026-10-14. Committed date: Not committed.\nBack to task list\n\nPROJECT · PROJECT TASK\n\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nCorrections required\nNext step\n\nRead the review feedback and submit corrected evidence through the required review workflow.\n\nOpen internal review\nDescription\n\nSynthetic local testing only. Work area: Coordination review.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-20261012@example.test\nDependencies\nTags\nCoordination review\nEdit task\nReassign owner\nTechnical details\nTask history\nOwner-authorized synthetic test persona and task setup · 12/10/2026, 22:10:35\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36",
+          "headings": [
+            "Tasks",
+            "My primary tasks11",
+            "TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open internal review",
+              "href": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "q3rf\nLocal Test Project A\nPriority\nMedium\nStatus\nNot started\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Correct: TEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Reassign owner",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 3660
+        },
+        {
+          "label": "correction-required-task",
+          "width": 783,
+          "screenshot": "evidence/correction-leader1-correction-required-task-783.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a&scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\nCreate task\nBack to task list\n\nPROJECT · PROJECT TASK\n\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nCorrections required\nNext step\n\nRead the review feedback and submit corrected evidence through the required review workflow.\n\nOpen internal review\nDescription\n\nSynthetic local testing only. Work area: Coordination review.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-20261012@example.test\nDependencies\nTags\nCoordination review\nEdit task\nReassign owner\nTechnical details\nTask history\nOwner-authorized synthetic test persona and task setup · 12/10/2026, 22:10:35\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36",
+          "headings": [
+            "Tasks",
+            "My primary tasks11",
+            "TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open internal review",
+              "href": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Reassign owner",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1615
+        },
+        {
+          "label": "correction-required-task",
+          "width": 390,
+          "screenshot": "evidence/correction-leader1-correction-required-task-390.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a&scope=mine",
+          "text": "Tasks\nCreate task\nBack to task list\n\nPROJECT · PROJECT TASK\n\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nCorrections required\nNext step\n\nRead the review feedback and submit corrected evidence through the required review workflow.\n\nOpen internal review\nDescription\n\nSynthetic local testing only. Work area: Coordination review.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-20261012@example.test\nDependencies\nTags\nCoordination review\nEdit task\nReassign owner\nTechnical details\nTask history\nOwner-authorized synthetic test persona and task setup · 12/10/2026, 22:10:35\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36",
+          "headings": [
+            "Tasks",
+            "My primary tasks11",
+            "TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open internal review",
+              "href": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Reassign owner",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1935
+        },
+        {
+          "label": "review-comments",
+          "width": 1440,
+          "screenshot": "evidence/correction-leader1-review-comments-1440.png",
+          "dialogs": [],
+          "url": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a&roundId=e183848c-08df-4f31-8ff5-717c74bc9b5d",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nReview inbox\nQueue\nWaiting\nCorrections required\nResubmitted\nHistory\nSort by\nProject name\nDue date\nSearch authorized reviews\nSearch\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20\nTEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nTEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20\nShowing 1–3 of 3\nPrevious\nNext\nOpen linked project task by ID\nOpen task\nTEST Team Leader 1 08 · Resolve drawing coordination issue\n\nTask ef48c65e-7424-41d2-b4c6-16e6391ed81a · CORRECTIONS REQUIRED · INTERNAL\n\nReviewer: task-test-03-20261012@example.test\nAssign reviewer\nChoose an authorized reviewer\ntask-test-03-20261012@example.test\nReason\nAssign reviewer\nRound 1\nCORRECTIONS REQUIRED\n\nSubmitted by task-test-20261012@example.test · 12/10/2026, 22:10:36 · Reviewer task-test-03-20261012@example.test\n\nSubmitted task snapshot\nTask version\n4\nTitle at submission\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nPriority at submission\nCRITICAL\nCommitted date at submission\nNo committed date\n\nSynthetic coordination issue: update the recorded drawing checklist.\n\ntask-test-03-20261012@example.test · 12/10/2026, 22:10:36\n\nCorrections required · MODERATE · Local test coordination\nSynthetic coordination issue: update the recorded drawing checklist.",
+          "headings": [
+            "Internal work review",
+            "Review inbox",
+            "TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Search",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-03-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Site Staff 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "TEST Designer 1 07 · Submit quality checklist\nLocal Test Project A · Round 1\nSUBMITTED · Reviewer task-test-20261012@example.test · Due 2026-10-20",
+              "disabled": false
+            },
+            {
+              "label": "Previous",
+              "disabled": true
+            },
+            {
+              "label": "Next",
+              "disabled": true
+            },
+            {
+              "label": "Open task",
+              "disabled": false
+            },
+            {
+              "label": "Assign reviewer",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1308
+        },
+        {
+          "label": "review-comments",
+          "width": 390,
+          "screenshot": "evidence/correction-leader1-review-comments-390.png",
+          "dialogs": [],
+          "url": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a&roundId=e183848c-08df-4f31-8ff5-717c74bc9b5d",
+          "text": "S13 · DESIGN CONTROL\n\nInternal work review\n\nReview the file, link or drawing revision submitted for the task.\n\nReview scope\nAll accessible reviews\nMy review assignments\nRefresh\nBack to review inbox\nTEST Team Leader 1 08 · Resolve drawing coordination issue\n\nTask ef48c65e-7424-41d2-b4c6-16e6391ed81a · CORRECTIONS REQUIRED · INTERNAL\n\nReviewer: task-test-03-20261012@example.test\nAssign reviewer\nChoose an authorized reviewer\ntask-test-03-20261012@example.test\nReason\nAssign reviewer\nRound 1\nCORRECTIONS REQUIRED\n\nSubmitted by task-test-20261012@example.test · 12/10/2026, 22:10:36 · Reviewer task-test-03-20261012@example.test\n\nSubmitted task snapshot\nTask version\n4\nTitle at submission\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nPriority at submission\nCRITICAL\nCommitted date at submission\nNo committed date\n\nSynthetic coordination issue: update the recorded drawing checklist.\n\ntask-test-03-20261012@example.test · 12/10/2026, 22:10:36\n\nCorrections required · MODERATE · Local test coordination\nSynthetic coordination issue: update the recorded drawing checklist.",
+          "headings": [
+            "Internal work review",
+            "Review inbox",
+            "TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [],
+          "controls": [
+            {
+              "label": "Refresh",
+              "disabled": false
+            },
+            {
+              "label": "Back to review inbox",
+              "disabled": false
+            },
+            {
+              "label": "Assign reviewer",
+              "disabled": true
+            }
+          ],
+          "overflow": false,
+          "height": 1809
+        },
+        {
+          "label": "linked-correction-task",
+          "width": 1440,
+          "screenshot": "evidence/correction-leader1-linked-correction-task-1440.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=1fbd4bba-e5a3-4e7a-8569-5d8a744f4379&scope=mine",
+          "text": "WORK MANAGEMENT\n\nTasks\nCreate task\nMy primary tasks\n11\nq3rf\nLocal Test Project A\nPriority\nMedium\nStatus\nNot started\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: Not started. Target date: 2026-10-22. Committed date: Not committed.\nTEST Team Leader 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: In progress. Target date: 2026-10-22. Committed date: Not committed.\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: CRITICAL. Status: Not started. Target date: 2026-10-21. Committed date: Not committed.\nTEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: CRITICAL. Status: Corrections required. Target date: 2026-10-21. Committed date: Not committed.\nTEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: Submitted internal review. Target date: 2026-10-20. Committed date: Not committed.\nTEST Team Leader 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: LOW. Status: Completed. Target date: 2026-10-19. Committed date: Not committed.\nTEST Team Leader 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: Waiting. Target date: 2026-10-18. Committed date: Not committed.\nTEST Team Leader 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: Waiting. Target date: 2026-10-17. Committed date: Not committed.\nTEST Team Leader 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: In progress. Target date: 2026-10-16. Committed date: Not committed.\nTEST Team Leader 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: HIGH. Status: Not started. Target date: 2026-10-15. Committed date: Not committed.\nTEST Team Leader 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →\nPrimary owner\nT2\ntask-test-20261012@example.test\nPrimary owner: task-test-20261012@example.test. Priority: MEDIUM. Status: Not started. Target date: 2026-10-14. Committed date: Not committed.\nBack to task list\n\nCORRECTION · PROJECT TASK\n\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nNot started\nNext step\n\nStart the task when you are ready. Available actions follow your current permissions.\n\nReason for change\nStart task\n\nEnter a reason of at least 3 characters to enable the applicable action.\n\nOpen correction instructions in internal review\nDescription\n\nComplete the correction recorded in the linked internal review. Request access if the exact drawing is restricted.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-20261012@example.test\nDependencies\nEdit task\nReassign owner\nTechnical details\nTask history\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36",
+          "headings": [
+            "Tasks",
+            "My primary tasks11",
+            "Correct: TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open correction instructions in internal review",
+              "href": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "q3rf\nLocal Test Project A\nPriority\nMedium\nStatus\nNot started\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 09 · Prepare handover index\nNo project\nPriority\nMedium\nStatus\nIn progress\nTarget\n22 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Correct: TEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nNot started\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 08 · Resolve drawing coordination issue\nLocal Test Project A\nPriority\nCritical\nStatus\nCorrections required\nTarget\n21 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 07 · Submit quality checklist\nLocal Test Project A\nPriority\nHigh\nStatus\nSubmitted internal review\nTarget\n20 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 06 · File completed meeting notes\nNo project\nPriority\nLow\nStatus\nCompleted\nTarget\n19 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 05 · Confirm site measurements\nLocal Test Project A\nPriority\nHigh\nStatus\nWaiting\nTarget\n18 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 04 · Follow up material information\nNo project\nPriority\nMedium\nStatus\nWaiting\nTarget\n17 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 03 · Update coordinated drawings\nLocal Test Project A\nPriority\nHigh\nStatus\nIn progress\nTarget\n16 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 02 · Prepare design concept\nLocal Test Project A\nPriority\nHigh\nStatus\nNot started\nTarget\n15 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "TEST Team Leader 1 01 · Plan weekly priorities\nNo project\nPriority\nMedium\nStatus\nNot started\nTarget\n14 Oct 2026\nCommitted\n—\nOpen task →",
+              "disabled": false
+            },
+            {
+              "label": "T2\ntask-test-20261012@example.test",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Start task",
+              "disabled": true
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Reassign owner",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 3660
+        },
+        {
+          "label": "linked-correction-task",
+          "width": 390,
+          "screenshot": "evidence/correction-leader1-linked-correction-task-390.png",
+          "dialogs": [],
+          "url": "/tasks?taskId=1fbd4bba-e5a3-4e7a-8569-5d8a744f4379&scope=mine",
+          "text": "Tasks\nCreate task\nBack to task list\n\nCORRECTION · PROJECT TASK\n\nCorrect: TEST Team Leader 1 08 · Resolve drawing coordination issue\nNot started\nNext step\n\nStart the task when you are ready. Available actions follow your current permissions.\n\nReason for change\nStart task\n\nEnter a reason of at least 3 characters to enable the applicable action.\n\nOpen correction instructions in internal review\nDescription\n\nComplete the correction recorded in the linked internal review. Request access if the exact drawing is restricted.\n\nSubtasks\n\nNo subtasks.\n\nCreate subtask\nPriority\nCritical\nTarget date\n21 Oct 2026\nCommitted due date\nNot set\nOwner\ntask-test-20261012@example.test\nDependencies\nEdit task\nReassign owner\nTechnical details\nTask history\nOwner-authorized synthetic test persona setup · 12/10/2026, 22:10:36",
+          "headings": [
+            "Tasks",
+            "My primary tasks11",
+            "Correct: TEST Team Leader 1 08 · Resolve drawing coordination issue"
+          ],
+          "links": [
+            {
+              "label": "Open correction instructions in internal review",
+              "href": "/reviews?taskId=ef48c65e-7424-41d2-b4c6-16e6391ed81a"
+            }
+          ],
+          "controls": [
+            {
+              "label": "Create task",
+              "disabled": false
+            },
+            {
+              "label": "Back to task list",
+              "disabled": false
+            },
+            {
+              "label": "Start task",
+              "disabled": true
+            },
+            {
+              "label": "Create subtask",
+              "disabled": false
+            },
+            {
+              "label": "Dependencies",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Edit task",
+              "disabled": false
+            },
+            {
+              "label": "Reassign owner",
+              "disabled": false
+            },
+            {
+              "label": "",
+              "disabled": true
+            },
+            {
+              "label": "Technical details",
+              "disabled": false
+            }
+          ],
+          "overflow": false,
+          "height": 1883
+        }
+      ],
+      "reads": [
+        {
+          "path": "/api/v1/auth/session",
+          "status": 401
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 401
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/my-work/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/my-work/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/dashboard/sources/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/my-work/attention",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/ef48c65e-7424-41d2-b4c6-16e6391ed81a",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/ef48c65e-7424-41d2-b4c6-16e6391ed81a/subtasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/ef48c65e-7424-41d2-b4c6-16e6391ed81a/dependency-candidates",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/inbox",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/reviews/tasks/ef48c65e-7424-41d2-b4c6-16e6391ed81a",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/health/release",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/auth/session",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/notifications/unread",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/setup",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/1fbd4bba-e5a3-4e7a-8569-5d8a744f4379",
+          "status": 200
+        },
+        {
+          "path": "/api/v1/tasks/1fbd4bba-e5a3-4e7a-8569-5d8a744f4379/subtasks",
+          "status": 200
+        }
+      ],
+      "interactions": [
+        {
+          "name": "Read review comments and linked correction task; no work changed or resubmitted",
+          "status": "PASS"
+        }
+      ],
+      "errors": [],
+      "loginStatus": 201,
+      "setupStatus": 200,
+      "setup": {
+        "actorEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+        "canAssign": true,
+        "creationProfile": {
+          "version": 1,
+          "variant": "EMPLOYEE",
+          "resolution": "GENERIC_FALLBACK"
+        },
+        "projects": [
+          {
+            "id": "af49ff6b-f305-46bb-9651-d800ceff9173",
+            "title": "Local Test Project A"
+          }
+        ]
+      },
+      "selfStatus": 200,
+      "self": {
+        "employee": {
+          "id": "a922f509-7161-4353-9acd-16c1aacbcee2",
+          "state": "ACTIVE",
+          "employeeCode": "LOCAL-TASK-001",
+          "hiredAt": "2026-10-12T00:00:00.000Z",
+          "homeBranch": {
+            "id": "79a6a68e-e2ba-41e7-b6ef-aad1fdb0fc60",
+            "name": "Local Test Branch"
+          },
+          "homeTeam": {
+            "id": "622064e0-521f-432b-9a3d-1dd4d5592aa4",
+            "name": "Local Test Team"
+          },
+          "reportsTo": null,
+          "jobRoleAssignments": [
+            {
+              "jobRole": {
+                "id": "bd801a6b-a4b5-4cc3-96e7-f3c2ee1483ea",
+                "name": "Team Leader"
+              }
+            }
+          ]
+        }
+      },
+      "personal": {
+        "total": 11,
+        "taskIds": [
+          "023bd29c-db95-45cd-9f2e-8d2fe1fab981",
+          "906a6fe6-9ca8-4c2c-b455-9b82047c9dd5",
+          "1fbd4bba-e5a3-4e7a-8569-5d8a744f4379",
+          "ef48c65e-7424-41d2-b4c6-16e6391ed81a",
+          "d25697fd-2385-4929-81af-be0da39db4ce",
+          "4b9050fb-9d82-4bc9-8b8e-0ce6268d6200",
+          "fda4084c-b7c8-49b2-b63b-6af84ea1f118",
+          "d70d3ee8-e42c-434e-a298-1945c85636eb",
+          "72bae0fa-7715-47c5-8678-6434cd534fbe",
+          "90ccdb4c-58df-4959-bef9-91f552338796",
+          "b1ef34e5-fe97-433a-ae1d-ec603b620b51"
+        ],
+        "items": [
+          {
+            "id": "023bd29c-db95-45cd-9f2e-8d2fe1fab981",
+            "title": "q3rf",
+            "status": "NOT_STARTED",
+            "type": "PROJECT"
+          },
+          {
+            "id": "906a6fe6-9ca8-4c2c-b455-9b82047c9dd5",
+            "title": "TEST Team Leader 1 09 · Prepare handover index",
+            "status": "IN_PROGRESS",
+            "type": "NON_PROJECT"
+          },
+          {
+            "id": "1fbd4bba-e5a3-4e7a-8569-5d8a744f4379",
+            "title": "Correct: TEST Team Leader 1 08 · Resolve drawing coordination issue",
+            "status": "NOT_STARTED",
+            "type": "CORRECTION"
+          },
+          {
+            "id": "ef48c65e-7424-41d2-b4c6-16e6391ed81a",
+            "title": "TEST Team Leader 1 08 · Resolve drawing coordination issue",
+            "status": "CORRECTIONS_REQUIRED",
+            "type": "PROJECT"
+          },
+          {
+            "id": "d25697fd-2385-4929-81af-be0da39db4ce",
+            "title": "TEST Team Leader 1 07 · Submit quality checklist",
+            "status": "SUBMITTED_INTERNAL_REVIEW",
+            "type": "PROJECT"
+          },
+          {
+            "id": "4b9050fb-9d82-4bc9-8b8e-0ce6268d6200",
+            "title": "TEST Team Leader 1 06 · File completed meeting notes",
+            "status": "COMPLETED",
+            "type": "NON_PROJECT"
+          },
+          {
+            "id": "fda4084c-b7c8-49b2-b63b-6af84ea1f118",
+            "title": "TEST Team Leader 1 05 · Confirm site measurements",
+            "status": "WAITING",
+            "type": "PROJECT"
+          },
+          {
+            "id": "d70d3ee8-e42c-434e-a298-1945c85636eb",
+            "title": "TEST Team Leader 1 04 · Follow up material information",
+            "status": "WAITING",
+            "type": "NON_PROJECT"
+          },
+          {
+            "id": "72bae0fa-7715-47c5-8678-6434cd534fbe",
+            "title": "TEST Team Leader 1 03 · Update coordinated drawings",
+            "status": "IN_PROGRESS",
+            "type": "PROJECT"
+          },
+          {
+            "id": "90ccdb4c-58df-4959-bef9-91f552338796",
+            "title": "TEST Team Leader 1 02 · Prepare design concept",
+            "status": "NOT_STARTED",
+            "type": "PROJECT"
+          },
+          {
+            "id": "b1ef34e5-fe97-433a-ae1d-ec603b620b51",
+            "title": "TEST Team Leader 1 01 · Plan weekly priorities",
+            "status": "NOT_STARTED",
+            "type": "NON_PROJECT"
+          }
+        ]
+      },
+      "correctionReviewRead": 200,
+      "correctionReview": {
+        "task": {
+          "id": "ef48c65e-7424-41d2-b4c6-16e6391ed81a",
+          "title": "TEST Team Leader 1 08 · Resolve drawing coordination issue",
+          "status": "CORRECTIONS_REQUIRED",
+          "version": 6,
+          "priority": "CRITICAL",
+          "committedDueDate": null,
+          "reviewRequirement": "INTERNAL",
+          "projectId": "af49ff6b-f305-46bb-9651-d800ceff9173"
+        },
+        "assignment": {
+          "reviewerEmployeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+          "reviewerName": "task-test-03-20261012@example.test"
+        },
+        "rounds": [
+          {
+            "id": "e183848c-08df-4f31-8ff5-717c74bc9b5d",
+            "roundNumber": 1,
+            "status": "CORRECTIONS_REQUIRED",
+            "taskVersion": 4,
+            "submittedAt": "2026-10-12T16:40:36.063Z",
+            "submittedByName": "task-test-20261012@example.test",
+            "taskSnapshot": {
+              "tags": [
+                "Coordination review"
+              ],
+              "title": "TEST Team Leader 1 08 · Resolve drawing coordination issue",
+              "priority": "CRITICAL",
+              "checklist": [],
+              "startDate": null,
+              "planItemId": null,
+              "targetDate": "2026-10-21",
+              "description": "Synthetic local testing only. Work area: Coordination review.",
+              "estimatedHours": null,
+              "ownerEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+              "committedDueDate": null
+            },
+            "revisionId": null,
+            "revisionFileId": null,
+            "revisionFileMimeType": null,
+            "revisionFileName": null,
+            "revisionLabel": null,
+            "reviewerName": "task-test-03-20261012@example.test",
+            "comments": [
+              {
+                "id": "a8823a7f-8c9d-4b67-af6d-524c32a1bb76",
+                "authorName": "task-test-03-20261012@example.test",
+                "comment": "Synthetic coordination issue: update the recorded drawing checklist.",
+                "annotations": [],
+                "markupFileId": null,
+                "createdAt": "2026-10-12T16:40:36.205Z"
+              }
+            ],
+            "escalations": [],
+            "correctionTaskId": "1fbd4bba-e5a3-4e7a-8569-5d8a744f4379",
+            "decision": {
+              "kind": "CORRECTIONS_REQUIRED",
+              "comment": "Synthetic coordination issue: update the recorded drawing checklist.",
+              "severity": "MODERATE",
+              "categoryName": "Local test coordination",
+              "decidedAt": "2026-10-12T16:40:36.203Z"
+            },
+            "withdrawal": null
+          }
+        ],
+        "categories": [
+          {
+            "id": "6494e59c-55be-4e40-b8fc-e828e58cc0ff",
+            "name": "Local test coordination"
+          }
+        ],
+        "reviewerCandidates": [
+          {
+            "employeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+            "name": "task-test-03-20261012@example.test"
+          }
+        ],
+        "correctionOwnerCandidates": [
+          {
+            "employeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+            "name": "task-test-20261012@example.test"
+          },
+          {
+            "employeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+            "name": "task-test-03-20261012@example.test"
+          },
+          {
+            "employeeId": "0536d0a4-53d3-4aae-ac57-8b3bb181ac36",
+            "name": "task-test-05-20261012@example.test"
+          }
+        ],
+        "availableRevisions": [],
+        "availableMarkupFiles": [],
+        "routing": null,
+        "automaticClientRouting": false,
+        "capabilities": {
+          "assignReviewer": true,
+          "configureClientRouting": true,
+          "submit": false,
+          "start": false,
+          "comment": false,
+          "decide": false,
+          "escalate": false,
+          "withdraw": false,
+          "changePriority": false,
+          "changeDeadline": false,
+          "assignCorrection": false,
+          "complete": false,
+          "manageCategories": false
+        }
+      },
+      "status": "READ_ONLY_CORRECTION_PATH_CAPTURED",
+      "ownAuditLogout": 204
+    }
+  ],
+  "blockedWrites": [],
+  "release": {
+    "/release.json": {
+      "service": "web",
+      "mode": "release",
+      "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+      "buildId": "70b047cd57af-1792849822919",
+      "builtAt": "2026-10-24T13:50:22.919Z",
+      "migrations": 120
+    },
+    "/api/v1/health/release": {
+      "service": "api",
+      "mode": "release",
+      "commit": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+      "buildId": "70b047cd57af-1792849822919",
+      "builtAt": "2026-10-24T13:50:22.919Z",
+      "migrations": 120
+    },
+    "/api/v1/health/ready": {
+      "status": "ready",
+      "service": "api",
+      "dependencies": {
+        "database": "ready"
+      },
+      "checkedAt": "2026-10-25T07:04:38.784Z"
+    }
+  },
+  "finishedAt": "2026-10-25T07:04:54.899Z"
+}

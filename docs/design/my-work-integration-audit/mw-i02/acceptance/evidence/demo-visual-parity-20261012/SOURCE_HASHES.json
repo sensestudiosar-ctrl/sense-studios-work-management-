@@ -1,0 +1,82 @@
+{
+  "capturedAt": "2026-10-12T10:23:02.518Z",
+  "reference": {
+    "prototype": "D:/SCRAP/prototype (2).html",
+    "sha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+    "refs": [
+      {
+        "width": 1440,
+        "height": 900,
+        "queue": 310.078125,
+        "firstTask": {
+          "x": 276.1875,
+          "y": 619.078125,
+          "width": 1119.625,
+          "height": 79,
+          "top": 619.078125,
+          "right": 1395.8125,
+          "bottom": 698.078125,
+          "left": 276.1875
+        }
+      },
+      {
+        "width": 1024,
+        "height": 900,
+        "queue": 310.078125,
+        "firstTask": {
+          "x": 96.71875,
+          "y": 619.078125,
+          "width": 895.5625,
+          "height": 79,
+          "top": 619.078125,
+          "right": 992.28125,
+          "bottom": 698.078125,
+          "left": 96.71875
+        }
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "queue": 334.296875,
+        "firstTask": {
+          "x": 21,
+          "y": 540.296875,
+          "width": 348,
+          "height": 231.6875,
+          "top": 540.296875,
+          "right": 369,
+          "bottom": 771.984375,
+          "left": 21
+        }
+      },
+      {
+        "width": 320,
+        "height": 740,
+        "queue": 334.296875,
+        "firstTask": {
+          "x": 21,
+          "y": 540.296875,
+          "width": 278,
+          "height": 249.875,
+          "top": 540.296875,
+          "right": 299,
+          "bottom": 790.171875,
+          "left": 21
+        }
+      }
+    ]
+  },
+  "files": {
+    "apps/web/src/main.tsx": "6022071bca4b7d54767d0042d96c2a066547d9d78be3a94143c5d4bbd3575752",
+    "apps/web/src/workspace-navigation.tsx": "e114a4c0e709752bce3ddee1b025bf7106659592e0a8732ec00de5dca480666f",
+    "apps/web/src/workspace-navigation.test.tsx": "c7c2136333569985f277c838cd3eeb441d6ce63a4ad70cf8af71d5dc56af8c4f",
+    "apps/web/src/my-work-shell.css": "88c502a1917a8b8e0cfa7dd06ddd542649c22907c3556e08155047fabb9006cf",
+    "apps/web/src/studio-theme.css": "c9c2d5590c31fffdd761f5bbb07c13e9a8f87b9d04cc7defdc8a69938d4a6429",
+    "apps/web/src/my-work-visual.css": "24a8029a6ef7f905bd36db8c29cce8bb475c3eeca50d1e7638cb9818c4454f49",
+    "apps/web/src/task.tsx": "fd490148755b1e3824024cce1254da6ca7e08f5e4bfffd3ea807f8662967d7fd",
+    "apps/web/src/task.test.tsx": "d1e46e2ec3e014dcdd2a662457659fccfea10a2ded7cd5b2a7f1f063bd6e0ff0",
+    "apps/web/src/my-work-attention.test.tsx": "4751c9471a8545858d670f9e209c2486191559782f6959968e86c8639d1f5220",
+    "apps/web/src/my-work-attention.tsx": "490689773d400a6a1382c3cb337055257902e2b50720885808b24173cd9d24a8",
+    "apps/web/src/app.tsx": "c4f6193065f6f66c40c5085b49c8cc12cc3105862eccb600052752464c6c795e"
+  }
+}

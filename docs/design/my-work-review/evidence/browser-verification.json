@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-08T19:05:24.996Z",
+  "browser": "Codex in-app browser",
+  "preview": "http://localhost:59420/",
+  "sampleDate": "2026-10-08",
+  "scope": "Disconnected fixture UI only",
+  "passed": [
+    "URL search/project/status/sort persistence through reload",
+    "Task page Back/Forward/reload",
+    "No-matches recovery",
+    "Keyboard Enter task selection",
+    "Mobile focus to Back and inert background/return to row",
+    "Wait reason plus delay gate",
+    "Start dependency acknowledgement gate",
+    "Action Tab containment/Escape and focus return",
+    "Preview receipt and unchanged official fixture status",
+    "Exact review task/round/revision and contextual return",
+    "Stale review round unavailable",
+    "Task Loading/Empty/Denied/Offline/Error and retry",
+    "Partial review denial retains authorized task metadata",
+    "Owner no employee personal empty",
+    "Exit hold no Resume",
+    "Terminal read-only and no overdue badge",
+    "Responsive document/body no horizontal overflow at five sizes",
+    "Final mobile row metadata12px"
+  ],
+  "limitations": [
+    "No real API/persistence/authorization acceptance",
+    "No screen-reader or zoom certification",
+    "Development HMR warnings during source edits",
+    "Nested vertical scrolling requires usability review",
+    "Existing production navigation test failure retained"
+  ]
+}

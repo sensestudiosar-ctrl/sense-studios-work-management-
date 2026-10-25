@@ -76,6 +76,41 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
     await expect(summaryTrigger).toHaveAttribute("href", /tasks/);
   }
   await page.setViewportSize(summaryViewport);
+  const initialSource = await page.request.get("/api/v1/dashboard/sources/tasks");
+  expect(initialSource.status()).toBe(200);
+  const sourceDay = (await initialSource.json() as { today: string }).today;
+  for (let index = 0; index < 8; index++) {
+    const created = await page.request.post("/api/v1/tasks", { headers: { Cookie: `sense_sid=${staffSecret}`, Origin: baseURL!, "X-CSRF-Token": staffCsrf }, data: { title: `Panel due-today ${suffix} ${index}`, type: "NON_PROJECT", priority: "HIGH", targetDate: sourceDay, reason: "Verify complete contextual Dashboard task list" } });
+    expect(created.status()).toBe(201);
+  }
+  await openDashboard(true);
+  const taskSourceResponse = await page.request.get("/api/v1/dashboard/sources/tasks");
+  expect(taskSourceResponse.status()).toBe(200);
+  const taskSource = await taskSourceResponse.json() as { sections: Array<{ key: string; rows: Array<{ id: string; label: string }> }> };
+  for (const [key, label] of [["overdue", "Overdue"], ["today", "Due today"], ["priority", "High priority"], ["waiting", "Waiting / blocked"], ["reviews", "Review / corrections"]]) {
+    const trigger = page.locator(`button.dv-summary-${key}`);
+    const dashboardUrl = page.url();
+    await trigger.click();
+    const panel = page.getByRole("dialog", { name: label, exact: true });
+    await expect(panel).toBeVisible();
+    expect(page.url()).toBe(dashboardUrl);
+    await expect(panel.getByRole("listitem")).toHaveCount(taskSource.sections.find(section => section.key === key)!.rows.length);
+    if (key === "today") await expect(panel.getByText(`Panel due-today ${suffix} 7`, { exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(panel).not.toBeVisible();
+    await expect(trigger).toBeFocused();
+  }
+  const originalViewport = page.viewportSize()!;
+  for (const width of testInfo.project.name === "desktop-chromium" ? [1440, 1024, 859, 783, 600, 390, 320] : [390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await verifyDashboardSummaryLayout(page, testInfo, width);
+    await page.locator("button.dv-summary-today").click();
+    const panel = page.getByRole("dialog", { name: "Due today", exact: true });
+    expect(await panel.evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
+    await page.screenshot({ path: resolve(screenshotDirectory, `dashboard-panel-${testInfo.project.name}-${width}.png`), fullPage: false });
+    await panel.getByRole("button", { name: "Close dashboard details" }).click();
+  }
+  await page.setViewportSize(originalViewport);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.screenshot({ path: resolve(screenshotDirectory, `dashboard-${testInfo.project.name}-overview.png`), fullPage: false });
 

@@ -1,0 +1,51 @@
+ M CURRENT_STATE.md
+ M IMPLEMENTATION_PLAN.md
+ M IMPLEMENTATION_STATUS.md
+ M apps/api/src/ai-assistance-security.database.api.spec.ts
+ M apps/api/src/ai-assistance.database.api.spec.ts
+ M apps/api/src/automation-security.database.api.spec.ts
+ M apps/api/src/automation.database.api.spec.ts
+ M apps/api/src/client-review.database.api.spec.ts
+ M apps/api/src/dashboard-security.database.api.spec.ts
+ M apps/api/src/dashboard.database.api.spec.ts
+ M apps/api/src/external-portal.database.api.spec.ts
+ M apps/api/src/gallery.database.api.spec.ts
+ M apps/api/src/integration-security.database.api.spec.ts
+ M apps/api/src/integration.database.api.spec.ts
+ M apps/api/src/performance-security.database.api.spec.ts
+ M apps/api/src/performance.database.api.spec.ts
+ M apps/api/src/s18-test-fixture.ts
+ M apps/api/src/skills.database.api.spec.ts
+ M apps/api/src/time.database.api.spec.ts
+ M apps/api/src/workforce-worker.database.api.spec.ts
+ M apps/api/src/workforce.database.api.spec.ts
+ M apps/web/src/app.tsx
+ M apps/web/src/dashboard.css
+ M apps/web/src/dashboard.tsx
+ M apps/web/src/styles.css
+ M apps/web/src/workspace-navigation.css
+ M apps/web/src/workspace-navigation.tsx
+ M tests/e2e/ai-assistance.spec.ts
+ M tests/e2e/automation.spec.ts
+ M tests/e2e/client-portal.spec.ts
+ M tests/e2e/client-review-staff.spec.ts
+ M tests/e2e/dashboard.spec.ts
+ M tests/e2e/external-portal.spec.ts
+ M tests/e2e/gallery.spec.ts
+ M tests/e2e/integrations.spec.ts
+ M tests/e2e/learning.spec.ts
+ M tests/e2e/library.spec.ts
+ M tests/e2e/offline-site.spec.ts
+ M tests/e2e/performance.spec.ts
+ M tests/e2e/review.spec.ts
+ M tests/e2e/site.spec.ts
+ M tests/e2e/time.spec.ts
+ M tests/e2e/training.spec.ts
+ M tests/e2e/turnkey.spec.ts
+ M tests/e2e/workforce.spec.ts
+?? apps/api/src/s27-disposable-test-target.ts
+?? apps/api/src/s27-disposable-test-target.unit.spec.ts
+?? docs/design/
+?? docs/ui/UX_DASHBOARD_REFERO_2026-10-08.md
+?? docs/ui/UX_MOBILE_SHELL_REFERO_2026-10-08.md
+?? docs/ui/UX_SIDEBAR_REFERO_2026-10-08.md

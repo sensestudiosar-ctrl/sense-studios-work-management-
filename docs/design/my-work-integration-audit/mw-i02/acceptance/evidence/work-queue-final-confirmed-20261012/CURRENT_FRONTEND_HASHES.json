@@ -1,0 +1,57 @@
+{
+  "kind": "Current frontend evidence snapshot; historical manifests unchanged",
+  "sources": [
+    {
+      "path": "apps/web/src/task.tsx",
+      "sha256": "3AB614161B325D7AA15879DB0402E44909922FC7798D650F44BDCF44F96145A8"
+    },
+    {
+      "path": "apps/web/src/task.css",
+      "sha256": "2B498DA1477042F4BC922ECA9F9F7D50059F53F71E38909A24E87C4A2B7451AF"
+    },
+    {
+      "path": "apps/web/src/task-people.tsx",
+      "sha256": "9062E87FD61286EF341E19D66765876AE849FB09F401B366CCEDFD228E1F52B7"
+    },
+    {
+      "path": "apps/web/src/task-people.css",
+      "sha256": "0B9E9C147A725DA2C1355EE60E446CF2D07B3372DC946B863190F2D88098402B"
+    },
+    {
+      "path": "apps/web/src/my-work-metrics.tsx",
+      "sha256": "D096DF3BBBA8CB9D7B27AA3629D1C2E9958B794C65A40182D9C7FF31C7A7B6AB"
+    },
+    {
+      "path": "apps/web/src/my-work-visual.css",
+      "sha256": "B8DED6DC50EED81DC985CA3740ED6735F440D1553A5346112B960F593BFB5989"
+    },
+    {
+      "path": "apps/web/src/my-work-attention.tsx",
+      "sha256": "4C9E9AC659ABB6B486FB990EFE4063C47FC0D7E8879C95C479AC00F3F754D006"
+    },
+    {
+      "path": "apps/web/src/my-work-attention.css",
+      "sha256": "C0523508A445EA21967E704C6A6CE032CC1B7E031FAB8238B48550734ECC7F13"
+    },
+    {
+      "path": "apps/web/src/approval-queue.tsx",
+      "sha256": "96EC147AC6D037EDDE5F324EB58B64EADB3873FC88C3EF1BDC3CA89F638092F6"
+    },
+    {
+      "path": "apps/web/src/app.tsx",
+      "sha256": "FB2DF4E0A1B077FAA27F9EF3B0239ADA5F99A099B840C3AEEBBEBCE035586EF3"
+    },
+    {
+      "path": "apps/web/src/my-work-filter-chips.tsx",
+      "sha256": "5F3EA6B4C69FA59096EC215F0B08990A07FB96D0C847152E25917341AF814967"
+    },
+    {
+      "path": "apps/web/src/my-work-filter-chips.css",
+      "sha256": "F41F0A107DF02A421C56EAABF7B406CFF1ABC2F9FFCF7247716E5BB2C5C92934"
+    },
+    {
+      "path": "apps/web/src/my-work-queue-preferences.tsx",
+      "sha256": "F1BA207AC6F2883E9F0103B1ACEC42ED2D24040815E796AED1093D662557F51A"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "cards": [
+    {
+      "bottom": 293.703125,
+      "height": 149.5,
+      "name": "◈Needs action",
+      "top": 144.203125
+    },
+    {
+      "bottom": 293.703125,
+      "height": 149.5,
+      "name": "◷Overdue",
+      "top": 144.203125
+    },
+    {
+      "bottom": 293.703125,
+      "height": 149.5,
+      "name": "◇Reviews",
+      "top": 144.203125
+    },
+    {
+      "bottom": 293.703125,
+      "height": 149.5,
+      "name": "⊘Waiting / blocked",
+      "top": 144.203125
+    }
+  ],
+  "queueTop": 305.703125,
+  "scrollY": 0,
+  "viewport": {
+    "height": 884,
+    "width": 719
+  }
+}

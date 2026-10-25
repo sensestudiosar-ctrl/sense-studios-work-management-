@@ -1,0 +1,10 @@
+{
+  "recordedDate": "2026-10-09",
+  "purpose": "Bounded role oversight and assignment prototype",
+  "inspectedImage": {
+    "screenId": "669f5daa-0a1e-413f-a0b4-5e39c29ebcac",
+    "size": "full",
+    "observation": "Assignee picker beside composer metadata, selected owner reviewed before creation; reference no-assignee/invite/draft actions rejected for Sense.",
+    "referoUrl": "https://refero.design/pages/669f5daa-0a1e-413f-a0b4-5e39c29ebcac"
+  }
+}

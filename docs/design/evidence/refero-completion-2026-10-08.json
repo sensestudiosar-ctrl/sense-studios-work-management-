@@ -1,0 +1,391 @@
+{
+  "date": "2026-10-08",
+  "flow": {
+    "id": 10844,
+    "platform": "web",
+    "refero_url": "https://refero.design/flows/10844",
+    "name": "Kanban Task Completion",
+    "screens_count": 3,
+    "description": "User is on a project board (project: \"Humanity\") using a three-column Kanban view (To Do, Doing, Done) under the Tasks tab. The happy path: the user locates a task and uses an inline quick-action to mark it complete, receives immediate visual feedback (green check and updated column count) and a confirmation snackbar with options to view tasks or undo the action. Entry point: Tasks tab of an open project. Exit point: task completion state confirmed (or reverted via Undo). Assumptions: user is authenticated and has access to the project, using a desktop/larger viewport, and viewing the Tasks area (not creating or editing task details).",
+    "problem": "User goal (user perspective): Quickly mark an individual task as complete from the Kanban board and receive a clear, reversible confirmation. The user expects an inline action (no navigation away), immediate visual state change, and an option to undo.\nInterface/system perspective: The Kanban task card exposes a quick-action control (check/complete). Hovering reveals a tooltip for the action; activating it toggles the task's completed state in the board, updates the numeric indicator on the column, shows a green check on the task, and surfaces a temporary confirmation snackbar with actions (View Tasks, Undo). At the end of the interaction the user sees the completed visual state and can either leave it or choose Undo to revert; the UI reflects the final choice (state persists or is reverted).",
+    "site": {
+      "id": 856,
+      "domain": "monodesk.com",
+      "description": "Less admin. More creative flow.",
+      "name": "MonoDesk ",
+      "background_url": "https://images.refero.design/backgrounds/monodesk.com/77c22ff7-67d9-4257-bc9a-154d5de99bf1.jpg",
+      "refero_url": "https://refero.design/websites/856",
+      "categories": [
+        "Project Management",
+        "Productivity"
+      ],
+      "favicon_url": "https://images.refero.design/favicon/monodesk.com/8b416ab2-e93a-49d9-a05b-61076648ae9a.jpg",
+      "background_color": "fc59e4"
+    },
+    "steps": [
+      {
+        "name": "Project Kanban Board",
+        "screen_id": "32fea949-78a1-4ca3-8ec2-239dbd051169",
+        "refero_url": "https://refero.design/pages/32fea949-78a1-4ca3-8ec2-239dbd051169",
+        "thumbnail_url": "https://images.refero.design/screenshots/monodesk.com/desktop/32fea949-78a1-4ca3-8ec2-239dbd051169_thumb.jpg",
+        "goal": "Review tasks across columns and locate the task to update",
+        "action": "Scan the To Do / Doing / Done columns and identify the target task; optionally use '+ Add Task' to create a task",
+        "system_response": "Displays the project board for 'Humanity' with task cards grouped into To Do, Doing and Done. Each column shows a numeric badge of item count and each task card shows compact metadata and an action area.",
+        "page_types": [
+          "Content Management Page",
+          "Task Management"
+        ],
+        "ux_patterns": [
+          "Task"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Tabs",
+          "Sidebar & Drawer",
+          "Icon"
+        ],
+        "fonts": [
+          "Arial",
+          "Roboto"
+        ],
+        "content": {
+          "description": "Overview\n- Screen shows a project-level Kanban board titled “Humanity”. Primary content area contains three vertical columns labeled “To Do”, “Doing”, and “Done”. Each column contains stacked task cards and an “+ Add Task” control at the bottom. A compact horizontal tab bar (Tasks, Files, Conversations, Details) sits below the top header. A slim left vertical navigation rail contains stacked icons; a vertical “Feedback” callout button is attached to the right edge.\nOverall style\n- Clean, minimal, product-design/project-management style with generous white space and soft neutral color palette. Visual hierarchy is created with card elevation (subtle shadows), rounded corners and small badges for counts.\nColor palette (recommended hex approximations)\n- Page background: very light gray #F3F6F8 (main canvas)\n- Main content container background (cards): white #FFFFFF\n- Column header background: transparent / card uses same white; header text dark slate #111827\n- Primary accent (active tab / interactive highlights): medium blue #2563EB\n- Secondary text / icons: cool gray #6B7280\n- Subtle borders / dividers: neutral gray #E6E9EC\n- Card shadow: rgba(16, 24, 40, 0.04) for default, rgba(16,24,40,0.08) on hover\n- Badge background (count): very light gray / soft blue tint #EEF2FF (text in #1E293B)\nTypography\n- Typeface: modern geometric sans (Inter / system UI / Roboto). Use Inter as example.\n- Page title (Humanity): 20–22px, 600 weight, left aligned, 24px top margin from top/nav\n- Tabs (Tasks/Files/...): 14px, 500 weight for active, 400 for inactive; 16–20px line-height\n- Card title / task text: 14px, 400 weight, 18px line-height\n- Card meta (time, comments): 12px, 400 weight, color #6B7280\n- Buttons (Add Task): 14px, 600 weight\nCard / element geometry\n- Column width: ~320px each (can be between 280–360px depending on viewport).\n- Column gap: 20–28px horizontal gutter between columns.\n- Page horizontal padding: 28–36px from left/right edges; vertical padding 20–24px.\n- Card: full column width minus 24px internal padding; card height variable; border-radius: 8px.\n- Card internal padding: 12px (vertical 10–12px, horizontal 12–16px).\n- Icons inside card (time/comment): 14–16px square with 6–8px spacing from text.\n- Add Task button: 44px tall full-width soft outline button inside column with rounded corners (6–8px). Text centered.\nNavigation and chrome\n- Left rail: 56–64px width, vertical stacked monochrome icons (primary color for active icon). Slight inset shadow or divider separating it from content.\n- Top-left: small back arrow and project name. Tabs row below project title with subtle divider or single active underline under \"Tasks\".\n- Right side: vertical blue pill labelled “Feedback” fixed to edge (floating button style).\nIcons and microcopy\n- Small metadata icons per card: clock (estimate/due), comment bubble (comments), maybe checklist icon.\n- Count badges: small circular badge at the top-right of each column header showing number of cards.\nStates and interactions\n- Hover on a card: raise elevation (increase shadow to rgba(16,24,40,0.08)), slight translateY(-4px), and cursor: grab (if draggable).\n- Active/dragging card: show ghost layer with 80% opacity, dashed placeholder in origin column; smooth transition.\n- Add task: clicking opens inline composer or modal with text field, assignee, due date, tags (composer is a small dialog centered inside column or inline expanded row).\n- Card click: opens detail side sheet or modal with description, comments, attachments, and metadata. Close button top-right of sheet.\n- Tabs: clicking Files, Conversations, Details switches main panel content without leaving project context.\nAnimations\n- Micro-interactions: 150–220ms ease-out for hover elevation, 200–300ms ease-in-out for dragging transitions, 200ms for tab underline move.\nAccessibility\n- Sufficient color contrast on primary text (#111827 on white background). Interactive controls should have focus ring (2px outline in primary blue #2563EB).\n",
+          "layout": "Global layout\n- Viewport: full-width layout with a left vertical navigation rail and main content to the right. The main content is horizontally centered with generous left/right margin.\n- Header area: top-left back arrow and project title, with a horizontal tab strip (Tasks, Files, Conversations, Details) directly beneath. Top-right contains utility controls (overflow menu / sort / filter icons) aligned to the right end of the content area.\nColumns\n- Number of columns: 3 (To Do, Doing, Done).\n- Column grouping: single group of three equal-height vertical columns placed in a single horizontal row. Columns are independent lists (each is a scrollable vertical stack when content overflows).\n- Column sizing: fixed or responsive min-width around 280–320px; columns do not span full width — centered content with whitespace on both sides.\nColumn internals\n- Column header: title aligned to the left; a circular count badge aligned to the right of the header.\n- Card stack: vertical list; cards occupy full column width with small vertical spacing (12–16px) between cards.\n- Column footer: centered \"+ Add Task\" control inside a muted bordered container, full column width, consistent bottom padding.\nLeft rail\n- Single column vertical nav strip (one column) with icon blocks stacked vertically; active icon highlighted.\nRight edge\n- Floating vertical feedback button anchored to the right edge of the viewport (single element).\nGrids / columns count summary\n- Columns: 3 (one group)\n- Column groups: 1\n- Card rows: variable number; in screenshot To Do=2, Doing=3, Done=5\nKeywords to describe layout\n- centered content\n- three-column kanban\n- vertical nav rail\n- card stacks\n- full-height columns\n- scrollable lists\n- column headers with badges\n- add-task footers\n- responsive column width\n- floating feedback button",
+          "functions": "Small-scale (single-card interactions)\n- Read task headers and metadata: users can scan card titles, timestamps and comment counts to assess status quickly.\n- Open a task: tap/click a card to open details (side sheet or modal) displaying description, comments and attachments.\n- Add a task: click “+ Add Task” at the bottom of a column to open an inline input or small form (title, assignee, due date, tags). The UI provides immediate visual feedback (new card inserted).\n- Edit task quick actions: inline icons on the card allow quick edits such as mark complete, add comment, or view attachments.\n- Reorder tasks: click-and-drag a card within a column (reorder) or between columns to update status (To Do -> Doing -> Done). Visual drop placeholder shows valid drop targets.\n- Filter / sort (expected): tabs or top controls may let users filter by assignee, due date, priority (not visible but typical).\nMedium-level workflows\n- Manage sprint/workflow: create multiple tasks, assign to team members, move tasks through stages to reflect progress.\n- Collaboration: open Conversations or Files tabs to attach resources or discuss a task; view change history in Details.\n- Bulk operations (possible): select multiple cards to move, archive, or change assignee (not explicitly visible, but common in this pattern).\nHigh-level goal\n- Track and manage work items for a project: the screen’s purpose is to let a user organize, prioritize and progress tasks through a workflow so that work moves from backlog (To Do) into in-progress (Doing) and then to completion (Done). The interface supports quick triage, assignment, and collaboration to keep the project transparent and moving forward.\nHow UI supports goals\n- Column layout mirrors common workflow stages for fast mental mapping.\n- Cards present bite-sized task summaries with meta cues for urgency and activity.\n- Drag-and-drop and inline add minimize friction for state changes.\n- Tabs keep related project resources (files, conversations, details) one click away for context."
+        }
+      },
+      {
+        "name": "Reveal & Trigger Quick Action",
+        "screen_id": "53c02456-42e5-4b38-95aa-0f8ed230798b",
+        "refero_url": "https://refero.design/pages/53c02456-42e5-4b38-95aa-0f8ed230798b",
+        "thumbnail_url": "https://images.refero.design/screenshots/monodesk.com/desktop/53c02456-42e5-4b38-95aa-0f8ed230798b_thumb.jpg",
+        "goal": "Expose the inline 'mark complete' control and activate it",
+        "action": "Hover over the task card to reveal the quick-action control. Click the check/complete control (tooltip 'Mark as complete' appears on hover).",
+        "system_response": "The control's tooltip appears. Activating the control applies a green check indicator to the task and the column's numeric count updates to reflect the change (visual immediate feedback).",
+        "page_types": [
+          "Content Management Page",
+          "Task Management"
+        ],
+        "ux_patterns": [
+          "Task"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Tabs",
+          "Checkbox & Radio",
+          "Tooltip",
+          "Sidebar & Drawer",
+          "Icon"
+        ],
+        "fonts": [
+          "Arial"
+        ],
+        "content": {
+          "description": "Overall visual style: A clean, minimal enterprise Kanban-style task board with a soft neutral color system and spacious layout. The screen shows a left vertical navigation rail, a compact header with a back arrow and project name, a horizontal tab row (Tasks, Files, Conversations, Details) directly under the header, then a main content area centered horizontally showing three primary columns (To Do, Doing, Done). Each column is a light card with a white interior, subtle rounded corners and a subtle drop shadow. Individual tasks are represented as smaller white cards / rows inside each column with thin separators and small metadata icons (comment bubble, clock/time estimate, maybe assignee). Each column has a small numeric badge at the column header showing task count, and a “+ Add Task” button at the bottom of the column.\n\nColor palette (approximations from screenshot):\n- Page background: very light bluish-gray #EDF3F6 (or RGB 237,243,246)\n- Left nav background: slightly darker light gray #E6EEF3\n- Header text / primary title: almost-black / very dark gray #111827\n- Column card background: white #FFFFFF\n- Column card border / subtle shadow: rgba(16,24,40,0.04) for shadow, border #E6E9EC\n- Accent / primary blue (logo / active states): bright blue #2F6BF6\n- Badge background (count): muted gray #F1F5F9 with text #111827 (or green for completed checkbox indicator #16A34A)\n- Secondary text (metadata / time / comments): medium gray #6B7280\n- Placeholder / disabled text: light gray #9CA3AF\n\nTypography:\n- System / UI font: Inter or Roboto (sans-serif). Use consistent weights for clarity.\n- Header / Project title: 20–22px, 600 weight, letter-spacing 0, line-height ~28px, left-aligned.\n- Tabs row labels: 14px, 500 weight, medium gray when inactive, primary blue when active.\n- Column headers (To Do / Doing / Done): 16px, 600 weight, #0F172A or dark gray.\n- Task card title text: 14px–15px, 500 weight, dark gray #111827.\n- Task metadata (icons + small labels): 12px, 400 weight, #6B7280, line-height ~16px.\n- Button text (“+ Add Task”): 13px–14px, 600 weight, muted gray or primary depending on style.\n\nLayout & spacing:\n- Left navigation rail fixed width approx. 64px (icons vertically stacked). Top spacing ~20px from top.\n- Header area sits to the right of the nav, with back arrow (24px) then title text, aligned vertically center with small top margin. Tabs are directly under header with ~24px vertical spacing.\n- Main content area centered left-to-right with generous horizontal padding. The three columns are horizontally arranged with equal widths (approx 300–360px each) and ~24–32px horizontal gutter between columns.\n- Each column card: padding 16px for header block, inner card radius 8px, subtle shadow of 0 1px 4px rgba(16,24,40,0.06).\n- Individual task rows inside column: vertical stack with ~12–14px vertical gap, each row height flexible (~48–64px) depending on content, inner padding 12px, subtle bottom border or separation.\n- “+ Add Task” button is a muted ghost button spanning column interior width, centered at column bottom with 12px vertical margin.\n\nUI elements details & states:\n- Left nav icons: simple 24px square clickable icons with hover highlight; currently the top logo square is filled with primary blue and white mark.\n- Tabs row: text-only tabs with active tab in primary blue + underline or bold weight; inactive tabs in medium gray.\n- Column header: name left, small circular numeric badge at right of header with light background and small text showing number of items.\n- Task row: shows main title text left, small metadata cluster right containing tiny icons (comment bubble, clock) and optionally an inline checkbox or status indicator (green check when marked done) that appears on hover or as part of the card. Hover state for a task shows a tooltip (e.g., “Mark as complete”) and/or a subtle highlight.\n- Buttons: “+ Add Task” styled as a low-contrast ghost button (light border, subtle hover fill). Card actions (ellipsis) are icon-only, 20–24px.\n- Tooltip: small rounded rectangle with dark background (#111827) and white text appearing on hover of certain interactive icons.\n- Badge: small rounded pill or circle near header with 12–14px font size.\n\nInteractions / animations (recommended behavior):\n- Drag & drop: when user drags a task card, the card lifts with a subtle shadow and a transform scale to 1.02; placeholder space appears in the target column. Use ease-out cubic-bezier(0.22, 1, 0.36, 1) for drop animation and 160–240ms for lift/hover transitions.\n- Hover states: tasks slightly elevate (translateY -2px) and show action icons; icon hovers use 120–160ms fade.\n- Add task: clicking “+ Add Task” opens a small inline form or modal with a 1–2 field entry (title, optional details) and Save/Cancel. Modal opens with a 180ms fade+scale.\n\nAccessibility considerations:\n- Sufficient color contrast on text and badges. Keyboard focus outlines for interactive items (tabs, cards, buttons). Use aria-labels for icons and role attributes for columns and lists.\n\nVisual references to recreate accurately: light bluish-gray full-bleed background, left compact navigation rail, centered content with 3 equal kanban columns, white cards and subtle shadows, medium gray metadata icons, small numerical badges on headers, ghost “+ Add Task” buttons at bottom of each column.",
+          "layout": "High-level structure: a fixed left navigation rail + main content area with header/tabs + 3-column Kanban grid within the main content. Details:\n- Left column: single fixed nav rail (1 column) ~64px width, vertical stack of square icons spaced evenly, top logo (primary blue), bottom profile icon.\n- Main area: header row at top (back arrow at far left of content area, project name to its right), then a horizontal tab bar immediately below the header with four tabs (Tasks, Files, Conversations, Details).\n- Under tabs: content container hosting a horizontal grid with 3 equal columns (To Do, Doing, Done). Each column is a vertical group containing: a header (title + numeric badge), a vertically stacked list of task cards (rows), and a footer area with a full-width ghost button (“+ Add Task”).\n- Column grouping: three groups (each group = 1 column). There are no sub-columns inside these groups. Task cards are stacked vertically inside each group (list). Columns aligned horizontally and centered with generous side padding on large screens.\n- Spacing: consistent 16–24px inner padding in cards, 24–32px gutter between columns, and 24px top spacing from tabs to column headers.\n- Responsive behavior: on narrow viewports the layout would collapse to 1 column (stack) or horizontally scrollable columns; in wide viewports all three columns sit in one row.\n\nKeywords to describe layout: Kanban, three-column, left-nav-rail, header-with-tabs, centered-grid, equal-column-width, vertical-card-list, column-headers-with-badges, inline-add-button, responsive-stack",
+          "functions": "Immediate (atomic) actions users can take on this screen:\n- Click or tap a column header to focus or rename (if editable).\n- Click the “+ Add Task” button at the bottom of any column to open an inline input or modal to create a new task (enter title, optional details, assign metadata like due date or assignee).\n- Click a task card to open the task detail view (which may show full description, attachments, comments, and action controls).\n- Hover a task card to reveal inline controls such as mark complete (checkbox or green check icon), quick edit (pencil), comment, or more actions (ellipsis menu) with tooltip descriptions.\n- Drag a task card from one column to another to change its status; drop into position to reorder within a column.\n- Use the top tabs (Tasks, Files, Conversations, Details) to switch context for the project — for example navigate to Files to browse attachments or Conversations to read team discussion.\n- Use the left navigation rail to switch workspaces or projects (click icons to open different areas or user profile).\n- Use small metadata icons on cards (comment icon, clock/time) to see counts or open related details (e.g., open comments or time estimates).\n\nMedium-level workflows supported:\n- Create and triage tasks: add tasks, set initial metadata, and place them in the To Do column.\n- Progress tracking and workflow management: move items from To Do → Doing → Done, reorder tasks within a column to prioritize work, and mark tasks complete.\n- Quick collaboration: open a task to comment, attach files or view conversations from the integrated tabs.\n- Lightweight administration: rename columns or set column policies (e.g., WIP limits), review counts at a glance, and filter or sort tasks (if controls present in a toolbar).\n\nBroader goals / user outcomes enabled by this screen:\n- Manage a small-to-medium project’s workflow visually, giving the team clear state visibility for each task.\n- Rapidly move work through stages to completion, enabling simple sprint or delivery management.\n- Support team collaboration by surfacing comments, files, and conversation context via the project-level tabs, decreasing friction between task status and contextual communication.\n- Provide a single, at-a-glance place for PMs and contributors to prioritize and act on daily tasks, increasing clarity and reducing status-meeting overhead.\n\nHow the UI supports these goals:\n- The clear three-column layout mirrors a simple workflow which makes status transitions intuitive.\n- Card metadata and inline action controls reduce clicks needed to perform common actions (comment, time estimate, mark complete).\n- Drag-and-drop with subtle animations gives direct manipulation feedback, making task movement feel responsive and reliable.\n- Tabs tie related resources (files, conversations) directly to the board so context is available without leaving the project."
+        }
+      },
+      {
+        "name": "Completion Confirmation Snackbar",
+        "screen_id": "eb697309-9fff-4144-8dc5-f258f83140bc",
+        "refero_url": "https://refero.design/pages/eb697309-9fff-4144-8dc5-f258f83140bc",
+        "thumbnail_url": "https://images.refero.design/screenshots/monodesk.com/desktop/eb697309-9fff-4144-8dc5-f258f83140bc_thumb.jpg",
+        "goal": "Confirm completion and provide a reversible option",
+        "action": "Observe the confirmation snackbar and choose an action: 'View Tasks' to navigate or 'Undo' to revert the completion.",
+        "system_response": "A temporary snackbar appears with message 'Task marked as complete' and action buttons ('View Tasks', 'Undo'). If the user taps Undo, the task's visual completion state and column count revert; otherwise the completed state remains visible in the board.",
+        "page_types": [
+          "Content Management Page",
+          "Task Management"
+        ],
+        "ux_patterns": [
+          "Task"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Tabs",
+          "Notifications & Toast",
+          "Sidebar & Drawer",
+          "Icon"
+        ],
+        "fonts": [
+          "Arial",
+          "Roboto"
+        ],
+        "content": {
+          "description": "Overview\n- A clean, modern kanban-style task board inside a light-gray workspace. The screen shows a left vertical sidebar with icon-only navigation, a top header with a back arrow and page title “Humanity”, then a horizontal set of content tabs (Tasks, Files, Conversations, Details). The main content area is centered and contains three card-style columns labeled “To Do”, “Doing”, and “Done”. Each column contains multiple task rows (cards) with small meta icons on the right (time/comment/activity indicators). A small Add Task control appears at the bottom of each column. A floating vertical “Feedback” tab is attached to the right edge. A dark success toast sits in the bottom-right corner with a green confirmation icon and action buttons (View Tasks, Undo). A tooltip reading “Mark as complete” is visible above a green checkbox control in the Done column.\n\nVisual style\n- Overall style: minimalist, soft shadows, generous white space, neutral background and subtle accents for actions and status. Uses card metaphors and subtle elevation for content blocks.\n- Background: very light gray canvas. Approximate color: #F3F6F8 (body background).\n- Left sidebar background: slightly lighter/paler panel: #F7FAFC or #EEF3F6.\n- Column cards: pure white cards: #FFFFFF with subtle 8px radius and a very soft shadow: box-shadow: 0 6px 12px rgba(16, 24, 40, 0.04) and a 1px border stroke: #E6E9EB.\n- Primary accent/active color: medium blue for selected tab and logo: approx #2563EB (or #1E6FF7). The floating feedback tab is a saturated blue: ~#1160EE.\n- Success/completed color: green used for completion badge/check: #10B981 (Tailwind green-500).\n- Text colors: primary heading/text: #0F1724 (very dark slate). Secondary text/meta: #6B7280 (muted gray). Disabled/placeholder text: #9CA3AF.\n- Toast background: dark slate/charcoal: #111827 with white text (#FFFFFF). Buttons inside toast: neutral outline or subtle green highlight for success.\n\nTypography\n- Likely a modern system or Inter/Roboto style family. Suggested fonts for reproduction: Inter / System UI.\n- Page title (“Humanity”): ~20-22px, 600 weight (semi-bold), letter-spacing normal, left-aligned within header area.\n- Tabs labels: 14-15px, 500 weight for selected state (blue), 400/500 for others; uppercase not used, normal sentence case.\n- Column headers (To Do / Doing / Done): 16-18px, 600 weight, 8px bottom margin inside card.\n- Task row text: 14px, 400 weight, single-line or multi-line wrapping; line-height ~20px.\n- Task metadata (time, comments): 12px, 400 weight, muted color #6B7280.\n\nSpacing & layout metrics\n- Left sidebar width approx 64-72px (icon column) with vertical icon stack, 24px top padding.\n- Top header height approx 56-64px with content left aligned, inner horizontal padding ~24px.\n- Main container centered with left margin to account for sidebar; max-width ~1200–1400px.\n- Kanban column width ~300–340px each. Column gap (horizontal gutter) ~24–32px.\n- Card corner radius ~8px. Task item height ~44–56px with 12–16px vertical padding and 16px horizontal padding.\n- Add Task button is a low-contrast ghost/secondary control inside each column with a small + icon (height ~36px, border-radius 8px).\n- Column header area includes a small badge with number of items (rounded 18–22px circle) aligned top-right inside the column cap.\n\nUI controls & states\n- Columns are elevated white cards with subtle shadow and hover elevation; tasks inside are flat list rows with subtle separators or stacked spacing rather than visible borders.\n- Hover states: task rows slightly lift (translateY -2px) or show a subtle shadow; action icons appear on hover (e.g., check/ellipsis).\n- Drag & drop behavior indicated by grab cursor and a slight ghost/clone of the dragged task; target column highlights with a faint blue outline or darker background tint. Easing: 180–280ms cubic-bezier(0.22, 1, 0.36, 1).\n- Mark-as-complete: toggling shows an animated check that turns green (#10B981) and triggers a success toast in bottom-right. The toast slides in and fades with 200–300ms ease.\n- Tooltip: small dark rounded rectangle with white text appears above the control on hover (approx 10px offset) with fade-in 120ms.\n\nIcons & imagery\n- Small icons for time, comments, and item count are used inline in each task; icons are simple 16px outlines in muted gray (#9CA3AF).\n- Logo (top-left) is a compact rounded-square mark with blue fill.\n\nAccessibility\n- Clear color contrast for text and controls; clickable controls sized to ~40px height for comfortable tapping.\n\nAnimations\n- Micro-interactions: hover lifts, tooltip fade, toast slide and fade, drag preview moves smoothly. Standard easing for motion: cubic-bezier(0.2, 0.8, 0.2, 1) or ease-out for entrance and 200–300ms durations.\n\nRecreation notes\n- Use a 3-column CSS grid centered inside a container with responsive breakpoint that collapses to fewer columns on narrow viewports (e.g., below 1024px collapse to 2, then 1).\n- Use subtle shadows and 8px corner radii to match the visual weight. Recreate metadata icons at 16px and keep spacing consistent across cards for a tidy grid.",
+          "layout": "Global structure\n- Three main horizontal bands: left vertical sidebar (icon column), top header (title + tabs + actions), central content area (kanban columns). There are overlay zones for floating controls (right feedback tab) and notifications (bottom-right toast).\n\nColumns & grid\n- Main content is a centered grid with 3 columns (each a vertical panel). Each column is a card container with:\n  - Column header (label and small numeric badge count top-right)\n  - Vertical list of task items stacked with consistent vertical spacing\n  - An “Add Task” ghost button aligned to the bottom center of the column card\n- Column count: 3 (To Do, Doing, Done). Grouping: a single group of 3 columns in one row. No sub-columns.\n- Column widths: fixed-ish (approx 300–340px) so the grid is non-fluid until responsive breakpoints.\n\nSidebar & header\n- Left sidebar: 1 column (icons stacked vertically) spanning the full content height; acts as navigation.\n- Header: full-width above the main content but inside the same horizontal flow; left-aligned back arrow + project title; below that a tabs row occupying the left/center area. Action icons and kebab menu anchored to right of header.\n\nOverlay elements\n- Feedback tab: vertical floating control stuck to the right edge of the viewport at mid-height.\n- Tooltip: a small overlay anchored to the control hovered (green checkbox), sits above the control.\n- Toast: fixed to bottom-right corner, occupying its own overlay layer.\n\nKeywords to describe the layout: kanban, three-column, centered-grid, left-sidebar, top-nav, card-based, stacked-list, overlay-toast, floating-tab, drag-drop",
+          "functions": "Specific actions (what users can do on this screen)\n- View tasks arranged by workflow stage by reading the column headers (To Do, Doing, Done).\n- Add a new task into any column using the “+ Add Task” control at the bottom of each column. This likely opens an inline text field or a modal to enter task title and metadata.\n- Inspect a task by clicking a task row to reveal details (open a side panel or modal with full task metadata and comments).\n- Mark a task as complete by clicking the green checkbox control in the task row; this triggers a tooltip and a success toast with options (View Tasks / Undo).\n- Drag and drop tasks between columns and reorder within a column (visual ghosting of the dragged item and highlight of drop target). Visual feedback indicates valid drop targets.\n- Use the top tabs (Tasks, Files, Conversations, Details) to switch context to related content for the project (e.g., view attached files, open conversations, or project details).\n- Use top-right kebab (three-dot) menu or filter/sort controls to change the view, filter tasks, or access export/settings.\n- Use left vertical sidebar icons to navigate between major app sections (team, projects, calendar, reports, etc.).\n- Trigger the floating Feedback tab to open a feedback panel or form.\n- Undo recent actions via the toast (Undo), or view aggregated changes with View Tasks.\n\nMedium-level workflows\n- Create a task, add metadata (due date, comments, attachments), then drag it from To Do into Doing to indicate progress; later mark as complete which moves it to Done and triggers success confirmation.\n- Scan the board to understand team progress, click task cards to read comments or attachments, and switch to Files or Conversations to access related resources.\n- Bulk-manage tasks using top-level menu or filters (sort by due date, assignee, priority) — implied by menu and filter icons in the header.\n\nBroader goal\n- The screen is designed to help project teams manage and visualize work in a lightweight kanban workflow: plan, track progress, and complete tasks. The UI supports rapid triage (drag & drop), quick edits (inline or modal), and immediate feedback on actions (tooltips and toasts) to maintain clarity, efficiency, and low friction when coordinating work."
+        }
+      }
+    ],
+    "related_queries": [
+      "kanban mark task complete",
+      "project board complete task",
+      "task card quick actions",
+      "task completion toast undo",
+      "hover reveal task actions",
+      "kanban column counts update",
+      "task status toggle confirmation",
+      "snackbar undo task complete",
+      "board task checkbox interaction",
+      "task list completion indicator"
+    ]
+  },
+  "screens": {
+    "records": [
+      {
+        "thumbnail_url": "https://images.refero.design/screenshots/monodesk.com/desktop/32fea949-78a1-4ca3-8ec2-239dbd051169_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/monodesk.com/desktop/32fea949-78a1-4ca3-8ec2-239dbd051169_preview.jpg",
+        "colors": [
+          [
+            227,
+            235,
+            235
+          ],
+          [
+            31,
+            32,
+            32
+          ],
+          [
+            31,
+            100,
+            240
+          ],
+          [
+            247,
+            247,
+            247
+          ],
+          [
+            152,
+            155,
+            160
+          ]
+        ],
+        "hex_colors": [
+          "0xE3EBEB",
+          "0x1F2020",
+          "0x1F64F0",
+          "0xF7F7F7",
+          "0x989BA0"
+        ],
+        "uuid": "32fea949-78a1-4ca3-8ec2-239dbd051169",
+        "page_url": "https://app.monodesk.com/projects/6686dfad-50ec-447a-bdbf-8bb832d05239/kanban",
+        "site": {
+          "name": "MonoDesk ",
+          "domain": "monodesk.com",
+          "description": "Less admin. More creative flow."
+        },
+        "ux_patterns": [
+          "Task"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Tabs",
+          "Sidebar & Drawer",
+          "Icon"
+        ],
+        "page_types": [
+          "Content Management Page",
+          "Task Management"
+        ],
+        "fonts": [
+          null,
+          "Arial",
+          "Roboto",
+          null,
+          null
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/32fea949-78a1-4ca3-8ec2-239dbd051169",
+        "content": {
+          "description": "Overview\n- Screen shows a project-level Kanban board titled “Humanity”. Primary content area contains three vertical columns labeled “To Do”, “Doing”, and “Done”. Each column contains stacked task cards and an “+ Add Task” control at the bottom. A compact horizontal tab bar (Tasks, Files, Conversations, Details) sits below the top header. A slim left vertical navigation rail contains stacked icons; a vertical “Feedback” callout button is attached to the right edge.\nOverall style\n- Clean, minimal, product-design/project-management style with generous white space and soft neutral color palette. Visual hierarchy is created with card elevation (subtle shadows), rounded corners and small badges for counts.\nColor palette (recommended hex approximations)\n- Page background: very light gray #F3F6F8 (main canvas)\n- Main content container background (cards): white #FFFFFF\n- Column header background: transparent / card uses same white; header text dark slate #111827\n- Primary accent (active tab / interactive highlights): medium blue #2563EB\n- Secondary text / icons: cool gray #6B7280\n- Subtle borders / dividers: neutral gray #E6E9EC\n- Card shadow: rgba(16, 24, 40, 0.04) for default, rgba(16,24,40,0.08) on hover\n- Badge background (count): very light gray / soft blue tint #EEF2FF (text in #1E293B)\nTypography\n- Typeface: modern geometric sans (Inter / system UI / Roboto). Use Inter as example.\n- Page title (Humanity): 20–22px, 600 weight, left aligned, 24px top margin from top/nav\n- Tabs (Tasks/Files/...): 14px, 500 weight for active, 400 for inactive; 16–20px line-height\n- Card title / task text: 14px, 400 weight, 18px line-height\n- Card meta (time, comments): 12px, 400 weight, color #6B7280\n- Buttons (Add Task): 14px, 600 weight\nCard / element geometry\n- Column width: ~320px each (can be between 280–360px depending on viewport).\n- Column gap: 20–28px horizontal gutter between columns.\n- Page horizontal padding: 28–36px from left/right edges; vertical padding 20–24px.\n- Card: full column width minus 24px internal padding; card height variable; border-radius: 8px.\n- Card internal padding: 12px (vertical 10–12px, horizontal 12–16px).\n- Icons inside card (time/comment): 14–16px square with 6–8px spacing from text.\n- Add Task button: 44px tall full-width soft outline button inside column with rounded corners (6–8px). Text centered.\nNavigation and chrome\n- Left rail: 56–64px width, vertical stacked monochrome icons (primary color for active icon). Slight inset shadow or divider separating it from content.\n- Top-left: small back arrow and project name. Tabs row below project title with subtle divider or single active underline under \"Tasks\".\n- Right side: vertical blue pill labelled “Feedback” fixed to edge (floating button style).\nIcons and microcopy\n- Small metadata icons per card: clock (estimate/due), comment bubble (comments), maybe checklist icon.\n- Count badges: small circular badge at the top-right of each column header showing number of cards.\nStates and interactions\n- Hover on a card: raise elevation (increase shadow to rgba(16,24,40,0.08)), slight translateY(-4px), and cursor: grab (if draggable).\n- Active/dragging card: show ghost layer with 80% opacity, dashed placeholder in origin column; smooth transition.\n- Add task: clicking opens inline composer or modal with text field, assignee, due date, tags (composer is a small dialog centered inside column or inline expanded row).\n- Card click: opens detail side sheet or modal with description, comments, attachments, and metadata. Close button top-right of sheet.\n- Tabs: clicking Files, Conversations, Details switches main panel content without leaving project context.\nAnimations\n- Micro-interactions: 150–220ms ease-out for hover elevation, 200–300ms ease-in-out for dragging transitions, 200ms for tab underline move.\nAccessibility\n- Sufficient color contrast on primary text (#111827 on white background). Interactive controls should have focus ring (2px outline in primary blue #2563EB).\n",
+          "layout": "Global layout\n- Viewport: full-width layout with a left vertical navigation rail and main content to the right. The main content is horizontally centered with generous left/right margin.\n- Header area: top-left back arrow and project title, with a horizontal tab strip (Tasks, Files, Conversations, Details) directly beneath. Top-right contains utility controls (overflow menu / sort / filter icons) aligned to the right end of the content area.\nColumns\n- Number of columns: 3 (To Do, Doing, Done).\n- Column grouping: single group of three equal-height vertical columns placed in a single horizontal row. Columns are independent lists (each is a scrollable vertical stack when content overflows).\n- Column sizing: fixed or responsive min-width around 280–320px; columns do not span full width — centered content with whitespace on both sides.\nColumn internals\n- Column header: title aligned to the left; a circular count badge aligned to the right of the header.\n- Card stack: vertical list; cards occupy full column width with small vertical spacing (12–16px) between cards.\n- Column footer: centered \"+ Add Task\" control inside a muted bordered container, full column width, consistent bottom padding.\nLeft rail\n- Single column vertical nav strip (one column) with icon blocks stacked vertically; active icon highlighted.\nRight edge\n- Floating vertical feedback button anchored to the right edge of the viewport (single element).\nGrids / columns count summary\n- Columns: 3 (one group)\n- Column groups: 1\n- Card rows: variable number; in screenshot To Do=2, Doing=3, Done=5\nKeywords to describe layout\n- centered content\n- three-column kanban\n- vertical nav rail\n- card stacks\n- full-height columns\n- scrollable lists\n- column headers with badges\n- add-task footers\n- responsive column width\n- floating feedback button",
+          "functions": "Small-scale (single-card interactions)\n- Read task headers and metadata: users can scan card titles, timestamps and comment counts to assess status quickly.\n- Open a task: tap/click a card to open details (side sheet or modal) displaying description, comments and attachments.\n- Add a task: click “+ Add Task” at the bottom of a column to open an inline input or small form (title, assignee, due date, tags). The UI provides immediate visual feedback (new card inserted).\n- Edit task quick actions: inline icons on the card allow quick edits such as mark complete, add comment, or view attachments.\n- Reorder tasks: click-and-drag a card within a column (reorder) or between columns to update status (To Do -> Doing -> Done). Visual drop placeholder shows valid drop targets.\n- Filter / sort (expected): tabs or top controls may let users filter by assignee, due date, priority (not visible but typical).\nMedium-level workflows\n- Manage sprint/workflow: create multiple tasks, assign to team members, move tasks through stages to reflect progress.\n- Collaboration: open Conversations or Files tabs to attach resources or discuss a task; view change history in Details.\n- Bulk operations (possible): select multiple cards to move, archive, or change assignee (not explicitly visible, but common in this pattern).\nHigh-level goal\n- Track and manage work items for a project: the screen’s purpose is to let a user organize, prioritize and progress tasks through a workflow so that work moves from backlog (To Do) into in-progress (Doing) and then to completion (Done). The interface supports quick triage, assignment, and collaboration to keep the project transparent and moving forward.\nHow UI supports goals\n- Column layout mirrors common workflow stages for fast mental mapping.\n- Cards present bite-sized task summaries with meta cues for urgency and activity.\n- Drag-and-drop and inline add minimize friction for state changes.\n- Tabs keep related project resources (files, conversations, details) one click away for context."
+        },
+        "flows": [
+          {
+            "id": 10844,
+            "name": "Marking task as complete",
+            "step": 1,
+            "total_steps": 3
+          }
+        ]
+      },
+      {
+        "thumbnail_url": "https://images.refero.design/screenshots/monodesk.com/desktop/53c02456-42e5-4b38-95aa-0f8ed230798b_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/monodesk.com/desktop/53c02456-42e5-4b38-95aa-0f8ed230798b_preview.jpg",
+        "colors": [
+          [
+            227,
+            235,
+            235
+          ],
+          [
+            29,
+            29,
+            29
+          ],
+          [
+            247,
+            247,
+            247
+          ],
+          [
+            33,
+            101,
+            236
+          ],
+          [
+            150,
+            153,
+            155
+          ]
+        ],
+        "hex_colors": [
+          "0xE3EBEB",
+          "0x1D1D1D",
+          "0xF7F7F7",
+          "0x2165EC",
+          "0x96999B"
+        ],
+        "uuid": "53c02456-42e5-4b38-95aa-0f8ed230798b",
+        "page_url": "https://app.monodesk.com/projects/6686dfad-50ec-447a-bdbf-8bb832d05239/kanban",
+        "site": {
+          "name": "MonoDesk ",
+          "domain": "monodesk.com",
+          "description": "Less admin. More creative flow."
+        },
+        "ux_patterns": [
+          "Task"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Tabs",
+          "Checkbox & Radio",
+          "Tooltip",
+          "Sidebar & Drawer",
+          "Icon"
+        ],
+        "page_types": [
+          "Content Management Page",
+          "Task Management"
+        ],
+        "fonts": [
+          null,
+          "Arial",
+          null
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/53c02456-42e5-4b38-95aa-0f8ed230798b",
+        "content": {
+          "description": "Overall visual style: A clean, minimal enterprise Kanban-style task board with a soft neutral color system and spacious layout. The screen shows a left vertical navigation rail, a compact header with a back arrow and project name, a horizontal tab row (Tasks, Files, Conversations, Details) directly under the header, then a main content area centered horizontally showing three primary columns (To Do, Doing, Done). Each column is a light card with a white interior, subtle rounded corners and a subtle drop shadow. Individual tasks are represented as smaller white cards / rows inside each column with thin separators and small metadata icons (comment bubble, clock/time estimate, maybe assignee). Each column has a small numeric badge at the column header showing task count, and a “+ Add Task” button at the bottom of the column.\n\nColor palette (approximations from screenshot):\n- Page background: very light bluish-gray #EDF3F6 (or RGB 237,243,246)\n- Left nav background: slightly darker light gray #E6EEF3\n- Header text / primary title: almost-black / very dark gray #111827\n- Column card background: white #FFFFFF\n- Column card border / subtle shadow: rgba(16,24,40,0.04) for shadow, border #E6E9EC\n- Accent / primary blue (logo / active states): bright blue #2F6BF6\n- Badge background (count): muted gray #F1F5F9 with text #111827 (or green for completed checkbox indicator #16A34A)\n- Secondary text (metadata / time / comments): medium gray #6B7280\n- Placeholder / disabled text: light gray #9CA3AF\n\nTypography:\n- System / UI font: Inter or Roboto (sans-serif). Use consistent weights for clarity.\n- Header / Project title: 20–22px, 600 weight, letter-spacing 0, line-height ~28px, left-aligned.\n- Tabs row labels: 14px, 500 weight, medium gray when inactive, primary blue when active.\n- Column headers (To Do / Doing / Done): 16px, 600 weight, #0F172A or dark gray.\n- Task card title text: 14px–15px, 500 weight, dark gray #111827.\n- Task metadata (icons + small labels): 12px, 400 weight, #6B7280, line-height ~16px.\n- Button text (“+ Add Task”): 13px–14px, 600 weight, muted gray or primary depending on style.\n\nLayout & spacing:\n- Left navigation rail fixed width approx. 64px (icons vertically stacked). Top spacing ~20px from top.\n- Header area sits to the right of the nav, with back arrow (24px) then title text, aligned vertically center with small top margin. Tabs are directly under header with ~24px vertical spacing.\n- Main content area centered left-to-right with generous horizontal padding. The three columns are horizontally arranged with equal widths (approx 300–360px each) and ~24–32px horizontal gutter between columns.\n- Each column card: padding 16px for header block, inner card radius 8px, subtle shadow of 0 1px 4px rgba(16,24,40,0.06).\n- Individual task rows inside column: vertical stack with ~12–14px vertical gap, each row height flexible (~48–64px) depending on content, inner padding 12px, subtle bottom border or separation.\n- “+ Add Task” button is a muted ghost button spanning column interior width, centered at column bottom with 12px vertical margin.\n\nUI elements details & states:\n- Left nav icons: simple 24px square clickable icons with hover highlight; currently the top logo square is filled with primary blue and white mark.\n- Tabs row: text-only tabs with active tab in primary blue + underline or bold weight; inactive tabs in medium gray.\n- Column header: name left, small circular numeric badge at right of header with light background and small text showing number of items.\n- Task row: shows main title text left, small metadata cluster right containing tiny icons (comment bubble, clock) and optionally an inline checkbox or status indicator (green check when marked done) that appears on hover or as part of the card. Hover state for a task shows a tooltip (e.g., “Mark as complete”) and/or a subtle highlight.\n- Buttons: “+ Add Task” styled as a low-contrast ghost button (light border, subtle hover fill). Card actions (ellipsis) are icon-only, 20–24px.\n- Tooltip: small rounded rectangle with dark background (#111827) and white text appearing on hover of certain interactive icons.\n- Badge: small rounded pill or circle near header with 12–14px font size.\n\nInteractions / animations (recommended behavior):\n- Drag & drop: when user drags a task card, the card lifts with a subtle shadow and a transform scale to 1.02; placeholder space appears in the target column. Use ease-out cubic-bezier(0.22, 1, 0.36, 1) for drop animation and 160–240ms for lift/hover transitions.\n- Hover states: tasks slightly elevate (translateY -2px) and show action icons; icon hovers use 120–160ms fade.\n- Add task: clicking “+ Add Task” opens a small inline form or modal with a 1–2 field entry (title, optional details) and Save/Cancel. Modal opens with a 180ms fade+scale.\n\nAccessibility considerations:\n- Sufficient color contrast on text and badges. Keyboard focus outlines for interactive items (tabs, cards, buttons). Use aria-labels for icons and role attributes for columns and lists.\n\nVisual references to recreate accurately: light bluish-gray full-bleed background, left compact navigation rail, centered content with 3 equal kanban columns, white cards and subtle shadows, medium gray metadata icons, small numerical badges on headers, ghost “+ Add Task” buttons at bottom of each column.",
+          "layout": "High-level structure: a fixed left navigation rail + main content area with header/tabs + 3-column Kanban grid within the main content. Details:\n- Left column: single fixed nav rail (1 column) ~64px width, vertical stack of square icons spaced evenly, top logo (primary blue), bottom profile icon.\n- Main area: header row at top (back arrow at far left of content area, project name to its right), then a horizontal tab bar immediately below the header with four tabs (Tasks, Files, Conversations, Details).\n- Under tabs: content container hosting a horizontal grid with 3 equal columns (To Do, Doing, Done). Each column is a vertical group containing: a header (title + numeric badge), a vertically stacked list of task cards (rows), and a footer area with a full-width ghost button (“+ Add Task”).\n- Column grouping: three groups (each group = 1 column). There are no sub-columns inside these groups. Task cards are stacked vertically inside each group (list). Columns aligned horizontally and centered with generous side padding on large screens.\n- Spacing: consistent 16–24px inner padding in cards, 24–32px gutter between columns, and 24px top spacing from tabs to column headers.\n- Responsive behavior: on narrow viewports the layout would collapse to 1 column (stack) or horizontally scrollable columns; in wide viewports all three columns sit in one row.\n\nKeywords to describe layout: Kanban, three-column, left-nav-rail, header-with-tabs, centered-grid, equal-column-width, vertical-card-list, column-headers-with-badges, inline-add-button, responsive-stack",
+          "functions": "Immediate (atomic) actions users can take on this screen:\n- Click or tap a column header to focus or rename (if editable).\n- Click the “+ Add Task” button at the bottom of any column to open an inline input or modal to create a new task (enter title, optional details, assign metadata like due date or assignee).\n- Click a task card to open the task detail view (which may show full description, attachments, comments, and action controls).\n- Hover a task card to reveal inline controls such as mark complete (checkbox or green check icon), quick edit (pencil), comment, or more actions (ellipsis menu) with tooltip descriptions.\n- Drag a task card from one column to another to change its status; drop into position to reorder within a column.\n- Use the top tabs (Tasks, Files, Conversations, Details) to switch context for the project — for example navigate to Files to browse attachments or Conversations to read team discussion.\n- Use the left navigation rail to switch workspaces or projects (click icons to open different areas or user profile).\n- Use small metadata icons on cards (comment icon, clock/time) to see counts or open related details (e.g., open comments or time estimates).\n\nMedium-level workflows supported:\n- Create and triage tasks: add tasks, set initial metadata, and place them in the To Do column.\n- Progress tracking and workflow management: move items from To Do → Doing → Done, reorder tasks within a column to prioritize work, and mark tasks complete.\n- Quick collaboration: open a task to comment, attach files or view conversations from the integrated tabs.\n- Lightweight administration: rename columns or set column policies (e.g., WIP limits), review counts at a glance, and filter or sort tasks (if controls present in a toolbar).\n\nBroader goals / user outcomes enabled by this screen:\n- Manage a small-to-medium project’s workflow visually, giving the team clear state visibility for each task.\n- Rapidly move work through stages to completion, enabling simple sprint or delivery management.\n- Support team collaboration by surfacing comments, files, and conversation context via the project-level tabs, decreasing friction between task status and contextual communication.\n- Provide a single, at-a-glance place for PMs and contributors to prioritize and act on daily tasks, increasing clarity and reducing status-meeting overhead.\n\nHow the UI supports these goals:\n- The clear three-column layout mirrors a simple workflow which makes status transitions intuitive.\n- Card metadata and inline action controls reduce clicks needed to perform common actions (comment, time estimate, mark complete).\n- Drag-and-drop with subtle animations gives direct manipulation feedback, making task movement feel responsive and reliable.\n- Tabs tie related resources (files, conversations) directly to the board so context is available without leaving the project."
+        },
+        "flows": [
+          {
+            "id": 10844,
+            "name": "Marking task as complete",
+            "step": 2,
+            "total_steps": 3
+          }
+        ]
+      },
+      {
+        "thumbnail_url": "https://images.refero.design/screenshots/monodesk.com/desktop/eb697309-9fff-4144-8dc5-f258f83140bc_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/monodesk.com/desktop/eb697309-9fff-4144-8dc5-f258f83140bc_preview.jpg",
+        "colors": [
+          [
+            42,
+            43,
+            42
+          ],
+          [
+            227,
+            235,
+            235
+          ],
+          [
+            31,
+            100,
+            240
+          ],
+          [
+            247,
+            247,
+            247
+          ],
+          [
+            147,
+            150,
+            154
+          ]
+        ],
+        "hex_colors": [
+          "0x2A2B2A",
+          "0xE3EBEB",
+          "0x1F64F0",
+          "0xF7F7F7",
+          "0x93969A"
+        ],
+        "uuid": "eb697309-9fff-4144-8dc5-f258f83140bc",
+        "page_url": "https://app.monodesk.com/projects/6686dfad-50ec-447a-bdbf-8bb832d05239/kanban",
+        "site": {
+          "name": "MonoDesk ",
+          "domain": "monodesk.com",
+          "description": "Less admin. More creative flow."
+        },
+        "ux_patterns": [
+          "Task"
+        ],
+        "ui_elements": [
+          "Cards & Tiles",
+          "Button",
+          "Tabs",
+          "Notifications & Toast",
+          "Sidebar & Drawer",
+          "Icon"
+        ],
+        "page_types": [
+          "Content Management Page",
+          "Task Management"
+        ],
+        "fonts": [
+          null,
+          "Arial",
+          "Roboto",
+          null,
+          null
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/eb697309-9fff-4144-8dc5-f258f83140bc",
+        "content": {
+          "description": "Overview\n- A clean, modern kanban-style task board inside a light-gray workspace. The screen shows a left vertical sidebar with icon-only navigation, a top header with a back arrow and page title “Humanity”, then a horizontal set of content tabs (Tasks, Files, Conversations, Details). The main content area is centered and contains three card-style columns labeled “To Do”, “Doing”, and “Done”. Each column contains multiple task rows (cards) with small meta icons on the right (time/comment/activity indicators). A small Add Task control appears at the bottom of each column. A floating vertical “Feedback” tab is attached to the right edge. A dark success toast sits in the bottom-right corner with a green confirmation icon and action buttons (View Tasks, Undo). A tooltip reading “Mark as complete” is visible above a green checkbox control in the Done column.\n\nVisual style\n- Overall style: minimalist, soft shadows, generous white space, neutral background and subtle accents for actions and status. Uses card metaphors and subtle elevation for content blocks.\n- Background: very light gray canvas. Approximate color: #F3F6F8 (body background).\n- Left sidebar background: slightly lighter/paler panel: #F7FAFC or #EEF3F6.\n- Column cards: pure white cards: #FFFFFF with subtle 8px radius and a very soft shadow: box-shadow: 0 6px 12px rgba(16, 24, 40, 0.04) and a 1px border stroke: #E6E9EB.\n- Primary accent/active color: medium blue for selected tab and logo: approx #2563EB (or #1E6FF7). The floating feedback tab is a saturated blue: ~#1160EE.\n- Success/completed color: green used for completion badge/check: #10B981 (Tailwind green-500).\n- Text colors: primary heading/text: #0F1724 (very dark slate). Secondary text/meta: #6B7280 (muted gray). Disabled/placeholder text: #9CA3AF.\n- Toast background: dark slate/charcoal: #111827 with white text (#FFFFFF). Buttons inside toast: neutral outline or subtle green highlight for success.\n\nTypography\n- Likely a modern system or Inter/Roboto style family. Suggested fonts for reproduction: Inter / System UI.\n- Page title (“Humanity”): ~20-22px, 600 weight (semi-bold), letter-spacing normal, left-aligned within header area.\n- Tabs labels: 14-15px, 500 weight for selected state (blue), 400/500 for others; uppercase not used, normal sentence case.\n- Column headers (To Do / Doing / Done): 16-18px, 600 weight, 8px bottom margin inside card.\n- Task row text: 14px, 400 weight, single-line or multi-line wrapping; line-height ~20px.\n- Task metadata (time, comments): 12px, 400 weight, muted color #6B7280.\n\nSpacing & layout metrics\n- Left sidebar width approx 64-72px (icon column) with vertical icon stack, 24px top padding.\n- Top header height approx 56-64px with content left aligned, inner horizontal padding ~24px.\n- Main container centered with left margin to account for sidebar; max-width ~1200–1400px.\n- Kanban column width ~300–340px each. Column gap (horizontal gutter) ~24–32px.\n- Card corner radius ~8px. Task item height ~44–56px with 12–16px vertical padding and 16px horizontal padding.\n- Add Task button is a low-contrast ghost/secondary control inside each column with a small + icon (height ~36px, border-radius 8px).\n- Column header area includes a small badge with number of items (rounded 18–22px circle) aligned top-right inside the column cap.\n\nUI controls & states\n- Columns are elevated white cards with subtle shadow and hover elevation; tasks inside are flat list rows with subtle separators or stacked spacing rather than visible borders.\n- Hover states: task rows slightly lift (translateY -2px) or show a subtle shadow; action icons appear on hover (e.g., check/ellipsis).\n- Drag & drop behavior indicated by grab cursor and a slight ghost/clone of the dragged task; target column highlights with a faint blue outline or darker background tint. Easing: 180–280ms cubic-bezier(0.22, 1, 0.36, 1).\n- Mark-as-complete: toggling shows an animated check that turns green (#10B981) and triggers a success toast in bottom-right. The toast slides in and fades with 200–300ms ease.\n- Tooltip: small dark rounded rectangle with white text appears above the control on hover (approx 10px offset) with fade-in 120ms.\n\nIcons & imagery\n- Small icons for time, comments, and item count are used inline in each task; icons are simple 16px outlines in muted gray (#9CA3AF).\n- Logo (top-left) is a compact rounded-square mark with blue fill.\n\nAccessibility\n- Clear color contrast for text and controls; clickable controls sized to ~40px height for comfortable tapping.\n\nAnimations\n- Micro-interactions: hover lifts, tooltip fade, toast slide and fade, drag preview moves smoothly. Standard easing for motion: cubic-bezier(0.2, 0.8, 0.2, 1) or ease-out for entrance and 200–300ms durations.\n\nRecreation notes\n- Use a 3-column CSS grid centered inside a container with responsive breakpoint that collapses to fewer columns on narrow viewports (e.g., below 1024px collapse to 2, then 1).\n- Use subtle shadows and 8px corner radii to match the visual weight. Recreate metadata icons at 16px and keep spacing consistent across cards for a tidy grid.",
+          "layout": "Global structure\n- Three main horizontal bands: left vertical sidebar (icon column), top header (title + tabs + actions), central content area (kanban columns). There are overlay zones for floating controls (right feedback tab) and notifications (bottom-right toast).\n\nColumns & grid\n- Main content is a centered grid with 3 columns (each a vertical panel). Each column is a card container with:\n  - Column header (label and small numeric badge count top-right)\n  - Vertical list of task items stacked with consistent vertical spacing\n  - An “Add Task” ghost button aligned to the bottom center of the column card\n- Column count: 3 (To Do, Doing, Done). Grouping: a single group of 3 columns in one row. No sub-columns.\n- Column widths: fixed-ish (approx 300–340px) so the grid is non-fluid until responsive breakpoints.\n\nSidebar & header\n- Left sidebar: 1 column (icons stacked vertically) spanning the full content height; acts as navigation.\n- Header: full-width above the main content but inside the same horizontal flow; left-aligned back arrow + project title; below that a tabs row occupying the left/center area. Action icons and kebab menu anchored to right of header.\n\nOverlay elements\n- Feedback tab: vertical floating control stuck to the right edge of the viewport at mid-height.\n- Tooltip: a small overlay anchored to the control hovered (green checkbox), sits above the control.\n- Toast: fixed to bottom-right corner, occupying its own overlay layer.\n\nKeywords to describe the layout: kanban, three-column, centered-grid, left-sidebar, top-nav, card-based, stacked-list, overlay-toast, floating-tab, drag-drop",
+          "functions": "Specific actions (what users can do on this screen)\n- View tasks arranged by workflow stage by reading the column headers (To Do, Doing, Done).\n- Add a new task into any column using the “+ Add Task” control at the bottom of each column. This likely opens an inline text field or a modal to enter task title and metadata.\n- Inspect a task by clicking a task row to reveal details (open a side panel or modal with full task metadata and comments).\n- Mark a task as complete by clicking the green checkbox control in the task row; this triggers a tooltip and a success toast with options (View Tasks / Undo).\n- Drag and drop tasks between columns and reorder within a column (visual ghosting of the dragged item and highlight of drop target). Visual feedback indicates valid drop targets.\n- Use the top tabs (Tasks, Files, Conversations, Details) to switch context to related content for the project (e.g., view attached files, open conversations, or project details).\n- Use top-right kebab (three-dot) menu or filter/sort controls to change the view, filter tasks, or access export/settings.\n- Use left vertical sidebar icons to navigate between major app sections (team, projects, calendar, reports, etc.).\n- Trigger the floating Feedback tab to open a feedback panel or form.\n- Undo recent actions via the toast (Undo), or view aggregated changes with View Tasks.\n\nMedium-level workflows\n- Create a task, add metadata (due date, comments, attachments), then drag it from To Do into Doing to indicate progress; later mark as complete which moves it to Done and triggers success confirmation.\n- Scan the board to understand team progress, click task cards to read comments or attachments, and switch to Files or Conversations to access related resources.\n- Bulk-manage tasks using top-level menu or filters (sort by due date, assignee, priority) — implied by menu and filter icons in the header.\n\nBroader goal\n- The screen is designed to help project teams manage and visualize work in a lightweight kanban workflow: plan, track progress, and complete tasks. The UI supports rapid triage (drag & drop), quick edits (inline or modal), and immediate feedback on actions (tooltips and toasts) to maintain clarity, efficiency, and low friction when coordinating work."
+        },
+        "flows": [
+          {
+            "id": 10844,
+            "name": "Marking task as complete",
+            "step": 3,
+            "total_steps": 3
+          }
+        ]
+      }
+    ]
+  },
+  "imageInspectionIds": [
+    "32fea949-78a1-4ca3-8ec2-239dbd051169",
+    "53c02456-42e5-4b38-95aa-0f8ed230798b",
+    "eb697309-9fff-4144-8dc5-f258f83140bc"
+  ]
+}

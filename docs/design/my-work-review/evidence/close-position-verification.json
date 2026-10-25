@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-09",
+  "geometry": [
+    {
+      "button": {
+        "h": 44,
+        "w": 44,
+        "x": 1369,
+        "y": 6
+      },
+      "header": {
+        "h": 57,
+        "w": 387,
+        "x": 1038,
+        "y": 0
+      },
+      "rightGutter": 12,
+      "verticalCenterDifference": -0.5,
+      "width": 1440
+    },
+    {
+      "button": {
+        "h": 44,
+        "w": 44,
+        "x": 953,
+        "y": 6
+      },
+      "header": {
+        "h": 57,
+        "w": 349,
+        "x": 660,
+        "y": 0
+      },
+      "rightGutter": 12,
+      "verticalCenterDifference": -0.5,
+      "width": 1024
+    }
+  ],
+  "close": {
+    "pane": "none",
+    "focus": "task-row-TSK-2420"
+  },
+  "mobileBack": true,
+  "build": "Vite isolated build exit0",
+  "scope": "Prototype CSS only; Sol intake, Luna change"
+}

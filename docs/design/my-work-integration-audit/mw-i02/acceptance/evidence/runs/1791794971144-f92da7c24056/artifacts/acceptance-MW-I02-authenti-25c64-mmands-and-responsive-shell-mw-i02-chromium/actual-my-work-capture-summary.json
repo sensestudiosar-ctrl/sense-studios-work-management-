@@ -1,0 +1,5558 @@
+[
+  {
+    "capturedAt": "2026-10-12T08:50:27.504Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-leader-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-1440-viewport.png",
+    "prototypeReference": "prototype-leader-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76,
+        "right": 1440,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 3195,
+          "right": 1408,
+          "bottom": 3303
+        },
+        "header": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 43,
+          "right": 1408,
+          "bottom": 151
+        },
+        "obligations": {
+          "x": 296,
+          "y": 227,
+          "width": 1113,
+          "height": 46,
+          "right": 1408,
+          "bottom": 273
+        },
+        "phases": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "widgets": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "aboutCounts": {
+          "x": 296,
+          "y": 3271,
+          "width": 1113,
+          "height": 32,
+          "right": 1408,
+          "bottom": 3303
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 296,
+          "y": 3163,
+          "width": 1113,
+          "height": 51,
+          "right": 1408,
+          "bottom": 3214
+        },
+        "filters": {
+          "x": 296,
+          "y": 280,
+          "width": 1113,
+          "height": 88,
+          "right": 1408,
+          "bottom": 368
+        },
+        "pagination": {
+          "x": 296,
+          "y": 3222,
+          "width": 1113,
+          "height": 40,
+          "right": 1408,
+          "bottom": 3262
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 53.59375,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 3259,
+        "right": 1440,
+        "bottom": 3335
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 109,
+        "width": 86,
+        "height": 27,
+        "right": 382,
+        "bottom": 136
+      },
+      "toolbar": {
+        "x": 296,
+        "y": 3163,
+        "width": 1113,
+        "height": 51,
+        "right": 1408,
+        "bottom": 3214
+      },
+      "queue": {
+        "x": 296,
+        "y": 374,
+        "width": 1113,
+        "height": 2783,
+        "right": 1408,
+        "bottom": 3156
+      },
+      "firstTask": {
+        "x": 313,
+        "y": 460,
+        "width": 1079,
+        "height": 54,
+        "right": 1391,
+        "bottom": 513
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 300,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 567,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 580,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 847,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1127,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1140,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1407,
+            "bottom": 218
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:27.731Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-leader-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-1024-viewport.png",
+    "prototypeReference": "prototype-leader-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 76,
+        "right": 1024,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 6553,
+          "right": 1001,
+          "bottom": 6652
+        },
+        "header": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 43,
+          "right": 1001,
+          "bottom": 142
+        },
+        "obligations": {
+          "x": 287,
+          "y": 218,
+          "width": 715,
+          "height": 46,
+          "right": 1001,
+          "bottom": 264
+        },
+        "phases": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "widgets": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "aboutCounts": {
+          "x": 287,
+          "y": 6620,
+          "width": 715,
+          "height": 32,
+          "right": 1001,
+          "bottom": 6652
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 287,
+          "y": 6511,
+          "width": 715,
+          "height": 51,
+          "right": 1001,
+          "bottom": 6562
+        },
+        "filters": {
+          "x": 287,
+          "y": 271,
+          "width": 715,
+          "height": 88,
+          "right": 1001,
+          "bottom": 359
+        },
+        "pagination": {
+          "x": 287,
+          "y": 6571,
+          "width": 715,
+          "height": 40,
+          "right": 1001,
+          "bottom": 6611
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 121.390625,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 6598,
+        "right": 1024,
+        "bottom": 6674
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 100,
+        "width": 86,
+        "height": 27,
+        "right": 372,
+        "bottom": 127
+      },
+      "toolbar": {
+        "x": 287,
+        "y": 6511,
+        "width": 715,
+        "height": 51,
+        "right": 1001,
+        "bottom": 6562
+      },
+      "queue": {
+        "x": 287,
+        "y": 364,
+        "width": 715,
+        "height": 6141,
+        "right": 1001,
+        "bottom": 6505
+      },
+      "firstTask": {
+        "x": 304,
+        "y": 418,
+        "width": 681,
+        "height": 121,
+        "right": 984,
+        "bottom": 540
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 291,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 458,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 471,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 639,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 820,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 833,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 1000,
+            "bottom": 209
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:28.306Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-leader-initial-390.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-390-viewport.png",
+    "prototypeReference": "prototype-leader-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 119,
+        "right": 390,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 11906,
+          "right": 374,
+          "bottom": 12041
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 358,
+          "height": 60,
+          "right": 374,
+          "bottom": 324
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 11997,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 12041
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 11883,
+          "width": 358,
+          "height": 52,
+          "right": 374,
+          "bottom": 11935
+        },
+        "filters": {
+          "x": 16,
+          "y": 332,
+          "width": 358,
+          "height": 62,
+          "right": 374,
+          "bottom": 394
+        },
+        "pagination": {
+          "x": 16,
+          "y": 11944,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 11988
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 784,
+        "width": 390,
+        "height": 60,
+        "right": 390,
+        "bottom": 844
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 783.828125,
+        "availableUnobstructedHeight": 665.25,
+        "firstTaskVisiblePixels": 228.53125,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 11938,
+        "right": 390,
+        "bottom": 12057
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 238,
+        "height": 27,
+        "right": 254,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 11883,
+        "width": 358,
+        "height": 52,
+        "right": 374,
+        "bottom": 11935
+      },
+      "queue": {
+        "x": 16,
+        "y": 399,
+        "width": 358,
+        "height": 11478,
+        "right": 374,
+        "bottom": 11877
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 440,
+        "width": 338,
+        "height": 229,
+        "right": 364,
+        "bottom": 669
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 0,
+      "firstTaskTop": 440.296875,
+      "firstTaskBottom": 668.828125,
+      "navigationTop": 783.828125,
+      "bottomClearance": 115,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:28.620Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-leader-initial-320.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-320-viewport.png",
+    "prototypeReference": "prototype-leader-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 119,
+        "right": 320,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 11991,
+          "right": 304,
+          "bottom": 12125
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 288,
+          "height": 100,
+          "right": 304,
+          "bottom": 364
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 12081,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 12125
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 11968,
+          "width": 288,
+          "height": 52,
+          "right": 304,
+          "bottom": 12020
+        },
+        "filters": {
+          "x": 16,
+          "y": 371,
+          "width": 288,
+          "height": 107,
+          "right": 304,
+          "bottom": 478
+        },
+        "pagination": {
+          "x": 16,
+          "y": 12029,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 12073
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 680,
+        "width": 320,
+        "height": 60,
+        "right": 320,
+        "bottom": 740
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 679.828125,
+        "availableUnobstructedHeight": 561.25,
+        "firstTaskVisiblePixels": 154.953125,
+        "firstTaskVisibleRatio": 0.67803910843703,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": false,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 73.578125
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 12023,
+        "right": 320,
+        "bottom": 12141
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 168,
+        "height": 27,
+        "right": 184,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 11968,
+        "width": 288,
+        "height": 52,
+        "right": 304,
+        "bottom": 12020
+      },
+      "queue": {
+        "x": 16,
+        "y": 484,
+        "width": 288,
+        "height": 11478,
+        "right": 304,
+        "bottom": 11961
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 525,
+        "width": 268,
+        "height": 229,
+        "right": 294,
+        "bottom": 753
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 85,
+      "firstTaskTop": 439.875,
+      "firstTaskBottom": 668.40625,
+      "navigationTop": 679.828125,
+      "bottomClearance": 11.421875,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:29.066Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-site-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-site-initial-1440-viewport.png",
+    "prototypeReference": "prototype-site-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76,
+        "right": 1440,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 642,
+          "right": 1408,
+          "bottom": 750
+        },
+        "header": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 43,
+          "right": 1408,
+          "bottom": 151
+        },
+        "obligations": {
+          "x": 296,
+          "y": 227,
+          "width": 1113,
+          "height": 46,
+          "right": 1408,
+          "bottom": 273
+        },
+        "phases": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "widgets": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "aboutCounts": {
+          "x": 296,
+          "y": 718,
+          "width": 1113,
+          "height": 32,
+          "right": 1408,
+          "bottom": 750
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 296,
+          "y": 609,
+          "width": 1113,
+          "height": 51,
+          "right": 1408,
+          "bottom": 660
+        },
+        "filters": {
+          "x": 296,
+          "y": 280,
+          "width": 1113,
+          "height": 88,
+          "right": 1408,
+          "bottom": 368
+        },
+        "pagination": {
+          "x": 296,
+          "y": 669,
+          "width": 1113,
+          "height": 40,
+          "right": 1408,
+          "bottom": 709
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 53.59375,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 705,
+        "right": 1440,
+        "bottom": 781
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 109,
+        "width": 86,
+        "height": 27,
+        "right": 382,
+        "bottom": 136
+      },
+      "toolbar": {
+        "x": 296,
+        "y": 609,
+        "width": 1113,
+        "height": 51,
+        "right": 1408,
+        "bottom": 660
+      },
+      "queue": {
+        "x": 296,
+        "y": 374,
+        "width": 1113,
+        "height": 229,
+        "right": 1408,
+        "bottom": 603
+      },
+      "firstTask": {
+        "x": 313,
+        "y": 460,
+        "width": 1079,
+        "height": 54,
+        "right": 1391,
+        "bottom": 513
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 300,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 567,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 580,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 847,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1127,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1140,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1407,
+            "bottom": 218
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:29.163Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-site-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-site-initial-1024-viewport.png",
+    "prototypeReference": "prototype-site-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 76,
+        "right": 1024,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 746,
+          "right": 1001,
+          "bottom": 845
+        },
+        "header": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 43,
+          "right": 1001,
+          "bottom": 142
+        },
+        "obligations": {
+          "x": 287,
+          "y": 218,
+          "width": 715,
+          "height": 46,
+          "right": 1001,
+          "bottom": 264
+        },
+        "phases": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "widgets": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "aboutCounts": {
+          "x": 287,
+          "y": 813,
+          "width": 715,
+          "height": 32,
+          "right": 1001,
+          "bottom": 845
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 287,
+          "y": 705,
+          "width": 715,
+          "height": 51,
+          "right": 1001,
+          "bottom": 756
+        },
+        "filters": {
+          "x": 287,
+          "y": 271,
+          "width": 715,
+          "height": 88,
+          "right": 1001,
+          "bottom": 359
+        },
+        "pagination": {
+          "x": 287,
+          "y": 764,
+          "width": 715,
+          "height": 40,
+          "right": 1001,
+          "bottom": 804
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 121.390625,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 791,
+        "right": 1024,
+        "bottom": 868
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 100,
+        "width": 86,
+        "height": 27,
+        "right": 372,
+        "bottom": 127
+      },
+      "toolbar": {
+        "x": 287,
+        "y": 705,
+        "width": 715,
+        "height": 51,
+        "right": 1001,
+        "bottom": 756
+      },
+      "queue": {
+        "x": 287,
+        "y": 364,
+        "width": 715,
+        "height": 334,
+        "right": 1001,
+        "bottom": 698
+      },
+      "firstTask": {
+        "x": 304,
+        "y": 418,
+        "width": 681,
+        "height": 121,
+        "right": 984,
+        "bottom": 540
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 291,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 458,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 471,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 639,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 820,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 833,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 1000,
+            "bottom": 209
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:29.405Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-site-initial-390.png",
+    "viewportScreenshot": "actual-my-work-site-initial-390-viewport.png",
+    "prototypeReference": "prototype-site-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 119,
+        "right": 390,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 937,
+          "right": 374,
+          "bottom": 1071
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 358,
+          "height": 60,
+          "right": 374,
+          "bottom": 324
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 1027,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 1071
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 914,
+          "width": 358,
+          "height": 52,
+          "right": 374,
+          "bottom": 966
+        },
+        "filters": {
+          "x": 16,
+          "y": 332,
+          "width": 358,
+          "height": 62,
+          "right": 374,
+          "bottom": 394
+        },
+        "pagination": {
+          "x": 16,
+          "y": 975,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 1019
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 784,
+        "width": 390,
+        "height": 60,
+        "right": 390,
+        "bottom": 844
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 783.828125,
+        "availableUnobstructedHeight": 665.25,
+        "firstTaskVisiblePixels": 228.53125,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 969,
+        "right": 390,
+        "bottom": 1087
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 238,
+        "height": 27,
+        "right": 254,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 914,
+        "width": 358,
+        "height": 52,
+        "right": 374,
+        "bottom": 966
+      },
+      "queue": {
+        "x": 16,
+        "y": 399,
+        "width": 358,
+        "height": 508,
+        "right": 374,
+        "bottom": 907
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 440,
+        "width": 338,
+        "height": 229,
+        "right": 364,
+        "bottom": 669
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 0,
+      "firstTaskTop": 440.296875,
+      "firstTaskBottom": 668.828125,
+      "navigationTop": 783.828125,
+      "bottomClearance": 115,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:29.604Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-site-initial-320.png",
+    "viewportScreenshot": "actual-my-work-site-initial-320-viewport.png",
+    "prototypeReference": "prototype-site-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 119,
+        "right": 320,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 1041,
+          "right": 304,
+          "bottom": 1176
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 288,
+          "height": 100,
+          "right": 304,
+          "bottom": 364
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 1132,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 1176
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 1018,
+          "width": 288,
+          "height": 52,
+          "right": 304,
+          "bottom": 1070
+        },
+        "filters": {
+          "x": 16,
+          "y": 371,
+          "width": 288,
+          "height": 107,
+          "right": 304,
+          "bottom": 478
+        },
+        "pagination": {
+          "x": 16,
+          "y": 1079,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 1123
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 680,
+        "width": 320,
+        "height": 60,
+        "right": 320,
+        "bottom": 740
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 679.828125,
+        "availableUnobstructedHeight": 561.25,
+        "firstTaskVisiblePixels": 154.953125,
+        "firstTaskVisibleRatio": 0.67803910843703,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": false,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 73.578125
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1073,
+        "right": 320,
+        "bottom": 1192
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 168,
+        "height": 27,
+        "right": 184,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 1018,
+        "width": 288,
+        "height": 52,
+        "right": 304,
+        "bottom": 1070
+      },
+      "queue": {
+        "x": 16,
+        "y": 484,
+        "width": 288,
+        "height": 528,
+        "right": 304,
+        "bottom": 1012
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 525,
+        "width": 268,
+        "height": 229,
+        "right": 294,
+        "bottom": 753
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 85,
+      "firstTaskTop": 439.875,
+      "firstTaskBottom": 668.40625,
+      "navigationTop": 679.828125,
+      "bottomClearance": 11.421875,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:30.384Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-owner-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-1440-viewport.png",
+    "prototypeReference": "prototype-owner-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group",
+          "open": true,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": true,
+          "summary": "Management5 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76,
+        "right": 1440,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 1131,
+          "right": 1408,
+          "bottom": 1239
+        },
+        "header": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 30,
+          "right": 1408,
+          "bottom": 137
+        },
+        "obligations": {
+          "x": 296,
+          "y": 214,
+          "width": 1113,
+          "height": 891,
+          "right": 1408,
+          "bottom": 1105
+        },
+        "phases": {
+          "x": 296,
+          "y": 144,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 206
+        },
+        "widgets": {
+          "x": 296,
+          "y": 144,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 206
+        },
+        "aboutCounts": null,
+        "selection": null,
+        "toolbar": null,
+        "filters": null,
+        "pagination": null
+      },
+      "navigation": null,
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 1194,
+        "right": 1440,
+        "bottom": 1271
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 109,
+        "width": 86,
+        "height": 27,
+        "right": 382,
+        "bottom": 136
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 300,
+            "y": 145,
+            "width": 267,
+            "height": 60,
+            "right": 567,
+            "bottom": 205
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 580,
+            "y": 145,
+            "width": 267,
+            "height": 60,
+            "right": 847,
+            "bottom": 205
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 145,
+            "width": 267,
+            "height": 60,
+            "right": 1127,
+            "bottom": 205
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1140,
+            "y": 145,
+            "width": 267,
+            "height": 60,
+            "right": 1407,
+            "bottom": 205
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:30.496Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-owner-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-1024-viewport.png",
+    "prototypeReference": "prototype-owner-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group",
+          "open": true,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": true,
+          "summary": "Management5 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 76,
+        "right": 1024,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 1438,
+          "right": 1001,
+          "bottom": 1537
+        },
+        "header": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 30,
+          "right": 1001,
+          "bottom": 128
+        },
+        "obligations": {
+          "x": 287,
+          "y": 205,
+          "width": 715,
+          "height": 1198,
+          "right": 1001,
+          "bottom": 1402
+        },
+        "phases": {
+          "x": 287,
+          "y": 135,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 197
+        },
+        "widgets": {
+          "x": 287,
+          "y": 135,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 197
+        },
+        "aboutCounts": null,
+        "selection": null,
+        "toolbar": null,
+        "filters": null,
+        "pagination": null
+      },
+      "navigation": null,
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 1483,
+        "right": 1024,
+        "bottom": 1559
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 100,
+        "width": 86,
+        "height": 27,
+        "right": 372,
+        "bottom": 127
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 291,
+            "y": 136,
+            "width": 168,
+            "height": 60,
+            "right": 458,
+            "bottom": 196
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 471,
+            "y": 136,
+            "width": 168,
+            "height": 60,
+            "right": 639,
+            "bottom": 196
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 136,
+            "width": 168,
+            "height": 60,
+            "right": 820,
+            "bottom": 196
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 833,
+            "y": 136,
+            "width": 168,
+            "height": 60,
+            "right": 1000,
+            "bottom": 196
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:30.655Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-owner-initial-390.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-390-viewport.png",
+    "prototypeReference": "prototype-owner-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group",
+          "open": true,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": true,
+          "summary": "Management5 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 119,
+        "right": 390,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 1387,
+          "right": 374,
+          "bottom": 1522
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 30,
+          "right": 374,
+          "bottom": 164
+        },
+        "obligations": {
+          "x": 16,
+          "y": 250,
+          "width": 358,
+          "height": 1096,
+          "right": 374,
+          "bottom": 1346
+        },
+        "phases": {
+          "x": 16,
+          "y": 171,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 242
+        },
+        "widgets": {
+          "x": 16,
+          "y": 171,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 242
+        },
+        "aboutCounts": null,
+        "selection": null,
+        "toolbar": null,
+        "filters": null,
+        "pagination": null
+      },
+      "navigation": {
+        "x": 0,
+        "y": 784,
+        "width": 390,
+        "height": 60,
+        "right": 390,
+        "bottom": 844
+      },
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1419,
+        "right": 390,
+        "bottom": 1538
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 136,
+        "width": 350,
+        "height": 27,
+        "right": 366,
+        "bottom": 163
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 20,
+            "y": 173,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 233
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 173,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 233
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 173,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 239
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 173,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 233
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:30.802Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-owner-initial-320.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-320-viewport.png",
+    "prototypeReference": "prototype-owner-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group",
+          "open": true,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": true,
+          "summary": "Management5 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 119,
+        "right": 320,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 1738,
+          "right": 304,
+          "bottom": 1873
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 30,
+          "right": 304,
+          "bottom": 164
+        },
+        "obligations": {
+          "x": 16,
+          "y": 250,
+          "width": 288,
+          "height": 1447,
+          "right": 304,
+          "bottom": 1697
+        },
+        "phases": {
+          "x": 16,
+          "y": 171,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 242
+        },
+        "widgets": {
+          "x": 16,
+          "y": 171,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 242
+        },
+        "aboutCounts": null,
+        "selection": null,
+        "toolbar": null,
+        "filters": null,
+        "pagination": null
+      },
+      "navigation": {
+        "x": 0,
+        "y": 680,
+        "width": 320,
+        "height": 60,
+        "right": 320,
+        "bottom": 740
+      },
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1770,
+        "right": 320,
+        "bottom": 1889
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 136,
+        "width": 280,
+        "height": 27,
+        "right": 296,
+        "bottom": 163
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 20,
+            "y": 173,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 233
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 173,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 233
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 173,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 239
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 173,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 233
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:34.284Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-1440-viewport.png",
+    "prototypeReference": "prototype-designer-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76,
+        "right": 1440,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 749,
+          "right": 1408,
+          "bottom": 857
+        },
+        "header": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 43,
+          "right": 1408,
+          "bottom": 151
+        },
+        "obligations": {
+          "x": 296,
+          "y": 227,
+          "width": 1113,
+          "height": 46,
+          "right": 1408,
+          "bottom": 273
+        },
+        "phases": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "widgets": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "aboutCounts": {
+          "x": 296,
+          "y": 825,
+          "width": 1113,
+          "height": 32,
+          "right": 1408,
+          "bottom": 857
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 296,
+          "y": 716,
+          "width": 1113,
+          "height": 51,
+          "right": 1408,
+          "bottom": 767
+        },
+        "filters": {
+          "x": 296,
+          "y": 280,
+          "width": 1113,
+          "height": 88,
+          "right": 1408,
+          "bottom": 368
+        },
+        "pagination": {
+          "x": 296,
+          "y": 776,
+          "width": 1113,
+          "height": 40,
+          "right": 1408,
+          "bottom": 816
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 53.59375,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 812,
+        "right": 1440,
+        "bottom": 889
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 109,
+        "width": 86,
+        "height": 27,
+        "right": 382,
+        "bottom": 136
+      },
+      "toolbar": {
+        "x": 296,
+        "y": 716,
+        "width": 1113,
+        "height": 51,
+        "right": 1408,
+        "bottom": 767
+      },
+      "queue": {
+        "x": 296,
+        "y": 374,
+        "width": 1113,
+        "height": 336,
+        "right": 1408,
+        "bottom": 710
+      },
+      "firstTask": {
+        "x": 313,
+        "y": 460,
+        "width": 1079,
+        "height": 54,
+        "right": 1391,
+        "bottom": 513
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 300,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 567,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 580,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 847,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 860,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1127,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 1140,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1407,
+            "bottom": 218
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:34.397Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-1024-viewport.png",
+    "prototypeReference": "prototype-designer-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 76,
+        "right": 1024,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 1009,
+          "right": 1001,
+          "bottom": 1108
+        },
+        "header": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 43,
+          "right": 1001,
+          "bottom": 142
+        },
+        "obligations": {
+          "x": 287,
+          "y": 218,
+          "width": 715,
+          "height": 46,
+          "right": 1001,
+          "bottom": 264
+        },
+        "phases": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "widgets": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "aboutCounts": {
+          "x": 287,
+          "y": 1076,
+          "width": 715,
+          "height": 32,
+          "right": 1001,
+          "bottom": 1108
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 287,
+          "y": 967,
+          "width": 715,
+          "height": 51,
+          "right": 1001,
+          "bottom": 1018
+        },
+        "filters": {
+          "x": 287,
+          "y": 271,
+          "width": 715,
+          "height": 88,
+          "right": 1001,
+          "bottom": 359
+        },
+        "pagination": {
+          "x": 287,
+          "y": 1027,
+          "width": 715,
+          "height": 40,
+          "right": 1001,
+          "bottom": 1067
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 121.390625,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 1054,
+        "right": 1024,
+        "bottom": 1130
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 100,
+        "width": 86,
+        "height": 27,
+        "right": 372,
+        "bottom": 127
+      },
+      "toolbar": {
+        "x": 287,
+        "y": 967,
+        "width": 715,
+        "height": 51,
+        "right": 1001,
+        "bottom": 1018
+      },
+      "queue": {
+        "x": 287,
+        "y": 364,
+        "width": 715,
+        "height": 597,
+        "right": 1001,
+        "bottom": 961
+      },
+      "firstTask": {
+        "x": 304,
+        "y": 418,
+        "width": 681,
+        "height": 121,
+        "right": 984,
+        "bottom": 540
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 291,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 458,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 471,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 639,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 652,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 820,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 833,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 1000,
+            "bottom": 209
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:34.622Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-initial-390.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-390-viewport.png",
+    "prototypeReference": "prototype-designer-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 119,
+        "right": 390,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 1414,
+          "right": 374,
+          "bottom": 1548
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 358,
+          "height": 60,
+          "right": 374,
+          "bottom": 324
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 1504,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 1548
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 1391,
+          "width": 358,
+          "height": 52,
+          "right": 374,
+          "bottom": 1443
+        },
+        "filters": {
+          "x": 16,
+          "y": 332,
+          "width": 358,
+          "height": 62,
+          "right": 374,
+          "bottom": 394
+        },
+        "pagination": {
+          "x": 16,
+          "y": 1452,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 1496
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 784,
+        "width": 390,
+        "height": 60,
+        "right": 390,
+        "bottom": 844
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 783.828125,
+        "availableUnobstructedHeight": 665.25,
+        "firstTaskVisiblePixels": 228.53125,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1446,
+        "right": 390,
+        "bottom": 1564
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 238,
+        "height": 27,
+        "right": 254,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 1391,
+        "width": 358,
+        "height": 52,
+        "right": 374,
+        "bottom": 1443
+      },
+      "queue": {
+        "x": 16,
+        "y": 399,
+        "width": 358,
+        "height": 985,
+        "right": 374,
+        "bottom": 1384
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 440,
+        "width": 338,
+        "height": 229,
+        "right": 364,
+        "bottom": 669
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 0,
+      "firstTaskTop": 440.296875,
+      "firstTaskBottom": 668.828125,
+      "navigationTop": 783.828125,
+      "bottomClearance": 115,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:34.819Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-initial-320.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-320-viewport.png",
+    "prototypeReference": "prototype-designer-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 119,
+        "right": 320,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 1515,
+          "right": 304,
+          "bottom": 1650
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 288,
+          "height": 100,
+          "right": 304,
+          "bottom": 364
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 1606,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 1650
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 1492,
+          "width": 288,
+          "height": 52,
+          "right": 304,
+          "bottom": 1544
+        },
+        "filters": {
+          "x": 16,
+          "y": 371,
+          "width": 288,
+          "height": 107,
+          "right": 304,
+          "bottom": 478
+        },
+        "pagination": {
+          "x": 16,
+          "y": 1553,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 1597
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 680,
+        "width": 320,
+        "height": 60,
+        "right": 320,
+        "bottom": 740
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 679.828125,
+        "availableUnobstructedHeight": 561.25,
+        "firstTaskVisiblePixels": 154.953125,
+        "firstTaskVisibleRatio": 0.67803910843703,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": false,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 73.578125
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1547,
+        "right": 320,
+        "bottom": 1666
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 168,
+        "height": 27,
+        "right": 184,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 1492,
+        "width": 288,
+        "height": 52,
+        "right": 304,
+        "bottom": 1544
+      },
+      "queue": {
+        "x": 16,
+        "y": 484,
+        "width": 288,
+        "height": 1002,
+        "right": 304,
+        "bottom": 1486
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 525,
+        "width": 268,
+        "height": 229,
+        "right": 294,
+        "bottom": 753
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 85,
+      "firstTaskTop": 439.875,
+      "firstTaskBottom": 668.40625,
+      "navigationTop": 679.828125,
+      "bottomClearance": 11.421875,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:35.249Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-waiting-selected-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-1440-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "Waiting personal tasks: 1",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76,
+        "right": 1440,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 665,
+          "right": 1408,
+          "bottom": 773
+        },
+        "header": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 43,
+          "right": 1408,
+          "bottom": 151
+        },
+        "obligations": {
+          "x": 296,
+          "y": 304,
+          "width": 1113,
+          "height": 46,
+          "right": 1408,
+          "bottom": 350
+        },
+        "phases": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 139,
+          "right": 1408,
+          "bottom": 296
+        },
+        "widgets": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "aboutCounts": {
+          "x": 296,
+          "y": 741,
+          "width": 1113,
+          "height": 32,
+          "right": 1408,
+          "bottom": 773
+        },
+        "selection": {
+          "x": 296,
+          "y": 237,
+          "width": 1113,
+          "height": 43,
+          "right": 1408,
+          "bottom": 280
+        },
+        "toolbar": {
+          "x": 296,
+          "y": 633,
+          "width": 1113,
+          "height": 51,
+          "right": 1408,
+          "bottom": 684
+        },
+        "filters": {
+          "x": 296,
+          "y": 357,
+          "width": 1113,
+          "height": 88,
+          "right": 1408,
+          "bottom": 445
+        },
+        "pagination": {
+          "x": 296,
+          "y": 693,
+          "width": 1113,
+          "height": 40,
+          "right": 1408,
+          "bottom": 732
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 72.65625,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 729,
+        "right": 1440,
+        "bottom": 805
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 109,
+        "width": 86,
+        "height": 27,
+        "right": 382,
+        "bottom": 136
+      },
+      "toolbar": {
+        "x": 296,
+        "y": 633,
+        "width": 1113,
+        "height": 51,
+        "right": 1408,
+        "bottom": 684
+      },
+      "queue": {
+        "x": 296,
+        "y": 451,
+        "width": 1113,
+        "height": 176,
+        "right": 1408,
+        "bottom": 626
+      },
+      "firstTask": {
+        "x": 313,
+        "y": 537,
+        "width": 1079,
+        "height": 73,
+        "right": 1391,
+        "bottom": 609
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 300,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 567,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 580,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 847,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 860,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1127,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 1140,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1407,
+            "bottom": 218
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:35.345Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-waiting-selected-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-1024-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "Waiting personal tasks: 1",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 76,
+        "right": 1024,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 702,
+          "right": 1001,
+          "bottom": 801
+        },
+        "header": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 43,
+          "right": 1001,
+          "bottom": 142
+        },
+        "obligations": {
+          "x": 287,
+          "y": 295,
+          "width": 715,
+          "height": 46,
+          "right": 1001,
+          "bottom": 341
+        },
+        "phases": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 139,
+          "right": 1001,
+          "bottom": 287
+        },
+        "widgets": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "aboutCounts": {
+          "x": 287,
+          "y": 769,
+          "width": 715,
+          "height": 32,
+          "right": 1001,
+          "bottom": 801
+        },
+        "selection": {
+          "x": 287,
+          "y": 228,
+          "width": 715,
+          "height": 43,
+          "right": 1001,
+          "bottom": 271
+        },
+        "toolbar": {
+          "x": 287,
+          "y": 660,
+          "width": 715,
+          "height": 51,
+          "right": 1001,
+          "bottom": 711
+        },
+        "filters": {
+          "x": 287,
+          "y": 348,
+          "width": 715,
+          "height": 88,
+          "right": 1001,
+          "bottom": 436
+        },
+        "pagination": {
+          "x": 287,
+          "y": 720,
+          "width": 715,
+          "height": 40,
+          "right": 1001,
+          "bottom": 760
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": {
+        "unobstructedTop": 76.1875,
+        "unobstructedBottom": 900,
+        "availableUnobstructedHeight": 823.8125,
+        "firstTaskVisiblePixels": 141.390625,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 747,
+        "right": 1024,
+        "bottom": 823
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 100,
+        "width": 86,
+        "height": 27,
+        "right": 372,
+        "bottom": 127
+      },
+      "toolbar": {
+        "x": 287,
+        "y": 660,
+        "width": 715,
+        "height": 51,
+        "right": 1001,
+        "bottom": 711
+      },
+      "queue": {
+        "x": 287,
+        "y": 442,
+        "width": 715,
+        "height": 212,
+        "right": 1001,
+        "bottom": 654
+      },
+      "firstTask": {
+        "x": 304,
+        "y": 496,
+        "width": 681,
+        "height": 141,
+        "right": 984,
+        "bottom": 637
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 291,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 458,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 471,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 639,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 652,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 820,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 833,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 1000,
+            "bottom": 209
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:35.522Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-waiting-selected-390.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-390-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "Waiting personal tasks: 1",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 119,
+        "right": 390,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 781,
+          "right": 374,
+          "bottom": 916
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 317,
+          "width": 358,
+          "height": 60,
+          "right": 374,
+          "bottom": 377
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 124,
+          "right": 374,
+          "bottom": 309
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 872,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 916
+        },
+        "selection": {
+          "x": 16,
+          "y": 262,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 306
+        },
+        "toolbar": {
+          "x": 16,
+          "y": 758,
+          "width": 358,
+          "height": 52,
+          "right": 374,
+          "bottom": 810
+        },
+        "filters": {
+          "x": 16,
+          "y": 384,
+          "width": 358,
+          "height": 62,
+          "right": 374,
+          "bottom": 446
+        },
+        "pagination": {
+          "x": 16,
+          "y": 819,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 863
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 784,
+        "width": 390,
+        "height": 60,
+        "right": 390,
+        "bottom": 844
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 783.828125,
+        "availableUnobstructedHeight": 665.25,
+        "firstTaskVisiblePixels": 248.53125,
+        "firstTaskVisibleRatio": 1,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": true,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 0
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 813,
+        "right": 390,
+        "bottom": 932
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 238,
+        "height": 27,
+        "right": 254,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 758,
+        "width": 358,
+        "height": 52,
+        "right": 374,
+        "bottom": 810
+      },
+      "queue": {
+        "x": 16,
+        "y": 452,
+        "width": 358,
+        "height": 299,
+        "right": 374,
+        "bottom": 751
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 493,
+        "width": 338,
+        "height": 249,
+        "right": 364,
+        "bottom": 742
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 0,
+      "firstTaskTop": 493.0625,
+      "firstTaskBottom": 741.59375,
+      "navigationTop": 783.828125,
+      "bottomClearance": 42.234375,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:35.670Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-waiting-selected-320.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-320-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "Waiting personal tasks: 1",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 119,
+        "right": 320,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 866,
+          "right": 304,
+          "bottom": 1000
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 317,
+          "width": 288,
+          "height": 100,
+          "right": 304,
+          "bottom": 417
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 124,
+          "right": 304,
+          "bottom": 309
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 956,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 1000
+        },
+        "selection": {
+          "x": 16,
+          "y": 262,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 306
+        },
+        "toolbar": {
+          "x": 16,
+          "y": 842,
+          "width": 288,
+          "height": 52,
+          "right": 304,
+          "bottom": 895
+        },
+        "filters": {
+          "x": 16,
+          "y": 424,
+          "width": 288,
+          "height": 107,
+          "right": 304,
+          "bottom": 531
+        },
+        "pagination": {
+          "x": 16,
+          "y": 903,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 947
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 680,
+        "width": 320,
+        "height": 60,
+        "right": 320,
+        "bottom": 740
+      },
+      "taskDiscoverability": {
+        "unobstructedTop": 118.578125,
+        "unobstructedBottom": 679.828125,
+        "availableUnobstructedHeight": 561.25,
+        "firstTaskVisiblePixels": 102.1875,
+        "firstTaskVisibleRatio": 0.4111655978875896,
+        "taskVisibleBeforeScrolling": true,
+        "wholeTaskVisibleBeforeScrolling": false,
+        "minimumScrollToRevealTaskPixels": 0,
+        "minimumScrollToClearTaskBottomPixels": 146.34375
+      },
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 898,
+        "right": 320,
+        "bottom": 1016
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 168,
+        "height": 27,
+        "right": 184,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 842,
+        "width": 288,
+        "height": 52,
+        "right": 304,
+        "bottom": 895
+      },
+      "queue": {
+        "x": 16,
+        "y": 536,
+        "width": 288,
+        "height": 299,
+        "right": 304,
+        "bottom": 836
+      },
+      "firstTask": {
+        "x": 26,
+        "y": 578,
+        "width": 268,
+        "height": 249,
+        "right": 294,
+        "bottom": 826
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": {
+      "actualScrollDeltaFromBaseline": 158,
+      "firstTaskTop": 419.640625,
+      "firstTaskBottom": 668.171875,
+      "navigationTop": 679.828125,
+      "bottomClearance": 11.65625,
+      "note": "Native locator scrollIntoViewIfNeeded; no forced visibility or task mutation"
+    },
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:38.783Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-empty-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-1440-viewport.png",
+    "prototypeReference": "prototype-designer-empty-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1440,
+        "height": 76,
+        "right": 1440,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 585,
+          "right": 1408,
+          "bottom": 692
+        },
+        "header": {
+          "x": 296,
+          "y": 108,
+          "width": 1113,
+          "height": 43,
+          "right": 1408,
+          "bottom": 151
+        },
+        "obligations": {
+          "x": 296,
+          "y": 227,
+          "width": 1113,
+          "height": 46,
+          "right": 1408,
+          "bottom": 273
+        },
+        "phases": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "widgets": {
+          "x": 296,
+          "y": 157,
+          "width": 1113,
+          "height": 62,
+          "right": 1408,
+          "bottom": 219
+        },
+        "aboutCounts": {
+          "x": 296,
+          "y": 660,
+          "width": 1113,
+          "height": 32,
+          "right": 1408,
+          "bottom": 692
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 296,
+          "y": 552,
+          "width": 1113,
+          "height": 51,
+          "right": 1408,
+          "bottom": 603
+        },
+        "filters": {
+          "x": 296,
+          "y": 280,
+          "width": 1113,
+          "height": 88,
+          "right": 1408,
+          "bottom": 368
+        },
+        "pagination": {
+          "x": 296,
+          "y": 612,
+          "width": 1113,
+          "height": 40,
+          "right": 1408,
+          "bottom": 652
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 648,
+        "right": 1440,
+        "bottom": 724
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 109,
+        "width": 86,
+        "height": 27,
+        "right": 382,
+        "bottom": 136
+      },
+      "toolbar": {
+        "x": 296,
+        "y": 552,
+        "width": 1113,
+        "height": 51,
+        "right": 1408,
+        "bottom": 603
+      },
+      "queue": {
+        "x": 296,
+        "y": 374,
+        "width": 1113,
+        "height": 172,
+        "right": 1408,
+        "bottom": 546
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 300,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 567,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 580,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 847,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1127,
+            "bottom": 218
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1140,
+            "y": 158,
+            "width": 267,
+            "height": 60,
+            "right": 1407,
+            "bottom": 218
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-42f15b7d-7bc9-476d-ba87-7f8bdef182c9",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:38.879Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-empty-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-1024-viewport.png",
+    "prototypeReference": "prototype-designer-empty-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 0,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 1024,
+        "height": 76,
+        "right": 1024,
+        "bottom": 76
+      },
+      "sections": {
+        "component": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 541,
+          "right": 1001,
+          "bottom": 639
+        },
+        "header": {
+          "x": 287,
+          "y": 99,
+          "width": 715,
+          "height": 43,
+          "right": 1001,
+          "bottom": 142
+        },
+        "obligations": {
+          "x": 287,
+          "y": 218,
+          "width": 715,
+          "height": 46,
+          "right": 1001,
+          "bottom": 264
+        },
+        "phases": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "widgets": {
+          "x": 287,
+          "y": 148,
+          "width": 715,
+          "height": 62,
+          "right": 1001,
+          "bottom": 210
+        },
+        "aboutCounts": {
+          "x": 287,
+          "y": 607,
+          "width": 715,
+          "height": 32,
+          "right": 1001,
+          "bottom": 639
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 287,
+          "y": 499,
+          "width": 715,
+          "height": 51,
+          "right": 1001,
+          "bottom": 550
+        },
+        "filters": {
+          "x": 287,
+          "y": 271,
+          "width": 715,
+          "height": 88,
+          "right": 1001,
+          "bottom": 359
+        },
+        "pagination": {
+          "x": 287,
+          "y": 559,
+          "width": 715,
+          "height": 40,
+          "right": 1001,
+          "bottom": 598
+        }
+      },
+      "navigation": null,
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 586,
+        "right": 1024,
+        "bottom": 662
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 100,
+        "width": 86,
+        "height": 27,
+        "right": 372,
+        "bottom": 127
+      },
+      "toolbar": {
+        "x": 287,
+        "y": 499,
+        "width": 715,
+        "height": 51,
+        "right": 1001,
+        "bottom": 550
+      },
+      "queue": {
+        "x": 287,
+        "y": 364,
+        "width": 715,
+        "height": 128,
+        "right": 1001,
+        "bottom": 492
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 291,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 458,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 471,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 639,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 820,
+            "bottom": 209
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 833,
+            "y": 149,
+            "width": 168,
+            "height": 60,
+            "right": 1000,
+            "bottom": 209
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-42f15b7d-7bc9-476d-ba87-7f8bdef182c9",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:39.004Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-empty-390.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-390-viewport.png",
+    "prototypeReference": "prototype-designer-empty-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 119,
+        "right": 390,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 563,
+          "right": 374,
+          "bottom": 698
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 358,
+          "height": 60,
+          "right": 374,
+          "bottom": 324
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 358,
+          "height": 71,
+          "right": 374,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 654,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 698
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 540,
+          "width": 358,
+          "height": 52,
+          "right": 374,
+          "bottom": 592
+        },
+        "filters": {
+          "x": 16,
+          "y": 332,
+          "width": 358,
+          "height": 62,
+          "right": 374,
+          "bottom": 394
+        },
+        "pagination": {
+          "x": 16,
+          "y": 601,
+          "width": 358,
+          "height": 44,
+          "right": 374,
+          "bottom": 645
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 784,
+        "width": 390,
+        "height": 60,
+        "right": 390,
+        "bottom": 844
+      },
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 595,
+        "right": 390,
+        "bottom": 714
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 238,
+        "height": 27,
+        "right": 254,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 540,
+        "width": 358,
+        "height": 52,
+        "right": 374,
+        "bottom": 592
+      },
+      "queue": {
+        "x": 16,
+        "y": 399,
+        "width": 358,
+        "height": 135,
+        "right": 374,
+        "bottom": 534
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-42f15b7d-7bc9-476d-ba87-7f8bdef182c9",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-12T08:50:39.101Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-empty-320.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-320-viewport.png",
+    "prototypeReference": "prototype-designer-empty-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My work",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "scrollY": 0,
+      "activeElement": "BODY",
+      "phaseStripScrollLeft": 2,
+      "sourceDisclosures": [
+        {
+          "className": "my-work-attention__zero-group is-compact",
+          "open": false,
+          "summary": "Other work sourcesReviews 0Corrections 0Management 0"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Reviews0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Corrections0 items"
+        },
+        {
+          "className": "my-work-attention__disclosure",
+          "open": false,
+          "summary": "Management0 items"
+        },
+        {
+          "className": "my-work-attention__client",
+          "open": false,
+          "summary": "Client reviewsProject context"
+        }
+      ],
+      "fixedHeader": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 119,
+        "right": 320,
+        "bottom": 119
+      },
+      "sections": {
+        "component": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 648,
+          "right": 304,
+          "bottom": 782
+        },
+        "header": {
+          "x": 16,
+          "y": 135,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 179
+        },
+        "obligations": {
+          "x": 16,
+          "y": 264,
+          "width": 288,
+          "height": 100,
+          "right": 304,
+          "bottom": 364
+        },
+        "phases": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "widgets": {
+          "x": 16,
+          "y": 185,
+          "width": 288,
+          "height": 71,
+          "right": 304,
+          "bottom": 256
+        },
+        "aboutCounts": {
+          "x": 16,
+          "y": 738,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 782
+        },
+        "selection": null,
+        "toolbar": {
+          "x": 16,
+          "y": 625,
+          "width": 288,
+          "height": 52,
+          "right": 304,
+          "bottom": 677
+        },
+        "filters": {
+          "x": 16,
+          "y": 371,
+          "width": 288,
+          "height": 107,
+          "right": 304,
+          "bottom": 478
+        },
+        "pagination": {
+          "x": 16,
+          "y": 686,
+          "width": 288,
+          "height": 44,
+          "right": 304,
+          "bottom": 730
+        }
+      },
+      "navigation": {
+        "x": 0,
+        "y": 680,
+        "width": 320,
+        "height": 60,
+        "right": 320,
+        "bottom": 740
+      },
+      "taskDiscoverability": null,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 680,
+        "right": 320,
+        "bottom": 798
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 143,
+        "width": 168,
+        "height": 27,
+        "right": 184,
+        "bottom": 170
+      },
+      "toolbar": {
+        "x": 16,
+        "y": 625,
+        "width": 288,
+        "height": 52,
+        "right": 304,
+        "bottom": 677
+      },
+      "queue": {
+        "x": 16,
+        "y": 484,
+        "width": 288,
+        "height": 135,
+        "right": 304,
+        "bottom": 618
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 20,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 100,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 111,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 191,
+            "bottom": 248
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 202,
+            "y": 188,
+            "width": 80,
+            "height": 66,
+            "right": 282,
+            "bottom": 254
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 294,
+            "y": 188,
+            "width": 80,
+            "height": 60,
+            "right": 374,
+            "bottom": 248
+          }
+        }
+      ]
+    },
+    "firstTaskScrollEvidence": null,
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-42f15b7d-7bc9-476d-ba87-7f8bdef182c9",
+    "evidence": "actual authenticated route and zero-result API response"
+  }
+]

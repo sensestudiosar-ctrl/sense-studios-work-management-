@@ -1,0 +1,37 @@
+- generic [ref=f6e2]:
+  - generic [ref=f6e3]:
+    - banner [ref=f6e4]:
+      - link "Sense Studios home" [ref=f6e5] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f6e6]: S
+        - generic [ref=f6e7]:
+          - strong [ref=f6e8]: SENSE STUDIOS
+          - generic [ref=f6e9]: WORK MANAGEMENT
+    - main [ref=f6e10]:
+      - region [ref=f6e11]:
+        - generic [ref=f6e12]: SENSE STUDIOS WORKSPACE
+        - heading "Owner sign in" [level=1] [ref=f6e13]
+        - paragraph [ref=f6e14]: Use the passkey registered to your work account to continue.
+        - generic [ref=f6e15]:
+          - generic [ref=f6e16]: Work email
+          - textbox "Work email" [ref=f6e17]
+          - button "Continue with passkey" [disabled] [ref=f6e18]
+        - navigation "Identity setup" [ref=f6e19]:
+          - link "Can't sign in?" [ref=f6e20] [cursor=pointer]:
+            - /url: /staff/recovery
+          - link "Client sign in" [ref=f6e21] [cursor=pointer]:
+            - /url: /client-portal/login
+          - link "All sign-in options" [ref=f6e22] [cursor=pointer]:
+            - /url: /sign-in
+          - link "Set up the first Owner account" [ref=f6e23] [cursor=pointer]:
+            - /url: /bootstrap
+          - link "Accept an invitation or recovery token" [ref=f6e24] [cursor=pointer]:
+            - /url: /enroll
+          - link "Recover an Owner account" [ref=f6e25] [cursor=pointer]:
+            - /url: /owner-recovery
+          - link "Install on your phone" [ref=f6e26] [cursor=pointer]:
+            - /url: /install
+    - contentinfo [ref=f6e27]: Sense Studios · Secure workspace
+  - complementary "Deployed release" [ref=f6e28]:
+    - group [ref=f6e29]:
+      - generic "Release 58872f03 · API 58872f03" [ref=f6e30]

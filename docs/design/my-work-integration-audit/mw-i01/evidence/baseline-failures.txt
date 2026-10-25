@@ -1,0 +1,19 @@
+ FAIL  src/app.test.tsx > identity authentication shell > lands a ready signed-in account on My Work while retaining the accepted destinations
+ FAIL  src/app.test.tsx > identity authentication shell > ignores a late session response after explicit session loss on /my-work
+ FAIL  src/app.test.tsx > identity authentication shell > ignores a late session response after explicit session loss on /tasks
+ FAIL  src/app.test.tsx > identity authentication shell > ignores a late session response after explicit session loss on /documents
+ FAIL  src/app.test.tsx > identity authentication shell > ignores a late session response after explicit session loss on /reviews
+ FAIL  src/app.test.tsx > identity authentication shell > ignores a late session response after explicit session loss on /projects
+ FAIL  src/app.test.tsx > identity authentication shell > clears Learning after session loss and ignores a late refresh
+ FAIL  src/app.test.tsx > identity authentication shell > runs options, browser assertion, verification, and restores the new session
+ FAIL  src/app.test.tsx > identity authentication shell > shows a generic invalid response without exposing account details
+ FAIL  src/app.test.tsx > identity authentication shell > reports network failure and passkey cancellation in generic terms
+ FAIL  src/app.test.tsx > identity authentication shell > sends the session CSRF token on logout and confirms completion
+ FAIL  src/app.test.tsx > identity authentication shell > returns to sign in when a refreshed session has been revoked
+ FAIL  src/app.test.tsx > identity authentication shell > bootstraps the first Owner and completes second passkey plus recovery acknowledgment
+ FAIL  src/app.test.tsx > identity authentication shell > accepts a staff invitation or recovery token and registers a passkey
+ FAIL  src/app.test.tsx > identity authentication shell > recovers the Owner using the offline code and a replacement passkey
+ FAIL  src/app.test.tsx > identity authentication shell > creates staff invitation and Owner-authorized recovery token handoffs
+ FAIL  src/app.test.tsx > identity authentication shell > shows session loading, then a readable error with retry and empty state
+ FAIL  src/app.test.tsx > identity authentication shell > labels the current device and revokes another session with CSRF, then refreshes the list
+ FAIL  src/workspace-navigation.test.tsx > workspace navigation > keeps the approved destinations available and marks the direct URL active

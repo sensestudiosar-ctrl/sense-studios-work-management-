@@ -1,0 +1,85 @@
+{
+  "kind": "Frontend component geometry only; not authenticated acceptance",
+  "results": [
+    {
+      "width": 1440,
+      "initial": {
+        "queueY": 586.46875,
+        "rowHeight": 53.59375,
+        "pageOverflow": false,
+        "contentWidth": 1128
+      },
+      "managementCollision": false,
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selected": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "mobileInteractions": "not applicable"
+    },
+    {
+      "width": 1024,
+      "initial": {
+        "queueY": 583.03125,
+        "rowHeight": 121.390625,
+        "pageOverflow": false,
+        "contentWidth": 712
+      },
+      "managementCollision": false,
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selected": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "mobileInteractions": "not applicable"
+    },
+    {
+      "width": 390,
+      "initial": {
+        "queueY": 754.0625,
+        "rowHeight": 228.53125,
+        "pageOverflow": false,
+        "contentWidth": 366
+      },
+      "managementCollision": false,
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selected": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "mobileInteractions": "PASS (mocked reads, no writes)"
+    },
+    {
+      "width": 320,
+      "initial": {
+        "queueY": 798.859375,
+        "rowHeight": 243.53125,
+        "pageOverflow": false,
+        "contentWidth": 296
+      },
+      "managementCollision": false,
+      "hover": {
+        "background": "rgb(250, 248, 242)",
+        "color": "rgb(36, 48, 43)"
+      },
+      "selected": "rgb(24, 44, 41)",
+      "focus": {
+        "outline": "solid",
+        "width": "3px"
+      },
+      "mobileInteractions": "PASS (mocked reads, no writes)"
+    }
+  ]
+}

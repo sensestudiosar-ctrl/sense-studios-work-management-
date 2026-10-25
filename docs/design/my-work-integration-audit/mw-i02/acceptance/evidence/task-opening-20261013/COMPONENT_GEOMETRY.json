@@ -1,0 +1,350 @@
+{
+  "kind": "synthetic-current-source-component",
+  "authenticatedAcceptance": false,
+  "viewports": [
+    {
+      "body": {
+        "bottom": 831,
+        "height": 551.21875,
+        "right": 1440,
+        "width": 570,
+        "x": 870,
+        "y": 279.78125
+      },
+      "bodyOverflow": "hidden",
+      "drawer": {
+        "bottom": 900,
+        "height": 900,
+        "right": 1440,
+        "width": 570,
+        "x": 870,
+        "y": 0
+      },
+      "drawerHorizontalOverflow": false,
+      "footer": {
+        "bottom": 900,
+        "height": 69,
+        "right": 1440,
+        "width": 570,
+        "x": 870,
+        "y": 831
+      },
+      "header": {
+        "bottom": 279.78125,
+        "height": 279.78125,
+        "right": 1440,
+        "width": 570,
+        "x": 870,
+        "y": 0
+      },
+      "height": 900,
+      "horizontalOverflow": false,
+      "modal": true,
+      "tabs": [
+        {
+          "label": "Overview",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 1022.5,
+            "width": 132.5,
+            "x": 890,
+            "y": 234.78125
+          }
+        },
+        {
+          "label": "Checklist",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 1155,
+            "width": 132.5,
+            "x": 1022.5,
+            "y": 234.78125
+          }
+        },
+        {
+          "label": "Evidence",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 1287.5,
+            "width": 132.5,
+            "x": 1155,
+            "y": 234.78125
+          }
+        },
+        {
+          "label": "Activity",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 1420,
+            "width": 132.5,
+            "x": 1287.5,
+            "y": 234.78125
+          }
+        }
+      ],
+      "width": 1440
+    },
+    {
+      "body": {
+        "bottom": 831,
+        "height": 551.21875,
+        "right": 1024,
+        "width": 570,
+        "x": 454,
+        "y": 279.78125
+      },
+      "bodyOverflow": "hidden",
+      "drawer": {
+        "bottom": 900,
+        "height": 900,
+        "right": 1024,
+        "width": 570,
+        "x": 454,
+        "y": 0
+      },
+      "drawerHorizontalOverflow": false,
+      "footer": {
+        "bottom": 900,
+        "height": 69,
+        "right": 1024,
+        "width": 570,
+        "x": 454,
+        "y": 831
+      },
+      "header": {
+        "bottom": 279.78125,
+        "height": 279.78125,
+        "right": 1024,
+        "width": 570,
+        "x": 454,
+        "y": 0
+      },
+      "height": 900,
+      "horizontalOverflow": false,
+      "modal": true,
+      "tabs": [
+        {
+          "label": "Overview",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 606.5,
+            "width": 132.5,
+            "x": 474,
+            "y": 234.78125
+          }
+        },
+        {
+          "label": "Checklist",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 739,
+            "width": 132.5,
+            "x": 606.5,
+            "y": 234.78125
+          }
+        },
+        {
+          "label": "Evidence",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 871.5,
+            "width": 132.5,
+            "x": 739,
+            "y": 234.78125
+          }
+        },
+        {
+          "label": "Activity",
+          "rect": {
+            "bottom": 278.78125,
+            "height": 44,
+            "right": 1004,
+            "width": 132.5,
+            "x": 871.5,
+            "y": 234.78125
+          }
+        }
+      ],
+      "width": 1024
+    },
+    {
+      "body": {
+        "bottom": 775,
+        "height": 504.609375,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 270.390625
+      },
+      "bodyOverflow": "hidden",
+      "drawer": {
+        "bottom": 844,
+        "height": 844,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "drawerHorizontalOverflow": false,
+      "footer": {
+        "bottom": 844,
+        "height": 69,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 775
+      },
+      "header": {
+        "bottom": 270.390625,
+        "height": 270.390625,
+        "right": 390,
+        "width": 390,
+        "x": 0,
+        "y": 0
+      },
+      "height": 844,
+      "horizontalOverflow": false,
+      "modal": true,
+      "tabs": [
+        {
+          "label": "Overview",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 104.5,
+            "width": 90.5,
+            "x": 14,
+            "y": 225.390625
+          }
+        },
+        {
+          "label": "Checklist",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 195,
+            "width": 90.5,
+            "x": 104.5,
+            "y": 225.390625
+          }
+        },
+        {
+          "label": "Evidence",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 285.5,
+            "width": 90.5,
+            "x": 195,
+            "y": 225.390625
+          }
+        },
+        {
+          "label": "Activity",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 376,
+            "width": 90.5,
+            "x": 285.5,
+            "y": 225.390625
+          }
+        }
+      ],
+      "width": 390
+    },
+    {
+      "body": {
+        "bottom": 671,
+        "height": 400.609375,
+        "right": 320,
+        "width": 320,
+        "x": 0,
+        "y": 270.390625
+      },
+      "bodyOverflow": "hidden",
+      "drawer": {
+        "bottom": 740,
+        "height": 740,
+        "right": 320,
+        "width": 320,
+        "x": 0,
+        "y": 0
+      },
+      "drawerHorizontalOverflow": false,
+      "footer": {
+        "bottom": 740,
+        "height": 69,
+        "right": 320,
+        "width": 320,
+        "x": 0,
+        "y": 671
+      },
+      "header": {
+        "bottom": 270.390625,
+        "height": 270.390625,
+        "right": 320,
+        "width": 320,
+        "x": 0,
+        "y": 0
+      },
+      "height": 740,
+      "horizontalOverflow": false,
+      "modal": true,
+      "tabs": [
+        {
+          "label": "Overview",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 87,
+            "width": 73,
+            "x": 14,
+            "y": 225.390625
+          }
+        },
+        {
+          "label": "Checklist",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 160,
+            "width": 73,
+            "x": 87,
+            "y": 225.390625
+          }
+        },
+        {
+          "label": "Evidence",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 233,
+            "width": 73,
+            "x": 160,
+            "y": 225.390625
+          }
+        },
+        {
+          "label": "Activity",
+          "rect": {
+            "bottom": 269.390625,
+            "height": 44,
+            "right": 306,
+            "width": 73,
+            "x": 233,
+            "y": 225.390625
+          }
+        }
+      ],
+      "width": 320
+    }
+  ]
+}

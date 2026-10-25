@@ -1,0 +1,888 @@
+{
+  "date": "2026-10-17",
+  "purpose": "UX/UI planning; no implementation",
+  "ownerDirection": "Propose client passwords",
+  "limitations": {
+    "styles": "Seven live style searches returned NO_RESULTS; existing approved visual lock and current theme used.",
+    "liveAudit": "Owner Dashboard and client signed-out entry inspected at existing desktop viewport; My Work navigation blocked by Vite JSX overlay. No client authentication or mobile acceptance.",
+    "security": "Refero is a UX reference, not security authority."
+  },
+  "styleSearches": [
+    {
+      "key": "styleSearch0",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    },
+    {
+      "key": "styleSearch1",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    },
+    {
+      "key": "styleSearch2",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    },
+    {
+      "key": "style-attio",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    },
+    {
+      "key": "style-productivity",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    },
+    {
+      "key": "style-minimal",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    },
+    {
+      "key": "style-final",
+      "response": {
+        "error": {
+          "code": "NO_RESULTS",
+          "message": "Search returned no results"
+        }
+      }
+    }
+  ],
+  "screens": [
+    {
+      "key": "full-linear",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/linear.app/desktop/b24b33dc-0e42-4254-ba16-55209661284c_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/linear.app/desktop/b24b33dc-0e42-4254-ba16-55209661284c_preview.jpg",
+        "colors": [
+          [
+            83,
+            83,
+            83
+          ],
+          [
+            159,
+            160,
+            159
+          ],
+          [
+            250,
+            250,
+            250
+          ],
+          [
+            200,
+            200,
+            200
+          ],
+          [
+            178,
+            97,
+            170
+          ]
+        ],
+        "hex_colors": [
+          "0x535353",
+          "0x9FA09F",
+          "0xFAFAFA",
+          "0xC8C8C8",
+          "0xB261AA"
+        ],
+        "uuid": "13774021-f998-4003-849d-ad1533489547",
+        "page_url": "https://linear.app/refero-design/issue/REF-1/get-familiar-with-linear-1",
+        "site": {
+          "name": "Linear",
+          "domain": "linear.app",
+          "description": "Plan and build products"
+        },
+        "ux_patterns": [
+          "Comments",
+          "Activity & Notification Feed",
+          "Task"
+        ],
+        "ui_elements": [
+          "Accordion & Collapse",
+          "List",
+          "Button",
+          "Dropdown",
+          "Checkbox & Radio",
+          "Page Control & Pagination",
+          "Text Field",
+          "Breadcrumb",
+          "Navigation Bar",
+          "Sidebar & Drawer",
+          "Icon",
+          "Thumbnail",
+          "Avatar",
+          "Animation"
+        ],
+        "page_types": [
+          "Task Management"
+        ],
+        "fonts": [
+          "Inter"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/13774021-f998-4003-849d-ad1533489547",
+        "content": {
+          "description": "The screen depicts a project management or issue tracking interface with a clean, minimalistic design and a predominantly white background. The layout is divided into three main vertical sections. On the left is a narrow sidebar with navigation links grouped under headings such as Inbox, My issues, Workspace (with Projects, Views, and More), Your teams (with Refero Design and its sub-items), and Try (Import issues, Invite people, Link GitHub). Each section is separated by subtle spacing and uses simple text links with small icons. The middle main content area shows a header with breadcrumb navigation \"Refero Design > REF-1\" and page controls (pagination 1/4 and properties icon) at the top. Below is a partial screenshot or image preview with a magnifying glass icon to zoom. Underneath, there is a link to \"+ Add sub-issues\". Further down is an Activity section with a timestamped entry \"Linear created the issue - 58min ago\" and a Subscribe button with a bell icon. Below that is a comment input field with placeholder text \"Leave a comment...\" and icons for attachment and submitting. On the right side is a narrow properties panel with options to mark as Todo, Set priority, Assign users, Add labels, and Add to project. The typography is clean and modern, likely a sans-serif font, with consistent font sizes and weights for headings, labels, and body text. The interface uses subtle grayscale colors for text and icons, with occasional purple accent for team/project names. The layout uses clear separation with vertical columns and plenty of white space for readability. UI elements include buttons, links, icons, input fields, and panels. The design is functional and focused on task and issue management workflows.",
+          "layout": "The layout consists of three vertical columns. The left sidebar column is narrow and vertically stacked with grouped navigation links and headings. The middle main content column is wider and vertically arranged with a header (breadcrumb and controls), an image preview area with zoom control, a link for adding sub-issues, an activity feed with timestamped entries, and a comment input area. The right sidebar column is narrow and vertically stacked with property controls for the current issue. The columns are separated by subtle vertical spacing and use consistent padding. The overall layout is a three-column grid with clear vertical stacking within each column, balanced white space, and alignment for readability and easy navigation.",
+          "functions": "Users can navigate through different sections of their workspace using the left sidebar, including accessing inbox, issues, projects, views, and team-related items. They can view details of a specific issue or task in the main content area, including associated images or screenshots. Users can add sub-issues to break down tasks, review activity logs showing recent actions, subscribe to updates for notifications, and leave comments to collaborate or provide feedback. The right properties panel allows users to manage task metadata such as marking as Todo, setting priority levels, assigning responsible users, adding labels for categorization, and linking the issue to a project. This screen supports detailed issue tracking and project management by providing clear navigation, task details, collaboration tools, and property management in a streamlined layout."
+        },
+        "flows": [
+          {
+            "id": 6636,
+            "name": "Reacting to issue using emoji",
+            "step": 1,
+            "total_steps": 4
+          }
+        ]
+      }
+    },
+    {
+      "key": "full-dock-code",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/dock.us/desktop/4a6d3cca-89b2-4300-9af7-c3afafed0cb3_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/dock.us/desktop/97c45dc3-e983-4c36-bea3-9c02e8017ee3_preview.jpg",
+        "colors": [
+          [
+            29,
+            32,
+            38
+          ],
+          [
+            248,
+            249,
+            251
+          ],
+          [
+            157,
+            168,
+            182
+          ],
+          [
+            54,
+            78,
+            232
+          ],
+          [
+            124,
+            124,
+            129
+          ]
+        ],
+        "hex_colors": [
+          "0x1D2026",
+          "0xF8F9FB",
+          "0x9DA8B6",
+          "0x364EE8",
+          "0x7C7C81"
+        ],
+        "uuid": "637c7ad0-39ff-4fc1-88b4-fcacf73c57d8",
+        "page_url": "https://auth.dock.us/find-your-dock/pin/nqbHgLTKZcsC",
+        "site": {
+          "name": "Dock",
+          "domain": "dock.us",
+          "description": "Makes it easy to create sales proposals, onboarding plans, client portals, and project hubs"
+        },
+        "ux_patterns": [],
+        "ui_elements": [
+          "Text Field",
+          "Dialog & Modal Window",
+          "Icon"
+        ],
+        "page_types": [
+          "Log In",
+          "Verification"
+        ],
+        "fonts": [
+          "San Francisco",
+          "Roobert"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/637c7ad0-39ff-4fc1-88b4-fcacf73c57d8",
+        "content": {
+          "description": "The screen presents a minimalistic and clean verification interface. The background is a very light off-white (#f8fbff) with faint overlapping large circular shapes in a very subtle light blue gradient, adding depth without distraction. Centrally positioned is a white rectangular card with subtle drop shadow to create elevation and visual focus. The card has rounded corners and contains text and input fields arranged vertically with balanced padding. At the top left corner of the whole screen is a small company logo featuring a blue and purple gradient graphic beside the black text \"dock\" in a modern sans-serif font. Inside the card, the main heading reads \"Check your email for a code\" in a black or very dark grey font (#121212), medium weight and size around 18-20px, centered. Below is supporting text in smaller size (~14px), grey (#666666) that instructs the user about the 6-character code sent to the email address, which is presented inline in bold for emphasis. Then there's an input area for 6 single-character fields for code entry, arranged horizontally in two groups of three separated by a dash spaced with consistent margins. Each input box is square with a thin light grey border (#CCCCCC) and subtle rounded corners. Placeholder circles or underscores indicate empty fields. The input fields highlight or focus state is not shown but presumably it changes visually when active. Beneath input boxes is a small subtle hint text reminding the user to check spam if code is not found. The entire layout uses a neat, consistent spacing, center alignment, and uses a modern sans-serif font family throughout. No animations visible in the screenshot but could be implied during typing or in error states.",
+          "layout": "The layout is minimal and centered on the screen with a large white rectangular card placed exactly at the vertical and horizontal center. The card contains vertically stacked elements: a heading, descriptive text, the verification code input fields in a single row subdivided into two groups of three inputs, and a small hint text at the bottom. The entire card has symmetrical padding and margin to keep content balanced. The background features large circular shapes layered behind the card, creating subtle depth and interest without clutter. There is one main column inside the card for text and input fields. Input fields are arranged horizontally within a subgroup inside the card, split into two subgroups separated by a dash symbol. The screen is spacious with ample whitespace around the card, emphasizing the focus area.",
+          "functions": "Users can read the instruction to check their email for a 6-character code required for verification. They can input the received code into six individual input fields arranged clearly and separately for ease of entry. The interface guides the users with a message confirming to which email the code was sent and warns about expiration. If the user can't find the code, they are prompted to check their spam folder with additional text. This screen facilitates the task of two-factor or email verification as part of a secure login or sign up/authentication flow. It ensures clarity by emphasizing the key instructions and input method, efficient by grouping input fields, and usable by providing contextual cues about the code's source and urgency. The ultimate purpose is to verify the user's identity via email to grant access or continue the authentication process, making the process secure and user-friendly."
+        }
+      }
+    },
+    {
+      "key": "full-safe-message",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/voicenotes.com/desktop/61f46794-30a0-45dc-a2a2-dca05e4b77e4_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/voicenotes.com/desktop/61f46794-30a0-45dc-a2a2-dca05e4b77e4_preview.jpg",
+        "colors": [
+          [
+            21,
+            26,
+            32
+          ],
+          [
+            252,
+            251,
+            252
+          ],
+          [
+            157,
+            160,
+            163
+          ],
+          [
+            124,
+            124,
+            125
+          ],
+          [
+            97,
+            101,
+            103
+          ]
+        ],
+        "hex_colors": [
+          "0x151A20",
+          "0xFCFBFC",
+          "0x9DA0A3",
+          "0x7C7C7D",
+          "0x616567"
+        ],
+        "uuid": "eae29959-ed62-4641-934f-7ba59c33dc52",
+        "page_url": "https://voicenotes.com/forgot-password?email=refero.design.team@gmail.com",
+        "site": {
+          "name": "Voicenotes",
+          "domain": "voicenotes.com",
+          "description": "AI Notes and Meetings"
+        },
+        "ux_patterns": [
+          "Success"
+        ],
+        "ui_elements": [
+          "Button",
+          "Full-Screen Overlay"
+        ],
+        "page_types": [
+          "Reset Password"
+        ],
+        "fonts": [
+          "UI Sans Serif",
+          "Inter"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/eae29959-ed62-4641-934f-7ba59c33dc52",
+        "content": {
+          "description": "The screen has a very minimalistic and clean design with a white background. At the top center, there is a small logo or icon. Below the logo, the main heading reads \"Forgot password\" in a simple, sans-serif font, likely around 16-20px in size, centered horizontally. Underneath the heading, there is a short explanatory text in smaller font size, stating: \"If an account with that email address exists, you will receive a link to reset your password.\" This text is also centered and uses a standard weight, black or dark gray color for good readability. The overall style is very minimal and functional, with no additional buttons, input fields, or decorative elements visible. The layout is vertically centered horizontally aligned with a lot of white space around the content, creating a calm and focused user experience. There are no interactive elements visible on this screen, suggesting it is a confirmation or informational page after a user has requested a password reset.",
+          "layout": "The layout is a single-column vertical stack. At the very top is a small centered logo or icon. Below that is a centered heading text, followed by a centered paragraph text. The entire content is horizontally centered with generous white space around it. There are no additional columns or grids. The alignment is strictly centered, and the content is spaced with comfortable padding between the logo, heading, and paragraph. The layout is simple, minimal, and focused on clarity and readability.",
+          "functions": "Users viewing this screen are informed that if the email address they provided exists in the system, they will receive an email with a password reset link. The screen serves as a confirmation and reassurance step in the password recovery flow. It prevents revealing whether an email is registered, which enhances security and privacy. There are no interactive elements here; the main function is to communicate the next step clearly and reduce user confusion or repeated requests. This screen fits within a broader workflow where users initiate a password reset and then wait for an email to proceed. It supports the overall goal of helping users regain access to their account securely and efficiently."
+        },
+        "flows": [
+          {
+            "id": 7004,
+            "name": "Resetting password",
+            "step": 3,
+            "total_steps": 6
+          }
+        ]
+      }
+    },
+    {
+      "key": "full-dock-dashboard",
+      "reference": {
+        "thumbnail_url": "https://images.refero.design/screenshots/dock.us/desktop/4ea00ea3-b984-46b9-8642-9a29c9564520_thumb.jpg",
+        "preview_url": "https://images.refero.design/screenshots/dock.us/desktop/7ba2baba-ce14-49db-b02e-0c35974737e0_preview.jpg",
+        "colors": [
+          [
+            68,
+            91,
+            246
+          ],
+          [
+            235,
+            236,
+            238
+          ],
+          [
+            123,
+            126,
+            132
+          ],
+          [
+            35,
+            36,
+            50
+          ],
+          [
+            158,
+            160,
+            168
+          ]
+        ],
+        "hex_colors": [
+          "0x445BF6",
+          "0xEBECEE",
+          "0x7B7E84",
+          "0x232432",
+          "0x9EA0A8"
+        ],
+        "uuid": "7ba2baba-ce14-49db-b02e-0c35974737e0",
+        "page_url": "https://refero.dock.us/spaces/6L86pQ3D3VeO/internal#tab=forms",
+        "site": {
+          "name": "Dock",
+          "domain": "dock.us",
+          "description": "Makes it easy to create sales proposals, onboarding plans, client portals, and project hubs"
+        },
+        "ux_patterns": [
+          "Stats"
+        ],
+        "ui_elements": [
+          "Accordion & Collapse",
+          "Button",
+          "Floating Button",
+          "Tabs",
+          "Page Control & Pagination",
+          "Navigation Bar",
+          "Sidebar & Drawer",
+          "Icon",
+          "Avatar"
+        ],
+        "page_types": [
+          "Dashboard"
+        ],
+        "fonts": [
+          "Intercom",
+          "Roobert"
+        ],
+        "platform": "web",
+        "refero_url": "https://refero.design/pages/7ba2baba-ce14-49db-b02e-0c35974737e0",
+        "content": {
+          "description": "The screen is a Customer Onboarding Portal dashboard with a minimalistic and clean design, predominantly using white and dark theme colors. The background is solid white, providing a clear and bright canvas for the UI elements. The header is dark navy (approx. #1A1F2E) with white text, featuring navigation buttons such as Back (top left) and toggle buttons labeled 'Internal', 'Editor', 'Shared' in the top center. On the top right, there are distinct colored buttons - a yellow 'Publish' button (#F4B300) and a blue 'Share' button (#1C68F7). The portal's logo is displayed in black and white with the text \"Customer Onboarding Portal\" to the left side, aligned vertically. \n\nThe screen layout is divided into three main vertical columns. Left column: a sidebar with collapsible sections titled 'About this workspace' (expanded) showing account info with Apple logo, account owner name, and link to add a team member. Below are collapsible sections for 'Key dates' and 'Additional Information' which are currently collapsed. The text is in a simple sans-serif font, black/dark grey (#333333), sized around 14-16 px, left aligned with some line spacing for readability. Small icons and detail texts are present, e.g., Apple logo and user avatar.\n\nMiddle column: main content area with horizontal tabs at top: 'Activity', 'People', 'Tasks', and 'Forms' with the 'Forms' tab selected and underlined with a thin blue line (#1C68F7). Underneath is a table with columns labeled Name, Starts, Responses, Completion, and Last update. The table is minimal, with light grey (#E0E0E0) horizontal dividing lines. The first row lists a form titled 'Immortan Joe' with a small note describing it (‘I am your redeemer. It is by my hand…’). Statistics for starts, responses are numeric (1), completion is 100%, and last update shows '41 minutes ago'. Pagination controls appear below (showing 1 of 1) with arrow buttons and page numbers.\n\nRight column: client activity summary with small headings 'Views' and 'Time Spent' showing zeroes in large bold font, as well as 'Actions' broken down into 'Downloads', 'Interactions', and 'Clicks', all zero. A button labeled 'View activity by person' is below, styled as a rectangular white button with subtle border or shadow for clickability.\n\nOverall typography uses a modern sans-serif font consistent throughout with varying weights for headings (bold) and body text (regular). The UI elements such as buttons have subtle shadows, a crisp and modern feel. The layout is spacious with clear padding between columns and segments, a three-column grid with a distinct sidebar, main content area, and secondary info panel. There are no visible animations. The UI focuses on clarity, data presentation in tabular form, and workspace management.",
+          "layout": "The layout is a three-column vertical structure. The left sidebar column is narrow and contains collapsible sections arranged vertically, with account details on top and other information below. The center column is the widest and is divided into a tab navigation bar horizontally at the top, and underneath a tabular data grid listing forms with rows and columns aligned horizontally. The third column on the right acts as a summary panel with grouped elements including key metrics displayed in large typography and a button below for viewing detailed activity by person. The spacing between columns is even, with clear padding inside each column. The layout uses a fixed sidebar on the left, flexible expanding main column, and a fixed or slightly narrower summary column on the right. Elements are aligned left consistently, and the tab bar uses a horizontal row with an active underline indicator. Pagination controls are placed below the table aligned center or right. The layout keywords include vertical columns, tabbed navigation, grid table, fixed sidebar, summary panel, collapsible sections, grouped metrics, and action buttons.",
+          "functions": "Users can navigate the onboarding portal workspace to view detailed information about their account, including team members and key dates. They can toggle between tabs such as Activity, People, Tasks, and Forms to access different types of data related to the workspace. Within the Forms tab, users can see a list of forms created for onboarding purposes, along with relevant statistics including the number of starts, responses, completion percentage, and the last update time. Users can paginate through the list if there are multiple forms. On the right side, they can monitor client activity such as views, time spent on the portal, and actions like downloads, interactions, and clicks. The interface provides actionable buttons such as \"Publish\" to finalize or share updates related to the workspace and \"Share\" to distribute access or information. Additionally, users can expand or collapse sidebar sections to view more details about the workspace, add team members, and access key dates or additional information. This setup helps users efficiently track the onboarding progress, team collaboration, and client engagement within a centralized portal, facilitating project management and communication."
+        }
+      }
+    }
+  ],
+  "flows": [
+    {
+      "key": "full-recovery",
+      "reference": {
+        "id": 5727,
+        "platform": "web",
+        "refero_url": "https://refero.design/flows/5727",
+        "name": "Email-based Password Reset",
+        "screens_count": 6,
+        "description": "Happy path: An unauthenticated user at the login prompt chooses the “Forgot Password?” path, submits their email to request a password reset, sees an email-sent confirmation, opens the reset-password interface (presented here as an in-app form), enters and confirms a new password, and then is returned to the login screen with a notification that the password was changed and they must re-authenticate. Entry point: login screen (password entry). Exit point: back to login screen, ready for the user to sign in with the new password. Assumptions: user is signed out (no active session), has access to the email address they submit, and is on a desktop-like split layout (left marketing panel, right auth panel). No additional authentication steps (2FA) are visible in these screens.",
+        "problem": "Task: Recover access to an account by resetting a forgotten password.\n\n- From the user's perspective: The user needs to regain access to their account. They expect to be able to request a password reset by providing their email, receive confirmation that an email has been sent, set a new password (enter and confirm), and then log in with the new password.\n\n- From the interface/system perspective: The UI provides a 'Forgot Password?' entry on the login screen that navigates to an email-collection screen. After the email is submitted the interface shows a success notification. The system then presents a reset-password form where the user enters and confirms a new password. The UI enforces (visibly) entering both password fields and provides a Reset action. After reset the system provides feedback that the password changed and returns the user to the login prompt.\n\n- End result:\n  - User-perceived outcome: The user sees confirmation that the reset email was sent, successfully sets a new password, receives confirmation that the password changed, and is asked to log in again.\n  - System-level outcome: The user’s password is updated and the session requires re-authentication (password change notification shown).",
+        "site": {
+          "id": 647,
+          "domain": "reown.com",
+          "description": "The onchain UX platform",
+          "name": "Reown",
+          "background_url": "https://images.refero.design/backgrounds/reown.com/cb79a36b-b5ef-4ee4-ab70-4d6e9ba019c5.jpg",
+          "refero_url": "https://refero.design/websites/647",
+          "categories": [
+            "Development Tools",
+            "Finance",
+            "Web3 & Crypto"
+          ],
+          "favicon_url": "https://images.refero.design/favicon/reown.com/33adb3dc-b8b7-48ef-a9e9-3b9986f0d5cb.jpg",
+          "background_color": "6aadf0"
+        },
+        "steps": [
+          {
+            "name": "Login - Password Prompt",
+            "screen_id": "7fa2f54a-187e-4efc-bcd2-cf0c8ceeb5ab",
+            "refero_url": "https://refero.design/pages/7fa2f54a-187e-4efc-bcd2-cf0c8ceeb5ab",
+            "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/abb69ec2-8d63-4cf2-8a6e-50b935da5451_thumb.jpg",
+            "goal": "Allow an existing user to authenticate or choose password recovery.",
+            "action": "User can enter their password to log in, or click the 'Forgot Password?' link to start account recovery.",
+            "system_response": "If 'Forgot Password?' is clicked, the UI navigates to the email-based password recovery screen. (No login occurs in this path.)",
+            "page_types": [
+              "Log In"
+            ],
+            "ux_patterns": [
+              "Product Features"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Full-Screen Overlay",
+              "Icon",
+              "Gradient"
+            ],
+            "fonts": [
+              "Inter"
+            ],
+            "content": {
+              "description": "This set of two screens features a minimalist split-screen design with a vertical division. The left screen uses a vertical, gradient sky-blue background transitioning from a deeper blue at the top to a lighter shade at the bottom. Centered is a white, rounded square card with an app icon at the top (a blue square with a black cloud shape inside), followed by a bold heading \"Cloud\" in black text. Below is a smaller, light gray subtitle followed by three checklist bullet points, each starting with a black checkmark icon and black text describing features (connecting wallets, wallet users app access, enabling web3 notifications). The font used appears modern and sans-serif, with a hierarchy from bold for the heading to normal weight for descriptive text. The overall style is clean, spacious, with generous padding around the card. The right screen features a clean white background with a password entry form centered vertically and horizontally. At top-left is a small back arrow icon, and at top-right a moon icon possibly representing dark mode toggle. Below these icons is a text label: \"Enter your password\" aligned left with a smaller \"Forgot Password?\" link aligned right on the same line in a lighter gray color. Beneath is a password input field with rounded corners, light gray background fill, and placeholder text \"Password\" in gray. Below the input is a wide black button with white text reading \"Log In\". The form uses a clean, sans-serif font, with clear spacing and minimal distractions. The layout uses symmetrical horizontal alignment and vertical stacking with generous spacing between elements. The UI includes subtle shadows and rounded corners, consistent spacing, and simple iconography. The interaction elements are visually clear, with an emphasis on accessibility and simplicity. No animations are visible in the screenshot.",
+              "layout": "The layout is a 2-column vertical split covering the full screen width. The left column uses a background gradient and a centered card with content arranged vertically. The card includes an icon at the top center, then a heading, a subtitle, and finally a vertical list of three bullet points with checkmark icons. The column has space around the card for breathing room. The right column has a plain white background and vertically center-aligned login form elements stacked top to bottom: back icon top-left, moon icon top-right, then the password prompt line with left and right aligned texts, followed by a centered password input field and a full-width login button below. Padding and consistent margin separates each element. The layout emphasizes symmetrical balance horizontally and vertical alignment within each column, using whitespace and simple geometric shapes like rounded rectangles for input and buttons.",
+              "functions": "Users can enter their password in the password input field on the right screen and click the black \"Log In\" button to authenticate and proceed. They can also tap the \"Forgot Password?\" link to initiate a password recovery process. Additionally, users can use the back arrow icon to navigate to the previous screen and toggle the moon icon to switch themes or modes if supported. The left screen primarily provides information about the 'Cloud' product or service, listing key features and benefits to inform or reassure users about the app's capabilities related to wallet connections and notifications. Together, these screens support secure user login to access a cloud-based wallet or app service platform. The interface is designed to be clear and efficient, minimizing user distractions while providing essential navigation and support options for authentication."
+            }
+          },
+          {
+            "name": "Request Password Reset (Email)",
+            "screen_id": "45f8baf5-023d-4898-899f-e74dbee8ac40",
+            "refero_url": "https://refero.design/pages/45f8baf5-023d-4898-899f-e74dbee8ac40",
+            "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/650b3ac3-0bc9-4f87-9a65-0c04c40688aa_thumb.jpg",
+            "goal": "Collect the user's email address to send a password reset message.",
+            "action": "User confirms or edits their email address in the input field and taps 'Send email'.",
+            "system_response": "The system attempts to send a password reset email and (on success) displays a temporary confirmation notification; the user stays on the same email submission screen.",
+            "page_types": [
+              "Reset Password"
+            ],
+            "ux_patterns": [
+              "Product Features"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Full-Screen Overlay",
+              "Icon",
+              "Gradient"
+            ],
+            "fonts": [
+              "Inter"
+            ],
+            "content": {
+              "description": "The screen is a password reset interface divided into two vertical sections. The left side features a soft blue gradient background (#9AD0FF to #D0EBFF) and a centered white rounded rectangle card with slightly rounded corners. Inside the card is a medium sized blue icon box (#2B6CB0) with a stylized black cloud icon. Below the icon is a bold heading 'Cloud' in black, followed by a light gray subtitle text in smaller font about building the new internet. Underneath are three bullet points with checkmark icons in black, each describing key features in black text. The right side has a white background with a minimalistic form: a label in black 'Continue with email' and a small grey instruction text below it. There is a single text input field with rounded edges and subtle gray background (#F0F0F0) containing a sample email address in black text. Below is a large black rectangular button with rounded corners and white text 'Send email'. The layout is horizontally split into two equal columns with vertical center alignment. The typography uses a clean, modern sans-serif font with varied weights (bold for headings, normal for body). The UI elements have ample padding and margin for clarity. There is a small black button labeled 'reown' in top left corner and a small crescent moon icon top right for theme toggle. Overall styling is clean, modern, minimalistic with soft colors on the left and strong black and white contrast on the right.",
+              "layout": "The screen is arranged in two vertical columns of equal width, forming a symmetric split layout. The left column holds a single centered card containing iconography and text content aligned vertically with spacing. The right column presents a form aligned vertically center as well, with the label and input stacked, followed by a centered button. Padding and margins are consistent, with medium spacing between elements to ensure readability and clean separation. The left column uses a full background gradient occupying entire column height, while the right column has a solid white background. The overall design uses a two-column grid layout with elements centrally aligned within each column, balanced spacing, and minimalistic styling.",
+              "functions": "Users can input their email address into the text field on the right side to initiate a password reset process. The input field clearly shows a placeholder or example email to guide users. After entering their email, users press the 'Send email' button, which is visually distinct with a black background and white text, indicating its interactive nature. This button likely triggers sending a reset password email to the entered address. The left side provides supportive branding and contextual information via the cloud icon and bullet points, enhancing user confidence and engagement. The interface provides a simple, focused workflow for users who have forgotten their password, allowing them to start the reset process by submitting their email. Visual cues like the prominent button, placeholder text, and concise instructions help users understand what to do quickly and efficiently. Overall, this screen facilitates the broader goal of enabling users to recover access to their account by verifying ownership through the registered email and beginning password reset."
+            }
+          },
+          {
+            "name": "Email Sent Confirmation",
+            "screen_id": "162ee02f-80ba-4b03-98fd-64c2a8870032",
+            "refero_url": "https://refero.design/pages/162ee02f-80ba-4b03-98fd-64c2a8870032",
+            "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/e3014f29-9c7a-41c6-bf99-29f08dd3f494_thumb.jpg",
+            "goal": "Provide immediate feedback that the reset request has been processed.",
+            "action": "User sees a small floating toast/message reading 'Email sent' and can wait for the email or continue if instructed by the message flow.",
+            "system_response": "A transient toast appears confirming the email was sent. The email-sent state is communicated but the screen remains the email submission view.",
+            "page_types": [
+              "Reset Password"
+            ],
+            "ux_patterns": [
+              "Success",
+              "Product Features"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Notifications & Toast",
+              "Full-Screen Overlay",
+              "Icon",
+              "Gradient",
+              "Popover"
+            ],
+            "fonts": [
+              "Inter"
+            ],
+            "content": {
+              "description": "This screen is a password reset interface with a clean, minimalistic design. The layout is split into two vertical halves: the left half has a light blue gradient background with a white rounded square card containing an app icon (cloud symbol in blue square), a bold heading \"Cloud,\" a subtitle describing the app, and three bullet points with check marks. The right half has a plain white background with a form for entering an email address to reset the password. The form includes a heading \"Continue with email\" and a subtext prompting the user to enter their email. Below is a rounded rectangular text input field pre-filled with an example email address. Under the input is a large black rounded button labeled \"Send email.\" At the top center is a small floating notification bubble with a check mark and text \"Email sent.\" On the top left corner, there is a dark mode toggle button with an icon and label \"reown.\" On the top right corner is a moon icon for toggling dark mode. The typography is modern sans-serif, with black and gray text on white and light blue backgrounds. The overall style is simple, clear, and user-friendly, with ample white space and subtle shadows for emphasis.",
+              "layout": "The screen uses a two-column layout divided vertically. The left column occupies approximately 50% width with a vertical gradient background from light blue to white and contains a centered card with icon, heading, subtitle, and bullet points arranged vertically with spacing. The right column also occupies about 50% width with a plain white background and vertically stacked elements aligned left: heading, subtext, email input field, and a full-width black button with rounded corners. The notification bubble floats near the top center, overlapping both columns slightly. The top bar includes two controls: a dark mode toggle on the left and a moon icon on the right. The layout is spacious with generous padding and margins, balanced alignment, and clear visual hierarchy.",
+              "functions": "Users can input their email address into the text field to request a password reset. The input field supports editing and displays the entered email. After entering the email, users can click the \"Send email\" button to submit the request. Upon successful submission, a confirmation notification \"Email sent\" appears to inform the user that the reset email has been sent. The dark mode toggle allows switching between light and dark themes. The interface facilitates the password recovery process by guiding users to enter their email and confirming the action's success, ensuring clarity and ease of use for account recovery."
+            }
+          },
+          {
+            "name": "Reset Password Form",
+            "screen_id": "2442c90a-1e97-4128-8c95-1b5b0361605d",
+            "refero_url": "https://refero.design/pages/2442c90a-1e97-4128-8c95-1b5b0361605d",
+            "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/59ba2edf-d089-4f8f-8db8-54b5a7eb61f6_thumb.jpg",
+            "goal": "Allow the user to set a new password by entering and confirming it.",
+            "action": "User enters a new password and repeats it in the confirm field, then taps the 'Reset' button.",
+            "system_response": "The UI validates inputs (presence and matching of the two fields implied by the layout) and enables the Reset action. On submit, the system processes the password change.",
+            "page_types": [
+              "Reset Password"
+            ],
+            "ux_patterns": [
+              "Product Features"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Full-Screen Overlay",
+              "Icon",
+              "Gradient"
+            ],
+            "fonts": [
+              "Inter"
+            ],
+            "content": {
+              "description": "This screen features a two-column layout with a vertical split, left and right sections. The left column occupies approximately half the screen width and has a vertical gradient background transitioning from a medium light blue (#a0c4ff) at the top to a very light bluish white at the bottom (#f0f8ff). Centered in this column is a white rounded square card with a slight shadow or subtle elevation effect. At the top center of this card is a blue rounded square icon background (#2563eb) with a black cloud icon inside it. Below the icon, the card displays the heading \"Cloud\" in a bold, 18-20 px, black font with center alignment. Underneath is a short subtitle in gray (#6b7280) smaller font (12-14 px) reading \"The all-in-one creator hub for building the new internet\" also center-aligned. Following this are three bullet points with black check icons preceding them and black text (12-14 px) reading: \"Easily connect apps to 500+ wallets,\" \"Empower wallet users to access 3,000+ apps,\" and \"Enable web3 notifications on both apps and wallets.\" The bullet texts are left aligned with consistent spacing and each bullet uses a black check mark icon on the left. \n\nThe right column has a plain white background (#ffffff) and a minimalist layout. Top left portion includes a small heading that reads \"Reset password\" in black bold font (~18 px). Below it is a smaller instructional text in light gray font (~12-14 px) that says: \"Enter and confirm your new password.\" There are two horizontally full-width input fields stacked vertically with about 12 px vertical spacing. The first input placeholder is \"New password\" and the second is \"Confirm password.\" Both input fields have rounded corners, a very light gray background (#f3f4f6), and subtle border. \n\nBelow the inputs is a single, full-width black button with rounded corners and white bold text \"Reset\" centered. The page has minimal icons for toggles in black or dark gray near the top: On the left side top area are two circular toggle icons and a pill-shaped button labeled \"reown.\" On the upper right corner is a small dark mode toggle icon (crescent moon shape). \n\nThe overall style is clean, modern, minimalist with ample white space, consistent padding and margin. The typography uses a sans-serif font with distinct hierarchy using font size and weight. UI elements have smooth rounded corners and high contrast for accessibility. \n\nThis design does not have animations but if implemented, transitions would likely be subtle fade-ins or slide effects for input focus and button hover states. The layout uses center alignment for content in left card and left alignment for form content on right side. The spacing is balanced with generous padding around text and interactive elements.",
+              "layout": "The layout is a two-column split layout with equal or near-equal widths. The left column has a vertical gradient background and vertically and horizontally centered card content. The card inside the left column is a single block with a rounded square shape, containing an icon at the top center, a title, a subtitle, and three bullet points vertically stacked with spacing. The right column is a plain white background with a form layout comprising a small header, instructional text, two stacked input fields, and a full-width button aligned vertically with consistent spacing. There are small toggles or icons spaced at the upper left and upper right corners. Padding is generous with whitespace between elements. Content alignment differs: left card content is center-aligned, right column content is left-aligned.",
+              "functions": "Users can interact with this interface primarily to reset their account password. Specifically, users can enter a new password into the first input field and then confirm it by typing the same password in the second input field. The form clearly instructs the user to enter and confirm their new password, helping to minimize errors. The input fields have placeholder text to guide the user on what information to input. Once the user fills in both fields, they can click the 'Reset' button below to submit the new password. The button is prominently styled with high contrast to indicate clickability. \n\nAt a higher level, this screen facilitates the password reset flow by ensuring users can securely change their password to regain or maintain access to their account. Additional UI cues include toggles and a dark mode button for personalization or interaction context, possibly to switch color themes.\n\nThe left column provides informational context about the platform or service called 'Cloud,' offering reassurance and credibility about the service behind the password reset. However, the primary task on this page is the password reset form on the right.\n\nOverall, the interface is designed to clearly convey purpose, minimize user errors during password reset, and provide a straightforward path to complete this security-sensitive action efficiently and confidently."
+            }
+          },
+          {
+            "name": "Password Entry & Submit",
+            "screen_id": "466923df-3efb-4554-aa61-f48316166a9e",
+            "refero_url": "https://refero.design/pages/466923df-3efb-4554-aa61-f48316166a9e",
+            "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/48eb5e75-17a0-4483-9a4e-3f4fe8fa5d7e_thumb.jpg",
+            "goal": "Complete the password change by submitting the new password.",
+            "action": "User fills both password fields (seen as masked text) and presses 'Reset'.",
+            "system_response": "On success the system shows a confirmation toast 'Password changed, please re-authenticate' and redirects or returns the user to the login/password entry screen.",
+            "page_types": [
+              "Reset Password"
+            ],
+            "ux_patterns": [
+              "Product Features"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Full-Screen Overlay",
+              "Icon",
+              "Gradient"
+            ],
+            "fonts": [
+              "Inter"
+            ],
+            "content": {
+              "description": "The screen is split into two vertical halves. On the left half, there is a light blue gradient background (gradient from #a8ceff to #e1eaff). Centered is a white rounded square card with subtle shadow. At the top of the card is a blue icon with a black cloud logo inside. Below the icon is a bold heading text 'Cloud' in black, using a clean sans-serif font, approximately 24px size, centered. Under the heading is a smaller subtitle line in gray (#7a7a7a), describing the hub. Beneath that are three bullet points with checkmark icons on the left, describing features. Text is left-aligned inside the card but the card itself is centered horizontally and vertically in the left half. On the right half, the background is solid white. At the top-right corner is a small dark mode toggle icon (crescent moon shape) in black. Centered vertically and horizontally on the right half is a minimal reset password form with the heading 'Reset password' in black, aligned left, small paragraph prompt 'Enter and confirm your new password' in lighter gray (#999). Below are two horizontally aligned password input fields with rounded corners and subtle shadows. The text inside password fields is masked, with an eye icon on the right side to toggle visibility. Under the inputs is a wide black button with rounded edges and white text 'Reset'. The fonts used appear modern sans-serif, about 16-18px for inputs and button text. The layout has generous padding and whitespace, with neat alignment. Overall style is minimalistic, clean, and balanced with a clear two-column split and user focus on the password reset form.",
+              "layout": "The screen uses a two-column layout with equal width vertical panes. The left column features a vertically and horizontally centered card with a rounded square shape. The right column holds the form vertically and horizontally centered as well. The form has a vertical stack layout with heading, subtext, two input fields stacked with consistent spacing, and a full-width button below them. Padding around columns is generous, ensuring visual separation. The top right corner includes a small icon for dark mode toggle positioned with margin from edges. The card text inside the left column uses left alignment for bullet points but the card itself is centered within the column. Both columns have ample whitespace and balanced visual weight.",
+              "functions": "Users can interact with the password input fields to enter and confirm a new password securely. The fields support text masking for privacy and include an eye icon allowing toggling visibility for verification. Users can click the 'Reset' button to submit the new password. The interface visually guides users with clear labels and instructions to complete password reset. The dark mode toggle lets users switch visual themes if implemented, enhancing user comfort. The left side provides informational content about the 'Cloud' service with bullet points for quick comprehension. Overall, the page facilitates the secure resetting of user passwords by combining input validation cues and a straightforward layout, helping users regain account access efficiently and confidently."
+            }
+          },
+          {
+            "name": "Return to Login - Re-authenticate",
+            "screen_id": "18bdefcd-3bd1-43ae-9dc8-8bcac5807213",
+            "refero_url": "https://refero.design/pages/18bdefcd-3bd1-43ae-9dc8-8bcac5807213",
+            "thumbnail_url": "https://images.refero.design/screenshots/reown.com/desktop/57e7de33-ad33-41f6-99dc-926b3c871da1_thumb.jpg",
+            "goal": "Have the user re-enter credentials using the updated password.",
+            "action": "User is presented again with the password entry field (login). They should enter the new password to sign in.",
+            "system_response": "A notification indicates the password was changed and the app requires re-authentication; the login prompt is active for the user to sign in with the new password.",
+            "fonts": [
+              "Inter"
+            ]
+          }
+        ],
+        "related_queries": [
+          "reset password via email",
+          "forgot password email reset",
+          "email reset confirmation toast",
+          "user password reset process",
+          "enter new password screen",
+          "confirm password reset screen",
+          "send password reset email",
+          "password changed re-authenticate",
+          "request password reset form",
+          "password reset success notification"
+        ]
+      }
+    },
+    {
+      "key": "full-faire-login",
+      "reference": {
+        "id": 13074,
+        "platform": "web",
+        "refero_url": "https://refero.design/flows/13074",
+        "name": "Wholesale Sign In and Marketplace Access",
+        "screens_count": 8,
+        "description": "Happy path starts on the Faire landing/home experience with a logged-out user. The user can browse promotional content and product discovery sections, then initiate sign-in from the top navigation. A modal guides email entry, password or email-code authentication, and successful verification returns the user into the logged-in marketplace experience with personalized recommendations and product browsing. Assumes a desktop device, no prior login at first, and standard access to the marketplace.",
+        "problem": "The user is trying to access Faire’s wholesale marketplace and get into an authenticated shopping experience. From the user’s perspective, the task is to discover products or proceed with buying by signing in when prompted. They expect to enter an email, verify their identity either with a password or a code sent by email, and then continue browsing. From the interface perspective, the UI supports exploration, prompts authentication through a centered modal, validates email entry, accepts password or one-time code, and transitions the user to a personalized marketplace view after successful sign-in. The result is that the user gets access to the logged-in storefront, and the system recognizes the account and loads relevant recommendations and shopping tools.",
+        "site": {
+          "id": 155,
+          "domain": "faire.com",
+          "description": "Wholesale Platform",
+          "name": "Faire",
+          "background_url": "https://images.refero.design/backgrounds/faire.com/bb99f642-fe9e-49d5-b71e-db3499b3f01a.jpg",
+          "refero_url": "https://refero.design/websites/155",
+          "categories": [
+            "Marketplace",
+            "Business"
+          ],
+          "favicon_url": "https://images.refero.design/favicon/faire.com/f2b44060-c464-46df-9e02-0d4ea2dfcef9.jpg",
+          "background_color": "6aadf0"
+        },
+        "steps": [
+          {
+            "name": "Landing Browse",
+            "screen_id": "06d5860d-1366-4082-8d8e-eafed7fa27f2",
+            "refero_url": "https://refero.design/pages/06d5860d-1366-4082-8d8e-eafed7fa27f2",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/06d5860d-1366-4082-8d8e-eafed7fa27f2_thumb.jpg",
+            "goal": "Explore the wholesale marketplace and find a path to sign in or shop.",
+            "action": "Browse featured brands, categories, or click a sign-in / sign-up entry point in the header.",
+            "system_response": "The site remains on the landing page while the user can navigate to sign-in, sign-up, or product/category sections.",
+            "page_types": [
+              "Catalog Page",
+              "Home Page"
+            ],
+            "ux_patterns": [
+              "Shopping",
+              "Testimonials"
+            ],
+            "ui_elements": [
+              "Cards & Tiles",
+              "Button",
+              "Tabs",
+              "Page Control & Pagination",
+              "Tags & Chips",
+              "Navigation Bar",
+              "Search Field",
+              "Footer",
+              "Photo",
+              "Icon",
+              "Hero Image",
+              "Currency"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen is a polished wholesale marketplace landing page with a refined editorial-commerce aesthetic. Overall style combines minimal luxury branding with warm, earthy tones and large lifestyle photography. The visual hierarchy is driven by oversized serif headlines, generous white space, soft beige backgrounds, and accent panels in muted olive, burgundy, lime, peach, and charcoal. The interface feels premium, calm, and aspirational rather than transactional.\n\nColor palette: the dominant background is a warm off-white / cream, approximately RGB 250, 245, 239 / HEX #FAF5EF. Primary dark text uses near-black charcoal and deep brown, roughly #2E2A27 and #384031 for secondary dark-green-gray. Accent tones visible across sections include muted olive green #384031, brass/gold #A7915B, terracotta brown #835D4F, mushroom gray #988E89, warm taupe #B0A096, dark burgundy #4B2B2F, chartreuse-lime #E7EC8C, pale peach #F7C6B5, and a saturated green used in imagery/shelving. Buttons are mostly white with thin gray or brown outlines, or dark filled CTA buttons with white text. Section backgrounds alternate between cream, deep plum/burgundy, olive, pale lime, and peach to create strong segmentation.\n\nTypography: the page uses a high-contrast serif for headlines and section titles, likely a display serif with elegant, editorial proportions. Headings are large, around 52–72 px on hero sections and 28–40 px in content blocks, set in regular or medium weight, left-aligned or centered depending on section. Supporting copy uses a clean sans-serif, around 14–18 px, medium gray to dark brown, with comfortable line spacing and small paragraph widths. Navigation and filter chips use a simple sans-serif in small sizes, around 13–15 px, with medium weight. Links are understated, often underlined or in dark text with subtle hover emphasis.\n\nHeader and navigation: at the top there is a slim announcement strip with centered text and a small link. Below it, a main header contains the FAIRE wordmark on the left, a long rounded search field in the center, and utility actions on the right such as language selection, blog, sign up to sell, sign in, and a prominent dark CTA button for sign up to buy. The search bar is a pill shape with a light border and faint placeholder text. Category navigation appears below the header as a horizontal row of text links.\n\nHero section: the hero is a full-width image banner with a lifestyle retail scene and a large overlay headline on the left. Text is white for contrast, with a subheading and a prominent white CTA button. A smaller secondary text link appears below the main CTA. The hero image is edge-to-edge and immersive, with content positioned toward the left side so that the product imagery remains visible on the right. The section has no heavy overlay except text placed directly over the photo.\n\nFeatured brands / discovery section: beneath the hero is a cream background section titled “Featured brands.” A row of rounded pill tabs sits near the top, with one selected state shown as a dark filled pill and the others as light outlined pills. Below the tabs is a horizontal row of brand cards, each with a square image, brand name, and location in smaller muted text. Cards are simple and airy, with minimal borders. A secondary outlined button sits below the card row, aligned left.\n\nEditorial brand story blocks: the page alternates between full-width color bands and lifestyle photography. One section uses a deep burgundy background with a left-aligned headline and supporting paragraph on the right, plus a wide landscape image beneath. Another section uses an olive background with centered text and two inset images on the left and right. Another uses pale lime with a two-column layout: copy and bullet-like benefit statements on the left, a large photo on the right. These blocks use strong spacing, large images, and concise marketing copy to create a magazine-like rhythm.\n\nProduct discovery carousel: one section titled “Bestsellers you might like” presents a horizontal product carousel with left and right arrow controls placed at the far edges. Product cards show a large square product image, a small badge like “Bestseller” in the corner, then a title, rating with star icon and numeric score, and a light button labeled “Unlock wholesale price.” The cards are evenly spaced and designed for quick browsing.\n\nCategory exploration: another section titled “Explore categories” uses a wide horizontal card carousel with large photo tiles and text labels overlaid in the lower left of each image. Tabs and arrows indicate scrollable navigation. Cards are large and immersive, emphasizing category imagery rather than dense metadata.\n\nValues and brand filtering: the “Shop by your values” section displays a row of pill-shaped filter chips such as Women owned, AAPI owned, Black owned, Latino owned, LGBTQI+ owned, Eco-friendly, Organic, Handmade, Not on Amazon, and Gives back. One chip is shown in active state with a dark fill. Below, a two-column feature block pairs a large image on the left with a testimonial-style paragraph and a text link on the right, followed by an outlined CTA button.\n\nBlog and footer area: the lower portion includes a content grid titled “Grow your retail business with Faire,” showing four editorial article cards in a row with photos and short captions. The final CTA block uses a soft peach background and oversized centered serif text, surrounded by floating product imagery at the edges. At the bottom, the footer contains two columns of links labeled Company and Explore, social media icons, secondary CTAs, legal text, and a final thin copyright/privacy line.\n\nSpacing and layout treatment: the entire page relies on generous vertical rhythm, wide margins, and modular sectioning. Content is aligned to a consistent left grid, with many sections using 2-column or 3-column splits. Cards are uniformly spaced, with subtle rounded corners and light borders. The overall visual language is premium, calm, and curated, with strong use of lifestyle imagery and restrained UI chrome.\n\nInteraction and motion: the page likely uses gentle hover states on links, chips, cards, and buttons. Carousel rows imply horizontal scrolling or arrow-based navigation, with smooth easing and subtle movement. Buttons have light shadow or border changes on hover. Chips show active/inactive states through fill color contrast. No aggressive animation is visible; motion is understated and refined.",
+              "layout": "Long scrolling homepage with a stacked, section-based layout. Top area includes a thin announcement bar, then a full-width header with three main zones: left logo, center search field, right utility links and CTA. Beneath that is a horizontal category nav spanning the width.\n\nMain content is organized in a single-column vertical page flow, but many sections use internal multi-column structures:\n- Hero: 1 full-width banner section with large overlay text on left and image background across entire width.\n- Featured brands: 1 section with tab row, then a horizontal row of 5 brand cards; left-aligned button beneath.\n- Brand storytelling: 2-column text/image blocks and full-width image strips inside colored bands.\n- Bestsellers: horizontal carousel row of product cards; arrows at left and right edges.\n- Category exploration: horizontal carousel of large image tiles.\n- Values section: chip filter row, then a 2-column layout with large image on left and text content on right.\n- Editorial blog cards: 4-column article grid with image thumbnails and captions.\n- Final CTA and footer: large centered CTA panel with decorative image framing, then a 2- or 3-column footer link area, ending with a thin legal strip.\n\nThe page uses consistent max-width content containers inside full-bleed background bands. Cards and tiles are arranged in rows with equal gutters, and several sections rely on horizontal scrolling/carousel behavior rather than fixed grids.",
+              "functions": "Users can search for wholesale products or brands using the persistent search bar, switch language, sign in, or start a buying/selling onboarding flow from the top header. They can browse the featured brands section by category tabs, select pill filters, open brand cards, and use the carousel arrows to move through more content. In the bestseller area, users can inspect products, view ratings, and unlock wholesale pricing via the CTA buttons. The category exploration section lets them browse by visual category tiles, while the values section enables filtering brands by social or ethical attributes such as women-owned or eco-friendly. The editorial content blocks guide users toward discovery and education, helping them understand the platform and retail benefits. The footer provides access to company information, help, marketplace resources, blog content, and account entry points.\n\nAt a workflow level, the interface supports discovery-first shopping for retailers: users can explore brands, narrow by category or values, compare bestselling items, and move toward account creation or purchase intent. It also supports brand sellers by offering a separate sign-up path and informational links. The broader purpose is to position Faire as a wholesale marketplace where retailers can discover products, evaluate brands, and begin buying with confidence. The screen balances inspirational browsing with practical conversion actions, reducing friction through visual navigation, prominent CTAs, and lightweight filtering."
+            }
+          },
+          {
+            "name": "Email Entry",
+            "screen_id": "74fccad7-a5da-4d15-a324-b60a9ff0c4f4",
+            "refero_url": "https://refero.design/pages/74fccad7-a5da-4d15-a324-b60a9ff0c4f4",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/74fccad7-a5da-4d15-a324-b60a9ff0c4f4_thumb.jpg",
+            "goal": "Start authentication with an email address.",
+            "action": "Enter an email address in the sign-in modal and click Next, or choose Google/Apple sign-in.",
+            "system_response": "The modal validates the email and advances to the next authentication step.",
+            "page_types": [
+              "Log In"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Dialog & Modal Window",
+              "Popover"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "This screen uses a clean, minimalist wholesale marketplace aesthetic with a dimmed full-page hero background and a centered authentication modal in the foreground. The base page is a large hero-style landing screen with a muted photographic background showing people and storefront imagery, darkened by a semi-transparent overlay to push focus toward the modal. The color palette is primarily neutral and monochrome: off-white background tones (#FBFBFB), near-black text (#100E0C), charcoal/dark gray buttons (#2E2E2C), deep brown-black accents (#241E19), and medium gray secondary text (#636363). The overall mood is premium, understated, and editorial, with generous whitespace and thin, refined typography.\n\nThe modal is a white rectangular card with sharp corners or very subtle rounding, centered both vertically and horizontally. It has a soft shadow and sits above a darkened backdrop overlay. At the top-right of the modal is a small close “X” icon in dark gray/black. The brand wordmark “FAIRE” appears at the top-left inside the modal in spaced uppercase letters, likely a serif or elegant display logo treatment. Below it, a large heading reads “Sign in to Faire,” set in a high-contrast serif font or similarly refined display typeface, large size, dark near-black color, left aligned. Under the heading is a labeled single-line text input for “Email address.” The label is small, regular-weight, dark gray, with the input field below it having a white fill, thin light-gray border, and subtle inner padding.\n\nThe primary action is a wide, dark charcoal button labeled “Next,” centered in the modal width. The button has rectangular proportions, a flat fill color around #2E2E2C, white text, and clear hover/active potential through slight darkening or subtle elevation. Beneath it is a horizontal divider with the word “or” centered in small gray text, separated by thin pale lines extending left and right. Two secondary sign-in buttons appear stacked below: “Sign in with Google” and “Sign in with Apple.” These are white or very light buttons with thin gray borders, black/dark text, and brand icons on the left—the multicolor Google “G” icon and the black Apple logo. The buttons are consistent in height, evenly spaced, and aligned to the modal width.\n\nBehind the modal, the landing page header spans the full width with a pale background and a thin top announcement bar reading something like “Shop wholesale online from over 100,000 brands. Sign up.” The main header includes the FAIRE logo on the left, a wide search field in the center with faint placeholder text, and utility links on the right such as language selection, Blog, Sign up to sell, Sign in, and a dark filled CTA button for “Sign up to buy.” A category navigation row sits below with compact text links like Featured, New, Home decor, Food & drink, Women, Beauty & wellness, Jewelry, Paper & novelty, Kids & baby, Pets, Men, Books. The hero section in the background contains a large marketing headline on the left (“Find your next best...”), supporting copy, and a muted CTA button, all heavily subdued by the overlay due to the modal being active.\n\nTypography throughout is sophisticated and high-contrast. Headings use a serif display style with larger sizes and elegant spacing, while navigation, labels, and button text use a clean sans-serif in small to medium sizes. Text alignment in the modal is left-aligned, except for centered dividers and button labels. The UI is uncluttered, with consistent spacing, plenty of internal padding inside the modal, and strong separation between form elements. No decorative gradients are present; the design relies on flat neutrals, photographic background imagery, and overlay dimming to create depth.\n\nOverall, the screen feels like a premium ecommerce authentication overlay on top of a marketplace landing page. It emphasizes simplicity, trust, and quick account access, with a single-step email login flow and alternative third-party sign-in options.",
+              "layout": "Single-page landing layout with a full-width top header and category nav, overlaid by a centered modal dialog. The background page uses a 1-column hero section with left-aligned marketing copy and CTA, but it is visually de-emphasized by a dark overlay. The foreground consists of a single centered column card approximately medium width, vertically placed around the middle of the viewport. Inside the modal, content is stacked in one column: brand mark, title, email label, input field, primary button, divider, then two secondary auth buttons. The header above the hero is arranged as a horizontal multi-group layout: left brand area, central search area, and right utility links/buttons. The category bar is another single horizontal row spanning the page. The modal is the dominant interaction layer and blocks the rest of the page visually and functionally.",
+              "functions": "Users can enter an email address to begin signing in, submit the form with the primary Next button, dismiss the dialog using the close icon, or choose alternative authentication methods through Google or Apple. The modal supports a quick login workflow by reducing sign-in to one primary field, then advancing the user to the next step after email entry. The separator and social buttons provide fallback and convenience options for users who prefer federated login. In the background, the page also supports broader marketplace navigation such as browsing categories, searching brands or products, and switching between buying and selling entry points. The overall purpose of the interface is to let wholesale shoppers or sellers access their Faire account while keeping the user focused on authentication without leaving the landing context."
+            }
+          },
+          {
+            "name": "Email Recognized",
+            "screen_id": "7510a73d-09bf-4b1b-810c-cb98969457d0",
+            "refero_url": "https://refero.design/pages/7510a73d-09bf-4b1b-810c-cb98969457d0",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/7510a73d-09bf-4b1b-810c-cb98969457d0_thumb.jpg",
+            "goal": "Confirm the account email before continuing.",
+            "action": "Review the prefilled email and continue with Next.",
+            "system_response": "The modal switches from email entry to password sign-in for the recognized account.",
+            "page_types": [
+              "Log In"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Dialog & Modal Window",
+              "Popover"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen is a wholesale marketplace landing page with a centered sign-in modal overlay. The overall aesthetic is minimal, editorial, and premium, with a muted darkened hero image in the background and a clean white authentication card in the foreground. The palette is dominated by off-white and charcoal tones: background base #FBFBFB, overlay darkening effect around rgba(16,14,12,0.55–0.7), primary text in near-black #100E0C and #2E2E2C, secondary text in medium gray #636363, and accents in warm brown-black #251E19. The hero behind the modal is dimmed to emphasize the dialog.\n\nThe modal itself is a white rectangular card with subtle shadow and crisp edges, centered horizontally and vertically over the page. It uses ample internal padding and a very light border or shadow separation from the background. At the top of the card is a small wordmark-style brand label “FAIRE” in uppercase with generous letter spacing, rendered in a refined serif-like or minimalist brand type style. In the top-right corner of the modal is a small close icon (X), dark gray/black, sized like a standard dialog dismiss control.\n\nThe main title reads “Sign in to Faire” in a larger serif display style, likely around 28–34 px, dark charcoal #100E0C, left-aligned, with moderate line height and strong visual hierarchy. Below it is a labeled input field for “Email address.” The label is small, dark gray, and positioned above the field. The email input has a thin light-gray border, white fill, and rounded corners with a soft rectangular shape. The entered text appears in dark gray/black, while the placeholder or prefilled email is shown in standard body text styling. The primary CTA button is a wide dark charcoal button labeled “Next,” with white text, centered, full-width within the card, and a height around 40–44 px. It has a flat, modern style with slight rounding and strong contrast.\n\nA centered divider with the word “or” separates email sign-in from social login options. The divider is composed of two faint horizontal lines on either side of the word, all in very light gray. Beneath it are two secondary outline buttons stacked vertically: “Sign in with Google” and “Sign in with Apple.” Both are white with subtle borders, dark text, and left-aligned brand icons within the button. The Google button includes the multicolor Google “G” icon; the Apple button includes a black Apple logo. These buttons are equal width, lightly bordered, and visually less prominent than the primary button. The modal composition is balanced, with consistent vertical spacing between all controls.\n\nBehind the modal, the page header remains visible but subdued. At the very top is a slim announcement bar with small text reading “Shop wholesale online from over 100,000 brands. Sign up.” The main navigation row beneath includes the Faire wordmark on the left, a long search field with light border and placeholder text “Search wholesale products or brands,” a language selector (“EN-US”), and navigation links such as Blog, Sign up to sell, and Sign in. On the far right is a dark button labeled “Sign up to buy.” Below that sits a category navigation bar with multiple links like Featured, New, Home decor, Food & drink, Women, Beauty & wellness, Jewelry, Paper & novelty, Kids & baby, Pets, Men, and Books. The hero area behind the modal shows a large photographic banner with overlaid promotional text and a CTA button, all dimmed by the modal overlay.\n\nTypography across the page mixes elegant serif headlines with clean sans-serif UI text. Labels, navigation, and button text are small-to-medium sans-serif in dark gray/black. Headings are larger and more refined, with strong contrast and generous spacing. The page uses a spacious layout, subdued branding, and a premium marketplace tone. The modal appears to be in an active state, with the background visually disabled to keep focus on authentication.",
+              "layout": "The layout uses a full-page landing screen with a fixed top navigation and a centered modal overlay. The page is organized into three major horizontal zones: a thin announcement bar at the top, a main navigation bar with search and account actions, and a hero section spanning the width of the page. Over this background, a single modal dialog is placed centrally.\n\nThe modal is one primary column with a simple vertical form stack. Inside the card, content flows top to bottom: brand mark, title, email label, text input, primary button, divider, social sign-in button 1, social sign-in button 2. Each element is full-width within the card and aligned to the left except the divider text, which is centered. The card uses generous padding on all sides and ample spacing between groups, creating a clean single-column form layout.\n\nThe underlying page also has a horizontal nav structure: logo on the left, search field centered-left, utility links to the right, and category links in a secondary row below. The hero image occupies the full width behind the modal, while the lower section begins to show a content block titled “Featured brands.” The overlay dims the entire background, making the modal the only interactive focal point.",
+              "functions": "This interface lets users begin the sign-in process by entering an email address and proceeding to the next authentication step. Users can also choose alternative sign-in methods through Google or Apple, which reduces friction for returning users. The close icon dismisses the modal and returns users to the underlying marketplace landing page.\n\nAt a more complete workflow level, the screen supports account access to the wholesale platform. A user can either continue with email-based authentication or use a federated identity provider to speed up login. The surrounding header and hero content indicate that users may be exploring products or considering sign-up as a buyer or seller, while the modal interrupts that browsing flow to request authentication.\n\nAt the broader level, this screen helps users gain access to Faire’s wholesale commerce ecosystem, where they can browse brands, search products, place wholesale orders, or manage buyer/seller account actions. The design reduces friction by giving multiple authentication paths, keeping the form minimal, and maintaining context with the underlying marketplace page."
+            }
+          },
+          {
+            "name": "Password Sign In",
+            "screen_id": "37f2bbbe-d3eb-4a04-bc83-8ca43c7d5151",
+            "refero_url": "https://refero.design/pages/37f2bbbe-d3eb-4a04-bc83-8ca43c7d5151",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/37f2bbbe-d3eb-4a04-bc83-8ca43c7d5151_thumb.jpg",
+            "goal": "Authenticate with account password.",
+            "action": "Enter the password and click Sign in, or choose email-based access.",
+            "system_response": "If credentials are accepted, the modal advances to a verification step using email code.",
+            "page_types": [
+              "Log In"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Dialog & Modal Window",
+              "Popover"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen shows a fashion/wholesale marketplace homepage dimmed by a centered sign-in modal overlay. The overall visual style is editorial and premium, with a soft neutral site chrome and a dramatic red-toned hero image in the background. The modal is the visual focus: a white rectangular card with subtle shadow and rounded corners, placed in the center of the screen over a darkened scrim. \n\nColor palette:\n- Page background/scrim: semi-transparent dark gray overlay, approximately rgba(0,0,0,0.45) to rgba(0,0,0,0.55), muting the entire page behind the dialog.\n- Modal background: pure white, #FFFFFF or very close to the provided screen base tone #FBFBFB.\n- Primary text: deep charcoal/near-black, around #311313 and #423C39 for headings and body.\n- Secondary text: muted gray-brown, around #5A5757 and #646464.\n- Primary action button: dark charcoal filled button, close to #423C39 or slightly darker.\n- Secondary button: white background with light gray border, border around #D9D9D9 to #E5E5E5, text in dark gray.\n- Top navigation text and icons: dark gray on a light gray header.\n- Hero image behind modal: saturated red/maroon tones with dark shadows, giving a boutique/fashion editorial feel.\n\nTypography:\n- Brand wordmark uses a serif-style uppercase logo treatment, spaced letters, small size, black/dark charcoal.\n- Modal heading “Welcome back” is large, elegant serif type, likely 28–34 px, regular weight, dark charcoal, left aligned.\n- Supporting email text is smaller sans-serif, around 13–14 px, medium gray.\n- Form label “Password” is small, sans-serif, around 12–13 px, muted gray.\n- Buttons use clean sans-serif, around 14–15 px, medium weight, centered.\n- Navigation links and category bar use compact sans-serif, around 12–13 px.\n\nLayout and structure:\n- A full-width header spans the top with a thin announcement bar, then a main navigation row containing the logo on the left, search field in the center, and utility links/buttons on the right.\n- Below that is a horizontal category navigation row with multiple product categories laid out in a single line.\n- The page hero fills the background with a large photographic banner and a left-aligned marketing headline, but it is visually suppressed by the overlay.\n- The modal is centered vertically and horizontally and occupies roughly one-third of the screen width and about half the screen height.\n- Inside the modal, elements are stacked in a single column with generous padding: logo at top, heading, email address, password field, primary sign-in button, divider text “or”, then a secondary button.\n- The close icon is placed in the top-right corner of the modal, small and minimal, allowing dismissal.\n\nForm and controls:\n- Password input is a white rectangular field with a faint gray border, subtle inset appearance, and an eye icon at the far right for show/hide password.\n- Primary “Sign in” button is a wide, filled dark button with white text and slightly rounded corners, spanning most of the modal width.\n- Divider uses thin horizontal lines on both sides of a centered “or” label in gray.\n- Secondary action button “Email me a code” is a wide outlined button, white fill, light gray border, dark text, matching the modal width.\n\nBackground and atmosphere:\n- The underlying homepage is a retail landing page for wholesale shopping, with a hero banner and promotional messaging on the left.\n- The page is intentionally darkened behind the modal to shift emphasis toward authentication.\n- The background hero has warm red hues and blurred or softly focused product/fashion imagery, creating contrast with the clean white modal.\n\nSpacing and proportions:\n- The modal has generous internal padding, approximately 24–32 px on all sides.\n- Vertical spacing between title, email, field, and buttons is moderate and consistent, around 12–18 px.\n- Buttons are large enough for easy tapping, with heights around 40–44 px.\n- The overlay and modal create a strong centered composition with a simple, uncluttered interaction flow.\n\nStates and interactions:\n- The background appears inactive due to the scrim overlay.\n- The password field is ready for input; the eye icon suggests a toggle for password visibility.\n- The close icon dismisses the dialog.\n- The primary button submits credentials, while the secondary button initiates passwordless login via email code.\n\nOverall, the design combines a polished ecommerce homepage with a focused authentication modal, using a restrained neutral palette and high-contrast call-to-action styling to guide the user toward signing in.",
+              "layout": "Single-page homepage layout with a fixed top header, a horizontal utility bar, and a secondary category navigation row. The page content beneath is a full-width hero section. Over that sits a centered modal overlay.\n\nModal structure: one main column, vertically stacked. Top area contains a small logo and a close icon in the top-right. Middle area contains a large title, the prefilled email text, a labeled password field, then a full-width primary button. Below is a horizontal divider with centered text, followed by a secondary outlined button. The modal is approximately 1 column, no internal subcolumns.\n\nHeader layout: left logo, center search bar, right-side utility links and button cluster. The topmost announcement strip is a single full-width row. The category navigation is another single horizontal row of evenly spaced text links.\n\nBackground layout: large hero image spanning full width, with left-aligned marketing copy and CTA, partially obscured by the overlay. The footer/next section begins below the fold with a visible “Featured brands” section header.",
+              "functions": "The interface lets users authenticate to the wholesale marketplace. At the smallest level, the user can enter a password into the input field, toggle password visibility with the eye icon, dismiss the dialog with the close icon, submit credentials with the primary Sign in button, or choose the alternative Email me a code option for passwordless access.\n\nAt a workflow level, this screen supports returning users who already have an account and need to regain access to the site. It provides two login paths: conventional password-based sign-in and email code sign-in. The modal also shows the user’s email address, helping confirm which account is being used before submission.\n\nAt the broader level, the screen serves as a gate into a wholesale shopping platform. Signing in likely unlocks pricing, product browsing, and buying features that are restricted to authenticated users. The modal keeps the user focused on account access while the dimmed background indicates the main storefront remains behind it."
+            }
+          },
+          {
+            "name": "Email Code Prompt",
+            "screen_id": "dfed7bce-37de-45ec-a01a-791baacc8f48",
+            "refero_url": "https://refero.design/pages/dfed7bce-37de-45ec-a01a-791baacc8f48",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/dfed7bce-37de-45ec-a01a-791baacc8f48_thumb.jpg",
+            "goal": "Verify identity using a one-time code sent by email.",
+            "action": "Check email and enter the 6-digit code into the input boxes.",
+            "system_response": "The code fields populate and the Next button remains available for submission.",
+            "page_types": [
+              "Log In"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Dialog & Modal Window",
+              "Popover"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen shows a centered authentication modal overlay on top of a dimmed marketplace landing page. The modal is a clean white rectangle with subtle shadow and generous padding, using a minimal editorial style. At the top left of the modal is the FAIRE wordmark in a thin serif-like uppercase logotype, dark gray/black. At the top right is a small close icon (an X) in dark gray. The modal content is vertically stacked and left aligned: a large headline reads “Check your email” in a serif display font, dark charcoal/black, with a refined luxury feel. Below it is helper copy in smaller sans-serif text, medium gray, explaining that a link was sent to an email address and that the user can also enter a 6-digit code to sign in without a password. The email address appears inline in the body text.\n\nUnder the instructions is a row of six evenly spaced square code input boxes. Each input is white with a very light gray border, subtle rounded corners, and equal size; they are arranged horizontally with small gaps, intended for one digit each. Beneath the inputs is a text link labeled “Resend email,” underlined or styled like a subdued link in dark gray. Below that is a wide rectangular primary action button labeled “Next,” rendered in a very light gray/disabled state with muted gray text, indicating it is inactive until the code is entered.\n\nThe background behind the modal is a homepage/hero section blurred and darkened by a translucent overlay. The visible page uses an earthy retail palette: deep green and brown tones, with large lifestyle photography, serif marketing headline text, and top navigation. The overlay tint is dark charcoal gray, approximately matching the main color #121E15 / #3A342F family, reducing contrast behind the dialog while keeping the modal prominent. Overall, the modal uses high whitespace, thin borders, minimal iconography, and a premium editorial aesthetic with a restrained palette of white (#FBFBFB), charcoal/dark brown (#2E1815), muted gray (#646463), and the dimmed green-black overlay.",
+              "layout": "Single centered modal overlay on top of a full-page dimmed background. The modal uses one primary column with stacked content inside a fixed-width card, roughly portrait-oriented and vertically centered in the viewport. Internal structure is: top bar with brand mark on the left and close icon on the right; then headline and explanatory text; then a horizontal row of 6 equal-width code input boxes; then a text link; then a full-width action button. The background page is visible but de-emphasized by a full-screen dark overlay. The underlying page layout appears to have a top navigation bar and a large hero section with imagery and marketing text, but it is not interactive focus due to the overlay. The modal itself is centered with balanced padding around all sides, likely around 24–32 px, and uses a compact form layout with strong vertical spacing between sections.",
+              "functions": "This interface lets a user verify their identity during sign-in by checking their inbox and entering a one-time 6-digit code. At the smallest level, the user can type one digit into each of the six separate input fields, request the email again through the “Resend email” link, or dismiss the dialog using the close icon. The disabled-looking “Next” button suggests progression is blocked until the code is complete.\n\nAt a medium workflow level, the screen supports passwordless authentication: the user receives an email, copies or reads the code, enters it into the form, and proceeds to the next step in the access flow. If the email does not arrive, they can trigger a resend. This reduces friction for account access and confirms ownership of the email address.\n\nAt the broad level, the screen helps the platform confirm that the person signing in is authorized to access the account or buyer experience. It is part of a secure account verification/sign-in process, likely for wholesale access, and acts as a gate before the user can continue into the product or purchase journey."
+            }
+          },
+          {
+            "name": "Code Completion",
+            "screen_id": "bb3c9469-1249-484d-a10e-bec4fc779141",
+            "refero_url": "https://refero.design/pages/bb3c9469-1249-484d-a10e-bec4fc779141",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/bb3c9469-1249-484d-a10e-bec4fc779141_thumb.jpg",
+            "goal": "Finish verification with the entered code.",
+            "action": "Complete the 6-digit code and proceed with Next.",
+            "system_response": "The modal confirms the code and completes authentication.",
+            "page_types": [
+              "Log In"
+            ],
+            "ui_elements": [
+              "Button",
+              "Text Field",
+              "Dialog & Modal Window",
+              "Popover"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen shows a wholesale marketplace landing page with a centered verification modal overlaying and dimming the home page hero. The overall aesthetic is minimal, premium, and editorial, using a restrained monochrome palette with warm neutrals.\n\nColor palette: The base background is a very light off-white, close to #FBFBFB. The darkened page overlay behind the modal is a semi-transparent charcoal/black layer, visually approximating #090807 with reduced opacity. Primary text on the page and modal uses deep black #090807 and very dark brown-black #1C130F. Secondary text and supporting labels use medium gray tones around #636363 and #3C3B39. Input borders and dividers are light gray, likely in the range of #E5E5E5 to #D9D9D9. The primary action button \"Next\" is a pale gray button with low contrast, suggesting a disabled state, and its text is muted gray. The top navigation contains black text on a light background, while the hero section uses a dark image with a black overlay for contrast.\n\nTypography: The brand wordmark \"FAIRE\" uses a high-contrast serif logotype with wide letter spacing, giving a luxury editorial feel. The modal headline \"Check your email\" is set in a large serif font, likely 28–36 px, regular or light weight, with elegant spacing and strong visual hierarchy. Supporting instructions are set in a clean sans-serif, around 13–15 px, regular weight, with generous line spacing for readability. Links such as \"Resend email\" appear in the same sans-serif style, underlined or styled as a subtle text link. The top navigation and category links use a compact sans-serif, likely 12–14 px, medium weight.\n\nLayout and structure: The screen uses a full-width desktop layout with a fixed top header and navigation. The header includes a left-aligned brand logo, a central search field, and right-aligned utility links and actions. Below that is a category navigation row stretching horizontally across the page. The main hero area is a wide image banner with dark overlay, left-aligned marketing copy, and a CTA button. A modal dialog is centered over the page content, blocking interaction with the background. The modal is approximately 360–420 px wide and around 330–380 px tall, with a white background, subtle drop shadow, and rounded corners close to 2–4 px. The modal padding is generous, around 24–32 px.\n\nModal content: At the top-left of the modal is a small brand wordmark. At the top-right is an X close icon in dark gray/black. The title \"Check your email\" is the dominant element. Below it is a concise instruction paragraph telling the user to click the email link or enter the 6-digit code to sign in without a password. The OTP code area contains six square input boxes aligned horizontally, each with a thin light-gray border and white background. Five digits are already filled: 8, 2, 7, 9, 9, with the last field empty, indicating an in-progress verification state. Beneath the code boxes is a text link \"Resend email.\" At the bottom is a wide rectangular \"Next\" button in a disabled or inactive appearance, with a very light gray fill and muted label.\n\nBackground page: Behind the overlay, the landing page hero shows a dark, softly blurred lifestyle photograph. Large serif headline text on the left reads \"Find your next best...\" with a smaller subheading beneath. A prominent rectangular CTA button \"Sign up to buy\" appears below the copy. The top bar includes small informational text such as \"Shop wholesale online from over 100,000 brands. Sign up.\" On the right side of the header are locale and account links, including \"EN-US\", \"Blog\", \"Sign up to sell\", \"Sign in\", and a dark filled button \"Sign up to buy.\" The category bar contains multiple text links like Featured, New, Home decor, Food & drink, Women, Beauty & wellness, Jewelry, Paper & novelty, Kids & baby, Pets, Men, and Books.\n\nVisual style: Clean, spacious, and modern with a luxury marketplace tone. The modal is the focal point due to contrast and centered placement, while the dimmed background keeps the user focused on verification. The design relies on typography hierarchy and whitespace rather than decorative graphics. No visible animations are captured, but the modal likely fades in smoothly with a dark overlay and slight scale or opacity transition.",
+              "layout": "Desktop webpage with a persistent header and a centered modal overlay. The header spans one full width row and contains three main groups: left brand area, middle search field, and right utility actions. Beneath it is a horizontal navigation row with many category links arranged in one line. The main content area is a full-width hero banner image with left-aligned promotional copy and CTA button. Over this page sits a single centered dialog card in the foreground. The dialog forms one dominant column with vertically stacked content: brand mark, close icon, headline, explanatory text, six OTP input boxes in one horizontal row, a resend link, and a full-width action button. The overlay dims the entire background, leaving the modal as the only active interactive region. The page underneath remains visible but visually suppressed. Overall structure is a 3-part page layout: header, hero section, and modal overlay.",
+              "functions": "This interface is used for email-based sign-in verification. At the smallest level, the user can read the instructions, enter or confirm a six-digit code in the individual input boxes, click the X icon to close the dialog, or choose the \"Resend email\" link if they did not receive the message. The user can then press the \"Next\" button to continue after entering the code.\n\nAt a workflow level, this screen supports a passwordless authentication step. The user requests access to the marketplace, receives a verification email, and either clicks the email link or manually types the one-time code shown in the modal. The interface provides the exact code-entry pattern needed for fast validation, and the disabled-looking primary button suggests that the action becomes available only when the code is complete.\n\nAt the broader level, the screen helps a visitor securely access the wholesale marketplace without using a traditional password. It acts as an identity confirmation gate that protects account access while keeping the experience lightweight and friction-reduced. The modal is also used as part of the conversion flow from visitor to authenticated buyer or seller, allowing users to sign in and continue browsing or purchasing wholesale products."
+            }
+          },
+          {
+            "name": "Marketplace Intro Pop-up",
+            "screen_id": "39babf23-f2a8-47a8-8352-f8c0ae56d15b",
+            "refero_url": "https://refero.design/pages/39babf23-f2a8-47a8-8352-f8c0ae56d15b",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/39babf23-f2a8-47a8-8352-f8c0ae56d15b_thumb.jpg",
+            "goal": "Introduce the logged-in marketplace experience and promote Faire Source.",
+            "action": "Review the modal and click Shop Faire Source or close it.",
+            "system_response": "A promotional overlay is shown on top of the logged-in marketplace home, offering a path into Faire Source.",
+            "ux_patterns": [
+              "Ads & Promo Offer"
+            ],
+            "ui_elements": [
+              "Button",
+              "Dialog & Modal Window",
+              "Photo",
+              "Popover"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen shows a retail marketplace homepage with a centered promotional modal overlay. The overall design is warm, editorial, and commerce-focused, using a muted beige base combined with deep burgundy and brown accent tones. The page is partially dimmed behind the modal, creating a strong focal hierarchy and a premium shopping feel.\n\nColor palette: the background of the page uses a very light warm neutral close to HEX #F8F6EC for the global chrome and content areas, while the hero banner behind the modal is a deep wine/burgundy tone around HEX #3A0F0B to #4A1410. Primary text appears in near-black brown, approximately HEX #230D05. Secondary text is a medium gray around HEX #636363. Accent tones in the marketplace branding and the modal imagery use warm ochre/gold around HEX #735517 and a deeper chestnut brown around HEX #522814. The modal itself has a cream/off-white body matching the site background, with a dark charcoal button around HEX #3A3A3A and white button text. The close icon is a small white “X” on the top-right of the modal image area. Navigation and secondary labels are rendered in low-contrast dark gray/brown for a refined, understated look.\n\nTypography: the interface uses a mix of serif and sans-serif styling. The modal headline is a large elegant serif font, likely a display serif in the range of 28–36 px, with regular to medium weight and generous line height for a sophisticated editorial feel. Supporting body copy beneath is smaller, around 13–15 px, in a clean sans-serif, medium-gray color, left-aligned with comfortable spacing. The site header and navigation use a small to medium sans-serif font, around 12–14 px, with regular weight and tight but readable tracking. Section labels and category names are also sans-serif, with a restrained, utilitarian e-commerce tone.\n\nLayout and structure: the base page uses a full-width top announcement bar, then a header row containing the brand mark on the left, category dropdown, search bar, and utility actions on the right. A secondary navigation row with category links sits below. The hero section spans the full width beneath the nav, with content on the left and a large abstract product illustration on the right. Over this, a centered modal appears as a vertical card with a fixed width and strong elevation. The modal is divided into two zones: a top image area showing stacked product/office items on a gold background, and a lower content area with headline, description, and CTA button. The modal is vertically centered and blocks interaction with the dimmed page underneath.\n\nThe modal panel has squared-off corners or a very subtle radius, with a thin shadow that lifts it from the background. The CTA button spans most of the modal width, centered horizontally, with dark fill, white label text, and a compact height of roughly 40–44 px. The close control sits in the upper-right corner of the modal image header, small and unobtrusive. Behind the modal, the hero banner includes a left-aligned logo lockup and a muted button, plus large rounded decorative shapes on the right. Lower on the page, partially visible category tiles/cards are arranged in a grid, each with a small thumbnail and label.\n\nVisual style: the screen balances luxury editorial styling with marketplace utility. The modal uses a promotional campaign aesthetic, while the underlying homepage maintains a catalog-oriented structure. The dimmed overlay reduces visual noise and forces attention onto the pop-up offer. Spacing is generous, with soft shadows, warm neutrals, and subtle contrast rather than harsh borders. The interface feels polished, curated, and brand-forward.\n\nNo obvious animation is visible in the screenshot, but the modal likely appears with a fade-in or scale-up transition and a darkened overlay fade behind it, using standard ease-out motion for a smooth promotional interruption.",
+              "layout": "The screen uses a full-width desktop layout with a stacked header and content structure. At the very top is a thin announcement strip spanning the entire width. Below it is a primary navigation bar with multiple groups: brand/logo on the left, category selector and search field in the center, and utility icons/actions on the right. A secondary horizontal menu sits under the main header, showing several top-level content links.\n\nThe main content area begins with a large hero banner spanning the width of the page. The hero is split visually into two zones: left-aligned text and CTA, right-aligned abstract illustration. Over the hero and the rest of the page sits a centered modal overlay that dominates the viewport. The modal is a single-column card with two stacked sections: a top image banner and a bottom text/CTA section. It is vertically and horizontally centered.\n\nBelow the hero, the underlying homepage shows a welcome section with a greeting and a grid of category cards. The grid appears as multiple rectangular tiles arranged in rows and columns, each card containing a thumbnail and category label. A small floating chat/help button appears near the bottom-left corner, indicating support access. Overall layout is a classic ecommerce homepage with a modal overlay interrupting the browsing flow.",
+              "functions": "Users can browse the marketplace homepage, search for products or brands, switch categories, and access account or utility functions from the top bar. They can click the promotional modal CTA to learn more about the wholesale offering, or dismiss the modal via the close icon to continue browsing the page. In the background, they can explore featured marketplace sections, jump into curated category cards, and navigate to specific content such as bestsellers, new products, gifts, or source-related pages.\n\nAt a task level, the interface supports discovery and shopping workflows: entering search terms, selecting category filters from navigation, opening promotional announcements, and choosing featured product categories. The modal specifically guides users toward a wholesale purchase pathway by explaining the minimum order value and directing them to the “Shop Faire Source” action. The homepage content underneath supports continued browsing and product exploration after the overlay is dismissed.\n\nAt the broader level, this screen helps users discover marketplace inventory and convert them into wholesale shoppers by promoting a flexible buying model. The modal acts as a conversion prompt, while the homepage structure helps users orient themselves within the catalog and move toward product discovery or sourcing decisions."
+            }
+          },
+          {
+            "name": "Logged-In Marketplace Home",
+            "screen_id": "4c3b49e2-0c76-4052-938c-7ad90a7d5db2",
+            "refero_url": "https://refero.design/pages/4c3b49e2-0c76-4052-938c-7ad90a7d5db2",
+            "thumbnail_url": "https://images.refero.design/screenshots/faire.com/desktop/4c3b49e2-0c76-4052-938c-7ad90a7d5db2_thumb.jpg",
+            "goal": "Browse personalized products and categories after sign-in.",
+            "action": "Explore recommended items, categories, and product cards; use navigation or filters as needed.",
+            "system_response": "The marketplace home displays personalized content, product grids, and shopping actions for the authenticated user.",
+            "page_types": [
+              "Catalog Page",
+              "Home Page"
+            ],
+            "ux_patterns": [
+              "Shopping",
+              "Like & Reactions"
+            ],
+            "ui_elements": [
+              "Cards & Tiles",
+              "Button",
+              "Tags & Chips",
+              "Navigation Bar",
+              "Search Field",
+              "Photo",
+              "Icon",
+              "Illustration",
+              "Hero Image",
+              "Thumbnail",
+              "Currency"
+            ],
+            "fonts": [
+              "Graphik",
+              "Nantes"
+            ],
+            "content": {
+              "description": "The screen is a clean, editorial-style marketplace homepage for a craft/home-goods shopping platform. The visual tone is warm, premium, and lightly rustic, with a strong emphasis on product discovery. The overall composition uses a large white canvas (#FFFFFF) with a deep maroon promotional hero block and soft beige accents. The key accent palette appears to include burnt sienna / terracotta (#A3613C), dark wine brown (#511910), muted tan (#AF8A62), warm gray (#A39D94), and dusty peach (#D4A58E). These colors are used in banners, badges, and product imagery to create a handmade, boutique feel.\n\nAt the top is a thin announcement strip with centered promotional text in a small sans-serif font, dark gray/black on a very light cream background. Under it sits the main header: the FAIRE logo on the left in serif uppercase lettering, a category dropdown, a wide rounded search field with a magnifying-glass icon, then utility actions on the right such as market list, language selector, setup guide, notifications, account, and cart icons. These header elements are compact, horizontally aligned, and spaced evenly to support quick shopping navigation.\n\nBelow the header is a full-width hero banner with a dark maroon background (#511910). On the left, the banner contains the Faire Market logo lockup and a white marketing headline. Beneath it is a light button with subtle shadow and rounded corners, styled in an off-white fill with dark text, inviting users to shop special offers. On the right side of the hero is a large decorative product illustration in peach and orange tones (#D4A58E and a brighter coral/orange), partly cropped to the edge to create a bold, modern merchandising feel. The banner uses large negative space and strong contrast to emphasize the promotional message.\n\nThe main content area is organized into multiple stacked discovery sections. First is a personalized greeting and a 2-row grid of category tiles. Each tile is a pale cream rectangle with a small product thumbnail on the left and category text on the right. The typography here is simple and readable, likely a modern sans-serif around 13–16 px, medium weight for headings and regular weight for sublabels. Tiles use soft borders, minimal shadows, and a gentle beige background to feel approachable and editorial.\n\nFurther down, multiple product recommendation sections appear, such as “Recently viewed” and “Ideas for you.” These sections are arranged as horizontal rows or responsive grids of product cards. Each card contains a large square product image at the top, usually with small overlay badges in the upper-left corner like “New,” “Bestseller,” or “Trending” on white pill-shaped labels with dark text. In the upper-right corner of each card there is a heart/favorite icon. At the bottom corners of the image area, small circular action buttons appear: one with a magnifier/quick-view style icon and another with a plus symbol for adding/saving. Under the image, product metadata is stacked in a compact text block: price in bold dark text, MSRP in lighter gray with strikethrough when applicable, product name, brand/vendor, star rating, minimum order quantity or shipping threshold, and promotion notes. Some cards include tiny color swatches or small avatar-like dots indicating variants or social proof.\n\nTypography across the marketplace content mixes elegant serif headings with clean sans-serif body text. Section titles like “Welcome to Faire” or “Recently viewed” use a refined serif font with larger size and high contrast, while product details and navigation use a neutral sans-serif. The hierarchy is achieved through size, weight, and spacing rather than heavy color use. Primary text is dark charcoal (#222222), secondary metadata is mid-gray (#A39D94), and promotional or discount labels use warm orange/terracotta tones.\n\nSpacing is generous and modular. The page uses a centered content column with consistent horizontal margins and a large number of evenly spaced cards. The product grids are multi-column, likely 4–5 columns depending on viewport width, with cards aligned in rows and each card maintaining equal width and consistent gutters. The footer is minimal and airy, featuring a large callout to download the mobile app, app store badges, and two columns of company/explore links. Social icons sit nearby, and legal links appear in a small footer line at the bottom in muted gray.\n\nOverall, the interface feels polished, marketplace-driven, and discovery-oriented, combining a curated editorial look with dense e-commerce browsing functionality. The color palette is warm, earthy, and brand-led, while the layout prioritizes product browsing, category exploration, and promotional merchandising.",
+              "layout": "The layout is a long vertically scrolling homepage built from stacked sections inside a centered content container. It starts with a thin announcement bar, then a single-row global header with multiple grouped controls: logo at left, navigation/search in the middle, account and utility actions at right. Below that is a full-width hero banner spanning the content area.\n\nThe main body uses a single-column page structure with multiple content blocks stacked vertically. The first block contains a heading and a 2-row by 4-column grid of category tiles. After that, product discovery sections appear as horizontally aligned multi-card grids. Each product section is arranged in repeated rows of 4–5 cards across, depending on available width, with each card maintaining consistent height and image-to-text proportions. Cards are organized in a clean modular grid with equal gutters and aligned baselines for pricing and metadata.\n\nThe page ends with a spacious footer area that splits into columns: an app promotion block on the left and link columns on the right, followed by a narrow legal footer line. The overall layout is content-dense but orderly, using strong vertical section spacing and a consistent card grid system.",
+              "functions": "Users can browse a marketplace of wholesale and artisan products, search for specific items, jump into categories, and explore curated recommendations. At the smallest interaction level, they can type in the search field, open the category dropdown, click category tiles, open product cards, favorite items with the heart icon, or use quick action buttons on cards such as view or add. They can also switch language, access the market list, open setup guidance, and use notification or account controls in the header.\n\nAt a broader workflow level, the interface supports discovery shopping: users can move from broad categories to specific products, compare products across recommendation rows, inspect pricing and minimums, and save items for later. The “Recently viewed” section helps users resume browsing, while “Ideas for you” and labeled badges like “Bestseller” and “Trending” help users evaluate relevance and popularity quickly. The footer also supports conversion by promoting the mobile app and offering company and support links.\n\nAt the highest level, the screen helps buyers discover and source products efficiently from a curated wholesale marketplace. It balances inspiration and utility, allowing users to explore merchandise, identify suitable suppliers, and take the first steps toward purchasing or saving products for business use."
+            }
+          }
+        ],
+        "related_queries": [
+          "wholesale sign in modal",
+          "email code login",
+          "faire marketplace home",
+          "buy wholesale products",
+          "brand discovery landing",
+          "marketplace category browsing",
+          "featured brands carousel",
+          "email verification login",
+          "market specials modal",
+          "product grid shopping"
+        ]
+      }
+    }
+  ],
+  "inspectedReferenceImages": [
+    "13774021-f998-4003-849d-ad1533489547",
+    "7ba2baba-ce14-49db-b02e-0c35974737e0",
+    "7fa2f54a-187e-4efc-bcd2-cf0c8ceeb5ab"
+  ],
+  "securitySources": [
+    "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+    "https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html",
+    "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html"
+  ]
+}

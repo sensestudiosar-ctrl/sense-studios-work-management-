@@ -1,0 +1,78 @@
+[
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\restore-preview.ps1",
+    "Hash": "B02B4F9C14F3886548461F101BABB1109D84BD95CE03F1F240A0357464DBC197"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\recovery-sequence.ps1",
+    "Hash": "C54DB26859AFEDACF0AD08A48EBC72CFF67043065E47F9A907A2800C6A1D0D79"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\recovery-sequence-tests.ps1",
+    "Hash": "5CAB3CB2F4CDC8BEE42967159FC1EC7B61EE61DB6D39D2EAB2213152D819FD04"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\retained-fixtures.mjs",
+    "Hash": "ADB060FBAB7F3851552F5A8E3B68FC12B65B268FA9E92FF621093BF914A3985E"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\retained-fixtures.test.mjs",
+    "Hash": "8187428620C17992358D116B42A871EB19B79089B93E532B11E1AF132EDCB0E5"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\preview-process-manifest.ps1",
+    "Hash": "3473791149E8D5911BBD9E64539175D2BDE60B1A546B0A0E4390458590101041"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\preview-process-manifest-tests.ps1",
+    "Hash": "CB4F9E318D5D3FC26E68EFE5B2F61648474E3334832067D5565558ACBB612DCF"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\host-preflight.ps1",
+    "Hash": "360D32BF2DC5C992215B23AFF4F6971E3A1E76424120CFD655F8FB336F7885DE"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\environment.mjs",
+    "Hash": "094B56ACC8503651C145EC9544A9EF16C5C4BAF0029925BC6EFC974843D72516"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\operator.mjs",
+    "Hash": "AE11211953619B6632F903F0C08560EC77F8FCBB9195243FBF9A4BA2402FAEF8"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\activation-result.mjs",
+    "Hash": "2CD69173399C88FAB82D92C75CFA34DD543A4FDE8422EC5545FCB077AC73699F"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\activation-result.test.mjs",
+    "Hash": "26B13C32490F82FFF31DDF5BD37403B4B447CF464F3DB06EBB313445B9081A98"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\controller-page.mjs",
+    "Hash": "F436FBEDFB23F0FD9F78B0A00344831B2BE19E3286C025F1F4FA952B74BFCD0F"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\verify-offline.ps1",
+    "Hash": "AEAE3EC875B5264F0719B09426178493E1D239C29E5D20D566A3B3BF0981AD4A"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\native-output-fixture.mjs",
+    "Hash": "CB28D9EA02D811692682EECF9BD57AD97E442973AF6375CB67106467262F580F"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\native-output-tests.ps1",
+    "Hash": "DFFDFB0D29463FCC2FA0D8592AEB56C26BC8F7EEF5D8EE2CE23E7404AE398B00"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\complete-helper.ps1",
+    "Hash": "640918420A146903FD4A0AA978328F536C7AD2D33F82A9CD10F388D1685E6739"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\complete-helper.test.mjs",
+    "Hash": "4815C24DB2CB5F59CA7FE42F243A17E05F9EC75D8FE21E8E38DB523156991B5A"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\test-personas\\imported-scope-tests.ps1",
+    "Hash": "EF49A208368B5E904B909E3BD9ABF9790458732317950E143C98FFB73AE9466F"
+  }
+]

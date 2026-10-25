@@ -1,0 +1,684 @@
+diff --git a/.gitignore b/.gitignore
+index 6bf619d..8ca7865 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -29,3 +29,4 @@ verify-run.txt
+ /.artifacts/v1/
+ /.artifacts/nas/
+ /.artifacts/login-auth-tests/
++.gstack/
+diff --git a/CURRENT_STATE.md b/CURRENT_STATE.md
+index 4d43a1b..c5ae0a7 100644
+--- a/CURRENT_STATE.md
++++ b/CURRENT_STATE.md
+@@ -1,8 +1,10 @@
+-## Canonical recovery and controlled staging — 2026-10-21
++## Canonical recovery and V10 completion — 2026-10-21
+ 
+-IN PROGRESS on `codex/sense-integration` in the existing Sense monorepo. The private complete source/configuration/evidence snapshot was restored and114,964 regular files checksum-verified; all69Git refs are bundled. Historical archives and every deferred prototype remain preserved. Client-password migration120 is excluded;119 is the bounded candidate. ArchiFlow and unaccepted archived alternatives are excluded.
++IN PROGRESS on `codex/sense-integration`. Recovery candidate388fffc passed both complete hosted runs39597756503 and39597744842, including57 browsers, container and backup/restore rehearsal. PR1 merged as886df63 with the same tree; that exact matched artifact is serving http://localhost:59443/ (build886df63dd9c9-1792586217538). Exact artifact cache/offline/draft preservation, live responsive shell and owned web/API/supervisor recovery passed. It still has the earlier Dashboard.
+ 
+-Bounded factual Dashboard corrections, the configured Site employee snag summary, frontend test isolation and immutable staging delivery are implemented. Exact-source native acceptance passed API508/66 suites, web617/63 files, PostgreSQL420/64 suites, nine receipt/concurrency cases, all57 desktop/mobile browsers, five bounded browser journeys and two bounded project database cases, plus typecheck/lint/build. Prior-table restore and all174 retained table fingerprints remain unchanged. Actual owned web/API/supervisor interruption recovery passed at its recorded artifact; the current2e3b7f5 immutable release passed canonical1440/390/320 checks through a hidden direct bootstrap. Windows subsequently left scheduled launchers suspended before code execution; after the Owner allowed them, the guarded scheduled start reached READY and canonical responsive checks passed again. Actual reboot/before-login behavior remains unverified. Ten current staging safety tests pass, including fast nonzero hidden-child exit propagation. Hosted exact-candidate CI and the release-branch merge/default switch remain pending. No whole-recovery, actual-project R-104/R-105 or production acceptance is claimed. Current and independent Codex reviews are Owner-approved exceptions to unavailable Opus/Sonnet. See docs/operations/RECOVERY_VERIFICATION_LOG_2026-10-21.md for fingerprints, actual results and limits.
++The Owner explicitly confirmed V10 and directed completion. Candidate8f235cc implements the existing-page V10 widget layout, account/device preferences and real Time/performance adapters. Full web630/630 and final focused25/25 passed; scoped lint and API/web type checks passed. Clean exact-commit native quality, six-context/four-width real-session browser acceptance and full regression are running; V10 has not been promoted. See docs/operations/V10_COMPLETION_PLAN_2026-10-21.md.
++
++Preservation remains non-destructive:119 migrations, no migration120 or ArchiFlow, historical branches/archives/configuration/evidence retained. During Owner-confirmed live sign-ins,170 non-auth table hashes remain unchanged; four authentication tables changed, with original security-event/challenge prefixes retained. Current all174-table byte equality is not claimed. Historical NUL-JSON availability incident, actual reboot/before-login, R-104/R-105 and production gates remain unverified. Current and independent Codex reviews replace unavailable Opus/Sonnet under Owner authorization.
+ 
+ ## Task creation demo handoff brief — 2026-10-20
+ 
+diff --git a/IMPLEMENTATION_STATUS.md b/IMPLEMENTATION_STATUS.md
+index 522dfe6..ee3085f 100644
+--- a/IMPLEMENTATION_STATUS.md
++++ b/IMPLEMENTATION_STATUS.md
+@@ -1,8 +1,10 @@
+-## Canonical recovery and controlled staging — 2026-10-21
++## Canonical recovery and V10 completion — 2026-10-21
+ 
+-IN PROGRESS on `codex/sense-integration` in the existing Sense monorepo. The private complete source/configuration/evidence snapshot was restored and114,964 regular files checksum-verified; all69Git refs are bundled. Historical archives and every deferred prototype remain preserved. Client-password migration120 is excluded;119 is the bounded candidate. ArchiFlow and unaccepted archived alternatives are excluded.
++IN PROGRESS on `codex/sense-integration`. Recovery candidate388fffc passed both complete hosted runs39597756503 and39597744842, including57 browsers, container and backup/restore rehearsal. PR1 merged as886df63 with the same tree; that exact matched artifact is serving http://localhost:59443/ (build886df63dd9c9-1792586217538). Exact artifact cache/offline/draft preservation, live responsive shell and owned web/API/supervisor recovery passed. It still has the earlier Dashboard.
+ 
+-Bounded factual Dashboard corrections, the configured Site employee snag summary, frontend test isolation and immutable staging delivery are implemented. Exact-source native acceptance passed API508/66 suites, web617/63 files, PostgreSQL420/64 suites, nine receipt/concurrency cases, all57 desktop/mobile browsers, five bounded browser journeys and two bounded project database cases, plus typecheck/lint/build. Prior-table restore and all174 retained table fingerprints remain unchanged. Actual owned web/API/supervisor interruption recovery passed at its recorded artifact; the current2e3b7f5 immutable release passed canonical1440/390/320 checks through a hidden direct bootstrap. Windows subsequently left scheduled launchers suspended before code execution; after the Owner allowed them, the guarded scheduled start reached READY and canonical responsive checks passed again. Actual reboot/before-login behavior remains unverified. Ten current staging safety tests pass, including fast nonzero hidden-child exit propagation. Hosted exact-candidate CI and the release-branch merge/default switch remain pending. No whole-recovery, actual-project R-104/R-105 or production acceptance is claimed. Current and independent Codex reviews are Owner-approved exceptions to unavailable Opus/Sonnet. See docs/operations/RECOVERY_VERIFICATION_LOG_2026-10-21.md for fingerprints, actual results and limits.
++The Owner explicitly confirmed V10 and directed completion. Candidate8f235cc implements the existing-page V10 widget layout, account/device preferences and real Time/performance adapters. Full web630/630 and final focused25/25 passed; scoped lint and API/web type checks passed. Clean exact-commit native quality, six-context/four-width real-session browser acceptance and full regression are running; V10 has not been promoted. See docs/operations/V10_COMPLETION_PLAN_2026-10-21.md.
++
++Preservation remains non-destructive:119 migrations, no migration120 or ArchiFlow, historical branches/archives/configuration/evidence retained. During Owner-confirmed live sign-ins,170 non-auth table hashes remain unchanged; four authentication tables changed, with original security-event/challenge prefixes retained. Current all174-table byte equality is not claimed. Historical NUL-JSON availability incident, actual reboot/before-login, R-104/R-105 and production gates remain unverified. Current and independent Codex reviews replace unavailable Opus/Sonnet under Owner authorization.
+ 
+ ## Task creation demo brief — READY FOR OWNER DESIGN — 2026-10-20
+ 
+diff --git a/apps/api/src/v1-agent1-browser.acceptance.spec.ts b/apps/api/src/v1-agent1-browser.acceptance.spec.ts
+index 8230f2a..7f16527 100644
+--- a/apps/api/src/v1-agent1-browser.acceptance.spec.ts
++++ b/apps/api/src/v1-agent1-browser.acceptance.spec.ts
+@@ -309,7 +309,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
+     };
+     const leader = await createPerson("v10-leader"), site = await createPerson("v10-site");
+     await database.prisma.employee.update({ where: { id: f.worker.employee.id }, data: { reportsToId: leader.employee.id } });
+-    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "performance.manage", effect: "ALLOW", scopeKind: "TEAM", teamId: leader.employee.homeTeamId, reason: "Explicit scoped V10 Team Leader fixture" } });
++    await database.prisma.employeePermissionOverride.create({ data: { organizationId: f.organization.id, employeeId: leader.employee.id, permissionKey: "performance.manage", effect: "ALLOW", scopeKind: "TEAM", branchId: f.branch.id, teamId: leader.employee.homeTeamId, reason: "Explicit scoped V10 Team Leader fixture" } });
+     const otherBranch = await database.prisma.branch.create({ data: { organizationId: f.organization.id, name: `V10 other ${randomUUID()}` } });
+     const otherTeam = await database.prisma.team.create({ data: { organizationId: f.organization.id, branchId: otherBranch.id, name: "Other team" } });
+     const cross = await createPerson("v10-cross", otherBranch.id, otherTeam.id);
+@@ -346,6 +346,7 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
+         if (!["owner", "leader"].includes(identity.key)) expect(scoreReads).toEqual([]);
+         if (identity.key === "employee") {
+           await page.getByPlaceholder("What are you working on?").fill("V10 real persisted timer");
++          await page.getByLabel("Non-project activity", { exact: true }).fill("V10 internal coordination");
+           const started = page.waitForResponse(r => new URL(r.url()).pathname === "/api/v1/time/timers" && r.request().method() === "POST");
+           await page.getByRole("button", { name: "Start timer", exact: true }).click(); expect((await started).status()).toBe(201);
+           await expectPage(page.getByRole("button", { name: "Pause", exact: true })).toBeVisible();
+@@ -358,7 +359,8 @@ describe("Agent1 source119 real session/application/browser acceptance", () => {
+           await page.getByRole("button", { name: "Stop & save", exact: true }).click();
+           await expectPage(page.getByRole("button", { name: "Start timer", exact: true })).toBeVisible();
+           const entries = await database.prisma.timeEntry.findMany({ where: { employeeId: f.worker.employee.id } });
+-          expect(entries.some(entry => (entry.data as { workNote?: string }).workNote === "V10 real persisted timer")).toBe(true);
++          const versions = await database.prisma.timeEntryVersion.findMany({ where: { OR: entries.map(entry => ({ entryId: entry.id, version: entry.version })) } });
++          expect(versions.some(version => { const data = version.data as { workNote?: string; activityLabel?: string }; return data.workNote === "V10 real persisted timer" && data.activityLabel === "V10 internal coordination"; })).toBe(true);
+         }
+         if (identity.key === "owner") {
+           await page.getByRole("button", { name: "Edit widgets", exact: true }).click();
+diff --git a/apps/web/src/app.tsx b/apps/web/src/app.tsx
+index 4123bdd..7b7fde9 100644
+--- a/apps/web/src/app.tsx
++++ b/apps/web/src/app.tsx
+@@ -7,7 +7,7 @@ import { AuditRetentionCenter } from "./audit-retention.js";
+ import { ApprovalQueue } from "./approval-queue.js";
+ import { MyWorkManagement } from "./my-work-attention.js";
+ import { ProjectsRoute } from "./projects-route.js";
+-import { WorkspaceLayout } from "./workspace-navigation.js";
++import { WorkspaceHeader, WorkspaceLayout } from "./workspace-navigation.js";
+ import { CrmWorkspace } from "./crm.js";
+ import { ProjectWorkspace } from "./project.js";
+ import { TaskWorkspace } from "./task.js";
+@@ -1129,7 +1129,7 @@ function DashboardRoute({ initialTab = "dashboard", focused = false }: { initial
+   if (!session) return <main className="identity-content"><section className="identity-section"><h1>Sign in to view your dashboard</h1><Link to="/">Return to sign in</Link></section></main>;
+   if (session.account.kind === "OWNER" && session.ownerSetupRequired) return <main className="identity-content"><section className="identity-section"><h1>Complete Owner setup first</h1><Link to="/">Return to Owner setup</Link></section></main>;
+   const reportsHome = initialTab === "reports";
+-  return <WorkspaceLayout key={session.account.id}><main className="identity-content"><div className="workspace-account-heading"><span>{reportsHome ? "Reports" : "Dashboard"}</span><span>{session.account.email}</span></div>{reportsHome && <InsightsNavigation />}<DashboardWorkspace accountId={session.account.id} csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
++  return <WorkspaceLayout key={session.account.id}><WorkspaceHeader session={session} contextLabel={reportsHome ? "Reports" : "Dashboard"} /><main className="identity-content">{reportsHome && <InsightsNavigation />}<DashboardWorkspace accountId={session.account.id} csrfToken={session.csrfToken} owner={session.account.kind === "OWNER"} initialTab={initialTab} focused={focused} /></main></WorkspaceLayout>;
+ }
+ 
+ function IntegrationsRoute(): React.JSX.Element {
+diff --git a/apps/web/src/dashboard-time-widget.tsx b/apps/web/src/dashboard-time-widget.tsx
+index 0469eb2..e42c137 100644
+--- a/apps/web/src/dashboard-time-widget.tsx
++++ b/apps/web/src/dashboard-time-widget.tsx
+@@ -10,11 +10,12 @@ async function request<T>(path: string, csrf: string, body?: unknown): Promise<T
+   if (!response.ok) throw new TimeReadError(result.error?.message ?? result.message ?? `Time source unavailable (${response.status})`, response.status);
+   return result as T;
+ }
+-export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React.JSX.Element {
++export function DashboardTimeWidget({ csrfToken, refreshVersion = 0 }: { csrfToken: string; refreshVersion?: number }): React.JSX.Element {
+   const [setup, setSetup] = useState<Setup | null>(null), [timer, setTimer] = useState<Timer | null>(null);
+   const [loading, setLoading] = useState(true), [error, setError] = useState(""), [pending, setPending] = useState(false);
+   const [workNote, setWorkNote] = useState(""), [location, setLocation] = useState("OFFICE"), [billable, setBillable] = useState(true);
+   const [projectId, setProjectId] = useState(""), [taskId, setTaskId] = useState("");
++  const [activityLabel, setActivityLabel] = useState("");
+   const [clock, setClock] = useState(Date.now), [readAt, setReadAt] = useState(0);
+   const generation = useRef(0), command = useRef<{ signature: string; id: string } | null>(null), busy = useRef(false);
+   const load = useCallback(async () => {
+@@ -28,7 +29,7 @@ export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React
+       setSetup(null); setTimer(null); setError(cause instanceof Error ? cause.message : "Time source unavailable");
+     } finally { if (current === generation.current) setLoading(false); }
+   }, [csrfToken]);
+-  useEffect(() => { void load(); return () => { generation.current++; }; }, [load]);
++  useEffect(() => { void load(); return () => { generation.current++; }; }, [load, refreshVersion]);
+   useEffect(() => { const tick = window.setInterval(() => setClock(Date.now()), 1000); return () => window.clearInterval(tick); }, []);
+   const mutate = async (path: string, payload: Record<string, unknown>) => {
+     if (busy.current) return; busy.current = true; setPending(true); setError("");
+@@ -40,7 +41,7 @@ export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React
+       await load();
+     } catch (cause) {
+       // Keep the command identity for a same-input retry after an uncertain response.
+-      if (cause instanceof TimeReadError && [401, 403].includes(cause.status)) { generation.current++; setSetup(null); setTimer(null); setReadAt(0); }
++      if (cause instanceof TimeReadError && [401, 403].includes(cause.status)) { generation.current++; setSetup(null); setTimer(null); setReadAt(0); setLoading(false); }
+       setError(cause instanceof Error ? cause.message : "Timer command not confirmed");
+     } finally { busy.current = false; setPending(false); }
+   };
+@@ -62,9 +63,10 @@ export function DashboardTimeWidget({ csrfToken }: { csrfToken: string }): React
+       <div className="dv-time-display">00:00:00</div>
+       <label className="dv-time-field">Project<select value={projectId} disabled={pending} onChange={e => { setProjectId(e.target.value); setTaskId(""); }}><option value="">Non-project activity</option>{setup.projects?.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}</select></label>
+       <label className="dv-time-field">Task · optional<select value={taskId} disabled={pending} onChange={e => setTaskId(e.target.value)}><option value="">No linked task</option>{setup.tasks?.filter(t => (t.projectId ?? "") === projectId).map(t => <option key={t.id} value={t.id}>{t.title}</option>)}</select></label>
++      {!projectId && !taskId && <label className="dv-time-field">Non-project activity<input value={activityLabel} maxLength={160} disabled={pending} onChange={e => setActivityLabel(e.target.value)} placeholder="For example, internal coordination" /></label>}
+       <label className="dv-time-field">Work note<input value={workNote} maxLength={1000} disabled={pending} onChange={e => setWorkNote(e.target.value)} placeholder="What are you working on?" /></label>
+       <div className="dv-time-options"><label className="dv-time-field">Location<select value={location} disabled={pending} onChange={e => setLocation(e.target.value)}><option value="OFFICE">Office</option><option value="SITE">Site</option><option value="REMOTE">Remote</option></select></label><label className="dv-time-check"><input type="checkbox" checked={billable} disabled={pending} onChange={e => setBillable(e.target.checked)} />Billable</label></div>
+-      <button type="button" disabled={pending || !workNote.trim()} onClick={() => void mutate("/timers", { workNote: workNote.trim(), location, billable, ...(projectId ? { projectId } : {}), ...(taskId ? { taskId } : {}) })}>Start timer</button>
++      <button type="button" disabled={pending || !workNote.trim() || !projectId && !taskId && !activityLabel.trim()} onClick={() => void mutate("/timers", { workNote: workNote.trim(), location, billable, ...(projectId ? { projectId } : {}), ...(taskId ? { taskId } : {}), ...(!projectId && !taskId ? { activityLabel: activityLabel.trim() } : {}) })}>Start timer</button>
+     </div> : !error && <p>Your account has no employee record for a personal timer.</p>}
+     <div className="dv-widget-foot"><span>{readAt ? `Read at ${new Date(readAt).toLocaleTimeString()}` : "Time source not read"}</span><Link to="/time">Time log & manual entry →</Link></div>
+   </div>;
+diff --git a/apps/web/src/dashboard-widgets.css b/apps/web/src/dashboard-widgets.css
+index ea409f4..77fd894 100644
+--- a/apps/web/src/dashboard-widgets.css
++++ b/apps/web/src/dashboard-widgets.css
+@@ -1116,6 +1116,7 @@
+ 
+ /* Small tablet / large phone: 760px */
+ @media (max-width: 760px) {
++  .dv-widget-col:empty { display: none; }
+   .dv-essentials-heading { align-items: flex-start; }
+   .dv-essentials-heading p { max-width: 14rem; }
+   .dv-widget-tools { gap: .4rem; }
+diff --git a/apps/web/src/dashboard-widgets.test.tsx b/apps/web/src/dashboard-widgets.test.tsx
+index c2807a1..8415752 100644
+--- a/apps/web/src/dashboard-widgets.test.tsx
++++ b/apps/web/src/dashboard-widgets.test.tsx
+@@ -51,6 +51,8 @@ describe("V10 real Time command adapter", () => {
+     }));
+     render(<MemoryRouter><DashboardTimeWidget csrfToken="csrf" /></MemoryRouter>);
+     fireEvent.change(await screen.findByPlaceholderText("What are you working on?"), { target: { value: "Draw plans" } });
++    expect(screen.getByRole("button", { name: "Start timer" })).toBeDisabled();
++    fireEvent.change(screen.getByLabelText("Non-project activity"), { target: { value: "Internal planning" } });
+     fireEvent.click(screen.getByRole("button", { name: "Start timer" }));
+     expect(await screen.findByRole("alert")).toHaveTextContent("Connection lost");
+     fireEvent.click(screen.getByRole("button", { name: "Start timer" }));
+diff --git a/apps/web/src/dashboard-widgets.ts b/apps/web/src/dashboard-widgets.ts
+index a3b15ca..b336058 100644
+--- a/apps/web/src/dashboard-widgets.ts
++++ b/apps/web/src/dashboard-widgets.ts
+@@ -37,7 +37,8 @@ export function loadLayout(accountId: string, kind: "OWNER" | "STAFF", permitted
+       if (typeof id !== "string" || !permitted.includes(id as WidgetId) || seen.has(id as WidgetId)) return false;
+       seen.add(id as WidgetId); return true;
+     });
+-    return { version: 1, accountKind: kind, leftOrder: clean(parsed.leftOrder), rightOrder: clean(parsed.rightOrder), hidden: clean(parsed.hidden) };
++    const leftOrder = clean(parsed.leftOrder), rightOrder = clean(parsed.rightOrder), hidden = clean(parsed.hidden);
++    return { version: 1, accountKind: kind, leftOrder: mode === "mobile" ? [...leftOrder, ...rightOrder] : leftOrder, rightOrder: mode === "mobile" ? [] : rightOrder, hidden };
+   } catch { return fallback(); }
+ }
+ export function saveLayout(accountId: string, layout: DashboardLayout, mode: LayoutMode = "desktop"): boolean {
+diff --git a/apps/web/src/dashboard.test.tsx b/apps/web/src/dashboard.test.tsx
+index ff33618..65a266b 100644
+--- a/apps/web/src/dashboard.test.tsx
++++ b/apps/web/src/dashboard.test.tsx
+@@ -61,9 +61,49 @@ function tile(label: string): HTMLElement {
+   if (!element) throw new Error(`Missing summary tile: ${label}`);
+   return element;
+ }
+-afterEach(() => { vi.unstubAllGlobals(); localStorage.clear(); });
++afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); localStorage.clear(); });
+ 
+ describe("DashboardWorkspace", () => {
++  it("keeps visit-only layout edits across a source refresh when storage fails", async () => {
++    mockFetch({ owner: true });
++    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => { throw new Error("Storage full"); });
++    renderWorkspace(true);
++    await screen.findByRole("heading", { name: "Performance" });
++    fireEvent.click(screen.getByRole("button", { name: "Edit widgets" }));
++    fireEvent.click(screen.getByRole("button", { name: "Hide Time tracking widget" }));
++    expect(screen.getByText(/Layout changed for this visit/)).toBeInTheDocument();
++    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
++    await screen.findByRole("heading", { name: "Performance" });
++    expect(screen.queryByRole("heading", { name: "Time tracking" })).not.toBeInTheDocument();
++  });
++
++  it("refreshes the Time source with the Dashboard without discarding an idle draft", async () => {
++    const calls = mockFetch({ owner: false });
++    renderWorkspace(false);
++    const note = await screen.findByPlaceholderText("What are you working on?");
++    fireEvent.change(note, { target: { value: "Keep my time draft" } });
++    const before = calls.filter(call => call.url.endsWith("/time/setup")).length;
++    fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
++    await waitFor(() => expect(calls.filter(call => call.url.endsWith("/time/setup")).length).toBeGreaterThan(before));
++    expect(await screen.findByDisplayValue("Keep my time draft")).toBeInTheDocument();
++  });
++  it("does not turn missing or unavailable task sections into an empty preview or next action", async () => {
++    mockFetch({ owner: false, sourceResponse: source => source === "tasks" ? sourcePage(source, [{ key: "attention", label: "Attention", unavailable: "Attention evidence is unavailable.", rows: [{ id: "stale", label: "Hidden stale task" }] }]) : undefined });
++    renderWorkspace(false);
++    expect(await screen.findByText(/This preview may be incomplete/)).toBeInTheDocument();
++    expect(screen.queryByText("No tasks in this scope.")).not.toBeInTheDocument();
++    expect(screen.queryByText("Hidden stale task")).not.toBeInTheDocument();
++    expect(screen.getByText("Attention evidence is unavailable.")).toBeInTheDocument();
++  });
++
++  it("uses the source organization date for overdue presentation instead of the device UTC date", async () => {
++    mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [{ key: "overdue", label: "Overdue", rows: [{ id: "org-date", label: "Source overdue task", date: "2026-10-04", status: "IN_PROGRESS" }] }, { key: "today", label: "Due today", rows: [{ id: "org-today", label: "Source today task", date: "2026-10-05", status: "IN_PROGRESS" }] }]) : undefined });
++    renderWorkspace(true);
++    const overdue = await screen.findByRole("link", { name: /Source overdue task/ });
++    const current = screen.getByRole("link", { name: /Source today task/ });
++    expect(overdue.querySelector(".dv-attention-due")).toHaveClass("overdue");
++    expect(current.querySelector(".dv-attention-due")).not.toHaveClass("overdue");
++  });
+   it("keeps overlapping task buckets separate instead of inventing an all-domain work total", async () => {
+     const task = { id: "task-shared", label: "Prepare drawings", status: "IN_PROGRESS", date: "2026-10-05" };
+     mockFetch({ sourceResponse: source => source === "tasks" ? sourcePage(source, [
+@@ -262,9 +302,10 @@ describe("DashboardWorkspace", () => {
+     const startButton = await screen.findByRole("button", { name: "Start timer" });
+     expect(startButton).toBeDisabled();
+     fireEvent.change(screen.getByPlaceholderText("What are you working on?"), { target: { value: "Dashboard timer test" } });
++    fireEvent.change(screen.getByLabelText("Non-project activity"), { target: { value: "Internal coordination" } });
+     fireEvent.click(startButton);
+     await waitFor(() => expect(posted).toBeDefined());
+-    expect(posted).toMatchObject({ workNote: "Dashboard timer test", location: "OFFICE", billable: true, commandId: expect.any(String) });
++    expect(posted).toMatchObject({ workNote: "Dashboard timer test", activityLabel: "Internal coordination", location: "OFFICE", billable: true, commandId: expect.any(String) });
+     const postCall = calls.find(call => call.url.endsWith("/time/timers") && call.init?.method === "POST");
+     expect(new Headers(postCall?.init?.headers ?? {}).get("X-CSRF-Token")).toBe("csrf-s24");
+   });
+diff --git a/apps/web/src/dashboard.tsx b/apps/web/src/dashboard.tsx
+index dd6e227..ced0322 100644
+--- a/apps/web/src/dashboard.tsx
++++ b/apps/web/src/dashboard.tsx
+@@ -11,7 +11,7 @@ import "./dashboard-widgets.css";
+ import {
+   WIDGET_INFO,
+   type WidgetId, type DashboardLayout, type LayoutMode,
+-  loadLayout, saveLayout, resetLayout,
++  loadLayout, saveLayout, defaultLayoutFor,
+ } from "./dashboard-widgets.js";
+ 
+ import { DashboardTimeWidget } from "./dashboard-time-widget.js";
+@@ -84,12 +84,12 @@ function permittedWidgetIds(
+ /* Draggable widget wrapper: dnd-kit sortable behaviour plus the V10
+    edit-mode chrome (hide, drag handle, keyboard move controls). */
+ function SortableWidget({
+-  id, editing, onHide, onMoveUp, onMoveDown, onMoveAcross, canMoveUp, canMoveDown, children,
++  id, editing, onHide, onMoveUp, onMoveDown, onMoveAcross, canMoveUp, canMoveDown, canMoveAcross, children,
+ }: {
+   id: string; editing: boolean;
+   onHide: (id: string) => void; onMoveUp: (id: string) => void;
+   onMoveDown: (id: string) => void; onMoveAcross: (id: string) => void;
+-  canMoveUp: boolean; canMoveDown: boolean;
++  canMoveUp: boolean; canMoveDown: boolean; canMoveAcross: boolean;
+   children: React.ReactNode;
+ }): React.JSX.Element {
+   const { transform, transition, isDragging, attributes, listeners, setNodeRef, setActivatorNodeRef } = useSortable({ id, disabled: !editing });
+@@ -108,7 +108,7 @@ function SortableWidget({
+             </button>
+             <button type="button" className="dv-edit-hbtn" title="Move up" aria-label={`Move ${info?.label ?? id} up`} disabled={!canMoveUp} onClick={() => onMoveUp(id)}>↑</button>
+             <button type="button" className="dv-edit-hbtn" title="Move down" aria-label={`Move ${info?.label ?? id} down`} disabled={!canMoveDown} onClick={() => onMoveDown(id)}>↓</button>
+-            <button type="button" className="dv-edit-hbtn" title="Move to other column" aria-label={`Move ${info?.label ?? id} to other column`} onClick={() => onMoveAcross(id)}>⇄</button>
++            {canMoveAcross && <button type="button" className="dv-edit-hbtn" title="Move to other column" aria-label={`Move ${info?.label ?? id} to other column`} onClick={() => onMoveAcross(id)}>⇄</button>}
+           </div>
+         )}
+       </div>
+@@ -291,8 +291,10 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+   const [editing, setEditing] = useState(false), [galleryOpen, setGalleryOpen] = useState(false), [queueExpanded, setQueueExpanded] = useState(false);
+   const [layoutNotice, setLayoutNotice] = useState("");
+   const beforeDrag = useRef<DashboardLayout | null>(null);
++  const visitLayouts = useRef(new Map<string, DashboardLayout>());
++  const visitLayoutKey = `${accountId}:${mode}`;
+   const longPress = useRef<ReturnType<typeof setTimeout> | null>(null);
+-  useEffect(() => { setLayout(loadLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode)); }, [accountId, kind, permitted, canSeePerformance, canSeeSite, mode]);
++  useEffect(() => { setLayout(visitLayouts.current.get(visitLayoutKey) ?? loadLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode)); }, [accountId, kind, permitted, canSeePerformance, canSeeSite, mode, visitLayoutKey]);
+   const [reviewInbox, setReviewInbox] = useState<{ total: number; items: Array<{ roundId: string; taskId: string; taskTitle: string; projectTitle: string; roundNumber: number; status: string; dueDate: string; revisionLabel?: string }> } | null>(null);
+   const [reviewError, setReviewError] = useState("");
+   useEffect(() => { let active = true; setReviewInbox(null); setReviewError("");
+@@ -306,7 +308,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+   );
+-  const updateLayout = (next: DashboardLayout): void => { setLayout(next); setLayoutNotice(saveLayout(accountId, next, mode) ? "Layout saved on this device." : "Layout changed for this visit; browser storage is unavailable."); };
++  const updateLayout = (next: DashboardLayout): void => { visitLayouts.current.set(visitLayoutKey, next); setLayout(next); setLayoutNotice(saveLayout(accountId, next, mode) ? "Layout saved on this device." : "Layout changed for this visit; browser storage is unavailable."); };
+   const hideWidget = (id: string): void => {
+     const wid = id as WidgetId;
+     updateLayout({ ...layout, hidden: [...layout.hidden, wid], leftOrder: layout.leftOrder.filter(w => w !== wid), rightOrder: layout.rightOrder.filter(w => w !== wid) });
+@@ -315,7 +317,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+     const wid = id as WidgetId;
+     updateLayout({ ...layout, hidden: layout.hidden.filter(w => w !== wid), leftOrder: [...layout.leftOrder, wid] });
+   };
+-  const resetToDefaults = (): void => { setLayout(resetLayout(accountId, kind, permitted, canSeePerformance, canSeeSite, mode)); setGalleryOpen(false); };
++  const resetToDefaults = (): void => { updateLayout(defaultLayoutFor(kind, permitted, canSeePerformance, canSeeSite, mode)); setGalleryOpen(false); };
+   const moveWithin = (id: string, direction: "up" | "down" | "across"): void => {
+     const wid = id as WidgetId;
+     const lane: "leftOrder" | "rightOrder" = layout.leftOrder.includes(wid) ? "leftOrder" : "rightOrder";
+@@ -350,10 +352,12 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+     return rows;
+   }, [tasksState]);
+   const attentionRows = queueExpanded ? attentionBaseRows : attentionBaseRows.slice(0, 2);
++  const queueIncomplete = Boolean(tasksState && !tasksState.loading && !tasksState.error && ["overdue", "waiting", "priority", "attention", "reviews", "today"].some(key => !tasksState.sections.some(section => section.key === key && !section.unavailable)));
+ 
+   const onDragOver = (event: DragOverEvent): void => {
+     const from = String(event.active.id), to = event.over ? String(event.over.id) : undefined;
+     if (!to || from === to) return;
++    if (mode === "mobile" && to === "lane-right") return;
+     const fromId = from as WidgetId, toId = to as WidgetId;
+     if (to === "lane-left" || to === "lane-right") {
+       const source = layout.leftOrder.includes(fromId) ? "leftOrder" : "rightOrder";
+@@ -385,7 +389,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+   };
+   const renderWidget = (id: WidgetId): React.JSX.Element | null => {
+     switch (id) {
+-      case "time": return <DashboardTimeWidget csrfToken={csrfToken} />;
++      case "time": return <DashboardTimeWidget csrfToken={csrfToken} refreshVersion={accessRefresh} />;
+       case "decisions":
+         return (
+           <div className="dv-widget-body">
+@@ -461,7 +465,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+       case "nextAction":
+         return (
+           <div className="dv-widget-body">
+-            {!tasksState || tasksState.loading ? <p role="status">Reading task source…</p> : tasksState.error ? <div className="dv-source-error" role="alert"><strong>Task source unavailable.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry tasks</button></div> : taskAttentionRows[0] ? (
++            {!tasksState || tasksState.loading ? <p role="status">Reading task source…</p> : taskSectionNote("attention") ? <div className="dv-source-error" role="alert"><strong>{taskSectionNote("attention")}</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry tasks</button></div> : taskAttentionRows[0] ? (
+               <Link to={taskAttentionRows[0].route ?? "/my-work"} className="dv-nextaction">
+                 <div className="dv-nextaction-icon" aria-hidden="true">→</div>
+                 <div className="dv-nextaction-main">
+@@ -561,6 +565,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+                   onMoveAcross={wid => moveWithin(wid, "across")}
+                   canMoveUp={visibleLeft.indexOf(id) > 0}
+                   canMoveDown={visibleLeft.indexOf(id) < visibleLeft.length - 1}
++                  canMoveAcross={mode === "desktop"}
+                 >
+                   {renderWidget(id as WidgetId)}
+                 </SortableWidget>
+@@ -593,6 +598,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+                   onMoveAcross={wid => moveWithin(wid, "across")}
+                   canMoveUp={visibleRight.indexOf(id) > 0}
+                   canMoveDown={visibleRight.indexOf(id) < visibleRight.length - 1}
++                  canMoveAcross={mode === "desktop"}
+                 >
+                   {renderWidget(id as WidgetId)}
+                 </SortableWidget>
+@@ -613,6 +619,7 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+           </div>
+           <span className="dv-attention-locked" aria-hidden="true">Fixed</span>
+         </div>
++        {queueIncomplete && <div className="dv-source-error" role="status"><strong>Some task sections are unavailable. This preview may be incomplete.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry attention source</button></div>}
+         <div className="dv-attention-body">
+           {!tasksState || tasksState.loading ? (
+             <div className="dv-source-loading">Reading attention items…</div>
+@@ -620,18 +627,18 @@ export function DashboardWorkspace({ csrfToken, accountId, owner, initialTab = "
+             <div className="dv-source-error"><strong>Task source unavailable.</strong><button type="button" onClick={() => void loadSource("tasks")}>Retry</button></div>
+           ) : attentionRows.length > 0 ? attentionRows.map(row => (
+             <Link key={row.id} to={row.route ?? "/my-work"} className="dv-attention-row">
+-              <span className={`dv-attention-stripe ${row.status?.includes("WAITING") ? "waiting" : row.date && row.date < today() ? "overdue" : "default"}`} aria-hidden="true"></span>
++              <span className={`dv-attention-stripe ${row.status?.includes("WAITING") ? "waiting" : row.date && dash.today && row.date < dash.today ? "overdue" : "default"}`} aria-hidden="true"></span>
+               <div className="dv-attention-main">
+                 <div className="dv-attention-title">{row.label}</div>
+                 <div className="dv-attention-meta">{[row.status, row.date].filter(Boolean).join(" · ")}</div>
+               </div>
+               <div className="dv-attention-right">
+-                <span className={`dv-attention-due${row.date && row.date < today() ? " overdue" : ""}`}>{row.date ?? ""}</span>
++                <span className={`dv-attention-due${row.date && dash.today && row.date < dash.today ? " overdue" : ""}`}>{row.date ?? ""}</span>
+                 <span className={`dv-attention-chip ${row.status?.includes("WAITING") ? "waiting" : ""}`}>{row.status?.replace(/_/g, " ") ?? ""}</span>
+               </div>
+             </Link>
+           )) : (
+-            <div className="dv-source-loading">No tasks in this scope.</div>
++            <div className="dv-source-loading">{queueIncomplete ? "No complete task preview is available." : "No tasks in this scope."}</div>
+           )}
+         </div>
+         {attentionBaseRows.length > 2 && (
+diff --git a/apps/web/src/task.tsx b/apps/web/src/task.tsx
+index 37ca0a3..fb87019 100644
+--- a/apps/web/src/task.tsx
++++ b/apps/web/src/task.tsx
+@@ -658,6 +658,14 @@ export function TaskWorkspace({ projectContext, onLeaveGuard, csrfToken, owner,
+   const requiresExplicitOwner = setup !== undefined && setup.actorEmployeeId === null;
+   const assignToEmployee = !!creation.options?.canAssign && assignTo || requiresExplicitOwner;
+   const canCreate = !!setup && (setup.canAssign || !!setup.actorEmployeeId) && (!projectContext || ["DRAFT", "ACTIVE"].includes(projectContext.status));
++  const createIntent = useRef(!projectContext && new URL(window.location.href).searchParams.get("create") === "1");
++  useEffect(() => {
++    if (!canCreate || !createIntent.current) return;
++    createIntent.current = false;
++    const url = new URL(window.location.href); url.searchParams.delete("create");
++    window.history.replaceState(window.history.state, "", url);
++    setShowForm(true);
++  }, [canCreate]);
+   const selected = detail?.task;
+   const selectedSubtasks = selected && subtasksTaskId === selected.id ? subtasks : undefined;
+   const profile = setup?.creationProfile;
+diff --git a/apps/web/src/workspace-navigation.css b/apps/web/src/workspace-navigation.css
+index 1115df0..cc459d9 100644
+--- a/apps/web/src/workspace-navigation.css
++++ b/apps/web/src/workspace-navigation.css
+@@ -351,3 +351,31 @@
+ @media (prefers-reduced-motion: reduce) {
+   .workspace-page-finder { animation: none; }
+ }
++
++/* Dashboard shell: the existing page finder and creation workflow stay in reach. */
++.workspace-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; min-height: 4.25rem; padding: .7rem clamp(1rem, 3vw, 2.75rem); border-bottom: 1px solid #d9d8cd; background: #f4f1e9; }
++.workspace-header-left, .workspace-header-actions { display: flex; align-items: center; gap: .65rem; min-width: 0; }
++.workspace-header-left { font-size: .8rem; color: #61736b; }
++.workspace-header-context { font-weight: 650; color: #20332e; }
++.workspace-header-divider { height: 1rem; width: 1px; background: #d9d8cd; }
++.workspace-header-new-task, .workspace-header-notifications { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 2.75rem; padding: .5rem .75rem; border-radius: .55rem; text-decoration: none; font-size: .78rem; font-weight: 650; }
++.workspace-header-new-task { background: #29463d; color: #fffdf7; }
++.workspace-header-new-task .workspace-route-icon { color: inherit; }
++.workspace-header-notifications { width: 2.75rem; color: #29463d; border: 1px solid #d9d8cd; background: #fffdf7; }
++.workspace-header :is(a, button):focus-visible { outline: 3px solid #b98f49; outline-offset: 2px; }
++.workspace-header-account { display: grid; grid-template-columns: 2.25rem minmax(0, 8rem); gap: .1rem .5rem; align-items: center; }
++.workspace-header-account-avatar { grid-row: span 2; display: grid; place-items: center; height: 2.25rem; border-radius: 50%; background: #e3eadf; color: #29463d; font-weight: 650; }
++.workspace-header-account-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #20332e; font-size: .72rem; }
++.workspace-header-account-kind { color: #61736b; font-size: .66rem; }
++.workspace-header .workspace-page-finder-trigger { min-height: 2.75rem; }
++.workspace-sidebar.is-collapsed .workspace-nav-group { padding-top: .3rem; }
++.workspace-sidebar.is-collapsed .workspace-nav-group-links { display: grid; gap: .25rem; }
++.workspace-sidebar.is-collapsed .workspace-nav-heading[hidden] { display: none; }
++@media (max-width: 1100px) { .workspace-header-account { display: none; } }
++@media (max-width: 767px) {
++  .workspace-header { position: sticky; top: 0; z-index: 20; min-height: 3.75rem; padding: .5rem .75rem; }
++  .workspace-header-breadcrumb, .workspace-header-divider, .workspace-header .workspace-page-finder-trigger > span, .workspace-header .workspace-page-finder-kbd { display: none; }
++  .workspace-header .workspace-page-finder-trigger { justify-content: center; width: 2.75rem; padding: .5rem; }
++  .workspace-header-new-task { position: fixed; right: 1rem; bottom: calc(4.5rem + env(safe-area-inset-bottom)); min-height: 3rem; box-shadow: 0 4px 14px #182c2926; z-index: 35; }
++  .workspace-page-finder-close, .workspace-page-finder-item { min-height: 2.75rem; }
++}
+diff --git a/apps/web/src/workspace-navigation.tsx b/apps/web/src/workspace-navigation.tsx
+index 9a8f2e1..f1b2827 100644
+--- a/apps/web/src/workspace-navigation.tsx
++++ b/apps/web/src/workspace-navigation.tsx
+@@ -156,7 +156,7 @@ function DesktopDestinationGroups({ pathname, filter, onClearFilter, unreadCount
+       const isCurrent = activeGroup === group.label;
+       const expanded = query.length > 0 ? items.length > 0 : openGroups[group.label];
+       return <section className={`workspace-nav-group${isCurrent ? " is-current" : ""}${collapsed ? " is-collapsed" : ""}`} key={group.label} aria-labelledby={headingId}>
+-        <h2 id={headingId} className="workspace-nav-heading">
++        <h2 id={headingId} className="workspace-nav-heading" hidden={collapsed}>
+           <button
+             className={`workspace-nav-disclosure${isCurrent ? " is-current" : ""}`}
+             type="button"
+@@ -172,8 +172,8 @@ function DesktopDestinationGroups({ pathname, filter, onClearFilter, unreadCount
+             {!collapsed && <svg className="workspace-nav-chevron" aria-hidden="true" focusable="false" viewBox="16 16 16 16"><path d="m4 6 4 4 4-4" /></svg>}
+           </button>
+         </h2>
+-        <div id={linksId} className="workspace-nav-group-links" hidden={!expanded || collapsed}>
+-          <DestinationLinks items={items} icons unreadCount={unreadCount} />
++        <div id={linksId} className="workspace-nav-group-links" hidden={!collapsed && !expanded}>
++          <DestinationLinks items={items} icons unreadCount={unreadCount} collapsed={collapsed} />
+         </div>
+       </section>;
+     })}
+@@ -193,11 +193,12 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
+   const listRef = useRef<HTMLDivElement>(null);
+   const navigate = useNavigate();
+   const triggerRef = useRef<HTMLButtonElement>(null);
++  const finderRef = useRef<HTMLDialogElement>(null);
+ 
+   useEffect(() => {
+     const handleKeyDown = (event: KeyboardEvent): void => {
+       const target = event.target as HTMLElement | null;
+-      const inEditable = target !== null && (target.isContentEditable || target.tagName === "INPUT" || target.tagName === "TEXTAREA");
++      const inFinder = target === inputRef.current || target !== null && listRef.current?.contains(target);
+       if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+         event.preventDefault();
+         setOpen(previous => {
+@@ -212,23 +213,27 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
+         setOpen(false);
+         onOpenChange?.(false);
+         triggerRef.current?.focus();
+-      } else if (open && event.key === "ArrowDown" && !inEditable) {
++      } else if (open && event.key === "ArrowDown" && inFinder) {
+         event.preventDefault();
+-        setActiveIndex(i => i + 1);
+-      } else if (open && event.key === "ArrowUp" && !inEditable) {
++        setActiveIndex(i => Math.min(Math.max(0, Math.min(20, filtered(dests, query).length) - 1), i + 1));
++      } else if (open && event.key === "ArrowUp" && inFinder) {
+         event.preventDefault();
+         setActiveIndex(i => Math.max(0, i - 1));
+-      } else if (open && event.key === "Enter" && !inEditable) {
++      } else if (open && event.key === "Enter" && target === inputRef.current) {
+         event.preventDefault();
+         const items = filtered(dests, query);
+-        if (items[activeIndex]) { navigate(items[activeIndex].to); setOpen(false); onOpenChange?.(false); }
++        if (items[activeIndex]) { navigate(items[activeIndex].to); setOpen(false); onOpenChange?.(false); triggerRef.current?.focus(); }
+       }
+     };
+     document.addEventListener("keydown", handleKeyDown);
+     return () => document.removeEventListener("keydown", handleKeyDown);
+   }, [open, query, activeIndex, dests, navigate, onOpenChange]);
+ 
+-  useEffect(() => { if (open) inputRef.current?.focus(); }, [open]);
++  useEffect(() => {
++    const dialog = finderRef.current;
++    if (open && dialog && !dialog.open) { dialog.showModal(); inputRef.current?.focus(); }
++    else if (!open && dialog?.open) dialog.close();
++  }, [open]);
+ 
+   const filtered = (d: Destination[], q: string): Destination[] => {
+     const query = q.trim().toLocaleLowerCase();
+@@ -245,13 +250,13 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
+   }, [activeIndex, open]);
+ 
+   return <>
+-    <button ref={triggerRef} type="button" className="workspace-page-finder-trigger" onClick={() => { setOpen(true); setQuery(""); setActiveIndex(0); onOpenChange?.(true); }} aria-haspopup="dialog" aria-expanded={open}>
++    <button ref={triggerRef} type="button" aria-label="Find a page" className="workspace-page-finder-trigger" onClick={() => { setOpen(true); setQuery(""); setActiveIndex(0); onOpenChange?.(true); }} aria-haspopup="dialog" aria-expanded={open}>
+       <Icon path="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
+       <span>Find a page</span>
+       <kbd className="workspace-page-finder-kbd">{navigator.platform.toLowerCase().includes("mac") ? "⌘" : "Ctrl+"}K</kbd>
+     </button>
+     {open && (
+-      <div role="dialog" aria-modal="true" aria-label="Page finder" className="workspace-page-finder" onClick={(event) => { if (event.target === event.currentTarget) { setOpen(false); triggerRef.current?.focus(); } }}>
++      <dialog ref={finderRef} aria-modal="true" aria-label="Page finder" className="workspace-page-finder" onCancel={event => { event.preventDefault(); setOpen(false); onOpenChange?.(false); triggerRef.current?.focus(); }} onClick={(event) => { if (event.target === event.currentTarget) { setOpen(false); onOpenChange?.(false); triggerRef.current?.focus(); } }}>
+         <div className="workspace-page-finder-panel">
+           <div className="workspace-page-finder-search">
+             <input ref={inputRef} type="search" placeholder="Type a page name…" value={query}
+@@ -273,7 +278,7 @@ function PageFinder({ destinations: dests, onOpenChange }: { destinations: Desti
+             ))}
+           </div>
+         </div>
+-      </div>
++      </dialog>
+     )}
+   </>;
+ }
+@@ -386,8 +391,6 @@ export function WorkspaceNavigation(): React.JSX.Element {
+         </>}
+       </div>
+       <nav className={`workspace-nav${collapsed ? " is-collapsed" : ""}`} aria-label="Workspace navigation">
+-        {!collapsed && <NavLink className="workspace-dashboard-link" to="/dashboard"><Icon path={routeIcons["/dashboard"]} /><span>Dashboard</span></NavLink>}
+-        {collapsed && <NavLink className="workspace-dashboard-link" to="/dashboard" aria-label="Dashboard"><Icon path={routeIcons["/dashboard"]} /></NavLink>}
+         <DesktopDestinationGroups pathname={location.pathname} filter={filter} onClearFilter={clearFilter} unreadCount={unreadCount} collapsed={collapsed} />
+       </nav>
+       {!collapsed && <div className="workspace-sidebar-footer">
+@@ -419,17 +422,17 @@ export function WorkspaceNavigation(): React.JSX.Element {
+   </>;
+ }
+ 
+-export function WorkspaceHeader({ session }: { session: { account: { email: string; kind: "OWNER" | "STAFF" } } }): React.JSX.Element {
++export function WorkspaceHeader({ session, contextLabel = "Dashboard" }: { session: { account: { email: string; kind: string } }; contextLabel?: string }): React.JSX.Element {
+   return (
+     <header className="workspace-header">
+       <div className="workspace-header-left">
+         <span className="workspace-header-breadcrumb">Workspace</span>
+         <span className="workspace-header-divider" aria-hidden="true"></span>
+-        <span className="workspace-header-context">Dashboard</span>
++        <span className="workspace-header-context">{contextLabel}</span>
+       </div>
+       <div className="workspace-header-actions">
+         <PageFinder destinations={[...destinations]} />
+-        <NavLink to="/tasks" className="workspace-header-new-task" aria-label="New task">
++        <NavLink to="/tasks?create=1" className="workspace-header-new-task" aria-label="New task">
+           <Icon path="M12 5v14M5 12h14" size={15} />
+           <span>New task</span>
+         </NavLink>
+diff --git a/docs/operations/RECOVERY_ACCEPTANCE_REPORT_2026-10-21.md b/docs/operations/RECOVERY_ACCEPTANCE_REPORT_2026-10-21.md
+index d60b09a..8d93daa 100644
+--- a/docs/operations/RECOVERY_ACCEPTANCE_REPORT_2026-10-21.md
++++ b/docs/operations/RECOVERY_ACCEPTANCE_REPORT_2026-10-21.md
+@@ -1,10 +1,14 @@
+ # Sense recovery acceptance — 2026-10-21
+ 
+-Status: IN PROGRESS. Final exact-source native acceptance passed; hosted gates and the release-branch deployment receipt are pending. This report does not certify production or actual-project R-104/R-105 acceptance.
++Latest checkpoint: `388fffc` is the pushed CI-cleanup candidate; staging remainsd08282c. Exact623 source5da1d953 passed420 PostgreSQL cases/64 suites after the independently reviewed deterministic expiry-test correction, plus API typecheck/scoped lint and artifact cache checks. The preceding hosted e7 run actually passed57 browsers, then timed out after its summary during fixture cleanup;388 addresses that CI lifecycle boundary and its hosted run is pending. Active Owner-confirmed staging use has since changed four authentication tables;170 table hashes remain unchanged, and original security-event/challenge rows remain intact. Do not interpret historical1011-row/all174-hash equality as the current live state. No final merge/deployment, whole-recovery, production or historical NUL-incident resolution is claimed.
++
++Status: IN PROGRESS. Candidate `d08282c` has passed current native acceptance and controlled local artifact deployment/recovery. Hosted browser/container acceptance, release-branch merge/default selection and exact merge-commit deployment remain pending. An earlier NUL-containing JSON startup incident remains unexplained. This report does not certify production, actual reboot/before-login startup or actual-project R-104/R-105 acceptance. See RECOVERY_VERIFICATION_LOG_2026-10-21.md for preserved attempts and source boundaries.
+ 
+ ## Authoritative application and release
+ 
+-Canonical source: `D:\app\sensestudios work management app`. Integration: `codex/sense-integration`. Release: `codex/sense-release`, through recovery PR1. Reviewed candidate: `3b8303aeefaad393fb21c5bb07eeb02d8555e1f4`; application/test/operational-source fingerprint: `bf059b02d19dc48c0bb99c8c96166a591b47359d4f70742ed2df696f525f3bb0`. Final promotion requires the explicit matched release commit and private artifact-manifest SHA256. Read the actual deployed identity from `/release.json`, `/api/v1/health/release`, the visible release footer and `pnpm staging:status`.
++Current native gates passed: typecheck/lint/build,508 API,619 web,57 desktop/mobile browsers, five bounded browser journeys, two project database cases and13 Windows staging tests. The first619-web run had one failed task-heading wait; the unchanged-source full rerun passed all619. Both attempts remain preserved. The matching candidate passed cached/fresh/offline draft/pending-command preservation, retained read-only119-migration/174-table/1011-row comparison, live1440/390/320 checks and exact owned web/API/supervisor recovery. Both earlier hosted d082 runs were cancelled; one exact PR run was restarted and has passed core tests/build, with final browser/container outcome pending. Fifteen raw Windows-query samples did not reproduce the earlier malformed output. A recovered READY state does not establish that incident's root cause.
++
++Canonical source: `D:\app\sensestudios work management app`. Integration: `codex/sense-integration`. Release: `codex/sense-release`, through draft recovery PR1. Reviewed and locally deployed candidate: `d08282c08febf1c4bc5758c9bb0dd93dfc891da4`, build `d08282c08feb-1792572887297`;656-file source fingerprint `11d12685babbdbf4fdd29e6dad63ec8fed5dba3270cd0e9909032595ea58410e`, private artifact-manifest SHA256 `f9cb255f6b1ddc4012ec3265037cea4cede9d6f1aacb3e7a02f9b02f83323712`. Concurrent Dashboard edits are excluded. Final promotion requires the explicit matched merge commit and its own private manifest hash. Read actual identity from `/release.json`, `/api/v1/health/release`, the visible release footer and `pnpm staging:status`.
+ 
+ Canonical staging: **http://localhost:59443/**, with the matched API on loopback59442 and retained PostgreSQL on loopback45434. Immutable artifacts contain web, API, contracts, dependencies and pinned Node24.19.0 together. Builds do not promote themselves or migrate retained data. Historic releases, configuration and source evidence remain outside the served root. Experimental Vite servers reject59443 and cannot automatically fall through to another occupied port.
+ 
+@@ -22,9 +26,9 @@ The bounded candidate contains119 migrations. Existing110–115 were not replaye
+ 
+ ## Verification evidence
+ 
+-Pinned toolchain: Node24.19.0 / pnpm11.19.0. The final exact-source native runs passed508 API tests/66suites,617 web tests/63files,420 real PostgreSQL tests/64suites, nine receipt/concurrency cases, all57 desktop/mobile browsers, five bounded real-browser journeys, two bounded project-database cases, typecheck/lint/build and26 runtime/NAS cases, without failures/skips/retries. The full native runs share the bf059b02 fingerprint. The subsequent delta is only the hosted fixture generator assigning the migration URL to its new browser database; application/contracts/schema/runtime code remain identical. Exact results and source hashes are recorded in `RECOVERY_VERIFICATION_LOG_2026-10-21.md`.
++Pinned toolchain: Node24.19.0 / pnpm11.19.0. Current d082 native results are listed above and bound to source11d12685. The preserved earlier bf059b02 run passed508 API/617 web/420 real PostgreSQL/nine receipt cases,57+5 browsers/two project database cases, typecheck/lint/build and26 runtime/NAS cases. Later changes include the hosted fixture correction, Library/Skills frontend regressions/fixes and Windows inspection retry; they do not inherit that earlier whole-tree acceptance. API/schema/contracts/dependencies remain identical in Git, so the earlier native420/nine-case results are recorded with that explicit boundary; current hosted core suites passed on the new candidate. Historical and current exact results appear in `RECOVERY_VERIFICATION_LOG_2026-10-21.md`.
+ 
+-Ten current staging safety tests pass, including a real hidden child that exits7. Actual Vite development/preview refusal and a separate loopback development server passed. A stopped, identity-checked disposable PostgreSQL18 cluster cold-started in311ms with the corrected output handling and was stopped cleanly. Native tests use PostgreSQL18; hosted fixtures use PostgreSQL17.10.
++All13 current staging safety tests pass, including a real hidden child that exits7, OS mutex identity checks and bounded inspection retry. Actual Vite development/preview refusal and a separate loopback development server passed at the recorded source. A stopped, identity-checked disposable PostgreSQL18 cluster cold-started in311ms with the corrected output handling and was stopped cleanly. Native tests use PostgreSQL18; hosted fixtures use PostgreSQL17.10.
+ 
+ The exact candidate artifact passed the historical cached-worker rehearsal, preserving a pending capture command and local draft. Clean profiles and upgraded cached profiles retained their offline shell. The old worker required one explicit online Ctrl+Shift+R after saving work; no browser storage was cleared. These are isolated persistent profiles carrying the actual historical worker, not the Owner's personal browser profile.
+ 
+diff --git a/docs/operations/RECOVERY_VERIFICATION_LOG_2026-10-21.md b/docs/operations/RECOVERY_VERIFICATION_LOG_2026-10-21.md
+index 2c43e65..509d6ef 100644
+--- a/docs/operations/RECOVERY_VERIFICATION_LOG_2026-10-21.md
++++ b/docs/operations/RECOVERY_VERIFICATION_LOG_2026-10-21.md
+@@ -1,9 +1,55 @@
+ # Recovery verification log — 21 October 2026
+ 
++## Matched recovery release and V10 follow-up
++
++IN PROGRESS on `codex/sense-integration`. Recovery candidate388fffc passed both complete hosted runs39597756503 and39597744842, including57 browsers, container and backup/restore rehearsal. PR1 merged as886df63 with the same tree; that exact matched artifact is serving http://localhost:59443/ (build886df63dd9c9-1792586217538). Exact artifact cache/offline/draft preservation, live responsive shell and owned web/API/supervisor recovery passed. It still has the earlier Dashboard.
++
++The Owner explicitly confirmed V10 and directed completion. Candidate8f235cc implements the existing-page V10 widget layout, account/device preferences and real Time/performance adapters. Full web630/630 and final focused25/25 passed; scoped lint and API/web type checks passed. Clean exact-commit native quality, six-context/four-width real-session browser acceptance and full regression are running; V10 has not been promoted. See docs/operations/V10_COMPLETION_PLAN_2026-10-21.md.
++
++Preservation remains non-destructive:119 migrations, no migration120 or ArchiFlow, historical branches/archives/configuration/evidence retained. During Owner-confirmed live sign-ins,170 non-auth table hashes remain unchanged; four authentication tables changed, with original security-event/challenge prefixes retained. Current all174-table byte equality is not claimed. Historical NUL-JSON availability incident, actual reboot/before-login, R-104/R-105 and production gates remain unverified. Current and independent Codex reviews replace unavailable Opus/Sonnet under Owner authorization.
++
++
++## Historical candidate evidence below
++
++
+ Status: IN PROGRESS. These are current-session results with explicit source boundaries, not final acceptance or production readiness.
+ 
+ ## Later candidate verification and remaining failures
+ 
++### Latest resume boundary
++
++Both exact388 hosted runs completed the full browser step successfully, including fixture cleanup and report upload: push39597744842 browser12:21:13–12:31:31Z; PR39597756503 browser12:21:36–12:32:25Z. Both then entered the actual Container and recovery rehearsal. This is now observed hosted wrapper cleanup success; full job/container acceptance remains pending until its actual result.
++
++The actual hosted Linux descendant-cleanup regression passed at12:13:28Z in run39597756503, followed by typecheck/lint and the full API/PostgreSQL/web core stage. The exact388 artifact built with660 source files/source `f632d14fc2b1aad4d145f2989555288715f1fcdf4a6355a2fcfbfe7fa6022b1c`, manifestSHA256 `87c815f87152f6cd323911332769d432b28892687345ce3e276b890e857d273c`; cache/offline acceptance and local-only preflight passed. The earlier e7 timeout actually uploaded a20,110,730-byte structured-report artifact successfully; its container/recovery stage was skipped and the job failed. This verifies timeout evidence upload, not a passing full job. Four subsequent canonicald082 read-only readiness/identity samples over90seconds passed8–131ms (`sustained-readiness-1792585113725.json`). No interruption or sign-in was performed for those samples. Final matched merge deployment and the historical NUL incident remain open.
++
++Candidate `388fffc6ef0003026a230f5e124e7e84027b0a4e` adds CI-only bounded fixture-process cleanup after hosted run39591689391 actually passed57/57 Playwright cases at11:48:40Z but hung after its summary until the30-minute step timeout. The particular surviving historical PID was not captured. The structural cleanup defect was direct-pnpm-only termination and skipping exited leaders with descendants holding pipes. Vite now launches directly at the same web cwd/proxy/ports; each Linux CI fixture owns a separate process group, receives TERM then KILL with bounded close waits, and reports cleanup begin/end. Cleanup failure still fails acceptance and all fixture cleanups are attempted. Six local lifecycle/progress checks, scoped lint and syntax passed; the Windows conditional branch does not execute the Linux descendant case. Hosted workflow explicitly runs that real Linux regression. Current-agent review is recorded; the independent reviewer reached a usage limit before this subsequent CI change. No independent review or hosted completion is claimed for388fffc yet. PR hosted run39597756503 and push39597744842 are in progress.
++
++The preceding `62368360579ac7854ff2ead31cba81ccfb874e9d` corrects one existing S21 real-clock test race exposed by PR run39591699809:419/420 PostgreSQL cases passed, but a one-second future grant expired before the positive SQL assertion. The test now uses database-clock future/past states, retains session-date constraints and writes expired-grant fixture version/history/event/audit/outbox in one transaction through the canonical evidence helper. Actual service/SQL expiry policies and the neighboring real lock-wait expiry regression are unchanged. Independent Codex reviewed the final test and passed scoped lint/diff checks. Clean exact-artifact source `5da1d9534f4d2eb2cb0cb8a2edeef8ded0a465646e37ec27b69e134016950edf` passed420/420 PostgreSQL cases/64 suites, API typecheck and scoped lint in run1792585500000-623683600006; its dedicated clusters are stopped and preserved. The preceding LF-only overlay run also passed420, but differs from the exported test file's CRLF bytes and is not substituted for exact-byte acceptance. An earlier setup attempt stopped because shared contracts had not been built; no failed evidence was overwritten. The623 artifact built and passed isolated cached/fresh/offline draft/pending-command checks. Neither623 nor388 was promoted over the workingd082 staging release.
++
++The Owner explicitly confirmed “Yes, staging is being used” after read-only comparisons found authentication activity. All174 table hashes/1011rows matched through11:26:02Z. A repeatable-read comparison at12:12:56Z found170 table hashes unchanged and1019 current rows: security_events and webauthn_challenges retain their exact original rows with three subsequent additions each; passkey_credentials and sessions have changed hashes during confirmed use (7 credentials remain,31→33 sessions). No original row-byte equivalence is claimed for those last two tables because the baseline retained hashes, not individual row bytes. The comparison fails on any change outside these four authentication tables. This is an explicit live-use preservation boundary, not a reset or silent replacement baseline; all observations remain preserved in retained-preservation-1792584776717.json. No retained writes were performed by these checks.
++
++The preserved hosted d082 attempt2 remained silent in its browser stage beyond the previously observed10–12minute completed runs. Its job-log endpoint returned404/BlobNotFound while active. No hang was attributed without evidence, and that run was not cancelled. Commit `e7c7acf` changes only CI observation/deadlines: fixed bounded test metadata is forwarded while complete ordinary output retains existing redaction; a25-minute Playwright deadline and30-minute browser-step deadline allow failure evidence upload before the90-minute job limit. No assertion, identity/permission guard, retry count, application/runtime or migration behavior changes. Actual metadata/GitHub/JSON reporter smoke passed. A3-second deadline smoke returned exit1/global errors/skipped1 and was rejected by the existing acceptance guard; the first smoke analysis incorrectly expected a failed count, then the corrected analysis verified the actual preserved result. Three metadata/chunk/forged-payload regression tests and scoped lint passed. Independent review found and then verified the strict scalar/allowlist fix; its report is preserved. Hosted timeout cleanup/upload itself remains unverified.
++
++Current candidate native acceptance finished successfully across its recorded unchanged-source runs: API508, web619, full desktop/mobile57, bounded browser5, project database2, exact-export Windows13, typecheck/lint/build. Browser fixture `1792580100000-d08282c00003` is stopped and preserved. The private preflight binds all evidence to656 files/source `11d12685babbdbf4fdd29e6dad63ec8fed5dba3270cd0e9909032595ea58410e` and artifact manifest `f9cb255f6b1ddc4012ec3265037cea4cede9d6f1aacb3e7a02f9b02f83323712`; no failed summary was overwritten. API/schema/contracts/dependencies remain unchanged from prior420 PostgreSQL/nine receipt native acceptance, and current hosted core tests/build have passed; final hosted browser/container outcome remains pending.
++
++Controlled local promotion selected `d08282c08febf1c4bc5758c9bb0dd93dfc891da4`, build `d08282c08feb-1792572887297`. Actual matching web/API READY and1440/390/320 browser checks passed (`browser/live-1792580446226/report.json`). Exact owned web/API/supervisor interruptions all recovered automatically (`live-process-recovery-1792580455483.json`); after supervisor recovery the supervisor itself runs from the d082 artifact. A first immediate status probe observed the expected STARTING transition and was not counted as passing. Final merge-SHA/default-branch promotion and sustained reliability claim remain pending; the historical NUL incident remains unexplained.
++
++Fresh independent Codex review of d082 found no source blocker in the bounded fixes and actually passed16 frontend/three retry tests. Its source hashes and limits are recorded in `reviews/late-candidate-independent-d08282c.md`. Fifteen bounded raw Windows query captures were valid (`windows-json-sample-1792580076600`); no matching Windows Application error during the incident window was found. These negative diagnostics do not establish a root cause or erase the availability defect.
++
++On the next authorized continuation, approval review became available and the prepared supplement actually ran: the unchanged `d08282c`/`11d12685...` export passed619/619 web tests with no skips and production build (`d082-quality-supplement/summary.json`). The original failed native summary remains intact. A newly prepared browser-purpose fixture `1792580100000-d08282c00003` is running full57 plus bounded5/2 checks; it does not reset the stopped preceding fixture. The candidate's exact artifact passed old/fresh-worker cache/offline/draft/pending-command preservation (`browser/run-1792579803430-a531a8fb-311b-427a-8b3d-4e8f8dbdf0bf/report.json`). A fresh read-only comparison at10:50:41Z matched119 migrations/all174 tables/1011 rows. Both earlier hosted d082 runs finished cancelled, so one PR run39572819677 was explicitly restarted; no cancelled run is reported as passing.
++
++The guarded scheduled restart of the accepted local98d3e4c artifact reached READY. Exact owned web/API/supervisor interruptions then all recovered automatically (`live-process-recovery-1792579875154.json`), with matching release/database readiness. The malformed-output incident remains preserved as unexplained; current successful recovery does not establish its historical root cause. Sustained final-candidate and matched merged-release verification remain required.
++
++The priority update succeeded with preserved task XML and process receipts. A comparison of task Settings XML, accounting for omitted default Priority7, confirms Priority6 was the sole settings change; principal/triggers/actions were also checked unchanged. The same4-second retained connection probes then passed in54/188/199ms. Canonical `98d3e4c` reached READY and passed1440/390/320 live checks (`browser/live-1792574032590/report.json`). This was a point-in-time result, not sustained final acceptance.
++
++The clean `d08282c` native run `1792573500000-d08282c00002` passed typecheck/lint and508 API tests, then finished618/619 web cases. The failed pre-existing Task creation journey could not find the returned task heading within its wait budget. Its cause is not confirmed; no test assertion or application rule was weakened. The owned disposable clusters were stopped and preserved. A separate full web rerun/build supplement was prepared but **not executed**: automatic approval review could not complete because its review quota was exhausted (reported retry time17:38 IST). This is a review-service failure, not an unsafe-action verdict, and was not bypassed. Final619-web/browser acceptance is therefore not granted.
++
++At10:43:49Z the canonical supervisor subsequently entered REQUIRES_ACTION, with no app children, after JSON parsing rejected output containing null bytes. On resume the active pointer and runtime JSON both parse correctly. The particular malformed input/output and root cause remain unidentified; no corrupt evidence was deleted or silently repaired. Current staging availability and sustained recovery are unverified. Latest hosted checks have not been reread after the approval-service failure. PR1 remains a draft; merge/default-branch/final matched-release completion is not claimed.
++
++Candidate `3686d32` CI stopped at web typecheck because the new regression used Playwright's `exact` option in a Testing Library role query. Commit `d08282c` removes that invalid test option; a current web typecheck passed. Its656-file Git-export source hash is `11d12685babbdbf4fdd29e6dad63ec8fed5dba3270cd0e9909032595ea58410e`. The exact export passed all13 Windows staging cases. The first native fixture prepared successfully but quality stopped before tests when pnpm tried to alter deployment dependency metadata without a TTY; the owned fixture was stopped and preserved. A separate clean Git export with frozen full development dependencies is now used for the fresh final native run; no failed stage is replayed against its old database.
++
++Later staging startup also failed on `timeout expired` before launching app children. Read-only connection probes measured2769ms followed by two4-second timeouts; a20-second diagnostic connected after17949ms, with no other active database work. The Owner allowed PostgreSQL/staging Node processes, but three subsequent4-second probes still timed out. No matching recent Defender block event was found; registered security-product names alone do not establish causation. Windows then reported100% CPU use, while the exact retained PostgreSQL process family ran BelowNormal and the scheduled task had priority7. A guarded change to ordinary Normal scheduling priority is being tested; task XML/settings and exact process identities are preserved, with no retained stop, migration or data change. Current live readiness remains unverified.
++
+ The retrieved39567150845 browser trace subsequently establishes the Skills root cause: approval returned201, then the legacy combined page's Training setup rewrote the shared employee query to the manager's own profile, which had no Skills requests. Network responses completed in well under a second; increasing the assertion timeout would not correct this selection change. A delayed Training setup regression reproduced the wrong employee URL before the fix. Background Training setup now preserves the Skills-owned employee query only on the legacy combined page; the separate Training page and explicit Training selection retain their existing behavior. All11 Skills/Training unit cases passed afterward. Full candidate/browser/hosted verification of this later source change is pending.
+ 
+ Library record switching was reproduced under delayed responses: the selected identifier changed while the preceding record's detail/actions remained visible. This could submit acknowledgement or file actions against the wrong visible context; the backend correctly rejected cross-record files. Commit `d6f9b96` renders detail/actions only when the loaded record matches the selection and guards uploads/version saves the same way. A delayed-response regression failed before the fix and all five Library unit cases passed afterward, without unhandled errors. No authorization or file-ownership rule was weakened.
+diff --git a/docs/operations/STAGING_RELEASE_WORKFLOW.md b/docs/operations/STAGING_RELEASE_WORKFLOW.md
+index e925788..1bb674f 100644
+--- a/docs/operations/STAGING_RELEASE_WORKFLOW.md
++++ b/docs/operations/STAGING_RELEASE_WORKFLOW.md
+@@ -35,6 +35,8 @@ The hidden launcher runs the generated local PowerShell script with process-only
+ 
+ The supervisor verifies its OS process identities, fixed loopback listeners, exact successful migration/checksum ledger, retained database identity, canonical file root and artifact integrity. It refuses unrelated occupied ports or contradictory database ownership. Child restarts are bounded; exhausted retry/log budgets persist `REQUIRES_ACTION` and preserve evidence. Stop uses a token-bound request and stops only owned app children; retained PostgreSQL data are kept.
+ 
++On21October host CPU saturation exposed BelowNormal task/child scheduling: retained database connection attempts exceeded the unchanged4-second preflight budget. The current task was changed from its default priority7 to6 (Normal), with XML and exact-process receipts preserved; its action/principal/triggers/other settings were unchanged. Only the verified retained PostgreSQL and already-running canonical launcher families were normalized, with no database restart or migration. Three identical probes then passed54/188/199ms, followed by actual app/supervisor recovery. Future recreation must preserve the reviewed Normal priority. This is a recorded host setting, not a production performance guarantee. Read-only Windows inspections retry one actual OS query timeout; permission errors, exhausted timeouts and wrong identities still fail closed. Task mutations/mutex claims are not replayed.
++
+ ## Cache and release verification
+ 
+ The visible release footer and `/release.json` identify the web build. `/api/v1/health/release` exposes only public API commit/build/time/schema count; `/api/v1/health/ready` additionally validates the full database identity and successful migration ledger. A mismatch/unavailable API is visible without automatically discarding drafts or reloading a page.

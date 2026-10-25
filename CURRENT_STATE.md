@@ -14,6 +14,29 @@ The Owner selected Dashboard as the visual source. All28 internal pages now use 
 
 All28 internal tab routes now share one global header, page context/actions/account access, paper canvas, gutters and sidebar offsets. Dashboard competing shell rules and duplicate page account strips were removed; collapse survives tab navigation. Final affected117/117, web typecheck/scoped lint/build,196 development and196 production synthetic browser layout checks passed. Full web683 passed/8 concurrent composer-related failures; an isolated baseline reproduced4 and did not reproduce4. No whole-checkout/full-verify, real-session/independent acceptance or canonical deployment is claimed. Retained data/schema and unrelated Dashboard/Time/composer work are preserved. See docs/ui/SHARED_SHELL_CONSISTENCY_2026-10-24.md.
 
+## Tasks tab UI/UX audit — 390px visual + code inspection, 2026-10-24
+
+Tasks tab (`/tasks` register mode, `TaskWorkspace` `listFirst` non-personal) audited at 390×844 against a synthetic in-memory fetch fixture (`apps/web/visual-fixtures/task-list-uiux.tsx`, served at `/task-list-uiux.html`) plus a targeted code read of `task.tsx`, `task.css`, `task-detail-drawer.css` and the ui-ux-pro-max design-intel CSVs (touch targets, focus, overflow, reduced motion, empty states, back-button behavior).
+
+**Verified at 390px (Playwright, headless):**
+- Queue rows use the container-query-driven 2-column grid (`@container task-queue (max-width: 550px)`); primary + open-action cells span full width. No horizontal overflow (`gridScrollWidth === clientWidth` on the filter panel grid).
+- All buttons/selects/checkboxes in the workspace are ≥44px at 390px — only 20×20px disabled checklist checkboxes are under that, which is acceptable (they are display-only, not interactive on that view; real toggle happens in the edit form).
+- `:focus-visible` renders a 3px solid pine outline (`#244f43` equivalent), offset 2px, on every focusable control tested.
+- `aria-current` is set on the selected queue row; the SR-only description span carries owner/priority/status/dates for each row.
+- Filter panel (`.task-secondary-filters`) opens inline (static positioning, register mode — no popover repositioning needed) and its 10-field grid fits within 283px with no scroll.
+- Back-to-task-list button, "Reason for change" input, and Complete task button are all present and sized correctly in the 390px detail view (detail height 2,465px, total scroll 2,713px — no anomalous overflow).
+
+**Pre-existing bug found and fixed:** `apps/web/src/task-composer-fields.tsx` line 145 had a stray `}` after the title `<input />` (part of the uncommitted V15 composer rewrite that also introduced the new `task-composer-v15.css`). This parse error blocked the entire web dev server and prevented any fixture from rendering. Fixed by removing the one character.
+
+**Observations worth tracking (no code change made):**
+- The inline (non-drawer) detail view on register mode at 390px uses ~2,465px of vertical scroll for a single task — consistent with the prior "known issue" that mixed attention at 320px requires substantial scroll. Not a regression.
+- `touch-action` is set to `none` only in `dashboard-widgets.css` (drag interactions); Tasks tab rows rely on default browser touch behavior, which is correct for scrollable list rows.
+- `prefers-reduced-motion` is honored in `task-detail-drawer.css` (progress bar transition disabled) but not in `task.css` — no animated elements in the main task list, so this is fine.
+- The 19k-px anomalous detail height seen during an earlier in-app Browser-pane session was a rendering-surface artifact (pane reported 0×0), not a real layout defect; clean Playwright run confirms 2,465px.
+
+**Files created (scratch, untracked):** `apps/web/task-list-uiux.html`, `apps/web/visual-fixtures/task-list-uiux.tsx`.
+**Files modified:** `apps/web/src/task-composer-fields.tsx` (one-character parse-error fix only).
+
 ## Dashboard summary responsiveness — controlled local staging COMPLETE, 2026-10-24
 
 Today at a glance now reflows with available width and uses readable full-width phone rows. Exact selectedb7fefb822fd3b135d81e11a5d21283b0a530ede7, matched web/API buildb7fefb822fd3-1792785165920, READY/schema120 verified. Seven widths320–1440 passed in both desktop/mobile Dashboard journeys;38 Dashboard unit tests, typecheck, changed-test lint, production build and isolated cache/offline checks passed. Supplementary populated-response checks passed2/2; independent source/14 empty-state visual review accepted, primary populated review completed (independent populated review unavailable due usage limit). No whole-checkout verify claim. All172 business hashes/176 table counts/1,051 rows preserved; only sessions changed. No migration or domain-rule changes. Concurrent Time/Dashboard work excluded. Personal-browser refresh, actual operational/production gates remain explicit. See docs/development/DASHBOARD_SUMMARY_RESPONSIVE_2026-10-24.md.

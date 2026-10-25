@@ -1,0 +1,18 @@
+[
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\mw-i01-acceptance\\setup.mjs",
+    "Hash": "19B7504B6640EFA057765E8921C27BF83AA1FEEC312176095F17E25777FEF9BA"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\mw-i01-acceptance\\cleanup.mjs",
+    "Hash": "ECBD3B3A423F8F67656B93C9351DC6240555B4323C087BCBA18035F3E130CD64"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\mw-i01-acceptance\\run-task-integration.mjs",
+    "Hash": "101821A37E5271A69C7234FBAE0F1A3FFD4B102EE66D1FF6F13101F4AA6A1AA6"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\.env.checkpoint-tools\\mw-i01-acceptance\\run-tests.mjs",
+    "Hash": "92ECDB4D2E50F27F117E1154DDBFA23886B01E38B57674787B271B6716A0CB06"
+  }
+]

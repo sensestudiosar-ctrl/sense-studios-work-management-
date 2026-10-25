@@ -1,0 +1,11 @@
+{
+  "capturedAt": "2026-10-12",
+  "purpose": "Current approved acceptance harness source pin; prior harness audit is preserved unchanged.",
+  "files": {
+    ".env.checkpoint-tools/mw-i02-acceptance/acceptance.spec.ts": "f86b726cf6c0f71d8902a103f30084953730cf010159a7fe9e0465820afdb712",
+    ".env.checkpoint-tools/mw-i02-acceptance/playwright.config.ts": "0703b0e80867c720ba626e2aca4918f7b92761fb7204d85ac72bd5cf6a1f46be",
+    "apps/web/mw-i02-after.html": "a367b7fb373f22e65ec13593bcc106be9b22ee53d74424ce159b666f591014b4",
+    ".env.checkpoint-tools/mw-i02-visual/after.tsx": "5de613ec7123b1f6f37c7fa9128e6ed56df896ba5e8df94cc4451cba57461cb3",
+    ".env.checkpoint-tools/mw-i02-visual/review-layout.mjs": "d109f6c36af73fb6da0e2b260a4008ae13db8f35653f1216eb74120fb8cef71e"
+  }
+}

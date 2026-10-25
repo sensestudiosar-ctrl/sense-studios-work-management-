@@ -1,0 +1,19 @@
+{
+  "time": "2026-10-10T15:49:59.424Z",
+  "files": {
+    "apps/web/src/task.tsx": "9004f3d3d5906378a6d2b3b2040014d57e0e76ef83711924e0ccb80bbcde6dbe",
+    "apps/web/src/task.css": "6bee17d0877e55e7fddf75056e07fd5045b3b29daabd652cf323d42c0e81ebe0",
+    "apps/web/src/task.test.tsx": "b027b58e9c0aec7498c9f0ea46eaa77a954fa795fcdff7f670f9a0d026b2f9d7",
+    "apps/web/src/my-work-attention.tsx": "da9801e055bc16abb849a743e66bd3f4a901a9cfd487afd13f7900a3730ce28b",
+    "apps/web/src/my-work-attention.css": "09e34d5fe203909217f702ec4929f15b1b4593425226bb9317c689dcc5efc1c0",
+    "apps/web/src/my-work-attention.test.tsx": "e82879a6d288e1f9f0f6061372a81e7575efc27bfeea262c2ceb55ee1a04d9fb"
+  },
+  "prototypeSha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+  "checks": {
+    "affectedFrontend": "45/45",
+    "typecheck": 0,
+    "lint": 0,
+    "build": 0
+  },
+  "mode": "frontend component inspection; mocked reads; writes disabled; no database or authentication"
+}

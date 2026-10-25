@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 type Timer = { id: string; state: "RUNNING" | "PAUSED"; version: number; elapsedSeconds: number; workNote: string };
@@ -10,8 +10,10 @@ async function request<T>(path: string, csrf: string, body?: unknown): Promise<T
   if (!response.ok) throw new TimeReadError(result.error?.message ?? result.message ?? `Time source unavailable (${response.status})`, response.status);
   return result as T;
 }
+type Entry = { date: string; projectId: string | null; taskId: string | null; durationSeconds: number };
 export function DashboardTimeWidget({ csrfToken, refreshVersion = 0 }: { csrfToken: string; refreshVersion?: number }): React.JSX.Element {
   const [setup, setSetup] = useState<Setup | null>(null), [timer, setTimer] = useState<Timer | null>(null);
+  const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true), [error, setError] = useState(""), [pending, setPending] = useState(false);
   const [workNote, setWorkNote] = useState(""), [location, setLocation] = useState("OFFICE"), [billable, setBillable] = useState(true);
   const [projectId, setProjectId] = useState(""), [taskId, setTaskId] = useState("");
@@ -21,9 +23,9 @@ export function DashboardTimeWidget({ csrfToken, refreshVersion = 0 }: { csrfTok
   const load = useCallback(async () => {
     const current = ++generation.current; setError(""); setLoading(true);
     try {
-      const [nextSetup, data] = await Promise.all([request<Setup>("/setup", csrfToken), request<{ timer: Timer | null }>("", csrfToken)]);
+      const [nextSetup, data] = await Promise.all([request<Setup>("/setup", csrfToken), request<{ timer: Timer | null; entries?: Entry[] }>("?scope=mine", csrfToken)]);
       if (current !== generation.current) return;
-      setSetup(nextSetup); setTimer(data.timer); setReadAt(Date.now()); setClock(Date.now());
+      setSetup(nextSetup); setTimer(data.timer); setEntries(Array.isArray(data.entries) ? data.entries : []); setReadAt(Date.now()); setClock(Date.now());
     } catch (cause) {
       if (current !== generation.current) return;
       setSetup(null); setTimer(null); setError(cause instanceof Error ? cause.message : "Time source unavailable");
@@ -53,6 +55,20 @@ export function DashboardTimeWidget({ csrfToken, refreshVersion = 0 }: { csrfTok
   };
   const elapsed = timer ? timer.elapsedSeconds + (timer.state === "RUNNING" ? Math.max(0, Math.floor((clock - readAt) / 1000)) : 0) : 0;
   const duration = [Math.floor(elapsed / 3600), Math.floor(elapsed % 3600 / 60), elapsed % 60].map(n => String(n).padStart(2, "0")).join(":");
+  const today = new Date().toLocaleDateString("en-CA");
+  const weekAgo = new Date(Date.now() - 6 * 86_400_000).toLocaleDateString("en-CA");
+  const hoursIn = (from: string) => { const s = entries.filter(entry => entry.date >= from).reduce((total, entry) => total + entry.durationSeconds, 0); return `${(s / 3600).toFixed(1)}h`; };
+  const projectHours = useMemo(() => {
+    const totals = new Map<string, { name: string; seconds: number; count: number }>();
+    for (const entry of entries) {
+      if (!entry.projectId) continue;
+      const name = setup?.projects.find(project => project.id === entry.projectId)?.name ?? "Project";
+      const current = totals.get(entry.projectId) ?? { name, seconds: 0, count: 0 };
+      current.seconds += entry.durationSeconds; current.count += 1;
+      totals.set(entry.projectId, current);
+    }
+    return [...totals.values()].sort((a, b) => b.seconds - a.seconds).slice(0, 3);
+  }, [entries, setup?.projects]);
   return <div className="dv-widget-body dv-time-body">
     {error && <div className="dv-source-error" role="alert"><strong>{error}</strong><button type="button" disabled={pending} onClick={() => void load()}>Refresh timer</button></div>}
     {loading ? <p role="status">Reading time source…</p> : timer ? <div className="dv-time-active">
@@ -68,6 +84,9 @@ export function DashboardTimeWidget({ csrfToken, refreshVersion = 0 }: { csrfTok
       <div className="dv-time-options"><label className="dv-time-field">Location<select value={location} disabled={pending} onChange={e => setLocation(e.target.value)}><option value="OFFICE">Office</option><option value="SITE">Site</option><option value="REMOTE">Remote</option></select></label><label className="dv-time-check"><input type="checkbox" checked={billable} disabled={pending} onChange={e => setBillable(e.target.checked)} />Billable</label></div>
       <button type="button" disabled={pending || !workNote.trim() || !projectId && !activityLabel.trim()} onClick={() => void mutate("/timers", { workNote: workNote.trim(), location, billable, ...(projectId ? { projectId } : {}), ...(taskId ? { taskId } : {}), ...(!projectId ? { activityLabel: activityLabel.trim() } : {}) })}>Start timer</button>
     </div> : !error && <p>Your account has no employee record for a personal timer.</p>}
+    {entries.length > 0 && <div className="dv-time-hours" aria-label="Logged hours from your recent time entries"><div className="dv-time-hours-row"><span>Today</span><strong>{hoursIn(today)}</strong><span>This week</span><strong>{hoursIn(weekAgo)}</strong></div>
+      {projectHours.length > 0 && <div className="dv-time-hours-projects">{projectHours.map(project => <div key={project.name} className="dv-time-hours-project"><span>{project.name}</span><strong>{(project.seconds / 3600).toFixed(1)}h</strong></div>)}</div>}
+    </div>}
     <div className="dv-widget-foot"><span>{readAt ? `Read at ${new Date(readAt).toLocaleTimeString()}` : "Time source not read"}</span><Link to="/time">Time log & manual entry →</Link></div>
   </div>;
 }

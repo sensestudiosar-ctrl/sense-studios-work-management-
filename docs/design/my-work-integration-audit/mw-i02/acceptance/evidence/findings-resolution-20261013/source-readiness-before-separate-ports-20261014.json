@@ -1,0 +1,3731 @@
+{
+  "state": "SOURCE_READINESS_PASS",
+  "checkedAt": "2026-10-14T05:04:19.558Z",
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "checks": [
+    {
+      "name": "Pinned Node24.19.0",
+      "state": "PASS"
+    },
+    {
+      "name": "Pinned pnpm11.19.0",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/acceptance.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/authorization-record.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/authorization-record.test.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/check-absence.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/check-no-unowned-connections.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/cleanup.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/parity-source-readiness.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/playwright.config.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/preflight.ps1",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/preflight.tests.ps1",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/readiness-parity-20261013.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/readiness.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/run-binding.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/run-binding.test.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/run-task-integration.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/run-tests.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/setup.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: .env.checkpoint-tools/mw-i02-acceptance/verify-recovery-copy.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/.defect-baseline-1791356244441_c8cbee21/authorization.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/.defect-baseline-1791356244441_c8cbee21/crm.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/actionable-work-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/ai-assistance.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/ai-assistance.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/ai-evidence.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/app.module.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/approval.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/approvals.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/audit-retention.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/audit-retention.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/auth.guard.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/authorization-read-context.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/authorization.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/authorization.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/automation-reports.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/automation.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/automation.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/brevo-email.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-access.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-access.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-files.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-identity.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-identity.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-review.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-scope.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-portal-scope.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-review.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/client-review.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/config.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/crm-events.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/crm.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/crm.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/dashboard-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/dashboard-transaction.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/dashboard.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/dashboard.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/database.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/document-file-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/document.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/document.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/domain-event-catalogue.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/email-verification.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/external-access.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/external-portal-identity.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/external-portal-identity.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/external-portal-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/external-portal.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/external-portal.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/gallery.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/gallery.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/browser.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/client.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/commonInputTypes.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/enums.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/internal/class.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/internal/prismaNamespace.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/internal/prismaNamespaceBrowser.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Account.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AiDecision.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AiReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AiRun.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ApprovalDecision.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ApprovalRequest.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AuditDeletionTombstone.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AuditEvent.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AuditRetentionConfiguration.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AuditRetentionHold.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AuditRetentionNotice.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AutomationReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AutomationRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AutomationRun.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/AutomationVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Branch.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Client.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientContact.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientCorrection.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientFinalApproval.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientItemDecision.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientItemGrant.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientItemGrantChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientPortalCeremony.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientPortalCode.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientPortalGrant.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientPortalGrantChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientPortalSession.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientReference.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientReviewClassification.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientReviewComment.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientReviewItem.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ClientReviewPackage.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/CrmSource.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DashboardReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DashboardRule.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DashboardRuleVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DashboardRun.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Document.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DocumentAccessGrant.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DocumentFolder.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DocumentRevision.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DocumentUpload.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DocumentUploadChunk.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DomainEvent.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DrawingClientReviewSelection.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DrawingRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/DrawingTransmittal.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/EmailVerificationChallenge.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Employee.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/EmployeeJobRoleAssignment.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/EmployeeMembershipHistory.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/EmployeePermissionOverride.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalCadShare.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalCode.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalGrant.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalHistory.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalSession.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalUpload.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ExternalPortalUploadChunk.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/FileBlobMetadata.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/FileRetentionRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/GalleryEntry.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IdentityEnrollmentGrant.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationCalendarEvent.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationCalendarHistory.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationConnector.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationConnectorVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationDelivery.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/IntegrationSubscription.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/JobRole.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Lead.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LeadActivity.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LeadStageChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LearningReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LibraryAcknowledgement.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LibraryFile.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LibraryPublication.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LibraryRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LibraryReference.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/LibraryVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Notification.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/NotificationPreference.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/NotificationQuietHours.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Organization.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/OrganizationEvent.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/OutboxDelivery.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/OwnerRecoveryCode.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PasskeyCredential.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PerformanceReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PerformanceRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PerformanceVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PersonalReminder.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PortfolioPublication.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Project.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectAssignment.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectBranchTransfer.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectCancellationRequest.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectCreationReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectGateOverride.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectLeadChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectPlan.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectPlanCompletion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectPlanItem.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectScope.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectScopeChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectScopePolicyChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectStatusChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectTemplate.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ProjectTemplateVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/PublicationGrant.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReportSnapshot.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewAssignment.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewAssignmentChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewCategory.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewCategoryChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewComment.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewEscalation.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewRound.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/ReviewSubmission.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/RevisionApprovalFact.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/RevisionStateChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/RolePermission.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SecurityEvent.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Session.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SiteCommandReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SiteHistory.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SiteRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SiteVerificationAttempt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SiteWorkspace.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SkillCatalogue.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SkillChangeRequest.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SkillRating.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SkillRatingChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/SkillReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/StaffRecoveryAuthorization.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Task.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskCloseoutApproval.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskCollaborator.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskCommittedDateChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskDependency.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskOwnerChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskRecurrenceChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskRecurrenceOccurrence.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskRecurrenceRule.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskStatusChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TaskSubtaskLink.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/Team.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeAccountingAttempt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeAccountingDelivery.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeApproval.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeCommandReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeEntry.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeEntryVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeTimer.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TimeTransition.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TrainingAssignment.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TrainingAssignmentChange.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TrainingAttempt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TransmittalItem.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TransmittalRecipient.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TurnkeyCostShare.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TurnkeyHistory.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TurnkeyPrice.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/TurnkeyRelease.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/WebAuthnChallenge.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/WorkforceLedger.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/WorkforceReceipt.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/WorkforceRecord.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/WorkforceSelfie.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/generated/prisma/models/WorkforceVersion.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/health.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/identity.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/identity.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/integration-calendar.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/integration-webhook.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/integration.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/integration.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/lead-stage-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/library-storage.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/library.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/library.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/main.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/migration-target-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/mw-i02-disposable-test-target.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/my-work.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/my-work.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/nas-storage.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/notification-task-locks.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/notification-time.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/notification-worker.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/notifications.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/notifications.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/organization-events.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/organization.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/organization.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/performance-calculations.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/performance.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/performance.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project-events.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project-lifecycle-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project-template-defaults.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project-template.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project-template.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project-workflow.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/project.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/report-exports.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/review.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/review.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/revision.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/revision.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/s18-test-fixture.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/s27-disposable-test-target.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/site.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/site.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/skills.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/skills.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-creation-profile.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-recurrence-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-recurrence.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-recurrence.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-review-metric.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-state-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task-subtask-policy.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/task.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/template-definition.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/time-accounting-adapter.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/time-lifecycle.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/time-worker.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/time.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/time.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/training-content.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/training.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/training.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/turnkey.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/turnkey.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/worker.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/workforce-calculations.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/workforce.controller.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/dist/workforce.service.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/jest.config.cjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/jest.integration.config.cjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/package.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/prisma/schema.prisma",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/actionable-work-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/actionable-work-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/actionable-work.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-assistance-security.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-assistance.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-assistance.controller.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-assistance.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-assistance.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-assistance.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-evidence.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/ai-evidence.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/app.module.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/approval.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/approval.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/approval.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/approvals.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/approvals.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/audit-retention.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/audit-retention.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/audit-retention.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/audit-retention.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/auth.guard.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/authorization-read-context.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/authorization.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/authorization.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/authorization.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation-reports.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation-reports.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation-security.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/automation.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/brevo-email.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/brevo-email.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-access.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-access.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-files.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-identity.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-identity.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-identity.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-identity.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-isolation.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-review.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-scope.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-scope.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-scope.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal-scope.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-portal.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-review.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-review.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/client-review.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/config.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/config.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/crm-events.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/crm.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/crm.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/crm.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/crm.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/crm.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard-learning-reports.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard-reads.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard-security.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard-transaction.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/dashboard.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/database.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/document-file-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/document-file-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/document.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/document.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/document.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/document.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/domain-event-catalogue.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/domain-event-catalogue.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/email-verification.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/email-verification.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/email-verification.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-access.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal-controllers.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal-identity.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal-identity.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal-identity.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/external-portal.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/gallery.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/gallery.controller.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/gallery.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/gallery.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/gallery.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/health.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/health.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/identity.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/identity.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/identity.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/identity.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/identity.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration-calendar.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration-calendar.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration-security.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration-webhook.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration-webhook.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/integration.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/lead-stage-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/lead-stage-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/library-storage.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/library-storage.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/library.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/library.controller.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/library.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/library.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/main.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/migration-target-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/migration-target-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/mw-i02-disposable-test-target.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/mw-i02-disposable-test-target.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/my-work-parity.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/my-work.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/my-work.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/my-work.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/nas-storage.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/nas-storage.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-recipient.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-task-delivery.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-task-locks.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-time.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-time.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-worker.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-worker.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notification-worker.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notifications.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notifications.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notifications.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/notifications.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization-events.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization-events.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/organization.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance-calculations.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance-calculations.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance-security.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/performance.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-events.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-lifecycle-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-lifecycle-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-template-defaults.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-template-defaults.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-template.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-template.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-template.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-template.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-workflow.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project-workflow.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/project.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/report-exports.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/report-exports.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/review.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/review.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/review.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/review.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/revision.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/revision.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/revision.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/revision.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/s10-settings.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/s18-test-fixture.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/s27-disposable-test-target.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/s27-disposable-test-target.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/site-offline.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/site.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/site.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/site.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/site.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/skills.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/skills.controller.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/skills.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/skills.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/skills.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-creation-profile.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-creation-profile.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-recurrence-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-recurrence-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-recurrence.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-recurrence.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-recurrence.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-recurrence.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-review-metric.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-review-metric.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-state-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-state-policy.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-subtask-commit.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task-subtask-policy.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task.controller.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/task.service.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/template-definition.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/template-definition.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time-accounting-adapter.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time-accounting-adapter.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time-lifecycle.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time-worker.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/time.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/training-content.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/training-content.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/training.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/training.controller.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/training.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/training.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/turnkey.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/turnkey.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/turnkey.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/worker.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/workforce-calculations.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/workforce-calculations.unit.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/workforce-worker.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/workforce.controller.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/workforce.database.api.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/src/workforce.service.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/tsconfig.build.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/api/tsconfig.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/package.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/actionable-work.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/actionable-work.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/actionable-work.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/ai-assistance.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/ai-assistance.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/ai-assistance.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/app.actor-session.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/app.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/app.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/approval-queue.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/approval-queue.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/audit-retention.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/audit-retention.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/automation.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/automation.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/automation.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-dashboard.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-dashboard.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-dashboard.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-portal-auth.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-portal-auth.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-portal-auth.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-review-project-loader.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-review-project-loader.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-review.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-review.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/client-review.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/crm.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/crm.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/crm.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/dashboard.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/dashboard.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/dashboard.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/document.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/document.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/document.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/external-portal.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/external-portal.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/external-portal.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/gallery.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/gallery.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/gallery.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/insights-navigation.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/insights-navigation.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/integrations.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/integrations.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/integrations.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/learning-training.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/learning-training.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/learning-training.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/learning.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/learning.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/learning.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/library-workspace.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/library-workspace.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/library-workspace.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/main.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-attention.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-attention.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-attention.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-filter-chips.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-filter-chips.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-filter-chips.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-metric-focus.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-metric-focus.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-metrics.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-metrics.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-queue-preferences.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-queue-preferences.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-saved-views.test.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-saved-views.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-shell.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/my-work-visual.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/notifications.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/notifications.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/passkey-registration-error.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/passkey-registration-error.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/performance.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/performance.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/performance.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/project-template.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/project-template.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/project-template.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/project.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/project.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/project.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/projects-route.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/review-evidence.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/review-evidence.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/review-evidence.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/review.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/review.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/review.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/revision.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/revision.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/settings-homes.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/settings-homes.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/setup-tests.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site-offline-capture.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site-offline-capture.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site-offline.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site-offline.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/site.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/studio-theme.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/styles.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-create-dialog.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-create-dialog.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-create-dialog.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-detail-drawer.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-detail-drawer.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-detail-drawer.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-my-work-drawer.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-people.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-people.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task-people.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/task.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/time.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/time.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/time.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/turnkey.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/turnkey.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/turnkey.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/use-window-search-params.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/workforce.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/workforce.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/workforce.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/workspace-navigation.css",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/workspace-navigation.test.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/src/workspace-navigation.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/tsconfig.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/visual-fixtures/capture-mw-i02.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/visual-fixtures/mw-i02.tsx",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: apps/web/vite.config.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: eslint.config.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: package.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: packages/contracts/dist/index.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: packages/contracts/dist/my-work.js",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: packages/contracts/package.json",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: packages/contracts/src/index.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: packages/contracts/src/my-work.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: pnpm-lock.yaml",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/ai-assistance.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/automation.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/client-portal.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/client-review-staff.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/crm.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/dashboard.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/document.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/external-portal.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/foundation.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/gallery.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/identity.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/integrations.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/learning.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/library.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/offline-site.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/performance.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/project-template.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/project.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/review.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/revision.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/s18-screenshot.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/site.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/task-dependency.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/task-extension.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/task.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/time.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/training.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/turnkey.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Frozen candidate: tests/e2e/workforce.spec.ts",
+      "state": "PASS"
+    },
+    {
+      "name": "Exact118 migration files",
+      "state": "PASS"
+    },
+    {
+      "name": "Reviewed migration inventory/checksums",
+      "state": "PASS"
+    },
+    {
+      "name": "Exact Owner demo hash",
+      "state": "PASS"
+    },
+    {
+      "name": "Candidate source-only checks passed",
+      "state": "PASS"
+    },
+    {
+      "name": "PowerShell parser/inert ownership tests",
+      "state": "PASS"
+    },
+    {
+      "name": "All71 prior safety cases retained and passing",
+      "state": "PASS"
+    },
+    {
+      "name": "Inert authorization/manifest/live-identity/stage guards",
+      "state": "PASS"
+    },
+    {
+      "name": "New exact-target persistence suite/guard semantic TypeScript",
+      "state": "PASS"
+    },
+    {
+      "name": "Current parity selector/migration blockers absent",
+      "state": "PASS"
+    },
+    {
+      "name": "Full journey/config semantic TypeScript",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: authorization-record.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: authorization-record.test.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: check-absence.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: check-no-unowned-connections.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: cleanup.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: parity-source-readiness.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: readiness-parity-20261013.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: readiness.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: run-binding.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: run-binding.test.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: run-task-integration.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: run-tests.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: setup.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Syntax: verify-recovery-copy.mjs",
+      "state": "PASS"
+    },
+    {
+      "name": "Native live preflight calls current candidate readiness",
+      "state": "PASS"
+    },
+    {
+      "name": "Native live preflight requires validated unique attempt before guards",
+      "state": "PASS"
+    },
+    {
+      "name": "Startup log and exclusive marker bind to this attempt",
+      "state": "PASS"
+    },
+    {
+      "name": "Manifest recorded before ordinary DB creation",
+      "state": "PASS"
+    },
+    {
+      "name": "Migration source fingerprint carried to run",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration safety: assert.equal(manifest.state, \"ready\")",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration safety: assert.equal(manifest.createdDatabase, true)",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration safety: assert.equal(manifest.databaseName, name)",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration safety: assert.equal(identity.oid, String(manifest.databaseOid))",
+      "state": "PASS"
+    },
+    {
+      "name": "Integration safety: assert.equal(identity.system_identifier, manifest.serverIdentity.system_identifier)",
+      "state": "PASS"
+    },
+    {
+      "name": "Independent Review is not gated on browser pass",
+      "state": "PASS"
+    },
+    {
+      "name": "All acceptance stages bind marker, fixed live identity and one-attempt ordering",
+      "state": "PASS"
+    },
+    {
+      "name": "Fresh actual Owner approval is bound before database creation",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup safety: marker.markerToken, manifest.markerToken",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup safety: target.oid, String(manifest.databaseOid)",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup safety: current.creationDate, expected.creationDate",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup safety: connections.rowCount, 0",
+      "state": "PASS"
+    },
+    {
+      "name": "Cleanup safety: finalCatalog, manifest.catalogBefore",
+      "state": "PASS"
+    },
+    {
+      "name": "Required viewports include320x740",
+      "state": "PASS"
+    },
+    {
+      "name": "All manually created browser contexts are touch-enabled",
+      "state": "PASS"
+    },
+    {
+      "name": "No forced controls, sleeps or skipped assertions",
+      "state": "PASS"
+    },
+    {
+      "name": "Native filter disclosure verified before controls",
+      "state": "PASS"
+    },
+    {
+      "name": "One worker/zero retries/unique artifacts",
+      "state": "PASS"
+    }
+  ],
+  "operatorResult": {
+    "total": 78,
+    "passed": 78,
+    "failed": 0,
+    "tests": [
+      {
+        "name": "valid process and matching parent identity",
+        "expected": "PASS",
+        "actual": "PASS",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "blank PID",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID parsed as positive integer"
+      },
+      {
+        "name": "malformed PID",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID parsed as positive integer"
+      },
+      {
+        "name": "overflow PID",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID parsed as positive integer"
+      },
+      {
+        "name": "wrong PID",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Exactly one process matches parsed PID"
+      },
+      {
+        "name": "wrong owner",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Process owner"
+      },
+      {
+        "name": "wrong executable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PostgreSQL executable"
+      },
+      {
+        "name": "wrong directory",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID file directory"
+      },
+      {
+        "name": "wrong PID-file port",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID file port and address"
+      },
+      {
+        "name": "PID file not ready",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID file ready state"
+      },
+      {
+        "name": "CIM process information unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Process information available"
+      },
+      {
+        "name": "command line unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Command line unavailable"
+      },
+      {
+        "name": "wrong command directory",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Command data directory"
+      },
+      {
+        "name": "wrong command port",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Command port"
+      },
+      {
+        "name": "wrong command address",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Command address"
+      },
+      {
+        "name": "actual process owner unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Process owner"
+      },
+      {
+        "name": "actual executable unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Path unavailable"
+      },
+      {
+        "name": "owner unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Current Windows owner available"
+      },
+      {
+        "name": "target PID absent",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Exactly one process matches parsed PID"
+      },
+      {
+        "name": "pidfile unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: PID file available"
+      },
+      {
+        "name": "listeners unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Listener information available"
+      },
+      {
+        "name": "system identifier unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Disk system identifier"
+      },
+      {
+        "name": "running status unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: pg_ctl reports running"
+      },
+      {
+        "name": "ambiguous target PID",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Exactly one process matches parsed PID"
+      },
+      {
+        "name": "duplicate data-directory owner",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: No competing PostgreSQL data-directory owner"
+      },
+      {
+        "name": "duplicate expected listeners",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Sole expected listener and owning PID"
+      },
+      {
+        "name": "wrong listener owner",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Sole expected listener and owning PID"
+      },
+      {
+        "name": "wrong listener address",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Sole expected listener and owning PID"
+      },
+      {
+        "name": "occupied application port",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: API and web ports free"
+      },
+      {
+        "name": "wrong system identifier",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Disk system identifier"
+      },
+      {
+        "name": "pg_ctl reports stopped",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: pg_ctl reports running"
+      },
+      {
+        "name": "parent PID mismatch",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Parent PID and current-user ownership"
+      },
+      {
+        "name": "parent process unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Parent process information available"
+      },
+      {
+        "name": "unsupported pg_ctl parent with quoted -o endpoint",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Missing or ambiguous argument -p"
+      },
+      {
+        "name": "main creation date unavailable",
+        "expected": "FAIL",
+        "actual": "FAIL",
+        "passed": true,
+        "error": "Guard failed: Process creation identity available"
+      },
+      {
+        "name": "different PostgreSQL executable without directory evidence remains blocked",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "PostgreSQL candidate PID 7120 lacks sufficient executable/command/service ancestry evidence to identify its data directory"
+      },
+      {
+        "name": "different PostgreSQL executable with explicit other directory",
+        "expected": "PASS",
+        "actual": "PASS",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "different PostgreSQL executable explicitly referencing retained directory",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Process 7127 already references the retained data directory"
+      },
+      {
+        "name": "same PostgreSQL executable explicitly using another data directory",
+        "expected": "PASS",
+        "actual": "PASS",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "pg_ctl controller is not a server data-directory owner",
+        "expected": "PASS",
+        "actual": "PASS",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "same PostgreSQL executable references retained data directory",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Process 7122 already references the retained data directory"
+      },
+      {
+        "name": "same PostgreSQL executable command line unavailable",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "PostgreSQL candidate PID 7123 lacks sufficient executable/command/service ancestry evidence to identify its data directory"
+      },
+      {
+        "name": "executable and command line both unavailable",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "PostgreSQL candidate PID 7124 lacks sufficient executable/command/service ancestry evidence to identify its data directory"
+      },
+      {
+        "name": "process enumeration unavailable",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "PostgreSQL process enumeration unavailable; data-directory ownership unverified"
+      },
+      {
+        "name": "missing command line resolved by verified unrelated service ancestry",
+        "expected": "PASS",
+        "actual": "PASS",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "service ancestry points to retained data directory",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Process 7130 already references the retained data directory"
+      },
+      {
+        "name": "service ancestry with contradictory creation order is ambiguous",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "PostgreSQL candidate PID 7130 lacks sufficient executable/command/service ancestry evidence to identify its data directory"
+      },
+      {
+        "name": "valid stale postmaster.pid with absent PID and matching identity",
+        "expected": "PASS",
+        "actual": "PASS",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "recorded PID still belongs to live process",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Recorded postmaster.pid PID 4312 is owned by a live process; refuse startup"
+      },
+      {
+        "name": "malformed stale postmaster.pid PID",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Retained postmaster.pid value is invalid"
+      },
+      {
+        "name": "stale postmaster.pid directory mismatch",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+      },
+      {
+        "name": "stale postmaster.pid port mismatch",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+      },
+      {
+        "name": "stale postmaster.pid address mismatch",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+      },
+      {
+        "name": "stale postmaster.pid readiness mismatch",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+      },
+      {
+        "name": "incomplete stale postmaster.pid",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Retained postmaster.pid is incomplete; no manual repair is allowed"
+      },
+      {
+        "name": "recorded PID process query unavailable",
+        "expected": "BLOCKED",
+        "actual": "BLOCKED",
+        "passed": true,
+        "error": "Process query for postmaster.pid PID is unavailable"
+      },
+      {
+        "name": "recognized running status",
+        "expected": "running",
+        "actual": "running",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "recognized stopped status",
+        "expected": "stopped",
+        "actual": "stopped",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "ambiguous status fails closed",
+        "expected": "unknown",
+        "actual": "unknown",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "unexcluded port",
+        "expected": true,
+        "actual": true,
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "excluded port",
+        "expected": false,
+        "actual": false,
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "unknown excluded-port output fails closed",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Excluded-port output format is unknown"
+      },
+      {
+        "name": "quoted argument",
+        "expected": "D:/fixture cluster",
+        "actual": "D:/fixture cluster",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "unquoted argument",
+        "expected": "D:/fixture",
+        "actual": "D:/fixture",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "missing argument",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Missing or ambiguous argument -D"
+      },
+      {
+        "name": "duplicate argument",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Missing or ambiguous argument -D"
+      },
+      {
+        "name": "missing address",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Missing or ambiguous argument -h"
+      },
+      {
+        "name": "missing port",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Missing or ambiguous argument -p"
+      },
+      {
+        "name": "duplicate address",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Missing or ambiguous argument -h"
+      },
+      {
+        "name": "duplicate port",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Missing or ambiguous argument -p"
+      },
+      {
+        "name": "raw PID cast regression",
+        "expected": "legacy=0 parsed=1",
+        "actual": "legacy=0 parsed=1",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "invalid unique attempt '' stops",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Explicit unique acceptance AttemptId is required"
+      },
+      {
+        "name": "invalid unique attempt '../escape' stops",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Explicit unique acceptance AttemptId is required"
+      },
+      {
+        "name": "invalid unique attempt '1790000000000-short' stops",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Explicit unique acceptance AttemptId is required"
+      },
+      {
+        "name": "invalid unique attempt '1790000000000-ABCDEF123456' stops",
+        "expected": "throw",
+        "actual": "throw",
+        "passed": true,
+        "error": "Explicit unique acceptance AttemptId is required"
+      },
+      {
+        "name": "valid unique attempt uses its exact startup paths",
+        "expected": "pass",
+        "actual": "pass",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "separate approved attempts preserve older startup paths",
+        "expected": "distinct",
+        "actual": "distinct",
+        "passed": true,
+        "error": null
+      },
+      {
+        "name": "native live adapter invokes current frozen readiness",
+        "expected": "current",
+        "actual": "current",
+        "passed": true,
+        "error": null
+      }
+    ]
+  },
+  "candidateHash": "1523a8aba7c340ebf2dbecb637687b442804e098ec680917d01b0420db2d3c35",
+  "limitation": "No live cluster check, migration, database or authenticated browser was executed. Source readiness is not runtime acceptance or authorization."
+}

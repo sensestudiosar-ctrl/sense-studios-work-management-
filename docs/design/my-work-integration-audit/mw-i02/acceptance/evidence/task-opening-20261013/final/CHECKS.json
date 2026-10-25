@@ -1,0 +1,20 @@
+{
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "checkedAt": "2026-10-13T06:57:59.035Z",
+  "results": [
+    {
+      "name": "drawer-focused",
+      "exitCode": 1,
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/task-detail-drawer.test.tsx",
+        "src/task-my-work-drawer.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=D:\\app\\sensestudios work management app\\docs\\design\\my-work-integration-audit\\mw-i02\\acceptance\\evidence\\task-opening-20261013\\final\\DRAWER_FOCUSED.json"
+      ]
+    }
+  ]
+}

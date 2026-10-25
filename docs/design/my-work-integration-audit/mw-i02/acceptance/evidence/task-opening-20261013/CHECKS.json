@@ -1,0 +1,59 @@
+{
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "checkedAt": "2026-10-13T06:55:17.227Z",
+  "results": [
+    {
+      "name": "affected-frontend",
+      "exitCode": null,
+      "args": [
+        "--filter",
+        "@sense/web",
+        "exec",
+        "vitest",
+        "run",
+        "src/task.test.tsx",
+        "src/task-detail-drawer.test.tsx",
+        "src/task-my-work-drawer.test.tsx",
+        "src/task-people.test.tsx",
+        "src/approval-queue.test.tsx",
+        "src/my-work-attention.test.tsx",
+        "src/my-work-metrics.test.tsx",
+        "src/my-work-metric-focus.test.tsx",
+        "src/my-work-filter-chips.test.tsx",
+        "src/my-work-saved-views.test.ts",
+        "src/my-work-queue-preferences.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=D:\\app\\sensestudios work management app\\docs\\design\\my-work-integration-audit\\mw-i02\\acceptance\\evidence\\task-opening-20261013\\AFFECTED_FRONTEND.json"
+      ]
+    },
+    {
+      "name": "web-typecheck",
+      "exitCode": 2,
+      "args": [
+        "--filter",
+        "@sense/web",
+        "typecheck"
+      ]
+    },
+    {
+      "name": "lint",
+      "exitCode": 1,
+      "args": [
+        "exec",
+        "eslint",
+        "."
+      ]
+    },
+    {
+      "name": "web-build",
+      "exitCode": 0,
+      "args": [
+        "--filter",
+        "@sense/web",
+        "build"
+      ]
+    }
+  ]
+}

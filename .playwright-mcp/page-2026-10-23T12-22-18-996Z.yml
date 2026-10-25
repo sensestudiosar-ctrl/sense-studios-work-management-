@@ -1,0 +1,68 @@
+- dialog [ref=f6e4]:
+  - generic [ref=f6e5]:
+    - banner [ref=f6e6]:
+      - generic [ref=f6e7]:
+        - generic [ref=f6e8]: OWNER · CREATE TASK
+        - heading "Create task" [level=2] [ref=f6e9]
+      - button "Close create task" [ref=f6e10] [cursor=pointer]: ×
+    - group "Task details" [ref=f6e13]:
+      - generic [ref=f6e15]:
+        - generic [ref=f6e16]:
+          - text: Task name *
+          - textbox "Task name" [invalid] [ref=f6e17]:
+            - /placeholder: What needs to happen?
+        - paragraph [ref=f6e18]: Task name must be between 2 and 160 characters.
+        - group "Task essentials" [ref=f6e19]:
+          - generic [ref=f6e20]:
+            - generic [ref=f6e21]: Priority
+            - generic [ref=f6e22]:
+              - button "Priority Medium. Press to change." [active] [ref=f6e23] [cursor=pointer]: Medium
+              - combobox "Priority select" [ref=f6e25]:
+                - option "Low"
+                - option "Medium" [selected]
+                - option "High"
+                - option "Critical"
+          - generic [ref=f6e26]:
+            - text: Type *
+            - combobox "Type" [ref=f6e27]:
+              - option "Project"
+              - option "Non project" [selected]
+              - option "Recurring"
+              - option "Correction"
+              - option "Site"
+              - option "Training practical"
+          - generic [ref=f6e28]:
+            - text: Target date *
+            - textbox "Target date" [ref=f6e29]: 2026-11-04
+          - generic [ref=f6e30]:
+            - generic [ref=f6e31]: Project
+            - combobox "Project" [ref=f6e32]:
+              - option "No project" [selected]
+              - option "Riverside Residence"
+              - option "Courtyard House"
+              - option "Studio Draft Project"
+          - generic [ref=f6e33]:
+            - generic [ref=f6e34]: Owner
+            - generic [ref=f6e35]: You
+      - generic [ref=f6e36]:
+        - text: Description (optional)
+        - textbox "Description (optional)" [ref=f6e37]:
+          - /placeholder: Add any detail that helps the person doing this.
+      - group "Ownership" [ref=f6e38]:
+        - generic [ref=f6e40]:
+          - checkbox "Assign to an employee" [ref=f6e41]
+          - text: Assign to an employee
+        - paragraph [ref=f6e42]: Assigned to you.
+      - generic [ref=f6e43]:
+        - text: Why is this task needed? *
+        - textbox "Reason" [ref=f6e44]:
+          - /placeholder: One short sentence — recorded in the task history.
+        - text: Recorded in the task history.
+      - group [ref=f6e45]:
+        - generic "Optional planning" [ref=f6e46] [cursor=pointer]
+        - option "No plan item" [selected]
+      - group [ref=f6e47]:
+        - generic "Collaborators (optional) · 0 selected" [ref=f6e48] [cursor=pointer]
+    - contentinfo [ref=f6e49]:
+      - button "Cancel" [ref=f6e50] [cursor=pointer]
+      - button "Create task" [ref=f6e51] [cursor=pointer]

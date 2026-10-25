@@ -1,0 +1,246 @@
+[
+  {
+    "clear": {
+      "bottom": 359.53125,
+      "height": 44,
+      "left": 31,
+      "right": 160.09375,
+      "top": 315.53125,
+      "width": 129.09375,
+      "x": 31,
+      "y": 315.53125
+    },
+    "documentOverflow": false,
+    "fixedNavigation": {
+      "bottom": 740,
+      "height": 66,
+      "left": 0,
+      "right": 305,
+      "top": 674,
+      "width": 305,
+      "x": 0,
+      "y": 674
+    },
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 60,
+      "height": 60,
+      "left": 0,
+      "right": 305,
+      "top": 0,
+      "width": 305,
+      "x": 0,
+      "y": 0
+    },
+    "height": 740,
+    "queue": {
+      "bottom": 216.140625,
+      "height": 39.296875,
+      "left": 12,
+      "right": 293,
+      "top": 176.84375,
+      "width": 281,
+      "x": 12,
+      "y": 176.84375
+    },
+    "result": {
+      "bottom": 372.53125,
+      "height": 96.390625,
+      "left": 12,
+      "right": 293,
+      "top": 276.140625,
+      "width": 281,
+      "x": 12,
+      "y": 276.140625
+    },
+    "scrollY": 195,
+    "selectedBackground": "rgba(0, 0, 0, 0)",
+    "selectedLabel": "Waiting / blocked: 0",
+    "selectedTextColor": "rgb(38, 49, 43)",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 320
+  },
+  {
+    "clear": {
+      "bottom": 358.53125,
+      "height": 44,
+      "left": 31,
+      "right": 160.09375,
+      "top": 314.53125,
+      "width": 129.09375,
+      "x": 31,
+      "y": 314.53125
+    },
+    "documentOverflow": false,
+    "fixedNavigation": {
+      "bottom": 844,
+      "height": 66,
+      "left": 0,
+      "right": 375,
+      "top": 778,
+      "width": 375,
+      "x": 0,
+      "y": 778
+    },
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 60,
+      "height": 60,
+      "left": 0,
+      "right": 375,
+      "top": 0,
+      "width": 375,
+      "x": 0,
+      "y": 0
+    },
+    "height": 844,
+    "queue": {
+      "bottom": 215.140625,
+      "height": 39.296875,
+      "left": 12,
+      "right": 363,
+      "top": 175.84375,
+      "width": 351,
+      "x": 12,
+      "y": 175.84375
+    },
+    "result": {
+      "bottom": 371.53125,
+      "height": 96.390625,
+      "left": 12,
+      "right": 363,
+      "top": 275.140625,
+      "width": 351,
+      "x": 12,
+      "y": 275.140625
+    },
+    "scrollY": 184,
+    "selectedBackground": "rgba(0, 0, 0, 0)",
+    "selectedLabel": "Waiting / blocked: 0",
+    "selectedTextColor": "rgb(38, 49, 43)",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 390
+  },
+  {
+    "clear": {
+      "bottom": 554.59375,
+      "height": 44,
+      "left": 830.1875,
+      "right": 959.28125,
+      "top": 510.59375,
+      "width": 129.09375,
+      "x": 830.1875,
+      "y": 510.59375
+    },
+    "documentOverflow": false,
+    "fixedNavigation": {
+      "bottom": 0,
+      "height": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    },
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 64,
+      "height": 64,
+      "left": 65,
+      "right": 1009,
+      "top": 0,
+      "width": 944,
+      "x": 65,
+      "y": 0
+    },
+    "height": 900,
+    "queue": {
+      "bottom": 330.390625,
+      "height": 71.6875,
+      "left": 95.71875,
+      "right": 978.28125,
+      "top": 258.703125,
+      "width": 882.5625,
+      "x": 95.71875,
+      "y": 258.703125
+    },
+    "result": {
+      "bottom": 567.59375,
+      "height": 69,
+      "left": 95.71875,
+      "right": 978.28125,
+      "top": 498.59375,
+      "width": 882.5625,
+      "x": 95.71875,
+      "y": 498.59375
+    },
+    "scrollY": 59,
+    "selectedBackground": "rgba(0, 0, 0, 0)",
+    "selectedLabel": "Waiting / blocked: 0",
+    "selectedTextColor": "rgb(38, 49, 43)",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 1024
+  },
+  {
+    "clear": {
+      "bottom": 554.59375,
+      "height": 44,
+      "left": 1233.71875,
+      "right": 1362.8125,
+      "top": 510.59375,
+      "width": 129.09375,
+      "x": 1233.71875,
+      "y": 510.59375
+    },
+    "documentOverflow": false,
+    "fixedNavigation": {
+      "bottom": 0,
+      "height": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    },
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 64,
+      "height": 64,
+      "left": 232,
+      "right": 1425,
+      "top": 0,
+      "width": 1193,
+      "x": 232,
+      "y": 0
+    },
+    "height": 900,
+    "queue": {
+      "bottom": 330.390625,
+      "height": 71.6875,
+      "left": 275.1875,
+      "right": 1381.8125,
+      "top": 258.703125,
+      "width": 1106.625,
+      "x": 275.1875,
+      "y": 258.703125
+    },
+    "result": {
+      "bottom": 567.59375,
+      "height": 69,
+      "left": 275.1875,
+      "right": 1381.8125,
+      "top": 498.59375,
+      "width": 1106.625,
+      "x": 275.1875,
+      "y": 498.59375
+    },
+    "scrollY": 59,
+    "selectedBackground": "rgba(0, 0, 0, 0)",
+    "selectedLabel": "Waiting / blocked: 0",
+    "selectedTextColor": "rgb(38, 49, 43)",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 1440
+  }
+]

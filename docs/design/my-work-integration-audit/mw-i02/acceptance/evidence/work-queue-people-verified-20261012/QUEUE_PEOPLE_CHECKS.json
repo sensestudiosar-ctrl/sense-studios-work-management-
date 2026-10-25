@@ -1,0 +1,98 @@
+{
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "results": [
+    {
+      "name": "focused-queue-people",
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/task.test.tsx",
+        "src/task-people.test.tsx",
+        "src/approval-queue.test.tsx",
+        "src/my-work-attention.test.tsx",
+        "src/my-work-metrics.test.tsx",
+        "src/my-work-saved-views.test.ts",
+        "src/my-work-queue-preferences.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=D:\\app\\sensestudios work management app\\docs\\design\\my-work-integration-audit\\mw-i02\\acceptance\\evidence\\work-queue-people-verified-20261012\\FOCUSED_QUEUE_PEOPLE.json"
+      ],
+      "cwd": "apps/web",
+      "exitCode": 1
+    },
+    {
+      "name": "full-web-queue-people",
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=D:\\app\\sensestudios work management app\\docs\\design\\my-work-integration-audit\\mw-i02\\acceptance\\evidence\\work-queue-people-verified-20261012\\FULL_WEB_QUEUE_PEOPLE.json"
+      ],
+      "cwd": "apps/web",
+      "exitCode": 1
+    },
+    {
+      "name": "eslint-queue-people",
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\eslint\\bin\\eslint.js",
+        "."
+      ],
+      "cwd": ".",
+      "exitCode": 1
+    },
+    {
+      "name": "contracts-build",
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\typescript\\bin\\tsc",
+        "-p",
+        "packages/contracts/tsconfig.json"
+      ],
+      "cwd": ".",
+      "exitCode": 0
+    },
+    {
+      "name": "contracts-typecheck",
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\typescript\\bin\\tsc",
+        "-p",
+        "packages/contracts/tsconfig.json",
+        "--noEmit"
+      ],
+      "cwd": ".",
+      "exitCode": 0
+    },
+    {
+      "name": "web-typecheck",
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\typescript\\bin\\tsc",
+        "-p",
+        "apps/web/tsconfig.json",
+        "--noEmit"
+      ],
+      "cwd": ".",
+      "exitCode": 0
+    },
+    {
+      "name": "api-typecheck-current-client",
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\typescript\\bin\\tsc",
+        "-p",
+        "apps/api/tsconfig.json",
+        "--noEmit"
+      ],
+      "cwd": ".",
+      "exitCode": 0
+    },
+    {
+      "name": "web-build",
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vite\\bin\\vite.js",
+        "build"
+      ],
+      "cwd": "apps/web",
+      "exitCode": 0
+    }
+  ]
+}

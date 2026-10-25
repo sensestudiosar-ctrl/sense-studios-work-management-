@@ -1,0 +1,4 @@
+- generic [ref=f2e2]:
+  - link "Skip to main content" [ref=f2e3] [cursor=pointer]:
+    - /url: "#sense-main"
+  - status [ref=f2e4]: Loading…

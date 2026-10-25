@@ -1,0 +1,2950 @@
+[
+  {
+    "capturedAt": "2026-10-10T15:24:06.389Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-leader-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-1440-viewport.png",
+    "prototypeReference": "prototype-leader-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-leader@example.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 3461,
+        "right": 1440,
+        "bottom": 3537
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": {
+        "x": 325,
+        "y": 456,
+        "width": 1055,
+        "height": 51,
+        "right": 1379,
+        "bottom": 507
+      },
+      "queue": {
+        "x": 325,
+        "y": 658,
+        "width": 1055,
+        "height": 2799,
+        "right": 1379,
+        "bottom": 3457
+      },
+      "firstTask": {
+        "x": 342,
+        "y": 760,
+        "width": 1021,
+        "height": 54,
+        "right": 1362,
+        "bottom": 814
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 329,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 594,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1126,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 449
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:06.617Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-leader-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-1024-viewport.png",
+    "prototypeReference": "prototype-leader-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-leader@example.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 6778,
+        "right": 1024,
+        "bottom": 6854
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": {
+        "x": 312,
+        "y": 444,
+        "width": 664,
+        "height": 51,
+        "right": 976,
+        "bottom": 495
+      },
+      "queue": {
+        "x": 312,
+        "y": 646,
+        "width": 664,
+        "height": 6141,
+        "right": 976,
+        "bottom": 6786
+      },
+      "firstTask": {
+        "x": 329,
+        "y": 700,
+        "width": 630,
+        "height": 121,
+        "right": 959,
+        "bottom": 821
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 316,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 484,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 820,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 436
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:07.056Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-leader-initial-390.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-390-viewport.png",
+    "prototypeReference": "prototype-leader-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-leader@example.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 12252,
+        "right": 390,
+        "bottom": 12370
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 27,
+        "right": 374,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 329,
+        "height": 70,
+        "right": 359,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 842,
+        "width": 329,
+        "height": 11478,
+        "right": 359,
+        "bottom": 12320
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 883,
+        "width": 309,
+        "height": 229,
+        "right": 350,
+        "bottom": 1112
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:07.255Z",
+    "persona": "leader",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-leader-initial-320.png",
+    "viewportScreenshot": "actual-my-work-leader-initial-320-viewport.png",
+    "prototypeReference": "prototype-leader-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-leader@example.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 14026,
+        "right": 320,
+        "bottom": 14145
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 27,
+        "right": 304,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 259,
+        "height": 70,
+        "right": 289,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 887,
+        "width": 259,
+        "height": 13208,
+        "right": 289,
+        "bottom": 14094
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 928,
+        "width": 239,
+        "height": 244,
+        "right": 280,
+        "bottom": 1172
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 52",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 52,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:07.553Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-site-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-site-initial-1440-viewport.png",
+    "prototypeReference": "prototype-site-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-site-employee@example.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 908,
+        "right": 1440,
+        "bottom": 984
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": {
+        "x": 325,
+        "y": 456,
+        "width": 1055,
+        "height": 51,
+        "right": 1379,
+        "bottom": 507
+      },
+      "queue": {
+        "x": 325,
+        "y": 658,
+        "width": 1055,
+        "height": 245,
+        "right": 1379,
+        "bottom": 903
+      },
+      "firstTask": {
+        "x": 342,
+        "y": 760,
+        "width": 1021,
+        "height": 54,
+        "right": 1362,
+        "bottom": 814
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 329,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 594,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1126,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 449
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:07.648Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-site-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-site-initial-1024-viewport.png",
+    "prototypeReference": "prototype-site-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-site-employee@example.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 991,
+        "right": 1024,
+        "bottom": 1067
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": {
+        "x": 312,
+        "y": 444,
+        "width": 664,
+        "height": 51,
+        "right": 976,
+        "bottom": 495
+      },
+      "queue": {
+        "x": 312,
+        "y": 646,
+        "width": 664,
+        "height": 354,
+        "right": 976,
+        "bottom": 999
+      },
+      "firstTask": {
+        "x": 329,
+        "y": 700,
+        "width": 630,
+        "height": 141,
+        "right": 959,
+        "bottom": 841
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 316,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 484,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 820,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 436
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:07.771Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-site-initial-390.png",
+    "viewportScreenshot": "actual-my-work-site-initial-390-viewport.png",
+    "prototypeReference": "prototype-site-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-site-employee@example.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1282,
+        "right": 390,
+        "bottom": 1401
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 27,
+        "right": 374,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 329,
+        "height": 70,
+        "right": 359,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 842,
+        "width": 329,
+        "height": 508,
+        "right": 359,
+        "bottom": 1350
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 883,
+        "width": 309,
+        "height": 229,
+        "right": 350,
+        "bottom": 1112
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:07.871Z",
+    "persona": "site",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-site-initial-320.png",
+    "viewportScreenshot": "actual-my-work-site-initial-320-viewport.png",
+    "prototypeReference": "prototype-site-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-site-employee@example.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1457,
+        "right": 320,
+        "bottom": 1575
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 47,
+        "right": 304,
+        "bottom": 182
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 618,
+        "width": 259,
+        "height": 70,
+        "right": 289,
+        "bottom": 688
+      },
+      "queue": {
+        "x": 31,
+        "y": 907,
+        "width": 259,
+        "height": 618,
+        "right": 289,
+        "bottom": 1525
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 948,
+        "width": 239,
+        "height": 284,
+        "right": 280,
+        "bottom": 1232
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 2",
+          "box": {
+            "x": 36,
+            "y": 479,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 539
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 479,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 539
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 549,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 609
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 549,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 609
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 2,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:08.469Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-owner-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-1440-viewport.png",
+    "prototypeReference": "prototype-owner-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-owner-17916457892151922209c6d12@local.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 799,
+        "right": 1440,
+        "bottom": 875
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 329,
+            "y": 600,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 660
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 594,
+            "y": 600,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 660
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 600,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 660
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1126,
+            "y": 600,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 660
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:08.564Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-owner-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-1024-viewport.png",
+    "prototypeReference": "prototype-owner-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-owner-17916457892151922209c6d12@local.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 1022,
+        "right": 1024,
+        "bottom": 1099
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 316,
+            "y": 815,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 875
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 484,
+            "y": 815,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 875
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 815,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 875
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 820,
+            "y": 815,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 875
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:08.671Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-owner-initial-390.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-390-viewport.png",
+    "prototypeReference": "prototype-owner-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-owner-17916457892151922209c6d12@local.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1288,
+        "right": 390,
+        "bottom": 1407
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 47,
+        "right": 374,
+        "bottom": 182
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 36,
+            "y": 1048,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 1108
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 1048,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 1108
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 1118,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 1178
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 1118,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 1178
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:08.770Z",
+    "persona": "owner",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-owner-initial-320.png",
+    "viewportScreenshot": "actual-my-work-owner-initial-320-viewport.png",
+    "prototypeReference": "prototype-owner-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-owner-17916457892151922209c6d12@local.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1441,
+        "right": 320,
+        "bottom": 1559
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 58,
+        "right": 304,
+        "bottom": 193
+      },
+      "toolbar": null,
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 36,
+            "y": 1180,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 1240
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 1180,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 1240
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 1250,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 1310
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 1250,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 1310
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 0,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:11.921Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-initial-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-1440-viewport.png",
+    "prototypeReference": "prototype-designer-initial-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 1015,
+        "right": 1440,
+        "bottom": 1091
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": {
+        "x": 325,
+        "y": 456,
+        "width": 1055,
+        "height": 51,
+        "right": 1379,
+        "bottom": 507
+      },
+      "queue": {
+        "x": 325,
+        "y": 658,
+        "width": 1055,
+        "height": 352,
+        "right": 1379,
+        "bottom": 1011
+      },
+      "firstTask": {
+        "x": 342,
+        "y": 760,
+        "width": 1021,
+        "height": 54,
+        "right": 1362,
+        "bottom": 814
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 329,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 594,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 860,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 1126,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 449
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.015Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-initial-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-1024-viewport.png",
+    "prototypeReference": "prototype-designer-initial-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 1254,
+        "right": 1024,
+        "bottom": 1330
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": {
+        "x": 312,
+        "y": 444,
+        "width": 664,
+        "height": 51,
+        "right": 976,
+        "bottom": 495
+      },
+      "queue": {
+        "x": 312,
+        "y": 646,
+        "width": 664,
+        "height": 617,
+        "right": 976,
+        "bottom": 1262
+      },
+      "firstTask": {
+        "x": 329,
+        "y": 700,
+        "width": 630,
+        "height": 121,
+        "right": 959,
+        "bottom": 821
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 316,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 484,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 652,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 820,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 436
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.137Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-initial-390.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-390-viewport.png",
+    "prototypeReference": "prototype-designer-initial-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1759,
+        "right": 390,
+        "bottom": 1878
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 27,
+        "right": 374,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 329,
+        "height": 70,
+        "right": 359,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 842,
+        "width": 329,
+        "height": 985,
+        "right": 359,
+        "bottom": 1827
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 883,
+        "width": 309,
+        "height": 229,
+        "right": 350,
+        "bottom": 1112
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 203,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 203,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.235Z",
+    "persona": "designer",
+    "state": "initial",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-initial-320.png",
+    "viewportScreenshot": "actual-my-work-designer-initial-320-viewport.png",
+    "prototypeReference": "prototype-designer-initial-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 2001,
+        "right": 320,
+        "bottom": 2120
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 27,
+        "right": 304,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 259,
+        "height": 70,
+        "right": 289,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 887,
+        "width": 259,
+        "height": 1182,
+        "right": 289,
+        "bottom": 2069
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 928,
+        "width": 239,
+        "height": 264,
+        "right": 280,
+        "bottom": 1192
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 168,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 168,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualPersonalTaskTotal": 5,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.637Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-waiting-selected-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-1440-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 931,
+        "right": 1440,
+        "bottom": 1008
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": {
+        "x": 325,
+        "y": 534,
+        "width": 1055,
+        "height": 51,
+        "right": 1379,
+        "bottom": 585
+      },
+      "queue": {
+        "x": 325,
+        "y": 735,
+        "width": 1055,
+        "height": 192,
+        "right": 1379,
+        "bottom": 927
+      },
+      "firstTask": {
+        "x": 342,
+        "y": 837,
+        "width": 1021,
+        "height": 73,
+        "right": 1362,
+        "bottom": 910
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 329,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 594,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 860,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 1126,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 449
+          }
+        }
+      ]
+    },
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.730Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-waiting-selected-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-1024-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 948,
+        "right": 1024,
+        "bottom": 1024
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": {
+        "x": 312,
+        "y": 542,
+        "width": 664,
+        "height": 51,
+        "right": 976,
+        "bottom": 593
+      },
+      "queue": {
+        "x": 312,
+        "y": 744,
+        "width": 664,
+        "height": 212,
+        "right": 976,
+        "bottom": 956
+      },
+      "firstTask": {
+        "x": 329,
+        "y": 798,
+        "width": 630,
+        "height": 141,
+        "right": 959,
+        "bottom": 939
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 316,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 484,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 652,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 820,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 436
+          }
+        }
+      ]
+    },
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.820Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-waiting-selected-390.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-390-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1250,
+        "right": 390,
+        "bottom": 1368
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 27,
+        "right": 374,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 724,
+        "width": 329,
+        "height": 121,
+        "right": 359,
+        "bottom": 844
+      },
+      "queue": {
+        "x": 31,
+        "y": 1018,
+        "width": 329,
+        "height": 299,
+        "right": 359,
+        "bottom": 1318
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 1060,
+        "width": 309,
+        "height": 249,
+        "right": 350,
+        "bottom": 1308
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 203,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 203,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:12.902Z",
+    "persona": "designer",
+    "state": "waiting-selected",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-waiting-selected-320.png",
+    "viewportScreenshot": "actual-my-work-designer-waiting-selected-320-viewport.png",
+    "prototypeReference": "prototype-designer-waiting-selected-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1300,
+        "right": 320,
+        "bottom": 1419
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 27,
+        "right": 304,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 745,
+        "width": 259,
+        "height": 70,
+        "right": 289,
+        "bottom": 815
+      },
+      "queue": {
+        "x": 31,
+        "y": 1034,
+        "width": 259,
+        "height": 334,
+        "right": 289,
+        "bottom": 1368
+      },
+      "firstTask": {
+        "x": 40,
+        "y": 1075,
+        "width": 239,
+        "height": 284,
+        "right": 280,
+        "bottom": 1359
+      },
+      "metrics": [
+        {
+          "label": "Active personal tasks: 4",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 1",
+          "box": {
+            "x": 168,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 1",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 1",
+          "box": {
+            "x": 168,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "actualWaitingTotal": 1,
+    "evidence": "authenticated application backed by the run database"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:14.869Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-empty-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-1440-viewport.png",
+    "prototypeReference": "prototype-designer-empty-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 851,
+        "right": 1440,
+        "bottom": 927
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": {
+        "x": 325,
+        "y": 456,
+        "width": 1055,
+        "height": 51,
+        "right": 1379,
+        "bottom": 507
+      },
+      "queue": {
+        "x": 325,
+        "y": 658,
+        "width": 1055,
+        "height": 188,
+        "right": 1379,
+        "bottom": 846
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 329,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 594,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 860,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 1126,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 449
+          }
+        }
+      ]
+    },
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-c03c6f37-231e-4312-befb-dd350c478793",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:14.964Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-empty-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-1024-viewport.png",
+    "prototypeReference": "prototype-designer-empty-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 765,
+        "right": 1024,
+        "bottom": 842
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": {
+        "x": 312,
+        "y": 444,
+        "width": 664,
+        "height": 51,
+        "right": 976,
+        "bottom": 495
+      },
+      "queue": {
+        "x": 312,
+        "y": 646,
+        "width": 664,
+        "height": 128,
+        "right": 976,
+        "bottom": 774
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 316,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 484,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 652,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 820,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 436
+          }
+        }
+      ]
+    },
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-c03c6f37-231e-4312-befb-dd350c478793",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:15.055Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-empty-390.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-390-viewport.png",
+    "prototypeReference": "prototype-designer-empty-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 909,
+        "right": 390,
+        "bottom": 1027
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 27,
+        "right": 374,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 329,
+        "height": 70,
+        "right": 359,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 842,
+        "width": 329,
+        "height": 135,
+        "right": 359,
+        "bottom": 977
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 203,
+            "y": 529,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-c03c6f37-231e-4312-befb-dd350c478793",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:15.136Z",
+    "persona": "designer",
+    "state": "empty",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-empty-320.png",
+    "viewportScreenshot": "actual-my-work-designer-empty-320-viewport.png",
+    "prototypeReference": "prototype-designer-empty-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 953,
+        "right": 320,
+        "bottom": 1072
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 27,
+        "right": 304,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 598,
+        "width": 259,
+        "height": 70,
+        "right": 289,
+        "bottom": 668
+      },
+      "queue": {
+        "x": 31,
+        "y": 887,
+        "width": 259,
+        "height": 135,
+        "right": 289,
+        "bottom": 1021
+      },
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: 0",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: 0",
+          "box": {
+            "x": 36,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 589
+          }
+        },
+        {
+          "label": "Completed personal tasks: 0",
+          "box": {
+            "x": 168,
+            "y": 529,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 589
+          }
+        }
+      ]
+    },
+    "serverConfirmedZeroMatch": true,
+    "searchToken": "mw-i02-empty-c03c6f37-231e-4312-befb-dd350c478793",
+    "evidence": "actual authenticated route and zero-result API response"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:16.358Z",
+    "persona": "designer",
+    "state": "error-simulated",
+    "width": 1440,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-error-simulated-1440.png",
+    "viewportScreenshot": "actual-my-work-designer-error-simulated-1440-viewport.png",
+    "prototypeReference": "prototype-designer-error-simulated-1440.png",
+    "geometry": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 1176,
+        "height": 822,
+        "right": 1440,
+        "bottom": 898
+      },
+      "scopeLabel": {
+        "x": 296,
+        "y": 108,
+        "width": 1113,
+        "height": 34,
+        "right": 1408,
+        "bottom": 142
+      },
+      "toolbar": {
+        "x": 325,
+        "y": 549,
+        "width": 1055,
+        "height": 51,
+        "right": 1379,
+        "bottom": 600
+      },
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: Unavailable",
+          "box": {
+            "x": 329,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 581,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Waiting personal tasks: Unavailable",
+          "box": {
+            "x": 594,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 847,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: Unavailable",
+          "box": {
+            "x": 860,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1113,
+            "bottom": 449
+          }
+        },
+        {
+          "label": "Completed personal tasks: Unavailable",
+          "box": {
+            "x": 1126,
+            "y": 389,
+            "width": 253,
+            "height": 60,
+            "right": 1378,
+            "bottom": 449
+          }
+        }
+      ]
+    },
+    "simulated": true,
+    "interceptedRequest": "GET /api/v1/tasks?scope=personal → HTTP 503",
+    "evidence": "supplemental controlled client-side failure only; not a real server or whole-app loading failure"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:16.447Z",
+    "persona": "designer",
+    "state": "error-simulated",
+    "width": 1024,
+    "height": 900,
+    "screenshot": "actual-my-work-designer-error-simulated-1024.png",
+    "viewportScreenshot": "actual-my-work-designer-error-simulated-1024-viewport.png",
+    "prototypeReference": "prototype-designer-error-simulated-1024.png",
+    "geometry": {
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 1024,
+        "clientWidth": 1024
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 264,
+        "y": 76,
+        "width": 760,
+        "height": 826,
+        "right": 1024,
+        "bottom": 902
+      },
+      "scopeLabel": {
+        "x": 287,
+        "y": 99,
+        "width": 715,
+        "height": 34,
+        "right": 1001,
+        "bottom": 133
+      },
+      "toolbar": {
+        "x": 312,
+        "y": 565,
+        "width": 664,
+        "height": 51,
+        "right": 976,
+        "bottom": 616
+      },
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: Unavailable",
+          "box": {
+            "x": 316,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 471,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Waiting personal tasks: Unavailable",
+          "box": {
+            "x": 484,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 639,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: Unavailable",
+          "box": {
+            "x": 652,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 807,
+            "bottom": 436
+          }
+        },
+        {
+          "label": "Completed personal tasks: Unavailable",
+          "box": {
+            "x": 820,
+            "y": 376,
+            "width": 155,
+            "height": 60,
+            "right": 975,
+            "bottom": 436
+          }
+        }
+      ]
+    },
+    "simulated": true,
+    "interceptedRequest": "GET /api/v1/tasks?scope=personal → HTTP 503",
+    "evidence": "supplemental controlled client-side failure only; not a real server or whole-app loading failure"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:16.537Z",
+    "persona": "designer",
+    "state": "error-simulated",
+    "width": 390,
+    "height": 844,
+    "screenshot": "actual-my-work-designer-error-simulated-390.png",
+    "viewportScreenshot": "actual-my-work-designer-error-simulated-390-viewport.png",
+    "prototypeReference": "prototype-designer-error-simulated-390.png",
+    "geometry": {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 390,
+        "height": 1155,
+        "right": 390,
+        "bottom": 1274
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 358,
+        "height": 27,
+        "right": 374,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 840,
+        "width": 329,
+        "height": 121,
+        "right": 359,
+        "bottom": 961
+      },
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: Unavailable",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: Unavailable",
+          "box": {
+            "x": 203,
+            "y": 459,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: Unavailable",
+          "box": {
+            "x": 36,
+            "y": 650,
+            "width": 154,
+            "height": 60,
+            "right": 190,
+            "bottom": 710
+          }
+        },
+        {
+          "label": "Completed personal tasks: Unavailable",
+          "box": {
+            "x": 203,
+            "y": 650,
+            "width": 154,
+            "height": 60,
+            "right": 357,
+            "bottom": 710
+          }
+        }
+      ]
+    },
+    "simulated": true,
+    "interceptedRequest": "GET /api/v1/tasks?scope=personal → HTTP 503",
+    "evidence": "supplemental controlled client-side failure only; not a real server or whole-app loading failure"
+  },
+  {
+    "capturedAt": "2026-10-10T15:24:16.619Z",
+    "persona": "designer",
+    "state": "error-simulated",
+    "width": 320,
+    "height": 740,
+    "screenshot": "actual-my-work-designer-error-simulated-320.png",
+    "viewportScreenshot": "actual-my-work-designer-error-simulated-320-viewport.png",
+    "prototypeReference": "prototype-designer-error-simulated-320.png",
+    "geometry": {
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "scopeLabelText": "My Workmw-i02-designer@example.test",
+      "document": {
+        "scrollWidth": 320,
+        "clientWidth": 320
+      },
+      "horizontalOverflow": false,
+      "shell": null,
+      "page": {
+        "x": 0,
+        "y": 119,
+        "width": 320,
+        "height": 1166,
+        "right": 320,
+        "bottom": 1285
+      },
+      "scopeLabel": {
+        "x": 16,
+        "y": 135,
+        "width": 288,
+        "height": 27,
+        "right": 304,
+        "bottom": 162
+      },
+      "toolbar": {
+        "x": 31,
+        "y": 857,
+        "width": 259,
+        "height": 70,
+        "right": 289,
+        "bottom": 927
+      },
+      "queue": null,
+      "firstTask": null,
+      "metrics": [
+        {
+          "label": "Active personal tasks: Unavailable",
+          "box": {
+            "x": 36,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Waiting personal tasks: Unavailable",
+          "box": {
+            "x": 168,
+            "y": 459,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 519
+          }
+        },
+        {
+          "label": "Personal tasks in review phase: Unavailable",
+          "box": {
+            "x": 36,
+            "y": 650,
+            "width": 119,
+            "height": 60,
+            "right": 155,
+            "bottom": 710
+          }
+        },
+        {
+          "label": "Completed personal tasks: Unavailable",
+          "box": {
+            "x": 168,
+            "y": 650,
+            "width": 119,
+            "height": 60,
+            "right": 287,
+            "bottom": 710
+          }
+        }
+      ]
+    },
+    "simulated": true,
+    "interceptedRequest": "GET /api/v1/tasks?scope=personal → HTTP 503",
+    "evidence": "supplemental controlled client-side failure only; not a real server or whole-app loading failure"
+  }
+]

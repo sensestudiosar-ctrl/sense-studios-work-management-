@@ -1,0 +1,3695 @@
+{
+  "classification": "SYNTHETIC READ-ONLY COMPONENT EVIDENCE; not authenticated, not production, and not visual acceptance",
+  "authentication": "none; browser fetch is fixture-mocked and all non-GET requests are rejected",
+  "generatedAt": "2026-10-13T17:50:33.446Z",
+  "fixture": "http://127.0.0.1:4173/mw-i02-after.html",
+  "fixtureSemantics": {
+    "endpoint": "/api/v1/my-work/attention",
+    "allSourceCounts": {
+      "task": 56,
+      "review": 56,
+      "approval": 3
+    },
+    "pageSize": 25,
+    "ownerReassignmentHolds": 5,
+    "taskSubtasksProjection": "one synthetic child; canCreate=true; taskVersion=1"
+  },
+  "viewports": [],
+  "captures": [
+    {
+      "file": "1440x900-designer-initial.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 275,
+        "y": 517,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 553,
+        "width": 1120,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 281,
+        "y": 553,
+        "width": 1115,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-designer-waiting.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 1786
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 1722,
+        "bottom": 1786
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 1722,
+        "bottom": 1786
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 275,
+        "y": 586,
+        "width": 1122,
+        "height": 1052,
+        "bottom": 1639
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 622,
+        "width": 1120,
+        "height": 73,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 281,
+        "y": 622,
+        "width": 1115,
+        "height": 73,
+        "bottom": 695
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-designer-attention.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 202
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 3255
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3191,
+        "bottom": 3255
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3191,
+        "bottom": 3255
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-leader-populated.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "leader-populated",
+      "role": "LEADER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 275,
+        "y": 517,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 553,
+        "width": 1120,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 281,
+        "y": 553,
+        "width": 1115,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-site-populated.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 275,
+        "y": 517,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 553,
+        "width": 1120,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 281,
+        "y": 553,
+        "width": 1115,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-owner-five-holds.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 1051
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 987,
+        "bottom": 1051
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 987,
+        "bottom": 1051
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 372,
+          "bottom": 650
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 662,
+          "width": 1122,
+          "height": 72,
+          "bottom": 733
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-create-dialog.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 275,
+        "y": 517,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 553,
+        "width": 1120,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 281,
+        "y": 553,
+        "width": 1115,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": {
+        "x": 340,
+        "y": 45,
+        "width": 760,
+        "height": 810,
+        "bottom": 855
+      },
+      "dialogFooter": {
+        "x": 341,
+        "y": 780,
+        "width": 758,
+        "height": 76,
+        "bottom": 856
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "createFieldHeights": [
+        44,
+        44,
+        44,
+        45,
+        44,
+        44,
+        84,
+        44,
+        84,
+        45,
+        44,
+        44
+      ],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "1440x900-task-drawer.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1440,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 232,
+        "y": 64,
+        "width": 1208,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 275,
+          "y": 156,
+          "width": 1122,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 275,
+          "y": 278,
+          "width": 1122,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 275,
+        "y": 517,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 553,
+        "width": 1120,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 281,
+        "y": 553,
+        "width": 1115,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": {
+        "x": 870,
+        "y": 0,
+        "width": 570,
+        "height": 900,
+        "bottom": 900
+      },
+      "dialogFooter": {
+        "x": 870,
+        "y": 831,
+        "width": 570,
+        "height": 69,
+        "bottom": 900
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "1024x900-designer-initial.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 96,
+        "y": 517,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 553,
+        "width": 896,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 102,
+        "y": 553,
+        "width": 891,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-designer-waiting.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 1786
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 1722,
+        "bottom": 1786
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 1722,
+        "bottom": 1786
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 96,
+        "y": 586,
+        "width": 898,
+        "height": 1052,
+        "bottom": 1639
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 622,
+        "width": 896,
+        "height": 73,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 102,
+        "y": 622,
+        "width": 891,
+        "height": 73,
+        "bottom": 695
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-designer-attention.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 202
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 3255
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3191,
+        "bottom": 3255
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3191,
+        "bottom": 3255
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-leader-populated.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "leader-populated",
+      "role": "LEADER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 96,
+        "y": 517,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 553,
+        "width": 896,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 102,
+        "y": 553,
+        "width": 891,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-site-populated.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 96,
+        "y": 517,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 553,
+        "width": 896,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 102,
+        "y": 553,
+        "width": 891,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-owner-five-holds.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 1051
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 987,
+        "bottom": 1051
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 987,
+        "bottom": 1051
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 372,
+          "bottom": 650
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 662,
+          "width": 898,
+          "height": 72,
+          "bottom": 733
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-create-dialog.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 96,
+        "y": 517,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 553,
+        "width": 896,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 102,
+        "y": 553,
+        "width": 891,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": {
+        "x": 132,
+        "y": 45,
+        "width": 760,
+        "height": 810,
+        "bottom": 855
+      },
+      "dialogFooter": {
+        "x": 133,
+        "y": 780,
+        "width": 758,
+        "height": 76,
+        "bottom": 856
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "createFieldHeights": [
+        44,
+        44,
+        44,
+        45,
+        44,
+        44,
+        84,
+        44,
+        84,
+        45,
+        44,
+        44
+      ],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "1024x900-task-drawer.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 73,
+        "navTopForClearance": 900
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 1024,
+        "height": 3748
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "route": {
+        "x": 65,
+        "y": 64,
+        "width": 959,
+        "height": 3684,
+        "bottom": 3748
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 96,
+          "y": 156,
+          "width": 898,
+          "height": 109,
+          "bottom": 266
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 96,
+          "y": 278,
+          "width": 898,
+          "height": 72,
+          "bottom": 349
+        }
+      },
+      "queue": {
+        "x": 96,
+        "y": 517,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3601
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 553,
+        "width": 896,
+        "height": 73,
+        "bottom": 626
+      },
+      "firstTaskButton": {
+        "x": 102,
+        "y": 553,
+        "width": 891,
+        "height": 73,
+        "bottom": 626
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "navTopForClearance": 900,
+      "firstTaskUnobstructedPixels": 73,
+      "openDialog": {
+        "x": 454,
+        "y": 0,
+        "width": 570,
+        "height": 900,
+        "bottom": 900
+      },
+      "dialogFooter": {
+        "x": 454,
+        "y": 831,
+        "width": 570,
+        "height": 69,
+        "bottom": 900
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "390x844-designer-initial.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 249,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 11712
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 433,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11478
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 444,
+        "width": 348,
+        "height": 251,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 445,
+        "width": 342,
+        "height": 249,
+        "bottom": 694
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 249,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-designer-waiting.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 66
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 249,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 4468
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 4342,
+        "bottom": 4402
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 4342,
+        "bottom": 4402
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 502,
+        "width": 366,
+        "height": 3732,
+        "bottom": 4234
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 513,
+        "width": 348,
+        "height": 251,
+        "bottom": 764
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 514,
+        "width": 342,
+        "height": 249,
+        "bottom": 763
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 249,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-designer-attention.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 262
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 3286
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 3160,
+        "bottom": 3220
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 3160,
+        "bottom": 3220
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-leader-populated.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "leader-populated",
+      "role": "LEADER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 249,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 11712
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 433,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11478
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 444,
+        "width": 348,
+        "height": 251,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 445,
+        "width": 342,
+        "height": 249,
+        "bottom": 694
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 249,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-site-populated.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 249,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 11712
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 433,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11478
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 444,
+        "width": 348,
+        "height": 251,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 445,
+        "width": 342,
+        "height": 249,
+        "bottom": 694
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 249,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-owner-five-holds.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 1162
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 1036,
+        "bottom": 1096
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 1036,
+        "bottom": 1096
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 484,
+          "bottom": 818
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 830,
+          "width": 366,
+          "height": 39,
+          "bottom": 869
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-create-dialog.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 249,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 11712
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 433,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11478
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 444,
+        "width": 348,
+        "height": 251,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 445,
+        "width": 342,
+        "height": 249,
+        "bottom": 694
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 249,
+      "openDialog": {
+        "x": 0,
+        "y": 51,
+        "width": 390,
+        "height": 793,
+        "bottom": 844
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 772,
+        "width": 390,
+        "height": 72,
+        "bottom": 844
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "createFieldHeights": [
+        44,
+        44,
+        44,
+        45,
+        44,
+        44,
+        84,
+        44,
+        84,
+        45,
+        44,
+        44
+      ],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "390x844-task-drawer.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 249,
+        "navTopForClearance": 778
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 390,
+        "height": 11712
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 390,
+        "height": 11586,
+        "bottom": 11646
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 366,
+          "height": 190,
+          "bottom": 322
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 334,
+          "width": 366,
+          "height": 39,
+          "bottom": 373
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 433,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11478
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 444,
+        "width": 348,
+        "height": 251,
+        "bottom": 695
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 445,
+        "width": 342,
+        "height": 249,
+        "bottom": 694
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "navTopForClearance": 778,
+      "firstTaskUnobstructedPixels": 249,
+      "openDialog": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "bottom": 844
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 775,
+        "width": 390,
+        "height": 69,
+        "bottom": 844
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "320x740-designer-initial.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 218,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 11723
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 444,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11489
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 455,
+        "width": 278,
+        "height": 251,
+        "bottom": 706
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 456,
+        "width": 272,
+        "height": 249,
+        "bottom": 705
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 218,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-designer-waiting.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 66
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 122,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 4506
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 4380,
+        "bottom": 4440
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 4380,
+        "bottom": 4440
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 540,
+        "width": 296,
+        "height": 3732,
+        "bottom": 4273
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 551,
+        "width": 278,
+        "height": 251,
+        "bottom": 802
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 552,
+        "width": 272,
+        "height": 249,
+        "bottom": 801
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 122,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-designer-attention.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 273
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 3874
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 3748,
+        "bottom": 3808
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 3748,
+        "bottom": 3808
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-leader-populated.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "leader-populated",
+      "role": "LEADER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 218,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 11723
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 444,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11489
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 455,
+        "width": 278,
+        "height": 251,
+        "bottom": 706
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 456,
+        "width": 272,
+        "height": 249,
+        "bottom": 705
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 218,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-site-populated.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 218,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 11723
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 444,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11489
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 455,
+        "width": 278,
+        "height": 251,
+        "bottom": 706
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 456,
+        "width": 272,
+        "height": 249,
+        "bottom": 705
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 218,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-owner-five-holds.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 0,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 1191
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 1065,
+        "bottom": 1125
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 1065,
+        "bottom": 1125
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 503,
+          "bottom": 847
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 859,
+          "width": 296,
+          "height": 39,
+          "bottom": 898
+        }
+      },
+      "queue": null,
+      "firstTask": null,
+      "firstTaskButton": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 0,
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-create-dialog.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 0
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 218,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 11723
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 444,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11489
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 455,
+        "width": 278,
+        "height": 251,
+        "bottom": 706
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 456,
+        "width": 272,
+        "height": 249,
+        "bottom": 705
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 218,
+      "openDialog": {
+        "x": 0,
+        "y": 44,
+        "width": 320,
+        "height": 696,
+        "bottom": 740
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 668,
+        "width": 320,
+        "height": 72,
+        "bottom": 740
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "createFieldHeights": [
+        44,
+        44,
+        44,
+        45,
+        44,
+        44,
+        84,
+        44,
+        84,
+        45,
+        44,
+        44
+      ],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "320x740-task-drawer.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "scrollAfterAction": {
+        "x": 0,
+        "y": 44
+      },
+      "postScrollActionClearance": {
+        "scrollAtCapture": {
+          "x": 0,
+          "y": 0
+        },
+        "firstTaskUnobstructedPixels": 218,
+        "navTopForClearance": 674
+      },
+      "scrollAtCapture": {
+        "x": 0,
+        "y": 0
+      },
+      "document": {
+        "width": 320,
+        "height": 11723
+      },
+      "noHorizontalOverflow": true,
+      "main": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "route": {
+        "x": 0,
+        "y": 60,
+        "width": 320,
+        "height": 11597,
+        "bottom": 11657
+      },
+      "sections": {
+        ".my-work-phase-summary": {
+          "x": 12,
+          "y": 132,
+          "width": 296,
+          "height": 201,
+          "bottom": 333
+        },
+        ".my-work-obligations": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "bottom": 0
+        },
+        ".my-work-queue-heading": {
+          "x": 12,
+          "y": 345,
+          "width": 296,
+          "height": 39,
+          "bottom": 384
+        }
+      },
+      "queue": {
+        "x": 12,
+        "y": 444,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11489
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 455,
+        "width": 278,
+        "height": 251,
+        "bottom": 706
+      },
+      "firstTaskButton": {
+        "x": 26,
+        "y": 456,
+        "width": 272,
+        "height": 249,
+        "bottom": 705
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "navTopForClearance": 674,
+      "firstTaskUnobstructedPixels": 218,
+      "openDialog": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 740,
+        "bottom": 740
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 671,
+        "width": 320,
+        "height": 69,
+        "bottom": 740
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "createFieldHeights": [],
+      "createFieldsTouchSized": true,
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "name": "390px touch filters/status/apply/reset/task/drawer/attention/page/clear",
+      "navBefore": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66
+      },
+      "filterPanelOpened": true,
+      "statusApplyPassed": true,
+      "resetPassed": true,
+      "drawerOpened": true,
+      "drawerFooterVisible": true,
+      "taskClearancePixels": 183.09375,
+      "attentionVisible": true,
+      "attentionPagingPassed": true,
+      "attentionCleared": true
+    },
+    {
+      "name": "320px touch filters/status/apply/reset/task/drawer/attention/page/clear",
+      "navBefore": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66
+      },
+      "filterPanelOpened": true,
+      "statusApplyPassed": true,
+      "resetPassed": true,
+      "drawerOpened": true,
+      "drawerFooterVisible": true,
+      "taskClearancePixels": 249.171875,
+      "attentionVisible": true,
+      "attentionPagingPassed": true,
+      "attentionCleared": true
+    }
+  ],
+  "sourceHashes": {
+    "apps/web/visual-fixtures/mw-i02.tsx": "5465f1757ca1ef9ee1098f594f963d637903281c041923f9164955c15a0ea1f6",
+    "apps/web/visual-fixtures/capture-mw-i02.mjs": "f1ad876451b973d5483e86a435c654b9bfbcbaadc3305306d723a279167224e4",
+    "apps/web/src/task.tsx": "40c4191fa441803667196054655bd08c2ad0ca2546189030c246fb887ae52704",
+    "apps/web/src/task-create-dialog.tsx": "4ce36b561ebcaf71f91189cfe345da7fb139f2133712e3a199e0628e18f3560b",
+    "apps/web/src/task-create-dialog.css": "0eab1db66270addcbfa4f7f952717ebec64383e780648b603c57e3b9753a9aa9",
+    "apps/web/src/task-detail-drawer.tsx": "7660e241ef1ef25c11cfcab2523b77e415f8a9b3bbfca9cda0b308ebae0b5f52",
+    "apps/web/src/task-detail-drawer.css": "5516d2b417372645388951e190b19dff85ac843bb8bdfd67b8fb07ecd0cba8f0"
+  }
+}

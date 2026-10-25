@@ -1,0 +1,1440 @@
+{
+  "generatedAt": "2026-10-25T06:24:03.562Z",
+  "note": "Static source signals, not a complete dynamic action or permission proof.",
+  "routes": [
+    {
+      "path": "/install",
+      "file": "apps/web/src/main.tsx",
+      "line": 28,
+      "composition": "<PhoneInstall />} />\r",
+      "purpose": "PWA installation/help",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/client-portal/*",
+      "file": "apps/web/src/main.tsx",
+      "line": 29,
+      "composition": "<React.Suspense fallback={<p role=\"status\">Loading client portal…</p>}><ClientPortalAuth /></React.Suspense>} />\r",
+      "purpose": "Separate CLIENT authentication, dashboard/review, costs/gallery and devices",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/external-portal/*",
+      "file": "apps/web/src/main.tsx",
+      "line": 30,
+      "composition": "<React.Suspense fallback={<p role=\"status\">Loading external portal…</p>}><ExternalPortalWorkspace /></React.Suspense>} />\r",
+      "purpose": "Separate EXTERNAL authentication and granted project collaboration",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/portfolio",
+      "file": "apps/web/src/main.tsx",
+      "line": 31,
+      "composition": "<React.Suspense fallback={<p role=\"status\">Loading portfolio…</p>}><PublicPortfolioPage /></React.Suspense>} />\r",
+      "purpose": "Published derivatives only",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/v15-preview",
+      "file": "apps/web/src/main.tsx",
+      "line": 32,
+      "composition": "<React.Suspense fallback={<p role=\"status\">Loading…</p>}><V15PreviewLazy /></React.Suspense>} />\r",
+      "purpose": "Experimental checkout-only composer preview; not presumed deployed",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "*",
+      "file": "apps/web/src/main.tsx",
+      "line": 33,
+      "composition": "<App />} />\r",
+      "purpose": "Fallback/not found; main.tsx also forwards internal routes to App",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/sign-in",
+      "file": "apps/web/src/app.tsx",
+      "line": 1031,
+      "composition": "<SignInHub />} />",
+      "purpose": "Role entry hub",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/staff/sign-in",
+      "file": "apps/web/src/app.tsx",
+      "line": 1032,
+      "composition": "<AuthHome />} />",
+      "purpose": "Staff passkey sign-in",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/owner/sign-in",
+      "file": "apps/web/src/app.tsx",
+      "line": 1033,
+      "composition": "<AuthHome />} />",
+      "purpose": "Owner passkey sign-in",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/staff/recovery",
+      "file": "apps/web/src/app.tsx",
+      "line": 1034,
+      "composition": "<StaffRecovery />} />",
+      "purpose": "Staff recovery",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/",
+      "file": "apps/web/src/app.tsx",
+      "line": 1035,
+      "composition": "<AuthHome />} />",
+      "purpose": "Internal entry; signed-in landing redirect; signed-out entry",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/workspace",
+      "file": "apps/web/src/app.tsx",
+      "line": 1036,
+      "composition": "<AuthHome legacyWorkspace />} />",
+      "purpose": "Legacy aggregate; organization/identity, CRM and operational entry",
+      "proposedHome": "Manage / legacy retained"
+    },
+    {
+      "path": "/my-work",
+      "file": "apps/web/src/app.tsx",
+      "line": 1037,
+      "composition": "<MyWorkRoute />} />",
+      "purpose": "Personal queue and existing management drill-down",
+      "proposedHome": "Daily"
+    },
+    {
+      "path": "/settings",
+      "file": "apps/web/src/app.tsx",
+      "line": 1038,
+      "composition": "<SettingsRoute />} />",
+      "purpose": "Account/devices and authorized organization/team settings",
+      "proposedHome": "Manage / legacy retained"
+    },
+    {
+      "path": "/decisions",
+      "file": "apps/web/src/app.tsx",
+      "line": 1039,
+      "composition": "<DecisionsRoute />} />",
+      "purpose": "Pending approval obligations; owning-workflow links",
+      "proposedHome": "Daily"
+    },
+    {
+      "path": "/notifications",
+      "file": "apps/web/src/app.tsx",
+      "line": 1040,
+      "composition": "<NotificationsRoute />} />",
+      "purpose": "Inbox, delivery and preferences",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/tasks",
+      "file": "apps/web/src/app.tsx",
+      "line": 1041,
+      "composition": "<TasksRoute />} />",
+      "purpose": "Cross-project task register and canonical create/detail",
+      "proposedHome": "Daily"
+    },
+    {
+      "path": "/projects",
+      "file": "apps/web/src/app.tsx",
+      "line": 1042,
+      "composition": "<ProjectsRoute readSession={readSession} />} />",
+      "purpose": "Directory/create and eight selected-project sections",
+      "proposedHome": "Daily"
+    },
+    {
+      "path": "/people",
+      "file": "apps/web/src/app.tsx",
+      "line": 1043,
+      "composition": "<PeopleRoute />} />",
+      "purpose": "Directory/profile, onboarding and identity access",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/bootstrap",
+      "file": "apps/web/src/app.tsx",
+      "line": 1044,
+      "composition": "<Bootstrap />} />",
+      "purpose": "First Owner setup",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/enroll",
+      "file": "apps/web/src/app.tsx",
+      "line": 1045,
+      "composition": "<Enrollment />} />",
+      "purpose": "Invitation/recovery enrollment",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/owner-recovery",
+      "file": "apps/web/src/app.tsx",
+      "line": 1046,
+      "composition": "<OwnerRecovery />} />",
+      "purpose": "Owner recovery",
+      "proposedHome": "Identity / public / portal / experimental"
+    },
+    {
+      "path": "/documents",
+      "file": "apps/web/src/app.tsx",
+      "line": 1047,
+      "composition": "<DocumentsRoute />} />",
+      "purpose": "Project folders/files, upload, Confidential access",
+      "proposedHome": "Project work"
+    },
+    {
+      "path": "/revisions",
+      "file": "apps/web/src/app.tsx",
+      "line": 1048,
+      "composition": "<RevisionsRoute />} />",
+      "purpose": "Drawing/revision register, formal issue/transmittals",
+      "proposedHome": "Project work"
+    },
+    {
+      "path": "/reviews",
+      "file": "apps/web/src/app.tsx",
+      "line": 1049,
+      "composition": "<ReviewsRoute />} />",
+      "purpose": "Independent internal review inbox and exact rounds",
+      "proposedHome": "Project work"
+    },
+    {
+      "path": "/client-reviews",
+      "file": "apps/web/src/app.tsx",
+      "line": 1050,
+      "composition": "<ClientReviewsRoute />} />",
+      "purpose": "Staff client-access/package/outcome and gallery/portfolio management",
+      "proposedHome": "Project work"
+    },
+    {
+      "path": "/external-access",
+      "file": "apps/web/src/app.tsx",
+      "line": 1051,
+      "composition": "<ExternalAccessRoute />} />",
+      "purpose": "Exact consultant/vendor/factory grants and requests",
+      "proposedHome": "Manage / legacy retained"
+    },
+    {
+      "path": "/turnkey",
+      "file": "apps/web/src/app.tsx",
+      "line": 1052,
+      "composition": "<TurnkeyRoute />} />",
+      "purpose": "Approved inputs, BOQ, materials, procurement and factory",
+      "proposedHome": "Project work"
+    },
+    {
+      "path": "/time",
+      "file": "apps/web/src/app.tsx",
+      "line": 1053,
+      "composition": "<TimeRoute />} />",
+      "purpose": "Timer/manual time, corrections, entries and export",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/workforce",
+      "file": "apps/web/src/app.tsx",
+      "line": 1054,
+      "composition": "<WorkforceRoute />} />",
+      "purpose": "Leave/WFH, attendance, allocation, schedule/capacity",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/learning",
+      "file": "apps/web/src/app.tsx",
+      "line": 1055,
+      "composition": "<LearningRoute key=\"learning-legacy\" />} />",
+      "purpose": "Legacy combined Skills/Training presentation",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/learning/skills",
+      "file": "apps/web/src/app.tsx",
+      "line": 1056,
+      "composition": "<LearningRoute key=\"learning-skills\" area=\"skills\" />} />",
+      "purpose": "Official skills, requests, ratings/history",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/learning/training",
+      "file": "apps/web/src/app.tsx",
+      "line": 1057,
+      "composition": "<LearningRoute key=\"learning-training\" area=\"training\" />} />",
+      "purpose": "Exact-version assignments/review/effectiveness",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/learning/library",
+      "file": "apps/web/src/app.tsx",
+      "line": 1058,
+      "composition": "<LearningRoute key=\"learning-library\" area=\"library\" />} />",
+      "purpose": "Versioned SOP, knowledge and training-module records",
+      "proposedHome": "People"
+    },
+    {
+      "path": "/performance",
+      "file": "apps/web/src/app.tsx",
+      "line": 1059,
+      "composition": "<PerformanceRoute key=\"performance\" />} />",
+      "purpose": "Employee/leader evidence, cycles and policy setup",
+      "proposedHome": "Insights"
+    },
+    {
+      "path": "/project-health",
+      "file": "apps/web/src/app.tsx",
+      "line": 1060,
+      "composition": "<PerformanceRoute key=\"project-health\" initialTab=\"project\" focused />} />",
+      "purpose": "Focused project health/delay evidence and policies",
+      "proposedHome": "Insights"
+    },
+    {
+      "path": "/dashboard",
+      "file": "apps/web/src/app.tsx",
+      "line": 1061,
+      "composition": "<DashboardRoute key=\"dashboard\" />} />",
+      "purpose": "Daily evidence, widgets, summaries, reports, reminders/schedules",
+      "proposedHome": "Daily"
+    },
+    {
+      "path": "/reports",
+      "file": "apps/web/src/app.tsx",
+      "line": 1062,
+      "composition": "<DashboardRoute key=\"reports\" initialTab=\"reports\" focused />} />",
+      "purpose": "Standard report preview, frozen history/export workflows",
+      "proposedHome": "Insights"
+    },
+    {
+      "path": "/integrations",
+      "file": "apps/web/src/app.tsx",
+      "line": 1063,
+      "composition": "<IntegrationsRoute />} />",
+      "purpose": "Calendar/events and website-enquiry integration setup/status",
+      "proposedHome": "Manage / legacy retained"
+    },
+    {
+      "path": "/automation",
+      "file": "apps/web/src/app.tsx",
+      "line": 1064,
+      "composition": "<AutomationRoute key=\"automation\" />} />",
+      "purpose": "Saved reports plus event rules and runs",
+      "proposedHome": "Manage / legacy retained"
+    },
+    {
+      "path": "/saved-reports",
+      "file": "apps/web/src/app.tsx",
+      "line": 1065,
+      "composition": "<AutomationRoute key=\"saved-reports\" savedReportsOnly />} />",
+      "purpose": "Focused versioned report definitions/builder",
+      "proposedHome": "Insights"
+    },
+    {
+      "path": "/assistance",
+      "file": "apps/web/src/app.tsx",
+      "line": 1066,
+      "composition": "<AiAssistanceRoute />} />",
+      "purpose": "Deterministic nonbinding authorized evidence",
+      "proposedHome": "Insights"
+    },
+    {
+      "path": "/site",
+      "file": "apps/web/src/app.tsx",
+      "line": 1067,
+      "composition": "<SiteRoute />} />",
+      "purpose": "Site packages, notes, offline capture, manpower, daily reports, snags and handover",
+      "proposedHome": "Project work"
+    },
+    {
+      "path": "*",
+      "file": "apps/web/src/app.tsx",
+      "line": 1068,
+      "composition": "<NotFound />} />",
+      "purpose": "Fallback/not found; main.tsx also forwards internal routes to App",
+      "proposedHome": "Identity / public / portal / experimental"
+    }
+  ],
+  "modules": [
+    {
+      "file": "apps/web/src/actionable-work.tsx",
+      "sha256": "80d94e2e6a285457b5702fd31a75791be099247e9ad20a504db35c1b1a4ce892",
+      "lines": 139,
+      "headings": [
+        "Needs your attention"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/my-work/attention?${query}"
+      ],
+      "formCount": 0,
+      "inputSignals": 1
+    },
+    {
+      "file": "apps/web/src/ai-assistance.tsx",
+      "sha256": "f53c0abd987746c159d48caac228c3352f572b9fd19fab1317585b086cbf72bc",
+      "lines": 231,
+      "headings": [
+        "Evidence assistance",
+        "Unavailable",
+        "Request a bounded evidence summary",
+        "Saved evidence",
+        "Selected evidence",
+        "Evidence",
+        "Eligible candidates (unranked)",
+        "Unavailable factors and limitations",
+        "Decision and observation history",
+        "Record a nonbinding human decision",
+        "Record a later source observation"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/ai"
+      ],
+      "formCount": 1,
+      "inputSignals": 11
+    },
+    {
+      "file": "apps/web/src/app.tsx",
+      "sha256": "0b6a7da3bfb2b2608c8345fc5221218bccd708830c6ae352f57aa4d8f6364121",
+      "lines": 1175,
+      "headings": [
+        "People",
+        "Settings",
+        "You’re signed in.",
+        "Account",
+        "Active sessions",
+        "Secure your Owner account",
+        "Organization settings",
+        "Team workspace",
+        "Permitted reporting team",
+        "Staff identity access",
+        "Register the first Owner passkey",
+        "Set up your passkey",
+        "Recover with your offline code",
+        "That page is not here.",
+        "Sign in to view project documents",
+        "Complete Owner setup first",
+        "Sign in to view notifications",
+        "Sign in to view settings",
+        "Sign in to view decisions",
+        "Complete Owner setup first",
+        "Sign in to view People",
+        "Complete Owner setup first",
+        "Sign in to view tasks",
+        "Complete Owner setup first",
+        "Sign in to view My Work",
+        "Complete Owner setup first",
+        "Sign in to view the drawing register",
+        "Complete Owner setup first",
+        "Sign in to review project drawings",
+        "Complete Owner setup first",
+        "Sign in to manage client reviews",
+        "Complete Owner setup first",
+        "Sign in to view Turnkey operations",
+        "Complete Owner setup first",
+        "Sign in to manage external access",
+        "Complete Owner setup first",
+        "Sign in to view time records",
+        "Complete Owner setup first",
+        "Sign in to view workforce records",
+        "Complete Owner setup first",
+        "Sign in to view Learning",
+        "Complete Owner setup first",
+        "Sign in to view performance records",
+        "Complete Owner setup first",
+        "Sign in to view your dashboard",
+        "Complete Owner setup first",
+        "Sign in to manage calendar integrations",
+        "Complete Owner setup first",
+        "Sign in to manage automation and reports",
+        "Complete Owner setup first",
+        "Sign in to view site delivery",
+        "Complete Owner setup first",
+        "Sign in to view evidence assistance",
+        "Complete Owner setup first"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/auth"
+      ],
+      "formCount": 7,
+      "inputSignals": 13
+    },
+    {
+      "file": "apps/web/src/approval-queue.tsx",
+      "sha256": "f2fd6925d9de778962db37ad78a68fccb95a16139f6bae8beef0e5f3b8677537",
+      "lines": 205,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/approvals/attention?limit=30",
+        "/api/v1/approvals/attention/${encodeURIComponent(requestedApprovalId)}",
+        "/api/v1/approvals/attention?limit=30&cursor=${encodeURIComponent(nextCursor)}"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/audit-retention.tsx",
+      "sha256": "6909a3ba4cf125434e1d7109619df8c288d42178f68065c495c4c5f98977b811",
+      "lines": 235,
+      "headings": [
+        "Audit and retention",
+        "Expiry notice settings",
+        "Upcoming expiry notices",
+        "Active retention holds",
+        "Search audit events"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/audit"
+      ],
+      "formCount": 6,
+      "inputSignals": 10
+    },
+    {
+      "file": "apps/web/src/auth-flow.tsx",
+      "sha256": "00ece9d24662c73a7cabcca02d2cb0634b58add5a231370a066df39f7537e9f4",
+      "lines": 61,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 1
+    },
+    {
+      "file": "apps/web/src/automation.tsx",
+      "sha256": "794009c17abc454e2db95dfc5f26e38233ce93c2e28aa4d8ffa9144581478e6e",
+      "lines": 168,
+      "headings": [
+        "Report preview",
+        "Saved reports",
+        "Event automation",
+        "Configured rules",
+        "Recent automation activity",
+        "Generated report"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/automation"
+      ],
+      "formCount": 2,
+      "inputSignals": 21
+    },
+    {
+      "file": "apps/web/src/client-dashboard.tsx",
+      "sha256": "1fdd0af539349db80184d2c0a827f1c00e95728fea2cb099c211d66c94172b53",
+      "lines": 76,
+      "headings": [
+        "Project dashboard",
+        "Recent submitted packages",
+        "Reviews available to you",
+        "Approved shared items"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/client-portal"
+      ],
+      "formCount": 0,
+      "inputSignals": 1
+    },
+    {
+      "file": "apps/web/src/client-portal-auth.tsx",
+      "sha256": "35f1b5ee4210fe16412b5045cf4c29267b2e42cebee82bc933f7c7aeb15a39a8",
+      "lines": 445,
+      "headings": [
+        "Client portal account",
+        "Account security",
+        "Sessions",
+        "Approved cost snapshots"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/client-portal/auth",
+        "/api/v1/client-portal"
+      ],
+      "formCount": 2,
+      "inputSignals": 3
+    },
+    {
+      "file": "apps/web/src/client-review.tsx",
+      "sha256": "5a909efa7bb9246b867f8f3640f9a33ba1b41aad965f30dd9ab986ae16965f25",
+      "lines": 493,
+      "headings": [
+        "Client review",
+        "Invite and configure client access",
+        "Set item capabilities",
+        "Your approval history",
+        "Shared review items",
+        "Comments and annotations",
+        "Approve this item",
+        "Final overall approval",
+        "Client reviews",
+        "Owner client access",
+        "Send a task for client review",
+        "Packages and outcomes"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/client-portal",
+        "/api/v1/client-reviews",
+        "/api/v1/projects/setup",
+        "/api/v1/projects?branchId=${encodeURIComponent(branchId)}&offset=${offset}&limit=${limit}",
+        "/api/v1/client-access/projects/${encodeURIComponent(id)}",
+        "/api/v1/tasks/${encodeURIComponent(taskId)}",
+        "/api/v1/tasks/${encodeURIComponent(taskId)}/state",
+        "/api/v1/client-access/projects/${encodeURIComponent(projectId)}/primary",
+        "/api/v1/client-access/grants/${encodeURIComponent(grant.id)}"
+      ],
+      "formCount": 5,
+      "inputSignals": 31
+    },
+    {
+      "file": "apps/web/src/confirmed-drawings.tsx",
+      "sha256": "4edd81708e7a64b3bd32b78ab440c8deeaa3cd9b7b7135ae1529d0220bd4393e",
+      "lines": 28,
+      "headings": [
+        "Confirmed drawings"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/reviews/projects/${encodeURIComponent(projectId)}/confirmed-drawings",
+        "/api/v1/documents/files/${encodeURIComponent(item.fileId)}/stream"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/crm.tsx",
+      "sha256": "257748ad156acfeb92d5e9f493ce45addac8cbb56d6b0f24b52aba2a27d44507",
+      "lines": 71,
+      "headings": [
+        "Leads and clients",
+        "Change stage",
+        "Record interaction",
+        "Stage history",
+        "Interactions",
+        "New lead",
+        "Edit lead details"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/crm/setup",
+        "/api/v1/crm/leads?branchId=${encodeURIComponent(b)}&offset=${o}&limit=25",
+        "/api/v1/crm/leads/${encodeURIComponent(id)}",
+        "/api/v1/crm/clients?branchId=${encodeURIComponent(branchId)}",
+        "/api/v1/crm/leads",
+        "/api/v1/crm/clients/${encodeURIComponent(clientForm.id)}",
+        "/api/v1/crm/clients",
+        "/api/v1/crm/clients?branchId=${encodeURIComponent(targetBranch)}",
+        "/api/v1/crm/leads/${encodeURIComponent(detail.lead.id)}",
+        "/api/v1/crm/sources",
+        "/api/v1/crm/sources/${encodeURIComponent(source.id)}",
+        "/api/v1/crm/leads/${encodeURIComponent(detail.lead.id)}/stage",
+        "/api/v1/crm/leads/${encodeURIComponent(detail.lead.id)}/activities"
+      ],
+      "formCount": 6,
+      "inputSignals": 26
+    },
+    {
+      "file": "apps/web/src/dashboard-data-visuals.tsx",
+      "sha256": "61cc7d10e0e7e13c32e8d647a38447d207b01e355f1d282cfbe797f56c5aaed6",
+      "lines": 39,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/dashboard-panel.tsx",
+      "sha256": "d44dda102e54c8fa7538fc8fc0b671ffdb57ca4f28fc55231f63feeca749fe5d",
+      "lines": 58,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/dashboard-performance-widget.tsx",
+      "sha256": "2dd649287ac6b2d44dd0ba1c6b53d4875a5ac0386e3885d6646524b13124ce58",
+      "lines": 52,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/performance/employees/${encodeURIComponent(selectedId)}"
+      ],
+      "formCount": 0,
+      "inputSignals": 2
+    },
+    {
+      "file": "apps/web/src/dashboard-time-widget.tsx",
+      "sha256": "50db4e2679543ec198899db67af2a0fb0aef8917098a67217c4544ddac1f9ed1",
+      "lines": 93,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/time${path}"
+      ],
+      "formCount": 0,
+      "inputSignals": 6
+    },
+    {
+      "file": "apps/web/src/dashboard.tsx",
+      "sha256": "5d7c4486a766c2f6e5d14c92429d4251ec1f1672c3a41d12a73d1dfc63f5b008",
+      "lines": 710,
+      "headings": [
+        "Today at a glance",
+        "Attention queue",
+        "Scheduled summaries",
+        "Build report preview",
+        "Frozen report history",
+        "Personal reminder",
+        "Your reminders"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/reports/export?category=${encodeURIComponent(preview.category)}&from=${encodeURIComponent(preview.from)}&to=${encodeURIComponent(preview.to)}&format=${fmt}",
+        "/api/v1/reports/snapshots/${encodeURIComponent(snapshot.id)}/export?format=${fmt}"
+      ],
+      "formCount": 0,
+      "inputSignals": 23
+    },
+    {
+      "file": "apps/web/src/document.tsx",
+      "sha256": "2416a4a4d12492adcef5d5e78fa24cd7ca56e56b55d091881f610224a4190d50",
+      "lines": 390,
+      "headings": [
+        "Documents",
+        "Files",
+        "Project folders",
+        "Create folder",
+        "Upload file",
+        "Confidential access",
+        "Active grants"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 3,
+      "inputSignals": 17
+    },
+    {
+      "file": "apps/web/src/external-portal.tsx",
+      "sha256": "a509da6f17e4382660cb43fc16b9432ee8d90ce1821004f08f655cf07dbb9fd3",
+      "lines": 169,
+      "headings": [
+        "Project portal",
+        "Your projects",
+        "Granted revisions",
+        "Production requirements",
+        "Requests from staff",
+        "Advisory submissions",
+        "Send a submission",
+        "Upload advisory evidence",
+        "Your uploads",
+        "Formal transmittals",
+        "Native CAD shares",
+        "Portal sessions",
+        "External project access",
+        "Current grants",
+        "Create exact access grant",
+        "Send scoped request",
+        "Record Owner-issued native CAD share",
+        "CAD cancellation blockers",
+        "External evidence"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/external-portal/auth",
+        "/api/v1/external-portal",
+        "/api/v1/external-access"
+      ],
+      "formCount": 8,
+      "inputSignals": 33
+    },
+    {
+      "file": "apps/web/src/gallery.tsx",
+      "sha256": "83260162756f4eb589ed9c3bec948334dfae14c13905cf24ab2ce368e2b2fcef",
+      "lines": 35,
+      "headings": [
+        "Project gallery and portfolio",
+        "Private client gallery",
+        "Public portfolio",
+        "Prepare a separate PNG derivative",
+        "Project gallery",
+        "Portfolio"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 2,
+      "inputSignals": 9
+    },
+    {
+      "file": "apps/web/src/insights-navigation.tsx",
+      "sha256": "e8d1df36595af56a2d3313579fa66dcf5aaa2903f92aff398c45f044b6f7251a",
+      "lines": 22,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/integrations.tsx",
+      "sha256": "e559b6f4e19a4239ac0d4d700853817090499a8f06121e7a5d89685243fccfc0",
+      "lines": 195,
+      "headings": [
+        "Calendar",
+        "Calendar subscription",
+        "Entered events",
+        "Website enquiries",
+        "Recent delivery status",
+        "Project locations"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/integrations"
+      ],
+      "formCount": 2,
+      "inputSignals": 12
+    },
+    {
+      "file": "apps/web/src/learning-training.tsx",
+      "sha256": "ad2e26616ebe8dd9ed3bb013b388220faf77519d6aeca2e64f5a8e5bb083f635",
+      "lines": 241,
+      "headings": [
+        "Training",
+        "Training",
+        "Assign training",
+        "Module content",
+        "Assessment criteria",
+        "Your submission",
+        "Reviewer assessment",
+        "Effectiveness observation",
+        "Training evidence and history",
+        "Manager recommendation",
+        "Skill recommendation status"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/training",
+        "/api/v1/skills/setup",
+        "/api/v1/skills/employees/${encodeURIComponent(employeeId)}",
+        "/api/v1/skills/requests",
+        "/api/v1/library/files/${encodeURIComponent(block.fileId)}/stream"
+      ],
+      "formCount": 4,
+      "inputSignals": 21
+    },
+    {
+      "file": "apps/web/src/learning.tsx",
+      "sha256": "2010607afc7d452997ec8b0f198fe450c171748e648aa2e4bf79bbf8571bac4f",
+      "lines": 181,
+      "headings": [
+        "Skills",
+        "Skills",
+        "Skills",
+        "Official ratings",
+        "Request a skill rating",
+        "Owner direct rating",
+        "Owner catalogue",
+        "Requests and decisions",
+        "Immutable rating history"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/skills"
+      ],
+      "formCount": 3,
+      "inputSignals": 12
+    },
+    {
+      "file": "apps/web/src/library-workspace.tsx",
+      "sha256": "e0e77205dc53d54a3765e01ba5795f398b3336ce606f27374210ecf69bfd4c01",
+      "lines": 219,
+      "headings": [
+        "Library",
+        "Library",
+        "Create a Library record",
+        "Records",
+        "Add a new version",
+        "Publication and activation",
+        "Reference this exact SOP version"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/library"
+      ],
+      "formCount": 2,
+      "inputSignals": 32
+    },
+    {
+      "file": "apps/web/src/main.tsx",
+      "sha256": "d48db3bb8873b44fd9c671faa3cc8bbfe688679f0a05c58bc2827393a50de8ff",
+      "lines": 39,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/my-work-attention.tsx",
+      "sha256": "0c1d76d0d9970691a6e2b2437a49eacdc4025b394126c624ee5549174825af86",
+      "lines": 334,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/tasks?${query.toString()}",
+        "/api/v1/reviews/inbox?personal=true&offset=${offset}&limit=${LIMIT}",
+        "/api/v1/tasks/attention?kind=corrections&offset=${offset}&limit=${LIMIT}",
+        "/api/v1/tasks/attention?kind=reassignment&offset=${offset}&limit=${LIMIT}"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/my-work-filter-chips.tsx",
+      "sha256": "5f3ea6b4c69fa59096ec215f0b08990a07fb96d0c847152e25917341af814967",
+      "lines": 25,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/my-work-metric-focus.tsx",
+      "sha256": "e699be500ad9c0cc285efc5705b581e5cbacc68eaf8b61505b6acc68f1cca17b",
+      "lines": 62,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/my-work-metrics.tsx",
+      "sha256": "2838e3e87df82c04ff88cf1577345ad09ccfe3d6f86043a12de760612bf8604a",
+      "lines": 227,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/tasks?${query}",
+        "/api/v1/dashboard/sources/site",
+        "/api/v1/dashboard/sources/tasks"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/my-work-queue-preferences.tsx",
+      "sha256": "f1ba207ac6f2883e9f0103b1acec42ed2d24040815e796aed1093d662557f51a",
+      "lines": 94,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 2,
+      "inputSignals": 4
+    },
+    {
+      "file": "apps/web/src/notifications.tsx",
+      "sha256": "50d85b286f532dc8d58a95adaaff6acb06042927610fe620681c8606af74aafe",
+      "lines": 253,
+      "headings": [
+        "Notifications",
+        "Email delivery",
+        "Optional channel preferences",
+        "Quiet hours"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/notifications"
+      ],
+      "formCount": 3,
+      "inputSignals": 7
+    },
+    {
+      "file": "apps/web/src/organization-admin.tsx",
+      "sha256": "b86ed2f4303cbacfdba9daf20eb537e40a9620d0eca5bb00e0f54cf7cefb67be",
+      "lines": 540,
+      "headings": [
+        "Home branch, team and manager",
+        "Explicit employee access overrides",
+        "Set up the organization",
+        "Add a branch",
+        "Add a team",
+        "Add a job role",
+        "Branches",
+        "Teams",
+        "Recurring task timezone",
+        "Job roles",
+        "Task creation presentation",
+        "Job role permission bundles",
+        "Create an employee record",
+        "Employees",
+        "Confirm employee suspension",
+        "Finalize employee exit"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/auth",
+        "/api/v1/org"
+      ],
+      "formCount": 15,
+      "inputSignals": 44
+    },
+    {
+      "file": "apps/web/src/people-directory.tsx",
+      "sha256": "b18f4766b6f2fcd55e2b4607e915c8df913adbf175089f8a0c08e0a3f972ed79",
+      "lines": 83,
+      "headings": [
+        "Employee directory"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 4
+    },
+    {
+      "file": "apps/web/src/people-self.tsx",
+      "sha256": "382586b46e2048eb2d807b8a444a67691eda9343b7635aad9ca0c8c676a0929b",
+      "lines": 38,
+      "headings": [
+        "My employee profile"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/org/self"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/performance.tsx",
+      "sha256": "e8a52a3d50599911ba06c9a7c6763af8403d93ff52f3dae4a2494c12f3de8ba6",
+      "lines": 276,
+      "headings": [
+        "Generate a grounded score snapshot",
+        "Projects",
+        "Delay attribution",
+        "Generate health and review delays",
+        "Owner reviewed delay source"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/performance",
+        "/api/v1/dashboard/sources/health"
+      ],
+      "formCount": 0,
+      "inputSignals": 43
+    },
+    {
+      "file": "apps/web/src/project-relationships.tsx",
+      "sha256": "71e9891e09dc1e216fb8c8ae73114d1c811c5a08567ad06060ac9533464938b9",
+      "lines": 76,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/crm/clients?branchId=${encodeURIComponent(branchId)}",
+        "/api/v1/crm/leads?branchId=${encodeURIComponent(branchId)}&stage=WON&offset=0&limit=100",
+        "/api/v1/crm/leads?branchId=${encodeURIComponent(branchId)}&stage=WON&offset=${current.leads.length}&limit=100"
+      ],
+      "formCount": 0,
+      "inputSignals": 4
+    },
+    {
+      "file": "apps/web/src/project-resources.tsx",
+      "sha256": "983dd9fd28ad8c27b5d0b95d798658be1cd3969effcf012425e9c5a531cc58b5",
+      "lines": 80,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/documents/projects/${encodeURIComponent(projectId)}",
+        "/api/v1/reviews/inbox?${waitingReviewQuery(projectId)}"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/project-template.tsx",
+      "sha256": "a7b901ed8aefa9c0c4eba193b569abded5a42063bbd3680fd74cb19c9ac269b2",
+      "lines": 153,
+      "headings": [
+        "Choose a project template",
+        "Project templates",
+        "Project plan",
+        "Planned folders",
+        "Plan history"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/project-templates",
+        "/api/v1/projects/${encodeURIComponent(projectId)}/plan",
+        "/api/v1/projects/${encodeURIComponent(projectId)}/plan-items/${encodeURIComponent(item.id)}/complete"
+      ],
+      "formCount": 1,
+      "inputSignals": 15
+    },
+    {
+      "file": "apps/web/src/project.tsx",
+      "sha256": "f70bf91ad2c70bc952cca3fca80cea5be382f29a1a9ae93091dfbdcae71c5190",
+      "lines": 338,
+      "headings": [
+        "Projects",
+        "Projects",
+        "Baseline scopes",
+        "History and requests",
+        "Project Lead",
+        "Assigned contributors",
+        "Plan",
+        "Create Draft project"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/projects"
+      ],
+      "formCount": 2,
+      "inputSignals": 18
+    },
+    {
+      "file": "apps/web/src/projects-route.tsx",
+      "sha256": "a48e876cb5e1397b70bb293dc61736b533434311197ec5dbc2427db12c80ba2e",
+      "lines": 29,
+      "headings": [
+        "Sign in to view projects",
+        "Complete Owner setup first"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/pwa-delivery.tsx",
+      "sha256": "40785702d45fed2fc48e079d22c993b4420638385df6593847a28e0052c8308d",
+      "lines": 107,
+      "headings": [
+        "Your work, on your phone",
+        "Android",
+        "iPhone",
+        "Before going to a site",
+        "Keep access secure"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 1
+    },
+    {
+      "file": "apps/web/src/release-status.tsx",
+      "sha256": "1f5812d98f21e0e8642a0a13d705055f3e5199c893dd346b32be2555943a8ac6",
+      "lines": 42,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/health/release"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/review-evidence.tsx",
+      "sha256": "7a5fd82ad1d15b15b12e5a27dd6b8365f0936508c909f27d8e0621ab7c11218c",
+      "lines": 259,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/documents"
+      ],
+      "formCount": 1,
+      "inputSignals": 4
+    },
+    {
+      "file": "apps/web/src/review.tsx",
+      "sha256": "de94a91a09fc62df757ea3d7edfea29c48d5e9cec683326225ee9c899086be82",
+      "lines": 169,
+      "headings": [
+        "Internal work review",
+        "Review inbox",
+        "Task controls",
+        "Client review delivery",
+        "Authorize client delivery",
+        "Submit work",
+        "Submitted task snapshot",
+        "Escalation history",
+        "Escalate review",
+        "Withdraw submission",
+        "Begin assigned review",
+        "Add comment or markup",
+        "Record decision",
+        "Assign correction task",
+        "Complete task",
+        "Correction categories"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/reviews",
+        "/api/v1/documents"
+      ],
+      "formCount": 17,
+      "inputSignals": 25
+    },
+    {
+      "file": "apps/web/src/revision.tsx",
+      "sha256": "b302c857417598fff81be9cb86bf6d0805cf416e4f9002f59c022e2c3aa165df",
+      "lines": 366,
+      "headings": [
+        "Drawing register",
+        "Drawings and revision history",
+        "Create drawing",
+        "Add revision",
+        "Create transmittal",
+        "Transmittals"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 4,
+      "inputSignals": 18
+    },
+    {
+      "file": "apps/web/src/route-accessibility.tsx",
+      "sha256": "153f10a2ef3a24218c257782883e30467c0a3293c8059794ba5ab4bbb1f079f9",
+      "lines": 33,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/session-groups.tsx",
+      "sha256": "5946305c5d809a7aa48b6de8ff01d92ed7a200976ad664a962fc4d57f541dd87",
+      "lines": 14,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/settings-homes.tsx",
+      "sha256": "4637cad81ff4687727c81712da6ee5529c0d92c1e9e2240db04ed6aa5ee66b3a",
+      "lines": 63,
+      "headings": [
+        "Personal",
+        "Organization &amp; administration",
+        "Settings",
+        "Account and sessions",
+        "Notifications",
+        "Integrations",
+        "Automation and reports",
+        "Organization settings",
+        "Decisions"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/site-offline-capture.tsx",
+      "sha256": "d1108279bb0d158507afddb64cad1a7845896adbadef057228875c1e3db4a40e",
+      "lines": 306,
+      "headings": [
+        "Offline capture",
+        "Offline site capture",
+        "Save an offline draft",
+        "Offline capture queue",
+        "Compare and amend local values",
+        "Offline site capture unavailable",
+        "Offline site capture unavailable",
+        "Site capture · local device mode"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/site/projects/${encodeURIComponent(entry.projectId)}/offline-photos",
+        "/api/v1/documents/uploads/${encodeURIComponent(photo.uploadId!)}/chunks/${index}",
+        "/api/v1/documents/uploads/${encodeURIComponent(photo.uploadId!)}/finalize",
+        "/api/v1/site/projects/${encodeURIComponent(ready.projectId)}/offline-commands"
+      ],
+      "formCount": 1,
+      "inputSignals": 28
+    },
+    {
+      "file": "apps/web/src/site.tsx",
+      "sha256": "1f211dd3c9cb50bbf61cf857b26efdbb3c32509cd4e3b49e621bb060d18076f9",
+      "lines": 239,
+      "headings": [
+        "Site progress and daily work",
+        "Today’s work",
+        "Tomorrow’s plan",
+        "Workers today",
+        "Progress and quality",
+        "Photos and evidence",
+        "Snags",
+        "Site approvals",
+        "Pending decisions",
+        "Materials",
+        "Blockers",
+        "Critical activities",
+        "Site notes",
+        "Plan a work package",
+        "Work packages",
+        "Report current progress",
+        "Manpower and attendance",
+        "Record a trade count",
+        "Daily reports",
+        "Save a new daily report draft",
+        "Snags and independent checks",
+        "Record a snag",
+        "Site handover"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/site",
+        "/api/v1/documents"
+      ],
+      "formCount": 11,
+      "inputSignals": 38
+    },
+    {
+      "file": "apps/web/src/task-composer-fields.tsx",
+      "sha256": "e279ad1c5c4218d318528a5649098a3b1981520335cf47c2a181e09f55da07e4",
+      "lines": 371,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 21
+    },
+    {
+      "file": "apps/web/src/task-create-dialog.tsx",
+      "sha256": "a413f3f149b27344b525b6d741744c807b4669b850fafbc0d11d76c0023420cc",
+      "lines": 98,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/task-detail-drawer.tsx",
+      "sha256": "7660e241ef1ef25c11cfcab2523b77e415f8a9b3bbfca9cda0b308ebae0b5f52",
+      "lines": 254,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/task-people.tsx",
+      "sha256": "7e8fb2fe24ba3379ff4a340ff4a452657c7af1cb41ab5a858ef74872afcc7158",
+      "lines": 142,
+      "headings": [],
+      "literalEndpointSignals": [
+        "/api/v1/tasks/${encodeURIComponent(task.id)}"
+      ],
+      "formCount": 0,
+      "inputSignals": 0
+    },
+    {
+      "file": "apps/web/src/task-refinement-fields.tsx",
+      "sha256": "f360d6093c150fdb49c8a3f4a9925520d0fb58f0fdc49da8f962d5e956b28e57",
+      "lines": 18,
+      "headings": [],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 3
+    },
+    {
+      "file": "apps/web/src/task.tsx",
+      "sha256": "0ca484132ca4f7597ad0a1a9624198befde87f1c65e0518b42a4249fa25dab43",
+      "lines": 1132,
+      "headings": [
+        "Checklist",
+        "Checklist",
+        "Task history",
+        "Activity",
+        "Evidence",
+        "Next step",
+        "Resume work",
+        "Description",
+        "Waiting details",
+        "Subtasks",
+        "Finish-to-start dependencies",
+        "Tags",
+        "Checklist",
+        "Task actions",
+        "Edit task",
+        "Description",
+        "Collaborators",
+        "Recurrence schedule",
+        "Schedule history",
+        "Deadline extension requests",
+        "Closeout approval",
+        "Wait on this task",
+        "Resume work",
+        "Reassign owner",
+        "Task history",
+        "Capacity warning",
+        "Tasks",
+        "Work queue",
+        "Filter My Work",
+        "Approve closeout task",
+        "No personal tasks",
+        "Kanban",
+        "Timeline"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/tasks",
+        "/api/v1/dashboard/sources/tasks"
+      ],
+      "formCount": 12,
+      "inputSignals": 60
+    },
+    {
+      "file": "apps/web/src/time.tsx",
+      "sha256": "51feb0eb1011d3b9854ef1971155739bccd71f69c8bb4b32e8b28991008fd863",
+      "lines": 212,
+      "headings": [
+        "Time",
+        "Time",
+        "Hours breakdown",
+        "Log time manually",
+        "Entry history",
+        "Correct time entry"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/time"
+      ],
+      "formCount": 2,
+      "inputSignals": 22
+    },
+    {
+      "file": "apps/web/src/turnkey.tsx",
+      "sha256": "db2d0d30a2853c54afc2575b062e295931644d12aff5ff4d36895e007ec24973",
+      "lines": 229,
+      "headings": [
+        "BOQ and production",
+        "Released design inputs",
+        "Bill of quantities",
+        "Materials",
+        "Procurement",
+        "Factory",
+        "Request cost approval",
+        "Cost approval decision",
+        "Set materials",
+        "Request procurement approval",
+        "Procurement decision",
+        "Update progress",
+        "Share approved costs with a client",
+        "Create an immutable draft",
+        "BOQ lines"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 8,
+      "inputSignals": 24
+    },
+    {
+      "file": "apps/web/src/workforce.tsx",
+      "sha256": "4e7c98adf331edde74c04ee59e4cc06e4098bf66560c4d0dcc5a5cd4846e163c",
+      "lines": 154,
+      "headings": [
+        "Workforce",
+        "Workforce",
+        "Leave setup · Owner",
+        "Schedule setup · Owner",
+        "Branch holiday · Owner",
+        "Site check-in setup · Owner",
+        "Request leave or WFH",
+        "Attendance",
+        "Explicit task allocation",
+        "Workload",
+        "Leave requests and history",
+        "Provisional attendance reviews",
+        "Attendance records",
+        "Leave balances"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/workforce"
+      ],
+      "formCount": 0,
+      "inputSignals": 45
+    },
+    {
+      "file": "apps/web/src/workspace-navigation.tsx",
+      "sha256": "dfec9a945c0759e389abe0228c631ca8f062b8b5545fb7204ac5914b91dace5f",
+      "lines": 483,
+      "headings": [
+        "",
+        "More destinations"
+      ],
+      "literalEndpointSignals": [
+        "/api/v1/notifications/unread"
+      ],
+      "formCount": 0,
+      "inputSignals": 2
+    },
+    {
+      "file": "apps/web/src/__v15-preview.tsx",
+      "sha256": "1250f7a6286ea8bf52f16d9044161afa13e11c31b4022665b6104e71717e71f2",
+      "lines": 74,
+      "headings": [
+        "New task"
+      ],
+      "literalEndpointSignals": [],
+      "formCount": 0,
+      "inputSignals": 0
+    }
+  ]
+}

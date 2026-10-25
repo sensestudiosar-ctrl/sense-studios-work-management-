@@ -1,0 +1,64 @@
+{
+  "state": "PASS",
+  "stage": "hierarchy",
+  "checkedAt": "2026-10-12T12:05:11.467Z",
+  "readOnly": true,
+  "identity": {
+    "database": "sense_local_preview_20261008_1791474390772_test",
+    "host": "127.0.0.1",
+    "port": 45434,
+    "directory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+    "system_identifier": "7693570241708228348"
+  },
+  "targetOid": "32768",
+  "migrations": {
+    "count": 115,
+    "latest": "20261007060000_s27_assistance"
+  },
+  "organizations": [
+    {
+      "id": "322e38d3-a455-4d6b-9a18-771497e36d27",
+      "name": "Sense Local Task Test"
+    }
+  ],
+  "branches": [
+    {
+      "id": "79a6a68e-e2ba-41e7-b6ef-aad1fdb0fc60",
+      "organizationId": "322e38d3-a455-4d6b-9a18-771497e36d27",
+      "name": "Local Test Branch",
+      "active": true
+    }
+  ],
+  "teams": [
+    {
+      "id": "622064e0-521f-432b-9a3d-1dd4d5592aa4",
+      "organizationId": "322e38d3-a455-4d6b-9a18-771497e36d27",
+      "branchId": "79a6a68e-e2ba-41e7-b6ef-aad1fdb0fc60",
+      "name": "Local Test Team",
+      "active": true,
+      "waitingAlertsEnabled": false
+    }
+  ],
+  "staff": [],
+  "grants": [],
+  "counts": {
+    "accounts": 1,
+    "employees": 0,
+    "tasks": 0,
+    "job_roles": 0,
+    "role_permissions": 0,
+    "employee_job_role_assignments": 0,
+    "employee_permission_overrides": 0,
+    "employee_membership_history": 0,
+    "organization_events": 3,
+    "audit_events": 3,
+    "security_events": 17,
+    "domain_events": 3,
+    "outbox_deliveries": 3
+  },
+  "ownerCredentialsPreserved": true,
+  "ownerRecoveryPreserved": true,
+  "ownerEmployeeCount": 0,
+  "otherDatabaseCatalogPreserved": true,
+  "backupHashVerified": true
+}

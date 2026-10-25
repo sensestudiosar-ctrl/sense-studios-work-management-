@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src http://localhost:59223 http://127.0.0.1:*; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>Test-only Owner relay</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#26312b;background:#f5f7f4}*{box-sizing:border-box}body{margin:0;padding:20px;line-height:1.45}.page{max-width:760px;margin:0 auto;padding:22px;background:#fff;border:1px solid #dce5dc;border-radius:12px}.warning{display:inline-block;padding:5px 9px;border:1px solid #9b4b36;border-radius:5px;color:#813d2d;font-size:12px;font-weight:800;letter-spacing:.06em}h1{font-size:22px;margin:14px 0 8px}.target{padding:12px;border-radius:8px;background:#f3f6f1;overflow-wrap:anywhere}.target h2{margin:0 0 5px;font-size:14px}.target pre{margin:0;font:12px/1.5 ui-monospace,Consolas,monospace;white-space:pre-wrap}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.controls button{min-width:150px;min-height:48px;padding:10px 14px;border:1px solid #244f43;border-radius:8px;background:#244f43;color:white;font:inherit;font-weight:700;cursor:pointer}.controls button.secondary{border-color:#9b4b36;background:white;color:#813d2d}.controls button:disabled{opacity:.55;cursor:not-allowed}button:focus-visible{outline:3px solid #78a98d;outline-offset:3px}.status{min-height:54px;padding:12px;border:1px solid #dce5dc;border-radius:8px;background:#fbfcfa}#operation{margin-top:12px;font-weight:650;overflow-wrap:anywhere}.instructions{margin-top:16px;color:#58675e;font-size:14px}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <span class="warning">TEST ONLY · LOCAL APPROVED SETUP</span>
+    <h1>Existing Owner setup relay</h1>
+    <section class="target" aria-labelledby="target-title"><h2 id="target-title">Exact approved local target</h2><pre id="target"></pre></section>
+    <div class="controls"><button id="start" type="button" disabled>Start approved setup</button><button id="stop" class="secondary" type="button" disabled>Stop</button></div>
+    <p id="status" class="status" role="status" aria-live="polite">Checking the signed-in Owner session…</p>
+    <p id="operation">Current operation: none</p>
+    <p class="instructions">Use this page in the already signed-in browser. After setup finishes or stops, return to the test controller tab. This page does not store the relay token.</p>
+  </main>
+  <script type="module">
+    import { OWNER, ORIGIN, TARGET, createRegistry, resolveOperation, recordResult, projectResult, assertOwnerSession } from "./test-personas-owner-operations.mjs";
+
+    const targetNode = document.getElementById("target");
+    const statusNode = document.getElementById("status");
+    const operationNode = document.getElementById("operation");
+    const startButton = document.getElementById("start");
+    const stopButton = document.getElementById("stop");
+    targetNode.textContent = JSON.stringify(TARGET, null, 2);
+
+    let relayOrigin;
+    let relayToken;
+    let owner;
+    let csrfToken;
+    let active = false;
+    let stopped = false;
+    let currentController;
+    let registry;
+
+    function setStatus(message) { statusNode.textContent = message; }
+    function parseRelayFragment() {
+      const fragment = window.location.hash.slice(1);
+      history.replaceState(history.state, "", window.location.pathname + window.location.search);
+      if (!fragment) throw new Error("Missing relay handoff fragment. Return to the controller and reopen this page.");
+      const decoded = atob(fragment.replace(/-/g, "+").replace(/_/g, "/") + "=".repeat((4 - fragment.length % 4) % 4));
+      const bytes = Uint8Array.from(decoded, (character) => character.charCodeAt(0));
+      const handoff = JSON.parse(new TextDecoder().decode(bytes));
+      if (!handoff || typeof handoff !== "object" || typeof handoff.relayOrigin !== "string" || typeof handoff.token !== "string") throw new Error("Invalid relay handoff.");
+      const match = /^http:\/\/127\.0\.0\.1:(\d+)$/.exec(handoff.relayOrigin);
+      if (!match) throw new Error("Relay origin is not an approved loopback origin.");
+      const port = Number(match[1]);
+      const parsed = new URL(handoff.relayOrigin);
+      if (!Number.isInteger(port) || port < 1024 || port > 65535 || parsed.origin !== handoff.relayOrigin || parsed.pathname !== "/" || parsed.search || parsed.hash || parsed.username || parsed.password) throw new Error("Relay origin is not an approved loopback origin.");
+      if (!/^[A-Za-z0-9_-]{43}$/.test(handoff.token)) throw new Error("Invalid relay handoff token.");
+      relayOrigin = handoff.relayOrigin;
+      relayToken = handoff.token;
+    }
+
+    async function readOwnerSession() {
+      const response = await fetch("/api/v1/auth/session", { method: "GET", credentials: "same-origin", cache: "no-store" });
+      if (!response.ok) throw new Error("Could not verify the current signed-in Owner session.");
+      const session = await response.json();
+      assertOwnerSession(session);
+      if (!session?.account || typeof session.account.id !== "string" || typeof session.account.email !== "string" || typeof session.account.kind !== "string" || typeof session.csrfToken !== "string") throw new Error("The current Owner session is missing required identity data.");
+      if (OWNER?.id && session.account.id !== OWNER.id) throw new Error("The signed-in account does not match the approved Owner.");
+      owner = { id: session.account.id, email: session.account.email, kind: session.account.kind };
+      csrfToken = session.csrfToken;
+    }
+
+    async function requireFreshOwner() {
+      const response = await fetch("/api/v1/auth/sessions", { credentials: "same-origin", cache: "no-store" });
+      if (!response.ok) throw new Error("Could not verify Owner sign-in freshness.");
+      const sessions = await response.json();
+      const current = Array.isArray(sessions) ? sessions.filter((item) => item.current === true && item.revokedAt === null) : [];
+      if (current.length !== 1 || !Number.isFinite(Date.parse(current[0].createdAt)) || Date.now() - Date.parse(current[0].createdAt) > 180000) {
+        throw new Error("A fresh Owner sign-in is needed for organization setup. Sign out normally in the app, sign in with your existing passkey, then reopen this helper from the test controller.");
+      }
+    }
+
+    async function relay(path, options = {}) {
+      return fetch(relayOrigin + path, {
+        ...options,
+        credentials: "omit",
+        headers: { ...(options.headers ?? {}), Authorization: "Bearer " + relayToken, "Content-Type": "application/json" }
+      });
+    }
+
+    function stopLocal(message) {
+      stopped = true;
+      active = false;
+      if (currentController) currentController.abort();
+      startButton.disabled = true;
+      stopButton.disabled = true;
+      setStatus(message);
+    }
+
+    async function requestStop() {
+      if (!active) return;
+      stopLocal("Stopping. No further operations will be applied.");
+      try { await relay("/owner-relay/stop", { method: "POST", body: "{}" }); } catch { /* best effort stop notification */ }
+    }
+
+    async function sendFailure(id, status) {
+      const resultResponse = await relay("/owner-relay/result", { method: "POST", body: JSON.stringify({ id, ok: false, status }) });
+      if (!resultResponse.ok) throw new Error("Could not acknowledge the failed operation; stopped without retrying it.");
+    }
+
+    async function sendSuccess(id, result) {
+      const resultResponse = await relay("/owner-relay/result", { method: "POST", body: JSON.stringify({ id, ok: true, result }) });
+      if (!resultResponse.ok) throw new Error("Could not acknowledge the completed operation; stopped without retrying it.");
+    }
+
+    async function applyOperation(item, signal) {
+      const { id, operation, input } = item;
+      operationNode.textContent = "Current operation: " + String(operation);
+      await readOwnerSession();
+      const request = resolveOperation(registry, operation, input);
+      const method = String(request.method).toUpperCase();
+      const headers = { "Content-Type": "application/json" };
+      if (method === "POST") headers["X-CSRF-Token"] = csrfToken;
+      const response = await fetch(request.path, {
+        method,
+        credentials: "same-origin",
+        cache: "no-store",
+        signal,
+        headers,
+        ...(request.data === undefined ? {} : { body: JSON.stringify(request.data) })
+      });
+      if (!response.ok) {
+        await sendFailure(id, response.status);
+        throw new Error("Application operation failed with status " + response.status + ". Setup stopped.");
+      }
+      const responseData = await response.json();
+      recordResult(registry, operation, input, responseData);
+      const result = projectResult(registry, operation, input, responseData);
+      await sendSuccess(id, result);
+      operationNode.textContent = "Current operation: " + String(operation) + " · complete";
+    }
+
+    async function run() {
+      if (active || stopped) return;
+      active = true;
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      registry = createRegistry();
+      setStatus("Connecting the verified Owner session to the local relay…");
+      currentController = new AbortController();
+      try {
+        await readOwnerSession();
+        await requireFreshOwner();
+        const ready = await relay("/owner-relay/ready", { method: "POST", signal: currentController.signal, body: JSON.stringify({ owner }) });
+        if (!ready.ok) throw new Error("The local relay did not accept the Owner session.");
+        setStatus("Connected. Waiting for an approved setup operation.");
+        while (active && !stopped) {
+          currentController = new AbortController();
+          const next = await relay("/owner-relay/next", { method: "GET", signal: currentController.signal });
+          if (next.status === 204) {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            continue;
+          }
+          if (!next.ok) throw new Error("The local relay stopped responding. Setup stopped.");
+          const item = await next.json();
+          if (item?.complete === true) { stopLocal("Setup complete. Five test accounts and fifty tasks are ready in the test controller."); break; }
+          if (!item || typeof item.id !== "string" || typeof item.operation !== "string") throw new Error("The local relay returned an invalid operation. Setup stopped.");
+          setStatus("Applying the next approved setup operation…");
+          await applyOperation(item, currentController.signal);
+          if (active && !stopped) setStatus("Operation acknowledged. Waiting for the next approved setup operation.");
+        }
+      } catch (error) {
+        if (!stopped) stopLocal(error instanceof Error ? error.message : "Setup stopped after an unexpected error.");
+      } finally {
+        if (!stopped) stopLocal("Setup relay ended.");
+        operationNode.textContent = "Current operation: none";
+        stopButton.disabled = true;
+      }
+    }
+
+    stopButton.addEventListener("click", () => { void requestStop(); });
+    startButton.addEventListener("click", () => { void run(); });
+
+    try {
+      if (window.location.origin !== ORIGIN) throw new Error("Open this page from the approved local application origin.");
+      if (window.top !== window.self) throw new Error("Open this helper as its own tab.");
+      parseRelayFragment();
+      await readOwnerSession();
+      setStatus("Owner session verified in this browser. Ready to start the approved local setup.");
+      startButton.disabled = false;
+    } catch (error) {
+      relayToken = undefined;
+      setStatus(error instanceof Error ? error.message : "Could not prepare the Owner relay.");
+    }
+  </script>
+</body>
+</html>

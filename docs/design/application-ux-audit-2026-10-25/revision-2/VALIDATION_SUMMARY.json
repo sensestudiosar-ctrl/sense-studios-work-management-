@@ -1,0 +1,388 @@
+{
+  "at": "2026-10-25T07:17:05.022Z",
+  "status": "REVISION_2_PLAN_READY; CLIENT_EXTERNAL_AUDIT_BLOCKED_BY_ABSENT_RECORDS; NO_IMPLEMENTATION_AUTHORIZED",
+  "deployed": "70b047cd57af5d4a755e45c5c99b06e4039a46c8",
+  "realStaffAccounts": [
+    {
+      "key": "leader1",
+      "jobRole": [
+        "Team Leader"
+      ],
+      "accountId": "473d501d-b547-4329-a30d-bacbfa064747",
+      "employeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+      "entryCaptures": 87,
+      "entryRoutes": 29,
+      "widths": [
+        1440,
+        783,
+        390
+      ],
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "canAssign": true,
+      "creationProfile": {
+        "version": 1,
+        "variant": "EMPLOYEE",
+        "resolution": "GENERIC_FALLBACK"
+      },
+      "projectAuthority": {
+        "projectId": "af49ff6b-f305-46bb-9651-d800ceff9173",
+        "currentLeadEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+        "isCurrentLead": true,
+        "capabilities": {
+          "manage": true,
+          "scopeRequest": false,
+          "cancellationRequest": false,
+          "decideScope": false,
+          "override": false,
+          "assignLead": false,
+          "manageLead": false,
+          "assignContributor": false,
+          "manageAssignments": false,
+          "changeStatus": true,
+          "manageLifecycle": true,
+          "requestScopeChange": false,
+          "requestScope": false,
+          "requestCancellation": true
+        }
+      },
+      "assignedWaitingReviews": 2,
+      "workflowCaptures": 27,
+      "interactions": [
+        {
+          "name": "Create form opens and closes without submission",
+          "status": "PASS"
+        },
+        {
+          "name": "Own accessible task detail",
+          "status": "PASS"
+        },
+        {
+          "name": "Assigned review read, no decision submitted",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "key": "leader2",
+      "jobRole": [
+        "Team Leader"
+      ],
+      "accountId": "f6337100-d635-4f19-8c14-c9ee1f19bbf1",
+      "employeeId": "b5ba4aec-1d94-485c-adb0-08f9650c3f1e",
+      "entryCaptures": 87,
+      "entryRoutes": 29,
+      "widths": [
+        1440,
+        783,
+        390
+      ],
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "canAssign": true,
+      "creationProfile": {
+        "version": 1,
+        "variant": "EMPLOYEE",
+        "resolution": "GENERIC_FALLBACK"
+      },
+      "projectAuthority": {
+        "projectId": "920677fe-53b2-4a31-a52c-1c220391b6fd",
+        "currentLeadEmployeeId": "b5ba4aec-1d94-485c-adb0-08f9650c3f1e",
+        "isCurrentLead": true,
+        "capabilities": {
+          "manage": true,
+          "scopeRequest": false,
+          "cancellationRequest": false,
+          "decideScope": false,
+          "override": false,
+          "assignLead": false,
+          "manageLead": false,
+          "assignContributor": false,
+          "manageAssignments": false,
+          "changeStatus": true,
+          "manageLifecycle": true,
+          "requestScopeChange": false,
+          "requestScope": false,
+          "requestCancellation": true
+        }
+      },
+      "assignedWaitingReviews": 1,
+      "workflowCaptures": 27,
+      "interactions": [
+        {
+          "name": "Create form opens and closes without submission",
+          "status": "PASS"
+        },
+        {
+          "name": "Own accessible task detail",
+          "status": "PASS"
+        },
+        {
+          "name": "Assigned review read, no decision submitted",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "key": "designer1",
+      "jobRole": [
+        "Designer"
+      ],
+      "accountId": "66bbb466-7851-4ddc-8186-840ff73afec9",
+      "employeeId": "5d7d87f7-b762-4984-a3f1-8343b0269704",
+      "entryCaptures": 87,
+      "entryRoutes": 29,
+      "widths": [
+        1440,
+        783,
+        390
+      ],
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "canAssign": false,
+      "creationProfile": {
+        "version": 1,
+        "variant": "EMPLOYEE",
+        "resolution": "GENERIC_FALLBACK"
+      },
+      "projectAuthority": {
+        "projectId": "af49ff6b-f305-46bb-9651-d800ceff9173",
+        "currentLeadEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+        "isCurrentLead": false,
+        "capabilities": {
+          "manage": false,
+          "scopeRequest": false,
+          "cancellationRequest": false,
+          "decideScope": false,
+          "override": false,
+          "assignLead": false,
+          "manageLead": false,
+          "assignContributor": false,
+          "manageAssignments": false,
+          "changeStatus": false,
+          "manageLifecycle": false,
+          "requestScopeChange": false,
+          "requestScope": false,
+          "requestCancellation": false
+        }
+      },
+      "assignedWaitingReviews": 1,
+      "workflowCaptures": 27,
+      "interactions": [
+        {
+          "name": "Create form opens and closes without submission",
+          "status": "PASS"
+        },
+        {
+          "name": "Own accessible task detail",
+          "status": "PASS"
+        },
+        {
+          "name": "Assigned review read, no decision submitted",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "key": "designer2",
+      "jobRole": [
+        "Designer"
+      ],
+      "accountId": "62d970c8-0848-4f6f-808e-9e0a3d82ea06",
+      "employeeId": "3717a7f3-15d2-4738-94fd-9c3acf364f7e",
+      "entryCaptures": 87,
+      "entryRoutes": 29,
+      "widths": [
+        1440,
+        783,
+        390
+      ],
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "canAssign": false,
+      "creationProfile": {
+        "version": 1,
+        "variant": "EMPLOYEE",
+        "resolution": "GENERIC_FALLBACK"
+      },
+      "projectAuthority": {
+        "projectId": "920677fe-53b2-4a31-a52c-1c220391b6fd",
+        "currentLeadEmployeeId": "b5ba4aec-1d94-485c-adb0-08f9650c3f1e",
+        "isCurrentLead": false,
+        "capabilities": {
+          "manage": false,
+          "scopeRequest": false,
+          "cancellationRequest": false,
+          "decideScope": false,
+          "override": false,
+          "assignLead": false,
+          "manageLead": false,
+          "assignContributor": false,
+          "manageAssignments": false,
+          "changeStatus": false,
+          "manageLifecycle": false,
+          "requestScopeChange": false,
+          "requestScope": false,
+          "requestCancellation": false
+        }
+      },
+      "assignedWaitingReviews": 1,
+      "workflowCaptures": 27,
+      "interactions": [
+        {
+          "name": "Create form opens and closes without submission",
+          "status": "PASS"
+        },
+        {
+          "name": "Own accessible task detail",
+          "status": "PASS"
+        },
+        {
+          "name": "Assigned review read, no decision submitted",
+          "status": "PASS"
+        }
+      ]
+    },
+    {
+      "key": "site",
+      "jobRole": [
+        "Site Staff"
+      ],
+      "accountId": "43ab62cb-761f-4da2-b7ea-76c775f34df5",
+      "employeeId": "0536d0a4-53d3-4aae-ac57-8b3bb181ac36",
+      "entryCaptures": 87,
+      "entryRoutes": 29,
+      "widths": [
+        1440,
+        783,
+        390
+      ],
+      "auth": "VERIFIED_REAL_BACKEND_SESSION",
+      "canAssign": false,
+      "creationProfile": {
+        "version": 1,
+        "variant": "EMPLOYEE",
+        "resolution": "GENERIC_FALLBACK"
+      },
+      "projectAuthority": {
+        "projectId": "af49ff6b-f305-46bb-9651-d800ceff9173",
+        "currentLeadEmployeeId": "a922f509-7161-4353-9acd-16c1aacbcee2",
+        "isCurrentLead": false,
+        "capabilities": {
+          "manage": false,
+          "scopeRequest": false,
+          "cancellationRequest": false,
+          "decideScope": false,
+          "override": false,
+          "assignLead": false,
+          "manageLead": false,
+          "assignContributor": false,
+          "manageAssignments": false,
+          "changeStatus": false,
+          "manageLifecycle": false,
+          "requestScopeChange": false,
+          "requestScope": false,
+          "requestCancellation": false
+        }
+      },
+      "assignedWaitingReviews": 0,
+      "workflowCaptures": 25,
+      "interactions": [
+        {
+          "name": "Create form opens and closes without submission",
+          "status": "PASS"
+        },
+        {
+          "name": "Own accessible task detail",
+          "status": "PASS"
+        }
+      ]
+    }
+  ],
+  "actualEntryViewCaptures": 435,
+  "actualStaffCaptureRecords": 604,
+  "pageErrors": [],
+  "blockedDomainWrites": [],
+  "readNavigationFailures": [],
+  "originalRepeatLoginFailure": [
+    {
+      "key": "leader1",
+      "status": 401,
+      "error": "Normal passkey login did not succeed\n\n401 !== 201\n"
+    }
+  ],
+  "retainedRoleInventory": {
+    "at": "2026-10-25T07:04:35.287Z",
+    "mode": "READ ONLY",
+    "database": "sense_latest_retained_20261014_test",
+    "oid": "145606",
+    "system": "7693570241708228348",
+    "accounts": [
+      {
+        "kind": "OWNER",
+        "state": "ACTIVE",
+        "count": 1
+      },
+      {
+        "kind": "STAFF",
+        "state": "ACTIVE",
+        "count": 5
+      }
+    ],
+    "counts": {
+      "client_portal_grants": 0,
+      "external_portal_grants": 0,
+      "client_review_packages": 0,
+      "client_review_items": 0,
+      "client_portal_sessions": 0,
+      "external_portal_sessions": 0
+    },
+    "note": "Counts/identity only. No token, OTP, private credential or session row contents exported."
+  },
+  "sourceBaselineFiles": 693,
+  "changedSourceFiles": [],
+  "parity": {
+    "userCapabilityObligations": 409,
+    "endpointDeclarations": 374,
+    "controlDeclarations": 1694,
+    "routeDeclarations": 43,
+    "unmappedEndpointDeclarations": 0,
+    "runtimeRedesignParity": "NOT RUN — no redesign implemented"
+  },
+  "approvedDemoReferences": [
+    {
+      "key": "dashboard-v10",
+      "sha256": "1829cbe1d4d3771365fba5af059a267b191aef051cb8cc71548aa6469e66a65a",
+      "captures": 4,
+      "formOpened": false,
+      "pageErrors": [],
+      "externalRequestCount": 0
+    },
+    {
+      "key": "my-work-approved",
+      "sha256": "f8c18088e04c72acee34c38bdb458bf84fc8cf9fc834667a75e3d5a3d95c59b8",
+      "captures": 4,
+      "formOpened": false,
+      "pageErrors": [],
+      "externalRequestCount": 0
+    },
+    {
+      "key": "task-creation-approved",
+      "sha256": "dc0f5a59c67faf23a144013a9833b347a0768983e0bfbaa60d9178977c2a5261",
+      "captures": 4,
+      "formOpened": true,
+      "pageErrors": [],
+      "externalRequestCount": 0
+    }
+  ],
+  "missingScreenshots": [],
+  "missingDocumentLinks": [],
+  "unrun": [
+    "CLIENT/EXTERNAL authenticated audit: no current account/grant/package records",
+    "Fully configured leave/scoring/site/training/drawing lifecycle states",
+    "Actual human usability study/physical-keyboard-phone/screen-reader acceptance",
+    "Product unit/integration/full verify/build/deploy",
+    "Redesigned runtime parity/visual acceptance"
+  ],
+  "ownerPriorities": [
+    "Create/assign tasks",
+    "Check work and work on Projects",
+    "Read review comments, perform corrections and resubmit"
+  ]
+}

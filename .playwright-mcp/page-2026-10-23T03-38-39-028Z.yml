@@ -1,0 +1,58 @@
+- generic [ref=f4e2]:
+  - link "Skip to main content" [ref=f4e3] [cursor=pointer]:
+    - /url: "#sense-main"
+  - generic [ref=f4e4]:
+    - banner [ref=f4e5]:
+      - link "Sense Studios home" [ref=f4e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e7]: S
+        - generic [ref=f4e8]:
+          - strong [ref=f4e9]: SENSE STUDIOS
+          - generic [ref=f4e10]: WORK MANAGEMENT
+    - main [ref=f4e11]:
+      - region [ref=f4e12]:
+        - paragraph [ref=f4e13]: WELCOME TO SENSE STUDIOS
+        - heading "Your work starts here" [active] [level=1] [ref=f4e14]
+        - paragraph [ref=f4e15]: Choose where you work with us.
+        - navigation "Choose your sign-in" [ref=f4e16]:
+          - link "Studio team Owner, team leaders and employees Continue with your work passkey" [ref=f4e17] [cursor=pointer]:
+            - /url: /staff/sign-in
+            - generic [aria-hidden] [ref=f4e18]: "01"
+            - generic [ref=f4e19]:
+              - strong [ref=f4e20]: Studio team
+              - generic [ref=f4e21]: Owner, team leaders and employees
+              - generic [ref=f4e22]: Continue with your work passkey
+            - generic [aria-hidden] [ref=f4e23]: ↗
+          - link "Clients Your projects, drawings and reviews Sign in to your client account" [ref=f4e24] [cursor=pointer]:
+            - /url: /client-portal/login
+            - generic [aria-hidden] [ref=f4e25]: "02"
+            - generic [ref=f4e26]:
+              - strong [ref=f4e27]: Clients
+              - generic [ref=f4e28]: Your projects, drawings and reviews
+              - generic [ref=f4e29]: Sign in to your client account
+            - generic [aria-hidden] [ref=f4e30]: ↗
+          - link "Consultants Shared documents and project requests Continue with an email code" [ref=f4e31] [cursor=pointer]:
+            - /url: /external-portal/consultant/login
+            - generic [aria-hidden] [ref=f4e32]: "03"
+            - generic [ref=f4e33]:
+              - strong [ref=f4e34]: Consultants
+              - generic [ref=f4e35]: Shared documents and project requests
+              - generic [ref=f4e36]: Continue with an email code
+            - generic [aria-hidden] [ref=f4e37]: ↗
+          - link "Vendors & production Drawings, requirements and updates Continue with an email code" [ref=f4e38] [cursor=pointer]:
+            - /url: /external-portal/vendor/login
+            - generic [aria-hidden] [ref=f4e39]: "04"
+            - generic [ref=f4e40]:
+              - strong [ref=f4e41]: Vendors & production
+              - generic [ref=f4e42]: Drawings, requirements and updates
+              - generic [ref=f4e43]: Continue with an email code
+            - generic [aria-hidden] [ref=f4e44]: ↗
+        - generic [ref=f4e45]:
+          - link "Owner sign in" [ref=f4e46] [cursor=pointer]:
+            - /url: /owner/sign-in
+          - link "View our public portfolio" [ref=f4e47] [cursor=pointer]:
+            - /url: /portfolio
+    - contentinfo [ref=f4e48]: Sense Studios · Secure workspace
+  - complementary "Deployed release" [ref=f4e49]:
+    - group [ref=f4e50]:
+      - generic "Release 7f3dee03 · API checking" [ref=f4e51]

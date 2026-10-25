@@ -1,0 +1,11 @@
+IMPLEMENT THE ATTACHED SENSE STUDIOS TASK CREATION ENGINEERING KIT INTO MY EXISTING WORK-MANAGEMENT APPLICATION.
+
+Read `README_START_HERE.md`, then `AGENT_MASTER_PROMPT.md` and every file in `docs/`. The approved design/behaviour is `reference/sense_task_creation_production_candidate.html`, with screenshots in `reference/screenshots/`. Examine the actual current repo code and original source handoff before modifying anything.
+
+Do the implementation, not just a plan. Integrate this UX into the ONE canonical existing React task-create component, all creation entry points, and the ONE existing NestJS API. Preserve existing backend business logic, role/branch/project permissions, review routing, parent/subtask API contracts, CSRF/session security, idempotency/capacity recovery, tests and unrelated work. Do not create a parallel app, old version or separate test server. Before editing, verify the current branch, running app build/commit, uncommitted changes and authoritative task APIs.
+
+Match the approved V15 task panel closely on desktop/mobile, including mobile Task Name → Description → Assign to → Target Date → Reason → More Settings, one-line circular avatars with the first eligible person as Main and others collaborators, inline reviewer/recurrence UI behind verified backend feature gates, subtasks/checklist/tags, readable dates, selected priority colours, files/discussion after creation and sticky create action.
+
+The currently documented strict POST /tasks does not support named reviewer IDs or recurrence frequency fields. Never silently pretend these settings were saved; gate them and provide a separate proposed backend extension, unless you confirm a newer existing supported contract in the current repository.
+
+Use screenshot comparison and actual auth/API browser tests, not mock-only evidence. Run and report actual checks from the current repository. Provide changed-file list, screenshots, request/response evidence, test logs, remaining blockers, single canonical staging route/commit and rollback instructions. Never automatically migrate retained databases, reset data, seed, deploy or overwrite unrelated work. Request explicit approval before consequential changes.

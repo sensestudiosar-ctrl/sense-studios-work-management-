@@ -1,0 +1,38 @@
+{
+  "state": "PASS",
+  "owner": "DESKTOP-7U1I620\\HI",
+  "processes": {
+    "pg": {
+      "pid": 38768,
+      "creationTime": "2026-10-13T05:15:03.925Z",
+      "executable": "C:\\Program Files\\PostgreSQL\\18\\bin\\postgres.exe",
+      "commandLine": "\"C:/Program Files/PostgreSQL/18/bin/postgres.exe\"  -D \"D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9\" -h 127.0.0.1 -p 45434 ",
+      "owner": "DESKTOP-7U1I620\\HI",
+      "parentPid": 11788
+    },
+    "api": {
+      "pid": 18408,
+      "creationTime": "2026-10-13T05:31:30.925Z",
+      "executable": "C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "commandLine": "\"C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe\" apps/api/dist/main.js",
+      "owner": "DESKTOP-7U1I620\\HI",
+      "parentPid": 35168
+    },
+    "web": {
+      "pid": 16368,
+      "creationTime": "2026-10-13T05:31:34.376Z",
+      "executable": "C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe",
+      "commandLine": "\"C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin\\node.exe\" node_modules/vite/bin/vite.js --host 127.0.0.1 --port 59223 --strictPort",
+      "owner": "DESKTOP-7U1I620\\HI",
+      "parentPid": 35168
+    },
+    "supervisor": {
+      "pid": 35168,
+      "creationTime": "2026-10-13T05:31:17.761Z",
+      "executable": "C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+      "commandLine": "\"C:\\Users\\HI\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoLogo -NoProfile -File \"D:/app/sensestudios work management app/.env.checkpoint-tools/test-personas/restore-preview.ps1\" -Execute -RunId cf12966a-2211-45c0-a63d-a386b5da759e -D \"D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9\" -h 127.0.0.1 -p 45434 -NoStartup",
+      "owner": "DESKTOP-7U1I620\\HI",
+      "parentPid": 42764
+    }
+  }
+}

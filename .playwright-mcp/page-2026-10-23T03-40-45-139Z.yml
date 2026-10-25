@@ -1,0 +1,18 @@
+- generic [ref=f5e2]:
+  - link "Skip to main content" [ref=f5e3] [cursor=pointer]:
+    - /url: "#sense-main"
+  - generic [ref=f5e4]:
+    - banner [ref=f5e5]:
+      - link "Sense Studios home" [ref=f5e6] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f5e7]: S
+        - generic [ref=f5e8]:
+          - strong [ref=f5e9]: SENSE STUDIOS
+          - generic [ref=f5e10]: WORK MANAGEMENT
+      - generic [ref=f5e11]: IDENTITY
+    - main [ref=f5e12]:
+      - status [ref=f5e13]: Checking your session…
+    - contentinfo [ref=f5e14]: Sense Studios · Secure workspace
+  - complementary "Deployed release" [ref=f5e15]:
+    - group [ref=f5e16]:
+      - generic "Release 7f3dee03 · API checking" [ref=f5e17]

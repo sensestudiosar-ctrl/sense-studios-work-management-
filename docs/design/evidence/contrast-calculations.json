@@ -1,0 +1,76 @@
+{
+  "date": "2026-10-08",
+  "method": "WCAG relative sRGB luminance (Llighter+0.05)/(Ldarker+0.05); opaque solid-color pairs only; not rendered accessibility acceptance",
+  "pairs": [
+    {
+      "fg": "ink",
+      "bg": "canvas",
+      "ratio": 13
+    },
+    {
+      "fg": "ink",
+      "bg": "surface",
+      "ratio": 14.43
+    },
+    {
+      "fg": "inkMuted",
+      "bg": "canvas",
+      "ratio": 4.46
+    },
+    {
+      "fg": "inkMuted",
+      "bg": "surface",
+      "ratio": 4.95
+    },
+    {
+      "fg": "gold",
+      "bg": "pine",
+      "ratio": 8.93
+    },
+    {
+      "fg": "focusLegacy",
+      "bg": "canvas",
+      "ratio": 2.62
+    },
+    {
+      "fg": "focus",
+      "bg": "canvas",
+      "ratio": 9.13
+    },
+    {
+      "fg": "controlBorder",
+      "bg": "surface",
+      "ratio": 3.63
+    },
+    {
+      "fg": "success",
+      "bg": "successBg",
+      "ratio": 7.28
+    },
+    {
+      "fg": "warning",
+      "bg": "warningBg",
+      "ratio": 6.57
+    },
+    {
+      "fg": "danger",
+      "bg": "dangerBg",
+      "ratio": 7.03
+    },
+    {
+      "fg": "info",
+      "bg": "infoBg",
+      "ratio": 8.39
+    },
+    {
+      "fg": "border",
+      "bg": "surface",
+      "ratio": 1.41
+    }
+  ],
+  "proposedSecondaryText": {
+    "hex": "#50645b",
+    "onCanvas": 5.61,
+    "onSurface": 6.23
+  }
+}

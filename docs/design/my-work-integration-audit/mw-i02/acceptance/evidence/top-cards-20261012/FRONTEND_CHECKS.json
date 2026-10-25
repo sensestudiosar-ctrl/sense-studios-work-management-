@@ -1,0 +1,53 @@
+{
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "results": [
+    {
+      "name": "contracts-build",
+      "args": [
+        "--filter",
+        "@sense/contracts",
+        "build"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "contracts-typecheck",
+      "args": [
+        "--filter",
+        "@sense/contracts",
+        "typecheck"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "web-typecheck",
+      "args": [
+        "--filter",
+        "@sense/web",
+        "typecheck"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "api-typecheck-current-client",
+      "args": [
+        "exec",
+        "tsc",
+        "-p",
+        "apps/api/tsconfig.json",
+        "--noEmit"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "web-build",
+      "args": [
+        "--filter",
+        "@sense/web",
+        "build"
+      ],
+      "exitCode": 0
+    }
+  ]
+}

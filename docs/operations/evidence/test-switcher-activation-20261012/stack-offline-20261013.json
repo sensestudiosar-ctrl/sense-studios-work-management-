@@ -1,0 +1,67 @@
+{
+  "recordedAt": "2026-10-13",
+  "state": "BLOCKED",
+  "stage": "read-only helper-relaunch preflight",
+  "mutations": false,
+  "findings": {
+    "pgStatus": "no server running",
+    "systemIdentifier": "7693570241708228348",
+    "diskState": "in production",
+    "listeners": {
+      "45434": [],
+      "59223": [],
+      "59224": []
+    },
+    "historicalPidsAbsent": [
+      26252,
+      16860,
+      3260,
+      35632
+    ],
+    "webReachable": false,
+    "apiReachable": false,
+    "lastPgLog": "2026-10-12 23:42:54 IST CreateProcess error87 / io_worker fork failed",
+    "allProcessExitCause": "UNKNOWN",
+    "lastVerifiedFixtureCount": 50,
+    "lastVerificationAt": "2026-10-12T16:41:06.292Z",
+    "freshLiveFixtureCount": null
+  },
+  "tools": {
+    "cluster": [
+      {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "8849ff",
+          "wall_time_seconds": 0.0412071,
+          "exit_code": 1,
+          "original_token_count": 7,
+          "output": "pg_ctl: no server running\r\n"
+        }
+      },
+      {
+        "status": "fulfilled",
+        "value": {
+          "chunk_id": "7a1664",
+          "wall_time_seconds": 0.555804,
+          "exit_code": 1,
+          "original_token_count": 29,
+          "output": "\r\nDatabase system identifier:           7693570241708228348\r\nDatabase cluster state:               in production\r\n\r\n"
+        }
+      }
+    ],
+    "services": {
+      "chunk_id": "439363",
+      "wall_time_seconds": 0.902944,
+      "exit_code": 0,
+      "original_token_count": 84,
+      "output": "{\"Port\":45434,\"Listeners\":[]}\r\n{\"Port\":59224,\"Listeners\":[]}\r\n{\"Port\":59223,\"Listeners\":[]}\r\n{\"ExpectedPid\":26252,\"Present\":false,\"ExecutablePath\":null}\r\n{\"ExpectedPid\":16860,\"Present\":false,\"ExecutablePath\":null}\r\n{\"ExpectedPid\":3260,\"Present\":false,\"ExecutablePath\":null}\r\n{\"ExpectedPid\":35632,\"Present\":false,\"ExecutablePath\":null}\r\n"
+    },
+    "health": {
+      "chunk_id": "4a0342",
+      "wall_time_seconds": 0.1528005,
+      "exit_code": 0,
+      "original_token_count": 28,
+      "output": "{\"base\":\"http://localhost:59223\",\"state\":\"UNREACHABLE\"}\n{\"base\":\"http://127.0.0.1:59224\",\"state\":\"UNREACHABLE\"}\n"
+    }
+  }
+}

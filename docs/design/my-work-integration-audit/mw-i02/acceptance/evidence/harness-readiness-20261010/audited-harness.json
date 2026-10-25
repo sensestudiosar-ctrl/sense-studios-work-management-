@@ -1,0 +1,27 @@
+{
+  "reviewedAt": "2026-10-12T06:21:48.8137241Z",
+  "sourceHashes": {
+    ".env.checkpoint-tools/mw-i02-acceptance/acceptance.spec.ts": "c1daf120d04acd2775c16f4f83d7b70ae4f2d93672a6c39d411f841cc9a3de8d",
+    ".env.checkpoint-tools/mw-i02-acceptance/run-task-integration.mjs": "c5a966453a5ffac48a745af5481fcc17916f81b69e9862ea184e5a6803dba3a8",
+    ".env.checkpoint-tools/mw-i02-acceptance/readiness.mjs": "0edbd2f7cd85ff766765da50f705ea6f07e21e34bce67f1e6cfb33d92fffd813",
+    ".env.checkpoint-tools/mw-i02-acceptance/setup.mjs": "cd168916568ed3f349204a82cef71a2e262e7ad51948c2647bff1417f1a10fb7",
+    ".env.checkpoint-tools/mw-i02-acceptance/run-tests.mjs": "8ddb70c1c66881f4cdad6cf4eedd501507e63bc7f433c30b9af78290ab2e2a04",
+    ".env.checkpoint-tools/mw-i02-acceptance/check-absence.mjs": "8933ca6370191c6cdd9889b03160874112887a8119d1d2d5c75adb942a6d458b",
+    ".env.checkpoint-tools/mw-i02-acceptance/cleanup.mjs": "80739dbaa2072274e1dfc7bd20a270fded78fa9dacd92bf36275627bb7fdc089",
+    ".env.checkpoint-tools/mw-i02-acceptance/playwright.config.ts": "0703b0e80867c720ba626e2aca4918f7b92761fb7204d85ac72bd5cf6a1f46be",
+    "apps/web/src/app.tsx": "14d4d9897e50f0e85d7e05d3e1c839d0ee8b28374ca081e8ae36cfe0b782c6f2",
+    "apps/web/src/workspace-navigation.tsx": "73acdcb4df53009c5d516c9dfcffcbdffee6a713998a585e8a7fe2c513d2fbbb",
+    "apps/web/src/workspace-navigation.css": "6d98dcbe67878f08a0aa6725717efe3a751a4b20c9923015e5451bd38d991c4f",
+    "apps/web/src/styles.css": "1319af0c08cbfda4d3a902eb12737eed3286cd6569c681cdd22dad87062dc3fa",
+    "apps/api/src/review.database.api.spec.ts": "9a02c446ce0c28ff10ac8cde730acc1352f2f8ec4c82d2bcfef50feb92729e70",
+    "package.json": "7ec90e4db7e8f243855a7cb30af0d80413a04cef2cb8401b0b07733655bae628",
+    "pnpm-lock.yaml": "beeca66ff333d4b7f3f9acfc8738f9f63361d52bbedec1320ba91985083452f8",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/HARNESS_READINESS_AUDIT_2026-10-10.md": "f4a018e90f83a51c4f66d43467c3092b12ee807cd817ac645af1842b5cce761a",
+    ".env.checkpoint-tools/mw-i02-acceptance/preflight.ps1": "c6448c37e3901daf9d0cd3f0d2594a08aa606456656b4d0b73f1a139603d6b68",
+    ".env.checkpoint-tools/mw-i02-acceptance/preflight.tests.ps1": "a2fcdfb634ff1b2db05c50be9cb104de877396af17f7c092bb0a13f3ad7d9c73",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/FINAL_CONSOLIDATED_ACCEPTANCE_PLAN_2026-10-10.md": "e6913fe5b412060e76a84b2d285bcc96cc7f3fb550730d8dd9d059e4eecbbc63",
+    ".env.checkpoint-tools/mw-i02-acceptance/verify-recovery-copy.mjs": "33a0ca1723b6e1b1062a5e1b9882032f240805c379dd6c4c98fef45848b77090",
+    "docs/design/my-work-integration-audit/mw-i02/acceptance/ENVIRONMENT_RECOVERY_FINAL_PLAN_2026-10-12.md": "9b1c078f3f9246477b82fe40311c5b0a3111187065d01f5a6107215f0cafe446",
+    ".env.checkpoint-tools/mw-i02-acceptance/check-no-unowned-connections.mjs": "70711fa32f292ac0a2a2ad0f7b1ca42c1727253198465112d9daca3a295d9cb2"
+  }
+}

@@ -1,0 +1,428 @@
+{
+  "fixture": "synthetic current-component; no server, authentication or database",
+  "sourceFingerprint": {
+    "apps/web/src/task.tsx": "e4df300b0eb75c5209b826573cd68fd2af4a474c769be8fafc52f594a2a9ec4a",
+    "apps/web/src/task.css": "6a88ed4f77d63ef7478e9b359a39dc81636ebfe017eea07fc4f5a29075516170",
+    "apps/web/src/task-detail-drawer.tsx": "7660e241ef1ef25c11cfcab2523b77e415f8a9b3bbfca9cda0b308ebae0b5f52",
+    "apps/web/src/styles.css": "3c662c41e1698979a30426dffb51138a7ac6983a903f133edcbf19f90488ce3c",
+    "apps/web/src/studio-theme.css": "c9c2d5590c31fffdd761f5bbb07c13e9a8f87b9d04cc7defdc8a69938d4a6429"
+  },
+  "results": [
+    {
+      "width": 1440,
+      "height": 900,
+      "form": {
+        "width": 486,
+        "left": 907,
+        "right": 1393
+      },
+      "controls": [
+        {
+          "tag": "INPUT",
+          "width": 452,
+          "height": 42.6875,
+          "left": 924,
+          "right": 1376
+        },
+        {
+          "tag": "SELECT",
+          "width": 220,
+          "height": 41.8125,
+          "left": 924,
+          "right": 1144
+        },
+        {
+          "tag": "SELECT",
+          "width": 220,
+          "height": 41.8125,
+          "left": 1156,
+          "right": 1376
+        },
+        {
+          "tag": "INPUT",
+          "width": 220,
+          "height": 44.6875,
+          "left": 924,
+          "right": 1144
+        },
+        {
+          "tag": "INPUT",
+          "width": 452,
+          "height": 42.6875,
+          "left": 924,
+          "right": 1376
+        },
+        {
+          "tag": "SELECT",
+          "width": 426,
+          "height": 41.8125,
+          "left": 937,
+          "right": 1363
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 426,
+          "height": 84.4375,
+          "left": 937,
+          "right": 1363
+        },
+        {
+          "tag": "INPUT",
+          "width": 426,
+          "height": 42.6875,
+          "left": 937,
+          "right": 1363
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 426,
+          "height": 84.4375,
+          "left": 937,
+          "right": 1363
+        },
+        {
+          "tag": "INPUT",
+          "width": 207,
+          "height": 44.6875,
+          "left": 937,
+          "right": 1144
+        },
+        {
+          "tag": "INPUT",
+          "width": 207,
+          "height": 42.6875,
+          "left": 1156,
+          "right": 1363
+        },
+        {
+          "tag": "INPUT",
+          "width": 452,
+          "height": 42.6875,
+          "left": 924,
+          "right": 1376
+        },
+        {
+          "tag": "BUTTON",
+          "width": 125.65625,
+          "height": 42.8125,
+          "left": 924,
+          "right": 1049.65625
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "form": {
+        "width": 486,
+        "left": 491,
+        "right": 977
+      },
+      "controls": [
+        {
+          "tag": "INPUT",
+          "width": 452,
+          "height": 42.6875,
+          "left": 508,
+          "right": 960
+        },
+        {
+          "tag": "SELECT",
+          "width": 220,
+          "height": 41.8125,
+          "left": 508,
+          "right": 728
+        },
+        {
+          "tag": "SELECT",
+          "width": 220,
+          "height": 41.8125,
+          "left": 740,
+          "right": 960
+        },
+        {
+          "tag": "INPUT",
+          "width": 220,
+          "height": 44.6875,
+          "left": 508,
+          "right": 728
+        },
+        {
+          "tag": "INPUT",
+          "width": 452,
+          "height": 42.6875,
+          "left": 508,
+          "right": 960
+        },
+        {
+          "tag": "SELECT",
+          "width": 426,
+          "height": 41.8125,
+          "left": 521,
+          "right": 947
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 426,
+          "height": 84.4375,
+          "left": 521,
+          "right": 947
+        },
+        {
+          "tag": "INPUT",
+          "width": 426,
+          "height": 42.6875,
+          "left": 521,
+          "right": 947
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 426,
+          "height": 84.4375,
+          "left": 521,
+          "right": 947
+        },
+        {
+          "tag": "INPUT",
+          "width": 207,
+          "height": 44.6875,
+          "left": 521,
+          "right": 728
+        },
+        {
+          "tag": "INPUT",
+          "width": 207,
+          "height": 42.6875,
+          "left": 740,
+          "right": 947
+        },
+        {
+          "tag": "INPUT",
+          "width": 452,
+          "height": 42.6875,
+          "left": 508,
+          "right": 960
+        },
+        {
+          "tag": "BUTTON",
+          "width": 125.65625,
+          "height": 42.8125,
+          "left": 508,
+          "right": 633.65625
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "form": {
+        "width": 328,
+        "left": 31,
+        "right": 359
+      },
+      "controls": [
+        {
+          "tag": "INPUT",
+          "width": 294,
+          "height": 44,
+          "left": 48,
+          "right": 342
+        },
+        {
+          "tag": "SELECT",
+          "width": 294,
+          "height": 44,
+          "left": 48,
+          "right": 342
+        },
+        {
+          "tag": "SELECT",
+          "width": 294,
+          "height": 44,
+          "left": 48,
+          "right": 342
+        },
+        {
+          "tag": "INPUT",
+          "width": 294,
+          "height": 44.6875,
+          "left": 48,
+          "right": 342
+        },
+        {
+          "tag": "INPUT",
+          "width": 294,
+          "height": 44,
+          "left": 48,
+          "right": 342
+        },
+        {
+          "tag": "SELECT",
+          "width": 268,
+          "height": 44,
+          "left": 61,
+          "right": 329
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 268,
+          "height": 84.4375,
+          "left": 61,
+          "right": 329
+        },
+        {
+          "tag": "INPUT",
+          "width": 268,
+          "height": 44,
+          "left": 61,
+          "right": 329
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 268,
+          "height": 84.4375,
+          "left": 61,
+          "right": 329
+        },
+        {
+          "tag": "INPUT",
+          "width": 268,
+          "height": 44.6875,
+          "left": 61,
+          "right": 329
+        },
+        {
+          "tag": "INPUT",
+          "width": 268,
+          "height": 44,
+          "left": 61,
+          "right": 329
+        },
+        {
+          "tag": "INPUT",
+          "width": 294,
+          "height": 44,
+          "left": 48,
+          "right": 342
+        },
+        {
+          "tag": "BUTTON",
+          "width": 125.65625,
+          "height": 44,
+          "left": 48,
+          "right": 173.65625
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "form": {
+        "width": 258,
+        "left": 31,
+        "right": 289
+      },
+      "controls": [
+        {
+          "tag": "INPUT",
+          "width": 224,
+          "height": 44,
+          "left": 48,
+          "right": 272
+        },
+        {
+          "tag": "SELECT",
+          "width": 224,
+          "height": 44,
+          "left": 48,
+          "right": 272
+        },
+        {
+          "tag": "SELECT",
+          "width": 224,
+          "height": 44,
+          "left": 48,
+          "right": 272
+        },
+        {
+          "tag": "INPUT",
+          "width": 224,
+          "height": 44.6875,
+          "left": 48,
+          "right": 272
+        },
+        {
+          "tag": "INPUT",
+          "width": 224,
+          "height": 44,
+          "left": 48,
+          "right": 272
+        },
+        {
+          "tag": "SELECT",
+          "width": 198,
+          "height": 44,
+          "left": 61,
+          "right": 259
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 198,
+          "height": 84.4375,
+          "left": 61,
+          "right": 259
+        },
+        {
+          "tag": "INPUT",
+          "width": 198,
+          "height": 44,
+          "left": 61,
+          "right": 259
+        },
+        {
+          "tag": "TEXTAREA",
+          "width": 198,
+          "height": 84.4375,
+          "left": 61,
+          "right": 259
+        },
+        {
+          "tag": "INPUT",
+          "width": 198,
+          "height": 44.6875,
+          "left": 61,
+          "right": 259
+        },
+        {
+          "tag": "INPUT",
+          "width": 198,
+          "height": 44,
+          "left": 61,
+          "right": 259
+        },
+        {
+          "tag": "INPUT",
+          "width": 224,
+          "height": 44,
+          "left": 48,
+          "right": 272
+        },
+        {
+          "tag": "BUTTON",
+          "width": 125.65625,
+          "height": 44,
+          "left": 48,
+          "right": 173.65625
+        }
+      ],
+      "documentOverflow": false,
+      "errors": []
+    }
+  ]
+}

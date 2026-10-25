@@ -1,0 +1,77 @@
+{
+  "capturedAt": "2026-10-12T10:57:16.024Z",
+  "reference": {
+    "prototype": "D:/SCRAP/prototype (2).html",
+    "sha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+    "refs": [
+      {
+        "width": 1440,
+        "height": 900,
+        "queue": 310.078125,
+        "firstTask": {
+          "x": 276.1875,
+          "y": 619.078125,
+          "width": 1119.625,
+          "height": 79,
+          "top": 619.078125,
+          "right": 1395.8125,
+          "bottom": 698.078125,
+          "left": 276.1875
+        }
+      },
+      {
+        "width": 1024,
+        "height": 900,
+        "queue": 310.078125,
+        "firstTask": {
+          "x": 96.71875,
+          "y": 619.078125,
+          "width": 895.5625,
+          "height": 79,
+          "top": 619.078125,
+          "right": 992.28125,
+          "bottom": 698.078125,
+          "left": 96.71875
+        }
+      },
+      {
+        "width": 390,
+        "height": 844,
+        "queue": 334.296875,
+        "firstTask": {
+          "x": 21,
+          "y": 540.296875,
+          "width": 348,
+          "height": 231.6875,
+          "top": 540.296875,
+          "right": 369,
+          "bottom": 771.984375,
+          "left": 21
+        }
+      },
+      {
+        "width": 320,
+        "height": 740,
+        "queue": 334.296875,
+        "firstTask": {
+          "x": 21,
+          "y": 540.296875,
+          "width": 278,
+          "height": 249.875,
+          "top": 540.296875,
+          "right": 299,
+          "bottom": 790.171875,
+          "left": 21
+        }
+      }
+    ]
+  },
+  "files": {
+    "apps/web/src/my-work-metrics.tsx": "b9179e28d6e70aa00b56f4a2495da5e88d4f2da9914c2dd403a10fccc41361a5",
+    "apps/web/src/my-work-metrics.test.tsx": "6b9380347052f7875d21c59a440499fb50c51164f2514767fb477c432e6f47ff",
+    "apps/web/src/my-work-attention.tsx": "443680d305fa00170cdbe916eddf511ba19d2813facf968e393feb30a41003e9",
+    "apps/web/src/my-work-visual.css": "181f867804f65d1582aad92f4d30c44dd50b9398ec3ce3e3a394eaddcdda034e",
+    "apps/web/src/task.tsx": "1196152215c77308f65520b55bf8c2830ba35b1700f6b765253fc07ca321af82",
+    "apps/web/src/task.test.tsx": "c331c93d3411aef9591c6971693f6179c023aab059ea1661d8b605e9c3e325a4"
+  }
+}

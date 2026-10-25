@@ -1,0 +1,21 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "web-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--config", "vite.config.preview.ts", "--port", "5173"],
+      "cwd": "apps/web",
+      "port": 5173,
+      "url": "http://localhost:5173"
+    },
+    {
+      "name": "web-dev-preview-api",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--config", "vite.config.ts", "--port", "5173"],
+      "cwd": "apps/web",
+      "port": 5173,
+      "url": "http://localhost:5173"
+    }
+  ]
+}

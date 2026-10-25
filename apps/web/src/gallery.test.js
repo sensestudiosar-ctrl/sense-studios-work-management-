@@ -1,0 +1,198 @@
+import { jsx as _jsx } from "react/jsx-runtime";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { ClientProjectGallery, PublicPortfolioPage, StaffProjectGallery } from "./gallery.js";
+const projectId = "project-gallery-1";
+const csrf = "owner-csrf";
+const session = { account: { id: "client-1", email: "client@example.test", kind: "CLIENT" }, csrfToken: "client-csrf", activePasskeyCount: 0 };
+const gallery = { projectId, entries: [], eligibleItems: [{ id: "item-1", label: "R0 approved elevation", mime: "application/pdf", grants: [{ portalGrantId: "grant-1", primary: true, expiresAt: null }] }] };
+const portfolio = { projectId, sourceFiles: [{ id: "file-1", fileName: "internal.pdf", mimeType: "application/pdf", sizeBytes: 12, sha256: "a".repeat(64) }], publications: [] };
+function reply(body, status = 200) { return { ok: status >= 200 && status < 300, status, json: async () => body }; }
+function deferred() { let resolve; const promise = new Promise((done) => { resolve = done; }); return { promise, resolve }; }
+function mockFetch(handler) {
+    const fetchMock = vi.fn((input, init) => Promise.resolve(handler(String(input), init)));
+    vi.stubGlobal("fetch", fetchMock);
+    return fetchMock;
+}
+beforeEach(() => vi.restoreAllMocks());
+describe("S15 project galleries and portfolio", () => {
+    it("keeps the selected project and loading state when an older project response finishes after a newer refresh", async () => {
+        const projectA = "project-gallery-a";
+        const projectB = "project-gallery-b";
+        const aGallery = deferred(), aPortfolio = deferred();
+        const bGallery = deferred(), bPortfolio = deferred();
+        const bRefreshGallery = deferred(), bRefreshPortfolio = deferred();
+        const queues = new Map([
+            [`${projectA}:gallery`, [aGallery]], [`${projectA}:portfolio`, [aPortfolio]],
+            [`${projectB}:gallery`, [bGallery, bRefreshGallery]], [`${projectB}:portfolio`, [bPortfolio, bRefreshPortfolio]],
+        ]);
+        const fetchMock = mockFetch((url) => {
+            const project = url.includes(projectA) ? projectA : projectB;
+            const kind = url.includes("/galleries/") ? "gallery" : "portfolio";
+            const request = queues.get(`${project}:${kind}`)?.shift();
+            if (!request)
+                throw new Error(`Unexpected gallery request: ${url}`);
+            return request.promise;
+        });
+        const view = render(_jsx(StaffProjectGallery, { projectId: projectA, csrfToken: csrf, owner: true }));
+        await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+        view.rerender(_jsx(StaffProjectGallery, { projectId: projectB, csrfToken: csrf, owner: true }));
+        await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+        await act(async () => {
+            bGallery.resolve(reply({ ...gallery, projectId: projectB, eligibleItems: [{ ...gallery.eligibleItems[0], label: "B approved R0" }] }));
+            bPortfolio.resolve(reply({ ...portfolio, projectId: projectB }));
+        });
+        expect(await screen.findByText(/B approved R0/)).toBeInTheDocument();
+        fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+        await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(6));
+        await act(async () => {
+            aGallery.resolve(reply({ ...gallery, projectId: projectA, eligibleItems: [{ ...gallery.eligibleItems[0], label: "A stale item" }] }));
+            aPortfolio.resolve(reply({ ...portfolio, projectId: projectA }));
+        });
+        expect(screen.getByText("Loading gallery and publication records…")).toBeInTheDocument();
+        await act(async () => {
+            bRefreshGallery.resolve(reply({}, 503));
+            bRefreshPortfolio.resolve(reply({ ...portfolio, projectId: projectB }));
+        });
+        expect(await screen.findByText("The gallery service could not complete the request. Try again.")).toBeInTheDocument();
+        expect(screen.queryByText("A stale item")).not.toBeInTheDocument();
+    });
+    it("ignores an older project's error while the current project's load is pending", async () => {
+        const projectA = "project-gallery-error-a";
+        const projectB = "project-gallery-error-b";
+        const aGallery = deferred(), aPortfolio = deferred();
+        const bGallery = deferred(), bPortfolio = deferred();
+        const queues = new Map([
+            [`${projectA}:gallery`, [aGallery]], [`${projectA}:portfolio`, [aPortfolio]],
+            [`${projectB}:gallery`, [bGallery]], [`${projectB}:portfolio`, [bPortfolio]],
+        ]);
+        const fetchMock = mockFetch((url) => {
+            const project = url.includes(projectA) ? projectA : projectB;
+            const kind = url.includes("/galleries/") ? "gallery" : "portfolio";
+            const request = queues.get(`${project}:${kind}`)?.shift();
+            if (!request)
+                throw new Error(`Unexpected gallery request: ${url}`);
+            return request.promise;
+        });
+        const view = render(_jsx(StaffProjectGallery, { projectId: projectA, csrfToken: csrf, owner: true }));
+        await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+        view.rerender(_jsx(StaffProjectGallery, { projectId: projectB, csrfToken: csrf, owner: true }));
+        await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(4));
+        await act(async () => {
+            aGallery.resolve(reply({}, 403));
+            aPortfolio.resolve(reply({ ...portfolio, projectId: projectA }));
+        });
+        expect(screen.getByText("Loading gallery and publication records…")).toBeInTheDocument();
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+        await act(async () => {
+            bGallery.resolve(reply({ ...gallery, projectId: projectB }));
+            bPortfolio.resolve(reply({ ...portfolio, projectId: projectB }));
+        });
+        expect(await screen.findByText(/R0 approved elevation/)).toBeInTheDocument();
+        expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    });
+    it("curates an existing current-grant item and saves a separate derivative before Owner publication", async () => {
+        let entries = gallery.entries;
+        let publications = portfolio.publications;
+        let published = false;
+        let withdrawn = false;
+        const fetchMock = mockFetch((url, init) => {
+            if (url.endsWith(`/galleries/projects/${projectId}`) && init?.method === "POST") {
+                const body = JSON.parse(String(init.body));
+                expect(body).toEqual({ itemId: "item-1", label: "Approved elevation", reason: "Place this granted R0 in the client gallery" });
+                entries = [{ id: "entry-1", itemId: body.itemId, label: body.label, mime: "application/pdf", streamUrl: `/api/v1/client-portal/projects/${projectId}/gallery/items/item-1/stream` }];
+                return reply(entries[0], 201);
+            }
+            if (url.endsWith(`/portfolio/projects/${projectId}`) && init?.method === "POST") {
+                const body = JSON.parse(String(init.body));
+                expect(body).toMatchObject({ sourceFileId: "file-1", title: "Warm oak kitchen", altText: "Kitchen with warm oak cabinetry", reason: "Prepare a separate public image" });
+                expect(body.imageBase64.length).toBeGreaterThan(0);
+                publications = [{ id: "pub-1", title: body.title, altText: body.altText, state: "DRAFT", version: 1, mime: "image/png", size: 10, sourceFileId: body.sourceFileId, reason: body.reason, createdAt: "2026-10-01T00:00:00Z" }];
+                return reply(publications[0], 201);
+            }
+            if (url.endsWith(`/galleries/projects/${projectId}`))
+                return reply({ ...gallery, entries });
+            if (url.endsWith(`/portfolio/projects/${projectId}`))
+                return reply({ ...portfolio, publications });
+            if (url.endsWith("/portfolio/pub-1/publish")) {
+                expect(JSON.parse(String(init?.body))).toEqual({ expectedVersion: 1, reason: "Publish this approved portfolio derivative" });
+                published = true;
+                publications = [{ ...publications[0], state: "PUBLISHED", version: 2 }];
+                return reply(publications[0]);
+            }
+            if (url.endsWith("/portfolio/pub-1/withdraw")) {
+                expect(JSON.parse(String(init?.body))).toEqual({ expectedVersion: 2, reason: "Withdraw this portfolio derivative" });
+                withdrawn = true;
+                publications = [{ ...publications[0], state: "WITHDRAWN", version: 3 }];
+                return reply(publications[0]);
+            }
+            return reply({}, 404);
+        });
+        const { container } = render(_jsx(StaffProjectGallery, { projectId: projectId, csrfToken: csrf, owner: true }));
+        await screen.findByText("No items have been added to this project’s client gallery.");
+        fireEvent.change(screen.getByLabelText("Exact currently granted review item"), { target: { value: "item-1" } });
+        fireEvent.change(screen.getByLabelText("Client-facing label"), { target: { value: "Approved elevation" } });
+        fireEvent.change(container.querySelectorAll(".s15-gallery-panel textarea")[0], { target: { value: "Place this granted R0 in the client gallery" } });
+        fireEvent.click(screen.getByRole("button", { name: "Add to client gallery" }));
+        expect(await screen.findByText("Client gallery updated.")).toBeInTheDocument();
+        expect(await screen.findByText("Approved elevation")).toBeInTheDocument();
+        expect(new Headers(fetchMock.mock.calls.find(([url, init]) => String(url).endsWith(`/galleries/projects/${projectId}`) && init?.method === "POST")?.[1]?.headers).get("X-CSRF-Token")).toBe(csrf);
+        fireEvent.change(screen.getByLabelText("Eligible source file"), { target: { value: "file-1" } });
+        expect(screen.getByLabelText("Eligible source file")).toHaveValue("file-1");
+        fireEvent.change(screen.getByLabelText("Public title"), { target: { value: "Warm oak kitchen" } });
+        fireEvent.change(screen.getByLabelText("Alternative text"), { target: { value: "Kitchen with warm oak cabinetry" } });
+        const png = new File([new Uint8Array([1, 2, 3, 4])], "derivative.png", { type: "image/png" });
+        Object.defineProperty(png, "arrayBuffer", { value: async () => new Uint8Array([1, 2, 3, 4]).buffer });
+        const derivativeInput = screen.getByLabelText(/Sanitized PNG derivative/);
+        Object.defineProperty(derivativeInput, "files", { configurable: true, value: [png] });
+        fireEvent.change(derivativeInput);
+        fireEvent.change(container.querySelectorAll(".s15-gallery-panel textarea")[1], { target: { value: "Prepare a separate public image" } });
+        const prepareForm = screen.getByRole("button", { name: "Save private draft" }).closest("form");
+        fireEvent.submit(prepareForm);
+        expect(await screen.findByText(/saved as a private draft/i)).toBeInTheDocument();
+        expect(await screen.findByText("Warm oak kitchen")).toBeInTheDocument();
+        expect(screen.getAllByText(/DRAFT/)).toHaveLength(2);
+        expect(published).toBe(false);
+        fireEvent.change(screen.getByLabelText("Owner action reason"), { target: { value: "Publish this approved portfolio derivative" } });
+        fireEvent.click(screen.getByRole("button", { name: "Publish" }));
+        expect(await screen.findByText("Portfolio publication is active.")).toBeInTheDocument();
+        expect(screen.getAllByText(/PUBLISHED/)).toHaveLength(2);
+        expect(published).toBe(true);
+        fireEvent.change(screen.getByLabelText("Owner action reason"), { target: { value: "Withdraw this portfolio derivative" } });
+        fireEvent.click(screen.getByRole("button", { name: "Withdraw" }));
+        expect(await screen.findByText("Portfolio publication withdrawn.")).toBeInTheDocument();
+        expect(screen.getAllByText(/WITHDRAWN/)).toHaveLength(2);
+        expect(withdrawn).toBe(true);
+        expect(container.querySelector("img")).toBeNull();
+    });
+    it("shows only the client gallery DTO and uses a no-store exact-authorization request", async () => {
+        const item = { id: "entry-public-id", itemId: "internal-item-id", label: "Approved elevation", mime: "application/pdf", streamUrl: `/api/v1/client-portal/projects/${projectId}/gallery/items/internal-item-id/stream` };
+        const fetchMock = mockFetch((url) => url.endsWith(`/client-portal/projects/${projectId}/gallery`) ? reply({ projectId, items: [item] }) : reply({}, 404));
+        render(_jsx(ClientProjectGallery, { projectId: projectId, session: session }));
+        expect(await screen.findByRole("link", { name: "View shared item" })).toHaveAttribute("href", item.streamUrl);
+        expect(screen.getByText("Approved elevation")).toBeInTheDocument();
+        const call = fetchMock.mock.calls.find(([url]) => String(url).endsWith(`/client-portal/projects/${projectId}/gallery`));
+        expect(call?.[1]).toMatchObject({ credentials: "same-origin", cache: "no-store" });
+        expect(new Headers(call?.[1]?.headers).get("X-CSRF-Token")).toBe(session.csrfToken);
+    });
+    it("loads the anonymous page without credentials and renders only public title, alt text and derivative media", async () => {
+        const fetchMock = mockFetch((url) => url.endsWith("/public/portfolio") ? reply({ items: [{ id: "publication-id", title: "Warm oak kitchen", altText: "Kitchen with warm oak cabinetry", mime: "image/png", streamUrl: "/api/v1/public/portfolio/publication-id/stream" }] }) : reply({}, 404));
+        const { container } = render(_jsx(PublicPortfolioPage, {}));
+        expect(await screen.findByRole("heading", { name: "Warm oak kitchen" })).toBeInTheDocument();
+        expect(screen.getByRole("img", { name: "Kitchen with warm oak cabinetry" })).toHaveAttribute("src", "/api/v1/public/portfolio/publication-id/stream");
+        expect(container.textContent).not.toContain("publication-id");
+        expect(container.textContent).not.toContain("internal");
+        expect(fetchMock.mock.calls[0]?.[1]).toMatchObject({ credentials: "omit", cache: "no-store" });
+    });
+    it("provides retryable public error and empty states", async () => {
+        let failed = true;
+        const fetchMock = mockFetch(() => failed ? reply({}, 503) : reply({ items: [] }));
+        render(_jsx(PublicPortfolioPage, {}));
+        expect(await screen.findByText("The portfolio is unavailable right now.")).toBeInTheDocument();
+        failed = false;
+        fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+        expect(await screen.findByText("No portfolio work is currently published.")).toBeInTheDocument();
+        expect(fetchMock).toHaveBeenCalledTimes(2);
+        await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+    });
+});

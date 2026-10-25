@@ -1,0 +1,47 @@
+{
+  "kind": "synthetic-current-source-component",
+  "authenticatedAcceptance": false,
+  "requestedViewport": {
+    "width": 320,
+    "height": 740
+  },
+  "observed": {
+    "body": {
+      "bottom": 651,
+      "height": 371.21875,
+      "right": 1280,
+      "width": 570,
+      "x": 710,
+      "y": 279.78125
+    },
+    "drawer": {
+      "bottom": 720,
+      "height": 720,
+      "right": 1280,
+      "width": 570,
+      "x": 710,
+      "y": 0
+    },
+    "footer": {
+      "bottom": 720,
+      "height": 69,
+      "right": 1280,
+      "width": 570,
+      "x": 710,
+      "y": 651
+    },
+    "header": {
+      "bottom": 279.78125,
+      "height": 279.78125,
+      "right": 1280,
+      "width": 570,
+      "x": 710,
+      "y": 0
+    },
+    "height": 720,
+    "horizontalOverflow": false,
+    "openAttribute": "",
+    "width": 1280
+  },
+  "viewportOverrideApplied": false
+}

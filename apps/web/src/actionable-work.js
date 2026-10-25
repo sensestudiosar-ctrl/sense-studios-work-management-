@@ -1,0 +1,146 @@
+import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { dueBucket, parityPriorityClass, parityPriorityLabel, parityState } from "./my-work/my-work-parity.js";
+import "./actionable-work.css";
+const PAGE_SIZE = 25;
+const sources = ["task", "review", "approval"];
+const labels = { task: "Tasks", review: "Assigned reviews", approval: "Decisions", all: "All work" };
+const reasonLabels = { due_today: "Due today", overdue: "Overdue", correction_required: "Correction required", resume_waiting: "Review waiting task / resume", reassignment_required: "Reassignment required", review_start_required: "Start review", review_decision_required: "Review decision required", decision_required: "Decision required" };
+/** Calendar day (YYYY-MM-DD) of an instant in a given timezone. */
+function calendarDay(instant, timezone) {
+    const fields = new Intl.DateTimeFormat("en-CA", { timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(instant);
+    return ["year", "month", "day"].map(key => fields.find(part => part.type === key).value).join("-");
+}
+export function attentionFilterQuery(filters) {
+    const query = new URLSearchParams();
+    for (const key of ["priorities", "collaboratorEmployeeIds", "q", "projectId", "status", "type", "ownerEmployeeId", "planItemId", "dateFrom", "dateTo"])
+        if (filters[key])
+            query.set(key, filters[key]);
+    if (filters.dateFrom || filters.dateTo)
+        query.set("dateBasis", filters.dateBasis || "target");
+    if (filters.phase && filters.phase !== "active")
+        query.set("phase", filters.phase);
+    return query;
+}
+export function validAttentionPage(value) {
+    if (!value || typeof value !== "object")
+        return false;
+    const page = value;
+    if (page.status !== "ready" || !["all", ...sources].includes(page.source) || !page.sourceCounts || !Array.isArray(page.items) || !Number.isInteger(page.totalItems) || page.totalItems < 0 || !Number.isInteger(page.offset) || page.offset < 0 || page.limit !== PAGE_SIZE || page.items.length > PAGE_SIZE || typeof page.hasMore !== "boolean" || !Number.isFinite(Date.parse(page.readAt)) || typeof page.timezone !== "string")
+        return false;
+    try {
+        calendarDay(new Date(page.readAt), page.timezone);
+    }
+    catch {
+        return false;
+    }
+    if (!sources.every(source => { const count = page.sourceCounts[source]; return count?.status === "excluded" || count?.status === "ready" && Number.isInteger(count.total) && count.total >= 0; }))
+        return false;
+    if (!sources.every(source => (page.source === "all" || page.source === source) === (page.sourceCounts[source].status === "ready")))
+        return false;
+    const totals = sources.reduce((sum, source) => { const c = page.sourceCounts[source]; return sum + (c.status === "ready" ? c.total : 0); }, 0);
+    if (totals !== page.totalItems || page.items.length !== Math.min(PAGE_SIZE, Math.max(0, page.totalItems - page.offset)) || page.hasMore !== (page.offset + PAGE_SIZE < page.totalItems))
+        return false;
+    const seen = new Set();
+    return page.items.every(row => {
+        const key = `${row.source}:${row.sourceId}`;
+        if (!sources.includes(row.source) || !row.sourceId || !row.title || seen.has(key) || page.source !== "all" && row.source !== page.source || page.sourceCounts[row.source].status !== "ready" || !["target_date", "review_date", "decision_expiry"].includes(row.deadlineKind) || row.deadline !== null && !Number.isFinite(Date.parse(row.deadline)))
+            return false;
+        seen.add(key);
+        return row.source === "task" ? row.taskId === row.sourceId && row.deadlineKind === "target_date" : row.source === "review" ? !!row.taskId && row.roundId === row.sourceId && row.deadlineKind === "review_date" : row.requestId === row.sourceId && row.taskId === undefined && row.deadlineKind === "decision_expiry";
+    });
+}
+export function ActionableWork({ accountId, enabled = true, filters = {}, refreshVersion = 0, onActionCounts, onSessionExpired, onOpenTask, onClear, onClearTaskFilters }) {
+    const [source, setSource] = useState("all");
+    const [paging, setPaging] = useState({ context: "", offset: 0 });
+    const [revision, setRevision] = useState(0);
+    const [state, setState] = useState({ status: "loading", context: "" });
+    const generation = useRef(0);
+    const filterQuery = attentionFilterQuery(filters);
+    const filterKey = filterQuery.toString();
+    const taskOnly = ["priorities", "collaboratorEmployeeIds", "status", "type", "ownerEmployeeId", "planItemId", "dateBasis", "dateFrom", "dateTo", "phase"].some(key => filterQuery.has(key));
+    const effectiveSource = taskOnly ? "task" : enabled ? source : "all";
+    const context = `${accountId}:${effectiveSource}:${filterKey}`;
+    const offset = enabled && paging.context === context ? paging.offset : 0;
+    const pageContext = `${context}:${offset}`;
+    const visible = state.context === pageContext ? state : { status: "loading", context: pageContext };
+    useEffect(() => { if (taskOnly)
+        setSource("all"); }, [taskOnly]);
+    useEffect(() => {
+        const id = ++generation.current, controller = new AbortController();
+        const query = new URLSearchParams(filterKey);
+        query.set("source", effectiveSource);
+        query.set("offset", String(offset));
+        query.set("limit", String(PAGE_SIZE));
+        setState(current => current.context === pageContext ? { ...current, status: "loading", message: undefined } : { status: "loading", context: pageContext });
+        void fetch(`/api/v1/my-work/attention?${query}`, { credentials: "include", cache: "no-store", signal: controller.signal }).then(async (response) => {
+            if (!response.ok)
+                throw Object.assign(new Error("Attention could not be refreshed."), { status: response.status });
+            const body = await response.json();
+            if (!validAttentionPage(body) || body.offset !== offset || body.source !== effectiveSource)
+                throw new Error("The server returned an invalid attention page.");
+            return body;
+        }).then(page => { if (id === generation.current)
+            setState({ status: "ready", context: pageContext, page }); }).catch((error) => {
+            if (id !== generation.current || controller.signal.aborted)
+                return;
+            const status = error.status;
+            if (status === 401) {
+                generation.current++;
+                setState({ status: "unavailable", context: pageContext, message: "Session ended. Sign in again." });
+                onSessionExpired?.();
+                return;
+            }
+            setState(current => status === 403 ? { status: "denied", context: pageContext, message: "Attention is not available with your current access." } : current.context === pageContext && current.page ? { ...current, status: "stale", message: "Refresh failed. These rows and counts are an older snapshot." } : { status: "unavailable", context: pageContext, message: "Attention sources are unavailable. No complete queue or fresh count is available." });
+        });
+        return () => { generation.current++; controller.abort(); };
+    }, [pageContext, filterKey, effectiveSource, offset, refreshVersion, revision, onSessionExpired]);
+    useEffect(() => {
+        const count = (sourceKey) => {
+            const c = visible.page?.sourceCounts[sourceKey];
+            if (visible.status === "ready" || visible.status === "stale")
+                return c?.status === "ready" ? { status: visible.status, total: c.total } : { status: "excluded" };
+            return { status: visible.status };
+        };
+        onActionCounts({ actionableTasks: count("task"), assignedReviews: count("review"), decisions: count("approval") });
+    }, [state, pageContext, onActionCounts]);
+    useEffect(() => {
+        const clear = () => { generation.current++; setState({ status: "loading", context: "" }); };
+        const refresh = () => { if (document.visibilityState !== "hidden")
+            setRevision(value => value + 1); };
+        window.addEventListener("sense-session-ended", clear);
+        window.addEventListener("focus", refresh);
+        document.addEventListener("visibilitychange", refresh);
+        return () => { window.removeEventListener("sense-session-ended", clear); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+    }, []);
+    if (!enabled)
+        return null;
+    const page = visible.status === "ready" || visible.status === "stale" ? visible.page : undefined;
+    // Due buckets and the overdue flag must agree with the server, so "today" is
+    // derived from the organization timezone the page reports — never the browser
+    // clock, which can put a row in the wrong bucket near midnight.
+    const today = page ? calendarDay(new Date(page.readAt), page.timezone) : "";
+    return _jsxs("section", { className: "actionable-work", "aria-label": "Needs your attention", children: [_jsxs("header", { className: "actionable-work__header", children: [_jsxs("div", { children: [_jsx("h3", { children: "Needs your attention" }), _jsxs("p", { children: [taskOnly ? "Tasks · task-only filters applied" : labels[effectiveSource], " \u00B7 Next required action"] })] }), _jsx("button", { type: "button", onClick: () => setRevision(value => value + 1), disabled: visible.status === "loading", children: "Refresh attention" }), _jsx("button", { type: "button", className: "actionable-work__clear", onClick: () => onClear?.(), disabled: !enabled, children: "Clear Needs action selection" })] }), _jsxs("div", { className: "actionable-work__controls", children: [_jsxs("label", { children: ["Work type", _jsx("select", { "aria-label": "Attention work type", value: effectiveSource, disabled: taskOnly, onChange: event => { setSource(event.target.value); setPaging({ context: "", offset: 0 }); }, children: ["all", ...sources].map(key => _jsx("option", { value: key, children: labels[key] }, key)) })] }), taskOnly && _jsx("button", { type: "button", onClick: () => { setSource("all"); onClearTaskFilters?.(); }, children: "Clear task-only filters \u00B7 restore all work" })] }), _jsxs("nav", { "aria-label": "Other authorized work", children: [_jsx(Link, { to: "/reviews?scope=mine&queue=waiting", children: "Assigned reviewer inbox \u2197" }), _jsx(Link, { to: "/decisions", children: "Open decisions \u2197" })] }), visible.status === "loading" && _jsx("p", { className: "actionable-work__read-at", role: "status", children: "Loading attention\u2026" }), visible.message && _jsxs("p", { className: "actionable-work__read-at", role: visible.status === "unavailable" ? "alert" : "status", children: [visible.message, visible.status !== "denied" && _jsx("button", { type: "button", onClick: () => setRevision(value => value + 1), children: "Retry attention" })] }), page && _jsxs(_Fragment, { children: [page.items.length === 0 ? _jsxs("div", { className: "actionable-work__empty", children: [_jsx("p", { children: "No authorized actions match these filters." }), _jsx("p", { children: taskOnly ? "Clear the task-only filters to see reviews and decisions too." : "Nothing needs your attention in this selection." })] }) : _jsx("ul", { children: page.items.map(row => _jsx(ActionRowView, { row: row, onOpenTask: onOpenTask, today: today }, `${row.source}:${row.sourceId}`)) }), _jsxs("p", { className: "actionable-work__read-at", children: [visible.status === "stale" ? "Stale · " : "", "Read ", new Date(page.readAt).toLocaleString(), " \u00B7 ", page.timezone] }), page.totalItems > PAGE_SIZE && _jsxs("nav", { "aria-label": "Attention pages", className: "actionable-work__pager", children: [_jsx("button", { type: "button", disabled: visible.status !== "ready" || offset === 0, onClick: () => setPaging({ context, offset: Math.max(0, offset - PAGE_SIZE) }), children: "Previous" }), _jsxs("span", { children: [offset + 1, "\u2013", offset + page.items.length, " of ", page.totalItems, " work items"] }), _jsx("button", { type: "button", disabled: visible.status !== "ready" || !page.hasMore, onClick: () => setPaging({ context, offset: offset + PAGE_SIZE }), children: "Next" })] })] })] });
+}
+function ActionRowView({ row, onOpenTask, today }) {
+    const responsibility = row.responsibility === "primary_owner" ? "Primary owner" : row.responsibility === "manager" ? "Manager action" : row.responsibility === "assigned_reviewer" ? "Assigned reviewer" : "Decision authority";
+    const reason = (row.reasons ?? [row.reason]).map(value => reasonLabels[value] ?? value.replaceAll("_", " ")).join(" · ");
+    const deadlineLabel = row.deadline ? `${row.deadlineKind === "target_date" ? "Target" : row.deadlineKind === "review_date" ? "Review due" : "Decision expires"} ${row.deadlineKind === "decision_expiry" ? new Date(row.deadline).toLocaleString() : row.deadline.slice(0, 10)}` : "No decision expiry";
+    // Sources without a projected status retain their source label; an absent
+    // priority must not be presented as a canonical Normal priority.
+    const status = row.status;
+    const state = status ? parityState(status) : undefined;
+    const statusLabel = status ? status.replaceAll("_", " ") : labels[row.source];
+    const day = row.deadlineKind === "decision_expiry" ? null : row.deadline?.slice(0, 10) ?? null;
+    const overdue = day !== null && day < today && status !== "COMPLETED";
+    const priorityClass = row.priority ? parityPriorityClass(row.priority) : undefined;
+    const priorityLabel = row.priority ? parityPriorityLabel(row.priority) : undefined;
+    const bucket = dueBucket(day, today, false);
+    const stage = `${row.deadlineKind === "target_date" ? "Task" : row.deadlineKind === "review_date" ? "Review" : "Decision"} · ${bucket}`;
+    const content = _jsxs(_Fragment, { children: [_jsxs("span", { className: "actionable-work__row-text", children: [_jsxs("span", { className: "actionable-work__row-heading", children: [_jsx("strong", { children: row.title }), priorityLabel && _jsx("span", { className: `my-work-priority ${priorityClass}`, title: `${priorityLabel} priority`, children: priorityLabel })] }), _jsxs("small", { children: [row.project?.title ? `${row.project.title} · ` : "", responsibility, " \u00B7 ", reason] }), _jsxs("small", { children: [row.isSubtask ? "Subtask · " : "", stage, " \u00B7 ", deadlineLabel] })] }), _jsx("span", { className: `my-work-status my-work-status-${state ?? "none"}`, "data-state": state ?? "none", children: statusLabel })] });
+    const href = row.source === "review" ? `/reviews?taskId=${encodeURIComponent(row.taskId)}&roundId=${encodeURIComponent(row.roundId)}` : `/decisions?approvalId=${encodeURIComponent(row.requestId)}`;
+    const label = `${row.title} · ${labels[row.source]} · ${responsibility} · ${reason} · ${deadlineLabel}${status ? ` · ${statusLabel}` : ""}${priorityLabel ? ` · ${priorityLabel} priority` : ""}`;
+    const className = `actionable-work__row actionable-work__row--${row.source} my-work-demo-row${state ? ` state-${state}` : " state-none"}${overdue ? " is-overdue" : ""}`;
+    return _jsx("li", { className: className, children: row.source === "task" ? _jsx("button", { type: "button", "aria-label": label, onClick: () => onOpenTask?.(row.taskId), children: content }) : _jsx(Link, { to: href, "aria-label": label, children: content }) });
+}

@@ -1,0 +1,68 @@
+{
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "checkedAt": "2026-10-13T07:24:24.867Z",
+  "results": [
+    {
+      "name": "drawer-focused",
+      "exitCode": 0,
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/task-detail-drawer.test.tsx",
+        "src/task-my-work-drawer.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=D:\\app\\sensestudios work management app\\docs\\design\\my-work-integration-audit\\mw-i02\\acceptance\\evidence\\task-opening-20261013\\accepted-source\\DRAWER_FOCUSED.json"
+      ]
+    },
+    {
+      "name": "affected-frontend",
+      "exitCode": 0,
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vitest\\vitest.mjs",
+        "run",
+        "src/task.test.tsx",
+        "src/task-detail-drawer.test.tsx",
+        "src/task-my-work-drawer.test.tsx",
+        "src/task-people.test.tsx",
+        "src/approval-queue.test.tsx",
+        "src/my-work-attention.test.tsx",
+        "src/my-work-metrics.test.tsx",
+        "src/my-work-metric-focus.test.tsx",
+        "src/my-work-filter-chips.test.tsx",
+        "src/my-work-saved-views.test.ts",
+        "src/my-work-queue-preferences.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=D:\\app\\sensestudios work management app\\docs\\design\\my-work-integration-audit\\mw-i02\\acceptance\\evidence\\task-opening-20261013\\accepted-source\\AFFECTED_FRONTEND.json"
+      ]
+    },
+    {
+      "name": "web-typecheck",
+      "exitCode": 0,
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\typescript\\bin\\tsc",
+        "-p",
+        "apps/web/tsconfig.json",
+        "--noEmit"
+      ]
+    },
+    {
+      "name": "lint",
+      "exitCode": 0,
+      "args": [
+        "D:\\app\\sensestudios work management app\\node_modules\\eslint\\bin\\eslint.js",
+        "."
+      ]
+    },
+    {
+      "name": "web-build",
+      "exitCode": 0,
+      "args": [
+        "D:\\app\\sensestudios work management app\\apps\\web\\node_modules\\vite\\bin\\vite.js",
+        "build"
+      ]
+    }
+  ]
+}

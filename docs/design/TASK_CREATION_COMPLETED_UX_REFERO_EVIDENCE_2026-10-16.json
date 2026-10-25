@@ -1,0 +1,486 @@
+{
+  "date": "2026-10-16",
+  "method": "Refero design skill, live Refero reference metadata/flows/images and read-only current source review",
+  "styleSearches": [
+    {
+      "key": "style_calm",
+      "references": [
+        {
+          "id": "5b70f172-2ba2-4f26-9956-251d4cfc0329",
+          "title": "Desktop.fm",
+          "url": "https://desktop.fm"
+        },
+        {
+          "id": "a0f473eb-0310-4df5-b5f6-5bc124ad5954",
+          "title": "Operate",
+          "url": "https://operate.so"
+        },
+        {
+          "id": "5c7acdfb-996b-4c6f-b361-264a3f580f7d",
+          "title": "Perplexity AI",
+          "url": "https://www.perplexity.ai"
+        },
+        {
+          "id": "b95e58ce-d00e-4de1-ad6b-6f1c7d7a5593",
+          "title": "Perplexity AI",
+          "url": "https://perplexity.ai"
+        },
+        {
+          "id": "667cf5b9-5940-4db5-a972-fb6bd51d5783",
+          "title": "ChatGPT",
+          "url": "https://chatgpt.com"
+        },
+        {
+          "id": "a4da778b-6520-4fbc-9211-fcff23ba3b65",
+          "title": "Flecto",
+          "url": "https://flecto.io"
+        },
+        {
+          "id": "980966ef-e661-439d-8858-4cefe1e0451a",
+          "title": "Modern Business Intelligence",
+          "url": "https://mode.com"
+        },
+        {
+          "id": "c14c0a94-1037-449e-bf5b-4cb972656ac7",
+          "title": "Ui",
+          "url": "https://ui.shadcn.com"
+        },
+        {
+          "id": "de162c4d-f3e5-489f-b9eb-ac31b8e0412e",
+          "title": "Spacelab",
+          "url": "https://spacelab.co.uk"
+        },
+        {
+          "id": "f72e18d0-98f4-4e88-9754-5426589564ea",
+          "title": "Raise",
+          "url": "https://opencollective.com"
+        }
+      ]
+    },
+    {
+      "key": "style_domain",
+      "references": [
+        {
+          "id": "09cbf50e-2bfc-4deb-8e68-df197953b99a",
+          "title": "ClickUp™",
+          "url": "https://www.clickup.com"
+        },
+        {
+          "id": "0dc5e09f-fa60-4e17-b8ee-83dacb8cbf7d",
+          "title": "monday.com",
+          "url": "https://monday.com"
+        },
+        {
+          "id": "f873e560-9f19-4abd-8266-d10a4f42c5df",
+          "title": "Superthread",
+          "url": "https://www.superthread.com"
+        },
+        {
+          "id": "32129d0a-39b5-4bbd-8446-fa564f7ff15e",
+          "title": "Tally Forms",
+          "url": "https://tally.so"
+        },
+        {
+          "id": "70776247-d83f-4c42-a221-4b90ab7c788d",
+          "title": "Getharvest",
+          "url": "https://www.getharvest.com"
+        },
+        {
+          "id": "a62c0ef5-f510-4e58-9321-e7605524a47e",
+          "title": "Asana",
+          "url": "https://asana.com"
+        },
+        {
+          "id": "bbc0123e-0d8a-4a12-852f-548445d7790e",
+          "title": "Wrike",
+          "url": "https://wrike.com"
+        },
+        {
+          "id": "d9a3223e-d0d5-436b-aa09-0facd1805a1e",
+          "title": "Todoist",
+          "url": "https://todoist.com"
+        },
+        {
+          "id": "9bdb7d7f-7c20-4672-bf61-ef781750915e",
+          "title": "Reclaim",
+          "url": "https://reclaim.ai"
+        },
+        {
+          "id": "86351665-7483-48d1-9be4-5fe456093686",
+          "title": "Elementor",
+          "url": "https://elementor.com"
+        }
+      ]
+    },
+    {
+      "key": "style_brand",
+      "references": [
+        {
+          "id": "a62c0ef5-f510-4e58-9321-e7605524a47e",
+          "title": "Asana",
+          "url": "https://asana.com"
+        },
+        {
+          "id": "554b801c-3b31-4086-a7e5-ae613cdd618b",
+          "title": "Linear",
+          "url": "https://linear.app"
+        },
+        {
+          "id": "11d3e58a-87d7-4a9a-bbf5-720f4fd3ffc6",
+          "title": "Changelog",
+          "url": "https://linear.app/changelog"
+        },
+        {
+          "id": "d9a3223e-d0d5-436b-aa09-0facd1805a1e",
+          "title": "Todoist",
+          "url": "https://todoist.com"
+        },
+        {
+          "id": "f873e560-9f19-4abd-8266-d10a4f42c5df",
+          "title": "Superthread",
+          "url": "https://www.superthread.com"
+        },
+        {
+          "id": "9609a392-675c-47ea-a34e-e52a2b993985",
+          "title": "Campsite",
+          "url": "https://www.campsite.com"
+        },
+        {
+          "id": "09cbf50e-2bfc-4deb-8e68-df197953b99a",
+          "title": "ClickUp™",
+          "url": "https://www.clickup.com"
+        },
+        {
+          "id": "0528b40d-d5ef-4783-9206-d42fa97ad1d2",
+          "title": "Cron Calendar",
+          "url": "https://cron.com"
+        },
+        {
+          "id": "735edf7d-e21b-4aec-bb2f-1404ac78e160",
+          "title": "Aboard",
+          "url": "https://aboardhr.com"
+        },
+        {
+          "id": "b7df8424-4714-4bb8-a4e1-48760f76d909",
+          "title": "Sign in",
+          "url": "https://imgs.so"
+        }
+      ]
+    }
+  ],
+  "fullStyles": [
+    {
+      "title": "Asana",
+      "northStar": "Productivity whiteboard lit by a coral lamp — authoritative black type on a breathing white field, with a warm coral flash and a deep-navy flicker to signal where action lives.",
+      "description": "Asana reads as a white canvas under a coral-and-violet editorial system — generous whitespace punctuated by a near-black (#0d0d0d) headline weight that commands attention, then released into light gray body copy. The signature move is two coexisting type voices: Ghost at 60-72px with -0.0070em tracking for display headlines that compress letter forms into dense, authoritative blocks, and TWK Lausanne at 300-500 weight handling everything else with a humanist openness. Pill buttons (100px+ radius) float as soft capsules against sharp-cornered cards (10-16px), creating gentle contrast between interaction surfaces and content containers. The coral tint (#ffeaec background, #690031 deep text) acts as a warm semantic accent for the product's brand-colored UI elements, while a saturated dark violet (#222875) marks interactive and informational states — both restrained to small, intentional doses against an otherwise achromatic canvas."
+    },
+    {
+      "title": "Todoist",
+      "northStar": "Warm, minimal productivity suite. Like a neatly organized desk bathed in natural light.",
+      "description": "This design system presents a clean, business-casual aesthetic, grounded in warm off-white and charcoal neutrals, punctuated by a signature vibrant red-orange. The generous use of rounded corners (15px for prominent elements, 8px for most others) softens the utilitarian feel of the task manager, while subtle, low-opacity shadows add minimal depth without visual clutter, creating an approachable, yet professional, interface."
+    },
+    {
+      "title": "Ui",
+      "northStar": "Monochromatic architectural blueprint – precise, functional forms on a stark, bright canvas.",
+      "description": "This design system feels like a finely tuned machine, presenting a clean and precise interface with a stark black-and-white aesthetic. The visual mood is serious and functional, achieved through a dominant achromatic palette and very subtle elevation. Geometric balance is created by mixing hard 10-14px radii for cards and inputs with highly rounded (near-pill) buttons and badges, suggesting both structure and approachability. The use of a custom sans-serif font across all elements with meticulous letter-spacing creates a unified, crisp typographic voice."
+    }
+  ],
+  "screens": [
+    {
+      "id": "04de1d3e-d515-46eb-aec7-d33233ecd734",
+      "site": "Workflow",
+      "url": "https://refero.design/pages/04de1d3e-d515-46eb-aec7-d33233ecd734"
+    },
+    {
+      "id": "2fe241a5-6152-4157-9456-cfcd22d449bb",
+      "site": "Dona",
+      "url": "https://refero.design/pages/2fe241a5-6152-4157-9456-cfcd22d449bb"
+    },
+    {
+      "id": "b86e234b-830e-48a7-9994-4545afbe5a56",
+      "site": "Amie",
+      "url": "https://refero.design/pages/b86e234b-830e-48a7-9994-4545afbe5a56"
+    },
+    {
+      "id": "e5fb7da7-81e7-4855-880d-9cb566924d24",
+      "site": "Linear",
+      "url": "https://refero.design/pages/e5fb7da7-81e7-4855-880d-9cb566924d24"
+    },
+    {
+      "id": "05f9a012-a1c2-4c8e-b6e0-e195a6e39e06",
+      "site": "MonoDesk ",
+      "url": "https://refero.design/pages/05f9a012-a1c2-4c8e-b6e0-e195a6e39e06"
+    },
+    {
+      "id": "0df8afb0-c39c-464e-9363-84a64829f9a8",
+      "site": "MonoDesk ",
+      "url": "https://refero.design/pages/0df8afb0-c39c-464e-9363-84a64829f9a8"
+    },
+    {
+      "id": "3e7906f9-acc8-4889-9ea1-7f5a9f58608b",
+      "site": "Programa",
+      "url": "https://refero.design/pages/3e7906f9-acc8-4889-9ea1-7f5a9f58608b"
+    }
+  ],
+  "flows": [
+    {
+      "id": 6645,
+      "name": "Create issue with sub-issue and recurrence",
+      "url": "https://refero.design/flows/6645",
+      "steps": [
+        {
+          "name": "Empty Active issues",
+          "screenId": "53f2db5e-8089-4e75-a767-9f6d21c8ba23",
+          "goal": "Start creating a new issue from an empty Active list",
+          "action": "User clicks the primary 'Create new issue' button in the empty state",
+          "systemResponse": "Opens the 'New issue' modal centered over the issues list"
+        },
+        {
+          "name": "New issue modal opened",
+          "screenId": "8209223d-06ab-4e89-8c4c-a48d76e79613",
+          "goal": "Provide title and description for the new issue",
+          "action": "User focuses the title field and description area in the modal",
+          "systemResponse": "Blank title/description inputs become active; inline metadata chips (Todo, Priority, Assignee, type) are visible"
+        },
+        {
+          "name": "Title and description entered",
+          "screenId": "1bd10114-f1e0-4621-97d9-f84600e2389a",
+          "goal": "Capture a concise issue title and supporting description",
+          "action": "User types 'Improve loading time on dashboard' and a short description",
+          "systemResponse": "Text populates the modal; action buttons (Create issue / Create more) remain enabled"
+        },
+        {
+          "name": "Open priority selector",
+          "screenId": "c7d10de1-73d5-4839-841b-33390868fc01",
+          "goal": "Choose priority level for the issue",
+          "action": "User clicks the Priority chip to open the priority dropdown",
+          "systemResponse": "Priority dropdown appears listing options (No priority, Urgent, High, Medium, Low)"
+        },
+        {
+          "name": "Select priority",
+          "screenId": "832cf4ec-26ae-4165-add7-e75008276a0e",
+          "goal": "Apply a priority tag",
+          "action": "User selects 'Medium' from the priority list",
+          "systemResponse": "Priority chip updates to show 'Medium' selected"
+        },
+        {
+          "name": "Open assignee picker",
+          "screenId": "669f5daa-0a1e-413f-a0b4-5e39c29ebcac",
+          "goal": "Assign the issue to a team member",
+          "action": "User clicks the Assignee chip to open the people picker",
+          "systemResponse": "Assignee dropdown shows team members, 'No assignee' option, and an 'Invite and assign...' action"
+        },
+        {
+          "name": "Assignee hover tooltip",
+          "screenId": "0e8f0844-ffde-4d93-bcd7-12bc24e42d9f",
+          "goal": "Inspect member details before assigning",
+          "action": "User hovers over a team member (Miles Hartman) in the picker",
+          "systemResponse": "Member tooltip appears showing avatar, name, status, and team context"
+        },
+        {
+          "name": "Select assignee",
+          "screenId": "e5fb7da7-81e7-4855-880d-9cb566924d24",
+          "goal": "Set a specific person as assignee",
+          "action": "User clicks a team member (nickstwo) to assign",
+          "systemResponse": "Assignee chip updates to show the selected member"
+        },
+        {
+          "name": "Open issue type selector",
+          "screenId": "02e3b423-fdf6-4211-b5f7-48d4b037f8ac",
+          "goal": "Categorize the issue (improvement, bug, feature)",
+          "action": "User clicks the type chip to open the type dropdown",
+          "systemResponse": "Type dropdown lists available issue types and highlights the chosen one"
+        },
+        {
+          "name": "Open due date menu",
+          "screenId": "c5f0d5ed-4bc0-47d0-b0b8-0e6d74c22d9e",
+          "goal": "Set a due date or recurring schedule",
+          "action": "User clicks the date/clock icon to open date/recurrence options",
+          "systemResponse": "Menu shows quick options (Custom, Tomorrow, End of week, In one week) and actions (Set due date, Make recurring, Add link, Add sub-issue)"
+        },
+        {
+          "name": "Configure recurrence frequency",
+          "screenId": "67c39e1f-1155-400f-bd63-d9fe4ed8367f",
+          "goal": "Specify the recurrence interval",
+          "action": "User opens the 'repeats every' frequency dropdown to pick the numeric interval",
+          "systemResponse": "A numeric list appears (1–12) for choosing how many units between recurrences"
+        },
+        {
+          "name": "Recurrence options",
+          "screenId": "3ca54d45-e8e0-4c61-9633-514ae0c7c30c",
+          "goal": "Finalize recurrence behavior",
+          "action": "User toggles options such as 'Don't repeat' or adding sub-issues from the recurrence menu",
+          "systemResponse": "Recurrence selection is applied; modal shows recurrence summary (first due date and repeats settings) and updates action button label to reflect recurring issue creation"
+        },
+        {
+          "name": "Expand create sub-issue area",
+          "screenId": "0567152a-e24c-4b26-a590-9c12c488c45b",
+          "goal": "Add nested work items under the parent issue",
+          "action": "User checks/enables 'Create sub-issue' to reveal sub-issue input fields",
+          "systemResponse": "Sub-issue title and description inputs appear inside the modal with their own controls and a separate 'Add sub-issue' CTA"
+        },
+        {
+          "name": "Add sub-issue content",
+          "screenId": "6dfd87f3-f3bb-40e5-a3d0-92a59d32cb96",
+          "goal": "Provide a specific sub-task for the parent issue",
+          "action": "User types a sub-issue title 'Audit API response time for dashboard data' and optional description",
+          "systemResponse": "Sub-issue content is added to the modal and shown under 'Sub-issues' list"
+        },
+        {
+          "name": "Attachment controls revealed",
+          "screenId": "4d9f8850-73c1-4386-bc98-3bc8d9d02a2f",
+          "goal": "Attach files to the sub-issue",
+          "action": "User clicks the attachment/paperclip control in the sub-issue area",
+          "systemResponse": "Attachment chooser/tooltip appears offering to attach images, files or videos"
+        },
+        {
+          "name": "Upload file in progress",
+          "screenId": "ca3e36e6-c89f-4365-96c1-806496ef34fc",
+          "goal": "Upload a file into the sub-issue",
+          "action": "User selects a file; progress bar displays while uploading (document.pdf)",
+          "systemResponse": "Upload progress indicator runs; file placeholder with name appears inside sub-issue"
+        },
+        {
+          "name": "Attachment added",
+          "screenId": "42b3d55c-5a03-448d-a6e6-8f6ffc0ba1a9",
+          "goal": "Confirm attachment is attached",
+          "action": "System completes upload and lists the uploaded file with size",
+          "systemResponse": "File is shown as attached to the sub-issue with filename and size metadata"
+        },
+        {
+          "name": "Add additional attachment",
+          "screenId": "c6af6331-10cb-45c4-b004-47e9766b5e82",
+          "goal": "Attach another supporting file",
+          "action": "User uploads a second file (Another one.pdf)",
+          "systemResponse": "Second attachment appears below the first in the sub-issue attachments area"
+        },
+        {
+          "name": "Review sub-issues list",
+          "screenId": "62d1d72e-a000-4ea2-ab7a-520da747c2d8",
+          "goal": "Verify sub-issue(s) and recurrence before creating",
+          "action": "User reviews the grouped sub-issue list, metadata chips, and recurrence summary at the bottom of the modal",
+          "systemResponse": "Modal shows consolidated view: parent title/description, sub-issue(s) listed, recurrence line (first due date, repeats every X weeks), and primary action button updated to 'Create recurring issue'"
+        },
+        {
+          "name": "Issue created and list updated",
+          "screenId": "d0d9c7d9-96d8-4e8a-b490-571a6f4ef818",
+          "goal": "Finalize creation and confirm addition to Active issues",
+          "action": "User clicks 'Create recurring issue' (or 'Add sub-issue' then create) to submit",
+          "systemResponse": "Modal closes; Active issues list updates showing the new parent issue and sub-issue entry; a small confirmation/toast appears noting the created issue"
+        }
+      ]
+    },
+    {
+      "id": 10844,
+      "name": "Kanban Task Completion",
+      "url": "https://refero.design/flows/10844",
+      "steps": [
+        {
+          "name": "Project Kanban Board",
+          "screenId": "32fea949-78a1-4ca3-8ec2-239dbd051169",
+          "goal": "Review tasks across columns and locate the task to update",
+          "action": "Scan the To Do / Doing / Done columns and identify the target task; optionally use '+ Add Task' to create a task",
+          "systemResponse": "Displays the project board for 'Humanity' with task cards grouped into To Do, Doing and Done. Each column shows a numeric badge of item count and each task card shows compact metadata and an action area."
+        },
+        {
+          "name": "Reveal & Trigger Quick Action",
+          "screenId": "53c02456-42e5-4b38-95aa-0f8ed230798b",
+          "goal": "Expose the inline 'mark complete' control and activate it",
+          "action": "Hover over the task card to reveal the quick-action control. Click the check/complete control (tooltip 'Mark as complete' appears on hover).",
+          "systemResponse": "The control's tooltip appears. Activating the control applies a green check indicator to the task and the column's numeric count updates to reflect the change (visual immediate feedback)."
+        },
+        {
+          "name": "Completion Confirmation Snackbar",
+          "screenId": "eb697309-9fff-4144-8dc5-f258f83140bc",
+          "goal": "Confirm completion and provide a reversible option",
+          "action": "Observe the confirmation snackbar and choose an action: 'View Tasks' to navigate or 'Undo' to revert the completion.",
+          "systemResponse": "A temporary snackbar appears with message 'Task marked as complete' and action buttons ('View Tasks', 'Undo'). If the user taps Undo, the task's visual completion state and column count revert; otherwise the completed state remains visible in the board."
+        }
+      ]
+    },
+    {
+      "id": 10846,
+      "name": "Completed Tasks — Browse & Filter",
+      "url": "https://refero.design/flows/10846",
+      "steps": [
+        {
+          "name": "Completed Tasks List",
+          "screenId": "05f9a012-a1c2-4c8e-b6e0-e195a6e39e06",
+          "goal": "Scan completed tasks and use search/filters to locate specific items.",
+          "action": "User views the Completed Tasks screen, can type in the search field, toggle filter buttons (All Clients, specific project), select rows, and use pagination or rows-per-page control.",
+          "systemResponse": "The table displays matching completed tasks with columns (Task Name, Client, Project, List, Labels, Assignees, Completed). Pagination and rows-per-page controls show current range. Filter buttons are visible but not expanded."
+        },
+        {
+          "name": "Project Filter Expanded",
+          "screenId": "6aad12ae-6e2c-416a-af31-04544cff6299",
+          "goal": "Narrow the completed tasks list by selecting a specific project.",
+          "action": "User clicks the project filter button, opening a dropdown and selecting/deselecting project options (e.g., Humanity, Refero, All Projects).",
+          "systemResponse": "A dropdown appears showing project options with checkmarks for selected items. The list reflects the selected project scope (in this screenshot the Humanity project is checked) without navigating away."
+        },
+        {
+          "name": "Empty State — No Matches",
+          "screenId": "0df8afb0-c39c-464e-9363-84a64829f9a8",
+          "goal": "Handle the case where filters/search return no completed tasks.",
+          "action": "After applying filters or search terms that produce no results, the user reads the message and can click the View Active Tasks CTA or adjust filters/search again.",
+          "systemResponse": "The table is replaced with an empty-state panel that explains no matching tasks were found and provides a prominent 'View Active Tasks' button as a suggested next action."
+        }
+      ]
+    },
+    {
+      "id": 13442,
+      "name": "Create Assigned Task",
+      "url": "https://refero.design/flows/13442",
+      "steps": [
+        {
+          "name": "Empty To-Do List",
+          "screenId": "4f33b132-f7e8-4f38-9d76-3539bdb08e5b",
+          "goal": "Begin creating a new task from the To-Do List.",
+          "action": "Select the New To-Do entry in the main content area.",
+          "systemResponse": "An inline task composer opens with fields for a task name and additional notes, plus controls for task metadata and Cancel and Done actions."
+        },
+        {
+          "name": "Open Task Composer",
+          "screenId": "3e7906f9-acc8-4889-9ea1-7f5a9f58608b",
+          "goal": "Prepare the task entry form for input.",
+          "action": "Enter the task title and supporting notes in the composer.",
+          "systemResponse": "The composer remains open and accepts the entered task content."
+        },
+        {
+          "name": "Enter Task Details",
+          "screenId": "4d47c4fe-68e8-4b4f-9532-c361ff3d0327",
+          "goal": "Record the task and explain what needs to be done.",
+          "action": "Type the title \"Review incoming emails and client messages\" and the notes \"Check updates from contractors, suppliers, and clients, and reply to urgent inquiries.\"",
+          "systemResponse": "The entered title and notes are displayed in the inline editor. The task is not yet saved."
+        },
+        {
+          "name": "Set Due Date",
+          "screenId": "1d83695a-c803-4602-bc7a-153fc81b5f82",
+          "goal": "Add a deadline to the task.",
+          "action": "Use the date control in the composer and select 15 Aug 2026.",
+          "systemResponse": "The selected date, \"15 Aug 2026,\" appears in the composer alongside the task metadata controls."
+        },
+        {
+          "name": "Assign Task",
+          "screenId": "9ecfc254-5cd2-462b-bc41-59e2e2e1ed40",
+          "goal": "Identify the person responsible for the task.",
+          "action": "Use the assignee control and select the user represented by the \"L\" avatar.",
+          "systemResponse": "The assignee indicator changes to show the selected user while the task remains in edit mode."
+        },
+        {
+          "name": "Save Task",
+          "screenId": "77bdbde3-497b-42b3-9aa3-f5945203aa85",
+          "goal": "Finish creating the task.",
+          "action": "Select Done.",
+          "systemResponse": "The editor closes and the new task appears in the To-Do List with its title, the 15 Aug due date, and the L assignee indicator. A new New To-Do entry remains available for creating another task."
+        }
+      ]
+    }
+  ],
+  "visualInspection": [
+    "e5fb7da7-81e7-4855-880d-9cb566924d24",
+    "2fe241a5-6152-4157-9456-cfcd22d449bb",
+    "05f9a012-a1c2-4c8e-b6e0-e195a6e39e06"
+  ],
+  "localCapture": ".artifacts/v1/20261016-agent1-browser/browser/320-uncertain-project-task-viewport.png",
+  "boundaries": "Recommendations only; no application source/runtime/database changed; no application tests rerun. Reference annotations may contain inference; only explicit observed patterns are adopted."
+}

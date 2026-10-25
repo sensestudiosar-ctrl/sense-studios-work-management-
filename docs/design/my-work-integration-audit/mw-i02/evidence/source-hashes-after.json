@@ -1,0 +1,32 @@
+[
+  {
+    "Path": "apps/web/src/task.tsx",
+    "SHA256": "84776DA710C9677A5869EC3720D26CED15ABF0663D0EFFC311D40CE700861C44",
+    "Length": 77177,
+    "LastWriteTimeUtc": "2026-10-09T16:33:22.1642785Z"
+  },
+  {
+    "Path": "apps/web/src/task.css",
+    "SHA256": "8A988A040F110E97F42E2735367948E71E135B9527775A1071D9029B32A3318E",
+    "Length": 24683,
+    "LastWriteTimeUtc": "2026-10-09T16:33:20.1226519Z"
+  },
+  {
+    "Path": "apps/web/src/task.test.tsx",
+    "SHA256": "AD0151ABA6A9F9F2CF07FED77EF825319A6F07CD3A50B5D5C1B158AE755B34D3",
+    "Length": 51028,
+    "LastWriteTimeUtc": "2026-10-09T16:36:49.8965460Z"
+  },
+  {
+    "Path": "apps/web/src/my-work-attention.tsx",
+    "SHA256": "80FEF78248CB73865A97303E501F73E3D3FAD879DFB0A9298104024D346DCDAB",
+    "Length": 7368,
+    "LastWriteTimeUtc": "2026-10-04T07:45:51.0055061Z"
+  },
+  {
+    "Path": "apps/web/src/my-work-attention.test.tsx",
+    "SHA256": "2D3E44A868AA01ADB038B6C17CCCE49EA35EE6C308CB50305B58EA5B94D2A5F8",
+    "Length": 5921,
+    "LastWriteTimeUtc": "2026-10-04T07:45:09.2004639Z"
+  }
+]

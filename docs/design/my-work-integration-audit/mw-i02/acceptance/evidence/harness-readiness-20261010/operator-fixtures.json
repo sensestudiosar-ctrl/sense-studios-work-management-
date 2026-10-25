@@ -1,0 +1,504 @@
+{
+  "total": 71,
+  "passed": 71,
+  "failed": 0,
+  "tests": [
+    {
+      "name": "valid process and matching parent identity",
+      "expected": "PASS",
+      "actual": "PASS",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "blank PID",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID parsed as positive integer"
+    },
+    {
+      "name": "malformed PID",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID parsed as positive integer"
+    },
+    {
+      "name": "overflow PID",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID parsed as positive integer"
+    },
+    {
+      "name": "wrong PID",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Exactly one process matches parsed PID"
+    },
+    {
+      "name": "wrong owner",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Process owner"
+    },
+    {
+      "name": "wrong executable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PostgreSQL executable"
+    },
+    {
+      "name": "wrong directory",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID file directory"
+    },
+    {
+      "name": "wrong PID-file port",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID file port and address"
+    },
+    {
+      "name": "PID file not ready",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID file ready state"
+    },
+    {
+      "name": "CIM process information unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Process information available"
+    },
+    {
+      "name": "command line unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Command line unavailable"
+    },
+    {
+      "name": "wrong command directory",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Command data directory"
+    },
+    {
+      "name": "wrong command port",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Command port"
+    },
+    {
+      "name": "wrong command address",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Command address"
+    },
+    {
+      "name": "actual process owner unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Process owner"
+    },
+    {
+      "name": "actual executable unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Path unavailable"
+    },
+    {
+      "name": "owner unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Current Windows owner available"
+    },
+    {
+      "name": "target PID absent",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Exactly one process matches parsed PID"
+    },
+    {
+      "name": "pidfile unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: PID file available"
+    },
+    {
+      "name": "listeners unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Listener information available"
+    },
+    {
+      "name": "system identifier unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Disk system identifier"
+    },
+    {
+      "name": "running status unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: pg_ctl reports running"
+    },
+    {
+      "name": "ambiguous target PID",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Exactly one process matches parsed PID"
+    },
+    {
+      "name": "duplicate data-directory owner",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: No competing PostgreSQL data-directory owner"
+    },
+    {
+      "name": "duplicate expected listeners",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Sole expected listener and owning PID"
+    },
+    {
+      "name": "wrong listener owner",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Sole expected listener and owning PID"
+    },
+    {
+      "name": "wrong listener address",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Sole expected listener and owning PID"
+    },
+    {
+      "name": "occupied application port",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: API and web ports free"
+    },
+    {
+      "name": "wrong system identifier",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Disk system identifier"
+    },
+    {
+      "name": "pg_ctl reports stopped",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: pg_ctl reports running"
+    },
+    {
+      "name": "parent PID mismatch",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Parent PID and current-user ownership"
+    },
+    {
+      "name": "parent process unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Parent process information available"
+    },
+    {
+      "name": "unsupported pg_ctl parent with quoted -o endpoint",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Missing or ambiguous argument -p"
+    },
+    {
+      "name": "main creation date unavailable",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "passed": true,
+      "error": "Guard failed: Process creation identity available"
+    },
+    {
+      "name": "different PostgreSQL executable without directory evidence remains blocked",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "The property 'ParentProcessId' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "name": "different PostgreSQL executable with explicit other directory",
+      "expected": "PASS",
+      "actual": "PASS",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "different PostgreSQL executable explicitly referencing retained directory",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Process 7127 already references the retained data directory"
+    },
+    {
+      "name": "same PostgreSQL executable explicitly using another data directory",
+      "expected": "PASS",
+      "actual": "PASS",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "pg_ctl controller is not a server data-directory owner",
+      "expected": "PASS",
+      "actual": "PASS",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "same PostgreSQL executable references retained data directory",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Process 7122 already references the retained data directory"
+    },
+    {
+      "name": "same PostgreSQL executable command line unavailable",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "The property 'ParentProcessId' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "name": "executable and command line both unavailable",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "The property 'ParentProcessId' cannot be found on this object. Verify that the property exists."
+    },
+    {
+      "name": "process enumeration unavailable",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "PostgreSQL process enumeration unavailable; data-directory ownership unverified"
+    },
+    {
+      "name": "missing command line resolved by verified unrelated service ancestry",
+      "expected": "PASS",
+      "actual": "PASS",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "service ancestry points to retained data directory",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Process 7130 already references the retained data directory"
+    },
+    {
+      "name": "service ancestry with contradictory creation order is ambiguous",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "PostgreSQL candidate PID 7130 lacks sufficient executable/command/service ancestry evidence to identify its data directory"
+    },
+    {
+      "name": "valid stale postmaster.pid with absent PID and matching identity",
+      "expected": "PASS",
+      "actual": "PASS",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "recorded PID still belongs to live process",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Recorded postmaster.pid PID 4312 is owned by a live process; refuse startup"
+    },
+    {
+      "name": "malformed stale postmaster.pid PID",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Retained postmaster.pid value is invalid"
+    },
+    {
+      "name": "stale postmaster.pid directory mismatch",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+    },
+    {
+      "name": "stale postmaster.pid port mismatch",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+    },
+    {
+      "name": "stale postmaster.pid address mismatch",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+    },
+    {
+      "name": "stale postmaster.pid readiness mismatch",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Retained postmaster.pid directory/address/port/readiness differs; no PID edits are allowed"
+    },
+    {
+      "name": "incomplete stale postmaster.pid",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Retained postmaster.pid is incomplete; no manual repair is allowed"
+    },
+    {
+      "name": "recorded PID process query unavailable",
+      "expected": "BLOCKED",
+      "actual": "BLOCKED",
+      "passed": true,
+      "error": "Process query for postmaster.pid PID is unavailable"
+    },
+    {
+      "name": "recognized running status",
+      "expected": "running",
+      "actual": "running",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "recognized stopped status",
+      "expected": "stopped",
+      "actual": "stopped",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "ambiguous status fails closed",
+      "expected": "unknown",
+      "actual": "unknown",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "unexcluded port",
+      "expected": true,
+      "actual": true,
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "excluded port",
+      "expected": false,
+      "actual": false,
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "unknown excluded-port output fails closed",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Excluded-port output format is unknown"
+    },
+    {
+      "name": "quoted argument",
+      "expected": "D:/fixture cluster",
+      "actual": "D:/fixture cluster",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "unquoted argument",
+      "expected": "D:/fixture",
+      "actual": "D:/fixture",
+      "passed": true,
+      "error": null
+    },
+    {
+      "name": "missing argument",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Missing or ambiguous argument -D"
+    },
+    {
+      "name": "duplicate argument",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Missing or ambiguous argument -D"
+    },
+    {
+      "name": "missing address",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Missing or ambiguous argument -h"
+    },
+    {
+      "name": "missing port",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Missing or ambiguous argument -p"
+    },
+    {
+      "name": "duplicate address",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Missing or ambiguous argument -h"
+    },
+    {
+      "name": "duplicate port",
+      "expected": "throw",
+      "actual": "throw",
+      "passed": true,
+      "error": "Missing or ambiguous argument -p"
+    },
+    {
+      "name": "raw PID cast regression",
+      "expected": "legacy=0 parsed=1",
+      "actual": "legacy=0 parsed=1",
+      "passed": true,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "checkedAt": "2026-10-08T19:04:24.8053637Z",
+  "baselineHead": "963a88f9caa087e33e4f09048f842ba45dde90f4",
+  "currentHead": "963a88f9caa087e33e4f09048f842ba45dde90f4",
+  "comparedFiles": 811,
+  "changedTrackedPathsOutsideDesign": [
+    ".github/workflows/s01-quality.yml"
+  ],
+  "taskEditBoundary": "docs/design only; ignored local TEMP infrastructure",
+  "limitation": "Untracked concurrent work outside docs/design is preserved and not covered by tracked-file hashes"
+}

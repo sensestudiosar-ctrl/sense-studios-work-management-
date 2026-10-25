@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mockup",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--yes", "-p", "http-server", "http-server", "-p", "8123", "-c-1", "-a", "localhost", "."],
+      "port": 8123,
+      "url": "http://localhost:8123/app.html"
+    }
+  ]
+}

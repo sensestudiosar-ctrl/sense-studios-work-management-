@@ -1,0 +1,102 @@
+{
+  "kit": "Sense Studios Task Creation V15-RC1 Engineering Kit",
+  "generated_date": "2026-10-24",
+  "source": "Approved standalone production-candidate prototype and repository-specific handoff",
+  "files": [
+    {
+      "path": "AGENT_MASTER_PROMPT.md",
+      "bytes": 14398,
+      "sha256": "4e11e3a89557f6a753216c54a632fa741e94f00f4316e92751a0bec49afcf15a"
+    },
+    {
+      "path": "IMPLEMENTATION_TRACKER.md",
+      "bytes": 1549,
+      "sha256": "7e8140a02c3483e55444a92788552f95aba2e5cda5087d990468cec62971aeec"
+    },
+    {
+      "path": "PASTE_THIS_TO_YOUR_AGENT.txt",
+      "bytes": 2218,
+      "sha256": "ab06131c6870fb38412867a9a35dd5852c840e65d62355652fb11a0715871111"
+    },
+    {
+      "path": "README_START_HERE.md",
+      "bytes": 4173,
+      "sha256": "a048c2dd2e27ef08109fd3e0590148914dd1d4ebf7d596ce9861fb601f1e4741"
+    },
+    {
+      "path": "docs/01_UI_UX_REQUIREMENTS.md",
+      "bytes": 9736,
+      "sha256": "b8342834aa6f7aa90011a50a34a769ee5f21475dddaf48de844499cefad07206"
+    },
+    {
+      "path": "docs/02_API_DOMAIN_AND_STATE_CONTRACT.md",
+      "bytes": 10825,
+      "sha256": "db1c89398f7245e1dfe7aa9c1ee7e8b3bf7c23c1241d0d9ff50a59e45f5c7836"
+    },
+    {
+      "path": "docs/03_IMPLEMENTATION_PLAN.md",
+      "bytes": 5781,
+      "sha256": "7ed84080046b0330231ad0c1e06554ee33ef0b8a3d82b76fdafa6b83145f5f37"
+    },
+    {
+      "path": "docs/04_ACCEPTANCE_TEST_MATRIX.md",
+      "bytes": 8693,
+      "sha256": "cf4e6418e1c549072d22c507a2205a499de71db3162809a81355b46beac47c05"
+    },
+    {
+      "path": "docs/05_RELEASE_DECISIONS.md",
+      "bytes": 5261,
+      "sha256": "2bcb7d29abe4f8b3c03f4ac804eaa48c54161c0789d5ec78ff9b8d8561972215"
+    },
+    {
+      "path": "reference/screenshots/desktop_1440x768.png",
+      "bytes": 93728,
+      "sha256": "b631018f05567c8f579f9beeb02ceaa76c640962af85630ce84a154e5f17781a"
+    },
+    {
+      "path": "reference/screenshots/inline_people_picker.png",
+      "bytes": 108806,
+      "sha256": "9c7b9be411129fe4dbe55f6f378e12ec6124e56fcf4bdc575af87865a4a9f493"
+    },
+    {
+      "path": "reference/screenshots/mobile_390x844.png",
+      "bytes": 40865,
+      "sha256": "26357307e43229aff42c53af2b7581a50ac17f8d9c93560a681f5a5b935e4615"
+    },
+    {
+      "path": "reference/screenshots/mobile_review_sequence.png",
+      "bytes": 45401,
+      "sha256": "da7e52dc6060cef0e2a105c599b4e6ef19d7936f6db6e33d29a87cd1b747d901"
+    },
+    {
+      "path": "reference/sense_task_creation_production_candidate.html",
+      "bytes": 230960,
+      "sha256": "c3047ff85cc353fd5162d4601a50fe5326353cdd9a8cefe0355baf5a00610266"
+    },
+    {
+      "path": "reference/sense_task_creation_programa_v15.html",
+      "bytes": 225139,
+      "sha256": "3d321b2a42bcef881a6f5672d23d64365c65925249ac12a9f2d6ba5576bb8bb0"
+    },
+    {
+      "path": "reference/source_handoffs/approved_v15_notes.md",
+      "bytes": 4307,
+      "sha256": "2df97e9ea5e71aac2b814dfd3759556fa6c9f1d6f91748622b57c999b72dbd85"
+    },
+    {
+      "path": "reference/source_handoffs/original_repository_handoff.txt",
+      "bytes": 15172,
+      "sha256": "ebe044c62b9adbc504bf1af84f654f07e95a56b0e00d687106a9872659e76bf8"
+    },
+    {
+      "path": "reference/source_handoffs/production_candidate_handoff.md",
+      "bytes": 11706,
+      "sha256": "eadb0593c4c7b3f45a5e3d844cb3715159143806559bbc389e54afef64dc49aa"
+    },
+    {
+      "path": "reference/source_handoffs/production_candidate_qa.md",
+      "bytes": 3176,
+      "sha256": "1e0ae749440baba41e461408213e28446e9392ef9e33a04f4484adf09ad610d1"
+    }
+  ]
+}

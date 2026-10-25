@@ -76,6 +76,18 @@ describe("TimeWorkspace", () => {
     expect(JSON.parse(String(fetchMock.mock.calls.find(([url]) => String(url).endsWith("/deliveries/delivery-1/retry"))?.[1]?.body))).toEqual({ reason: "Receiver is available for retry" });
   });
 
+  it("shows per-project and per-task logged hours in the breakdown panel", async () => {
+    const entries = [entry, { ...entry, id: "entry-2", durationSeconds: 1800, workNote: "Second task", versions: [], deliveries: [] }];
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => (String(input).endsWith("/setup") ? response(setup) : response({ timer: null, entries }))));
+    render(<TimeWorkspace csrfToken="time-csrf" owner={false} />);
+    const panel = await screen.findByRole("heading", { name: "Hours breakdown" });
+    const scope = panel.closest("section")!;
+    // The total counts every entry; the bar chart covers project-scoped hours only.
+    expect(within(scope).getAllByText("1.5h").length).toBeGreaterThan(0);
+    expect(within(scope).getByRole("img", { name: /accounts for \d+% of logged time/ })).toBeInTheDocument();
+    expect(within(scope).getByRole("button", { name: /Concept/ })).toBeInTheDocument();
+  });
+
   it("hides an Owner personal timer when the account has no employee identity", async () => {
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).endsWith("/setup") ? response({ ...setup, employeeId: null }) : response({ timer: null, entries: [] })));
     render(<TimeWorkspace csrfToken="csrf" owner />);

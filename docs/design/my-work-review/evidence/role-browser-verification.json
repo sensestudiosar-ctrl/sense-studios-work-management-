@@ -1,0 +1,115 @@
+{
+  "date": "2026-10-09",
+  "target": "http://localhost:59420/",
+  "scope": "Disconnected synthetic React prototype only",
+  "checks": {
+    "desktopClose": {
+      "beforeMainWidth": 645,
+      "afterMainWidth": 1033,
+      "paneDisplay": "none",
+      "focus": "task-row-TSK-2481",
+      "emptyTaskQuery": true,
+      "reopenBackReload": "pass"
+    },
+    "employeeManagementDeepLink": "No title/detail exposed for TSK-2501",
+    "ownerPersonal": "Empty with no employee link",
+    "completedFilter": "Owner organization selected COMPLETED rendered TSK-2345",
+    "filterReload": "Owner Maya Chen + Harbor House + IN_PROGRESS retained",
+    "reassign": {
+      "task": "TSK-2501",
+      "version": 4,
+      "oldOwner": "Maya Chen",
+      "candidate": "Alex Morgan",
+      "withoutWarningAckEnabled": false,
+      "receipt": "No owner/status/version/count change; confirmed detail unchanged"
+    },
+    "ordinaryWaiting": {
+      "task": "TSK-2502",
+      "receipt": "Waiting remains recorded",
+      "focus": "Return to task list",
+      "tabWrap": "Close management preview",
+      "escape": "Originating management button"
+    },
+    "exitHold": {
+      "task": "TSK-2504",
+      "expectedState": "Not started",
+      "version": 3,
+      "historyClosesDialog": true
+    },
+    "fieldstoneLeader": "No Preview reassignment command for TSK-2398",
+    "create": {
+      "title": "Coordinate mock sample review",
+      "owner": "Maya Chen",
+      "target": "2026-10-21",
+      "receipt": "No task created and loaded counts unchanged"
+    },
+    "ownerReview": "TSK-2458 REV-HH-612-03 read-only evidence mock; no decision command",
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "focus": "Back to tasks",
+      "backgroundInert": true,
+      "closeFocus": "task-row-TSK-2481",
+      "reloadClosed": true
+    },
+    "narrow": {
+      "width": 320,
+      "scrollWidth": 320
+    }
+  },
+  "sourceStates": [
+    {
+      "state": "Denied",
+      "ownerOptions": "All owners",
+      "ownerEnabled": false,
+      "list": "Organization work\nSource status\n☷ List\n⊘\nTasks are unavailable\n\nTask names and details are hidden while access is unavailable.\n\nRetry tasks",
+      "assign": 0
+    },
+    {
+      "state": "Loading",
+      "ownerOptions": "All owners",
+      "ownerEnabled": false,
+      "list": "Organization work\nSource status\n☷ List\n\nLoading tasks…",
+      "assign": 0
+    },
+    {
+      "state": "Empty",
+      "ownerOptions": "All owners",
+      "ownerEnabled": false,
+      "list": "Organization work\nSource status\n☷ List\n⌕\nNo visible work\n\nNo visible task records exist in this sample scope.",
+      "assign": 0
+    },
+    {
+      "state": "Error",
+      "ownerOptions": "All owners",
+      "ownerEnabled": false,
+      "list": "Organization work\nSource status\n☷ List\n!\nCouldn’t load tasks\n\nThe task source could not be loaded. Retry to recover.\n\nRetry tasks",
+      "assign": 0
+    },
+    {
+      "state": "Offline",
+      "ownerOptions": "All owners\nAlex Morgan\nDevon Brooks\nElena Ruiz\nJonah Patel\nJordan Lee\nMaya Chen\nPriya Shah",
+      "ownerEnabled": true,
+      "list": "Organization work\n4 loaded sample tasks\n☷ List\nRevise lobby wayfinding elevations\nTSK-2481\n·\nHarbor House\n·\nInterior design · Package 04\nOwner Maya Chen\nCommitted Oct 12, 2026\nTarget Oct 9, 2026\nCorrections required\nMC\nMaya Chen\nC",
+      "assign": 0
+    },
+    {
+      "state": "Ready",
+      "ownerOptions": "All owners\nAlex Morgan\nDevon Brooks\nElena Ruiz\nJonah Patel\nJordan Lee\nMaya Chen\nPriya Shah",
+      "ownerEnabled": true,
+      "list": "Organization work\n4 loaded sample tasks\nCreate & assign\n☷ List\nRevise lobby wayfinding elevations\nTSK-2481\n·\nHarbor House\n·\nInterior design · Package 04\nOwner Maya Chen\nCommitted Oct 12, 2026\nTarget Oct 9, 2026\nCorrections require",
+      "assign": 1
+    }
+  ],
+  "limits": [
+    "No real API or persistence acceptance",
+    "No full pnpm verify rerun",
+    "No screen-reader, zoom or physical-device certification",
+    "Leader loaded sample pool does not include an Owner-only exclusion fixture",
+    "Native date automation required keyboard segment entry"
+  ],
+  "models": {
+    "contextAndSourceReview": "gpt-6.1-sol",
+    "boundedImplementation": "gpt-6-luna"
+  }
+}

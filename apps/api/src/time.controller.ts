@@ -16,6 +16,13 @@ export class TimeController {
  private async actor(request: Request) { const name = this.config.webOrigin.startsWith("https:") ? "__Host-sense_sid" : "sense_sid"; const cookie = request.headers.cookie?.split(";").map(v => v.trim()).find(v => v.startsWith(`${name}=`))?.slice(name.length + 1); const active = await this.identity.session(cookie); const actor = await this.projects.actor(active.row.accountId); if (actor.kind !== "OWNER" && actor.kind !== "STAFF" || actor.kind === "OWNER" && !await this.identity.ownerReady(actor.accountId)) throw new ForbiddenException("Internal identity required"); return { active, actor: { ...actor, sessionId: active.row.id } }; }
  private async mutate(request: Request, csrf?: string) { if (request.headers.origin !== this.config.webOrigin) throw new ForbiddenException("Request origin is not allowed"); const { actor, active } = await this.actor(request); this.identity.verifyCsrf(active, csrf); return actor; }
  @Get("setup") async setup(@Req() req: Request, @Res({ passthrough: true }) res: Response) { res.setHeader("Cache-Control", "no-store"); return this.time.setup((await this.actor(req)).actor); }
+  @Get("summary") async summary(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Query("projectId") projectId: string, @Query("taskId") taskId?: string, @Query("employeeId") employeeId?: string) {
+    res.setHeader("Cache-Control", "no-store");
+    const parsedProject = uuid.safeParse(projectId);
+    if (!parsedProject.success) throw new BadRequestException("Project scope is required for a time summary");
+    const optional = (value?: string): string | null => value && uuid.safeParse(value).success ? value : null;
+    return this.time.timeSummary((await this.actor(req)).actor, parsedProject.data, optional(taskId), optional(employeeId));
+  }
  @Get() async list(@Req() req: Request, @Res({ passthrough: true }) res: Response, @Query("scope") scope = "mine") { res.setHeader("Cache-Control", "no-store"); return this.time.list((await this.actor(req)).actor, parse(z.enum(["mine", "managed"]), scope)); }
  @Post("timers") async start(@Req() req: Request, @Headers("x-csrf-token") csrf: string | undefined, @Body() body: unknown) { return this.time.start(await this.mutate(req, csrf), parse(data.extend({ commandId: uuid }), body)); }
  @Post("timers/:id/:action") async timer(@Req() req: Request, @Headers("x-csrf-token") csrf: string | undefined, @Param("id") id: string, @Param("action") action: string, @Body() body: unknown) { return this.time.timerCommand(await this.mutate(req, csrf), parse(uuid, id), parse(z.enum(["pause", "resume", "stop"]), action), parse(change, body)); }

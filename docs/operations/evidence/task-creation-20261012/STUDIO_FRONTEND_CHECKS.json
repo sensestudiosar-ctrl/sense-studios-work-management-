@@ -1,0 +1,50 @@
+{
+  "node": "v24.19.0",
+  "pnpm": "11.19.0",
+  "results": [
+    {
+      "name": "focused-final",
+      "args": [
+        "--filter",
+        "@sense/web",
+        "exec",
+        "vitest",
+        "run",
+        "src/task.test.tsx",
+        "src/my-work-attention.test.tsx",
+        "src/my-work-metrics.test.tsx",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=../../docs/operations/evidence/task-creation-20261012/focused-final.json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "full-web-final",
+      "args": [
+        "--filter",
+        "@sense/web",
+        "exec",
+        "vitest",
+        "run",
+        "--maxWorkers=1",
+        "--reporter=json",
+        "--outputFile=../../docs/operations/evidence/task-creation-20261012/full-web-final.json"
+      ],
+      "exitCode": 1
+    },
+    {
+      "name": "eslint-final",
+      "args": [
+        "exec",
+        "eslint",
+        "."
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "typechecks-and-build",
+      "exitCode": 0
+    }
+  ]
+}

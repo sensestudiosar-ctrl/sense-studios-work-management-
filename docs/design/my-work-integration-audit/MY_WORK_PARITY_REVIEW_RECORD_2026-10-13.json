@@ -1,0 +1,74 @@
+{
+  "date": "2026-10-13",
+  "scope": "My Work remaining demo parity plan only",
+  "mode": "HOLD_SCOPE",
+  "planRevision": "1.2",
+  "referenceSha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+  "ownerDecisions": {
+    "D1": "Hold scope",
+    "D2": "One globally ordered server-paged queue; separate source counts and unchanged permissions",
+    "D3": "Task-only filters visibly select Tasks; Clear restores mixed queue",
+    "D4": "Exact status fills; dark labels on three low-contrast badges",
+    "E1": "One composer-owned read snapshot and clock/calendar context"
+  },
+  "reviews": {
+    "ceo": {
+      "sectionsEvaluated": 11,
+      "unresolved": 0
+    },
+    "engineering": {
+      "sectionsEvaluated": [
+        "architecture",
+        "code quality",
+        "tests",
+        "performance"
+      ],
+      "unresolved": 0,
+      "verdict": "PLAN PASS; implementation and runtime not accepted"
+    },
+    "refero": {
+      "liveMcpResearch": true,
+      "exactDemoIsPrimary": true,
+      "renderedAcceptance": "pending"
+    }
+  },
+  "routing": {
+    "contextAndArchitectureReview": "GPT-6.1 Sol (existing reviewer agent)",
+    "documentation": "primary assistant",
+    "lunaDocumentationAttempt": "GPT-6 Luna agent failed with application network permission revoked; no Luna result accepted"
+  },
+  "changes": "planning/status/decision documents and planning artifacts only",
+  "executed": {
+    "applicationEdits": false,
+    "tests": false,
+    "databaseOperations": false,
+    "hostLifecycle": false,
+    "authenticatedAcceptance": false
+  },
+  "futureGates": [
+    "Freeze candidate",
+    "Current-source unit/typecheck/lint/build",
+    "Inert harness readiness",
+    "Separately authorized dedicated migration/persistence/concurrency",
+    "Authenticated four-role/four-viewport visual and functional acceptance",
+    "Manifest cleanup/catalog preservation",
+    "Owner acceptance"
+  ],
+  "mwI02": "IN PROGRESS",
+  "mwI03": "not started",
+  "hostAdaptation": "Workspace-contained artifacts used; global gstack configuration, telemetry and review-log commands not run. Structured JSON serialization used for task artifact; jq was unavailable. No global install requested.",
+  "sourceImplementation": {
+    "updatedAt": "2026-10-14",
+    "state": "SOURCE_CHECKS_PASS_RUNTIME_ACCEPTANCE_PENDING",
+    "report": "docs/design/my-work-integration-audit/MY_WORK_PARITY_FINDINGS_RESOLUTION_2026-10-14.md",
+    "candidateSourceHash": "86e68003ed3826f7edd2d3ce613ad413a234ee46c7a095c0f61bf63592cb8843",
+    "apiUnit": 355,
+    "webUnit": 428,
+    "syntheticCaptures": 32,
+    "databaseRun": "NOT_RUN",
+    "authenticatedComparison": "NOT_RUN",
+    "readinessChecks": 792,
+    "nativeInertCases": 78,
+    "liveAttempt": "NOT_STARTED_APPROVAL_FINGERPRINT_UPDATE_PENDING"
+  }
+}

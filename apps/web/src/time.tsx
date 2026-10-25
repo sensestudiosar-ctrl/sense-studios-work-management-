@@ -125,6 +125,33 @@ export function TimeWorkspace({ csrfToken, owner }: { csrfToken: string; owner: 
     setCorrectionFields({ ...emptyFields(), employeeId: entry.employeeId, projectId: entry.projectId ?? "", taskId: entry.taskId ?? "", stageId: entry.stageId ?? "", activityLabel: entry.activityLabel ?? "", date: entry.date, startedAt: localDateTime(entry.startedAt), endedAt: localDateTime(entry.endedAt), durationSeconds: String(entry.durationSeconds), workNote: entry.workNote, location: entry.location, billable: entry.billable, evidenceFileId: entry.evidenceFileId ?? "" });
   };
   const visible = useMemo(() => (data?.entries ?? []).filter((entry) => (!filterProject || entry.projectId === filterProject) && (filterStatus === "all" || (filterStatus === "locked" ? entry.locked : filterStatus === "approved" ? entry.approved : filterStatus === "open" ? !entry.locked : true)) && (!search || `${entry.workNote} ${entry.activityLabel ?? ""}`.toLowerCase().includes(search.toLowerCase()))), [data, filterProject, filterStatus, search]);
+  const hoursBreakdown = useMemo(() => {
+    const entries = data?.entries ?? [];
+    const total = entries.reduce((sum, entry) => sum + entry.durationSeconds, 0);
+    const byProject = new Map<string, { seconds: number; entries: number }>();
+    for (const entry of entries) {
+      const key = entry.projectId ?? "non-project";
+      const bucket = byProject.get(key) ?? { seconds: 0, entries: 0 };
+      bucket.seconds += entry.durationSeconds; bucket.entries += 1;
+      byProject.set(key, bucket);
+    }
+    const projectRows = [...byProject.entries()].map(([key, value]) => ({ key, name: key === "non-project" ? "Non-project activity" : setup?.projects.find((project) => project.id === key)?.name ?? "Project", ...value })).sort((a, b) => b.seconds - a.seconds);
+    const byTask = new Map<string, { seconds: number; title: string; projectId: string | null }>();
+    for (const entry of entries) {
+      if (!entry.taskId) continue;
+      const title = setup?.tasks.find((task) => task.id === entry.taskId)?.title ?? "Task";
+      const bucket = byTask.get(entry.taskId) ?? { seconds: 0, title, projectId: entry.projectId };
+      bucket.seconds += entry.durationSeconds;
+      byTask.set(entry.taskId, bucket);
+    }
+    const taskRows = [...byTask.entries()].map(([key, value]) => ({ key, ...value })).sort((a, b) => b.seconds - a.seconds).slice(0, 12);
+    return { totalSeconds: total, totalHours: total / 3600, projectRows, taskRows, entryCount: entries.length };
+  }, [data, setup?.projects, setup?.tasks]);
+  const [hoursProjectFilter, setHoursProjectFilter] = useState("");
+  const hoursForProject = hoursBreakdown.projectRows.filter((row) => !hoursProjectFilter || row.key === hoursProjectFilter);
+  const hoursTaskRows = hoursBreakdown.taskRows.filter((row) => !hoursProjectFilter || (hoursProjectFilter === "non-project" ? row.projectId === null : row.projectId === hoursProjectFilter));
+  const hoursTotalSeconds = hoursForProject.reduce((sum, row) => sum + row.seconds, 0);
+  const hoursTotalHours = hoursTotalSeconds / 3600;
 
   if (loading) return <section className="identity-section time-workspace"><p role="status">Loading time workspace…</p></section>;
   if (!setup || !data) return <section className="identity-section time-workspace"><h2>Time</h2><p className="auth-error" role="alert">{error || "Time workspace is unavailable."}</p><button type="button" onClick={() => void load(true)}>Try again</button></section>;
@@ -134,6 +161,17 @@ export function TimeWorkspace({ csrfToken, owner }: { csrfToken: string; owner: 
     <div className="time-heading"><div><div className="eyebrow">WORK LOG</div><h2 id="time-heading">Time</h2><p>Record project and non-project work, then review its history and accounting delivery.</p></div><button type="button" className="secondary-action" disabled={pending} onClick={() => void load(true)}>Refresh</button></div>
     {(owner || setup.employees.length > 0) && <div className="time-toolbar"><label>View<select value={scope} onChange={(e) => setScope(e.target.value as "mine" | "managed")}><option value="mine">My time</option><option value="managed">Managed time</option></select></label><span>{scope === "managed" ? "Management actions follow your time permissions." : "Your entries are shown by default."}</span></div>}
     {error && <p className="auth-error" role="alert">{error}</p>}{notice && <p className="notice" role="status">{notice}</p>}
+    <section className="time-panel time-hours"><div className="time-hours-head"><div><h3>Hours breakdown</h3><p>Worked hours per project and per task from your logged entries.{scope === "managed" ? " Managed scope." : ""}</p></div><label className="time-hours-filter">Project<select value={hoursProjectFilter} onChange={(e) => setHoursProjectFilter(e.target.value)}><option value="">All projects</option>{hoursBreakdown.projectRows.map((row) => <option key={row.key} value={row.key}>{row.name}</option>)}</select></label></div>
+      <div className="time-hours-total"><span>Logged</span><strong>{hoursTotalHours.toFixed(1)}h</strong><small>{hoursForProject.reduce((sum, row) => sum + row.entries, 0)} entries in view · {hoursBreakdown.entryCount} total</small></div>
+      {hoursForProject.length ? <div className="time-hours-grid">{hoursForProject.map((row) => {
+        const rowTasks = hoursTaskRows.filter((task) => task.projectId === (row.key === "non-project" ? null : row.key));
+        const share = hoursBreakdown.totalSeconds > 0 ? Math.round((row.seconds / hoursBreakdown.totalSeconds) * 100) : 0;
+        return <div key={row.key} className="time-hours-card"><div className="time-hours-card-title"><h4>{row.name}</h4><span>{(row.seconds / 3600).toFixed(1)}h · {row.entries} {row.entries === 1 ? "entry" : "entries"}</span></div>
+          <div className="time-hours-bar" role="img" aria-label={`${row.name} accounts for ${share}% of logged time`}><i style={{ width: `${share}%` }} /></div>
+          {rowTasks.length ? <div className="time-hours-tasks">{rowTasks.map((task) => <button type="button" key={task.key} onClick={() => { setFilterProject(task.projectId ?? ""); setFilterStatus("all"); }}><span>{task.title}</span><strong>{(task.seconds / 3600).toFixed(1)}h</strong></button>)}</div> : <p className="time-hours-card-note">No task-level time logged.</p>}
+        </div>;
+      })} </div> : <p className="identity-note">No logged hours yet in this view.</p>}
+    </section>
     <div className="time-top-grid">
       {(data.timer || setup.employeeId) && <section className="time-panel"><h3>{data.timer ? "Active timer" : "Start a timer"}</h3>
         {data.timer ? <><p className="time-clock" aria-live="polite">{duration(elapsed)}</p><p>{data.timer.workNote || "No work note"} · {data.timer.state.toLowerCase()}</p><div className="time-actions">{data.timer.state === "RUNNING" ? <button type="button" className="secondary-action" disabled={pending} onClick={() => timerAction("pause")}>Pause</button> : <button type="button" disabled={pending} onClick={() => timerAction("resume")}>Resume</button>}<button type="button" className="secondary-action" disabled={pending} onClick={() => timerAction("stop")}>Stop timer</button></div></> : <>

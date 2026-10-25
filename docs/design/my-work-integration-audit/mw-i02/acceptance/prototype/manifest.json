@@ -1,0 +1,3240 @@
+{
+  "generatedAt": "2026-10-10T08:57:50.641Z",
+  "mode": "local HTML prototype; page.setContent; no network, app server, API or database",
+  "sourcePath": "D:/app/reference from codex chat/Sense_Studios_My_Work_UX_Package/Sense_Studios_My_Work/prototype.html",
+  "copiedSource": ".env.checkpoint-tools/mw-i02-prototype-capture/prototype.html",
+  "sha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+  "expectedSha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+  "viewportCapture": "fullPage screenshot at deviceScaleFactor 1; viewport is also recorded per image",
+  "requestedStates": {
+    "initial": "Supported, captured for all roles/viewports.",
+    "selectedWaiting": "Supported for Designer; selector-driven Waiting / blocked metric filters the matching sample queue.",
+    "empty": "Supported for Designer; unique no-match search produces the prototype empty state.",
+    "error": "Supported as an explicit local simulation via View Settings > Preview UX error states > Simulate load failure; does not issue a request.",
+    "loading": "No independently triggerable pending/initial loading state exists in this prototype. Not fabricated or captured.",
+    "accessDenied": "Prototype checklist says actual route guard is required; role preview is not authorization. Not represented."
+  },
+  "dataLimit": "All task names, IDs, statuses and counts are supplied sample data. Use screenshots only as visual references. The prototype lower-case waiting sample is not a canonical backend enum; actual acceptance uses canonical status values.",
+  "captures": [
+    {
+      "filename": "prototype-designer-initial-1440.png",
+      "role": "designer",
+      "state": "initial",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "Select #role option Designer; use initial My Work queue.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 186,
+            "width": 1122,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 275,
+            "y": 186,
+            "width": 271,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 559,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 842,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 1125,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 1311,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 310,
+            "width": 1122,
+            "height": 1367,
+            "bottom": 1677
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 380,
+            "width": 1120,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 276,
+            "y": 619,
+            "width": 1120,
+            "height": 79,
+            "bottom": 698
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 619,
+          "firstTaskDocumentY": 619,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-waiting-1440.png",
+      "role": "designer",
+      "state": "waiting",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "Click [data-metric=\"waiting\"] (label Waiting / blocked); captures the matching sample status task.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [
+          "Confirm bathroom tile measurements"
+        ],
+        "visibleCount": "1 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": "⊘\nWaiting / blocked",
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 186,
+            "width": 1122,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 275,
+            "y": 186,
+            "width": 271,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 559,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 842,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 1125,
+              "y": 185,
+              "width": 271,
+              "height": 108,
+              "bottom": 293
+            }
+          ],
+          "scope": {
+            "x": 1311,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 310,
+            "width": 1122,
+            "height": 449,
+            "bottom": 759
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 380,
+            "width": 1120,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 276,
+            "y": 678,
+            "width": 1120,
+            "height": 79,
+            "bottom": 757
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 678,
+          "firstTaskDocumentY": 678,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-empty-1440.png",
+      "role": "designer",
+      "state": "empty",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "Fill #search with mw-i02-no-match-7f3a; wait for #groups .empty.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [],
+        "visibleCount": "0 tasks",
+        "emptyHeading": "No matching tasks",
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 186,
+            "width": 1122,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 275,
+            "y": 186,
+            "width": 271,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 559,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 842,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 1125,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 1311,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 310,
+            "width": 1122,
+            "height": 491,
+            "bottom": 801
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 380,
+            "width": 1120,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": null,
+          "firstMetricTop": 186,
+          "firstTaskTop": null,
+          "firstTaskDocumentY": null,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-error-simulated-1440.png",
+      "role": "designer",
+      "state": "error-simulated",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "At a width where visible, click #viewSettings > Preview UX error states > #errorOn (local demo error; no backend request), then Close; return to the requested viewport before capture.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": "Simulated error: task information failed to refresh. Your current filters and draft state are preserved.Retry preview",
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 249,
+            "width": 1122,
+            "height": 108,
+            "bottom": 357
+          },
+          "summaryDocumentY": 249,
+          "metric": {
+            "x": 275,
+            "y": 249,
+            "width": 271,
+            "height": 108,
+            "bottom": 357
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 249,
+              "width": 271,
+              "height": 108,
+              "bottom": 357
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 559,
+              "y": 249,
+              "width": 271,
+              "height": 108,
+              "bottom": 357
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 842,
+              "y": 249,
+              "width": 271,
+              "height": 108,
+              "bottom": 357
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 1125,
+              "y": 249,
+              "width": 271,
+              "height": 108,
+              "bottom": 357
+            }
+          ],
+          "scope": {
+            "x": 1311,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 373,
+            "width": 1122,
+            "height": 1367,
+            "bottom": 1740
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 443,
+            "width": 1120,
+            "height": 61,
+            "bottom": 504
+          },
+          "firstTask": {
+            "x": 276,
+            "y": 682,
+            "width": 1120,
+            "height": 79,
+            "bottom": 761
+          },
+          "firstMetricTop": 249,
+          "firstTaskTop": 682,
+          "firstTaskDocumentY": 682,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-leader-my-work-1440.png",
+      "role": "leader",
+      "state": "my-work",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "Select #role option Team Leader; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Team Leader",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [
+          "Review bedroom working drawing R2",
+          "Resolve ceiling snag escalation",
+          "Reassign delayed electrical drawings",
+          "Review kitchen perspective submission",
+          "Check design team weekly workload"
+        ],
+        "visibleCount": "5 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 186,
+            "width": 1122,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 275,
+            "y": 186,
+            "width": 271,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 559,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 842,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 1125,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 1230,
+            "y": 87,
+            "width": 167,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 310,
+            "width": 1122,
+            "height": 844,
+            "bottom": 1154
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 380,
+            "width": 1120,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 276,
+            "y": 619,
+            "width": 1120,
+            "height": 79,
+            "bottom": 698
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 619,
+          "firstTaskDocumentY": 619,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-site-my-work-1440.png",
+      "role": "site",
+      "state": "my-work",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "Select #role option Site Employee; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Site Employee",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [
+          "Capture bathroom tile photographs",
+          "Upload daily site progress photographs",
+          "Request revised ceiling working drawing",
+          "Submit end-of-day site report",
+          "Inspect lobby carpentry finish",
+          "Report ceiling alignment snag",
+          "Check site drawing register"
+        ],
+        "visibleCount": "7 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 186,
+            "width": 1122,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 275,
+            "y": 186,
+            "width": 271,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⚑\nSite snags",
+              "x": 559,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⇧\nUploads pending",
+              "x": 842,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 1125,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 1228,
+            "y": 87,
+            "width": 169,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 570,
+            "width": 1122,
+            "height": 1071,
+            "bottom": 1641
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 640,
+            "width": 1120,
+            "height": 61,
+            "bottom": 701
+          },
+          "firstTask": {
+            "x": 276,
+            "y": 879,
+            "width": 1120,
+            "height": 79,
+            "bottom": 958
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 879,
+          "firstTaskDocumentY": 879,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-owner-my-work-1440.png",
+      "role": "owner",
+      "state": "my-work",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "step": "Select #role option Owner; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Owner",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "documentWidth": 1440,
+        "visibleTaskTitles": [
+          "Approve revised material selection",
+          "Resolve procurement cost escalation",
+          "Approve turnkey stage handover",
+          "Review team staffing capacity"
+        ],
+        "visibleCount": "4 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 275,
+            "y": 186,
+            "width": 1122,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 275,
+            "y": 186,
+            "width": 271,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 275,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 559,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 842,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 1125,
+              "y": 186,
+              "width": 271,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 1208,
+            "y": 87,
+            "width": 189,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 275,
+            "y": 310,
+            "width": 1122,
+            "height": 765,
+            "bottom": 1075
+          },
+          "toolbar": {
+            "x": 276,
+            "y": 380,
+            "width": 1120,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 276,
+            "y": 619,
+            "width": 1120,
+            "height": 79,
+            "bottom": 698
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 619,
+          "firstTaskDocumentY": 619,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-initial-1024.png",
+      "role": "designer",
+      "state": "initial",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "Select #role option Designer; use initial My Work queue.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 186,
+            "width": 898,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 96,
+            "y": 186,
+            "width": 215,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 323,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 551,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 778,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 907,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 310,
+            "width": 898,
+            "height": 1367,
+            "bottom": 1677
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 380,
+            "width": 896,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 97,
+            "y": 619,
+            "width": 896,
+            "height": 79,
+            "bottom": 698
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 619,
+          "firstTaskDocumentY": 619,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-waiting-1024.png",
+      "role": "designer",
+      "state": "waiting",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "Click [data-metric=\"waiting\"] (label Waiting / blocked); captures the matching sample status task.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [
+          "Confirm bathroom tile measurements"
+        ],
+        "visibleCount": "1 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": "⊘\nWaiting / blocked",
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 186,
+            "width": 898,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 96,
+            "y": 186,
+            "width": 215,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 323,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 551,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 778,
+              "y": 185,
+              "width": 215,
+              "height": 108,
+              "bottom": 293
+            }
+          ],
+          "scope": {
+            "x": 907,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 310,
+            "width": 898,
+            "height": 449,
+            "bottom": 759
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 380,
+            "width": 896,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 97,
+            "y": 678,
+            "width": 896,
+            "height": 79,
+            "bottom": 757
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 678,
+          "firstTaskDocumentY": 678,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-empty-1024.png",
+      "role": "designer",
+      "state": "empty",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "Fill #search with mw-i02-no-match-7f3a; wait for #groups .empty.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [],
+        "visibleCount": "0 tasks",
+        "emptyHeading": "No matching tasks",
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 186,
+            "width": 898,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 96,
+            "y": 186,
+            "width": 215,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 323,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 551,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 778,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 907,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 310,
+            "width": 898,
+            "height": 491,
+            "bottom": 801
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 380,
+            "width": 896,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": null,
+          "firstMetricTop": 186,
+          "firstTaskTop": null,
+          "firstTaskDocumentY": null,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-error-simulated-1024.png",
+      "role": "designer",
+      "state": "error-simulated",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "At a width where visible, click #viewSettings > Preview UX error states > #errorOn (local demo error; no backend request), then Close; return to the requested viewport before capture.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": "Simulated error: task information failed to refresh. Your current filters and draft state are preserved.Retry preview",
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 249,
+            "width": 898,
+            "height": 108,
+            "bottom": 357
+          },
+          "summaryDocumentY": 249,
+          "metric": {
+            "x": 96,
+            "y": 249,
+            "width": 215,
+            "height": 108,
+            "bottom": 357
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 249,
+              "width": 215,
+              "height": 108,
+              "bottom": 357
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 323,
+              "y": 249,
+              "width": 215,
+              "height": 108,
+              "bottom": 357
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 551,
+              "y": 249,
+              "width": 215,
+              "height": 108,
+              "bottom": 357
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 778,
+              "y": 249,
+              "width": 215,
+              "height": 108,
+              "bottom": 357
+            }
+          ],
+          "scope": {
+            "x": 907,
+            "y": 87,
+            "width": 86,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 373,
+            "width": 898,
+            "height": 1367,
+            "bottom": 1740
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 443,
+            "width": 896,
+            "height": 61,
+            "bottom": 504
+          },
+          "firstTask": {
+            "x": 97,
+            "y": 682,
+            "width": 896,
+            "height": 79,
+            "bottom": 761
+          },
+          "firstMetricTop": 249,
+          "firstTaskTop": 682,
+          "firstTaskDocumentY": 682,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-leader-my-work-1024.png",
+      "role": "leader",
+      "state": "my-work",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "Select #role option Team Leader; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Team Leader",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [
+          "Review bedroom working drawing R2",
+          "Resolve ceiling snag escalation",
+          "Reassign delayed electrical drawings",
+          "Review kitchen perspective submission",
+          "Check design team weekly workload"
+        ],
+        "visibleCount": "5 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 186,
+            "width": 898,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 96,
+            "y": 186,
+            "width": 215,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 323,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 551,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 778,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 826,
+            "y": 87,
+            "width": 167,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 310,
+            "width": 898,
+            "height": 844,
+            "bottom": 1154
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 380,
+            "width": 896,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 97,
+            "y": 619,
+            "width": 896,
+            "height": 79,
+            "bottom": 698
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 619,
+          "firstTaskDocumentY": 619,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-site-my-work-1024.png",
+      "role": "site",
+      "state": "my-work",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "Select #role option Site Employee; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Site Employee",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [
+          "Capture bathroom tile photographs",
+          "Upload daily site progress photographs",
+          "Request revised ceiling working drawing",
+          "Submit end-of-day site report",
+          "Inspect lobby carpentry finish",
+          "Report ceiling alignment snag",
+          "Check site drawing register"
+        ],
+        "visibleCount": "7 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 186,
+            "width": 898,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 96,
+            "y": 186,
+            "width": 215,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⚑\nSite snags",
+              "x": 323,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⇧\nUploads pending",
+              "x": 551,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 778,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 825,
+            "y": 87,
+            "width": 169,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 570,
+            "width": 898,
+            "height": 1071,
+            "bottom": 1641
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 640,
+            "width": 896,
+            "height": 61,
+            "bottom": 701
+          },
+          "firstTask": {
+            "x": 97,
+            "y": 879,
+            "width": 896,
+            "height": 79,
+            "bottom": 958
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 879,
+          "firstTaskDocumentY": 879,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-owner-my-work-1024.png",
+      "role": "owner",
+      "state": "my-work",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "step": "Select #role option Owner; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Owner",
+        "scope": "My Work",
+        "viewport": {
+          "width": 1024,
+          "height": 900
+        },
+        "documentWidth": 1024,
+        "visibleTaskTitles": [
+          "Approve revised material selection",
+          "Resolve procurement cost escalation",
+          "Approve turnkey stage handover",
+          "Review team staffing capacity"
+        ],
+        "visibleCount": "4 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 96,
+            "y": 186,
+            "width": 898,
+            "height": 108,
+            "bottom": 294
+          },
+          "summaryDocumentY": 186,
+          "metric": {
+            "x": 96,
+            "y": 186,
+            "width": 215,
+            "height": 108,
+            "bottom": 294
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 96,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 323,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 551,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 778,
+              "y": 186,
+              "width": 215,
+              "height": 108,
+              "bottom": 294
+            }
+          ],
+          "scope": {
+            "x": 804,
+            "y": 87,
+            "width": 189,
+            "height": 42,
+            "bottom": 129
+          },
+          "queue": {
+            "x": 96,
+            "y": 310,
+            "width": 898,
+            "height": 765,
+            "bottom": 1075
+          },
+          "toolbar": {
+            "x": 97,
+            "y": 380,
+            "width": 896,
+            "height": 61,
+            "bottom": 441
+          },
+          "firstTask": {
+            "x": 97,
+            "y": 619,
+            "width": 896,
+            "height": 79,
+            "bottom": 698
+          },
+          "firstMetricTop": 186,
+          "firstTaskTop": 619,
+          "firstTaskDocumentY": 619,
+          "scopeControlHeight": 42
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-initial-390.png",
+      "role": "designer",
+      "state": "initial",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "Select #role option Designer; use initial My Work queue.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 370,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 137,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 154,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 298,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 442,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 80,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 370,
+            "height": 2667,
+            "bottom": 3001
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 368,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 540,
+            "width": 348,
+            "height": 232,
+            "bottom": 772
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 540,
+          "firstTaskDocumentY": 540,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-waiting-390.png",
+      "role": "designer",
+      "state": "waiting",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "Click [data-metric=\"waiting\"] (label Waiting / blocked); captures the matching sample status task.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [
+          "Confirm bathroom tile measurements"
+        ],
+        "visibleCount": "1 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": "⊘\nWaiting / blocked",
+        "layout": {
+          "scrollY": 255,
+          "summary": {
+            "x": 10,
+            "y": -43,
+            "width": 370,
+            "height": 112,
+            "bottom": 69
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": -189,
+            "y": -42,
+            "width": 137,
+            "height": 108,
+            "bottom": 66
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": -189,
+              "y": -42,
+              "width": 137,
+              "height": 108,
+              "bottom": 66
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": -45,
+              "y": -42,
+              "width": 137,
+              "height": 108,
+              "bottom": 66
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 99,
+              "y": -42,
+              "width": 137,
+              "height": 108,
+              "bottom": 66
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 243,
+              "y": -42,
+              "width": 137,
+              "height": 108,
+              "bottom": 66
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": -93,
+            "width": 80,
+            "height": 38,
+            "bottom": -55
+          },
+          "queue": {
+            "x": 10,
+            "y": 79,
+            "width": 370,
+            "height": 630,
+            "bottom": 709
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 120,
+            "width": 368,
+            "height": 51,
+            "bottom": 171
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 400,
+            "width": 348,
+            "height": 232,
+            "bottom": 632
+          },
+          "firstMetricTop": -42,
+          "firstTaskTop": 400,
+          "firstTaskDocumentY": 655,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-empty-390.png",
+      "role": "designer",
+      "state": "empty",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "Fill #search with mw-i02-no-match-7f3a; wait for #groups .empty.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [],
+        "visibleCount": "0 tasks",
+        "emptyHeading": "No matching tasks",
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 370,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 137,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 154,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 298,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 442,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 80,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 370,
+            "height": 477,
+            "bottom": 811
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 368,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": null,
+          "firstMetricTop": 213,
+          "firstTaskTop": null,
+          "firstTaskDocumentY": null,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-error-simulated-390.png",
+      "role": "designer",
+      "state": "error-simulated",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "At a width where visible, click #viewSettings > Preview UX error states > #errorOn (local demo error; no backend request), then Close; return to the requested viewport before capture.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": "Simulated error: task information failed to refresh. Your current filters and draft state are preserved.Retry preview",
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 293,
+            "width": 370,
+            "height": 112,
+            "bottom": 405
+          },
+          "summaryDocumentY": 293,
+          "metric": {
+            "x": 10,
+            "y": 294,
+            "width": 137,
+            "height": 108,
+            "bottom": 402
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 294,
+              "width": 137,
+              "height": 108,
+              "bottom": 402
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 154,
+              "y": 294,
+              "width": 137,
+              "height": 108,
+              "bottom": 402
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 298,
+              "y": 294,
+              "width": 137,
+              "height": 108,
+              "bottom": 402
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 442,
+              "y": 294,
+              "width": 137,
+              "height": 108,
+              "bottom": 402
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 80,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 415,
+            "width": 370,
+            "height": 2667,
+            "bottom": 3082
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 456,
+            "width": 368,
+            "height": 51,
+            "bottom": 507
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 621,
+            "width": 348,
+            "height": 232,
+            "bottom": 852
+          },
+          "firstMetricTop": 294,
+          "firstTaskTop": 621,
+          "firstTaskDocumentY": 621,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-leader-my-work-390.png",
+      "role": "leader",
+      "state": "my-work",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "Select #role option Team Leader; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Team Leader",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [
+          "Review bedroom working drawing R2",
+          "Resolve ceiling snag escalation",
+          "Reassign delayed electrical drawings",
+          "Review kitchen perspective submission",
+          "Check design team weekly workload"
+        ],
+        "visibleCount": "5 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 370,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 137,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 154,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 298,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 442,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 155,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 370,
+            "height": 1567,
+            "bottom": 1902
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 368,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 540,
+            "width": 348,
+            "height": 232,
+            "bottom": 772
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 540,
+          "firstTaskDocumentY": 540,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-site-my-work-390.png",
+      "role": "site",
+      "state": "my-work",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "Select #role option Site Employee; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Site Employee",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [
+          "Capture bathroom tile photographs",
+          "Upload daily site progress photographs",
+          "Request revised ceiling working drawing",
+          "Submit end-of-day site report",
+          "Inspect lobby carpentry finish",
+          "Report ceiling alignment snag",
+          "Check site drawing register"
+        ],
+        "visibleCount": "7 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 370,
+            "height": 100,
+            "bottom": 312
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 137,
+            "height": 96,
+            "bottom": 309
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 137,
+              "height": 96,
+              "bottom": 309
+            },
+            {
+              "label": "⚑\nSite snags",
+              "x": 154,
+              "y": 213,
+              "width": 137,
+              "height": 96,
+              "bottom": 309
+            },
+            {
+              "label": "⇧\nUploads pending",
+              "x": 298,
+              "y": 213,
+              "width": 137,
+              "height": 96,
+              "bottom": 309
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 442,
+              "y": 213,
+              "width": 137,
+              "height": 96,
+              "bottom": 309
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 157,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 664,
+            "width": 370,
+            "height": 2094,
+            "bottom": 2758
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 705,
+            "width": 368,
+            "height": 51,
+            "bottom": 756
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 870,
+            "width": 348,
+            "height": 232,
+            "bottom": 1101
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 870,
+          "firstTaskDocumentY": 870,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-owner-my-work-390.png",
+      "role": "owner",
+      "state": "my-work",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "step": "Select #role option Owner; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Owner",
+        "scope": "My Work",
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "documentWidth": 390,
+        "visibleTaskTitles": [
+          "Approve revised material selection",
+          "Resolve procurement cost escalation",
+          "Approve turnkey stage handover",
+          "Review team staffing capacity"
+        ],
+        "visibleCount": "4 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 370,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 137,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 154,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 298,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 442,
+              "y": 213,
+              "width": 137,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 177,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 370,
+            "height": 1331,
+            "bottom": 1666
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 368,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 540,
+            "width": 348,
+            "height": 235,
+            "bottom": 776
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 540,
+          "firstTaskDocumentY": 540,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-initial-320.png",
+      "role": "designer",
+      "state": "initial",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "Select #role option Designer; use initial My Work queue.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 300,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 120,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 137,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 264,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 391,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 80,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 300,
+            "height": 2685,
+            "bottom": 3020
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 298,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 540,
+            "width": 278,
+            "height": 250,
+            "bottom": 790
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 540,
+          "firstTaskDocumentY": 540,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-waiting-320.png",
+      "role": "designer",
+      "state": "waiting",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "Click [data-metric=\"waiting\"] (label Waiting / blocked); captures the matching sample status task.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [
+          "Confirm bathroom tile measurements"
+        ],
+        "visibleCount": "1 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": "⊘\nWaiting / blocked",
+        "layout": {
+          "scrollY": 334,
+          "summary": {
+            "x": 10,
+            "y": -122,
+            "width": 300,
+            "height": 112,
+            "bottom": -10
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": -191,
+            "y": -121,
+            "width": 120,
+            "height": 108,
+            "bottom": -13
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": -191,
+              "y": -121,
+              "width": 120,
+              "height": 108,
+              "bottom": -13
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": -64,
+              "y": -121,
+              "width": 120,
+              "height": 108,
+              "bottom": -13
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 63,
+              "y": -121,
+              "width": 120,
+              "height": 108,
+              "bottom": -13
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 190,
+              "y": -121,
+              "width": 120,
+              "height": 108,
+              "bottom": -13
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": -172,
+            "width": 80,
+            "height": 38,
+            "bottom": -134
+          },
+          "queue": {
+            "x": 10,
+            "y": 0,
+            "width": 300,
+            "height": 630,
+            "bottom": 630
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 41,
+            "width": 298,
+            "height": 51,
+            "bottom": 92
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 321,
+            "width": 278,
+            "height": 232,
+            "bottom": 553
+          },
+          "firstMetricTop": -121,
+          "firstTaskTop": 321,
+          "firstTaskDocumentY": 655,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-empty-320.png",
+      "role": "designer",
+      "state": "empty",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "Fill #search with mw-i02-no-match-7f3a; wait for #groups .empty.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [],
+        "visibleCount": "0 tasks",
+        "emptyHeading": "No matching tasks",
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 300,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 120,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 137,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 264,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 391,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 80,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 300,
+            "height": 477,
+            "bottom": 811
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 298,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": null,
+          "firstMetricTop": 213,
+          "firstTaskTop": null,
+          "firstTaskDocumentY": null,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-designer-error-simulated-320.png",
+      "role": "designer",
+      "state": "error-simulated",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "At a width where visible, click #viewSettings > Preview UX error states > #errorOn (local demo error; no backend request), then Close; return to the requested viewport before capture.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Designer",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [
+          "Revise bedroom wardrobe working drawing",
+          "Submit kitchen 3D perspective",
+          "Update lounge false-ceiling plan",
+          "Confirm bathroom tile measurements",
+          "Submit master bedroom lighting layout",
+          "Prepare paint and veneer mood board",
+          "Personal learning and SOP review",
+          "Coordinate fixture specification samples",
+          "Review archived concept references"
+        ],
+        "visibleCount": "9 tasks",
+        "emptyHeading": null,
+        "demoBanner": "Simulated error: task information failed to refresh. Your current filters and draft state are preserved.Retry preview",
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 311,
+            "width": 300,
+            "height": 112,
+            "bottom": 423
+          },
+          "summaryDocumentY": 311,
+          "metric": {
+            "x": 10,
+            "y": 312,
+            "width": 120,
+            "height": 108,
+            "bottom": 420
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 312,
+              "width": 120,
+              "height": 108,
+              "bottom": 420
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 137,
+              "y": 312,
+              "width": 120,
+              "height": 108,
+              "bottom": 420
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 264,
+              "y": 312,
+              "width": 120,
+              "height": 108,
+              "bottom": 420
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 391,
+              "y": 312,
+              "width": 120,
+              "height": 108,
+              "bottom": 420
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 80,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 433,
+            "width": 300,
+            "height": 2685,
+            "bottom": 3118
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 474,
+            "width": 298,
+            "height": 51,
+            "bottom": 525
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 639,
+            "width": 278,
+            "height": 250,
+            "bottom": 889
+          },
+          "firstMetricTop": 312,
+          "firstTaskTop": 639,
+          "firstTaskDocumentY": 639,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-leader-my-work-320.png",
+      "role": "leader",
+      "state": "my-work",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "Select #role option Team Leader; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Team Leader",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [
+          "Review bedroom working drawing R2",
+          "Resolve ceiling snag escalation",
+          "Reassign delayed electrical drawings",
+          "Review kitchen perspective submission",
+          "Check design team weekly workload"
+        ],
+        "visibleCount": "5 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 300,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 120,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 137,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 264,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 391,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 155,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 300,
+            "height": 1571,
+            "bottom": 1905
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 298,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 540,
+            "width": 278,
+            "height": 232,
+            "bottom": 772
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 540,
+          "firstTaskDocumentY": 540,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-site-my-work-320.png",
+      "role": "site",
+      "state": "my-work",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "Select #role option Site Employee; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Site Employee",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [
+          "Capture bathroom tile photographs",
+          "Upload daily site progress photographs",
+          "Request revised ceiling working drawing",
+          "Submit end-of-day site report",
+          "Inspect lobby carpentry finish",
+          "Report ceiling alignment snag",
+          "Check site drawing register"
+        ],
+        "visibleCount": "7 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 300,
+            "height": 114,
+            "bottom": 326
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 120,
+            "height": 110,
+            "bottom": 323
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 120,
+              "height": 110,
+              "bottom": 323
+            },
+            {
+              "label": "⚑\nSite snags",
+              "x": 137,
+              "y": 213,
+              "width": 120,
+              "height": 110,
+              "bottom": 323
+            },
+            {
+              "label": "⇧\nUploads pending",
+              "x": 264,
+              "y": 213,
+              "width": 120,
+              "height": 110,
+              "bottom": 323
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 391,
+              "y": 213,
+              "width": 120,
+              "height": 110,
+              "bottom": 323
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 157,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 695,
+            "width": 300,
+            "height": 2094,
+            "bottom": 2789
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 736,
+            "width": 298,
+            "height": 51,
+            "bottom": 787
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 901,
+            "width": 278,
+            "height": 232,
+            "bottom": 1133
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 901,
+          "firstTaskDocumentY": 901,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    },
+    {
+      "filename": "prototype-owner-my-work-320.png",
+      "role": "owner",
+      "state": "my-work",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "step": "Select #role option Owner; capture this role's initial My Work view. Owner personal scope is selected through [data-org-scope=\"My Work\"] when shown.",
+      "details": {
+        "title": "Sense Studios · My Work UX Prototype",
+        "role": "Owner",
+        "scope": "My Work",
+        "viewport": {
+          "width": 320,
+          "height": 740
+        },
+        "documentWidth": 320,
+        "visibleTaskTitles": [
+          "Approve revised material selection",
+          "Resolve procurement cost escalation",
+          "Approve turnkey stage handover",
+          "Review team staffing capacity"
+        ],
+        "visibleCount": "4 tasks",
+        "emptyHeading": null,
+        "demoBanner": null,
+        "selectedMetric": null,
+        "layout": {
+          "scrollY": 0,
+          "summary": {
+            "x": 10,
+            "y": 212,
+            "width": 300,
+            "height": 112,
+            "bottom": 324
+          },
+          "summaryDocumentY": 212,
+          "metric": {
+            "x": 10,
+            "y": 213,
+            "width": 120,
+            "height": 108,
+            "bottom": 321
+          },
+          "metricBoxes": [
+            {
+              "label": "◈\nNeeds action",
+              "x": 10,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◷\nOverdue",
+              "x": 137,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "◇\nReviews / corrections",
+              "x": 264,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            },
+            {
+              "label": "⊘\nWaiting / blocked",
+              "x": 391,
+              "y": 213,
+              "width": 120,
+              "height": 108,
+              "bottom": 321
+            }
+          ],
+          "scope": {
+            "x": 10,
+            "y": 162,
+            "width": 177,
+            "height": 38,
+            "bottom": 200
+          },
+          "queue": {
+            "x": 10,
+            "y": 334,
+            "width": 300,
+            "height": 1331,
+            "bottom": 1666
+          },
+          "toolbar": {
+            "x": 11,
+            "y": 375,
+            "width": 298,
+            "height": 51,
+            "bottom": 426
+          },
+          "firstTask": {
+            "x": 21,
+            "y": 540,
+            "width": 278,
+            "height": 235,
+            "bottom": 776
+          },
+          "firstMetricTop": 213,
+          "firstTaskTop": 540,
+          "firstTaskDocumentY": 540,
+          "scopeControlHeight": 38
+        }
+      },
+      "pageErrors": []
+    }
+  ]
+}

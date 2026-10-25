@@ -1,0 +1,79 @@
+- main [ref=f1e3]:
+  - paragraph [ref=f1e4]: Synthetic project preview · no authentication
+  - region [ref=f1e5]:
+    - generic [ref=f1e6]:
+      - generic [ref=f1e7]:
+        - generic [ref=f1e8]: DELIVERY
+        - heading "Projects" [level=1] [ref=f1e9]
+        - paragraph [ref=f1e10]: Create Draft projects and review their delivery scopes and history.
+      - generic [ref=f1e11]:
+        - generic [ref=f1e12]: 0 total
+        - button "New project" [ref=f1e13] [cursor=pointer]
+    - generic [ref=f1e14]:
+      - text: Project directory
+      - combobox "Project branch" [ref=f1e15]:
+        - option "All projects available to me" [selected]
+        - option "Mumbai"
+    - generic [ref=f1e16]:
+      - region "Project directory" [ref=f1e17]:
+        - generic [ref=f1e18]:
+          - generic [ref=f1e19]:
+            - generic [ref=f1e20]:
+              - heading "Projects" [level=3] [ref=f1e21]
+              - generic [ref=f1e22]: Showing 0
+            - button "Refresh" [ref=f1e23] [cursor=pointer]
+          - generic [ref=f1e24]:
+            - generic [ref=f1e25]:
+              - text: Search title, delivery type, or current lead
+              - textbox "Search projects" [ref=f1e26]
+            - generic [ref=f1e27]:
+              - text: Applied stage key
+              - combobox "Applied stage key" [ref=f1e28]:
+                - option "All applied stages" [selected]
+            - generic [ref=f1e29]:
+              - text: Sort projects
+              - combobox "Sort projects" [ref=f1e30]:
+                - option "Created" [selected]
+                - option "Name"
+                - option "Next milestone"
+            - generic [ref=f1e31]:
+              - text: Direction
+              - combobox "Sort direction" [ref=f1e32]:
+                - option "Descending" [selected]
+                - option "Ascending"
+            - button "Search" [ref=f1e33] [cursor=pointer]
+          - status [ref=f1e34]:
+            - paragraph [ref=f1e37]: No projects match these filters.
+            - button "Clear filters" [ref=f1e38] [cursor=pointer]
+          - navigation "Project list pages" [ref=f1e39]:
+            - button "Previous" [disabled] [ref=f1e40]
+            - generic [ref=f1e41]: No pages
+            - button "Next" [disabled] [ref=f1e42]
+      - region [ref=f1e43]:
+        - generic [ref=f1e44]:
+          - heading "Create Draft project" [level=3] [ref=f1e45]
+          - generic [ref=f1e46]: Draft
+        - group [ref=f1e47]:
+          - generic "Project template (optional)" [ref=f1e48]
+        - form "Create project" [ref=f1e49]:
+          - group "Project details" [ref=f1e50]:
+            - generic [ref=f1e52]:
+              - text: Project title
+              - textbox "Project title" [ref=f1e53]
+            - generic [ref=f1e54]:
+              - text: Delivery type
+              - combobox "Delivery type" [ref=f1e55]:
+                - option "Design" [selected]
+                - option "Turnkey"
+            - generic [ref=f1e56]:
+              - text: Initial service scopes
+              - textbox "Initial service scopes" [ref=f1e57]:
+                - /placeholder: "Architecture\nInterior design"
+              - generic [ref=f1e58]: Enter 1–12 scopes, one per line or separated by commas.
+            - region "Client and lead links" [ref=f1e59]:
+              - paragraph [ref=f1e60]: Link an existing client or won lead, or leave both blank for a direct project.
+              - paragraph [ref=f1e61]: Choose a project branch to find clients and won leads.
+            - generic [ref=f1e62]:
+              - text: Creation reason
+              - textbox "Creation reason" [ref=f1e63]
+            - button "Create Draft project" [disabled] [ref=f1e64]

@@ -218,6 +218,53 @@ export class TimeService {
     await tx.timeEntryVersion.create({ data: { organizationId: actor.organizationId, entryId: row.id, version: 1, data: json(data), reason, editorId: actor.accountId, eventId } });
     return { id: row.id, version: 1 };
   }
+  async timeSummary(actor: ProjectActor, projectId: string, taskId: string | null, employeeId: string | null) {
+    return this.transaction(async tx => {
+      const self = await this.active(tx, actor);
+      const project = await tx.project.findFirst({ where: { id: projectId, organizationId: actor.organizationId } });
+      if (!project) throw new NotFoundException("Project unavailable");
+      if (actor.kind !== AccountKind.OWNER) {
+        const ownAssignment = self && await tx.projectAssignment.findFirst({ where: { projectId, employeeId: self.id, revokedAt: null, ...(self.homeBranchId !== project.branchId ? { crossBranchAuthorized: true } : {}) } });
+        if (!ownAssignment) throw new ForbiddenException("Project access required");
+        await this.authorization.assertPermission(actor.accountId, "project.view", { kind: "BRANCH", organizationId: actor.organizationId, branchId: project.branchId }, tx);
+      }
+      const activeEmployees = await tx.employee.findMany({ where: { organizationId: actor.organizationId, state: "ACTIVE" }, select: { id: true, account: { select: { normalizedEmail: true } } } });
+      const managedEmployees = actor.kind === AccountKind.OWNER ? activeEmployees : (await Promise.all(activeEmployees.map(employee => this.manager(tx, actor, employee.id, projectId).then(canManage => canManage ? employee : null)))).filter((employee): employee is (typeof activeEmployees)[number] => !!employee);
+      const managedIds = new Set(managedEmployees.map(employee => employee.id));
+      const where = { organizationId: actor.organizationId, projectId, ...(taskId ? { taskId } : {}), ...(employeeId ? { employeeId } : {}), ...(actor.kind !== AccountKind.OWNER && !employeeId ? { employeeId: { in: [...managedIds] } } : {}) };
+      const entries = await tx.timeEntry.findMany({ where, select: { id: true, employeeId: true, taskId: true, version: true } });
+      const second = (value: number | null | undefined) => Math.max(0, Number(value) || 0);
+      const byEmployee = new Map<string, number>();
+      const byTask = new Map<string, number>();
+      const entryIdByEntry = new Map<string, number>();
+      for (const row of entries) entryIdByEntry.set(row.id, row.version);
+      const versions = await tx.timeEntryVersion.findMany({ where: { organizationId: actor.organizationId, entryId: { in: entries.map(entry => entry.id) } }, select: { entryId: true, version: true, data: true } });
+      for (const version of versions) {
+        const entry = entries.find(row => row.id === version.entryId && row.version === version.version);
+        if (!entry) continue;
+        const duration = Number((version.data as { durationSeconds?: unknown })?.durationSeconds ?? 0);
+        byEmployee.set(entry.employeeId, (byEmployee.get(entry.employeeId) ?? 0) + duration);
+        if (entry.taskId) byTask.set(entry.taskId, (byTask.get(entry.taskId) ?? 0) + duration);
+      }
+      const nameOf = (id: string) => managedEmployees.find(employee => employee.id === id)?.account?.normalizedEmail ?? id;
+      const taskRows = taskId
+        ? await tx.task.findUnique({ where: { id: taskId, organizationId: actor.organizationId }, select: { id: true, title: true, status: true } }).then(row => row ? [row] : [])
+        : await tx.task.findMany({ where: { organizationId: actor.organizationId, projectId, status: { notIn: ["STOPPED_DUE_TO_PROJECT_CANCELLATION"] } }, select: { id: true, title: true, status: true } });
+      const activeTimer = self && taskId ? await tx.timeTimer.findFirst({ where: { taskId, employeeId: self.id, state: { in: ["RUNNING", "PAUSED"] } } }) : null;
+      return {
+        projectId,
+        taskId: taskId ?? null,
+        loggedSeconds: second([...byEmployee.values()].reduce((total, value) => total + value, 0)),
+        entryCount: entries.length,
+        estimatedHours: taskId
+          ? Number((await tx.task.findUnique({ where: { id: taskId }, select: { estimatedHours: true } }))?.estimatedHours ?? 0)
+          : Number((await tx.task.aggregate({ where: { organizationId: actor.organizationId, projectId, estimatedHours: { not: null } }, _sum: { estimatedHours: true } }))?._sum?.estimatedHours ?? 0),
+        byEmployee: [...byEmployee.entries()].map(([id, seconds]) => ({ id, name: nameOf(id), seconds: second(seconds) })).filter(row => managedIds.has(row.id) || actor.kind === AccountKind.OWNER),
+        byTask: taskRows.map(task => ({ ...task, seconds: second(byTask.get(task.id)), hasTime: byTask.has(task.id) })).filter(task => !taskId || task.seconds > 0 || task.hasTime),
+        activeTimer: activeTimer ? { id: activeTimer.id, state: activeTimer.state, elapsedSeconds: Math.floor((Number(activeTimer.elapsedMs) + (activeTimer.runningSince ? Math.max(0, Date.now() - activeTimer.runningSince.getTime()) : 0)) / 1000) } : null,
+      };
+    });
+  }
   async manual(actor: ProjectActor, input: TimeData & { commandId: string; employeeId?: string | undefined }) {
     return this.command(actor, input.commandId, { op: "manual", input }, async tx => {
       const self = await this.active(tx, actor); const employeeId = input.employeeId ?? self?.id;

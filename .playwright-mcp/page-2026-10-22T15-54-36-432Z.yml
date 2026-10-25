@@ -1,0 +1,12 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - link "Sense Studios home" [ref=f1e5] [cursor=pointer]:
+      - /url: /
+      - generic [ref=f1e6]: S
+      - generic [ref=f1e7]:
+        - strong [ref=f1e8]: SENSE STUDIOS
+        - generic [ref=f1e9]: WORK MANAGEMENT
+    - generic [ref=f1e10]: IDENTITY
+  - main [ref=f1e11]:
+    - status [ref=f1e12]: Checking your session…
+  - contentinfo [ref=f1e13]: Sense Studios · Secure workspace

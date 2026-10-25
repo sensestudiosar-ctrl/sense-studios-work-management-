@@ -1,0 +1,38 @@
+[
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\app.tsx",
+    "Hash": "6BA6548C6F6CD67F919DEBD5A5D3CACC50214E6BCDA89D369FFFF69D68975904"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.tsx",
+    "Hash": "435724DFD7587FA7BD12A2144C37A889A3D6D155D3EBFDE687681B928D7258B5"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.css",
+    "Hash": "4E08B6DC912459C9ACDEA49643A28F9E1E04787734E3A43BCB630B9E81E20F88"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.test.tsx",
+    "Hash": "A2AB695F254E32ADA499B885DA5BDD93E5F02671CBFF58D96894FD251DD3BF61"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-attention.tsx",
+    "Hash": "8DEB92B6C29ECFC776AF56E2401FC3303F36E1AB383FB38CF09026092BD03AE3"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-attention.css",
+    "Hash": "7B799C34D81C462D8CFAA466DFD4B1F0CBFD9C9B435A9AFCB1D508663823A3F7"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-attention.test.tsx",
+    "Hash": "00630011E0A35FCB545DBCA931BCD31BFE1D30620B6F8DC7AA9D0B96EF03C87C"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\approval-queue.tsx",
+    "Hash": "F27440276B1AEE4F1EF5769C5581E451D6E6E270028F7D4318AEAF809B418E1F"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\approval-queue.test.tsx",
+    "Hash": "19B9837188B68FE961CA5E846D5EE0B1AA91D089A02C9F9FCF23024186ED6A4F"
+  }
+]

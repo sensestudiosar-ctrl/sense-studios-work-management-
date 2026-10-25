@@ -1,0 +1,10 @@
+{
+  "state": "PASS",
+  "ownership": 35,
+  "manifest": 30,
+  "sequence": 41,
+  "helperAndInput": 41,
+  "parsers": 26,
+  "processStarts": false,
+  "databaseAccess": false
+}

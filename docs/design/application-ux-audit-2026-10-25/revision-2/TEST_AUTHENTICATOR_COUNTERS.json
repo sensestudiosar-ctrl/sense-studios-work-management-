@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-25T07:04:35.287Z",
+  "note": "Public signing-counter metadata only, read without modifying server credentials. Existing private keys remain DPAPI-protected.",
+  "counters": [
+    {
+      "accountId": "473d501d-b547-4329-a30d-bacbfa064747",
+      "counter": "4"
+    },
+    {
+      "accountId": "f6337100-d635-4f19-8c14-c9ee1f19bbf1",
+      "counter": "4"
+    },
+    {
+      "accountId": "66bbb466-7851-4ddc-8186-840ff73afec9",
+      "counter": "4"
+    },
+    {
+      "accountId": "62d970c8-0848-4f6f-808e-9e0a3d82ea06",
+      "counter": "4"
+    },
+    {
+      "accountId": "43ab62cb-761f-4da2-b7ea-76c775f34df5",
+      "counter": "4"
+    }
+  ]
+}

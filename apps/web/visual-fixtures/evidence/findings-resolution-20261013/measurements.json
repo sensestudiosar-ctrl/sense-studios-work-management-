@@ -1,0 +1,1427 @@
+{
+  "classification": "SYNTHETIC READ-ONLY COMPONENT EVIDENCE; not authenticated, not production, and not visual acceptance",
+  "generatedAt": "2026-10-13T17:47:56.981Z",
+  "fixture": "http://127.0.0.1:4173/mw-i02-after.html",
+  "fixtureSemantics": {
+    "endpoint": "/api/v1/my-work/attention",
+    "allSourceCounts": {
+      "task": 56,
+      "review": 56,
+      "approval": 3
+    },
+    "pageSize": 25,
+    "ownerReassignmentHolds": 5,
+    "taskSubtasksProjection": "one synthetic child; canCreate=true; taskVersion=1"
+  },
+  "viewports": [],
+  "captures": [
+    {
+      "file": "1440x900-designer-initial.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1440,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 275,
+        "y": 542,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 577,
+        "width": 1120,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-designer-waiting.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1440,
+        "height": 1810
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 275,
+        "y": 611,
+        "width": 1122,
+        "height": 1052,
+        "bottom": 1663
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 646,
+        "width": 1120,
+        "height": 73,
+        "bottom": 719
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-designer-attention.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1440,
+        "height": 3280
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-site-populated.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "document": {
+        "width": 1440,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 275,
+        "y": 542,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 577,
+        "width": 1120,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-owner-five-holds.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "document": {
+        "width": 1440,
+        "height": 1075
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1440x900-create-dialog.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1440,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 275,
+        "y": 542,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 577,
+        "width": 1120,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": {
+        "x": 340,
+        "y": 45,
+        "width": 760,
+        "height": 810,
+        "bottom": 855
+      },
+      "dialogFooter": {
+        "x": 341,
+        "y": 780,
+        "width": 758,
+        "height": 76,
+        "bottom": 856
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "1440x900-task-drawer.png",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1440,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 275,
+        "y": 542,
+        "width": 1122,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 276,
+        "y": 577,
+        "width": 1120,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 13,
+        "y": 163,
+        "width": 206,
+        "height": 719,
+        "bottom": 882
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": {
+        "x": 870,
+        "y": 0,
+        "width": 570,
+        "height": 900,
+        "bottom": 900
+      },
+      "dialogFooter": {
+        "x": 870,
+        "y": 831,
+        "width": 570,
+        "height": 69,
+        "bottom": 900
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "1024x900-designer-initial.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1024,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 96,
+        "y": 542,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 577,
+        "width": 896,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-designer-waiting.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1024,
+        "height": 1810
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 96,
+        "y": 611,
+        "width": 898,
+        "height": 1052,
+        "bottom": 1663
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 646,
+        "width": 896,
+        "height": 73,
+        "bottom": 719
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-designer-attention.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1024,
+        "height": 3280
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-site-populated.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "document": {
+        "width": 1024,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 96,
+        "y": 542,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 577,
+        "width": 896,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-owner-five-holds.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "document": {
+        "width": 1024,
+        "height": 1075
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "1024x900-create-dialog.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1024,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 96,
+        "y": 542,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 577,
+        "width": 896,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": {
+        "x": 132,
+        "y": 45,
+        "width": 760,
+        "height": 810,
+        "bottom": 855
+      },
+      "dialogFooter": {
+        "x": 133,
+        "y": 780,
+        "width": 758,
+        "height": 76,
+        "bottom": 856
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "1024x900-task-drawer.png",
+      "viewport": {
+        "width": 1024,
+        "height": 900
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 1024,
+        "height": 3772
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 96,
+        "y": 542,
+        "width": 898,
+        "height": 3083,
+        "bottom": 3625
+      },
+      "firstTask": {
+        "x": 97,
+        "y": 577,
+        "width": 896,
+        "height": 73,
+        "bottom": 650
+      },
+      "workspaceNav": {
+        "x": 9,
+        "y": 132,
+        "width": 47,
+        "height": 748,
+        "bottom": 880
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "openDialog": {
+        "x": 454,
+        "y": 0,
+        "width": 570,
+        "height": 900,
+        "bottom": 900
+      },
+      "dialogFooter": {
+        "x": 454,
+        "y": 831,
+        "width": 570,
+        "height": 69,
+        "bottom": 900
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "390x844-designer-initial.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 390,
+        "height": 11735
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 456,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11502
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 467,
+        "width": 348,
+        "height": 251,
+        "bottom": 719
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-designer-waiting.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 390,
+        "height": 4491
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 459,
+        "width": 366,
+        "height": 3732,
+        "bottom": 4192
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 470,
+        "width": 348,
+        "height": 251,
+        "bottom": 722
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-designer-attention.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 390,
+        "height": 3310
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-site-populated.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "document": {
+        "width": 390,
+        "height": 11735
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 456,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11502
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 467,
+        "width": 348,
+        "height": 251,
+        "bottom": 719
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-owner-five-holds.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "document": {
+        "width": 390,
+        "height": 1185
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "390x844-create-dialog.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 390,
+        "height": 11735
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 456,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11502
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 467,
+        "width": 348,
+        "height": 251,
+        "bottom": 719
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": {
+        "x": 0,
+        "y": 51,
+        "width": 390,
+        "height": 793,
+        "bottom": 844
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 772,
+        "width": 390,
+        "height": 72,
+        "bottom": 844
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "390x844-task-drawer.png",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 390,
+        "height": 11735
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 456,
+        "width": 366,
+        "height": 11045,
+        "bottom": 11502
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 467,
+        "width": 348,
+        "height": 251,
+        "bottom": 719
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66,
+        "bottom": 844
+      },
+      "openDialog": {
+        "x": 0,
+        "y": 0,
+        "width": 390,
+        "height": 844,
+        "bottom": 844
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 775,
+        "width": 390,
+        "height": 69,
+        "bottom": 844
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "320x740-designer-initial.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "designer-initial",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 320,
+        "height": 11763
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 485,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11530
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 496,
+        "width": 278,
+        "height": 251,
+        "bottom": 747
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-designer-waiting.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "designer-waiting",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 320,
+        "height": 4547
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 489,
+        "width": 296,
+        "height": 3732,
+        "bottom": 4221
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 500,
+        "width": 278,
+        "height": 251,
+        "bottom": 751
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-designer-attention.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "designer-attention",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 320,
+        "height": 3915
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-site-populated.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "site-populated",
+      "role": "SITE",
+      "document": {
+        "width": 320,
+        "height": 11763
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 485,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11530
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 496,
+        "width": 278,
+        "height": 251,
+        "bottom": 747
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-owner-five-holds.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "owner-five-holds",
+      "role": "OWNER",
+      "document": {
+        "width": 320,
+        "height": 1232
+      },
+      "noHorizontalOverflow": true,
+      "queue": null,
+      "firstTask": null,
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": null,
+      "dialogFooter": null,
+      "footerVisible": null,
+      "bodyScrollLocked": false,
+      "dialogActiveElement": null,
+      "consoleErrors": []
+    },
+    {
+      "file": "320x740-create-dialog.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "create-dialog",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 320,
+        "height": 11763
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 485,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11530
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 496,
+        "width": 278,
+        "height": 251,
+        "bottom": 747
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": {
+        "x": 0,
+        "y": 44,
+        "width": 320,
+        "height": 696,
+        "bottom": 740
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 668,
+        "width": 320,
+        "height": 72,
+        "bottom": 740
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Create my task",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    },
+    {
+      "file": "320x740-task-drawer.png",
+      "viewport": {
+        "width": 320,
+        "height": 740
+      },
+      "case": "task-drawer",
+      "role": "EMPLOYEE",
+      "document": {
+        "width": 320,
+        "height": 11763
+      },
+      "noHorizontalOverflow": true,
+      "queue": {
+        "x": 12,
+        "y": 400,
+        "width": 296,
+        "height": 11045,
+        "bottom": 11445
+      },
+      "firstTask": {
+        "x": 21,
+        "y": 411,
+        "width": 278,
+        "height": 251,
+        "bottom": 662
+      },
+      "workspaceNav": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "bottom": 0
+      },
+      "mobileNav": {
+        "x": 0,
+        "y": 674,
+        "width": 320,
+        "height": 66,
+        "bottom": 740
+      },
+      "openDialog": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 740,
+        "bottom": 740
+      },
+      "dialogFooter": {
+        "x": 0,
+        "y": 671,
+        "width": 320,
+        "height": 69,
+        "bottom": 740
+      },
+      "footerVisible": true,
+      "bodyScrollLocked": true,
+      "dialogActiveElement": "Close task details",
+      "consoleErrors": [],
+      "dialogCheck": {
+        "closed": true,
+        "bodyScrollRestored": true,
+        "triggerFocusRestored": true
+      }
+    }
+  ],
+  "interactions": [
+    {
+      "name": "390px touch filters, attention open/page/clear",
+      "navBefore": {
+        "x": 0,
+        "y": 778,
+        "width": 390,
+        "height": 66
+      },
+      "filterPanelOpened": true,
+      "attentionVisible": true,
+      "attentionPagingPassed": true,
+      "attentionCleared": true
+    }
+  ],
+  "sourceHashes": {
+    "apps/web/visual-fixtures/mw-i02.tsx": "00a2212a58d2c72fe3761b9db12e08df08bf5aed7c3dc7bf1c669c174a510029",
+    "apps/web/visual-fixtures/capture-mw-i02.mjs": "5dfb452079c5d7d179d6001490933d1b43a485b8b794997b87df96a0cffbf2a8",
+    "apps/web/src/task.tsx": "40c4191fa441803667196054655bd08c2ad0ca2546189030c246fb887ae52704",
+    "apps/web/src/task-create-dialog.tsx": "4ce36b561ebcaf71f91189cfe345da7fb139f2133712e3a199e0628e18f3560b",
+    "apps/web/src/task-create-dialog.css": "0eab1db66270addcbfa4f7f952717ebec64383e780648b603c57e3b9753a9aa9",
+    "apps/web/src/task-detail-drawer.tsx": "7660e241ef1ef25c11cfcab2523b77e415f8a9b3bbfca9cda0b308ebae0b5f52",
+    "apps/web/src/task-detail-drawer.css": "5516d2b417372645388951e190b19dff85ac843bb8bdfd67b8fb07ecd0cba8f0"
+  }
+}

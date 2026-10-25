@@ -1,0 +1,28 @@
+{
+  "at": "2026-10-25T07:04:35.287Z",
+  "mode": "READ ONLY",
+  "database": "sense_latest_retained_20261014_test",
+  "oid": "145606",
+  "system": "7693570241708228348",
+  "accounts": [
+    {
+      "kind": "OWNER",
+      "state": "ACTIVE",
+      "count": 1
+    },
+    {
+      "kind": "STAFF",
+      "state": "ACTIVE",
+      "count": 5
+    }
+  ],
+  "counts": {
+    "client_portal_grants": 0,
+    "external_portal_grants": 0,
+    "client_review_packages": 0,
+    "client_review_items": 0,
+    "client_portal_sessions": 0,
+    "external_portal_sessions": 0
+  },
+  "note": "Counts/identity only. No token, OTP, private credential or session row contents exported."
+}

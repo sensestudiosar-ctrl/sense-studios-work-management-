@@ -17,10 +17,15 @@
    grid-area on .task-composer__context / .task-composer__aside, and flex
    layout on .task-field, so every relevant property is restated here. */
 @media (min-width: 701px) {
-  .task-composer-v15 .task-composer__core { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); grid-template-areas: "brief aside"; column-gap: 28px; row-gap: 18px; align-items: start; min-height: 0; }
-  .task-composer-v15 .task-composer__brief { grid-area: brief; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 20px 26px 30px 0; min-width: 0; background: transparent; }
-  .task-composer-v15 .task-composer__aside { grid-area: aside; display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; align-content: start; background: #f8f8f6; border: 0; border-left: 1px solid #e8ebe6; border-radius: 0; padding: 20px 22px 30px; min-width: 0; }
-}
+  .task-composer-v15 .task-composer__core { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 340px); grid-template-areas: "brief aside"; column-gap: 28px; row-gap: 18px; align-items: stretch; min-height: 0; }
+  .task-composer-v15 .task-composer__core .task-composer__brief { grid-area: brief; display: flex; flex-direction: column; gap: 16px; padding: 20px 26px 30px 0; min-width: 0; background: transparent; }
+  /* Inside the real dialog the legacy .task-create-dialog .task-composer__brief rule
+     (0,2,0) still loads; match its depth so the flex column always wins. */
+  .task-create-dialog .task-composer-v15 .task-composer__brief { grid-area: brief; display: flex; flex-direction: column; gap: 16px; padding: 20px 26px 30px 0; min-width: 0; background: transparent; }
+  /* Push "Optional planning" and "After creation" to the bottom of the brief
+     column when the dialog is taller than the content. */
+  .task-composer-v15 .task-composer__brief .task-optional-planning { flex: 1; }
+  .task-composer-v15 .task-composer__brief .task-post-creation { margin-top: auto; }
 
 .task-composer-v15 .task-composer__context-line { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .task-composer-v15 .task-composer__context-label { font-size: 11px; font-weight: 700; color: #7a877c; }

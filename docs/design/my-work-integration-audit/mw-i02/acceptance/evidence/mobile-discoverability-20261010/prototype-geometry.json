@@ -1,0 +1,94 @@
+{
+  "source": "D:/app/reference from codex chat/Sense_Studios_My_Work_UX_Package/Sense_Studios_My_Work/prototype.html",
+  "sha256": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8",
+  "evidence": [
+    {
+      "width": 390,
+      "state": "initial",
+      "geometry": {
+        "queue": {
+          "y": 334.296875,
+          "height": 2667.1875,
+          "bottom": 3001.484375
+        },
+        "firstTask": {
+          "y": 540.296875,
+          "height": 231.6875,
+          "bottom": 771.984375
+        },
+        "summary": {
+          "y": 212.296875,
+          "height": 112,
+          "bottom": 324.296875
+        },
+        "viewportHeight": 844
+      }
+    },
+    {
+      "width": 390,
+      "state": "waiting",
+      "geometry": {
+        "queue": {
+          "y": 334.296875,
+          "height": 629.6875,
+          "bottom": 963.984375
+        },
+        "firstTask": {
+          "y": 655.296875,
+          "height": 231.6875,
+          "bottom": 886.984375
+        },
+        "summary": {
+          "y": 212.296875,
+          "height": 112,
+          "bottom": 324.296875
+        },
+        "viewportHeight": 844
+      }
+    },
+    {
+      "width": 320,
+      "state": "initial",
+      "geometry": {
+        "queue": {
+          "y": 334.296875,
+          "height": 2685.375,
+          "bottom": 3019.671875
+        },
+        "firstTask": {
+          "y": 540.296875,
+          "height": 249.875,
+          "bottom": 790.171875
+        },
+        "summary": {
+          "y": 212.296875,
+          "height": 112,
+          "bottom": 324.296875
+        },
+        "viewportHeight": 844
+      }
+    },
+    {
+      "width": 320,
+      "state": "waiting",
+      "geometry": {
+        "queue": {
+          "y": 334.296875,
+          "height": 629.6875,
+          "bottom": 963.984375
+        },
+        "firstTask": {
+          "y": 655.296875,
+          "height": 231.6875,
+          "bottom": 886.984375
+        },
+        "summary": {
+          "y": 212.296875,
+          "height": 112,
+          "bottom": 324.296875
+        },
+        "viewportHeight": 844
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-12T11:13:23.469Z",
+  "readOnly": true,
+  "identity": {
+    "database": "sense_local_preview_20261008_1791474390772_test",
+    "host": "127.0.0.1",
+    "port": 45434,
+    "directory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+    "system_identifier": "7693570241708228348"
+  },
+  "migrations": {
+    "count": 115,
+    "latest": "20261007060000_s27_assistance"
+  },
+  "counts": {
+    "organizations": 0,
+    "branches": 0,
+    "teams": 0,
+    "employees": 0,
+    "tasks": 0
+  },
+  "ownerSecurity": {
+    "owner_accounts": 1,
+    "active_owners": 1,
+    "secured_owners": 1
+  }
+}

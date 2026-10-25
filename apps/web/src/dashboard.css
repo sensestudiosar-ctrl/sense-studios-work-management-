@@ -110,6 +110,14 @@
 .dv-time-body > .dv-time-idle > button, .dv-time-controls button { min-height: 35px; font-size: 10.3px; padding: 8px 12px; }
 /* Demo .time-foot: mint strip, 9.5px, 7px 18px. */
 .dv-time-body > .dv-widget-foot { background: #f2f6ed; border-top: 1px solid #e6ebe1; color: #6d7e72; font-size: 9.5px; padding: 7px 18px; margin: 0 -16px; }
+/* Logged-hours strip on the dashboard time widget (today / week + top projects). */
+.dv-time-hours { display: grid; gap: 8px; padding: 10px 12px; border: 1px solid #e4e7df; border-radius: 10px; background: #f7faf4; }
+.dv-time-hours-row { display: flex; align-items: baseline; gap: 8px; }
+.dv-time-hours-row span { color: #6d7e72; font-size: 10px; font-weight: 650; }
+.dv-time-hours-row strong { color: #2f5d47; font-size: 15px; font-variant-numeric: tabular-nums; margin: 0 8px 0 2px; }
+.dv-time-hours-project { display: flex; justify-content: space-between; gap: 8px; padding: 7px 9px; border-radius: 8px; background: #fffdf7; border: 1px solid #edf0e8; }
+.dv-time-hours-project span { color: #334d44; font-size: 10.5px; font-weight: 650; }
+.dv-time-hours-project strong { color: #2f5d47; font-size: 11px; font-variant-numeric: tabular-nums; }
 /* Demo .obligation-chip (amber) and .obligation-chip.review (blue). */
 .dv-decisions-chip { padding: 8px 10px; background: #faf5e9; border-color: #e8e3d5; gap: 8px; }
 .dv-decisions-chip.review { background: #f0f4f6; border-color: #e0e8eb; }

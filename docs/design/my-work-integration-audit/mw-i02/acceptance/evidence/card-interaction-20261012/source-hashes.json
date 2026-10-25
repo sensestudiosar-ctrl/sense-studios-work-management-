@@ -1,0 +1,30 @@
+[
+  {
+    "Path": "D:\\SCRAP\\prototype (2).html",
+    "Hash": "F8C18088E04C72ACEE34C38BDB458BF84FC8CF9FC834667A75E3D5A3D95C59B8"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.tsx",
+    "Hash": "89C944DCCF87BA7EA2F128D5C7B5B4720E60F8EBF8C865FC21E87780A933CFF5"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\task.test.tsx",
+    "Hash": "8CA89F1F46D320895C20E73B188E846908B5B5BD6D09589766EFCD6BDB1DEEDD"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-metrics.tsx",
+    "Hash": "6A94304601D00422DB130E5B255D7BC9C3649D7BCFC2E0E279BAD9508E61DFE4"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-metric-focus.tsx",
+    "Hash": "BA0155A0CC0C5079B2C78438D944A894F279A95A63FB860AE0C2003C24686A3B"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-metric-focus.test.tsx",
+    "Hash": "39481D423C2F3D49791CC22A27436E3171AFF8FC8D1E179F1278C8FA021E4BEE"
+  },
+  {
+    "Path": "D:\\app\\sensestudios work management app\\apps\\web\\src\\my-work-visual.css",
+    "Hash": "4B8E671251055FE0E390781877DC94681A9D6E10F30F366DBA577881E7C78C7C"
+  }
+]

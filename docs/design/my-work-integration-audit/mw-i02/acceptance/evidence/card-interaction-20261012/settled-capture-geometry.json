@@ -1,0 +1,214 @@
+[
+  {
+    "clear": {
+      "bottom": 370.53125,
+      "height": 44,
+      "left": 31,
+      "right": 160.09375,
+      "top": 326.53125,
+      "width": 129.09375
+    },
+    "documentOverflow": false,
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 60,
+      "height": 60,
+      "left": 0,
+      "right": 305,
+      "top": 0,
+      "width": 305
+    },
+    "height": 740,
+    "navigation": {
+      "bottom": 735.203125,
+      "height": 55.40625,
+      "left": 7.1875,
+      "right": 243.109375,
+      "top": 679.796875,
+      "width": 235.921875
+    },
+    "queue": {
+      "bottom": 227.140625,
+      "height": 39.296875,
+      "left": 12,
+      "right": 293,
+      "top": 187.84375,
+      "width": 281
+    },
+    "result": {
+      "bottom": 383.53125,
+      "height": 96.390625,
+      "left": 12,
+      "right": 293,
+      "top": 287.140625,
+      "width": 281
+    },
+    "resultText": "0 tasks · Waiting / blocked× Clear widget filter",
+    "scrollY": 184,
+    "selectedLabel": "Waiting / blocked: 0",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 320,
+    "file": "owner-waiting-320-settled.jpg",
+    "captureWidth": 305,
+    "captureHeight": 705
+  },
+  {
+    "clear": {
+      "bottom": 358.53125,
+      "height": 44,
+      "left": 31,
+      "right": 160.09375,
+      "top": 314.53125,
+      "width": 129.09375
+    },
+    "documentOverflow": false,
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 60,
+      "height": 60,
+      "left": 0,
+      "right": 375,
+      "top": 0,
+      "width": 375
+    },
+    "height": 844,
+    "navigation": {
+      "bottom": 839.203125,
+      "height": 55.40625,
+      "left": 7.1875,
+      "right": 300.515625,
+      "top": 783.796875,
+      "width": 293.328125
+    },
+    "queue": {
+      "bottom": 215.140625,
+      "height": 39.296875,
+      "left": 12,
+      "right": 363,
+      "top": 175.84375,
+      "width": 351
+    },
+    "result": {
+      "bottom": 371.53125,
+      "height": 96.390625,
+      "left": 12,
+      "right": 363,
+      "top": 275.140625,
+      "width": 351
+    },
+    "resultText": "0 tasks · Waiting / blocked× Clear widget filter",
+    "scrollY": 184,
+    "selectedLabel": "Waiting / blocked: 0",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 390,
+    "file": "owner-waiting-390-settled.jpg",
+    "captureWidth": 375,
+    "captureHeight": 812
+  },
+  {
+    "clear": {
+      "bottom": 554.59375,
+      "height": 44,
+      "left": 830.1875,
+      "right": 959.28125,
+      "top": 510.59375,
+      "width": 129.09375
+    },
+    "documentOverflow": false,
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 64,
+      "height": 64,
+      "left": 65,
+      "right": 1009,
+      "top": 0,
+      "width": 944
+    },
+    "height": 900,
+    "navigation": {
+      "bottom": 0,
+      "height": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "width": 0
+    },
+    "queue": {
+      "bottom": 330.390625,
+      "height": 71.6875,
+      "left": 95.71875,
+      "right": 978.28125,
+      "top": 258.703125,
+      "width": 882.5625
+    },
+    "result": {
+      "bottom": 567.59375,
+      "height": 69,
+      "left": 95.71875,
+      "right": 978.28125,
+      "top": 498.59375,
+      "width": 882.5625
+    },
+    "resultText": "0 tasks · Waiting / blocked× Clear widget filter",
+    "scrollY": 59,
+    "selectedLabel": "Waiting / blocked: 0",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 1024,
+    "file": "owner-waiting-1024-settled.jpg",
+    "captureWidth": 1009,
+    "captureHeight": 887
+  },
+  {
+    "clear": {
+      "bottom": 554.59375,
+      "height": 44,
+      "left": 1233.71875,
+      "right": 1362.8125,
+      "top": 510.59375,
+      "width": 129.09375
+    },
+    "documentOverflow": false,
+    "focusedText": "Work queue",
+    "header": {
+      "bottom": 64,
+      "height": 64,
+      "left": 232,
+      "right": 1425,
+      "top": 0,
+      "width": 1193
+    },
+    "height": 900,
+    "navigation": {
+      "bottom": 0,
+      "height": 0,
+      "left": 0,
+      "right": 0,
+      "top": 0,
+      "width": 0
+    },
+    "queue": {
+      "bottom": 330.390625,
+      "height": 71.6875,
+      "left": 275.1875,
+      "right": 1381.8125,
+      "top": 258.703125,
+      "width": 1106.625
+    },
+    "result": {
+      "bottom": 567.59375,
+      "height": 69,
+      "left": 275.1875,
+      "right": 1381.8125,
+      "top": 498.59375,
+      "width": 1106.625
+    },
+    "resultText": "0 tasks · Waiting / blocked× Clear widget filter",
+    "scrollY": 59,
+    "selectedLabel": "Waiting / blocked: 0",
+    "url": "http://localhost:59223/my-work?scope=personal&phase=active&workPhase=waiting",
+    "width": 1440,
+    "file": "owner-waiting-1440-settled.jpg",
+    "captureWidth": 1425,
+    "captureHeight": 891
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "runId": "1791647954161-9c235e5cf941",
+  "state": "cleaned",
+  "serverIdentity": {
+    "database": "postgres",
+    "username": "sense_demo",
+    "server_address": "127.0.0.1",
+    "server_port": 45434,
+    "system_identifier": "7693570241708228348",
+    "data_directory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+    "server_started_at": "2026-10-10 19:53:18.970304+05:30"
+  },
+  "databaseName": "sense_mw_i02_validation_20261009_test",
+  "databaseOid": "108033",
+  "migrations": 116,
+  "apiPid": 23152,
+  "webPid": 37672,
+  "sessionCleanup": {
+    "sessions": {
+      "revokedRows": 8,
+      "remainingActive": 0
+    },
+    "client_portal_sessions": {
+      "revokedRows": 0,
+      "remainingActive": 0
+    },
+    "external_portal_sessions": {
+      "revokedRows": 0,
+      "remainingActive": 0
+    }
+  },
+  "stoppedOwnedProcesses": {
+    "api": true,
+    "web": true
+  },
+  "cleanedAt": "2026-10-10T16:00:52.960Z",
+  "catalogBeforeSha256": "51eec71680e80efdbc0d6438b7a806dff8de6b9100647d29b990ceabb2c6546e",
+  "catalogAfterSha256": "51eec71680e80efdbc0d6438b7a806dff8de6b9100647d29b990ceabb2c6546e",
+  "catalogPreserved": true,
+  "frontendSourceHashesUnchanged": true,
+  "tests": {
+    "taskIntegration": {
+      "passed": 26,
+      "suites": 2,
+      "exit": 0
+    },
+    "browser": {
+      "passed": 0,
+      "failed": 1,
+      "durationSeconds": 33.8,
+      "retries": 0,
+      "exit": 1,
+      "classification": "obsolete harness text locator; not established application regression"
+    },
+    "reviewIntegration": {
+      "state": "BLOCKED",
+      "exit": 1,
+      "testsExecuted": 0,
+      "reason": "Existing runner requires browser pass before review stage"
+    }
+  },
+  "finalReadOnlyVerification": {
+    "checkedAt": "2026-10-10T16:01:21.709Z",
+    "clusterPid": 35672,
+    "systemIdentifier": "7693570241708228348",
+    "host": "127.0.0.1",
+    "port": 45434,
+    "disposableTargetAbsent": true
+  },
+  "screenshots": [
+    "my-work-designer-initial-1440.png",
+    "tasks-designer-desktop-viewport.png",
+    "tasks-designer-desktop.png",
+    "tasks-desktop-cards-viewport.png",
+    "tasks-desktop-cards.png",
+    "tasks-desktop-list-viewport.png",
+    "tasks-desktop-list.png",
+    "tasks-detail-desktop.png",
+    "tasks-leader-desktop-viewport.png",
+    "tasks-leader-desktop.png",
+    "tasks-mobile-320-cards-viewport.png",
+    "tasks-mobile-320-detail.png",
+    "tasks-mobile-320-list-viewport.png",
+    "tasks-mobile-320-list.png",
+    "tasks-mobile-320-queue-viewport.png",
+    "tasks-mobile-320.png",
+    "tasks-mobile-390-cards-viewport.png",
+    "tasks-mobile-390-detail.png",
+    "tasks-mobile-390-list-viewport.png",
+    "tasks-mobile-390-list.png",
+    "tasks-mobile-390-queue-viewport.png",
+    "tasks-mobile-390.png",
+    "tasks-site-employee-desktop-viewport.png",
+    "tasks-site-employee-desktop.png"
+  ]
+}

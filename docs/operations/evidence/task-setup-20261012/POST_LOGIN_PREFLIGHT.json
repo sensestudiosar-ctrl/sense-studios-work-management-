@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-10-12T11:57:28.437Z",
+  "readOnly": true,
+  "identity": {
+    "database": "sense_local_preview_20261008_1791474390772_test",
+    "role": "sense_demo",
+    "host": "127.0.0.1",
+    "port": 45434,
+    "directory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+    "system_identifier": "7693570241708228348"
+  },
+  "targetOid": "32768",
+  "otherDatabaseCatalog": [
+    {
+      "oid": "5",
+      "name": "postgres"
+    },
+    {
+      "oid": "16388",
+      "name": "sense_checkpoint_demo_20261006_a7c9_test"
+    },
+    {
+      "oid": "24580",
+      "name": "sense_checkpoint_user_20261007_695996_test"
+    },
+    {
+      "oid": "4",
+      "name": "template0"
+    },
+    {
+      "oid": "1",
+      "name": "template1"
+    }
+  ],
+  "counts": {
+    "organizations": 0,
+    "branches": 0,
+    "teams": 0,
+    "employees": 0,
+    "tasks": 0,
+    "employee_membership_history": 0,
+    "employee_job_role_assignments": 0,
+    "employee_permission_overrides": 0
+  },
+  "migrations": {
+    "count": 115,
+    "latest": "20261007060000_s27_assistance"
+  },
+  "proposedEmailAbsent": true,
+  "conflictingInvitationAbsent": true,
+  "ownerAccountId": "3301b429-93fd-41d5-95e5-5ed38837bb12",
+  "ownerCredentialIdentityHash": "fb10a7c689212dd4287b3ab8f8a8fc25391f90fa63227d2187b34662df1ecd36",
+  "ownerRecoveryConfigurationHash": "8e3c3b4771ef4db22fab6f6607a56a706caed7eb35e0bb2e945b0c30349a092b",
+  "ownerActiveCredentialCount": 2,
+  "serversReady": true
+}

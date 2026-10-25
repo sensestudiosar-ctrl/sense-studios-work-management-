@@ -1,0 +1,63 @@
+{
+  "runId": "1791643972610-275f9b9a894e",
+  "state": "cleaned",
+  "serverIdentity": {
+    "database": "postgres",
+    "username": "sense_demo",
+    "server_address": "127.0.0.1",
+    "server_port": 45434,
+    "system_identifier": "7693570241708228348",
+    "data_directory": "D:/app/sensestudios work management app/.env.checkpoint-tools/pg-demo-20261006-a7c9",
+    "server_started_at": "2026-10-10 19:53:18.970304+05:30"
+  },
+  "database": "sense_mw_i02_validation_20261009_test",
+  "databaseOid": "93548",
+  "migrations": 116,
+  "authenticatedBrowserAcceptance": {
+    "state": "passed",
+    "finishedAt": "2026-10-10T14:53:59.330Z"
+  },
+  "observedIntegrationResults": {
+    "source": "Observed process outputs, not an additional test execution",
+    "tasks": {
+      "passed": 26,
+      "suites": 2,
+      "exitCode": 0
+    },
+    "review": {
+      "passed": 3,
+      "suites": 1,
+      "exitCode": 0
+    }
+  },
+  "cleanup": {
+    "cleanedAt": "2026-10-10T14:54:34.001Z",
+    "sessionCleanup": {
+      "sessions": {
+        "revokedRows": 8,
+        "remainingActive": 0
+      },
+      "client_portal_sessions": {
+        "revokedRows": 0,
+        "remainingActive": 0
+      },
+      "external_portal_sessions": {
+        "revokedRows": 0,
+        "remainingActive": 0
+      }
+    },
+    "stoppedOwnedProcesses": {
+      "api": true,
+      "web": true
+    },
+    "catalogBeforeHash": "51eec71680e80efdbc0d6438b7a806dff8de6b9100647d29b990ceabb2c6546e",
+    "catalogAfterHash": "51eec71680e80efdbc0d6438b7a806dff8de6b9100647d29b990ceabb2c6546e",
+    "catalogPreserved": true,
+    "targetAbsentAfterCleanup": true,
+    "postgresLeftRunningPid": 35672
+  },
+  "capturedAtRange": [
+    "2026-10-10T14:53:46.530Z",
+    "2026-10-10T14:53:58.610Z"
+  ]
+}

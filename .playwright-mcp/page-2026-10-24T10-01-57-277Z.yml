@@ -1,0 +1,132 @@
+- region [ref=f8e3]:
+  - generic [ref=f8e4]:
+    - generic [ref=f8e5]:
+      - heading "Dashboard" [level=1] [ref=f8e6]
+      - paragraph [ref=f8e7]: A current view of decisions, tasks and project updates available to your account.
+    - button "Refresh" [ref=f8e8] [cursor=pointer]
+  - navigation "Dashboard sections" [ref=f8e9]:
+    - button "Overview" [pressed] [ref=f8e10] [cursor=pointer]
+    - button "Scheduled summaries" [ref=f8e11] [cursor=pointer]
+    - button "Reports" [ref=f8e12] [cursor=pointer]
+    - button "Reminders & schedules" [ref=f8e13] [cursor=pointer]
+  - generic "Dashboard source context" [ref=f8e14]:
+    - generic [ref=f8e15]:
+      - generic [ref=f8e16]: Organization date
+      - strong [ref=f8e17]: 2026-10-24
+    - generic [ref=f8e18]:
+      - generic [ref=f8e19]: Account type
+      - strong [ref=f8e20]: Staff account
+  - heading "Today at a glance" [level=3] [ref=f8e22]
+  - generic "Five independent task summaries; counts overlap and must not be summed" [ref=f8e23]:
+    - button "Overdue · 1 matching tasks" [ref=f8e24] [cursor=pointer]:
+      - strong [ref=f8e26]: Overdue
+      - generic [ref=f8e27]: "1"
+      - generic [ref=f8e28]: Past due and incomplete
+      - generic [ref=f8e29]: 1 in progress
+      - generic [aria-hidden] [ref=f8e33]: →
+    - button "Due today · 1 matching tasks" [ref=f8e34] [cursor=pointer]:
+      - strong [ref=f8e36]: Due today
+      - generic [ref=f8e37]: "1"
+      - generic [ref=f8e38]: Committed date when present, otherwise Target
+      - generic [ref=f8e39]: 1 not started
+      - generic [aria-hidden] [ref=f8e43]: →
+    - button "High priority · 1 matching tasks" [ref=f8e44] [cursor=pointer]:
+      - strong [ref=f8e46]: High priority
+      - generic [ref=f8e47]: "1"
+      - generic [ref=f8e48]: High and critical priority
+      - generic [ref=f8e49]: 1 waiting
+      - generic [aria-hidden] [ref=f8e53]: →
+    - button "Waiting / blocked · 1 matching tasks" [ref=f8e54] [cursor=pointer]:
+      - strong [ref=f8e56]: Waiting / blocked
+      - generic [ref=f8e57]: "1"
+      - generic [ref=f8e58]: Waiting state and blockers
+      - generic [ref=f8e59]: 1 waiting
+      - generic [aria-hidden] [ref=f8e63]: →
+    - button "Review / corrections · 1 matching tasks" [ref=f8e64] [cursor=pointer]:
+      - strong [ref=f8e66]: Review / corrections
+      - generic [ref=f8e67]: "1"
+      - generic [ref=f8e68]: Task states only
+      - generic [ref=f8e69]: 1 in internal review
+      - generic [aria-hidden] [ref=f8e73]: →
+  - generic [ref=f8e74]: Task source read at 10/24/2026, 3:31:57 PM Counts overlap.
+  - button "Edit widgets" [ref=f8e77] [cursor=pointer]
+  - generic [ref=f8e79]:
+    - generic [ref=f8e80]:
+      - heading "Time tracking" [level=3] [ref=f8e83]
+      - generic [ref=f8e84]:
+        - alert [ref=f8e85]:
+          - strong [ref=f8e86]: Time source unavailable (404)
+          - button "Refresh timer" [ref=f8e87] [cursor=pointer]
+        - generic [ref=f8e88]:
+          - generic [ref=f8e89]: Time source not read
+          - link "Time log & manual entry →" [ref=f8e90] [cursor=pointer]:
+            - /url: /time
+    - generic [ref=f8e91]:
+      - heading "Next action" [level=3] [ref=f8e94]
+      - button "Coordinate drawing 1 IN_PROGRESS · 2026-10-20" [ref=f8e96] [cursor=pointer]:
+        - generic [aria-hidden] [ref=f8e97]: →
+        - generic [ref=f8e98]:
+          - generic [ref=f8e99]: Coordinate drawing 1
+          - generic [ref=f8e100]: IN_PROGRESS · 2026-10-20
+    - generic [ref=f8e101]:
+      - heading "Projects at a glance" [level=3] [ref=f8e104]
+      - generic [ref=f8e105]:
+        - generic [ref=f8e106]:
+          - strong [ref=f8e107]: "1"
+          - generic [ref=f8e108]:
+            - text: Projects in this source
+            - generic [ref=f8e109]: 1 with scored evidence
+        - button "Riverside Residence ON_TRACK ON_TRACK · Phase 2 Health score 82 · Scale 0–100 View details →" [ref=f8e113] [cursor=pointer]:
+          - generic [ref=f8e114]:
+            - generic [ref=f8e115]: Riverside Residence
+            - generic [ref=f8e116]: ON_TRACK
+          - generic [ref=f8e117]: ON_TRACK · Phase 2
+          - generic [ref=f8e118]: Health score 82 · Scale 0–100
+          - generic [ref=f8e119]: View details →
+    - generic [ref=f8e120]:
+      - heading "Decisions & assigned reviews" [level=3] [ref=f8e123]
+      - generic [ref=f8e124]:
+        - generic [ref=f8e125]:
+          - generic [ref=f8e126]:
+            - strong [ref=f8e127]: "1"
+            - generic [ref=f8e128]: Approval requests
+          - generic [ref=f8e129]:
+            - strong [ref=f8e130]: "1"
+            - generic [ref=f8e131]: Task reviews
+        - generic [ref=f8e132]: Approval obligations
+        - button "Approve task closeout Asha · Owner" [ref=f8e133] [cursor=pointer]:
+          - generic [ref=f8e135]:
+            - generic [ref=f8e136]: Approve task closeout
+            - generic [ref=f8e137]: Asha · Owner
+        - generic [ref=f8e138]:
+          - generic [ref=f8e139]:
+            - strong [ref=f8e140]: Assigned review rounds
+            - generic [ref=f8e141]: 0 total
+          - generic [ref=f8e142]: No assigned review rounds in the authorized review source.
+  - status [ref=f8e143]
+  - region "Attention queue — fixed, not movable" [ref=f8e144]:
+    - generic [ref=f8e145]:
+      - generic [ref=f8e146]:
+        - heading "Attention queue" [level=3] [ref=f8e147]
+        - paragraph [ref=f8e148]: Authorized task preview · one row per task, even with multiple reasons
+      - generic [aria-hidden] [ref=f8e149]: Fixed
+    - generic [ref=f8e150]:
+      - button "Coordinate drawing 1 IN_PROGRESS · 2026-10-20 Oct 20, 2026 In progress" [ref=f8e151] [cursor=pointer]:
+        - generic [ref=f8e153]:
+          - generic [ref=f8e154]: Coordinate drawing 1
+          - generic [ref=f8e155]: IN_PROGRESS · 2026-10-20
+        - generic [ref=f8e156]:
+          - generic [ref=f8e157]: Oct 20, 2026
+          - generic [ref=f8e158]: In progress
+      - button "Critical client revision WAITING · 2026-10-18 Oct 18, 2026 Waiting" [ref=f8e159] [cursor=pointer]:
+        - generic [ref=f8e161]:
+          - generic [ref=f8e162]: Critical client revision
+          - generic [ref=f8e163]: WAITING · 2026-10-18
+        - generic [ref=f8e164]:
+          - generic [ref=f8e165]: Oct 18, 2026
+          - generic [ref=f8e166]: Waiting
+    - generic [ref=f8e167]:
+      - generic [ref=f8e168]: Read at 10/24/2026, 3:31:57 PM · 4 tasks
+      - generic [ref=f8e169]:
+        - button "Show more · 2 tasks" [ref=f8e170] [cursor=pointer]
+        - button "Open all tasks →" [ref=f8e171] [cursor=pointer]
