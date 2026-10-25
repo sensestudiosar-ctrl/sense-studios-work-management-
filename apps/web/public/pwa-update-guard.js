@@ -1,4 +1,3 @@
-/* global self */
 // Activation is an explicit user action and must not reload another open app window.
 self.addEventListener("message", (event) => {
   if (event.data?.type !== "SENSE_ACTIVATE_UPDATE" || !event.ports[0]) return;

@@ -1,4 +1,3 @@
-/* global self, caches, fetch, URL, Response */
 // Staging navigations always check the server. Offline fallback is scoped to this release.
 const CACHE = 'sense-staging-__SENSE_RELEASE__';
 self.importScripts('/pwa-update-guard.js');

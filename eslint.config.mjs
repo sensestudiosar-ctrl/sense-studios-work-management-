@@ -14,8 +14,22 @@ export default tseslint.config(
       // Preserved standalone design outputs and diagnostic scratch scripts are not application source.
       "docs/design/_build/**",
       "docs/v1-demo/task-create-refinement.js",
-      "_allviews.js", "_av2.js", "_dump.js", "_probe.js", "_runtest.js", "_trace.js",
+      "_allviews.js", "_av2.js", "_dump.js", "_probe.js", "_runtest.js", "_trace.js", "_shots.mjs",
+      ".v15-debug.mjs",
       ".scratch-visual/**",
+      ".playwright-mcp/**",
+      "apps/web/.scratch-preview-build/**",
+      "apps/web/agent1-project.html",
+      "apps/web/agent1-project-recovery.html",
+      "apps/web/agent1-project-resources.html",
+      "apps/web/agent1-query.html",
+      "apps/web/agent1-receipts.html",
+      "apps/web/mw-i02-after.html",
+      "apps/web/src/__v15-preview.js",
+      "apps/web/src/__v15-preview.tsx",
+      "docs/design/application-ux-audit-2026-10-25/audit-browser.mjs",
+      "docs/design/application-ux-audit-2026-10-25/prototype-delivery/**",
+      "docs/v1-demo/connected-internal-prototype.js",
       "playwright-report/**",
       "test-results/**"
     ]
@@ -23,7 +37,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["**/*.{ts,tsx,mjs,cjs}"],
+    files: ["**/*.{ts,tsx,mjs,cjs,js}"],
     languageOptions: {
       parserOptions: { tsconfigRootDir: import.meta.dirname },
       globals: {

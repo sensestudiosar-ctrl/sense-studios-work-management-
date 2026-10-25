@@ -1,4 +1,4 @@
-import { test, expect, type Page, type Context } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 /**
  * V15-RC1 visual evidence for the task creation composer.
@@ -51,11 +51,6 @@ const optionsResponse = {
     { id: "emp-5", name: "Pranav Chandrashekhar — Detached Technical Design & Site", homeBranchId: "branch-a" },
   ],
   readAt: "2026-10-24T00:00:00Z",
-};
-const task = {
-  id: "task-v15", title: "Prepare kitchen working drawings", type: "PROJECT", priority: "MEDIUM",
-  targetDate: "2026-11-06T00:00:00Z", projectId: "project-a", primaryOwnerEmployeeId: "emp-1",
-  status: "NOT_STARTED", version: 1, tags: [], checklist: [], reviewRequirement: "NONE", createdAt: "2026-10-24T00:00:00Z",
 };
 
 function mockRoutes(page: Page): void {
