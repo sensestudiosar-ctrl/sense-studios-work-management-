@@ -163,7 +163,7 @@ try {
     NODE_ENV: "test",
     S27_E2E_ENABLED: "1",
     S27_TEST_ENV_FILE: `.env.s27-tools/${envName}`,
-    S27_EXPECTED_MIGRATIONS: "119",
+    S27_EXPECTED_MIGRATIONS: "120",
     MIGRATION_DATABASE_URL: databaseUrl(mainDatabase, mainPort, adminUser, adminPassword),
     S16_ADMIN_DATABASE_URL: generated.S16_DATABASE_URL,
     API_TEST_WORKERS: "2",
@@ -202,7 +202,7 @@ try {
     provider: "github-actions-disposable-postgres",
     runId,
     suffix,
-    targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 119 })),
+    targets: [...databaseNames.entries()].map(([database, target]) => ({ database, key: target.key, hostPort: target.port, serverPort: target.serverPort, migrations: 120 })),
     e2eCompatibilityAlias: `The retained GitHub-only loopback alias ${mainCompatibilityPort} maps to this run's disposable main server listening on ${mainPort}. All current manifest-bound suite URLs use actual server ports ${mainPort}/${s14Port}.`,
     runtimeRoles: `Test clients use ${runtimeUser}; migration and fixture provisioning use the run-scoped ${adminUser}. Only the isolated S22 database grants ${runtimeUser} USAGE and CREATE on schema public and transfers audit_events ownership for its injected-trigger rollback test.`,
     identityChecks: "Each server and database name was checked before fixture creation; accepted local databases are not referenced."
@@ -228,7 +228,7 @@ try {
   const mainClient = await connectVerified(databaseUrl(mainDatabase, mainPort, adminUser, adminPassword), mainDatabase, mainPort);
   try {
       const migrations = await mainClient.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-      if (migrations.rows[0]?.count !== 119 || migrations.rows[0]?.incomplete !== 0) throw new Error("The CI fixture template is not at migration 119 with a clean migration ledger.");
+      if (migrations.rows[0]?.count !== 120 || migrations.rows[0]?.incomplete !== 0) throw new Error("The CI fixture template is not at migration 120 with a clean migration ledger.");
   } finally { await mainClient.end(); }
 
   const admin = await connectVerified(databaseUrl("postgres", mainPort, adminUser, adminPassword), "postgres", mainPort);
@@ -261,7 +261,7 @@ try {
   const s14Client = await connectVerified(databaseUrl(s14Database, s14Port, adminUser, adminPassword), s14Database, s14Port);
   try {
     const migrations = await s14Client.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-    if (migrations.rows[0]?.count !== 119 || migrations.rows[0]?.incomplete !== 0) throw new Error("The isolated S14 fixture is not at migration 119 with a clean ledger.");
+    if (migrations.rows[0]?.count !== 120 || migrations.rows[0]?.incomplete !== 0) throw new Error("The isolated S14 fixture is not at migration 120 with a clean ledger.");
   } finally { await s14Client.end(); }
 
   for (const [database, target] of databaseNames) {
@@ -270,7 +270,7 @@ try {
     const targetClient = await connectVerified(databaseUrl(database, target.serverPort, adminUser, adminPassword), database, target.serverPort);
     try {
       const migrations = await targetClient.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS count, count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-      if (migrations.rows[0]?.count !== 119 || migrations.rows[0]?.incomplete !== 0) throw new Error(`CI target ${target.key} is not at migration 119 with a clean migration ledger.`);
+      if (migrations.rows[0]?.count !== 120 || migrations.rows[0]?.incomplete !== 0) throw new Error(`CI target ${target.key} is not at migration 120 with a clean migration ledger.`);
     } finally { await targetClient.end(); }
   }
 
@@ -294,11 +294,11 @@ try {
     const verified=await connectVerified(browserEnvironment[target.key],name,target.serverPort);
     try {
       const ledger=await verified.query("SELECT count(*) FILTER (WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL)::int AS n,count(*) FILTER (WHERE finished_at IS NULL AND rolled_back_at IS NULL)::int AS incomplete FROM _prisma_migrations");
-      if(ledger.rows[0].n!==119||ledger.rows[0].incomplete!==0)throw new Error("Browser fixture schema mismatch");
+      if(ledger.rows[0].n!==120||ledger.rows[0].incomplete!==0)throw new Error("Browser fixture schema mismatch");
       const accounts=await verified.query("SELECT count(*)::int AS n FROM accounts");
       if(accounts.rows[0].n!==0)throw new Error("Browser fixture must be pristine before enrollment");
     } finally { await verified.end(); }
-    browserTargets.push({database:name,key:target.key,port:target.port,migrations:119,pristine:true});
+    browserTargets.push({database:name,key:target.key,port:target.port,migrations:120,pristine:true});
   }
   if(new URL(browserEnvironment.MIGRATION_DATABASE_URL).pathname!==new URL(browserEnvironment.DATABASE_URL).pathname)throw new Error("Browser runtime and migration fixtures must identify the same fresh database");
   await writeFile(resolve(toolsDir,browserEnvName),`${Object.entries(browserEnvironment).map(([key,value])=>`${key}=${value}`).join("\n")}\n`,{flag:"wx",mode:0o600});
@@ -311,9 +311,9 @@ try {
   }
   await appendFile(process.env.GITHUB_ENV, `${Object.entries(environment).map(([key, value]) => `${key}=${value}`).join("\n")}\nCI_REPORT_DIR=${reportDir}\n`, { mode: 0o600 });
   if (process.env.GITHUB_STEP_SUMMARY) {
-    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 119 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role USAGE and CREATE on schema public and transfers audit_events ownership for its injected-trigger rollback test.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
+    await appendFile(process.env.GITHUB_STEP_SUMMARY, `\n### Disposable PostgreSQL fixtures\n\n- 21 isolated suite targets were identity-checked at migration 120 on servers listening on loopback ports ${mainPort} (main) and ${s14Port} (S14).\n- The disposable main server is also exposed on loopback port ${mainCompatibilityPort} for the existing E2E DATABASE_URL contract; identity checks verify its actual server port remains ${mainPort}.\n- Only the isolated S22 test database grants the runtime role USAGE and CREATE on schema public and transfers audit_events ownership for its injected-trigger rollback test.\n- Test clients use the restricted runtime role; migrations and provisioning use the run-scoped administrator.\n- S26 source migration 109 and populated-clone preservation remain separate local PostgreSQL gates; this ephemeral GitHub fixture does not claim those checks.\n`);
   }
-  process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 119 on loopback servers ${mainPort} (main) and ${s14Port} (S14), with the main compatibility alias on ${mainCompatibilityPort}. CI credentials were generated for this run and were not printed.\n`);
+  process.stdout.write(`Provisioned ${databaseNames.size} isolated suite databases at migration 120 on loopback servers ${mainPort} (main) and ${s14Port} (S14), with the main compatibility alias on ${mainCompatibilityPort}. CI credentials were generated for this run and were not printed.\n`);
 } catch (error) {
   for (const name of started) spawnSync("docker", ["rm", "--force", name], { cwd: workspace, stdio: "ignore" });
   throw error;

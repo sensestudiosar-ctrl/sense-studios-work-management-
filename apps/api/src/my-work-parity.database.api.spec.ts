@@ -37,7 +37,7 @@ import { isS27DisposableTestTarget } from "./s27-disposable-test-target.js";
 
 // Prepared source only. Never infer authorization from Jest invocation or an
 // arbitrary *_test name; the exact approved run and live identity are required.
-const ciParity = process.env.GITHUB_ACTIONS === "true" && /^\d+$/.test(process.env.GITHUB_RUN_ID ?? "") && process.env.S27_EXPECTED_MIGRATIONS === "119";
+const ciParity = process.env.GITHUB_ACTIONS === "true" && /^\d+$/.test(process.env.GITHUB_RUN_ID ?? "") && process.env.S27_EXPECTED_MIGRATIONS === "120";
 const reviewFeature = !!process.env.SENSE_REVIEW_ROUTING_TEST_RUN;
 const parityDescribe = reviewFeature || process.env.SENSE_RECOVERY_TEST_MANIFEST || process.env.MW_I02_ENABLED === "1" || ciParity ? describe : describe.skip;
 jest.setTimeout(60_000);
@@ -107,7 +107,7 @@ parityDescribe("MW-I02 exact-run composed queue and committed subtask invariants
     const migrations = await database.prisma.$queryRaw<Array<{ migration_name: string; checksum: string; finished_at: Date | null; rolled_back_at: Date | null }>>`SELECT migration_name, checksum, finished_at, rolled_back_at FROM _prisma_migrations ORDER BY migration_name`;
     const root = resolve(process.cwd(), "prisma/migrations");
     const source = readdirSync(root, { withFileTypes: true }).filter(entry => entry.isDirectory()).map(entry => entry.name).sort();
-    expect(source).toHaveLength(reviewBinding ? 120 : recovery || ciParity ? 119 : 118); expect(migrations.map(row => row.migration_name)).toEqual(source);
+    expect(source).toHaveLength(reviewBinding ? 120 : recovery || ciParity ? 120 : 118); expect(migrations.map(row => row.migration_name)).toEqual(source);
     for (const migration of migrations) {
       expect(migration.finished_at).not.toBeNull(); expect(migration.rolled_back_at).toBeNull();
       expect(migration.checksum).toBe(createHash("sha256").update(readFileSync(resolve(root, migration.migration_name, "migration.sql"))).digest("hex"));

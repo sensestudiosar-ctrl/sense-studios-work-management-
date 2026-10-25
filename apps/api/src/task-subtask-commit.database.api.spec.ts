@@ -27,14 +27,14 @@ dbDescribe("Current subtask commit and deferred evidence acceptance", () => {
       await verifyReviewRoutingTestDatabase(database.prisma, owned); return;
     }
     const recovery = process.env.SENSE_RECOVERY_TEST_MANIFEST ? loadRecoveryTestTarget(process.env, resolve(process.cwd(), "../.."), "DATABASE_URL") : undefined;
-    const ci119 = process.env.GITHUB_ACTIONS === "true" && /^\d+$/.test(process.env.GITHUB_RUN_ID ?? "") && process.env.S27_EXPECTED_MIGRATIONS === "119" && isS27DisposableTestTarget("DATABASE_URL", databaseUrl);
+    const ci119 = process.env.GITHUB_ACTIONS === "true" && /^\d+$/.test(process.env.GITHUB_RUN_ID ?? "") && process.env.S27_EXPECTED_MIGRATIONS === "120" && isS27DisposableTestTarget("DATABASE_URL", databaseUrl);
     if (!recovery && !ci119 && (!isS27DisposableTestTarget("DATABASE_URL", databaseUrl) || !databaseUrl?.includes("sense_s27_main_s27_1791849600000_ac13_test"))) throw new Error("Exact newly authorized acceptance target required");
     database = new DatabaseService({ nodeEnv: "test", databaseUrl, port: 4000, webOrigin: "http://localhost:59443" } as RuntimeConfig);
     if (recovery) { await verifyRecoveryTestDatabase(database.prisma, recovery); return; }
     const identity = await database.prisma.$queryRaw<Array<{ database: string; port: number }>>`SELECT current_database() AS database, inet_server_port() AS port`;
     if (!identity[0] || !matchesS27DisposableServer(databaseUrl, identity[0].database, identity[0].port)) throw new Error("Acceptance server mismatch");
     const migrations = await database.prisma.$queryRaw<Array<{ n: bigint }>>`SELECT count(*) n FROM _prisma_migrations WHERE finished_at IS NOT NULL AND rolled_back_at IS NULL`;
-    if (Number(migrations[0]?.n) !== (ci119 ? 119 : 118)) throw new Error("Exact reviewed migration count required");
+    if (Number(migrations[0]?.n) !== (ci119 ? 120 : 118)) throw new Error("Exact reviewed migration count required");
   });
   afterAll(async () => database?.onModuleDestroy());
   async function fixture() {
