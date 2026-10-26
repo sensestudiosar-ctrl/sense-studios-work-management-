@@ -1,0 +1,88 @@
+{
+  "mode": "Synthetic read-only browser acceptance, not real authentication/persistence",
+  "screenshots": [
+    {
+      "name": "cards-1440",
+      "width": 1440,
+      "documentWidth": 1440,
+      "overflow": false
+    },
+    {
+      "name": "list-1440",
+      "width": 1440,
+      "documentWidth": 1440,
+      "overflow": false
+    },
+    {
+      "name": "cards-783",
+      "width": 783,
+      "documentWidth": 783,
+      "overflow": false
+    },
+    {
+      "name": "list-783",
+      "width": 783,
+      "documentWidth": 783,
+      "overflow": false
+    },
+    {
+      "name": "cards-390",
+      "width": 390,
+      "documentWidth": 390,
+      "overflow": false
+    },
+    {
+      "name": "list-390",
+      "width": 390,
+      "documentWidth": 390,
+      "overflow": false
+    },
+    {
+      "name": "cards-320",
+      "width": 320,
+      "documentWidth": 320,
+      "overflow": false
+    },
+    {
+      "name": "list-320",
+      "width": 320,
+      "documentWidth": 320,
+      "overflow": false
+    },
+    {
+      "name": "create-1440",
+      "width": 1440,
+      "documentWidth": 1440,
+      "overflow": false
+    },
+    {
+      "name": "empty-1440",
+      "width": 1440,
+      "documentWidth": 1440,
+      "overflow": false
+    },
+    {
+      "name": "error-1440",
+      "width": 1440,
+      "documentWidth": 1440,
+      "overflow": false
+    },
+    {
+      "name": "staff-reduced-motion-390",
+      "width": 390,
+      "documentWidth": 390,
+      "overflow": false
+    }
+  ],
+  "checks": [
+    "Cards/List at four widths without page overflow",
+    "Keyboard project open uses canonical ID; Back restores directory view",
+    "Focused creation heading remains below sticky workspace header",
+    "New project focuses existing form and collapsing preserves draft",
+    "Search and Clear use server query without resetting view",
+    "Empty and failed list recover through existing actions",
+    "Staff has no creation control; reduced-motion/mobile rendering"
+  ],
+  "errors": [],
+  "writes": []
+}
