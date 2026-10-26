@@ -23,6 +23,7 @@ function api(mode:"success"|"lost"|"malformed"|"detailDenied"|"denied"="success"
  });vi.stubGlobal("fetch",fetcher);return fetcher;
 }
 async function fill(){
+ fireEvent.click(await screen.findByRole("button",{name:"New project"}));
  const form=await screen.findByRole("form",{name:"Create project"});
  fireEvent.change(within(form).getByLabelText("Project title"),{target:{value:project.title}});
  fireEvent.change(within(form).getByLabelText("Initial service scopes"),{target:{value:"Design"}});
@@ -35,7 +36,7 @@ describe("Project creation canonical results",()=>{
   await screen.findByText("No projects match these filters.");expect(screen.getByRole("button",{name:"Previous"})).toBeDisabled();fireEvent.submit(form);
   await screen.findByRole("heading",{name:project.title});
   const query=new URL(location.href).searchParams;expect(query.get("projectId")).toBe(project.id);expect(query.get("q")).toBe("Existing");expect(query.get("sort")).toBe("milestone");expect(query.get("offset")).toBe("50");
-  expect(screen.getByText("0 total")).toBeInTheDocument();
+  expect(screen.getByText("0 matching")).toBeInTheDocument();
   fireEvent.click(screen.getByRole("button",{name:"← Back to projects"}));
   expect(new URL(location.href).searchParams.get("q")).toBe("Existing");expect(new URL(location.href).searchParams.has("projectId")).toBe(false);
   expect(mock.mock.calls.filter(([,init])=>init?.method==="POST")).toHaveLength(1);
@@ -64,6 +65,7 @@ describe("Project creation canonical results",()=>{
  });
  it("recovers an existing template creation contract with the exact original key and body",async()=>{
   const mock=api("lost",true);render(<ProjectWorkspace csrfToken="csrf" owner listFirst/>);
+  fireEvent.click(await screen.findByRole("button",{name:"New project"}));
   await screen.findByRole("option",{name:"Studio setup · version 1"});
   fireEvent.change(screen.getByLabelText("Project template"),{target:{value:"template-version"}});
   const form=await fill();fireEvent.submit(form);

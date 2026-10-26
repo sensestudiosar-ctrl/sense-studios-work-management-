@@ -3,7 +3,51 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ProjectWorkspace } from "./project.js";
 
 afterEach(() => vi.unstubAllGlobals());
+
+it("keeps the chosen project display through a server search and refresh", async () => {
+  window.history.replaceState(null, "", "/projects");
+  const branch = { id: "display-branch", name: "Mumbai" };
+  const project = { id: "display-project", title: "Display studio", status: "ACTIVE", deliveryType: "DESIGN", version: 1, scopes: [], branch };
+  const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url === "/api/v1/projects/setup") return response({ branches: [branch] });
+    if (url.startsWith("/api/v1/projects?")) return response({ total: 1, items: [project] });
+    if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+    return response({}, 404);
+  });
+  vi.stubGlobal("fetch", fetcher);
+  render(<ProjectWorkspace csrfToken="display-csrf" owner={false} listFirst />);
+  fireEvent.click(await screen.findByRole("button", { name: "List view" }));
+  fireEvent.change(screen.getByLabelText("Search projects"), { target: { value: "Display" } });
+  fireEvent.click(screen.getByRole("button", { name: "Search" }));
+  await waitFor(() => expect(fetcher.mock.calls.some(([url]) => String(url).includes("q=Display"))).toBe(true));
+  expect(await screen.findByRole("button", { name: "List view" })).toHaveAttribute("aria-pressed", "true");
+  fireEvent.click(screen.getByRole("button", { name: "Refresh" }));
+  expect(await screen.findByRole("button", { name: "List view" })).toHaveAttribute("aria-pressed", "true");
+  expect(screen.getByRole("button", { name: /Display studio/ })).toBeInTheDocument();
+});
 const response = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json" } });
+
+it("reports an unavailable directory count on read failure and restores it after recovery", async () => {
+  let fail = true;
+  vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url === "/api/v1/projects/setup") return response({ branches: [] });
+    if (url.startsWith("/api/v1/projects?")) return fail ? response({}, 503) : response({ total: 0, items: [] });
+    if (url === "/api/v1/project-templates") return response({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
+    return response({}, 404);
+  }));
+  render(<ProjectWorkspace csrfToken="failure-csrf" owner={false} listFirst />);
+  await screen.findByText("Count unavailable");
+  expect(screen.getByText("Project count unavailable")).toBeInTheDocument();
+  expect(screen.getByText("Pages unavailable")).toBeInTheDocument();
+  expect(screen.queryByText("0 available")).not.toBeInTheDocument();
+  expect(screen.queryByText("No projects match these filters.")).not.toBeInTheDocument();
+  fail = false;
+  fireEvent.click(screen.getByRole("button", { name: "Try again" }));
+  await screen.findByText("0 available");
+  expect(screen.getByText("No projects match these filters.")).toBeInTheDocument();
+});
 
 describe("ProjectWorkspace UX structure", () => {
   it("renders the filter-caused empty state with a status role and a clear action", async () => {

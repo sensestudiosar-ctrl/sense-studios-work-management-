@@ -186,6 +186,14 @@
 
 /* ── Layout ──────────────────────────────────────────────────────── */
 .project-columns { display: grid; grid-template-columns: minmax(0, 1.65fr) minmax(18rem, 1fr); gap: 16px; align-items: start; }
+.project-workspace-list-first .project-columns { grid-template-columns: minmax(0, 1fr); }
+.project-workspace-list-first .project-columns > .project-panel:first-child { padding: 0; border: 0; background: transparent; box-shadow: none; }
+.project-workspace-list-first .project-create-panel { position: static; }
+#create-project-heading { scroll-margin-top: calc(var(--sense-header-height, 64px) + 24px); }
+.project-create-summary { min-height: 44px; cursor: pointer; color: var(--pj-strong); font-size: 14px; font-weight: 650; }
+.project-create-summary > span { margin-left: 12px; color: var(--pj-muted); font-size: 12px; font-weight: 400; }
+.project-create-panel[open] > .project-create-summary { margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--pj-line); }
+.project-create-panel > section { max-width: 48rem; }
 .project-workspace.is-project-open .project-columns { grid-template-columns: minmax(0, 1fr); }
 .project-panel {
   min-width: 0;
@@ -214,6 +222,7 @@
   background: var(--pj-surface-muted);
 }
 .project-list-filters label { display: grid; gap: 5px; min-width: 0; color: var(--pj-muted); font-size: 11.5px; font-weight: 650; }
+.project-list-filters .project-clear-filters { grid-column: 1 / -1; justify-self: start; min-height: 44px; }
 .project-list-filters button[type="submit"] { border-color: var(--pj-accent); background: var(--pj-accent); color: #fff; }
 .project-list-filters button[type="submit"]:hover:not(:disabled) { border-color: var(--pj-accent-hover); background: var(--pj-accent-hover); }
 
