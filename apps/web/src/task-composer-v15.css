@@ -26,6 +26,7 @@
      column when the dialog is taller than the content. */
   .task-composer-v15 .task-composer__brief .task-optional-planning { flex: 1; }
   .task-composer-v15 .task-composer__brief .task-post-creation { margin-top: auto; }
+}
 
 .task-composer-v15 .task-composer__context-line { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
 .task-composer-v15 .task-composer__context-label { font-size: 11px; font-weight: 700; color: #7a877c; }

@@ -47,8 +47,15 @@ try {
   const snapshot = async name => {
     await page.screenshot({ path: path.join(output, name + '.png'), fullPage: true });
     const geometry = await page.evaluate(() => ({ width: innerWidth, documentWidth: document.documentElement.scrollWidth, overflow: document.documentElement.scrollWidth > innerWidth + 1 }));
-    report.screenshots.push({ name, ...geometry });
+    const styling = await page.evaluate(() => {
+      const list = document.querySelector('.project-directory-items'), icon = document.querySelector('.project-directory-icon');
+      return list && icon ? { display: getComputedStyle(list).display, listStyle: getComputedStyle(list).listStyleType, iconWidth: getComputedStyle(icon).width, iconFill: getComputedStyle(icon).fill } : null;
+    });
+    report.screenshots.push({ name, ...geometry, styling });
     expect(geometry.overflow, name + ' page overflow').toBe(false);
+    if (/^(cards|list|staff)-/.test(name)) {
+      expect(styling, name + ' production directory styles').toEqual({ display: 'grid', listStyle: 'none', iconWidth: '19px', iconFill: 'none' });
+    }
   };
   await page.goto((process.env.PROJECTS_VISUAL_ORIGIN ?? 'http://127.0.0.1:59765') + '/projects', { waitUntil: 'domcontentloaded' });
   await expect(page.getByRole('button', { name: /Courtyard House/ })).toBeVisible();
