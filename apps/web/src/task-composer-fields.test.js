@@ -1,6 +1,7 @@
 import { jsx as _jsx } from "react/jsx-runtime";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { useState } from "react";
 import { TaskComposerFields, taskCreateBody, taskDraftError } from "./task-composer-fields.js";
 const draft = { title: "Prepare layout", type: "PROJECT", projectId: "project", priority: "HIGH", targetDate: "2026-10-16", description: "", ownerId: "owner", startDate: "", estimatedHours: "", collaboratorIds: [], collaboratorHours: {}, planItemId: "", tagsText: "", checklistText: "", reason: "Prepare the approved project work", assignTo: true, reviewRequirement: "INTERNAL" };
 describe("shared task composer validation and fields", () => {
@@ -63,5 +64,47 @@ describe("shared task composer validation and fields", () => {
         expect(screen.getByRole("checkbox", { name: "Internal review required" })).toBeChecked();
         expect(screen.getByRole("checkbox", { name: "Internal review required" })).toBeDisabled();
         expect(taskCreateBody({ ...draft, reviewRequirement: "CLIENT" }, { canAssign: false, actorEmployeeId: "owner" }).reviewRequirement).toBe("BOTH");
+    });
+    it("moves the single priority selection with click, arrows, Home and End without submitting", () => {
+        function Composer() {
+            const [value, setValue] = useState(draft);
+            return _jsx(TaskComposerFields, { draft: value, onChange: patch => setValue(current => ({ ...current, ...patch })), projects: [], planItems: [], options: undefined, optionsError: undefined, retryOptions: () => undefined, compact: false, busy: false });
+        }
+        render(_jsx(Composer, {}));
+        const group = screen.getByRole("radiogroup", { name: "Priority" });
+        expect(screen.getByRole("radio", { name: "High" })).toHaveAttribute("tabindex", "0");
+        fireEvent.click(screen.getByRole("radio", { name: "Low" }));
+        expect(group).toHaveStyle({ "--priority-index": "0" });
+        fireEvent.keyDown(screen.getByRole("radio", { name: "Low" }), { key: "ArrowLeft" });
+        expect(screen.getByRole("radio", { name: "Critical" })).toHaveFocus();
+        expect(screen.getByRole("radio", { name: "Critical" })).toHaveAttribute("aria-checked", "true");
+        expect(group).toHaveClass("tone-critical");
+        expect(group).toHaveStyle({ "--priority-index": "3" });
+        fireEvent.keyDown(group, { key: "Home" });
+        expect(screen.getByRole("radio", { name: "Low" })).toHaveFocus();
+        fireEvent.keyDown(group, { key: "End" });
+        fireEvent.keyDown(group, { key: "ArrowRight" });
+        expect(screen.getByRole("radio", { name: "Low" })).toHaveAttribute("aria-checked", "true");
+        expect(group.querySelectorAll(".task-priority-segmented__selection")).toHaveLength(1);
+        expect([...group.querySelectorAll('[role="radio"]')].filter(radio => radio.tabIndex === 0)).toHaveLength(1);
+    });
+    it("keeps native date values, constraints, clear behavior and errors behind the calendar icons", () => {
+        const onChange = vi.fn();
+        render(_jsx(TaskComposerFields, { draft: { ...draft, startDate: "2026-10-15" }, onChange: onChange, projects: [], planItems: [], options: undefined, optionsError: undefined, retryOptions: () => undefined, compact: false, busy: false }));
+        const target = screen.getByLabelText("Target date");
+        const start = screen.getByLabelText("Start date");
+        const showPicker = vi.fn();
+        Object.defineProperty(target, "showPicker", { configurable: true, value: showPicker });
+        fireEvent.click(target);
+        expect(showPicker).toHaveBeenCalledTimes(1);
+        expect(target).toHaveAttribute("type", "date");
+        expect(target).toBeRequired();
+        expect(target).toHaveValue("2026-10-16");
+        expect(target).toHaveAttribute("title", "Target date: 16/10/2026");
+        expect(start).not.toBeRequired();
+        fireEvent.change(start, { target: { value: "" } });
+        expect(onChange).toHaveBeenCalledWith({ startDate: "" });
+        fireEvent.change(target, { target: { value: "2026-11-06" } });
+        expect(onChange).toHaveBeenCalledWith({ targetDate: "2026-11-06" });
     });
 });

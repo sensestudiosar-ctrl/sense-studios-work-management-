@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import { resolve } from "node:path";
 
 /**
  * V15-RC1 visual evidence for the task creation composer.
@@ -15,6 +16,7 @@ import { test, expect, type Page } from "@playwright/test";
 const viewports = [
   { width: 1440, height: 768, name: "desktop-1440x768" },
   { width: 1024, height: 768, name: "desktop-1024x768" },
+  { width: 1075, height: 884, name: "marked-1075x884" },
   { width: 783, height: 768, name: "compact-783x768" },
   { width: 390, height: 844, name: "mobile-390x844" },
   { width: 320, height: 700, name: "phone-320x700" },
@@ -60,7 +62,7 @@ function mockRoutes(page: Page): void {
     const url = new URL(route.request().url());
     const p = url.pathname;
     if (p === "/api/v1/tasks/setup") return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(setupResponse) });
-    if (p.startsWith("/api/v1/tasks/creation-options")) return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(optionsResponse) });
+    if (p.startsWith("/api/v1/tasks/creation-options")) return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ ...optionsResponse, project: url.searchParams.get("projectId") ? project : null }) });
     if (p === "/api/v1/tasks") return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ total: 0, items: [] }) });
     if (p === "/api/v1/projects/setup") return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ branches: [{ id: "branch-a", name: "Mumbai" }], employees: [] }) });
     if (p.endsWith("/plan")) return route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify({ plan: null, items: [], history: [], capabilities: { complete: false, override: false } }) });
@@ -90,13 +92,9 @@ async function seed(page: Page): Promise<void> {
       await projectSelect.selectOption({ index: 1 }).catch(() => undefined);
     }
   }
-  // Pick the primary owner from the avatar strip add-people menu.
-  const addPeople = page.getByRole("button", { name: /Add people/ });
-  if (await addPeople.first().isVisible().catch(() => false)) {
-    await addPeople.first().click();
-    const firstOption = page.getByRole("option", { name: /Anjali Rao/ });
-    if (await firstOption.isVisible().catch(() => false)) await firstOption.first().click();
-  }
+  // Ownership uses its canonical select; the + menu manages collaborators.
+  const owner = page.getByLabel("Primary owner", { exact: true });
+  if (await owner.isVisible().catch(() => false)) await owner.selectOption("emp-1");
 }
 
 test("captures the V15 task creation composer at all reference viewports", async ({ page, context }) => {
@@ -122,11 +120,77 @@ test("captures the V15 task creation composer at all reference viewports", async
     await expect(dialog).toBeVisible({ timeout: 10_000 });
 
     await seed(page);
-    await page.waitForTimeout(600);
-    await dialog.screenshot({ path: `artifacts/task-v15/${vp.name}.png` });
+    await dialog.locator(".task-create-dialog__body").evaluate(element => { element.scrollTop = 0; });
+    expect(await dialog.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    await dialog.screenshot({ path: resolve(process.env.TASK_V15_EVIDENCE_DIR ?? "artifacts/task-v15", `${vp.name}.png`) });
+    await dialog.getByRole("radiogroup", { name: "Priority" }).scrollIntoViewIfNeeded();
+    for (const name of ["Low", "Medium", "High", "Critical"]) {
+      const option = dialog.getByRole("radio", { name, exact: true });
+      expect((await option.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+      expect(await option.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
+    }
+    const footer = await dialog.locator(".task-create-dialog__footer").boundingBox();
+    expect(footer!.y + footer!.height).toBeLessThanOrEqual(vp.height + 1);
+    await dialog.screenshot({ path: resolve(process.env.TASK_V15_EVIDENCE_DIR ?? "artifacts/task-v15", `${vp.name}-controls.png`) });
 
     // Close without triggering the draft guard: navigate directly to clear the dialog.
     await page.goto("/tasks", { waitUntil: "domcontentloaded", timeout: 30_000 });
     await page.waitForTimeout(400);
   }
+});
+
+test("marked task composer controls retain native dates, accessible priority selection and people search", async ({ page }) => {
+  mockRoutes(page);
+  await page.setViewportSize({ width: 1075, height: 884 });
+  await page.goto("/tasks?create=1", { waitUntil: "domcontentloaded" });
+  const dialog = page.getByRole("dialog", { name: "Create or assign a task", exact: true });
+  await expect(dialog).toBeVisible();
+  const add = dialog.getByRole("button", { name: "Add people", exact: true });
+  await expect(add).toHaveText("+");
+  await expect(add).toHaveCSS("border-top-style", "none");
+  await expect(add).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await add.click();
+  await expect(dialog.getByRole("searchbox", { name: "Search eligible people" })).toBeFocused();
+  await dialog.getByRole("button", { name: "Add Meera Suresh", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "Meera Suresh, collaborator. Press to manage." })).toBeVisible();
+  await dialog.getByRole("button", { name: "Close people search" }).click();
+
+  const priority = dialog.getByRole("radiogroup", { name: "Priority" });
+  const selection = priority.locator(".task-priority-segmented__selection");
+  const fills = new Set<string>();
+  for (const level of ["Low", "Medium", "High", "Critical"]) {
+    const option = priority.getByRole("radio", { name: level, exact: true });
+    await option.click();
+    await expect(option).toHaveAttribute("aria-checked", "true");
+    await expect.poll(async () => {
+      const selected = await selection.boundingBox(), button = await option.boundingBox();
+      return selected && button ? Math.abs(selected.x - button.x) : 999;
+    }).toBeLessThan(2);
+    fills.add(await selection.evaluate(element => getComputedStyle(element).backgroundColor));
+  }
+  expect(fills.size).toBe(4);
+  await priority.getByRole("radio", { name: "Critical" }).press("ArrowRight");
+  await expect(priority.getByRole("radio", { name: "Low" })).toBeFocused();
+  await expect(priority.getByRole("radio", { name: "Low" })).toHaveAttribute("aria-checked", "true");
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(selection).toHaveCSS("transition-duration", "0s");
+
+  for (const name of ["Target date", "Start date"]) {
+    const date = dialog.getByLabel(name, { exact: true });
+    await expect(date).toHaveAttribute("type", "date");
+    await expect(date).toHaveCSS("opacity", "0");
+    const box = await date.boundingBox();
+    expect(box?.width).toBeGreaterThanOrEqual(44);
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    await date.click();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeVisible();
+    await date.fill(name === "Target date" ? "2026-11-06" : "2026-11-05");
+    await expect(date).toHaveAttribute("title", name === "Target date" ? "Target date: 06/11/2026" : "Start date: 05/11/2026");
+    await expect(date.locator("..")).toHaveClass(/has-value/);
+  }
+  await expect(dialog.locator(".task-composer__brief")).toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await expect(dialog.locator(".task-composer__aside")).not.toHaveCSS("background-color", "rgb(255, 255, 255)");
+  await dialog.screenshot({ path: resolve(process.env.TASK_V15_EVIDENCE_DIR ?? "artifacts/task-v15", "marked-controls.png") });
 });

@@ -1,5 +1,5 @@
 import { TASK_DESCRIPTION_MAX_LENGTH, type TaskCreationOptions } from "@sense/contracts";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import "./task-composer-v15.css";
 
 export type TaskComposerDraft = {
@@ -159,6 +159,17 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
     change({ collaboratorIds: d.collaboratorIds.filter(value => value !== id), collaboratorHours: Object.fromEntries(Object.entries(d.collaboratorHours).filter(([key]) => key !== id)) });
   };
   const reviewValue = d.reviewRequirement === "CLIENT" ? "BOTH" : d.reviewRequirement;
+  const dateField = (field: "targetDate" | "startDate", text: string) => <label className="task-calendar-field">
+    <span>{text}{field === "targetDate" ? <span className="task-field__req" aria-hidden="true">*</span> : <span className="task-field__optional">· optional</span>}</span>
+    <span className={`task-calendar-control${d[field] ? " has-value" : ""}`}>
+      <input {...attrs(field)} type="date" aria-label={text} required={field === "targetDate"} value={d[field]} disabled={busy}
+        min={field === "targetDate" ? todayISO : undefined}
+        title={d[field] ? `${text}: ${d[field].split("-").reverse().join("/")}` : `Choose ${text.toLowerCase()}`}
+        onChange={event => change({ [field]: event.target.value })}
+        onClick={event => { try { event.currentTarget.showPicker?.(); } catch { /* The native date field remains keyboard-editable if a browser blocks programmatic opening. */ } }} />
+      <RowIcon name="calendar" />
+    </span>
+  </label>;
 
   // Left canvas: directly edited fields in V15 order. Subtask and checklist rows are
   // visual companions — subtask drafts are staged separately by TaskWorkspace after
@@ -344,9 +355,9 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
         <div className="task-timing-group">
           <span className="task-timing-group__header"><RowIcon name="target" /> Timing</span>
           <div className="task-timing-group__row">
-            <label>Target date <span className="task-field__req" aria-hidden="true">*</span><input {...attrs("targetDate")} type="date" aria-label="Target date" required value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} disabled={busy} min={todayISO} /></label>
+            {dateField("targetDate", "Target date")}
             {error("targetDate")}
-            <label>Start date <span className="task-field__optional">· optional</span><input {...attrs("startDate")} type="date" aria-label="Start date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} /></label>
+            {dateField("startDate", "Start date")}
             {error("startDate")}
             <label>Estimated hours <span className="task-field__optional">· optional</span>
               <div className="task-effort-input"><button type="button" aria-label="Clear estimated effort" disabled={!d.estimatedHours || busy} onClick={() => change({ estimatedHours: "" })}>−</button>
@@ -360,12 +371,23 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
         </div>
         <div className="task-property-row task-property-row--priority">
           <span className="task-property-row__label"><RowIcon name="priority" /> Priority</span>
-          <div className={`task-priority-segmented tone-${d.priority.toLowerCase()}`} role="radiogroup" aria-label="Priority">
+          <div className={`task-priority-segmented tone-${d.priority.toLowerCase()}`} role="radiogroup" aria-label="Priority"
+            style={{ "--priority-index": Math.max(0, PRIORITIES.indexOf(d.priority as typeof PRIORITIES[number])) } as CSSProperties}
+            onKeyDown={event => {
+              const current = PRIORITIES.indexOf(d.priority as typeof PRIORITIES[number]);
+              const next = event.key === "Home" ? 0 : event.key === "End" ? PRIORITIES.length - 1
+                : ["ArrowRight", "ArrowDown"].includes(event.key) ? (current + 1) % PRIORITIES.length
+                  : ["ArrowLeft", "ArrowUp"].includes(event.key) ? (current + PRIORITIES.length - 1) % PRIORITIES.length : -1;
+              if (next < 0 || busy) return;
+              event.preventDefault(); change({ priority: PRIORITIES[next]! });
+              event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]')[next]?.focus();
+            }}>
+            <span className="task-priority-segmented__selection" aria-hidden="true" />
             {PRIORITIES.map(value => (
-              <button key={value} type="button" role="radio" aria-checked={d.priority === value} disabled={busy}
+              <button key={value} type="button" role="radio" aria-checked={d.priority === value} tabIndex={d.priority === value ? 0 : -1} disabled={busy}
                 className={d.priority === value ? "task-priority-segmented__option task-priority-segmented__option--active" : "task-priority-segmented__option"}
                 onClick={() => change({ priority: value })}>
-                <span className="task-priority-segmented__dot" aria-hidden="true" />{label(value)}
+                {label(value)}
               </button>
             ))}
           </div>
