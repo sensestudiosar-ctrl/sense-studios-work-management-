@@ -129,7 +129,7 @@ describe("external portal", () => {
       if (url.endsWith("/auth/sessions")) return response([]);
       if (url.endsWith("/projects")) return response({ projects: [{ id: "p1", title: "Granted project", status: "ACTIVE", portalType: "CONSULTANT" }] });
       if (url.endsWith("/projects/p1/uploads")) { starts.push(url); return response({ uploadId: "upload-2", chunkSize: 8 * 1024 * 1024 }); }
-      if (url.includes("/uploads/upload-2/chunks/0")) { chunkCount++; chunkBodies.push(await (init?.body as Blob).text()); if (chunkCount === 1) throw new TypeError("Chunk acknowledgement lost after persistence"); return response({ index: 0, received: true }); }
+      if (url.includes("/uploads/upload-2/chunks/0")) { chunkCount++; const body = init?.body; chunkBodies.push(await body.text()); if (chunkCount === 1) throw new TypeError("Chunk acknowledgement lost after persistence"); return response({ index: 0, received: true }); }
       if (url.endsWith("/uploads/upload-2/finalize")) return response({ id: "retained-upload-2" });
       if (url.endsWith("/projects/p1")) return response(workspace);
       throw new Error("Unexpected request " + url);

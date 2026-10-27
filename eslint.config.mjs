@@ -14,6 +14,8 @@ export default tseslint.config(
       // Preserved standalone design outputs and diagnostic scratch scripts are not application source.
       "docs/design/_build/**",
       "docs/v1-demo/task-create-refinement.js",
+      "docs/v1-demo/mandatory-review-evidence.js",
+      "docs/v1-demo/p1-p2a-refinement.js",
       "_allviews.js", "_av2.js", "_dump.js", "_probe.js", "_runtest.js", "_trace.js", "_shots.mjs",
       ".v15-debug.mjs",
       ".scratch-visual/**",
