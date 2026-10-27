@@ -1055,6 +1055,7 @@ describe("TaskWorkspace", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<TaskWorkspace csrfToken="task-csrf" owner listFirst />);
     await screen.findByRole("form", { name: "Task filters" });
+    await screen.findByRole("option", { name: "Studio" });
 
     fireEvent.change(screen.getByLabelText("Filter by project"), { target: { value: "project-1" } });
     fireEvent.change(screen.getByLabelText("Filter by primary owner"), { target: { value: "employee-2" } });
