@@ -30,7 +30,9 @@ rechecked at the stronger tier before it gates a PR.
 - **Session boot checklist (every factory session):**
   1. `git branch --show-current` + `git rev-parse --short HEAD` +
      `git status --short | head` — re-derive, never trust docs (L-002).
-  2. Read top entry of `CURRENT_STATE.md` and `docs/ai-factory/BACKLOG.md`.
+  2. Read top entry of `CURRENT_STATE.md` and `docs/ai-factory/BACKLOG.md`
+     (pre-cutover mirror) — new issues live in Linear project `P-SEN-1`
+     (see `docs/ai-factory/LINEAR.md`).
   3. `node scripts/factory/checkpoint.mjs list` — recover own unfinished
      tasks first.
 - **Work isolation:** implementation in a git worktree branched from

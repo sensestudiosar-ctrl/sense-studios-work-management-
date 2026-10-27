@@ -3,6 +3,18 @@
 Newest first. Each entry: date · what ran · pass/block results ·
 checkpoint ids.
 
+## 2026-10-27 (latest) — Linear cutover (project 1 of 9)
+- `linear-server` OAuth-connected; live read in fresh session
+  (workspace SENSE STUDIOS, team `SEN`).
+- Owner ordered factory to use Linear: project 1 **Foundation &
+  Infrastructure → `P-SEN-1`** created via `save_project` (unblocked
+  per Owner choice; write approved once, no other Linear writes).
+- Docs cut over: LINEAR.md (cutover + Rules), BACKLOG.md (pre-cutover
+  mirror, new issues → Linear), README.md #5, AGENT_ROLES.md boot
+  checklist, TOOLS_MCP_READINESS.md (installed+verified). Groups 2–9
+  not created (progressive discipline).
+
+
 ## 2026-10-27 — factory init
 - Built + verified: rulebook, canonical map, 8 agents, checkpoint CLI
   (self-test 14/14), recovery runbook, RCA, metrics baseline, lessons,
@@ -11,7 +23,9 @@ checkpoint ids.
   - Scheduled tasks: `create_scheduled_task` denied by session
     permission policy → SCHEDULES.md registry ready, awaiting Owner
     approval.
-  - Linear MCP not connected → BACKLOG.md fallback active (B-001).
+  - B-001 RESOLVED 2026-10-27: linear-server OAuth-connected ✔ (live read
+    confirmed in fresh session). BACKLOG.md remains the version-controlled
+    mirror until Linear projects are seeded; then it is read-only (LINEAR.md §Rules).
   - Cross-role audit only has Owner evidence (B-003).
 - Checkpoints: see `checkpoints/`.
 

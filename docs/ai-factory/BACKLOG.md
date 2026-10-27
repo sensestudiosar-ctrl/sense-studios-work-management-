@@ -1,4 +1,9 @@
-# Factory Backlog (version-controlled fallback; mirrors Linear when connected)
+# Factory Backlog (version-controlled mirror of pre-cutover rows)
+
+**Issue store since 2026-10-27: Linear** — workspace SENSE STUDIOS,
+project **Foundation & Infrastructure (`P-SEN-1`)**, team `SEN`. New
+factory issues are created in Linear; this file holds the pre-cutover
+rows (F-001…F-009, B-###) read-only until migrated (see LINEAR.md §Rules).
 
 Statuses: `BACKLOG · READY · IN_PROGRESS · IN_REVIEW · VERIFIED · DONE ·
 BLOCKED · PAUSED`. Only `READY` + `approved: yes` + no active hold enters
@@ -33,7 +38,7 @@ autonomous work only starts from rows below with `approved: yes`.)_
 ## BLOCKED
 | ID | Module | Reason | Unblock condition |
 |---|---|---|---|
-| B-001 | Linear | Configured in `.mcp.json` (http, mcp.linear.app) but **not authenticated**; account/auth required from Owner (runbook in LINEAR.md §"How to connect"). | Owner completes OAuth via `/mcp` or adds a Bearer API key + verifies in a fresh session |
+| B-001 | Linear | **RESOLVED 2026-10-27** — `linear-server` OAuth-authenticated; ✔ Connected. Was: "configured in `.mcp.json` but not authenticated". | OAuth via runbook in LINEAR.md |
 | B-002 | MW-I02 stack | 59542/59543 prepared, not started. | Owner grants the one bounded approval under `docs/design/my-work-integration-audit/MW_I02_SEPARATE_PORT_ACCEPTANCE_PLAN_2026-10-14.md` |
 | B-003 | Cross-role audit | Only Owner session authenticated in 2026-10-25 audit. | Real Leader/employee/Site/Client personas in a session |
 

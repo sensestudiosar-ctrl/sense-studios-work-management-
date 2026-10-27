@@ -10,8 +10,9 @@ Read in this order:
    specialist subagents and their operating rules.
 4. [RECOVERY.md](RECOVERY.md) + `scripts/factory/checkpoint.mjs` —
    durable checkpoint/recovery engine (self-test passing).
-5. [BACKLOG.md](BACKLOG.md) — version-controlled issue store (Linear
-   fallback; see [LINEAR.md](LINEAR.md)).
+5. [BACKLOG.md](BACKLOG.md) — version-controlled issue store mirror
+   (pre-cutover rows; Linear `P-SEN-1` is the issue store since the
+   2026-10-27 cutover — see [LINEAR.md](LINEAR.md)).
 6. [DESIGN_RULES.md](DESIGN_RULES.md), [RCA.md](RCA.md),
    [METRICS.md](METRICS.md), [LESSONS.md](LESSONS.md) — quality memory.
 7. [SCHEDULES.md](SCHEDULES.md) — unattended-loop registry (currently

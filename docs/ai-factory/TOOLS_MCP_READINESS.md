@@ -19,7 +19,7 @@ Verified 2026-10-27 by direct invocation / inspection. Status classes:
 ## Unverified / not connected / auth-required
 | Tool | Status | Note |
 |---|---|---|
-| Linear MCP | not connected | See `LINEAR.md` for fallback. No Linear MCP in `.mcp.json`. |
+| Linear MCP | installed+verified | `linear-server` in `.mcp.json` (http, `mcp.linear.app/mcp`); OAuth-authenticated 2026-10-27, `claude mcp get` reports ✔ Connected, live read confirmed in a fresh session (`get_workspace` → SENSE STUDIOS). See `LINEAR.md`. |
 | Refero in cloud | available-not-verified | Local Refero is a repo-level Bearer; cloud scheduled sessions need their own connector or the repo `.mcp.json`. |
 | Playwright in cloud | available-not-verified | Cloud tasks need a browser runtime; local MCP does not imply cloud availability. |
 | Chrome DevTools MCP | not installed | Not required for current scope; add only on demonstrated need. |
