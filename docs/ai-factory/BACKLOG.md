@@ -34,6 +34,22 @@ autonomous work only starts from rows below with `approved: yes`.)_
 | F-006 | Insights | Technical labels (slice codes, UUIDs, underscore statuses) shown in user-facing review/document/library views. | `docs/design/application-ux-audit-2026-10-25/MASTER_UX_PLAN.md` UX14 | Medium | Medium | no |
 | F-007 | Navigation | Regroup "Daily" groups + cross-role validation (Phase A/B of the master plan) — requires Owner naming approval + real Leader/employee/Site sessions. | MASTER_UX_PLAN UX01, §11 | High | Low | no (structural) |
 | F-008 | Factory | Scheduled autonomous tasks defined but unverified against a real usage-limit event; cloud tool availability unverified. | this file + TOOLS_MCP_READINESS | Medium | Medium | gated |
+| F-010 | Projects (T1) | Shell & directory: implement the focused project frame and context-preserving navigation (Branch/search/sort/page URL restoration; deep-link; loading-race fixes). | `docs/ui/PROJECTS_DESIGN_REVIEW_PLAN_2026-10-27.md` §Implementation Tasks T1 (design approved D2) | High | P1 | design approved; implementation not yet authorized |
+| F-011 | Projects (T2) | Project creation: move the existing Draft form into the focused create view; exit-path directory-context restoration per Owner decision E6. | plan T2 + §E6 (independent review + owner decision recorded in plan) | High | P1 | design approved; implementation not yet authorized |
+| F-012 | Projects (T3) | Project task detail: adapt the canonical task panel for all four views (list/non-list) without My Work regression. | plan T3 (D5) | High | P1 | design approved; implementation not yet authorized |
+| F-013 | Projects (T4) | Task views & phone Kanban: one task dataset across List/Cards/Kanban/Timeline; readable canonical lanes; page-only counts; no invented timeline duration. | plan T4 (D8) | High | P1 | design approved; implementation not yet authorized |
+| F-014 | Projects (T5) | State feedback: section-local loading/empty/error/partial-access patterns; denial/expiry clears sensitive content; late responses rejected. | plan T5 (D3) | High | P1 | design approved; implementation not yet authorized |
+| F-015 | Projects (T6) | Section hierarchy: refine Overview/Plan/People/Documents/Reviews/Delivery/Activity around one primary surface; token/contrast pass. | plan T6 (D6) | Medium | P2 | design approved; implementation not yet authorized |
+| F-016 | Projects (T7) | Mobile & accessibility: D7 section picker; 320–1440px, 200% zoom, 44px targets, focus/Escape/restore, reduced motion. | plan T7 (D7/D8) | High | P1 | design approved; implementation not yet authorized |
+| F-017 | Projects (T8) | Acceptance: pinned-toolchain checks, Owner/lead/contributor authenticated journeys, permission/persistence regression, visual comparison vs plan; explicit selected-file commit + matched staging release. | plan T8 + companion `docs/ui/PROJECTS_REDESIGN_TEST_PLAN_2026-10-28.md` | High | P1 | blocked on F-010…F-016 |
+
+> **F-010…F-017 (Projects T1–T8):** sequential by design — the tasks share
+> `ProjectWorkspace`/`TaskWorkspace` and scoped CSS; run T1→T8 in order
+> (E4 approved the single-browser focused spec; no parallelization). Each
+> task carries its own verify list from the plan. Linear target when
+> connected: project group 5 "Projects & Planning" (P-SEN-5, uncreated);
+> migrate these rows to Linear P-SEN-1 or P-SEN-5 and record the issue
+> IDs here (never fabricate IDs).
 
 ## BLOCKED
 | ID | Module | Reason | Unblock condition |
