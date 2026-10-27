@@ -260,12 +260,11 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
           disabled={busy}
           onClick={() => change({ reviewRequirement: option.value })}>
           <span className="task-review-card__label">{option.label}</span>
-          <span className="task-review-card__help">{option.help}</span>
         </button>
       ))}
+      <p className="task-review-note" role="note">{REVIEW_OPTIONS.find(option => option.value === reviewValue)?.help}</p>
       {reviewValue === "BOTH" && <div className="task-review-sequence" aria-label="Review sequence">
         <span className="task-review-node">Internal</span><span aria-hidden="true">→</span><span className="task-review-node">Client</span>
-        <span className="task-review-sequence-note" role="note">Internal approval precedes client review.</span>
       </div>}
       {/* Legacy checkbox contract: existing tests and API normalise CLIENT → BOTH.
           Hidden visually (sr-only) but kept for the strict payload mapping. */}
@@ -326,27 +325,26 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
           <strong>Assignment &amp; timing</strong>
           <span className="task-composer__status" data-state={busy ? "loading" : optionsError ? "error" : "idle"}>{busy ? "Saving" : "To do"}</span>
         </div>
-        <div className="task-property-row">
-          <span className="task-property-row__label"><RowIcon name="type" /> Type <span className="task-field__req" aria-hidden="true">*</span></span>
-          <select {...attrs("type")} aria-label="Type" value={d.type} onChange={event => change({ type: event.target.value })} disabled={busy}>{TASK_TYPES.map(type => <option key={type} value={type}>{label(type)}</option>)}</select>
+        <div className="task-property-row task-property-row--pair">
+          <label><span className="task-property-row__label"><RowIcon name="type" /> Type <span className="task-field__req" aria-hidden="true">*</span></span>
+            <select {...attrs("type")} aria-label="Type" value={d.type} onChange={event => change({ type: event.target.value })} disabled={busy}>{TASK_TYPES.map(type => <option key={type} value={type}>{label(type)}</option>)}</select>
+          </label>
           {error("type")}
-        </div>
-        <div className="task-property-row">
-          <span className="task-property-row__label"><RowIcon name="project" /> Project{fixedProject ? " · locked" : ""}{!fixedProject && projectTypes.includes(d.type) ? <span className="task-field__req" aria-hidden="true">*</span> : null}</span>
-          {projectField}{error("projectId")}
-          {(fixedProject || d.projectId) && <p className="task-form-note">{fixedProject ? "Project is fixed for this task context." : projects.find(project => project.id === d.projectId)?.title}</p>}
+          <label><span className="task-property-row__label"><RowIcon name="project" /> Project{fixedProject ? " · locked" : ""}{!fixedProject && projectTypes.includes(d.type) ? <span className="task-field__req" aria-hidden="true">*</span> : null}</span>
+            {projectField}
+          </label>
+          {error("projectId")}
         </div>
         {explicit && <div className="task-property-row">
           <span className="task-property-row__label"><RowIcon name="owner" /> Primary owner <span className="task-field__req" aria-hidden="true">*</span></span>
           {ownerValue}
-          <small className="task-field__helper">One person is accountable for this task.</small>
           {error("ownerId")}
         </div>}
         <div className="task-timing-group">
           <span className="task-timing-group__header"><RowIcon name="target" /> Timing</span>
-          <label>Target date <span className="task-field__req" aria-hidden="true">*</span><input {...attrs("targetDate")} type="date" aria-label="Target date" required value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} disabled={busy} min={todayISO} /></label>
-          {error("targetDate")}
-          <div className="task-timing-group__pair">
+          <div className="task-timing-group__row">
+            <label>Target date <span className="task-field__req" aria-hidden="true">*</span><input {...attrs("targetDate")} type="date" aria-label="Target date" required value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} disabled={busy} min={todayISO} /></label>
+            {error("targetDate")}
             <label>Start date <span className="task-field__optional">· optional</span><input {...attrs("startDate")} type="date" aria-label="Start date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} /></label>
             {error("startDate")}
             <label>Estimated hours <span className="task-field__optional">· optional</span>
@@ -358,7 +356,6 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
             </label>
             {error("estimatedHours")}
           </div>
-          <p className="task-form-note">An estimate does not automatically create a dated capacity allocation.</p>
         </div>
         <div className="task-property-row task-property-row--priority">
           <span className="task-property-row__label"><RowIcon name="priority" /> Priority</span>
