@@ -43,7 +43,7 @@ describe("ReviewEvidence", () => {
         expect(screen.getByLabelText("Page 1 of 2")).toBeInTheDocument();
         expect(getDocument).toHaveBeenCalledWith(expect.objectContaining({ enableXfa: false, useSystemFonts: false, useWasm: false, useWorkerFetch: false, stopAtErrors: true }));
         expect(pdfMocks.render).toHaveBeenCalledWith(expect.objectContaining({ canvas: null, annotationMode: AnnotationMode.DISABLE }));
-        expect(screen.getByRole("button", { name: "Use this point" })).toBeEnabled();
+        await waitFor(() => expect(screen.getByRole("button", { name: "Use this point" })).toBeEnabled());
     });
     it("maps point clicks only inside the actual page rectangle and offers normalized keyboard entry", async () => {
         contextStub();

@@ -34,7 +34,7 @@
 .task-create-dialog:not([open]).task-create-dialog--harness { display: block; position: relative; width: 100%; max-width: 100%; height: auto; max-height: none; margin: 0; }
 .task-create-dialog::backdrop { background: rgb(16 35 26 / 42%); }
 .task-create-dialog__frame { display: flex; flex-direction: column; height: min(92dvh, 920px); max-height: inherit; min-height: 0; }
-.task-create-dialog__header { display: flex; flex: 0 0 auto; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px 16px; border-bottom: 1px solid var(--create-line); background: #f7f5f0; }
+.task-create-dialog__header { display: flex; flex: 0 0 auto; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 14px 24px 10px; border-bottom: 1px solid var(--create-line); background: #f7f5f0; }
 .task-create-dialog__heading { min-width: 0; }
 .task-create-dialog__eyebrow { color: var(--create-pine); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
 .task-create-dialog__header h2 { margin: 5px 0 0; font-size: 22px; font-weight: 750; letter-spacing: -.4px; line-height: 1.2; }
@@ -267,7 +267,7 @@
 .task-create-dialog :is(input:not([type="checkbox"]), select, textarea) { width: 100%; min-width: 0; min-height: 44px; padding: .62rem .7rem; border: 1px solid var(--create-line); border-radius: 8px; background: #fff; color: var(--create-ink); }
 .task-create-dialog textarea { resize: vertical; }
 .task-create-dialog input[type="checkbox"] { accent-color: var(--create-pine); }
-.task-create-dialog__footer { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; gap: 10px; padding: 14px 24px calc(14px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--create-line); background: #fff; }
+.task-create-dialog__footer { display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end; gap: 10px; padding: 12px 24px calc(12px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--create-line); background: #fff; }
 /* Live readiness line (demo "N required details remaining"): pinned left of the
    Cancel / Create actions. One job — state, not mood. */
 .task-create-dialog__footer .task-create-readiness { margin: 0 auto 0 0; font-size: 12px; font-weight: 500; color: var(--task-muted, #667069); }

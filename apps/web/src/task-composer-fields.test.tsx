@@ -31,6 +31,13 @@ describe("shared task composer validation and fields", () => {
     expect(screen.getByText("Assigned to you.")).toBeInTheDocument();
     expect(screen.queryByLabelText("Primary owner")).not.toBeInTheDocument();
   });
+  it("offers authorized staff a clear way to choose another owner and explains review appointment", () => {
+    const onChange = vi.fn();
+    render(<TaskComposerFields draft={{ ...draft, assignTo: false }} onChange={onChange} projects={[]} planItems={[]} options={{ actorEmployeeId: "self", project: null, canAssign: true, canCreate: true, owners: [{ id: "self", name: "Self", homeBranchId: "branch" }, { id: "owner", name: "Owner", homeBranchId: "branch" }], collaborators: [], readAt: "" }} optionsError={undefined} retryOptions={() => undefined} compact={false} busy={false} />);
+    fireEvent.click(screen.getByLabelText("Assign to another person"));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ assignTo: true }));
+    expect(screen.getByText(/appoints an independent reviewer/)).toBeInTheDocument();
+  });
   it("hides optional planning and collaborator sections for compact (non-owner) variants", () => {
     const props = { onChange: () => undefined, projects: [{ id: "project", title: "Studio", status: "ACTIVE" as const }], planItems: [{ id: "stage", projectId: "project", kind: "STAGE", label: "Design" }], options: { actorEmployeeId: null, project: null, canAssign: true, canCreate: true, owners: [{ id: "owner", name: "Owner", homeBranchId: "branch" }], collaborators: [{ id: "helper", name: "Helper", homeBranchId: "branch" }], readAt: "" }, optionsError: undefined, retryOptions: () => undefined, busy: false };
     const view = render(<TaskComposerFields draft={draft} compact={false} {...props} />);

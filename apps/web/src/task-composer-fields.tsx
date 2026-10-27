@@ -204,7 +204,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
         <option value="">Choose an employee</option>
         {options.owners.map(employee => <option key={employee.id} value={employee.id}>{employee.name}</option>)}
       </select>
-    : <p className="task-owner-summary" role="status">{options?.canAssign && !explicit ? "Assigned to you." : "Choose an owner"}</p>;
+    : <p className="task-owner-summary" role="status">{options?.actorEmployeeId && !explicit ? "Assigned to you." : "Choose an owner"}</p>;
 
   const assignSection = options ? (
     <div className="task-composer__assign">
@@ -236,13 +236,13 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
           </div>
         )) : <p className="task-people-menu__empty">No eligible people match this search.</p>}
       </div>}
-      {d.collaboratorIds.length > 0 && <ul className="task-collaborator-list" aria-label="Selected collaborators">
+      {d.collaboratorIds.length > 0 && <ul className="task-collaborator-chips" aria-label="Selected collaborators">
         {d.collaboratorIds.map(id => {
           const person = options?.collaborators.find(value => value.id === id);
-          return <li key={id} className="task-collaborator-row">
+          return <li key={id} className="task-collaborator-chip">
             <span className="task-avatar__initials task-avatar__initials--sm" aria-hidden="true">{initials(person?.name ?? "?")}</span>
-            <span className="task-collaborator-row__name">{person?.name ?? "Unavailable"}</span>
-            <button type="button" className="task-small-remove" aria-label={`Remove ${person?.name ?? "collaborator"}`} onClick={() => removeCollaborator(id)}>×</button>
+            <span className="task-collaborator-chip__name">{person?.name ?? "Unavailable"}</span>
+            <button type="button" className="task-collaborator-chip__remove" aria-label={`Remove ${person?.name ?? "collaborator"}`} onClick={() => removeCollaborator(id)}>×</button>
           </li>;
         })}
       </ul>}
@@ -263,6 +263,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
         </button>
       ))}
       <p className="task-review-note" role="note">{REVIEW_OPTIONS.find(option => option.value === reviewValue)?.help}</p>
+      {reviewValue !== "NONE" && <p className="task-review-note">Before submitting work, an authorized person appoints an independent reviewer in Internal reviews.</p>}
       {reviewValue === "BOTH" && <div className="task-review-sequence" aria-label="Review sequence">
         <span className="task-review-node">Internal</span><span aria-hidden="true">→</span><span className="task-review-node">Client</span>
       </div>}
@@ -272,7 +273,6 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
       <label className="task-review-legacy task-sr-only"><input type="checkbox" checked={reviewValue === "BOTH"} disabled={busy} onChange={event => change({ reviewRequirement: event.target.checked ? "BOTH" : "INTERNAL" })} aria-label="Client review required" /></label>
     </div>
       : <div className="task-info-strip"><span className="task-info-strip__body"><b>Review routing needs a project.</b>Client and internal review routes require a project context with publishing authority.</span></div>}
-    <p className="task-feature-gate" role="note">Named reviewer selection and repeat schedules are proposals — not saved by the current task create endpoint. Only the supported review route and task type are submitted.</p>
   </div>;
 
   const tagsSection = <div className="task-composer__tags">
@@ -291,7 +291,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
 
   const planningSection = <div className="task-composer__planning">
     <button type="button" className="task-accordion-toggle" aria-expanded={planningOpen} onClick={() => setPlanningOpen(open => !open)}>
-      <span>More task settings</span><span className="task-accordion-toggle__hint">Stage, tags, checklist and collaborator hours</span>
+      <span>More task settings</span><span className="task-accordion-toggle__hint">Tags, stage, checklist and collaborator hours</span>
       <span className="task-accordion-toggle__chevron" aria-hidden="true">{planningOpen ? "▴" : "▾"}</span>
     </button>
     {planningOpen && <div className="task-accordion-content">
@@ -335,6 +335,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
           </label>
           {error("projectId")}
         </div>
+        {options?.canAssign && options.actorEmployeeId && <label className="task-property-row"><span className="task-property-row__label">Assign to another person</span><input type="checkbox" checked={d.assignTo} onChange={event => change({ assignTo: event.target.checked, ownerId: "", collaboratorIds: [], collaboratorHours: {} })} /></label>}
         {explicit && <div className="task-property-row">
           <span className="task-property-row__label"><RowIcon name="owner" /> Primary owner <span className="task-field__req" aria-hidden="true">*</span></span>
           {ownerValue}

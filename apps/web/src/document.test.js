@@ -12,6 +12,12 @@ function picker(items = [projectOne, projectTwo], total = items.length) { return
 function register(id, title, fileName = "") { return { project: { id, title }, folders: [], files: fileName ? [{ id: `${id}-file`, folderId: "folder-1", fileName, mimeType: "application/pdf", sizeBytes: 20, sha256: "hash", confidential: true, viewOnly: true, createdAt: "2026-10-01T00:00:00.000Z" }] : [], capabilities: { createFolder: false, upload: false, grant: false } }; }
 afterEach(() => vi.unstubAllGlobals());
 describe("DocumentWorkspace authorized project picker", () => {
+    it("explains an empty document picker without claiming project access", async () => {
+        window.history.replaceState({}, "", "/documents");
+        vi.stubGlobal("fetch", vi.fn(async () => response({ branches: [], total: 0, items: [] })));
+        render(_jsx(DocumentWorkspace, { csrfToken: "csrf", owner: false }));
+        expect(await screen.findByText(/Project access and document access are separate/)).toBeInTheDocument();
+    });
     it("opens an authorized project deep link beyond the first picker page using the protected register identity", async () => {
         const originalUrl = `${window.location.pathname}${window.location.search}`;
         window.history.replaceState({}, "", "/documents?projectId=project-55");

@@ -55,7 +55,7 @@ test("employee creates, refreshes, edits and completes a persisted self-task; un
 
     await page.goto("/workspace");
     const workspace = page.locator(".task-workspace");
-    await expect(workspace.getByRole("heading", { name: "Tasks" })).toBeVisible();
+    await expect(workspace.getByRole("heading", { name: "Tasks", exact: true })).toBeVisible();
     await workspace.getByRole("button", { name: "Create task", exact: true }).first().click();
     const dialog = page.getByRole("dialog", { name: "Create my task", exact: true });
     const form = dialog.getByRole("form", { name: "Create task" });

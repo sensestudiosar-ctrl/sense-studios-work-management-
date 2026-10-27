@@ -591,6 +591,21 @@ databaseDescribe("S17 workforce PostgreSQL acceptance", () => {
     });
   });
 
+  it("identifies missing schedule coverage without confusing a scheduled day off with missing setup", async () => {
+    await fixture(async (f) => {
+      const date = futureDate();
+      const next = new Date(`${date}T00:00:00.000Z`);
+      next.setUTCDate(next.getUTCDate() + 1);
+      const nextDate = next.toISOString().slice(0, 10);
+      await f.workforce.savePolicy(f.owner, { ...policyInput(f.branchId), ...command("Configure capacity thresholds") });
+      await f.workforce.saveSchedule(f.owner, { ...scheduleInput(f.employee.employeeId, nextDate), workingDays: [0, 1, 2, 3, 4, 5, 6].filter(day => day !== next.getUTCDay()), ...command("Set schedule from the next date") });
+      const result = await f.workforce.list(f.employee.actor, "mine", date, nextDate);
+      expect(result.workload.find(row => row.date === date)).toMatchObject({ scheduleSetupRequired: true });
+      expect(result.workload.find(row => row.date === nextDate)).toMatchObject({ scheduleSetupRequired: false, scheduledMinutes: 0 });
+      expect(result.workloadPeriods.find(row => row.employeeId === f.employee.employeeId)).toMatchObject({ scheduleSetupRequired: true });
+    });
+  });
+
   it("requires explicit task participation and overload acknowledgement and serializes competing leave decisions", async () => {
     await fixture(async (f) => {
       const date = futureDate();
