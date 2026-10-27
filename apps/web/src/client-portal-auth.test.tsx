@@ -44,6 +44,9 @@ describe("client portal identity and security", () => {
 
     expect(await screen.findByRole("heading", { name: "Client portal account" })).toBeInTheDocument();
     expect(screen.getByText("client@example.test")).toBeInTheDocument();
+    // The restored-session effect issues /auth/sessions one tick after the heading
+    // renders; wait for it so the call list is deterministic under parallel workers.
+    await waitFor(() => expect(fetchMock.mock.calls.length).toBe(5));
     expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
       "/api/v1/client-portal/auth/session",
       "/api/v1/client-portal/auth/code/request",
