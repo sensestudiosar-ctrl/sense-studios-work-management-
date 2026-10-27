@@ -181,12 +181,10 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
     </label>
     <label className="task-field"><span className="task-field__label">Task brief <span className="task-field__optional">· optional</span></span>
       <textarea {...attrs("description")} aria-label="Description (optional)" value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={3} placeholder="What needs to be delivered? Add scope, context and the expected result." />
-      <small className="task-field__helper">A useful brief helps the next person start without another conversation.</small>
       {error("description")}
     </label>
     <label className="task-field"><span className="task-field__label">Why is this task needed? <span className="task-field__req" aria-hidden="true">*</span></span>
       <input {...attrs("reason")} aria-label="Reason" value={d.reason} onChange={event => change({ reason: event.target.value })} minLength={3} maxLength={1000} required placeholder="e.g. Incorporate the agreed client feedback" />
-      <small className="task-field__helper">Kept with the task's creation history.</small>
       {error("reason")}
     </label>
     {!compact && <details className="task-optional-planning">
