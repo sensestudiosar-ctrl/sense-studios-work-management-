@@ -33,10 +33,12 @@ with `pnpm verify`.
 
 ## Current branch and tree state
 
-- Branch: `codex/s20-site-integration`
-- The working tree has **369 uncommitted changes** (280 modified, 89
-  untracked). They are preserved as-is — do not commit, stash, or reset
-  them without the Owner's direction. Run `git status` first.
+- Branch: `codex/sense-integration`
+- The working tree has a small number of uncommitted changes (a few dozen
+  modified/untracked/deleted). They are preserved as-is — do not commit,
+  stash, or reset them without the Owner's direction. Run `git status`
+  first and re-derive the branch/HEAD/dirty-state live; the exact counts
+  drift as work lands.
 - Source migrations: **118**. Current source has 118 migrations; they
   were applied to the fresh isolated test database on 2026-10-14, but
   are **not yet deployed** to the retained preview or any accepted
