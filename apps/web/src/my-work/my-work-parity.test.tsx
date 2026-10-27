@@ -37,12 +37,14 @@ describe("prototype status colour system", () => {
     }
   });
 
-  it("drives both the left rail and the whole-row tint from one state variable", () => {
+  it("renders the status dot as the only per-row colour (F-002 dot-only contract)", () => {
+    // Rows sit on neutral paper: no left rail, no whole-row tint.
+    expect(css).not.toContain("border-left: var(--my-work-rail)");
+    expect(css).not.toContain("--row-tint");
+    // Each state still colours its 6px status dot via its own state variable.
     for (const state of ["todo", "progress", "review", "waiting", "correction", "done"]) {
-      expect(css).toMatch(new RegExp(`\\.state-${state}\\s*\\{[^}]*--state-rail:[^}]*--row-tint:`));
+      expect(css).toMatch(new RegExp(`\\.state-${state}\\s*\\{[^}]*--my-work-status-dot: var\\(--state-${state}\\);`));
     }
-    expect(css).toContain("border-left: var(--my-work-rail) solid var(--state-rail)");
-    expect(css).toContain("background: var(--row-tint)");
   });
 
   it("gives every state chip a solid fill and an accessible label colour", () => {
@@ -61,9 +63,9 @@ describe("prototype status colour system", () => {
     }
   });
 
-  it("keeps the prototype's 65px comfortable and 50px compact row heights", () => {
-    expect(css).toContain("--my-work-row: 65px;");
-    expect(css).toContain("--my-work-row: 50px;");
+  it("uses the F-002 density: 56px comfortable and 44px compact row heights", () => {
+    expect(css).toContain("--my-work-row: 56px;");
+    expect(css).toContain("--my-work-row: 44px;");
   });
 
   it("allocates a desktop track to each of the five re-scoped row columns", () => {
