@@ -1,6 +1,6 @@
 # Task composer marked refinements — 27 October 2026
 
-Status: frontend verified; exact-artifact controlled staging update IN PROGRESS. Owner’s five marked comments apply directly to existing `/tasks?create=1` and its shared task composer. This is a presentation/interaction slice under R-018–R-024 and R-100–R-102; task creation authority, participant eligibility, required target date, optional start date, priorities, payloads, review requirements and data remain unchanged.
+Status: COMPLETE for controlled local staging. Owner’s five marked comments apply directly to existing `/tasks?create=1` and its shared task composer. This is a presentation/interaction slice under R-018–R-024 and R-100–R-102; task creation authority, participant eligibility, required target date, optional start date, priorities, payloads, review requirements and data remain unchanged.
 
 Reference lock: the supplied Sense screenshots are primary for layout, pine/paper palette, field order and density. [Maze’s white-surface/warm-canvas style](https://maze.co) informs only white content against neutral properties, without importing its typography or accent palette. [Linear issue creation](https://refero.design/pages/1bd10114-f1e0-4621-97d9-f84600e2389a) and [date selection](https://refero.design/pages/c5f0d5ed-4bc0-47d0-b0b8-0e6d74c22d9e) inform compact metadata/icon affordances. User comments override those references for the sliding priority control.
 
@@ -17,3 +17,15 @@ Source review: only shared frontend rendering/styles and tests changed. Native d
 Preserved initial failures: new unit fixtures omitted the required compact prop and counted other review radios; corrected fixture scope passed. The first browser mock returned a project-bound participant context for a non-project request; corrected request-specific fixture passed. A320px check found an older mobile row selector squeezing the priority track; the more specific full-width row correction passed all final viewports. None is relabelled as a passing run. Python skill-search executable alias was unavailable; the directly read UI/UX accessibility/interaction reference is the fallback. Actual research used the Refero sources above. Current execution/review: GPT-6.1 Sol; no independent model review or new backend/persistence run is claimed.
 
 Private logs/captures: `.env.composer-marked-20261027/`. Concurrent factory BACKLOG/HEALTH/PR text and the untracked Projects design plan remain excluded from selected commits.
+
+## Controlled test-server completion
+
+Selected commit `6b3804a360af83d575bcf8efeb15c346410f7a73`, matched build `6b3804a360af-1793124385016`, is live and READY at http://localhost:59443/tasks?create=1. The source/tests are unchanged from passing frontend acceptance. The exact immutable release export compiled web/API/contracts and sealed the API dependency closure; manifest SHA-256 `79d920f9cd357a97e70e57d4e6ec57e16efda0edf0e9187924bb3bcdb6568bc8` binds passing promotion evidence.
+
+Fresh sealed-artifact acceptance passed the two Chromium cases, seven viewports and15saved captures with0skips/retries, followed by exact historical-worker/cache/offline/draft/pending-command preservation. A live-served control case passed in a separate mocked-data browser; no retained-data fixture writes or personal-tab reload occurred. Live index/all JS/CSS asset hashes, frontend/API release identity, schema120readiness and anonymous Projects API denial401 passed. Prior release, active pointer and evidence remain retained.
+
+Read-only before/after checks preserve database identity, the exact120migration/checksum ledger, all176table counts/1,184rows and all175non-session table hashes. Sessions retained65rows with an active-use content-hash difference; session byte equality is not claimed. No retained migration/seed/reset, backend/schema/contract/permission change, startup-task edit or scheduler activation occurred. Backend/real PostgreSQL/full59browser gates were not rerun for this bounded frontend update; their earlier results are not claimed as new acceptance.
+
+Save open work before refreshing. A historical cached shell may need Ctrl+Shift+R while online; do not clear storage. Actual operational/production and personal-browser-refresh acceptance remain outside this controlled local release.
+
+Publication boundary: automatic approval review rejected the attempted public push of the deployment report because it contains internal staging URLs/release/database-preservation metadata without specific public-payload approval. No remote write ran. The completed UI deployment and its local Git record are retained; no alternate upload was attempted.
