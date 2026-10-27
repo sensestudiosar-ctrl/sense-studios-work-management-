@@ -59,8 +59,8 @@ test("S26 Owner saves a report and scoped event rule, then reviews an event gene
       organizationId = randomUUID();
       await db.query(`INSERT INTO organizations(id,name,"updatedAt") VALUES($1,$2,CURRENT_TIMESTAMP)`, [organizationId, `S26 browser ${suffix}`]);
     }
-    employeeId = (await db.query<{ id: string }>(`SELECT e.id FROM employees e JOIN accounts a ON a.id=e."accountId" WHERE e.state='ACTIVE' AND a.state='ACTIVE' AND e."organizationId"=$1 ORDER BY e.id LIMIT 1`, [organizationId])).rows[0]?.id ?? "";
-    if (!employeeId) {
+    // Each viewport owns its event-source employee so unrelated fixture workload cannot trigger capacity warnings.
+    {
       const branchId = (await db.query<{ id: string }>(`SELECT id FROM branches WHERE "organizationId"=$1 AND active=true ORDER BY id LIMIT 1`, [organizationId])).rows[0]?.id ?? randomUUID();
       if (!(await db.query(`SELECT id FROM branches WHERE id=$1`, [branchId])).rows[0]) await db.query(`INSERT INTO branches(id,"organizationId",name,"updatedAt") VALUES($1,$2,$3,CURRENT_TIMESTAMP)`, [branchId, organizationId, `S26 browser ${suffix}`]);
       const teamId = (await db.query<{ id: string }>(`SELECT id FROM teams WHERE "branchId"=$1 ORDER BY id LIMIT 1`, [branchId])).rows[0]?.id ?? randomUUID();
