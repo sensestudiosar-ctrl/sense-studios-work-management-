@@ -1,6 +1,6 @@
-## Master source consolidation — verified, remote publication in progress, 2026-10-27
+## Master source consolidation — verified locally, public publication approval blocked, 2026-10-27
 
-Owner-requested branch consolidation is verified locally. All inventoried histories are reachable; latest reviewed source edits and final composer CSS are included. Final application source `904cd71557441011e0714da520488bb99257333e`: API524,web708,PostgreSQL423,59/59fresh desktop/mobile journeys, factory8, staging12, type/lint/production build and five-width CSS checks passed across the documented unchanged-source boundary. Earlier combined-fixture failure is retained. Remote master/default cleanup remains IN PROGRESS until verified. Canonical staging/data/schema are untouched. See docs/operations/BRANCH_CONSOLIDATION_2026-10-27.md.
+Owner-requested branch consolidation is verified locally. All inventoried histories are reachable; latest reviewed source edits and final composer CSS are included. Final application source `904cd71557441011e0714da520488bb99257333e`: API524,web708,PostgreSQL423,59/59fresh desktop/mobile journeys, factory8, staging12, type/lint/production build and five-width CSS checks passed across the documented unchanged-source boundary. Earlier combined-fixture failure is retained. Automatic approval review rejected publication to the public repository pending explicit Owner approval; no remote ref/settings change occurred. Local master consolidation/branch reduction is complete; remote publication/default cleanup is BLOCKED. Canonical staging/data/schema are untouched. See docs/operations/BRANCH_CONSOLIDATION_2026-10-27.md.
 
 ## Inner project workspaces — deployed to controlled local staging, 2026-10-27
 

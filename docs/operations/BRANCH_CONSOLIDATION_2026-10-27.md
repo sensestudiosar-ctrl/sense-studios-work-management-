@@ -1,6 +1,6 @@
 # Master branch consolidation — 27 October 2026
 
-Status: source consolidation and verification COMPLETE; remote publication/default-branch cleanup IN PROGRESS. Owner explicitly requested review of all branches, merger of required work and one master containing all work. This supersedes the earlier canonical integration-branch name.
+Status: source consolidation and verification COMPLETE; remote publication/default-branch cleanup BLOCKED pending explicit public-repository approval. Owner explicitly requested review of all branches, merger of required work and one master containing all work. This supersedes the earlier canonical integration-branch name.
 
 ## Source selection and preservation
 
@@ -87,3 +87,7 @@ Application source commit `904cd71557441011e0714da520488bb99257333e`, source SHA
 Both initial and later working snapshots remain preserved. The first browser attempt remains recorded as1failed/58not run due to its non-pristine API fixture, not an application auth failure. The first CSS probe used a closed dialog and produced0geometry; corrected open-state production CSS checks passed. Sandbox dependency/temporary-file attempts are preserved separately. These unsuccessful attempts are not relabelled as passing acceptance. No source migration, retained database/configuration, staging artifact or scheduler was changed.
 
 Publication receipts will record the remote master commit, actual default-branch setting and final branch count.
+
+## Publication approval block
+
+The fully tested master was prepared at `1439036867e0b4728f7eb34b9c229e44e62293c8`. Automatic approval review rejected the attempted atomic push of master plus the aggregate archive because the destination is public and the current request did not explicitly approve public exposure of potentially sensitive source/history. The push was not executed. No alternative upload, remote default change or remote branch deletion was attempted. Explicit Owner approval to publish to the named public repository is required before retrying. Local source consolidation, branch reduction, working-file preservation and canonical origin configuration proceed independently. The old GitHub repository remains unchanged; all14branches on the new repository remain until authorized publication/cleanup.
