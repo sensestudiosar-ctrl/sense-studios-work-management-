@@ -216,7 +216,7 @@ const disposableS27Database = Boolean(process.env.DATABASE_URL && isS27Disposabl
     await expect(page.getByText("Final overall approval", { exact: true })).not.toBeVisible();
     if (await page.getByRole("button", { name: "Open project dashboard", exact: true }).count()) await page.getByRole("button", { name: "Open project dashboard", exact: true }).click();
     const approvedDashboard = page.locator(".client-dashboard");
-    await approvedDashboard.getByRole("button", { name: "Refresh" }).click();
+    await approvedDashboard.locator(":scope > header").getByRole("button", { name: "Refresh", exact: true }).click();
     await expect(approvedDashboard).toContainText("1 / 1");
     await expect(approvedDashboard).toContainText("Design approval brief");
     const approvedDashboardCapture = await page.screenshot({ path: testInfo.outputPath("s24-client-dashboard-approved.png"), fullPage: true });
