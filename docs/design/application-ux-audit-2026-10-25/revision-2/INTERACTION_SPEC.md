@@ -1,5 +1,7 @@
 # Master UX interaction specification
 
+**Owner requirement, 26 October 2026:** [Mandatory review evidence, EV01–EV10](../prototype-delivery/evidence-rule-2026-10-26/APPLICATION_SPEC.md) is normative across Internal, Client and BOTH initial submissions/resubmissions. Exact validation: “Add at least one file or link before submitting for review.” Preserve exact-round evidence/history, server authorization and approved-evidence carry-forward. This is prototype/specification scope, not application implementation authorization.
+
 UXI-2 · 25 October 2026 · Normative **proposed UI behavior**, not implemented behavior or new business authority. User constraints and current backend/domain contracts prevail. Each ID becomes an acceptance target only within a later explicitly approved slice.
 
 ## 0. Shared state and terminology

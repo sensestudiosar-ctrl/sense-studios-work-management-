@@ -51,6 +51,34 @@
 .task-filter-icon { width: 1rem; height: 1rem; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; vertical-align: middle; }
 .task-filter-error { grid-column: 1 / -1; margin: .25rem 0; color: #8c2922; font-size: .86rem; }
 .task-filter-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; padding-top: .25rem; }
+/* Unified filter bar: on shared routes the secondary fields fold into the same in-place popover the personal route uses. */
+.task-workspace-list-first:not(.task-workspace-personal) .task-list-filters { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding: .55rem .75rem; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-list-filters > label.task-search-control { position: relative; display: block; grid-column: 1; min-width: 0; margin: 0; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-search-label { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-search-control input { width: 100%; min-width: 0; padding-left: 2.45rem; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-search-icon { position: absolute; z-index: 1; top: 50%; left: .85rem; width: 1.05rem; height: 1.05rem; transform: translateY(-50%); fill: none; stroke: var(--task-muted); stroke-width: 1.8; stroke-linecap: round; pointer-events: none; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-secondary-filters { grid-column: 2; grid-row: 1; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-secondary-filters > summary { min-height: 44px; display: flex; align-items: center; gap: .4rem; border: 1px solid var(--task-line); border-radius: .55rem; padding: .45rem .7rem; background: #fff; color: var(--task-ink); white-space: nowrap; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-secondary-filters > summary:hover { background: var(--task-surface-muted, #f8faf8); }
+.task-workspace-list-first:not(.task-workspace-personal) .task-secondary-filters > summary:focus-visible { outline: 3px solid var(--sense-focus, #8c6b30); outline-offset: 2px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-count { border-radius: 999px; padding: .15rem .4rem; background: #edf2e9; color: var(--task-accent); font-size: .7rem; line-height: 1.2; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover { position: fixed; z-index: 50; width: min(320px, calc(100vw - 32px)); overflow: auto; padding: 14px; border: 1px solid #e8e8e2; border-radius: 13px; background: #fff; box-shadow: 0 18px 50px #254f3b24; color: #26312b; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover > header { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover h3 { margin: 0; font-size: 14px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover > header button { min-width: 44px; min-height: 44px; padding: 4px; border: 0; background: transparent; color: #26312b; font-size: 22px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover .task-secondary-filter-grid { grid-template-columns: minmax(0, 1fr); gap: 11px; padding: 8px 0 12px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover label { gap: 5px; min-width: 0; font-size: 11px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover :is(input, select) { min-height: 38px; border-color: #e8e8e2; font-size: 12px; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover .task-filter-actions { display: flex; flex-wrap: nowrap; position: sticky; bottom: -14px; margin-bottom: -14px; padding: 12px 0 14px; background: #fff; border-top: 1px solid #e8e8e2; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover .task-filter-actions button { flex: 1 1 0; width: auto; min-width: 0; }
+.task-workspace-list-first:not(.task-workspace-personal) .task-filter-error { grid-column: 1 / -1; }
+@media (max-width: 700px) {
+  .task-workspace-list-first:not(.task-workspace-personal) .task-list-filters { grid-template-columns: minmax(0, 1fr) auto; }
+  .task-workspace-list-first:not(.task-workspace-personal) .task-secondary-filters { grid-column: 2; grid-row: 1; }
+  .task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover { top: auto; left: 0; right: 0; bottom: calc(var(--sense-mobile-nav-height, 66px) + env(safe-area-inset-bottom)); width: 100%; max-height: calc(100dvh - var(--sense-header-height, 60px) - var(--sense-mobile-nav-height, 66px) - 16px); padding: 20px; border-radius: 19px 19px 0 0; }
+  .task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover :is(input, select) { min-height: 44px; font-size: 16px; }
+  .task-workspace-list-first:not(.task-workspace-personal) .task-filter-popover .task-filter-actions { bottom: -20px; margin-bottom: -20px; padding-bottom: 20px; }
+}
 .task-list-paging { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin: .8rem 0; color: var(--task-muted); font-size: .86rem; }
 .task-list-paging > div { display: flex; gap: .5rem; }
 .task-toolbar [aria-label="Task list scope"].task-tabs { flex-wrap: wrap; }
@@ -209,6 +237,8 @@
 .task-workspace-personal .task-list-filters { margin: .35rem 0; padding: .55rem; gap: .25rem .6rem; }
 .task-workspace-personal .task-list-filters > label { margin: .15rem 0; }
 .task-workspace-personal .task-list-paging { margin: .35rem 0 .55rem; }
+/* Applied-filter chips on the shared Tasks route keep the personal demo chrome, softened for the neutral queue. */
+.task-workspace-list-first:not(.task-workspace-personal) .my-work-filter-chips { padding: 0 20px 12px; background: transparent; border-bottom: 0; border-top: 1px solid var(--task-line); }
 @media (max-width: 700px) {
   .task-workspace-list-first .task-toolbar .task-mobile-scope { grid-column: 1 / -1; }
   .task-workspace-list-first .task-mobile-scope select { width: 100%; white-space: normal; }

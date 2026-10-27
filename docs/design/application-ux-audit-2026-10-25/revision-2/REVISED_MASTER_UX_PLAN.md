@@ -1,5 +1,7 @@
 # Sense UX master plan — revision 2
 
+**26 October Owner evidence requirement:** [EV01–EV10](../prototype-delivery/evidence-rule-2026-10-26/APPLICATION_SPEC.md) applies to all Internal, Client and BOTH initial submissions/resubmissions. Preserve exact immutable task/version/round evidence and authorized carry-forward of internally approved evidence without duplicate uploads. Creation/start remain possible without evidence. Prototype/specification coverage does not authorize application implementation or close the deferred client/external audit gates.
+
 25 October 2026 · **Planning/specification only. Application implementation and prototype construction are not authorized.**
 
 The Owner accepted revision 1 as a discovery baseline and requested this stronger package. That approval does not approve a navigation change, prototype build, production change or domain rule. The earlier evidence remains intact.

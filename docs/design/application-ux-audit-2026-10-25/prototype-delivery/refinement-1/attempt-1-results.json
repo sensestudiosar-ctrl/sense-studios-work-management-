@@ -1,0 +1,390 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\app\\sensestudios work management app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "docs/v1-demo/connected-refinement.config.mjs",
+      "--grep",
+      "refinement 390px"
+    ],
+    "configFile": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.config.mjs",
+    "rootDir": "D:/app/sensestudios work management app/docs/v1-demo",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/app/sensestudios work management app/docs/design/application-ux-audit-2026-10-25/prototype-delivery/refinement-1/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/app/sensestudios work management app/docs/v1-demo",
+        "testIgnore": [],
+        "testMatch": [
+          "connected-prototype.spec.mjs",
+          "connected-refinement.spec.mjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "connected-refinement.spec.mjs",
+      "file": "connected-refinement.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "refinement 390px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6470,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:47:56.049Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c898226f9aab35505d9e",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8513,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:47:56.250Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8451fac9d150097fd1f9",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 11316,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-project-task=\"SS-142\"]')\nExpected substring: \u001b[32m\"Opened from your task\"\u001b[39m\nReceived string:    \u001b[31m\"Revise bedroom wardrobe working drawingSS-142 · Lakeview ResidenceASNEAsha +1 helpingCorrectionHigh priority\"\u001b[39m\nTimeout: 7000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" locator('[data-project-task=\"SS-142\"]') with timeout 7000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-project-task=\"SS-142\"]')\u001b[22m\n\u001b[2m    17 × locator resolved to <div aria-current=\"true\" class=\"cx-row cx-origin\" data-project-task=\"SS-142\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"Revise bedroom wardrobe working drawingSS-142 · Lakeview ResidenceASNEAsha +1 helpingCorrectionHigh priority\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-project-task=\"SS-142\"]')\nExpected substring: \u001b[32m\"Opened from your task\"\u001b[39m\nReceived string:    \u001b[31m\"Revise bedroom wardrobe working drawingSS-142 · Lakeview ResidenceASNEAsha +1 helpingCorrectionHigh priority\"\u001b[39m\nTimeout: 7000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" locator('[data-project-task=\"SS-142\"]') with timeout 7000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-project-task=\"SS-142\"]')\u001b[22m\n\u001b[2m    17 × locator resolved to <div aria-current=\"true\" class=\"cx-row cx-origin\" data-project-task=\"SS-142\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"Revise bedroom wardrobe working drawingSS-142 · Lakeview ResidenceASNEAsha +1 helpingCorrectionHigh priority\"\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:26:380",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 380,
+                          "line": 26
+                        },
+                        "snippet": "  24 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator('#search').fill('wardrobe');await p.locator('#filterBtn').click();await p.locator('#filterProject').selectOption('Lakeview Residence');await p.locator('#filterPriority').selectOption('High');await p.locator('#filterApply').click();\n  25 |   if(width<768){await p.locator('#mobileQueueMore').click();await p.locator('#mqMoreGroup').selectOption('project');await p.getByRole('button',{name:'Apply',exact:true}).click();}else await p.locator('#groupBy').selectOption('project');\n> 26 |   await p.locator('.task-row[data-id=\"SS-142\"]').scrollIntoViewIfNeeded();const scroll=await p.evaluate(()=>scrollY);await p.locator('.task-row[data-id=\"SS-142\"]').click();await p.locator('#cx-detail [data-cx-project]').click();await expect(p.locator('[data-project-task=\"SS-142\"]')).toHaveAttribute('aria-current','true');await expect(p.locator('[data-project-task=\"SS-142\"]')).toContainText('Opened from your task');await p.locator('[data-cx-task=\"SS-142\"]').first().click();await close(p);await p.locator('[data-ref-return]').click();await expect(p.locator('#search')).toHaveValue('wardrobe');await expect(p.locator('#groupBy')).toHaveValue('project');await expect(p.locator('.task-row[data-id=\"SS-142\"]')).toBeFocused();const snapshot=await p.evaluate(()=>window.connectedPrototype.snapshot());expect(snapshot.origin.filters.project).toBe('Lakeview Residence');expect(snapshot.origin.filters.priority).toBe('High');expect(Math.abs((await p.evaluate(()=>scrollY))-scroll)).toBeLessThan(3);\n     |                                                                                                                                                                                                                                                                                                                                                                                            ^\n  27 |  });\n  28 |  test('all eight project sections remain reachable with current selection and overflow cues',async({page:p})=>{\n  29 |   await p.locator('[data-cx-action=\"seed\"]').click();await p.locator('#cx-detail [data-cx-project]').click();await expect(p.locator('[data-cx-section]')).toHaveCount(8);await expect(p.locator('[data-cx-section=\"Tasks\"]')).toHaveAttribute('aria-current','page');await p.locator('[data-cx-section=\"Tasks\"]').focus();await p.keyboard.press('End');await expect(p.locator('[data-cx-section=\"Activity\"]')).toBeFocused();await expect(p.locator('[data-cx-section=\"Activity\"]')).toHaveAttribute('aria-current','page');await expect(p.locator('.cx-tabs-hint')).toContainText('Scroll for more');"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 380,
+                            "line": 26
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('[data-project-task=\"SS-142\"]')\nExpected substring: \u001b[32m\"Opened from your task\"\u001b[39m\nReceived string:    \u001b[31m\"Revise bedroom wardrobe working drawingSS-142 · Lakeview ResidenceASNEAsha +1 helpingCorrectionHigh priority\"\u001b[39m\nTimeout: 7000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" locator('[data-project-task=\"SS-142\"]') with timeout 7000ms\u001b[22m\n\u001b[2m  - waiting for locator('[data-project-task=\"SS-142\"]')\u001b[22m\n\u001b[2m    17 × locator resolved to <div aria-current=\"true\" class=\"cx-row cx-origin\" data-project-task=\"SS-142\">…</div>\u001b[22m\n\u001b[2m       - unexpected value \"Revise bedroom wardrobe working drawingSS-142 · Lakeview ResidenceASNEAsha +1 helpingCorrectionHigh priority\"\u001b[22m\n\n\n  24 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator('#search').fill('wardrobe');await p.locator('#filterBtn').click();await p.locator('#filterProject').selectOption('Lakeview Residence');await p.locator('#filterPriority').selectOption('High');await p.locator('#filterApply').click();\n  25 |   if(width<768){await p.locator('#mobileQueueMore').click();await p.locator('#mqMoreGroup').selectOption('project');await p.getByRole('button',{name:'Apply',exact:true}).click();}else await p.locator('#groupBy').selectOption('project');\n> 26 |   await p.locator('.task-row[data-id=\"SS-142\"]').scrollIntoViewIfNeeded();const scroll=await p.evaluate(()=>scrollY);await p.locator('.task-row[data-id=\"SS-142\"]').click();await p.locator('#cx-detail [data-cx-project]').click();await expect(p.locator('[data-project-task=\"SS-142\"]')).toHaveAttribute('aria-current','true');await expect(p.locator('[data-project-task=\"SS-142\"]')).toContainText('Opened from your task');await p.locator('[data-cx-task=\"SS-142\"]').first().click();await close(p);await p.locator('[data-ref-return]').click();await expect(p.locator('#search')).toHaveValue('wardrobe');await expect(p.locator('#groupBy')).toHaveValue('project');await expect(p.locator('.task-row[data-id=\"SS-142\"]')).toBeFocused();const snapshot=await p.evaluate(()=>window.connectedPrototype.snapshot());expect(snapshot.origin.filters.project).toBe('Lakeview Residence');expect(snapshot.origin.filters.priority).toBe('High');expect(Math.abs((await p.evaluate(()=>scrollY))-scroll)).toBeLessThan(3);\n     |                                                                                                                                                                                                                                                                                                                                                                                            ^\n  27 |  });\n  28 |  test('all eight project sections remain reachable with current selection and overflow cues',async({page:p})=>{\n  29 |   await p.locator('[data-cx-action=\"seed\"]').click();await p.locator('#cx-detail [data-cx-project]').click();await expect(p.locator('[data-cx-section]')).toHaveCount(8);await expect(p.locator('[data-cx-section=\"Tasks\"]')).toHaveAttribute('aria-current','page');await p.locator('[data-cx-section=\"Tasks\"]').focus();await p.keyboard.press('End');await expect(p.locator('[data-cx-section=\"Activity\"]')).toBeFocused();await expect(p.locator('[data-cx-section=\"Activity\"]')).toHaveAttribute('aria-current','page');await expect(p.locator('.cx-tabs-hint')).toContainText('Scroll for more');\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:26:380"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:48:03.545Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-1f1a4-yboard-return-are-preserved\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-1f1a4-yboard-return-are-preserved\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-1f1a4-yboard-return-are-preserved\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 380,
+                        "line": 26
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-fbdf3716ec0840f18dea",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2358,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:48:05.750Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-9faead55a46a1a19b7bd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 2695,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Resubmit for internal review', exact: true }) resolved to 2 elements:\n    1) <button data-cx-action=\"seed\" class=\"cx-btn primary\">Resubmit for internal review</button> aka locator('#connected-surface').getByRole('button', { name: 'Resubmit for internal review' })\n    2) <button class=\"cx-btn primary\" data-cx-action=\"submit\">Resubmit for internal review</button> aka locator('#cx-detail').getByRole('button', { name: 'Resubmit for internal review' })\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Resubmit for internal review', exact: true })\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Resubmit for internal review', exact: true }) resolved to 2 elements:\n    1) <button data-cx-action=\"seed\" class=\"cx-btn primary\">Resubmit for internal review</button> aka locator('#connected-surface').getByRole('button', { name: 'Resubmit for internal review' })\n    2) <button class=\"cx-btn primary\" data-cx-action=\"submit\">Resubmit for internal review</button> aka locator('#cx-detail').getByRole('button', { name: 'Resubmit for internal review' })\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Resubmit for internal review', exact: true })\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:34:821",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 821,
+                          "line": 34
+                        },
+                        "snippet": "  32 |  });\n  33 |  test('correction return, updated evidence, current round and dashboard guidance change',async({page:p})=>{\n> 34 |   await p.locator('[data-cx-action=\"seed\"]').click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open linked correction');await p.getByRole('button',{name:'Open linked correction',exact:true}).click();await reason(p);await p.getByRole('button',{name:'Complete correction',exact:true}).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Return to original task');await p.getByRole('button',{name:'Return to original task',exact:true}).click();await expect(p.locator('#cx-next-guidance')).toContainText('Add the updated file or link evidence');await expect(p.locator('#cx-detail .primary')).toHaveText('Resubmit for internal review');await reason(p);await p.locator('#cx-evidence').fill('Wardrobe_Updated_R2.pdf');await p.getByRole('button',{name:'Resubmit for internal review',exact:true}).click();await expect(p.locator('#cx-current-round')).toHaveText('Round 2 · Awaiting Meera');await expect(p.locator('#cx-detail .primary')).toHaveCount(0);await expect(p.locator('#cx-next-guidance')).not.toContainText('must complete correction');await p.screenshot({path:path.join(dest,`${width}-resubmitted.png`)});await close(p);await expect(p.locator('#cx-dashboard-guidance')).toContainText('Round 2 is awaiting Meera');await expect(p.locator('#cx-dashboard-guidance')).not.toContainText('Complete the linked correction');\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^\n  35 |  });\n  36 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  37 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 821,
+                            "line": 34
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Resubmit for internal review', exact: true }) resolved to 2 elements:\n    1) <button data-cx-action=\"seed\" class=\"cx-btn primary\">Resubmit for internal review</button> aka locator('#connected-surface').getByRole('button', { name: 'Resubmit for internal review' })\n    2) <button class=\"cx-btn primary\" data-cx-action=\"submit\">Resubmit for internal review</button> aka locator('#cx-detail').getByRole('button', { name: 'Resubmit for internal review' })\n\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Resubmit for internal review', exact: true })\u001b[22m\n\n\n  32 |  });\n  33 |  test('correction return, updated evidence, current round and dashboard guidance change',async({page:p})=>{\n> 34 |   await p.locator('[data-cx-action=\"seed\"]').click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open linked correction');await p.getByRole('button',{name:'Open linked correction',exact:true}).click();await reason(p);await p.getByRole('button',{name:'Complete correction',exact:true}).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Return to original task');await p.getByRole('button',{name:'Return to original task',exact:true}).click();await expect(p.locator('#cx-next-guidance')).toContainText('Add the updated file or link evidence');await expect(p.locator('#cx-detail .primary')).toHaveText('Resubmit for internal review');await reason(p);await p.locator('#cx-evidence').fill('Wardrobe_Updated_R2.pdf');await p.getByRole('button',{name:'Resubmit for internal review',exact:true}).click();await expect(p.locator('#cx-current-round')).toHaveText('Round 2 · Awaiting Meera');await expect(p.locator('#cx-detail .primary')).toHaveCount(0);await expect(p.locator('#cx-next-guidance')).not.toContainText('must complete correction');await p.screenshot({path:path.join(dest,`${width}-resubmitted.png`)});await close(p);await expect(p.locator('#cx-dashboard-guidance')).toContainText('Round 2 is awaiting Meera');await expect(p.locator('#cx-dashboard-guidance')).not.toContainText('Complete the linked correction');\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ^\n  35 |  });\n  36 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  37 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:34:821"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:48:08.229Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-2d980-d-dashboard-guidance-change\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-2d980-d-dashboard-guidance-change\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-2d980-d-dashboard-guidance-change\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 821,
+                        "line": 34
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-93405433628826206e82",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3455,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:48:17.841Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-75e39f450ddc97bb3314",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-25T11:47:54.661Z",
+    "duration": 32131.981,
+    "expected": 4,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

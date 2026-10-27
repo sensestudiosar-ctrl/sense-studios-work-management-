@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const baseline=path.resolve(root,'../design/application-ux-audit-2026-10-25/prototype-delivery/baseline/task-creation-completed-demo.html');
+let content=fs.readFileSync(baseline,'utf8');
+const oldSource=fs.readFileSync(path.resolve(path.dirname(baseline),'task-create-refinement.js'),'utf8').trim();
+const newSource=fs.readFileSync(path.join(root,'task-create-refinement.js'),'utf8').trim();
+if(!content.includes(oldSource))throw new Error('Preserved approved creation module was not found');
+content=content.replace(oldSource,newSource);
+const inventory=JSON.parse(fs.readFileSync(path.resolve(root,'../design/application-ux-audit-2026-10-25/revision-2/DEPLOYED_CAPABILITY_INVENTORY.json'),'utf8'));
+const refinement=fs.readFileSync(path.join(root,'p1-p2a-refinement.js'),'utf8')+'\n'+fs.readFileSync(path.join(root,'mandatory-review-evidence.js'),'utf8');
+const extension=fs.readFileSync(path.join(root,'connected-internal-prototype.js'),'utf8').replace('/* EXISTING_ROUTE_INDEX */ []',JSON.stringify(inventory.routes.map(r=>JSON.parse(r.path)))).replace('// Fictional Asha opens',refinement+'\n// Fictional Asha opens');
+content=content.replace('</body>',`<!-- Connected P1/P2a review extension: never loaded by apps/web -->\n<script>\n${extension}\n</script>\n</body>`);
+fs.writeFileSync(path.join(root,'task-creation-completed-demo.html'),content);
+console.log('Updated existing review artifact; no application build or network operation.');

@@ -7,6 +7,7 @@ import { TaskDetailDrawer, type TaskDetailDrawerProps } from "./task-detail-draw
 const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
 const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
 const originalAnimationFrame = Object.getOwnPropertyDescriptor(window, "requestAnimationFrame");
+const originalScrollIntoView = Object.getOwnPropertyDescriptor(Element.prototype, "scrollIntoView");
 let originalBodyOverflow = "";
 
 beforeEach(() => {
@@ -28,6 +29,13 @@ beforeEach(() => {
       value(callback: FrameRequestCallback) { return window.setTimeout(() => callback(performance.now()), 0); },
     });
   }
+  // jsdom does not implement scrollIntoView; the badge affordances rely on it.
+  if (!Element.prototype.scrollIntoView) {
+    Object.defineProperty(Element.prototype, "scrollIntoView", {
+      configurable: true,
+      value() { /* jsdom: no-op */ },
+    });
+  }
 });
 
 afterEach(() => {
@@ -39,6 +47,8 @@ afterEach(() => {
   else Reflect.deleteProperty(HTMLDialogElement.prototype, "close");
   if (originalAnimationFrame) Object.defineProperty(window, "requestAnimationFrame", originalAnimationFrame);
   else Reflect.deleteProperty(window, "requestAnimationFrame");
+  if (originalScrollIntoView) Object.defineProperty(Element.prototype, "scrollIntoView", originalScrollIntoView);
+  else Reflect.deleteProperty(Element.prototype, "scrollIntoView");
 });
 
 function drawerProps(overrides: Partial<TaskDetailDrawerProps> = {}): TaskDetailDrawerProps {
@@ -63,9 +73,14 @@ function drawerProps(overrides: Partial<TaskDetailDrawerProps> = {}): TaskDetail
   };
 }
 
-function ControlledDrawer(props: Omit<TaskDetailDrawerProps, "enabled" | "onClose">) {
-  const [enabled, setEnabled] = useState(false);
-  return <><button type="button" onClick={() => setEnabled(true)}>Open task</button><TaskDetailDrawer {...props} enabled={enabled} onClose={() => setEnabled(false)} /></>;
+/**
+ * The drawer's default layout is the single scroll. Tests that pin the
+ * tabbed behaviour first select the tabbed layout through the footer
+ * toggle, keeping every original tab assertion intact.
+ */
+/** Selects the tabbed layout before asserting tab behaviour. */
+function renderDrawer(overrides: Partial<TaskDetailDrawerProps> = {}, tabbed = false): ReturnType<typeof render> {
+  return render(<TaskDetailDrawer {...drawerProps(overrides)} layout={tabbed ? "tabs" : "single"} />);
 }
 
 describe("TaskDetailDrawer", () => {
@@ -77,7 +92,11 @@ describe("TaskDetailDrawer", () => {
 
   it("opens as a native modal, locks body scrolling, then restores the close trigger focus and prior overflow", async () => {
     document.body.style.overflow = "clip";
-    const view = render(<ControlledDrawer {...drawerProps()} />);
+    function ModalHarness() {
+      const [enabled, setEnabled] = useState(false);
+      return <><button type="button" onClick={() => setEnabled(true)}>Open task</button><TaskDetailDrawer {...drawerProps()} enabled={enabled} onClose={() => setEnabled(false)} /></>;
+    }
+    const view = render(<ModalHarness />);
     const openTrigger = screen.getByRole("button", { name: "Open task" });
     openTrigger.focus();
     fireEvent.click(openTrigger);
@@ -110,8 +129,28 @@ describe("TaskDetailDrawer", () => {
     expect(dialog.open).toBe(true);
   });
 
-  it("selects all four tabs and moves selection and focus with arrow keys", () => {
+  it("defaults to the single-scroll layout with all four sections in one column, and keeps the tabbed layout reachable", () => {
     render(<TaskDetailDrawer {...drawerProps()} />);
+    expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+    const body = screen.getByRole("dialog").querySelector(".task-detail-drawer__body")!;
+    expect(body).toHaveClass("task-detail-drawer__body--single");
+    const sections = [...body.querySelectorAll(".task-detail-drawer__section")];
+    expect(sections.map((section) => section.getAttribute("aria-label"))).toEqual(["Overview", "Checklist", "Evidence", "Activity"]);
+    expect(screen.getByText("Checklist content")).toBeInTheDocument();
+    expect(screen.getByText("Evidence content")).toBeInTheDocument();
+    expect(screen.getByText("Activity content")).toBeInTheDocument();
+
+    // The footer toggle reveals the tabbed layout with all four panels mounted.
+    fireEvent.click(screen.getByRole("button", { name: "Tabs" }));
+    expect(screen.getByRole("tablist", { name: "Task details" })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Overview" })).toHaveAttribute("aria-selected", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Single scroll" }));
+    expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+    expect(screen.getByText("Checklist content")).toBeInTheDocument();
+  });
+
+  it("selects all four tabs and moves selection and focus with arrow keys", () => {
+    renderDrawer({}, true);
     const tablist = screen.getByRole("tablist", { name: "Task details" });
     const overviewTab = within(tablist).getByRole("tab", { name: "Overview" });
     const checklistTab = within(tablist).getByRole("tab", { name: "Checklist" });
@@ -139,7 +178,7 @@ describe("TaskDetailDrawer", () => {
       const [draft, setDraft] = useState("");
       return <label>Evidence note<input aria-label="Evidence note" value={draft} onChange={(event) => setDraft(event.target.value)} /></label>;
     }
-    render(<TaskDetailDrawer {...drawerProps({ evidence: <DraftForm /> })} />);
+    renderDrawer({ evidence: <DraftForm /> }, true);
     const evidenceTab = screen.getByRole("tab", { name: "Evidence" });
     fireEvent.click(evidenceTab);
     fireEvent.change(screen.getByRole("textbox", { name: "Evidence note" }), { target: { value: "Client upload pending" } });
@@ -173,6 +212,7 @@ describe("TaskDetailDrawer", () => {
     }
 
     render(<NavigationHarness />);
+    fireEvent.click(screen.getByRole("button", { name: "Tabs" }));
     fireEvent.click(screen.getByRole("tab", { name: "Activity" }));
     const nextButton = screen.getByRole("button", { name: "Next task" });
     nextButton.focus();
@@ -224,7 +264,7 @@ describe("TaskDetailDrawer", () => {
   });
 
   it("switches Task actions to Overview and focuses the existing command marker", async () => {
-    render(<TaskDetailDrawer {...drawerProps()} />);
+    renderDrawer({}, true);
     fireEvent.click(screen.getByRole("tab", { name: "Evidence" }));
     const marker = document.querySelector<HTMLElement>("[data-task-drawer-commands]");
     expect(marker).not.toBeNull();
@@ -235,5 +275,46 @@ describe("TaskDetailDrawer", () => {
     await waitFor(() => expect(screen.getByRole("tab", { name: "Overview" })).toHaveAttribute("aria-selected", "true"));
     await waitFor(() => expect(marker).toHaveFocus());
     expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" });
+  });
+
+  it("treats the header badges as click-to-edit affordances that reveal and focus the matching Overview editor", async () => {
+    const localRender = (overrides: Partial<TaskDetailDrawerProps> = {}) =>
+      render(<TaskDetailDrawer {...drawerProps({ waitingLabel: "Waiting on client", ...overrides })} />);
+    vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => window.setTimeout(() => callback(performance.now()), 0));
+
+    // Status badge: scroll to Overview and focus the transition action.
+    localRender({ overview: <><h4 data-task-drawer-commands tabIndex={-1}>Task actions</h4><div className="task-actions"><button type="button">Start task</button></div><dl className="task-facts"><div><dt>Priority</dt><dd>High</dd></div><div><dt>Target date</dt><dd>18 Oct 2026</dd></div></dl></> });
+    const statusBadge = screen.getByRole("button", { name: /Status In progress/ });
+    fireEvent.click(statusBadge);
+    await waitFor(() => expect(screen.getByRole("button", { name: "Start task" })).toHaveFocus());
+    cleanup();
+
+    // Target badge: focus the target-date fact when no edit form is open.
+    localRender({ overview: <><h4 data-task-drawer-commands tabIndex={-1}>Task actions</h4><div className="task-actions"><button type="button">Start task</button></div><dl className="task-facts"><div><dt>Priority</dt><dd>High</dd></div><div><dt>Target date</dt><dd>18 Oct 2026</dd></div></dl></> });
+    const targetBadge = screen.getByRole("button", { name: /Due 18 Oct/ });
+    fireEvent.click(targetBadge);
+    await waitFor(() => expect(screen.getByText("18 Oct 2026")).toHaveFocus());
+    cleanup();
+
+    // Priority badge: reveal the Edit task form field when one is open.
+    function OverviewWithEditForm() {
+      return <form className="task-edit-form"><input aria-label="Task name" defaultValue="Prepare studio concept" /></form>;
+    }
+    localRender({ overview: <><h4 data-task-drawer-commands tabIndex={-1}>Task actions</h4><OverviewWithEditForm /></> });
+    const priorityBadge = screen.getByRole("button", { name: /Priority High/ });
+    fireEvent.click(priorityBadge);
+    await waitFor(() => expect(screen.getByRole("textbox", { name: "Task name" })).toHaveFocus());
+    cleanup();
+
+    // Waiting badge: reveal the waiting details.
+    function OverviewWithWaiting() {
+      return <section className="task-waiting-details" aria-label="Waiting details"><input aria-label="Resume reason" defaultValue="" /></section>;
+    }
+    localRender({ overview: <><h4 data-task-drawer-commands tabIndex={-1}>Task actions</h4><OverviewWithWaiting /></> });
+    const waitingBadge = screen.getByRole("button", { name: /Waiting on client/ });
+    fireEvent.click(waitingBadge);
+    await waitFor(() => expect(screen.getByRole("textbox", { name: "Resume reason" })).toHaveFocus());
+
+    vi.unstubAllGlobals();
   });
 });

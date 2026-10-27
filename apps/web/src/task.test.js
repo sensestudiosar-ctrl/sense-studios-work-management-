@@ -271,7 +271,7 @@ describe("TaskWorkspace", () => {
         const oversized = "x".repeat(2001);
         fireEvent.change(descriptionInput, { target: { value: oversized } });
         fireEvent.submit(form);
-        await waitFor(() => expect(descriptionInput).toHaveAccessibleDescription("Description must be 2000 characters or fewer."));
+        await waitFor(() => expect(descriptionInput).toHaveAccessibleDescription("Task brief must be 2000 characters or fewer."));
         expect(fetchMock.mock.calls.filter(([url, init]) => String(url) === "/api/v1/tasks" && init?.method === "POST")).toHaveLength(0);
         expect(descriptionInput).toHaveValue(oversized);
         expect(descriptionInput).toHaveAttribute("maxlength", "2000");
@@ -318,7 +318,7 @@ describe("TaskWorkspace", () => {
         fireEvent.change(input, { target: { value: oversized } });
         fireEvent.submit(form);
         if (mode === "subtask")
-            await waitFor(() => expect(input).toHaveAccessibleDescription("Description must be 2000 characters or fewer."));
+            await waitFor(() => expect(input).toHaveAccessibleDescription("Task brief must be 2000 characters or fewer."));
         else
             await within(dialog).findByText("Description must be 2000 characters or fewer.");
         expect(fetchMock.mock.calls.filter(([url, init]) => String(url) === commandPath && init?.method === method)).toHaveLength(0);

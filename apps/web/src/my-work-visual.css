@@ -12,7 +12,7 @@
 }
 .task-workspace-personal .task-header { align-items: center; margin: 0 0 16px; }
 .task-workspace-personal .task-header h2 { font-size: 29px; line-height: 1.2; font-weight: 750; letter-spacing: -.6px; text-transform: capitalize; }
-.task-workspace-personal .task-header > div:first-child p.my-work-kicker:not(.task-eyebrow) { margin: 0 0 4px; color: #667069; font-size: 9px; font-weight: 750; letter-spacing: .13em; text-transform: uppercase; }
+.task-workspace-personal .task-header > div:first-child p.my-work-kicker:not(.task-eyebrow) { margin: 0 0 4px; color: #667069; font-size: 12px; font-weight: 600; }
 .task-workspace-personal .task-header-actions button { min-height: 44px; font-size: 12px; border-radius: 9px; }
 .task-workspace-personal .my-work-phase-summary { margin: 0 0 12px; }
 .task-workspace-personal .my-work-phase-summary__grid { gap: 10px; }
@@ -118,10 +118,14 @@
 .task-workspace-personal .my-work-queue-layoutbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 19px; border: 1px solid #edf0eb; border-inline-color: #e8e8e2; background: #fafbf9; color: #758278; font-size: 11px; }
 .task-workspace-personal .my-work-queue-layoutbar label { display: flex; align-items: center; gap: 4px; min-width: 0; }
 .task-workspace-personal .my-work-queue-layoutbar select { width: auto; min-height: 27px; padding: 0 6px; border: 0; background: transparent; color: #456858; font-size: 11px; font-weight: 600; }
-.task-workspace-personal .my-work-status-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 11px; padding: 10px 18px; border: 1px solid #e8e8e2; border-block: 0; background: #fbfcfb; color: #5a6b60; font-size: 11px; }
+/* Status-colour shortcuts now live inside the "More" disclosure, so they
+   read as a grouped filter panel rather than a permanent strip under the
+   queue. Text stays at the 12px floor and the block is never a bare strip. */
+.task-workspace-personal .my-work-status-legend { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--task-line); border-radius: 9px; background: #f8faf7; color: #5a6b60; font-size: 12px; }
+.task-workspace-personal .my-work-status-legend > strong { font-size: 12px; font-weight: 600; }
 .task-workspace-personal .my-work-status-legend > div { display: flex; flex-wrap: wrap; gap: 5px; }
-.task-workspace-personal .my-work-status-legend > span { margin-left: auto; color: #667069; font-size: 10px; }
-.task-workspace-personal .my-work-status-shortcut { --task-state-rail: #758496; display: inline-flex; align-items: center; gap: 6px; min-height: 29px; padding: 5px 6px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #65746b; font-size: 10px; font-weight: 650; }
+.task-workspace-personal .my-work-status-legend > span { color: #667069; font-size: 12px; }
+.task-workspace-personal .my-work-status-shortcut { --task-state-rail: #758496; display: inline-flex; align-items: center; gap: 6px; min-height: 29px; padding: 5px 6px; border: 1px solid transparent; border-radius: 6px; background: transparent; color: #65746b; font-size: 12px; font-weight: 650; }
 .task-workspace-personal .my-work-status-shortcut i { width: 11px; height: 11px; flex-shrink: 0; border-radius: 3px; background: var(--task-state-rail); }
 .task-workspace-personal .my-work-status-shortcut:hover { background: #eaf1eb; border-color: #d7e4da; }
 .task-workspace-personal .my-work-status-shortcut[aria-pressed=true] { background: #e4f0e8; border-color: #95baa4; color: #244f43; box-shadow: inset 0 0 0 1px #b8d8c4; }
@@ -142,7 +146,7 @@
 .task-workspace-personal .my-work-attention__zero-group:not(.is-compact) .my-work-attention__disclosure[open] { grid-column: 1 / -1; }
 .task-workspace-personal .task-queue-list { padding: 0; border: 1px solid var(--task-line); border-top-color: #edf0eb; border-radius: 0 0 15px 15px; background: #fff; }
 .task-workspace-personal .task-queue-list > h3 { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip-path: inset(50%); }
-.task-workspace-personal .task-queue-header { padding: 10px 14px; background: #fafbf9; font-size: 10px; }
+.task-workspace-personal .task-queue-header { padding: 10px 14px; background: #fafbf9; font-size: 11px; letter-spacing: 0; }
 .task-workspace-personal .task-queue-row { --task-state-rail: #758496; min-height: 65px; padding: 10px 14px!important; border-left: 5px solid var(--task-state-rail); border-top-color: #edf0eb; background: #fff; }
 .task-workspace-personal .task-row-state-in_progress { --task-state-rail: #2384be; }
 .task-workspace-personal .task-row-state-waiting { --task-state-rail: #7d5cb9; }
@@ -158,7 +162,7 @@
 .task-workspace-personal .task-queue-type,
 .task-workspace-personal .task-owner-initial,
 .task-workspace-personal .task-next-action { display: none; }
-.task-workspace-personal .task-queue-row .task-state { align-self: start; border: 0; border-radius: 5px; padding: 5px 7px; font-size: 10px; font-weight: 700; line-height: 1.35; background: var(--task-state-rail); color: #fff; }
+.task-workspace-personal .task-queue-row .task-state { align-self: start; border: 0; border-radius: 5px; padding: 5px 7px; font-size: 12px; font-weight: 700; line-height: 1.35; background: var(--task-state-rail); color: #fff; }
 /* Keep the reference's rail colors; badges need 4.5:1 contrast for small text. */
 .task-workspace-personal .task-queue-row .task-state-not_started { background: #758496; color: #0b100d; }
 .task-workspace-personal .task-queue-row .task-state-in_progress { background: #2384be; color: #0b100d; }
@@ -186,7 +190,7 @@
   .task-workspace-personal .task-header { display: flex; margin-bottom: 12px; gap: 8px; }
   .task-workspace-personal .task-header > div:first-child { display: block; }
   .task-workspace-personal .task-header h2 { font-size: 23px; }
-  .task-workspace-personal .task-header > div:first-child p.my-work-kicker:not(.task-eyebrow) { font-size: 8px; }
+  .task-workspace-personal .task-header > div:first-child p.my-work-kicker:not(.task-eyebrow) { font-size: 12px; }
   .task-workspace-personal .task-header-actions button { min-width: 0; font-size: 11px; padding: 8px 10px; }
   .task-workspace-personal .my-work-phase-summary__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; overflow: visible; padding: 0; }
   .task-workspace-personal .my-work-phase { flex: none; min-width: 0; border-left-width: 3px; border-radius: 10px; }

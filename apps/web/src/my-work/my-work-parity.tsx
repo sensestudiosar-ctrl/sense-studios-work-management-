@@ -54,6 +54,14 @@ export type DueBucket = (typeof DUE_BUCKETS)[number];
 const PRIORITY_ORDER = ["CRITICAL", "HIGH", "MEDIUM", "LOW"];
 
 /**
+ * The next-action value the caller emits when no task-specific action
+ * applies. Rows that carry this value render the quiet right-edge chevron
+ * instead of a filled labelled button; informational labels (corrections,
+ * reviews, approvals) keep the labelled action button.
+ */
+const DEFAULT_NEXT_ACTION = "Open task";
+
+/**
  * Maps an application status to the prototype's six visual states. The
  * prototype has exactly six states; the application has thirteen statuses.
  * This is a pure presentation mapping and must never be used to decide
@@ -204,7 +212,7 @@ export function MyWorkParityList({
         </button>
         {!collapsed && <>
           <div className="my-work-tablehead" aria-hidden="true">
-            <span>Task</span><span>Project / stage</span><span>People</span><span>Due</span><span>Status</span><span>Priority</span><span>Next action</span>
+            <span>Task</span><span>People</span><span>Due</span><span>Status</span><span>Priority</span>
           </div>
           {slice.map(row => <ParityRow key={row.id} row={row} today={today} selected={row.id === selectedId} rowRefs={rowRefs} onOpen={onOpenTask} onPin={onPin} onQuickAction={onQuickAction} onMove={move} />)}
           {group.rows.length > visible && <button type="button" className="my-work-showmore" onClick={() => setShown(current => ({ ...current, [group.key]: visible + 6 }))}>Show {Math.min(6, group.rows.length - visible)} more of {group.rows.length} ▾</button>}
@@ -239,6 +247,9 @@ function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction
    * exposed as list-item text, so nothing is lost for screen-reader users.
    */
   const label = `Open task: ${row.title}`;
+  /** Default state (the "Open task" label) → quiet chevron; an informational
+   *  label → filled labelled button. Both delegate to the same upward action. */
+  const isOpenOnly = row.nextAction === DEFAULT_NEXT_ACTION;
   return <div className={`my-work-demo-row state-${state}${selected ? " is-selected" : ""}`} role="listitem">
     <button
       type="button"
@@ -253,9 +264,10 @@ function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction
     />
     <span className="my-work-row-task">
       {onPin && <button type="button" className="my-work-pin" aria-pressed={Boolean(row.pinned)} aria-label={`${row.pinned ? "Unpin" : "Pin"} ${row.title}`} title={`${row.pinned ? "Unpin" : "Pin"} task`} onClick={() => onPin(row.id, !row.pinned)}>{row.pinned ? "◆" : "◇"}</button>}
+      <span className="my-work-status-dot" aria-hidden="true" />
       <span className="my-work-row-text">
         <span className="my-work-titleline"><strong>{row.title}</strong><span className={`my-work-priority ${parityPriorityClass(row.priority)}`} title={`${parityPriorityLabel(row.priority)} priority`}>{parityPriorityLabel(row.priority)}</span></span>
-        <small>{row.context}</small>
+        <small>{row.context || row.project}{row.context ? "" : ` · ${row.stage}`}</small>
         <small>{row.isSubtask ? "Subtask · " : ""}Next: {row.nextAction}</small>
         {row.requiresReassignment && <small className="my-work-row-reassignment">Needs reassignment after employee exit</small>}
         <span className="my-work-mobile-state">
@@ -264,12 +276,15 @@ function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction
         </span>
       </span>
     </span>
-    <span className="my-work-row-cell my-work-row-project">{row.project}<small>{row.stage}</small></span>
     <span className="my-work-row-cell">{row.people}</span>
     <span className={`my-work-row-cell my-work-due${overdue ? " overdue" : ""}`}>{row.dueDate ?? "No date"}</span>
     <span className="my-work-status-cell"><span className={`my-work-status my-work-status-${state}`}>{parityStatusLabel(row.status)}</span></span>
     <span className="my-work-row-cell my-work-priority-cell"><span className={`my-work-priority priority-pill ${parityPriorityClass(row.priority)}`} title={`${parityPriorityLabel(row.priority)} priority`}>{parityPriorityLabel(row.priority)}</span></span>
-    <span className="my-work-row-action"><button type="button" onClick={() => (onQuickAction ?? onOpen)(row.id)}>{row.nextAction}</button></span>
+    <span className="my-work-row-action">
+      {isOpenOnly
+        ? <span className="my-work-row-open" aria-hidden="true">→</span>
+        : <button type="button" onClick={() => (onQuickAction ?? onOpen)(row.id)}>{row.nextAction}</button>}
+    </span>
   </div>;
 }
 

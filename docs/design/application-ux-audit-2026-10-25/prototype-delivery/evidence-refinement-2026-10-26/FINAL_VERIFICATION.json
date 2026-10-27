@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-26T06:02:27.383Z",
+  "stats": {
+    "startTime": "2026-10-26T05:56:06.084Z",
+    "duration": 249859.463,
+    "expected": 122,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "prototypeSha256": "6f6e383c8d26e3ea6d711a2f2c94ac840c4fd9b60bbfe5ccd36f1a94502dc11d",
+  "previousPrototypeSha256": "9cdba8d52450e03ddc8b413cae307e3f73c40812e8edef94bdf38d9d08b8ac48",
+  "screenshots": [
+    "1024-dashboard.png",
+    "1024-local-file-blocked.png",
+    "1024-review-evidence-link.png",
+    "1024-submitted-status.png",
+    "1440-dashboard.png",
+    "1440-local-file-blocked.png",
+    "1440-review-evidence-link.png",
+    "1440-submitted-status.png",
+    "320-dashboard.png",
+    "320-local-file-blocked.png",
+    "320-review-evidence-link.png",
+    "320-submitted-status.png",
+    "390-dashboard.png",
+    "390-local-file-blocked.png",
+    "390-review-evidence-link.png",
+    "390-submitted-status.png",
+    "768-dashboard.png",
+    "768-local-file-blocked.png",
+    "768-review-evidence-link.png",
+    "768-submitted-status.png"
+  ],
+  "visualBaselines": 14,
+  "scope": "Review artifact, specification and tests only; no production implementation",
+  "realUploadVerified": false,
+  "reviewerLinkAccessVerified": false,
+  "clientPortalAcceptance": "BLOCKED",
+  "livePreview": "http://127.0.0.1:59444/task-creation-completed-demo.html",
+  "livePreviewStatus": 200
+}

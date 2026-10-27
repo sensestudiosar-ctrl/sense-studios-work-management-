@@ -57,16 +57,19 @@ describe("prototype status colour system", () => {
         expect(css).toContain("--my-work-row: 65px;");
         expect(css).toContain("--my-work-row: 50px;");
     });
-    it("allocates a desktop track to each of the seven canonical row fields", () => {
-        expect(css).toContain("grid-template-columns: minmax(0, 2.35fr) minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.15fr) minmax(0, .8fr) minmax(0, 1fr);");
+    it("allocates a desktop track to each of the five re-scoped row columns", () => {
+        // 7 → 5 column re-scope (tasks-tab-review F1): Task / People / Due / Status / Priority.
+        expect(css).toContain("grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, .8fr) minmax(0, .9fr) minmax(0, .8fr);");
     });
     it("collapses to the prototype's mobile card row", () => {
         expect(css).toMatch(/@media \(max-width: 700px\)[\s\S]*\.my-work-demo-row\[role="listitem"\]\s*\{[^}]*display: flex;/);
         expect(css).toMatch(/@media \(max-width: 700px\)[\s\S]*min-height: 92px;/);
         expect(css).toMatch(/@media \(max-width: 700px\)[\s\S]*\.my-work-mobile-state\s*\{\s*display: flex;/);
     });
-    it("hides the project column at tablet width like the prototype", () => {
-        expect(css).toMatch(/@media \(max-width: 1100px\)[\s\S]*\.my-work-row-project/);
+    it("folds the project/stage column into the context line at every width", () => {
+        // The Project/stage column no longer exists as its own grid track, so
+        // there is no 1100px hide rule to pin; the class must not reappear.
+        expect(css).not.toContain(".my-work-row-project");
     });
     it("is scoped to the My Work workspace so the Tasks route is untouched", () => {
         const unscoped = css.split("\n").filter(line => /^\.(my-work|state-)/.test(line));

@@ -1,0 +1,3189 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\app\\sensestudios work management app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "docs/v1-demo/connected-refinement.config.mjs"
+    ],
+    "configFile": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.config.mjs",
+    "rootDir": "D:/app/sensestudios work management app/docs/v1-demo",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/app/sensestudios work management app/docs/design/application-ux-audit-2026-10-25/prototype-delivery/refinement-1/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/app/sensestudios work management app/docs/v1-demo",
+        "testIgnore": [],
+        "testMatch": [
+          "connected-prototype.spec.mjs",
+          "connected-refinement.spec.mjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "connected-prototype.spec.mjs",
+      "file": "connected-prototype.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "1440px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1316,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:14.084Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-64b99c3270638023b83f",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4515,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:14.111Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-c42b06a7852b741005a7",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5346,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:15.866Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-9a9cfbb3b4b7bad8c727",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 11630,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:19.119Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-3ec94243ea8cf613e465",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5423,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:21.239Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-48f6b46f3a4eac3e32bb",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4021,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:26.723Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-31cb696ffbde34af7a03",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "1024px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1628,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:30.778Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8e5df7fe53458bbd2ec2",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:30.803Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-bcdee6525b4acb14e9fc",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5121,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:32.463Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-9c323daf8dd6bdbec6b5",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7681,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:35.278Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-2ec2e6b77f3b4b9a67be",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5164,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:37.627Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-3a99a30822fd5fbc8aa1",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3569,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:42.803Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-fa8e5e7c0646c628b594",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "783px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1406,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:43.000Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-67919cabaae7cee6c3d1",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3750,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:44.463Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8a53869b625b1ab55536",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4369,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:46.411Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-abbbacf28fcf283dec38",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8325,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:48.231Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-aab2ded9056883d68af1",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4802,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:50.833Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-a3307015847bdb2e9d73",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3617,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:55.663Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-c4422d9cfdf36df1169a",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "768px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1167,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:56.600Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-f84981cdce2e54265569",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4237,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:57.782Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-ad18f544ace90f8d1423",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5154,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:58:59.328Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8e2d23f1f60101599399",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8942,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:02.074Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-52de461f30afb77c0607",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4868,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:04.515Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-477aef27e5f5e1d72b46",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3609,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:09.408Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-2873e4a67ee2b87cca5e",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "767px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1089,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:11.046Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-1fb40835425d36763abf",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4014,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:12.178Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-ce67341f6f1f5741e7f7",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4384,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:13.061Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8358217509425625ee4d",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9215,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:16.210Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-ee38b24c0e55100c50c2",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4753,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:17.501Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-98d99867979ebc029cc0",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3802,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:22.271Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-5c7de6ffae8a3c60d435",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "390px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1354,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:25.460Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-204ffc2c863baefbdf66",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5094,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:26.106Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-e0cbf2ff4fbe40d5af8a",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5000,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:26.871Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-4a5149d6a423b19ee491",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11886,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:31.253Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-7e28dc777604584e068f",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9846,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:31.942Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-7dad91a95a03fe16c583",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4288,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:41.823Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-2c0dea4d396348eebd46",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "320px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1338,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:43.208Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-a1224db511b3eee602c6",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4985,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:44.623Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-b28e6fb6ce01604a1461",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7526,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:46.141Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-fca9301b33984ded411e",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 11546,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:49.639Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-b91e51c1b33ffda4fb26",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9456,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T11:59:53.700Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-a5b727c8098b7c7a7843",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4505,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:01.221Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-77ad06660294fd0d6a0f",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "connected-refinement.spec.mjs",
+      "file": "connected-refinement.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "refinement 1440px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2294,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:03.241Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-029db03fa967bad8ec16",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2845,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:05.597Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-4ef0ba78a721d0bfdf42",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1660,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:05.838Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8214f309d5a7b9d7a0e4",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3903,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:07.573Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-a564c0da0432b1e171dd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2150,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:08.529Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-4fead5acd6bc9fc24de2",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2474,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:10.788Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-6a3f3b6a13a6c61d7d01",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 12059,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 450,
+                          "line": 40
+                        },
+                        "snippet": "  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 450,
+                            "line": 40
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:11.499Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-29e65--responsible-actor-guidance\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-29e65--responsible-actor-guidance\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-29e65--responsible-actor-guidance\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 450,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-9d5d47484004b05b0248",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1240,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:13.308Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-255caa7c2a3ae8772cd6",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 1024px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2326,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:14.577Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-d4b0c8a24649a82dfddb",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3357,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:16.927Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8d9eb8af1637d2c3426e",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:20.320Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-988e8b3f764ac6846ad7",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1856,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:21.788Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-6532cdbba8cecec83ffc",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2370,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:23.668Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c31ec50d3d9b2a083d0a",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2467,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:26.069Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-933ba9067e12ed3136d3",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 11937,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 450,
+                          "line": 40
+                        },
+                        "snippet": "  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 450,
+                            "line": 40
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:29.238Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-1d99e--responsible-actor-guidance\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-1d99e--responsible-actor-guidance\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-1d99e--responsible-actor-guidance\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 450,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-a58885bef0bf84cb340f",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1279,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:28.555Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-5be44f65a6c6118109ec",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 768px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2392,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:29.855Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-2459be5f79aa62b69676",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3437,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:32.282Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-329eaa14af9576147f70",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1158,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:35.756Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-e61b9a294e119252fcad",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1555,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:36.939Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-d5f5f2908329ab6da929",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2435,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:38.530Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-10ab8408145264c72986",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1858,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:40.983Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-cfaf52ac38c937e228d4",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 11257,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not enabled\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not enabled\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 450,
+                          "line": 40
+                        },
+                        "snippet": "  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 450,
+                            "line": 40
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is not enabled\u001b[22m\n\u001b[2m  - retrying click action\u001b[22m\n\u001b[2m    - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:42.876Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-9ca54--responsible-actor-guidance\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-9ca54--responsible-actor-guidance\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-9ca54--responsible-actor-guidance\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 450,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-ea21bfabb0ae88537cf0",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1174,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:48.628Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-207e7655161495a17371",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 390px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2558,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:50.105Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c898226f9aab35505d9e",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3966,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:52.697Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8451fac9d150097fd1f9",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1889,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:56.708Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-fbdf3716ec0840f18dea",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2943,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:00:58.624Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-9faead55a46a1a19b7bd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2615,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:01.097Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-93405433628826206e82",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2370,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:01.603Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8b72a043ce3a58fe1ffd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 13021,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 450,
+                          "line": 40
+                        },
+                        "snippet": "  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 450,
+                            "line": 40
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:04.015Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-7fdcf--responsible-actor-guidance\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-7fdcf--responsible-actor-guidance\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-7fdcf--responsible-actor-guidance\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 450,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-803f50157fe01883084d",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1526,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:04.336Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-75e39f450ddc97bb3314",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 320px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2116,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:05.908Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-71507f1b61303ff67fa1",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3448,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:08.054Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-2dc9e76edb260f33d23b",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1671,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:11.529Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-48c6ed3f69434c45ff4a",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1821,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:13.224Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c5dc64ec9bfd99c392b6",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3016,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:15.073Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-7056d50698f542ad3089",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2488,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:18.129Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-6fed450b158cc7fc3595",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 10715,
+                      "error": {
+                        "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n",
+                        "stack": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                          "column": 450,
+                          "line": 40
+                        },
+                        "snippet": "  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                            "column": 450,
+                            "line": 40
+                          },
+                          "message": "TimeoutError: locator.click: Timeout 8000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'Create subtask', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled class=\"cx-btn \" data-cx-action=\"subtask\">Create subtask</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m  - element was detached from the DOM, retrying\u001b[22m\n\n\n  38 |  });\n  39 |  test('unfinished subtask replaces ineligible parent completion with responsible-actor guidance',async({page:p})=>{\n> 40 |   await form(p,'Parent task with child');await creation(p).locator('#new-review').selectOption('NONE');await creation(p).locator('#new-submit').click();const parent=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await p.locator('summary').filter({hasText:'Other task actions'}).click();await p.getByRole('button',{name:'Create subtask',exact:true}).click();await creation(p).locator('#new-title').fill('Required child work');await creation(p).locator('#new-target').fill('2026-11-10');await creation(p).locator('#new-reason').fill('Finish required child detail');await creation(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Required child work');await p.locator(`#cx-detail [data-cx-task=\"${parent}\"]`).click();await expect(p.locator('#cx-detail .primary')).toHaveText('Open required subtask');await expect(p.locator('#cx-next-guidance')).toContainText('Asha must complete subtask');await expect(p.getByRole('button',{name:'Complete task',exact:true})).toHaveCount(0);\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ^\n  41 |  });\n  42 |  test('unsaved details, keyboard focus return and mobile control geometry',async({page:p})=>{\n  43 |   await p.getByRole('button',{name:'Open My Work',exact:true}).click();if(width<768){const s=await p.locator('#search').boundingBox(),f=await p.locator('#filterBtn').boundingBox(),v=await p.locator('#mobileQueueMore').boundingBox();expect(s.width).toBeGreaterThan(width-100);expect(f.y).toBeGreaterThan(s.y+s.height-1);expect(Math.abs(f.y-v.y)).toBeLessThan(2);for(const loc of ['#filterBtn','#mobileQueueMore'])expect((await p.locator(loc).boundingBox()).height).toBeGreaterThanOrEqual(44);for(const metric of await p.locator('#summary .metric').all())expect(await metric.evaluate(n=>n.scrollWidth<=n.clientWidth+1)).toBe(true);}\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs:40:450"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:20.638Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-b9f00--responsible-actor-guidance\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-b9f00--responsible-actor-guidance\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\refinement-1\\test-artifacts\\connected-refinement-refin-b9f00--responsible-actor-guidance\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\connected-refinement.spec.mjs",
+                        "column": 450,
+                        "line": 40
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-83f53f9fdaf68642bb77",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1674,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-25T12:01:23.741Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-bf9ffa0eeb7d608d6182",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-25T11:58:13.277Z",
+    "duration": 200321.74099999998,
+    "expected": 77,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

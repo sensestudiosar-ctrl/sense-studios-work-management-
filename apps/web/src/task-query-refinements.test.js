@@ -75,8 +75,9 @@ describe("task query controls and URL state", () => {
         window.history.replaceState(null, "", "/my-work?sort=priority_desc&workPhase=attention");
         render(_jsx(MemoryRouter, { children: _jsx(TaskWorkspace, { csrfToken: "csrf", owner: false, listFirst: true, personalOnly: true, accountId: self }) }));
         await screen.findByText("Task list sort (paused): Highest priority, then Target");
+        // The queue's inline sort select was removed; sort is reachable only through
+        // the "Sort tasks" control in the Filters popover, which stays disabled here.
         expect(screen.getByLabelText("Sort tasks")).toBeDisabled();
-        expect(screen.getByLabelText("Queue sort")).toBeDisabled();
         expect(screen.getByText("Ordered by deadline, then priority")).toBeInTheDocument();
     });
     it.each([{ priorities: "HIGH,HIGH" }, { priorities: "URGENT" }, { collaboratorEmployeeIds: "person" }])("rejects invalid visible filter draft %j", value => {

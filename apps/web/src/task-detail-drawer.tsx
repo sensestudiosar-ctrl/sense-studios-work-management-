@@ -30,6 +30,13 @@ export interface TaskDetailDrawerProps {
   actions?: ReactNode;
   hasActions?: boolean;
   hasData?: boolean;
+  /**
+   * Initial section layout. `"single"` (default) renders Overview, Checklist,
+   * Evidence and Activity in one scrollable column; `"tabs"` restores the
+   * classic tabbed layout. The footer toggle switches between them at
+   * runtime, and a `layout` change re-syncs the active layout.
+   */
+  layout?: "single" | "tabs" | undefined;
 }
 
 const tabs: ReadonlyArray<{ id: TaskDetailDrawerTab; label: string }> = [
@@ -65,8 +72,16 @@ export function TaskDetailDrawer({
   actions,
   hasActions = true,
   hasData = true,
+  layout = "single",
 }: TaskDetailDrawerProps) {
   const [activeTab, setActiveTab] = useState<TaskDetailDrawerTab>("overview");
+  /**
+   * Which section layout is on screen. The default is the single scroll;
+   * the footer toggle switches to the tabbed layout so in-progress drafts
+   * and existing tab tests keep working. The internal `activeTab` state
+   * still drives scroll restoration in both layouts.
+   */
+  const [sectionLayout, setSectionLayout] = useState<"single" | "tabs">(layout);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -160,6 +175,57 @@ export function TaskDetailDrawer({
 
   const safeChecklistCompleted = Math.max(0, Math.min(checklistTotal, checklistCompleted));
   const content: Record<TaskDetailDrawerTab, ReactNode> = { overview, checklist, evidence, activity };
+  const useTabs = sectionLayout === "tabs";
+  /**
+   * Header badges are click-to-edit affordances: clicking one reveals and
+   * focuses the matching editor inside the Overview section. No new data
+   * is fetched — the editors are the forms the parent already renders in
+   * `overview`.
+   */
+  const scrollToOverview = (findTarget?: (dialog: HTMLElement | null) => HTMLElement | null): void => {
+    selectTab("overview");
+    requestAnimationFrame(() => {
+      const dialog = dialogRef.current;
+      const targetElement = findTarget?.(dialog) ?? null;
+      const scroller = panelRef.current;
+      if (!dialog || !scroller) return;
+      scroller.scrollTop = 0;
+      if (targetElement) {
+        targetElement.scrollIntoView({ block: "nearest" });
+        if (targetElement.tabIndex < 0) targetElement.tabIndex = -1;
+        targetElement.focus({ preventScroll: true });
+      }
+    });
+  };
+  const focusEditTask = () => scrollToOverview((dialog) => {
+    if (!dialog) return null;
+    const form = dialog.querySelector<HTMLElement>(".task-edit-form");
+    if (form) return form.querySelector<HTMLElement>("input, select") ?? form;
+    const editTask = [...dialog.querySelectorAll<HTMLElement>("button")].find((element) => element.textContent?.trim() === "Edit task");
+    return editTask ?? null;
+  });
+  const focusStatusTransition = () => scrollToOverview((dialog) => {
+    if (!dialog) return null;
+    const target = [...dialog.querySelectorAll<HTMLButtonElement>(".task-actions button")].find((element) => !element.disabled);
+    return target ?? dialog.querySelector<HTMLElement>("[aria-label='Reason for change']") ?? null;
+  });
+  const focusTargetDate = () => scrollToOverview((dialog) => {
+    if (!dialog) return null;
+    const form = dialog.querySelector<HTMLElement>(".task-edit-form");
+    if (form) return form.querySelector<HTMLElement>("input[type='date']") ?? form;
+    const facts = dialog.querySelector<HTMLElement>(".task-facts");
+    if (!facts) return null;
+    const cell = [...facts.children].find((item) => item.querySelector<HTMLElement>("dt")?.textContent?.startsWith("Target date"));
+    return (cell?.querySelector("dd") ?? facts) as HTMLElement;
+  });
+  const focusWaiting = () => scrollToOverview((dialog) => {
+    if (!dialog) return null;
+    const form = dialog.querySelector<HTMLElement>(".task-wait-form");
+    if (form) return form.querySelector<HTMLElement>("input, select, textarea") ?? form;
+    const details = dialog.querySelector<HTMLElement>(".task-waiting-details");
+    if (details) return details.querySelector<HTMLElement>("input, select, textarea") ?? details;
+    return null;
+  });
 
   return createPortal(
     <dialog
@@ -191,10 +257,10 @@ export function TaskDetailDrawer({
         <h2 id="task-detail-drawer-title">{loading ? "Loading task…" : title}</h2>
         <p id="task-detail-drawer-context" className="task-detail-drawer__context">{contextLabel}</p>
         {hasData && !loading && <div className="task-detail-drawer__badges" aria-label="Task status and schedule">
-          <span className="task-detail-drawer__badge task-detail-drawer__badge--priority">{priorityLabel} priority</span>
-          <span className="task-detail-drawer__badge task-detail-drawer__badge--status">{statusLabel}</span>
-          <span className="task-detail-drawer__badge task-detail-drawer__badge--target">{targetLabel}</span>
-          {waitingLabel && <span className="task-detail-drawer__badge task-detail-drawer__badge--waiting">{waitingLabel}</span>}
+          <button type="button" className="task-detail-drawer__badge task-detail-drawer__badge--priority" onClick={focusEditTask} aria-label={`Priority ${priorityLabel} — edit task details`}>{priorityLabel} priority</button>
+          <button type="button" className="task-detail-drawer__badge task-detail-drawer__badge--status" onClick={focusStatusTransition} aria-label={`Status ${statusLabel} — open status actions`}>{statusLabel}</button>
+          <button type="button" className="task-detail-drawer__badge task-detail-drawer__badge--target" onClick={focusTargetDate} aria-label={`${targetLabel} — set target or committed date`}>{targetLabel}</button>
+          {waitingLabel && <button type="button" className="task-detail-drawer__badge task-detail-drawer__badge--waiting" onClick={focusWaiting} aria-label={`${waitingLabel} — open waiting details`}>{waitingLabel}</button>}
         </div>}
         {hasData && !loading && <div className="task-detail-drawer__summary">
           <span>Checklist</span>
@@ -203,7 +269,7 @@ export function TaskDetailDrawer({
             <span style={{ width: `${checklistTotal > 0 ? safeChecklistCompleted / checklistTotal * 100 : 0}%` }} />
           </span>
         </div>}
-        <div className="task-detail-drawer__tabs" role="tablist" aria-label="Task details">
+        {useTabs ? <div className="task-detail-drawer__tabs" role="tablist" aria-label="Task details">
           {tabs.map((tab) => (
             <button
               key={tab.id}
@@ -218,34 +284,50 @@ export function TaskDetailDrawer({
               onKeyDown={onTabKeyDown}
             >{tab.label}</button>
           ))}
-        </div>
+        </div> : null}
       </header>
 
       <div
         ref={panelRef}
-        className="task-detail-drawer__body"
+        className={`task-detail-drawer__body${useTabs ? "" : " task-detail-drawer__body--single"}`}
         onScroll={(event) => scrollPositions.current.set(`${taskId}:${activeTab}`, event.currentTarget.scrollTop)}
       >
         {errors && <div className="task-detail-drawer__errors" role="alert">{errors}</div>}
         {feedback}
-        {tabs.map((tab) => (
-          <section
-            key={tab.id}
-            id={`task-detail-panel-${tab.id}`}
-            className="task-detail-drawer__panel"
-            role="tabpanel"
-            aria-labelledby={`task-detail-tab-${tab.id}`}
-            hidden={activeTab !== tab.id}
-            tabIndex={0}
-          >
-            {loading ? <p className="task-detail-drawer__loading" role="status">Loading task details…</p> : content[tab.id]}
-          </section>
-        ))}
+        {useTabs
+          ? tabs.map((tab) => (
+              <section
+                key={tab.id}
+                id={`task-detail-panel-${tab.id}`}
+                className="task-detail-drawer__panel"
+                role="tabpanel"
+                aria-labelledby={`task-detail-tab-${tab.id}`}
+                hidden={activeTab !== tab.id}
+                tabIndex={0}
+              >
+                {loading ? <p className="task-detail-drawer__loading" role="status">Loading task details…</p> : content[tab.id]}
+              </section>
+            ))
+          : tabs.map((tab) => (
+              <section
+                key={tab.id}
+                id={`task-detail-panel-${tab.id}`}
+                className="task-detail-drawer__section"
+                aria-label={tab.label}
+              >
+                {loading && tab.id === "overview" ? <p className="task-detail-drawer__loading" role="status">Loading task details…</p> : content[tab.id]}
+              </section>
+            ))}
       </div>
 
       <footer className="task-detail-drawer__footer">
         <div className="task-detail-drawer__footer-actions">{actions}</div>
-        <button type="button" className="task-detail-drawer__more" onClick={revealTaskActions} disabled={!hasActions || busy || loading}>Task actions <span aria-hidden="true">↗</span></button>
+        <div className="task-detail-drawer__footer-controls">
+          <button type="button" className="task-detail-drawer__layout-toggle" aria-pressed={useTabs} onClick={() => { setSectionLayout(useTabs ? "single" : "tabs"); setActiveTab("overview"); }}>
+            {useTabs ? "Single scroll" : "Tabs"}
+          </button>
+          <button type="button" className="task-detail-drawer__more" onClick={revealTaskActions} disabled={!hasActions || busy || loading}>Task actions <span aria-hidden="true">↗</span></button>
+        </div>
       </footer>
     </dialog>,
     document.body,

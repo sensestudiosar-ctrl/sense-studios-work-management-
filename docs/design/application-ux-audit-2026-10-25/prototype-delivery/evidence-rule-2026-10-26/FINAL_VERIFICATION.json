@@ -1,0 +1,37 @@
+{
+  "at": "2026-10-26T05:17:17.649Z",
+  "stats": {
+    "startTime": "2026-10-26T05:12:39.414Z",
+    "duration": 226919.264,
+    "expected": 107,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "prototypeSha256": "9cdba8d52450e03ddc8b413cae307e3f73c40812e8edef94bdf38d9d08b8ac48",
+  "scope": "Prototype/specification only; no application/backend/staging implementation",
+  "clientPortalAcceptance": "BLOCKED; staff preparation/shared guard only",
+  "screenshots": [
+    "1024-approved-carry-forward.png",
+    "1024-file-resubmitted.png",
+    "1024-invalid-evidence.png",
+    "1024-link-resubmitted.png",
+    "1440-approved-carry-forward.png",
+    "1440-file-resubmitted.png",
+    "1440-invalid-evidence.png",
+    "1440-link-resubmitted.png",
+    "320-approved-carry-forward.png",
+    "320-file-resubmitted.png",
+    "320-invalid-evidence.png",
+    "320-link-resubmitted.png",
+    "390-approved-carry-forward.png",
+    "390-file-resubmitted.png",
+    "390-invalid-evidence.png",
+    "390-link-resubmitted.png",
+    "768-approved-carry-forward.png",
+    "768-file-resubmitted.png",
+    "768-invalid-evidence.png",
+    "768-link-resubmitted.png"
+  ]
+}

@@ -85,6 +85,44 @@ For all three: any restart, reseed, migration or lifecycle operation
 requires explicit Owner approval. Do not log Owner in through the
 test-only controller.
 
+## Hot dev loop — what is built is visible immediately (added 2026-10-26)
+
+The 59443 preview is a sealed, commit-based release: it only shows working-tree
+changes after an Owner-gated rebuild + promote. To view working-tree changes
+*immediately, without rebuilding every time*, use the hot loop:
+
+**Key fact:** the `apps/web` module graph imports **physical `.js` twins**
+(e.g. `app.tsx` → `./task.js`); Vite serves the `.js`, not the `.tsx`. The
+twins are generated artifacts kept in git; `.tsx` is the source of truth.
+`scripts/dev-js-twin-watcher.mjs` re-emits a `.js` twin on every `.tsx` save,
+so HMR reflects the edit within a second.
+
+```bash
+# 1) Dev server with HMR, API proxied to the running sealed API (59442, retained preview DB)
+cd apps/web && API_PROXY_TARGET='http://localhost:59442' node node_modules/vite/bin/vite.js --port 5180 --strictPort
+# -> http://localhost:5180  (sign-in works through the 59442 API; no commit required)
+
+# 2) Twin watcher (run alongside the dev server)
+node scripts/dev-js-twin-watcher.mjs
+```
+
+Rules of the hot loop:
+
+- **5180 is the working-tree view.** 59443 remains the S18/S27 acceptance
+  surface and stays Owner-gated as before; "live immediately" means 5180, not 59443.
+- **Sealed releases are unaffected.** `scripts/staging/build.mjs` still builds
+  from a committed revision (`git archive <commit>`), never from the working
+  directory; this loop does not change that.
+- **Stale twin?** Re-emit one file byte-faithfully with:
+  `node node_modules/typescript/lib/tsc.js apps/web/src/<f>.tsx --outDir <tmp> --jsx react-jsx --target es2022 --module esnext --moduleResolution bundler --esModuleInterop --skipLibCheck --noEmit false`,
+  then copy the emitted `<f>.js` back over `apps/web/src/<f>.js`.
+  (Flag set verified byte-identical against `src/task-people.js`.)
+- **API note:** the proxy points at the *sealed* 59442 API. If you change
+  `apps/api`, the hot loop will not show it — run a separate dev API and point
+  `API_PROXY_TARGET` there.
+- Tests/typecheck/lint must pass in the `.tsx` **and** keep the committed
+  `.js` twins in sync (watcher does this on save; run it before committing).
+
 ## Latest gate evidence (frozen source `752761cb`, 2026-10-14)
 
 Reported by the MW-I02 separate-port preparation: API **359/57 suites**

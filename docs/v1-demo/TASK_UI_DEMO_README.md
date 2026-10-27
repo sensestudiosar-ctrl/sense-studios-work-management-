@@ -1,4 +1,12 @@
-# Task UI demo — original My Work retained
+# Task UI demo — connected P1/P2a review extension
+
+Latest Owner review candidate: [Review Evidence presentation/storage clarification](../design/application-ux-audit-2026-10-25/prototype-delivery/evidence-refinement-2026-10-26/README.md). Evidence is directly beneath guidance; local selection is not stored evidence, URL format is not reviewer access, and client publishing remains unverified/blocked. The same designated artifact is used; no production implementation is authorized.
+
+26 October evidence rule: [Mandatory evidence for every review](../design/application-ux-audit-2026-10-25/prototype-delivery/evidence-rule-2026-10-26/README.md). File selection or valid link is required for a new review submission; updated evidence and exact immutable round history are preserved. This remains prototype/specification work, not application implementation or deployment.
+
+Current refinement candidate: [mobile navigation, contextual return, reviewer setup and state-aware guidance](../design/application-ux-audit-2026-10-25/prototype-delivery/refinement-1/README.md). The same artifact is updated; production implementation remains unauthorized. Earlier notes below describe the preserved baseline.
+
+25 October 2026: Owner D01–D04 authorize **prototype only**. The same designated `task-creation-completed-demo.html` now connects Dashboard, approved My Work/creation, Project Tasks, internal review, linked corrections and resubmission. Default fictional persona is Designer; Owner remains in separate review controls. Read the [delivery and exact test/acceptance boundary](../design/application-ux-audit-2026-10-25/prototype-delivery/README.md). No application implementation or deployment is authorized. The following 17 October notes describe the preserved approved baseline; its original artifact/source are retained in the delivery `baseline/` directory.
 
 17 October 2026. Open `task-creation-completed-demo.html` directly in a modern browser. It is self-contained; no server, package install, real API or database is required.
 

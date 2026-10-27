@@ -11,13 +11,23 @@ export function taskDraftError(draft: TaskComposerDraft): string | undefined {
   return Object.values(taskDraftErrors(draft))[0];
 }
 
+/** Live footer readiness line (demo "N required details remaining"): counts only the
+    required essentials, so a draft needing just a Target date reads "1 required detail remaining". */
+export function taskDraftReadiness(draft: TaskComposerDraft, options: TaskCreationOptions | undefined): string {
+  const errors = taskDraftErrors(draft);
+  const explicit = options ? options.actorEmployeeId === null || options.canAssign && draft.assignTo : false;
+  const ownerMissing = explicit && options?.canCreate === true && !options.owners.some(person => person.id === draft.ownerId);
+  const missing = [errors.title, errors.targetDate, errors.reason, errors.projectId, ownerMissing ? "owner" : undefined].filter(Boolean).length;
+  return missing === 0 ? "Ready to create" : `${missing} required ${missing === 1 ? "detail" : "details"} remaining`;
+}
+
 /** One validation pass supplies both the command guard and field-level errors. */
 export function taskDraftErrors(draft: TaskComposerDraft): Record<string, string> {
   const errors: Record<string, string> = {};
   if (draft.title.trim().length < 2 || draft.title.trim().length > 160) errors.title = "Task name must be between 2 and 160 characters.";
   const validDate = (value: string): boolean => { const date = new Date(`${value}T00:00:00Z`); return /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value; };
   if (!validDate(draft.targetDate)) errors.targetDate = "Choose a valid Target date.";
-  if (draft.description.trim().length > TASK_DESCRIPTION_MAX_LENGTH) errors.description = `Description must be ${TASK_DESCRIPTION_MAX_LENGTH} characters or fewer.`;
+  if (draft.description.trim().length > TASK_DESCRIPTION_MAX_LENGTH) errors.description = `Task brief must be ${TASK_DESCRIPTION_MAX_LENGTH} characters or fewer.`;
   if (draft.startDate && (!validDate(draft.startDate) || draft.startDate > draft.targetDate)) errors.startDate = "Start date must be valid and on or before the Target date.";
   const invalidHours = (value: string): boolean => value !== "" && (!Number.isFinite(Number(value)) || Number(value) < 0 || Number(value) > 100_000);
   if (invalidHours(draft.estimatedHours)) errors.estimatedHours = "Estimated hours must be a number between 0 and 100,000.";
@@ -159,7 +169,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
       {error("title")}
     </label>
     <label className="task-field"><span className="task-field__label">Task brief <span className="task-field__optional">· optional</span></span>
-      <textarea {...attrs("description")} aria-label="Description (optional)" value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={4} placeholder="What needs to be delivered? Add scope, context and the expected result." />
+      <textarea {...attrs("description")} aria-label="Description (optional)" value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={3} placeholder="What needs to be delivered? Add scope, context and the expected result." />
       <small className="task-field__helper">A useful brief helps the next person start without another conversation.</small>
       {error("description")}
     </label>
@@ -198,7 +208,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
 
   const assignSection = options ? (
     <div className="task-composer__assign">
-      <p className="task-composer__section-title">Assign to</p>
+      <p className="task-composer__section-title">Assign to{d.collaboratorIds.length > 0 && <span className="task-field__optional">· {d.collaboratorIds.length} selected</span>}</p>
       {optionsError
         ? <div className="task-options-retry" role="alert"><p>{optionsError}</p><button type="button" onClick={retryOptions} disabled={busy}>Retry participants</button></div>
         : <div className="task-avatar-strip" aria-label="Assigned people">
@@ -282,10 +292,11 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
 
   const planningSection = <div className="task-composer__planning">
     <button type="button" className="task-accordion-toggle" aria-expanded={planningOpen} onClick={() => setPlanningOpen(open => !open)}>
-      <span>More task settings</span><span className="task-accordion-toggle__hint">{compact ? "Stage, dates and hours" : "Stage, checklist and optional planning"}</span>
+      <span>More task settings</span><span className="task-accordion-toggle__hint">Stage, tags, checklist and collaborator hours</span>
       <span className="task-accordion-toggle__chevron" aria-hidden="true">{planningOpen ? "▴" : "▾"}</span>
     </button>
     {planningOpen && <div className="task-accordion-content">
+      {tagsSection}
       <label>Stage or milestone (optional)<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
       <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder="One item per line" rows={3} /><small className="task-field__helper">Checklist progress does not complete the task automatically.</small>{error("checklistText")}</label>
       <details className="task-collaborator-details" open={planningOpen}>
@@ -331,39 +342,42 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
           <small className="task-field__helper">One person is accountable for this task.</small>
           {error("ownerId")}
         </div>}
-        <div className="task-property-row">
-          <span className="task-property-row__label"><RowIcon name="target" /> Target date <span className="task-field__req" aria-hidden="true">*</span></span>
-          <input {...attrs("targetDate")} type="date" aria-label="Target date" required value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} disabled={busy} min={todayISO} />
+        <div className="task-timing-group">
+          <span className="task-timing-group__header"><RowIcon name="target" /> Timing</span>
+          <label>Target date <span className="task-field__req" aria-hidden="true">*</span><input {...attrs("targetDate")} type="date" aria-label="Target date" required value={d.targetDate} onChange={event => change({ targetDate: event.target.value })} disabled={busy} min={todayISO} /></label>
           {error("targetDate")}
-        </div>
-        <div className="task-property-row task-property-row--pair">
-          <label>Start date <span className="task-field__optional">· optional</span><input {...attrs("startDate")} type="date" aria-label="Start date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} /></label>
-          {error("startDate")}
-          <label>Estimated hours <span className="task-field__optional">· optional</span>
-            <div className="task-effort-input"><button type="button" aria-label="Clear estimated effort" disabled={!d.estimatedHours || busy} onClick={() => change({ estimatedHours: "" })}>−</button>
-              <input {...attrs("estimatedHours")} aria-label="Estimated hours" type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} />
-              <span className="task-effort-unit" aria-hidden="true">h</span>
-              <button type="button" aria-label="Increment estimated effort" disabled={busy} onClick={() => change({ estimatedHours: String(Number(d.estimatedHours || 0) + 1) })}>+</button>
-            </div>
-          </label>
-          {error("estimatedHours")}
+          <div className="task-timing-group__pair">
+            <label>Start date <span className="task-field__optional">· optional</span><input {...attrs("startDate")} type="date" aria-label="Start date" value={d.startDate} onChange={event => change({ startDate: event.target.value })} /></label>
+            {error("startDate")}
+            <label>Estimated hours <span className="task-field__optional">· optional</span>
+              <div className="task-effort-input"><button type="button" aria-label="Clear estimated effort" disabled={!d.estimatedHours || busy} onClick={() => change({ estimatedHours: "" })}>−</button>
+                <input {...attrs("estimatedHours")} aria-label="Estimated hours" type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} />
+                <span className="task-effort-unit" aria-hidden="true">h</span>
+                <button type="button" aria-label="Increment estimated effort" disabled={busy} onClick={() => change({ estimatedHours: String(Number(d.estimatedHours || 0) + 1) })}>+</button>
+              </div>
+            </label>
+            {error("estimatedHours")}
+          </div>
           <p className="task-form-note">An estimate does not automatically create a dated capacity allocation.</p>
         </div>
         <div className="task-property-row task-property-row--priority">
           <span className="task-property-row__label"><RowIcon name="priority" /> Priority</span>
-          <div className={`task-priority-picker tone-${d.priority.toLowerCase()}`} aria-label={`Priority ${label(d.priority)}`}>
-            <span className="task-priority-picker__dot" aria-hidden="true" />
-            <select aria-label="Priority" value={d.priority} onChange={event => change({ priority: event.target.value })} disabled={busy}>
-              {PRIORITIES.map(value => <option key={value} value={value}>{label(value)}</option>)}
-            </select>
-            <span className="task-priority-picker__chevron" aria-hidden="true">▾</span>
+          <div className={`task-priority-segmented tone-${d.priority.toLowerCase()}`} role="radiogroup" aria-label="Priority">
+            {PRIORITIES.map(value => (
+              <button key={value} type="button" role="radio" aria-checked={d.priority === value} disabled={busy}
+                className={d.priority === value ? "task-priority-segmented__option task-priority-segmented__option--active" : "task-priority-segmented__option"}
+                onClick={() => change({ priority: value })}>
+                <span className="task-priority-segmented__dot" aria-hidden="true" />{label(value)}
+              </button>
+            ))}
           </div>
-          <p className="task-priority-hint">{label(d.priority)} is the selected priority. Colour communicates the current selection.</p>
         </div>
         {assignSection}
         {reviewSection}
-        {tagsSection}
-        {!compact && planningSection}
+        {/* Compact (EMPLOYEE/SITE) variants keep Tags visible directly in the aside —
+            their "More task settings" accordion is not rendered at all. Full
+            variants move Tags into the accordion to keep essentials above the fold. */}
+        {compact ? tagsSection : planningSection}
       </aside>
     </div>
   </fieldset>;

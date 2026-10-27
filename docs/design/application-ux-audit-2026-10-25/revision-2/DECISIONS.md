@@ -1,5 +1,7 @@
 # Exact decisions needed from the Owner
 
+**Owner decisions received 25 October 2026; historical questions below are superseded:** D01 defer and BLOCK client/external audits, with no new identities/grants/fixtures; D02 priorities confirmed; D03 IA approved for prototype specification only; D04 connected internal P1/P2a prototype approved in the existing review artifact only. No production implementation/deployment is authorized. See [prototype delivery and settled decision boundary](../prototype-delivery/README.md).
+
 25 October 2026 · These decisions do not authorize application implementation unless a later separate instruction explicitly does so.
 
 ## D01 — Missing real CLIENT/EXTERNAL audit records (required to close all-role audit)

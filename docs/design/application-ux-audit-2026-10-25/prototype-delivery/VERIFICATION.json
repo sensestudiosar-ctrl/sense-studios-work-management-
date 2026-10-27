@@ -1,0 +1,100 @@
+{
+  "at": "2026-10-25T08:09:50.633Z",
+  "checkedApplicationFiles": 693,
+  "unchanged": 688,
+  "changed": [
+    {
+      "path": "apps/api/src/my-work-parity.database.api.spec.ts",
+      "expected": "b3c5059fe8a09f4e8b7307ced8d645ed2ddb694e01bd4f8406ff355ee93c4c9b",
+      "actual": "26602cf61a73ce6a0c827390ca8e06060e3e043be13f91d651328ba62aa47537"
+    },
+    {
+      "path": "apps/api/src/task-subtask-commit.database.api.spec.ts",
+      "expected": "f41e5cf65cd435b5862042a1873f432ecd13093c704a532f7bb8b49d0ea090fc",
+      "actual": "1e0b8bce04b51036f103a492e5d6b654fd3660a58f197e01b83323c665363a9e"
+    },
+    {
+      "path": "apps/web/public/pwa-update-guard.js",
+      "expected": "2408dbb33f956a41ae7eb3e87dea4a2eb5dd3a46b6037936f29670ed9ff6a8b8",
+      "actual": "a6b7cf4f3c3de88eb6503c86885b62de0f90353432bd9390500016df1974cfef"
+    },
+    {
+      "path": "scripts/ci/prepare-disposable-postgres.mjs",
+      "expected": "f6a2f0a9e65c96ac33d40b8d2b86c71c106e6ffb20dba27ad2cd8aa81d2411a0",
+      "actual": "1571764d5949df22542b2da055bbaca3c7d1d16adc49645e912d771399e724fb"
+    },
+    {
+      "path": "scripts/staging/service-worker.js",
+      "expected": "b424b7f912d7d5e8a6ad25605aa9a26bf8764a44a77e210c84b09abbaf4a64e4",
+      "actual": "d7b6d747e233b17c9c7c7dbe694f9b1ae43fe870a5bee09ded2f7dfa4e62ae68"
+    }
+  ],
+  "references": [
+    {
+      "name": "dashboard-v10",
+      "path": "D:\\app\\sensestudios work management app\\demos\\Sense_Studios_Codex_Dashboard_V10_Handoff\\reference\\Sense_Studios_Dashboard_V10_Refined_Shell.html",
+      "sha256": "1829cbe1d4d3771365fba5af059a267b191aef051cb8cc71548aa6469e66a65a"
+    },
+    {
+      "name": "my-work-approved",
+      "path": "D:/app/reference from codex chat/Sense_Studios_My_Work_UX_Package/Sense_Studios_My_Work/prototype.html",
+      "sha256": "f8c18088e04c72acee34c38bdb458bf84fc8cf9fc834667a75e3d5a3d95c59b8"
+    },
+    {
+      "name": "creation-approved",
+      "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\baseline\\task-creation-completed-demo.html",
+      "sha256": "dc0f5a59c67faf23a144013a9833b347a0768983e0bfbaa60d9178977c2a5261"
+    }
+  ],
+  "prototypeSha256": "cee1c37d4bd225da407b95ee7ee5dc669cfb4a58ffc87617b94c0e067722f4ec",
+  "browserErrors": [],
+  "networkAttempts": [],
+  "contrastSamples": [
+    {
+      "name": "Body text",
+      "fg": "#20332e",
+      "bg": "#fffdf7",
+      "ratio": 13.11
+    },
+    {
+      "name": "Secondary text",
+      "fg": "#50645a",
+      "bg": "#fffdf7",
+      "ratio": 6.23
+    },
+    {
+      "name": "Primary button",
+      "fg": "#ffffff",
+      "bg": "#29463d",
+      "ratio": 10.31
+    },
+    {
+      "name": "Error text",
+      "fg": "#84352e",
+      "bg": "#fae9e5",
+      "ratio": 7.06
+    },
+    {
+      "name": "Warning pill",
+      "fg": "#744317",
+      "bg": "#faecd6",
+      "ratio": 7.05
+    }
+  ],
+  "capabilityRows": 409,
+  "coreScenarioMapped": 23,
+  "notClaimed": [
+    "Real role/auth/API enforcement",
+    "Operational usability study",
+    "Physical mobile or screen reader certification",
+    "All capability runtime parity",
+    "Production implementation or deployment"
+  ],
+  "checkoutCommit": "15204346db383b4317670db1f5a728107f7892d8",
+  "unrelatedWorktreeChanges": [
+    "apps/web/public/pwa-update-guard.js",
+    "eslint.config.mjs",
+    "scripts/staging/service-worker.js"
+  ],
+  "sourceBoundary": "Earlier discovery baseline drift and concurrent unrelated work remain explicit; this task edits only review artifacts/docs. No reset or whole-checkout acceptance."
+}

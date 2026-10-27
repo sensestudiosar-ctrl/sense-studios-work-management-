@@ -1,5 +1,7 @@
 # Measurable usability, visual, accessibility and parity acceptance
 
+**26 October Owner evidence gate:** Include [EV01–EV10](../prototype-delivery/evidence-rule-2026-10-26/APPLICATION_SPEC.md) in every review acceptance. Missing/invalid/unchanged prior evidence must block a new submission with the exact required message on desktop and mobile. Evidence retains exact task/version/round association; BOTH reuses approved evidence only after independent approval. Client/external role gates remain BLOCKED; prototype checks do not certify production enforcement.
+
 25 October 2026 · Future acceptance specification. No targets below are claimed as achieved by the current plan or by reference screenshots.
 
 ## 1. Separate gates and precedence

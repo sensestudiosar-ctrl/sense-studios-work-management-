@@ -82,9 +82,10 @@
 .task-workspace-personal .my-work-demo-row[role="listitem"] {
   --state-rail: var(--state-todo);
   --row-tint: #f8f9fb;
+  --my-work-status-dot: var(--state-todo);
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 2.35fr) minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.15fr) minmax(0, .8fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, .8fr) minmax(0, .9fr) minmax(0, .8fr);
   align-items: center;
   gap: 12px;
   min-height: var(--my-work-row);
@@ -99,12 +100,21 @@
   cursor: pointer;
   outline: 0;
 }
-.task-workspace-personal .my-work-demo-row.state-todo { --state-rail: var(--state-todo); --row-tint: #f8f9fb; }
-.task-workspace-personal .my-work-demo-row.state-progress { --state-rail: var(--state-progress); --row-tint: #f4f9fd; }
-.task-workspace-personal .my-work-demo-row.state-review { --state-rail: var(--state-review); --row-tint: #fffbf2; }
-.task-workspace-personal .my-work-demo-row.state-waiting { --state-rail: var(--state-waiting); --row-tint: #f9f6fe; }
-.task-workspace-personal .my-work-demo-row.state-correction { --state-rail: var(--state-correction); --row-tint: #fff6f6; }
-.task-workspace-personal .my-work-demo-row.state-done { --state-rail: var(--state-done); --row-tint: #f5fbf7; }
+.task-workspace-personal .my-work-demo-row.state-todo { --state-rail: var(--state-todo); --row-tint: #f8f9fb; --my-work-status-dot: var(--state-todo); }
+.task-workspace-personal .my-work-demo-row.state-progress { --state-rail: var(--state-progress); --row-tint: #f4f9fd; --my-work-status-dot: var(--state-progress); }
+.task-workspace-personal .my-work-demo-row.state-review { --state-rail: var(--state-review); --row-tint: #fffbf2; --my-work-status-dot: var(--state-review); }
+.task-workspace-personal .my-work-demo-row.state-waiting { --state-rail: var(--state-waiting); --row-tint: #f9f6fe; --my-work-status-dot: var(--state-waiting); }
+.task-workspace-personal .my-work-demo-row.state-correction { --state-rail: var(--state-correction); --row-tint: #fff6f6; --my-work-status-dot: var(--state-correction); }
+.task-workspace-personal .my-work-demo-row.state-done { --state-rail: var(--state-done); --row-tint: #f5fbf7; --my-work-status-dot: var(--state-done); }
+
+.task-workspace-personal .my-work-demo-row .my-work-status-dot {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--my-work-status-dot, var(--state-todo));
+}
 
 .task-workspace-personal .my-work-demo-row[role="listitem"]:hover { background: #edf5f2; box-shadow: inset 0 0 0 1px #d8e6df; }
 .task-workspace-personal .my-work-demo-row[role="listitem"]:focus-visible { outline: 2px solid #7da393; outline-offset: -2px; }
@@ -124,7 +134,7 @@
   background: transparent;
 }
 .task-workspace-personal .my-work-row-main:focus-visible { outline: 3px solid #244f43; outline-offset: -3px; }
-.task-workspace-personal .my-work-demo-row > :is(.my-work-row-task, .my-work-row-cell, .my-work-status-cell, .my-work-row-action) { position: relative; min-width: 0; pointer-events: none; }
+.task-workspace-personal .my-work-demo-row > :is(.my-work-row-task, .my-work-row-cell, .my-work-status-cell, .my-work-priority-cell, .my-work-row-action) { position: relative; min-width: 0; pointer-events: none; }
 .task-workspace-personal .my-work-demo-row :is(.my-work-pin, .my-work-row-action button) { pointer-events: auto; min-height: 44px; min-width: 44px; }
 
 /* ---- Row cells ---- */
@@ -135,30 +145,45 @@
 .task-workspace-personal .my-work-row-text small { display: block; color: #8a988e; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 10px; margin-top: 5px; line-height: 1.4; }
 .task-workspace-personal .my-work-row-cell { font-size: 11px; color: #576d5f; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .task-workspace-personal .my-work-row-cell small { display: block; color: #9baa9d; font-size: 10px; margin-top: 4px; }
-.task-workspace-personal .my-work-status-cell { display: flex; justify-content: center; min-height: 33px; width: 100%; max-width: 125px; text-align: center; }
-.task-workspace-personal .my-work-status-cell .my-work-status { justify-content: center; width: 100%; box-shadow: inset 0 -2px 0 #0000000c; }
+.task-workspace-personal .my-work-status-cell { display: flex; align-items: center; min-width: 0; }
+.task-workspace-personal .my-work-status-cell .my-work-status { justify-content: flex-start; width: max-content; max-width: 100%; box-shadow: inset 0 -2px 0 #0000000c; }
 .task-workspace-personal .my-work-due.overdue { display: inline-flex; width: max-content; align-items: center; background: #fce7e8; border: 1px solid #f1c6ca; color: #ac3442; border-radius: 5px; padding: 6px 7px; white-space: nowrap; font-weight: 800; }
 
-/* ---- Priority pills ---- */
+/* ---- Priority marker: compact dot + 11px sentence-case label in the
+   title line; the pr-* tints double as a marker dot + pill in the
+   dedicated priority column. ---- */
 .task-workspace-personal .my-work-priority {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 5px;
   white-space: nowrap;
   flex: 0 0 auto;
   line-height: 1.35;
   padding: 3px 6px;
   border-radius: 4px;
   border: 1px solid transparent;
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .02em;
+  font-size: 11px;
+  font-weight: 650;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.task-workspace-personal .my-work-priority::before {
+  content: "";
+  display: inline-block;
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
 }
 .task-workspace-personal .my-work-priority.pr-Urgent { background: #fbe9ec; color: #ac253a; border-color: #f3cad2; }
 .task-workspace-personal .my-work-priority.pr-High { background: #fff0dc; color: #a75810; border-color: #f5d8ac; }
 .task-workspace-personal .my-work-priority.pr-Normal { background: #eaf2fd; color: #365f95; border-color: #d4e4f8; }
 .task-workspace-personal .my-work-priority.pr-Low { background: #edf2ef; color: #5c766c; border-color: #d8e5dd; }
+
+/* Bare marker for the dedicated priority column: 6px dot + 11px label, no
+   filled pill background. */
+.task-workspace-personal .my-work-priority-cell .my-work-priority { background: transparent; border-color: transparent; padding: 0; }
 
 /* ---- Pin ---- */
 .task-workspace-personal .my-work-pin { border: 0; background: transparent; color: #bc9c60; font-size: 15px; padding: 2px; line-height: 1; }
@@ -166,8 +191,12 @@
 
 /* ---- Next-action button in the last column ---- */
 .task-workspace-personal .my-work-row-action { display: flex; justify-content: flex-end; }
-.task-workspace-personal .my-work-row-action button { font-size: 10px; white-space: nowrap; border-radius: 7px; border: 1px solid #d8e5dc; background: #f4f8f5; color: #35624d; padding: 7px 8px; font-weight: 600; min-height: 29px; }
+.task-workspace-personal .my-work-row-action button { font-size: 11px; white-space: nowrap; border-radius: 7px; border: 1px solid #d8e5dc; background: #f4f8f5; color: #35624d; padding: 7px 8px; font-weight: 600; min-height: 29px; }
 .task-workspace-personal .my-work-row-action button:hover { background: #e7f1e9; }
+/* Ghost affordance for the default "Open task" state: chevron only, no
+   filled background. */
+.task-workspace-personal .my-work-row-action .my-work-row-open { border-color: transparent; background: transparent; color: #8a988e; padding: 0 11px; font-size: 15px; font-weight: 400; }
+.task-workspace-personal .my-work-row-action .my-work-row-open:hover { background: #f2f6f2; color: #35624d; }
 
 /* ---- Group header ---- */
 .task-workspace-personal .my-work-group { border-bottom: 1px solid #eef0ec; }
@@ -176,7 +205,7 @@
 .task-workspace-personal .my-work-group-count { display: inline-grid; place-items: center; min-width: 22px; height: 19px; background: #eef2ed; color: #718175; padding: 0 6px; border-radius: 6px; font-size: 10px; font-weight: 700; }
 .task-workspace-personal .my-work-chev { display: inline-block; font-size: 12px; width: 13px; transition: transform .2s; }
 .task-workspace-personal .my-work-chev.is-collapsed { transform: rotate(-90deg); }
-.task-workspace-personal .my-work-tablehead { display: grid; grid-template-columns: minmax(0, 2.35fr) minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, .9fr) minmax(0, 1.15fr) minmax(0, .8fr) minmax(0, 1fr); gap: 12px; padding: 0 19px 9px 34px; font-size: 10px; letter-spacing: .6px; color: #94a296; text-transform: uppercase; font-weight: 700; }
+.task-workspace-personal .my-work-tablehead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, .8fr) minmax(0, .9fr) minmax(0, .8fr); gap: 12px; padding: 0 19px 9px 34px; font-size: 10px; letter-spacing: .6px; color: #94a296; text-transform: uppercase; font-weight: 700; }
 .task-workspace-personal .my-work-showmore { display: block; width: 100%; padding: 11px 18px 14px 28px; background: #fff; color: #40775a; font-size: 11px; border: 0; font-weight: 650; text-align: left; min-height: 44px; }
 .task-workspace-personal .my-work-showmore:hover { background: #f8faf7; }
 
@@ -211,13 +240,7 @@
 .task-workspace-personal .my-work-empty strong { display: block; color: var(--task-ink); font-size: 15px; margin: 13px 0 5px; }
 .task-workspace-personal .my-work-empty p { font-size: 12px; max-width: 400px; margin: 0 auto 17px; line-height: 1.5; }
 
-/* ---- Responsive: tablet hides the project column, mobile becomes cards ---- */
-@media (max-width: 1100px) {
-  .task-workspace-personal .my-work-demo-row[role="listitem"],
-  .task-workspace-personal .my-work-tablehead { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, .85fr) minmax(0, 1.1fr) minmax(0, .8fr) minmax(0, 1fr); }
-  .task-workspace-personal .my-work-demo-row > .my-work-row-project,
-  .task-workspace-personal .my-work-tablehead > :nth-child(2) { display: none; }
-}
+/* ---- Responsive: mobile becomes cards ---- */
 @media (max-width: 700px) {
   .task-workspace-personal .my-work-demo-row[role="listitem"] {
     display: flex;
@@ -237,6 +260,12 @@
   .task-workspace-personal .my-work-mobile-state { display: flex; }
   .task-workspace-personal .my-work-demo-row > .my-work-row-action { display: flex; align-self: center; }
   .task-workspace-personal .my-work-demo-row > .my-work-row-action button { font-size: 10px; padding: 6px; }
+}
+/* Carry-over issue: below ~360px the title + priority + status line plus the
+   due line no longer fit in 92px, so the mixed-attention row scrolls. Give
+   the card the height it needs instead of forcing overflow. */
+@media (max-width: 360px) {
+  .task-workspace-personal .my-work-demo-row[role="listitem"] { min-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .task-workspace-personal .my-work-chev,

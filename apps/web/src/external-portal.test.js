@@ -172,8 +172,7 @@ describe("external portal", () => {
             }
             if (url.includes("/uploads/upload-2/chunks/0")) {
                 chunkCount++;
-                const body = init?.body;
-                chunkBodies.push(await body.text());
+                chunkBodies.push(await (init?.body).text());
                 if (chunkCount === 1)
                     throw new TypeError("Chunk acknowledgement lost after persistence");
                 return response({ index: 0, received: true });

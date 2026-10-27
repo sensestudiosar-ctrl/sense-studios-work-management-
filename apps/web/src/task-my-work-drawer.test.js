@@ -136,6 +136,9 @@ describe("TaskWorkspace My Work task drawer", () => {
         expect(urlState().searchParams.get("status")).toBe("NOT_STARTED");
         expect(urlState().searchParams.get("q")).toBe("concept");
         expect(urlState().searchParams.get("sort")).toBe("title_asc");
+        // The drawer defaults to the single-scroll layout; switch to the tabbed
+        // layout to exercise the pinned tab behaviour.
+        fireEvent.click(within(dialog).getByRole("button", { name: "Tabs" }));
         fireEvent.click(within(dialog).getByRole("tab", { name: "Checklist" }));
         const checklist = within(dialog).getByRole("region", { name: "Task checklist" });
         expect(within(checklist).getByText("Confirm the brief")).toBeInTheDocument();

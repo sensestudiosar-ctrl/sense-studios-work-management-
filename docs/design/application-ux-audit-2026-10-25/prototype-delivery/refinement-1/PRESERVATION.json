@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-25T12:08:17.803Z",
+  "checked": 909,
+  "differences": [
+    {
+      "path": "apps/web/src/my-work/my-work-parity.css",
+      "expected": "4b9e3ad2ff6b77489a8651f2eda06b80c11f16e632162b8c447291c19a9d7332",
+      "actual": "8212bc22d5b224cfe3ae7b67342c6367d991eaeaa79ed5a0baa73e0c04f474a6"
+    },
+    {
+      "path": "apps/web/src/task.tsx",
+      "expected": "0ca484132ca4f7597ad0a1a9624198befde87f1c65e0518b42a4249fa25dab43",
+      "actual": "aac0fd3abc074f5e50d03112f997e916e2946f36d2dbf19f75cab4da37fbec5d"
+    }
+  ],
+  "prototypeSha256": "2ed572bd2173367c6e4d577c620ee3ea3f43a16a0e022592bed59ade5ef17efe"
+}

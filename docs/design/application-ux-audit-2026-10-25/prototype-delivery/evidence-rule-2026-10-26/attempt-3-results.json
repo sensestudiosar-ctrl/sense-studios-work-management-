@@ -1,0 +1,277 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\app\\sensestudios work management app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "docs/v1-demo/mandatory-evidence.config.mjs",
+      "--grep",
+      "evidence 390px"
+    ],
+    "configFile": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.config.mjs",
+    "rootDir": "D:/app/sensestudios work management app/docs/v1-demo",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/app/sensestudios work management app/docs/design/application-ux-audit-2026-10-25/prototype-delivery/evidence-rule-2026-10-26/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/app/sensestudios work management app/docs/v1-demo",
+        "testIgnore": [],
+        "testMatch": [
+          "connected-prototype.spec.mjs",
+          "connected-refinement.spec.mjs",
+          "mandatory-evidence.spec.mjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "mandatory-evidence.spec.mjs",
+      "file": "mandatory-evidence.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "evidence 390px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4746,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:05:20.912Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-14bb4f407a8ded27198b",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5770,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:05:20.990Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-2fb64a30cca03c585603",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7546,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:05:26.119Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-84398cc1b820c6376874",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8449,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:05:27.125Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-ee2d2452ebeb2c1da52c",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3197,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:05:33.703Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-f79f98d77db45963c607",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T05:05:19.964Z",
+    "duration": 20127.73,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

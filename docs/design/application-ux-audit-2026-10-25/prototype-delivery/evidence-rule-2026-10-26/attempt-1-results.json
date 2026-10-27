@@ -1,0 +1,517 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\app\\sensestudios work management app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "docs/v1-demo/mandatory-evidence.config.mjs",
+      "--grep",
+      "evidence 390px"
+    ],
+    "configFile": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.config.mjs",
+    "rootDir": "D:/app/sensestudios work management app/docs/v1-demo",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/app/sensestudios work management app/docs/design/application-ux-audit-2026-10-25/prototype-delivery/evidence-rule-2026-10-26/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/app/sensestudios work management app/docs/v1-demo",
+        "testIgnore": [],
+        "testMatch": [
+          "connected-prototype.spec.mjs",
+          "connected-refinement.spec.mjs",
+          "mandatory-evidence.spec.mjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "mandatory-evidence.spec.mjs",
+      "file": "mandatory-evidence.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "evidence 390px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 5520,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:25:12",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                          "column": 824,
+                          "line": 13
+                        },
+                        "snippet": "  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 824,
+                            "line": 13
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n\n  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:25:12"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 52,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"submitReviewDemo is not defined\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  21 |  test.use({viewport:{width,height:width<768?844:900}});\n  22 |  test.beforeEach(async({page:p})=>{p.errors=[];p.requests=[];p.on('pageerror',e=>p.errors.push(e.message));await p.route(/^https?:/,r=>{p.requests.push(r.request().url());return r.abort();});await p.goto(url);});\n> 23 |  test.afterEach(async({page:p})=>{expect(p.errors).toEqual([]);expect(p.requests).toEqual([]);expect(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);});\n     |                                                    ^\n  24 |  test('initial INTERNAL review blocks missing, typed filenames and invalid links',async({page:p})=>{\n  25 |   const id=await create(p);await expect(p.locator('#review-evidence-status')).toHaveText(message);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);for(const invalid of ['drawing.pdf','javascript:alert(1)','http://drive.google.com/work','https://127.0.0.1/work','https://user:pass@drive.google.com/work']){await p.locator('#cx-evidence').fill(invalid);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);}\n  26 |   await p.screenshot({path:path.join(out,`${width}-invalid-evidence.png`)});await p.locator('#cx-evidence').fill('https://drive.google.com/file/d/initial-r1/view');await submit(p);const s=await p.evaluate(()=>window.connectedPrototype.snapshot());const round=s.rounds.find(([t])=>t===id)[1][0];expect(round.evidenceSnapshot).toMatchObject({taskId:id,roundNumber:1,submissionVersion:1,submissionId:round.id,roundId:round.id,evidence:{kind:'LINK',url:'https://drive.google.com/file/d/initial-r1/view'}});\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:23:52"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:02:38.243Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-10e99-filenames-and-invalid-links\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-10e99-filenames-and-invalid-links\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-10e99-filenames-and-invalid-links\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                        "column": 824,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-14bb4f407a8ded27198b",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 5291,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:29:12",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                          "column": 824,
+                          "line": 13
+                        },
+                        "snippet": "  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 824,
+                            "line": 13
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n\n  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:29:12"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 52,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"submitReviewDemo is not defined\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  21 |  test.use({viewport:{width,height:width<768?844:900}});\n  22 |  test.beforeEach(async({page:p})=>{p.errors=[];p.requests=[];p.on('pageerror',e=>p.errors.push(e.message));await p.route(/^https?:/,r=>{p.requests.push(r.request().url());return r.abort();});await p.goto(url);});\n> 23 |  test.afterEach(async({page:p})=>{expect(p.errors).toEqual([]);expect(p.requests).toEqual([]);expect(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);});\n     |                                                    ^\n  24 |  test('initial INTERNAL review blocks missing, typed filenames and invalid links',async({page:p})=>{\n  25 |   const id=await create(p);await expect(p.locator('#review-evidence-status')).toHaveText(message);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);for(const invalid of ['drawing.pdf','javascript:alert(1)','http://drive.google.com/work','https://127.0.0.1/work','https://user:pass@drive.google.com/work']){await p.locator('#cx-evidence').fill(invalid);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);}\n  26 |   await p.screenshot({path:path.join(out,`${width}-invalid-evidence.png`)});await p.locator('#cx-evidence').fill('https://drive.google.com/file/d/initial-r1/view');await submit(p);const s=await p.evaluate(()=>window.connectedPrototype.snapshot());const round=s.rounds.find(([t])=>t===id)[1][0];expect(round.evidenceSnapshot).toMatchObject({taskId:id,roundNumber:1,submissionVersion:1,submissionId:round.id,roundId:round.id,evidence:{kind:'LINK',url:'https://drive.google.com/file/d/initial-r1/view'}});\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:23:52"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:02:38.235Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-9fc28-val-and-exact-carry-forward\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-9fc28-val-and-exact-carry-forward\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-9fc28-val-and-exact-carry-forward\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                        "column": 824,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-2fb64a30cca03c585603",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 4787,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:32:12",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                          "column": 824,
+                          "line": 13
+                        },
+                        "snippet": "  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 824,
+                            "line": 13
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n\n  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:32:12"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 52,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"submitReviewDemo is not defined\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  21 |  test.use({viewport:{width,height:width<768?844:900}});\n  22 |  test.beforeEach(async({page:p})=>{p.errors=[];p.requests=[];p.on('pageerror',e=>p.errors.push(e.message));await p.route(/^https?:/,r=>{p.requests.push(r.request().url());return r.abort();});await p.goto(url);});\n> 23 |  test.afterEach(async({page:p})=>{expect(p.errors).toEqual([]);expect(p.requests).toEqual([]);expect(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);});\n     |                                                    ^\n  24 |  test('initial INTERNAL review blocks missing, typed filenames and invalid links',async({page:p})=>{\n  25 |   const id=await create(p);await expect(p.locator('#review-evidence-status')).toHaveText(message);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);for(const invalid of ['drawing.pdf','javascript:alert(1)','http://drive.google.com/work','https://127.0.0.1/work','https://user:pass@drive.google.com/work']){await p.locator('#cx-evidence').fill(invalid);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);}\n  26 |   await p.screenshot({path:path.join(out,`${width}-invalid-evidence.png`)});await p.locator('#cx-evidence').fill('https://drive.google.com/file/d/initial-r1/view');await submit(p);const s=await p.evaluate(()=>window.connectedPrototype.snapshot());const round=s.rounds.find(([t])=>t===id)[1][0];expect(round.evidenceSnapshot).toMatchObject({taskId:id,roundNumber:1,submissionVersion:1,submissionId:round.id,roundId:round.id,evidence:{kind:'LINK',url:'https://drive.google.com/file/d/initial-r1/view'}});\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:23:52"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:02:48.968Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-1e869--preserves-earlier-snapshot\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-1e869--preserves-earlier-snapshot\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-1e869--preserves-earlier-snapshot\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                        "column": 824,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-84398cc1b820c6376874",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2772,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:32:12",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                          "column": 824,
+                          "line": 13
+                        },
+                        "snippet": "  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 824,
+                            "line": 13
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n\n  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:32:12"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 52,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"submitReviewDemo is not defined\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  21 |  test.use({viewport:{width,height:width<768?844:900}});\n  22 |  test.beforeEach(async({page:p})=>{p.errors=[];p.requests=[];p.on('pageerror',e=>p.errors.push(e.message));await p.route(/^https?:/,r=>{p.requests.push(r.request().url());return r.abort();});await p.goto(url);});\n> 23 |  test.afterEach(async({page:p})=>{expect(p.errors).toEqual([]);expect(p.requests).toEqual([]);expect(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);});\n     |                                                    ^\n  24 |  test('initial INTERNAL review blocks missing, typed filenames and invalid links',async({page:p})=>{\n  25 |   const id=await create(p);await expect(p.locator('#review-evidence-status')).toHaveText(message);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);for(const invalid of ['drawing.pdf','javascript:alert(1)','http://drive.google.com/work','https://127.0.0.1/work','https://user:pass@drive.google.com/work']){await p.locator('#cx-evidence').fill(invalid);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);}\n  26 |   await p.screenshot({path:path.join(out,`${width}-invalid-evidence.png`)});await p.locator('#cx-evidence').fill('https://drive.google.com/file/d/initial-r1/view');await submit(p);const s=await p.evaluate(()=>window.connectedPrototype.snapshot());const round=s.rounds.find(([t])=>t===id)[1][0];expect(round.evidenceSnapshot).toMatchObject({taskId:id,roundNumber:1,submissionVersion:1,submissionId:round.id,roundId:round.id,evidence:{kind:'LINK',url:'https://drive.google.com/file/d/initial-r1/view'}});\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:23:52"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:02:51.906Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-cf833--preserves-earlier-snapshot\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-cf833--preserves-earlier-snapshot\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-cf833--preserves-earlier-snapshot\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                        "column": 824,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-ee2d2452ebeb2c1da52c",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3493,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:37:12",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                          "column": 824,
+                          "line": 13
+                        },
+                        "snippet": "  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 824,
+                            "line": 13
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('[data-cx-action=\"my-work\"]') resolved to 6 elements:\n    1) <button class=\"cx-btn primary\" data-cx-action=\"my-work\">Open My Work</button> aka getByRole('button', { name: 'Open My Work' })\n    2) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Overdue 0 Past their Target' })\n    3) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Due today 2 Target date today' })\n    4) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'High priority 3 High or' })\n    5) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Waiting / blocked 0 A next' })\n    6) <button class=\"cx-stat\" data-cx-action=\"my-work\">…</button> aka getByRole('button', { name: 'Review / corrections 1 Review' })\n\nCall log:\n\u001b[2m  - waiting for locator('[data-cx-action=\"my-work\"]')\u001b[22m\n\n\n  11 | async function reviews(p){if(p.viewportSize().width<768){await p.locator('.mobile-nav [data-cx-route=\"more\"]').click();await p.locator('#connected-surface [data-cx-route=\"/reviews\"]').click();}else await p.locator('.sidebar [data-cx-route=\"/reviews\"]').click();}\n  12 | async function create(p,mode='INTERNAL'){\n> 13 |  await persona(p,'Owner');await p.locator('#cx-new').click();await form(p).locator('#new-title').fill('Mandatory evidence '+mode);await form(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await form(p).locator('#new-owner').selectOption('designer1');await form(p).locator('#new-review').selectOption(mode);if(mode!=='CLIENT')await form(p).locator('#new-reviewer').selectOption('lead');await form(p).locator('#new-target').fill('2026-11-12');await form(p).locator('#new-reason').fill('Prepare evidence review');await form(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Mandatory evidence '+mode);const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await close(p);await persona(p,'Designer');await p.locator('[data-cx-action=\"my-work\"]').click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.getByRole('button',{name:'Start task',exact:true}).click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  14 | }\n  15 | async function attach(p,bytes,name='work.pdf'){await p.locator('[data-evidence-kind=\"FILE\"]').click();await p.locator('#cx-evidence-file').setInputFiles({name,mimeType:'application/pdf',buffer:Buffer.from(bytes)});await expect(p.locator('#review-evidence-status')).toContainText('Attachment ready');}\n  16 | async function submit(p){await reason(p);await p.locator('#cx-detail [data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-current-round')).toContainText('Awaiting Meera');}\n    at create (D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:13:824)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:37:12"
+                        },
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                            "column": 52,
+                            "line": 23
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 3\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"submitReviewDemo is not defined\",\u001b[39m\n\u001b[31m+ ]\u001b[39m\n\n  21 |  test.use({viewport:{width,height:width<768?844:900}});\n  22 |  test.beforeEach(async({page:p})=>{p.errors=[];p.requests=[];p.on('pageerror',e=>p.errors.push(e.message));await p.route(/^https?:/,r=>{p.requests.push(r.request().url());return r.abort();});await p.goto(url);});\n> 23 |  test.afterEach(async({page:p})=>{expect(p.errors).toEqual([]);expect(p.requests).toEqual([]);expect(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);});\n     |                                                    ^\n  24 |  test('initial INTERNAL review blocks missing, typed filenames and invalid links',async({page:p})=>{\n  25 |   const id=await create(p);await expect(p.locator('#review-evidence-status')).toHaveText(message);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);for(const invalid of ['drawing.pdf','javascript:alert(1)','http://drive.google.com/work','https://127.0.0.1/work','https://user:pass@drive.google.com/work']){await p.locator('#cx-evidence').fill(invalid);await p.locator('[data-cx-action=\"submit\"]').click();await expect(p.locator('#cx-feedback')).toHaveText(message);}\n  26 |   await p.screenshot({path:path.join(out,`${width}-invalid-evidence.png`)});await p.locator('#cx-evidence').fill('https://drive.google.com/file/d/initial-r1/view');await submit(p);const s=await p.evaluate(()=>window.connectedPrototype.snapshot());const round=s.rounds.find(([t])=>t===id)[1][0];expect(round.evidenceSnapshot).toMatchObject({taskId:id,roundNumber:1,submissionVersion:1,submissionId:round.id,roundId:round.id,evidence:{kind:'LINK',url:'https://drive.google.com/file/d/initial-r1/view'}});\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs:23:52"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:02:58.531Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-09f18-granting-client-publication\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-09f18-granting-client-publication\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-rule-2026-10-26\\test-artifacts\\mandatory-evidence-evidenc-09f18-granting-client-publication\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\mandatory-evidence.spec.mjs",
+                        "column": 824,
+                        "line": 13
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-f79f98d77db45963c607",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T05:02:37.065Z",
+    "duration": 30274.122,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

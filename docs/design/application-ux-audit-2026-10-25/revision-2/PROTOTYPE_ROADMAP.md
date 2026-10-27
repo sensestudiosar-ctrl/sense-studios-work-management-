@@ -1,5 +1,7 @@
 # Prioritized connected prototype roadmap
 
+**25 October Owner update:** P1 + P2a prototype-only construction was approved and is delivered in the existing designated review artifact. See [delivery](../prototype-delivery/README.md). D01 client/external audits remain BLOCKED and no production implementation is authorized. The plan-only wording below records the preceding discovery baseline, not the current authorization for this bounded prototype.
+
 25 October 2026 · **Plan only. No prototype/app code, new server or dependencies authorized.**
 
 ## 1. Deliverable and integration boundary

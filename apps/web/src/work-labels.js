@@ -6,7 +6,7 @@ export function workDate(value) {
     const date = new Date(day + "T00:00:00Z");
     if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== day)
         return "Date unavailable";
-    return new Intl.DateTimeFormat(undefined, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
+    return new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" }).format(date);
 }
 export function workState(value) {
     return value.toLowerCase().replaceAll("_", " ").replace(/^./, letter => letter.toUpperCase());

@@ -7,6 +7,7 @@ import { TaskDetailDrawer } from "./task-detail-drawer.js";
 const originalShowModal = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "showModal");
 const originalClose = Object.getOwnPropertyDescriptor(HTMLDialogElement.prototype, "close");
 const originalAnimationFrame = Object.getOwnPropertyDescriptor(window, "requestAnimationFrame");
+const originalScrollIntoView = Object.getOwnPropertyDescriptor(Element.prototype, "scrollIntoView");
 let originalBodyOverflow = "";
 beforeEach(() => {
     originalBodyOverflow = document.body.style.overflow;
@@ -27,6 +28,13 @@ beforeEach(() => {
             value(callback) { return window.setTimeout(() => callback(performance.now()), 0); },
         });
     }
+    // jsdom does not implement scrollIntoView; the badge affordances rely on it.
+    if (!Element.prototype.scrollIntoView) {
+        Object.defineProperty(Element.prototype, "scrollIntoView", {
+            configurable: true,
+            value() { },
+        });
+    }
 });
 afterEach(() => {
     cleanup();
@@ -43,6 +51,10 @@ afterEach(() => {
         Object.defineProperty(window, "requestAnimationFrame", originalAnimationFrame);
     else
         Reflect.deleteProperty(window, "requestAnimationFrame");
+    if (originalScrollIntoView)
+        Object.defineProperty(Element.prototype, "scrollIntoView", originalScrollIntoView);
+    else
+        Reflect.deleteProperty(Element.prototype, "scrollIntoView");
 });
 function drawerProps(overrides = {}) {
     return {
@@ -65,9 +77,14 @@ function drawerProps(overrides = {}) {
         ...overrides,
     };
 }
-function ControlledDrawer(props) {
-    const [enabled, setEnabled] = useState(false);
-    return _jsxs(_Fragment, { children: [_jsx("button", { type: "button", onClick: () => setEnabled(true), children: "Open task" }), _jsx(TaskDetailDrawer, { ...props, enabled: enabled, onClose: () => setEnabled(false) })] });
+/**
+ * The drawer's default layout is the single scroll. Tests that pin the
+ * tabbed behaviour first select the tabbed layout through the footer
+ * toggle, keeping every original tab assertion intact.
+ */
+/** Selects the tabbed layout before asserting tab behaviour. */
+function renderDrawer(overrides = {}, tabbed = false) {
+    return render(_jsx(TaskDetailDrawer, { ...drawerProps(overrides), layout: tabbed ? "tabs" : "single" }));
 }
 describe("TaskDetailDrawer", () => {
     it("renders the overview inline when disabled", () => {
@@ -77,7 +94,11 @@ describe("TaskDetailDrawer", () => {
     });
     it("opens as a native modal, locks body scrolling, then restores the close trigger focus and prior overflow", async () => {
         document.body.style.overflow = "clip";
-        const view = render(_jsx(ControlledDrawer, { ...drawerProps() }));
+        function ModalHarness() {
+            const [enabled, setEnabled] = useState(false);
+            return _jsxs(_Fragment, { children: [_jsx("button", { type: "button", onClick: () => setEnabled(true), children: "Open task" }), _jsx(TaskDetailDrawer, { ...drawerProps(), enabled: enabled, onClose: () => setEnabled(false) })] });
+        }
+        const view = render(_jsx(ModalHarness, {}));
         const openTrigger = screen.getByRole("button", { name: "Open task" });
         openTrigger.focus();
         fireEvent.click(openTrigger);
@@ -104,8 +125,26 @@ describe("TaskDetailDrawer", () => {
         expect(onClose).toHaveBeenCalledTimes(2);
         expect(dialog.open).toBe(true);
     });
-    it("selects all four tabs and moves selection and focus with arrow keys", () => {
+    it("defaults to the single-scroll layout with all four sections in one column, and keeps the tabbed layout reachable", () => {
         render(_jsx(TaskDetailDrawer, { ...drawerProps() }));
+        expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+        const body = screen.getByRole("dialog").querySelector(".task-detail-drawer__body");
+        expect(body).toHaveClass("task-detail-drawer__body--single");
+        const sections = [...body.querySelectorAll(".task-detail-drawer__section")];
+        expect(sections.map((section) => section.getAttribute("aria-label"))).toEqual(["Overview", "Checklist", "Evidence", "Activity"]);
+        expect(screen.getByText("Checklist content")).toBeInTheDocument();
+        expect(screen.getByText("Evidence content")).toBeInTheDocument();
+        expect(screen.getByText("Activity content")).toBeInTheDocument();
+        // The footer toggle reveals the tabbed layout with all four panels mounted.
+        fireEvent.click(screen.getByRole("button", { name: "Tabs" }));
+        expect(screen.getByRole("tablist", { name: "Task details" })).toBeInTheDocument();
+        expect(screen.getByRole("tab", { name: "Overview" })).toHaveAttribute("aria-selected", "true");
+        fireEvent.click(screen.getByRole("button", { name: "Single scroll" }));
+        expect(screen.queryByRole("tablist")).not.toBeInTheDocument();
+        expect(screen.getByText("Checklist content")).toBeInTheDocument();
+    });
+    it("selects all four tabs and moves selection and focus with arrow keys", () => {
+        renderDrawer({}, true);
         const tablist = screen.getByRole("tablist", { name: "Task details" });
         const overviewTab = within(tablist).getByRole("tab", { name: "Overview" });
         const checklistTab = within(tablist).getByRole("tab", { name: "Checklist" });
@@ -131,7 +170,7 @@ describe("TaskDetailDrawer", () => {
             const [draft, setDraft] = useState("");
             return _jsxs("label", { children: ["Evidence note", _jsx("input", { "aria-label": "Evidence note", value: draft, onChange: (event) => setDraft(event.target.value) })] });
         }
-        render(_jsx(TaskDetailDrawer, { ...drawerProps({ evidence: _jsx(DraftForm, {}) }) }));
+        renderDrawer({ evidence: _jsx(DraftForm, {}) }, true);
         const evidenceTab = screen.getByRole("tab", { name: "Evidence" });
         fireEvent.click(evidenceTab);
         fireEvent.change(screen.getByRole("textbox", { name: "Evidence note" }), { target: { value: "Client upload pending" } });
@@ -156,6 +195,7 @@ describe("TaskDetailDrawer", () => {
                         }), enabled: true })] });
         }
         render(_jsx(NavigationHarness, {}));
+        fireEvent.click(screen.getByRole("button", { name: "Tabs" }));
         fireEvent.click(screen.getByRole("tab", { name: "Activity" }));
         const nextButton = screen.getByRole("button", { name: "Next task" });
         nextButton.focus();
@@ -201,7 +241,7 @@ describe("TaskDetailDrawer", () => {
         expect(within(dialog).queryByText(/Evidence received|outstanding|confirmed/)).not.toBeInTheDocument();
     });
     it("switches Task actions to Overview and focuses the existing command marker", async () => {
-        render(_jsx(TaskDetailDrawer, { ...drawerProps() }));
+        renderDrawer({}, true);
         fireEvent.click(screen.getByRole("tab", { name: "Evidence" }));
         const marker = document.querySelector("[data-task-drawer-commands]");
         expect(marker).not.toBeNull();
@@ -211,5 +251,39 @@ describe("TaskDetailDrawer", () => {
         await waitFor(() => expect(screen.getByRole("tab", { name: "Overview" })).toHaveAttribute("aria-selected", "true"));
         await waitFor(() => expect(marker).toHaveFocus());
         expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" });
+    });
+    it("treats the header badges as click-to-edit affordances that reveal and focus the matching Overview editor", async () => {
+        const localRender = (overrides = {}) => render(_jsx(TaskDetailDrawer, { ...drawerProps({ waitingLabel: "Waiting on client", ...overrides }) }));
+        vi.stubGlobal("requestAnimationFrame", (callback) => window.setTimeout(() => callback(performance.now()), 0));
+        // Status badge: scroll to Overview and focus the transition action.
+        localRender({ overview: _jsxs(_Fragment, { children: [_jsx("h4", { "data-task-drawer-commands": true, tabIndex: -1, children: "Task actions" }), _jsx("div", { className: "task-actions", children: _jsx("button", { type: "button", children: "Start task" }) }), _jsxs("dl", { className: "task-facts", children: [_jsxs("div", { children: [_jsx("dt", { children: "Priority" }), _jsx("dd", { children: "High" })] }), _jsxs("div", { children: [_jsx("dt", { children: "Target date" }), _jsx("dd", { children: "18 Oct 2026" })] })] })] }) });
+        const statusBadge = screen.getByRole("button", { name: /Status In progress/ });
+        fireEvent.click(statusBadge);
+        await waitFor(() => expect(screen.getByRole("button", { name: "Start task" })).toHaveFocus());
+        cleanup();
+        // Target badge: focus the target-date fact when no edit form is open.
+        localRender({ overview: _jsxs(_Fragment, { children: [_jsx("h4", { "data-task-drawer-commands": true, tabIndex: -1, children: "Task actions" }), _jsx("div", { className: "task-actions", children: _jsx("button", { type: "button", children: "Start task" }) }), _jsxs("dl", { className: "task-facts", children: [_jsxs("div", { children: [_jsx("dt", { children: "Priority" }), _jsx("dd", { children: "High" })] }), _jsxs("div", { children: [_jsx("dt", { children: "Target date" }), _jsx("dd", { children: "18 Oct 2026" })] })] })] }) });
+        const targetBadge = screen.getByRole("button", { name: /Due 18 Oct/ });
+        fireEvent.click(targetBadge);
+        await waitFor(() => expect(screen.getByText("18 Oct 2026")).toHaveFocus());
+        cleanup();
+        // Priority badge: reveal the Edit task form field when one is open.
+        function OverviewWithEditForm() {
+            return _jsx("form", { className: "task-edit-form", children: _jsx("input", { "aria-label": "Task name", defaultValue: "Prepare studio concept" }) });
+        }
+        localRender({ overview: _jsxs(_Fragment, { children: [_jsx("h4", { "data-task-drawer-commands": true, tabIndex: -1, children: "Task actions" }), _jsx(OverviewWithEditForm, {})] }) });
+        const priorityBadge = screen.getByRole("button", { name: /Priority High/ });
+        fireEvent.click(priorityBadge);
+        await waitFor(() => expect(screen.getByRole("textbox", { name: "Task name" })).toHaveFocus());
+        cleanup();
+        // Waiting badge: reveal the waiting details.
+        function OverviewWithWaiting() {
+            return _jsx("section", { className: "task-waiting-details", "aria-label": "Waiting details", children: _jsx("input", { "aria-label": "Resume reason", defaultValue: "" }) });
+        }
+        localRender({ overview: _jsxs(_Fragment, { children: [_jsx("h4", { "data-task-drawer-commands": true, tabIndex: -1, children: "Task actions" }), _jsx(OverviewWithWaiting, {})] }) });
+        const waitingBadge = screen.getByRole("button", { name: /Waiting on client/ });
+        fireEvent.click(waitingBadge);
+        await waitFor(() => expect(screen.getByRole("textbox", { name: "Resume reason" })).toHaveFocus());
+        vi.unstubAllGlobals();
     });
 });

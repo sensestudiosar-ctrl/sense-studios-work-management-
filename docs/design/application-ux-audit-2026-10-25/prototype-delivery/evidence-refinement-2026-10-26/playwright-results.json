@@ -1,0 +1,4449 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\app\\sensestudios work management app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "docs/v1-demo/evidence-presentation.config.mjs"
+    ],
+    "configFile": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.config.mjs",
+    "rootDir": "D:/app/sensestudios work management app/docs/v1-demo",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/app/sensestudios work management app/docs/design/application-ux-audit-2026-10-25/prototype-delivery/evidence-refinement-2026-10-26/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/app/sensestudios work management app/docs/v1-demo",
+        "testIgnore": [],
+        "testMatch": [
+          "connected-prototype.spec.mjs",
+          "connected-refinement.spec.mjs",
+          "mandatory-evidence.spec.mjs",
+          "evidence-presentation.spec.mjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "connected-prototype.spec.mjs",
+      "file": "connected-prototype.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "1440px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 977,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:06.959Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-64b99c3270638023b83f",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3815,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:06.960Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-c42b06a7852b741005a7",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5201,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:08.211Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-9a9cfbb3b4b7bad8c727",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8667,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:11.068Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-3ec94243ea8cf613e465",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4456,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:13.438Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-48f6b46f3a4eac3e32bb",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3236,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:17.927Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-31cb696ffbde34af7a03",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "1024px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1095,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:19.792Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8e5df7fe53458bbd2ec2",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3685,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:20.919Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-bcdee6525b4acb14e9fc",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4630,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:21.197Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-9c323daf8dd6bdbec6b5",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8506,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:24.653Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-2ec2e6b77f3b4b9a67be",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4064,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:25.882Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-3a99a30822fd5fbc8aa1",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3165,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:30.004Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-fa8e5e7c0646c628b594",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "783px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1295,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:33.198Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-67919cabaae7cee6c3d1",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3477,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:33.228Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8a53869b625b1ab55536",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5410,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:34.514Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-abbbacf28fcf283dec38",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8360,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:36.757Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-aab2ded9056883d68af1",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4899,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:39.959Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-a3307015847bdb2e9d73",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3111,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:44.877Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-c4422d9cfdf36df1169a",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "768px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1056,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:45.153Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-f84981cdce2e54265569",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3500,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:46.245Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-ad18f544ace90f8d1423",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5036,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:48.003Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8e2d23f1f60101599399",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7782,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:49.777Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-52de461f30afb77c0607",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4105,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:53.060Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-477aef27e5f5e1d72b46",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3130,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:57.191Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-2873e4a67ee2b87cca5e",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "767px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 761,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:57.627Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-1fb40835425d36763abf",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3435,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:56:58.399Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-ce67341f6f1f5741e7f7",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5362,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:00.336Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-8358217509425625ee4d",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7978,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:01.853Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-ee38b24c0e55100c50c2",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4094,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:05.715Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-98d99867979ebc029cc0",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3069,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:09.833Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-5c7de6ffae8a3c60d435",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "390px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 898,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:09.856Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-204ffc2c863baefbdf66",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3538,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:10.786Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-e0cbf2ff4fbe40d5af8a",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5451,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:12.942Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-4a5149d6a423b19ee491",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8553,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:14.344Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-7e28dc777604584e068f",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4279,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:18.466Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-7dad91a95a03fe16c583",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3455,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:22.922Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-2c0dea4d396348eebd46",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "320px",
+          "file": "connected-prototype.spec.mjs",
+          "line": 23,
+          "column": 40,
+          "specs": [
+            {
+              "title": "visual snapshot states",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1282,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:22.937Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-a1224db511b3eee602c6",
+              "file": "connected-prototype.spec.mjs",
+              "line": 32,
+              "column": 2
+            },
+            {
+              "title": "P1 create, recovery and same-object project/list continuity",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4164,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:24.257Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-b28e6fb6ce01604a1461",
+              "file": "connected-prototype.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "P2a linked correction gate, new evidence and independent internal approval",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4280,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:26.426Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-fca9301b33984ded411e",
+              "file": "connected-prototype.spec.mjs",
+              "line": 49,
+              "column": 2
+            },
+            {
+              "title": "new task submit, correction request, separate assignment and fixed child context",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 7678,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:28.439Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-b91e51c1b33ffda4fb26",
+              "file": "connected-prototype.spec.mjs",
+              "line": 62,
+              "column": 2
+            },
+            {
+              "title": "responsive shells, state recovery and keyboard modal containment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6378,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:30.725Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-a5b727c8098b7c7a7843",
+              "file": "connected-prototype.spec.mjs",
+              "line": 74,
+              "column": 2
+            },
+            {
+              "title": "Owner assignment preserves personal scope; denied request retains draft",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3080,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:36.127Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "24df927127a4ac3c51c7-77ad06660294fd0d6a0f",
+              "file": "connected-prototype.spec.mjs",
+              "line": 83,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "connected-refinement.spec.mjs",
+      "file": "connected-refinement.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "refinement 1440px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1886,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:37.129Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-029db03fa967bad8ec16",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3279,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:39.033Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-4ef0ba78a721d0bfdf42",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1343,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:39.227Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8214f309d5a7b9d7a0e4",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1544,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:40.582Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-a564c0da0432b1e171dd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2444,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:42.138Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-4fead5acd6bc9fc24de2",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2247,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:42.324Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-6a3f3b6a13a6c61d7d01",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3843,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:44.582Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-9d5d47484004b05b0248",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1078,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:44.602Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-255caa7c2a3ae8772cd6",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 1024px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1952,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:45.690Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-d4b0c8a24649a82dfddb",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4030,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:47.663Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8d9eb8af1637d2c3426e",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1153,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:48.439Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-988e8b3f764ac6846ad7",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1513,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:49.603Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-6532cdbba8cecec83ffc",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2318,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:51.126Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c31ec50d3d9b2a083d0a",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2573,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:51.704Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-933ba9067e12ed3136d3",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3836,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:53.456Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-a58885bef0bf84cb340f",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2024,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:54.288Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-5be44f65a6c6118109ec",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 768px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1902,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:56.323Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-2459be5f79aa62b69676",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3737,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:57.303Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-329eaa14af9576147f70",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1163,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:58.235Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-e61b9a294e119252fcad",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1458,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:57:59.409Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-d5f5f2908329ab6da929",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2433,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:00.880Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-10ab8408145264c72986",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1750,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:01.051Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-cfaf52ac38c937e228d4",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3935,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:02.813Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-ea21bfabb0ae88537cf0",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1188,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:03.324Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-207e7655161495a17371",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 390px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2136,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:04.561Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c898226f9aab35505d9e",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3555,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:06.765Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8451fac9d150097fd1f9",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1321,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:06.770Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-fbdf3716ec0840f18dea",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1702,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:08.146Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-9faead55a46a1a19b7bd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2434,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:09.881Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-93405433628826206e82",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2790,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:10.413Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-8b72a043ce3a58fe1ffd",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4152,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:12.334Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-803f50157fe01883084d",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1469,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:13.248Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-75e39f450ddc97bb3314",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "refinement 320px",
+          "file": "connected-refinement.spec.mjs",
+          "line": 11,
+          "column": 49,
+          "specs": [
+            {
+              "title": "authorized manager creates with separate independent reviewer assignment",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2326,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:14.777Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-71507f1b61303ff67fa1",
+              "file": "connected-refinement.spec.mjs",
+              "line": 15,
+              "column": 2
+            },
+            {
+              "title": "employee without assignment authority sees responsible manager and correct prerequisites",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3544,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:16.515Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-2dc9e76edb260f33d23b",
+              "file": "connected-refinement.spec.mjs",
+              "line": 19,
+              "column": 2
+            },
+            {
+              "title": "My Work context, exact project task and contextual keyboard return are preserved",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1372,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:17.171Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-48c6ed3f69434c45ff4a",
+              "file": "connected-refinement.spec.mjs",
+              "line": 23,
+              "column": 2
+            },
+            {
+              "title": "all eight project sections remain reachable with current selection and overflow cues",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1737,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:18.576Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-c5dc64ec9bfd99c392b6",
+              "file": "connected-refinement.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "correction return, updated evidence, current round and dashboard guidance change",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1955,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:20.108Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-7056d50698f542ad3089",
+              "file": "connected-refinement.spec.mjs",
+              "line": 33,
+              "column": 2
+            },
+            {
+              "title": "My Work row guidance follows the submitted review round",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 2923,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:20.345Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-6fed450b158cc7fc3595",
+              "file": "connected-refinement.spec.mjs",
+              "line": 36,
+              "column": 2
+            },
+            {
+              "title": "unfinished subtask replaces ineligible parent completion with responsible-actor guidance",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4277,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:22.133Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-83f53f9fdaf68642bb77",
+              "file": "connected-refinement.spec.mjs",
+              "line": 39,
+              "column": 2
+            },
+            {
+              "title": "unsaved details, keyboard focus return and mobile control geometry",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 1804,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:23.345Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "64a95f1bad070f447636-bf9ffa0eeb7d608d6182",
+              "file": "connected-refinement.spec.mjs",
+              "line": 42,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "evidence-presentation.spec.mjs",
+      "file": "evidence-presentation.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "evidence presentation 1440px",
+          "file": "evidence-presentation.spec.mjs",
+          "line": 13,
+          "column": 49,
+          "specs": [
+            {
+              "title": "Review Evidence immediately follows guidance; Add link preview never claims reviewer access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5035,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:25.236Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-be6a6c94b50dd48bb89e",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 17,
+              "column": 2
+            },
+            {
+              "title": "selected local file is blocked until explicitly simulated confirmation; immutable record says no real upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5007,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:26.696Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-dbd7bd38ad1deb66df6d",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 21,
+              "column": 2
+            },
+            {
+              "title": "phone Dashboard surfaces next action early; submitted round has one status and disclosed history",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4321,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:30.315Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-12abfecc5ce4daec4279",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 25,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence presentation 1024px",
+          "file": "evidence-presentation.spec.mjs",
+          "line": 13,
+          "column": 49,
+          "specs": [
+            {
+              "title": "Review Evidence immediately follows guidance; Add link preview never claims reviewer access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4004,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:31.924Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-67c177284440b632aed3",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 17,
+              "column": 2
+            },
+            {
+              "title": "selected local file is blocked until explicitly simulated confirmation; immutable record says no real upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4162,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:34.749Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-5e9b51c07dad591be4f5",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 21,
+              "column": 2
+            },
+            {
+              "title": "phone Dashboard surfaces next action early; submitted round has one status and disclosed history",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4553,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:36.045Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-b803e23a9761cc4b8c91",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 25,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence presentation 768px",
+          "file": "evidence-presentation.spec.mjs",
+          "line": 13,
+          "column": 49,
+          "specs": [
+            {
+              "title": "Review Evidence immediately follows guidance; Add link preview never claims reviewer access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4055,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:39.017Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-bd07f014e8856bed559a",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 17,
+              "column": 2
+            },
+            {
+              "title": "selected local file is blocked until explicitly simulated confirmation; immutable record says no real upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4113,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:40.627Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-596795c0bf10917d75d6",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 21,
+              "column": 2
+            },
+            {
+              "title": "phone Dashboard surfaces next action early; submitted round has one status and disclosed history",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3758,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:43.110Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-4543c3aa9e2502ddc357",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 25,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence presentation 390px",
+          "file": "evidence-presentation.spec.mjs",
+          "line": 13,
+          "column": 49,
+          "specs": [
+            {
+              "title": "Review Evidence immediately follows guidance; Add link preview never claims reviewer access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3307,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:44.794Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-e06a599ddd6bc24e257a",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 17,
+              "column": 2
+            },
+            {
+              "title": "selected local file is blocked until explicitly simulated confirmation; immutable record says no real upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3961,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:46.906Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-b173160aaaf29fa086ad",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 21,
+              "column": 2
+            },
+            {
+              "title": "phone Dashboard surfaces next action early; submitted round has one status and disclosed history",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3902,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:48.152Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-031e7b7d468ed2d5ff21",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 25,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence presentation 320px",
+          "file": "evidence-presentation.spec.mjs",
+          "line": 13,
+          "column": 49,
+          "specs": [
+            {
+              "title": "Review Evidence immediately follows guidance; Add link preview never claims reviewer access",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3531,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:50.900Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-7225a6c20d91234bb24a",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 17,
+              "column": 2
+            },
+            {
+              "title": "selected local file is blocked until explicitly simulated confirmation; immutable record says no real upload",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3878,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:52.071Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-36f16842200852fd9d36",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 21,
+              "column": 2
+            },
+            {
+              "title": "phone Dashboard surfaces next action early; submitted round has one status and disclosed history",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4062,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:54.460Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-57d5495468c103fec63f",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 25,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "mandatory-evidence.spec.mjs",
+      "file": "mandatory-evidence.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "evidence 1440px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4236,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:55.978Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-0b0bc9645df8910d4f5c",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5073,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:58:58.577Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-711b86be7e11979dc1b6",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8493,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:00.233Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-165f5b6619eaa9ee2afa",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8349,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:03.677Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-a7334f33b51757ec6227",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3255,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:08.766Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-bd2f3a0196a8dd880c1d",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence 1024px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4343,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:12.051Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-5a8d1c16b7c22c78200d",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4959,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:12.067Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-7d3d2787944d7e167953",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8266,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:16.434Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-2ae0f2eaf78bd481f9fc",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8309,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:17.068Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-12f72cdfcfc58cda7b5a",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3370,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:24.734Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-6fd43cda0ae098bba36d",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence 768px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4519,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:25.481Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-19c4481823af8f39dfa3",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 5194,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:28.225Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-c2719a473695b6c8bd09",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8889,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:30.070Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-b89f18df635e6dbb7444",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 9062,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:33.435Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-28a6f5715a3d80631250",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3319,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:39.009Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-267b422a1202bfce76ab",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence 390px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4429,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:42.401Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-14bb4f407a8ded27198b",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4694,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:42.515Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-2fb64a30cca03c585603",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8016,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:46.909Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-84398cc1b820c6376874",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8809,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:47.264Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-ee2d2452ebeb2c1da52c",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3425,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:55.003Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-f79f98d77db45963c607",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        },
+        {
+          "title": "evidence 320px",
+          "file": "mandatory-evidence.spec.mjs",
+          "line": 20,
+          "column": 49,
+          "specs": [
+            {
+              "title": "initial INTERNAL review blocks missing, typed filenames and invalid links",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 4367,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:56.104Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-7cc895c94de9369d6f5b",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 24,
+              "column": 2
+            },
+            {
+              "title": "file attachment BOTH review preserves independent approval and exact carry-forward",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 5347,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:59:58.491Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-2fc4d09c384746b19b0f",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 28,
+              "column": 2
+            },
+            {
+              "title": "LINK resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 8297,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T06:00:00.519Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-1511caf43a35dacd0c37",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "FILE resubmission requires updated evidence and preserves earlier snapshot",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8932,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T06:00:03.869Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-859b8d987e7a81e777b4",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 31,
+              "column": 36
+            },
+            {
+              "title": "CLIENT staff preparation uses the same guard without granting client publication",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3156,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T06:00:08.860Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "cd02d68e9aa05f413aec-9a35d1af80b718dbe534",
+              "file": "mandatory-evidence.spec.mjs",
+              "line": 36,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T05:56:06.084Z",
+    "duration": 249859.463,
+    "expected": 122,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

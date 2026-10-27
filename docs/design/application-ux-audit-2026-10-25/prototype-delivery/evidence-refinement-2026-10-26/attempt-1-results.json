@@ -1,0 +1,330 @@
+{
+  "config": {
+    "argv": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\app\\sensestudios work management app\\node_modules\\@playwright\\test\\cli.js",
+      "test",
+      "--config",
+      "docs/v1-demo/evidence-presentation.config.mjs",
+      "--grep",
+      "evidence presentation 390px"
+    ],
+    "configFile": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.config.mjs",
+    "rootDir": "D:/app/sensestudios work management app/docs/v1-demo",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 2
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "D:/app/sensestudios work management app/docs/design/application-ux-audit-2026-10-25/prototype-delivery/evidence-refinement-2026-10-26/test-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 2
+        },
+        "id": "",
+        "name": "",
+        "testDir": "D:/app/sensestudios work management app/docs/v1-demo",
+        "testIgnore": [],
+        "testMatch": [
+          "connected-prototype.spec.mjs",
+          "connected-refinement.spec.mjs",
+          "mandatory-evidence.spec.mjs",
+          "evidence-presentation.spec.mjs"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\playwright-results.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\playwright-report",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.63.0",
+    "workers": 2,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "evidence-presentation.spec.mjs",
+      "file": "evidence-presentation.spec.mjs",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "evidence presentation 390px",
+          "file": "evidence-presentation.spec.mjs",
+          "line": 13,
+          "column": 49,
+          "specs": [
+            {
+              "title": "Review Evidence immediately follows guidance; Add link preview never claims reviewer access",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 2874,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n\n    at ready (D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:11:792)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:18:3",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                          "column": 792,
+                          "line": 11
+                        },
+                        "snippet": "   9 | async function reason(p){await p.locator('#cx-reason').fill('Review this exact work version');}\n  10 | async function ready(p){\n> 11 |  await persona(p,'Owner');await p.locator('#cx-new').click();await root(p).locator('#new-title').fill('Review Evidence presentation');await root(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await root(p).locator('#new-owner').selectOption('designer1');await root(p).locator('#new-review').selectOption('INTERNAL');await root(p).locator('#new-reviewer').selectOption('lead');await root(p).locator('#new-target').fill('2026-11-15');await root(p).locator('#new-reason').fill('Prepare review evidence');await root(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Review Evidence presentation');const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await p.locator('#cx-detail [data-cx-action=\"close-detail\"]').click();await persona(p,'Designer');await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.locator('#cx-detail [data-cx-action=\"start-task\"]').click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  12 | }\n  13 | for(const width of [1440,1024,768,390,320])test.describe(`evidence presentation ${width}px`,()=>{\n  14 |  test.use({viewport:{width,height:width<768?844:900}});"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                            "column": 792,
+                            "line": 11
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n\n\n   9 | async function reason(p){await p.locator('#cx-reason').fill('Review this exact work version');}\n  10 | async function ready(p){\n> 11 |  await persona(p,'Owner');await p.locator('#cx-new').click();await root(p).locator('#new-title').fill('Review Evidence presentation');await root(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await root(p).locator('#new-owner').selectOption('designer1');await root(p).locator('#new-review').selectOption('INTERNAL');await root(p).locator('#new-reviewer').selectOption('lead');await root(p).locator('#new-target').fill('2026-11-15');await root(p).locator('#new-reason').fill('Prepare review evidence');await root(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Review Evidence presentation');const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await p.locator('#cx-detail [data-cx-action=\"close-detail\"]').click();await persona(p,'Designer');await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.locator('#cx-detail [data-cx-action=\"start-task\"]').click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  12 | }\n  13 | for(const width of [1440,1024,768,390,320])test.describe(`evidence presentation ${width}px`,()=>{\n  14 |  test.use({viewport:{width,height:width<768?844:900}});\n    at ready (D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:11:792)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:18:3"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:51:47.177Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-0697f-ever-claims-reviewer-access\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-0697f-ever-claims-reviewer-access\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-0697f-ever-claims-reviewer-access\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                        "column": 792,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-e06a599ddd6bc24e257a",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 17,
+              "column": 2
+            },
+            {
+              "title": "selected local file is blocked until explicitly simulated confirmation; immutable record says no real upload",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 2354,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n\n    at ready (D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:11:792)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:22:12",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                          "column": 792,
+                          "line": 11
+                        },
+                        "snippet": "   9 | async function reason(p){await p.locator('#cx-reason').fill('Review this exact work version');}\n  10 | async function ready(p){\n> 11 |  await persona(p,'Owner');await p.locator('#cx-new').click();await root(p).locator('#new-title').fill('Review Evidence presentation');await root(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await root(p).locator('#new-owner').selectOption('designer1');await root(p).locator('#new-review').selectOption('INTERNAL');await root(p).locator('#new-reviewer').selectOption('lead');await root(p).locator('#new-target').fill('2026-11-15');await root(p).locator('#new-reason').fill('Prepare review evidence');await root(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Review Evidence presentation');const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await p.locator('#cx-detail [data-cx-action=\"close-detail\"]').click();await persona(p,'Designer');await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.locator('#cx-detail [data-cx-action=\"start-task\"]').click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  12 | }\n  13 | for(const width of [1440,1024,768,390,320])test.describe(`evidence presentation ${width}px`,()=>{\n  14 |  test.use({viewport:{width,height:width<768?844:900}});"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                            "column": 792,
+                            "line": 11
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n\n\n   9 | async function reason(p){await p.locator('#cx-reason').fill('Review this exact work version');}\n  10 | async function ready(p){\n> 11 |  await persona(p,'Owner');await p.locator('#cx-new').click();await root(p).locator('#new-title').fill('Review Evidence presentation');await root(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await root(p).locator('#new-owner').selectOption('designer1');await root(p).locator('#new-review').selectOption('INTERNAL');await root(p).locator('#new-reviewer').selectOption('lead');await root(p).locator('#new-target').fill('2026-11-15');await root(p).locator('#new-reason').fill('Prepare review evidence');await root(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Review Evidence presentation');const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await p.locator('#cx-detail [data-cx-action=\"close-detail\"]').click();await persona(p,'Designer');await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.locator('#cx-detail [data-cx-action=\"start-task\"]').click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  12 | }\n  13 | for(const width of [1440,1024,768,390,320])test.describe(`evidence presentation ${width}px`,()=>{\n  14 |  test.use({viewport:{width,height:width<768?844:900}});\n    at ready (D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:11:792)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:22:12"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:51:47.337Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-ac9f3--record-says-no-real-upload\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-ac9f3--record-says-no-real-upload\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-ac9f3--record-says-no-real-upload\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                        "column": 792,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-b173160aaaf29fa086ad",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 21,
+              "column": 2
+            },
+            {
+              "title": "phone Dashboard surfaces next action early; submitted round has one status and disclosed history",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 60000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 3359,
+                      "error": {
+                        "message": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n",
+                        "stack": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n\n    at ready (D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:11:792)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:27:3",
+                        "location": {
+                          "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                          "column": 792,
+                          "line": 11
+                        },
+                        "snippet": "   9 | async function reason(p){await p.locator('#cx-reason').fill('Review this exact work version');}\n  10 | async function ready(p){\n> 11 |  await persona(p,'Owner');await p.locator('#cx-new').click();await root(p).locator('#new-title').fill('Review Evidence presentation');await root(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await root(p).locator('#new-owner').selectOption('designer1');await root(p).locator('#new-review').selectOption('INTERNAL');await root(p).locator('#new-reviewer').selectOption('lead');await root(p).locator('#new-target').fill('2026-11-15');await root(p).locator('#new-reason').fill('Prepare review evidence');await root(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Review Evidence presentation');const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await p.locator('#cx-detail [data-cx-action=\"close-detail\"]').click();await persona(p,'Designer');await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.locator('#cx-detail [data-cx-action=\"start-task\"]').click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  12 | }\n  13 | for(const width of [1440,1024,768,390,320])test.describe(`evidence presentation ${width}px`,()=>{\n  14 |  test.use({viewport:{width,height:width<768?844:900}});"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                            "column": 792,
+                            "line": 11
+                          },
+                          "message": "Error: locator.click: Error: strict mode violation: locator('#cx-detail [data-cx-action=\"close-detail\"]') resolved to 2 elements:\n    1) <button class=\"cx-btn\" data-cx-action=\"close-detail\" aria-label=\"Close task details\">×</button> aka getByRole('button', { name: 'Close task details' })\n    2) <button class=\"cx-btn \" data-cx-action=\"close-detail\">Back to list</button> aka getByRole('button', { name: 'Back to list' })\n\nCall log:\n\u001b[2m  - waiting for locator('#cx-detail [data-cx-action=\"close-detail\"]')\u001b[22m\n\n\n   9 | async function reason(p){await p.locator('#cx-reason').fill('Review this exact work version');}\n  10 | async function ready(p){\n> 11 |  await persona(p,'Owner');await p.locator('#cx-new').click();await root(p).locator('#new-title').fill('Review Evidence presentation');await root(p).locator('#new-project').selectOption({label:'Lakeview Residence'});await root(p).locator('#new-owner').selectOption('designer1');await root(p).locator('#new-review').selectOption('INTERNAL');await root(p).locator('#new-reviewer').selectOption('lead');await root(p).locator('#new-target').fill('2026-11-15');await root(p).locator('#new-reason').fill('Prepare review evidence');await root(p).locator('#new-submit').click();await expect(p.locator('#cx-detail-title')).toHaveText('Review Evidence presentation');const id=await p.evaluate(()=>window.taskCreateRefinement.lastCreated());await p.locator('#cx-detail [data-cx-action=\"close-detail\"]').click();await persona(p,'Designer');await p.getByRole('button',{name:'Open My Work',exact:true}).click();await p.locator(`.task-row[data-id=\"${id}\"]`).focus();await p.keyboard.press('Enter');await reason(p);await p.locator('#cx-detail [data-cx-action=\"start-task\"]').click();await expect(p.locator('#cx-feedback')).toContainText('recorded');return id;\n     |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ^\n  12 | }\n  13 | for(const width of [1440,1024,768,390,320])test.describe(`evidence presentation ${width}px`,()=>{\n  14 |  test.use({viewport:{width,height:width<768?844:900}});\n    at ready (D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:11:792)\n    at D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs:27:3"
+                        }
+                      ],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-10-26T05:51:54.340Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-ac6f3-tatus-and-disclosed-history\\test-failed-1.png"
+                        },
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-ac6f3-tatus-and-disclosed-history\\error-context.md"
+                        },
+                        {
+                          "name": "trace",
+                          "contentType": "application/zip",
+                          "path": "D:\\app\\sensestudios work management app\\docs\\design\\application-ux-audit-2026-10-25\\prototype-delivery\\evidence-refinement-2026-10-26\\test-artifacts\\evidence-presentation-evid-ac6f3-tatus-and-disclosed-history\\trace.zip"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "D:\\app\\sensestudios work management app\\docs\\v1-demo\\evidence-presentation.spec.mjs",
+                        "column": 792,
+                        "line": 11
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "ba00acf0d7b85988e8d6-031e7b7d468ed2d5ff21",
+              "file": "evidence-presentation.spec.mjs",
+              "line": 25,
+              "column": 2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-26T05:51:46.197Z",
+    "duration": 16483.637000000002,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}
