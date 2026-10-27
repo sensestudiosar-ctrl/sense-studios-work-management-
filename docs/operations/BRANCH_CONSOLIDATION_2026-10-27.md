@@ -1,6 +1,6 @@
 # Master branch consolidation — 27 October 2026
 
-Status: source consolidation and verification COMPLETE; remote publication/default-branch cleanup BLOCKED pending explicit public-repository approval. Owner explicitly requested review of all branches, merger of required work and one master containing all work. This supersedes the earlier canonical integration-branch name.
+Status: consolidation, verification, public master publication and12remote branch retirements COMPLETE; administrator-only default-branch change and final old-default retirement remain pending. Owner explicitly requested review of all branches, merger of required work and one master containing all work. This supersedes the earlier canonical integration-branch name.
 
 ## Source selection and preservation
 
@@ -99,3 +99,11 @@ The main checkout is on clean `master`. Seventeen redundant local heads were ret
 The original F-001 worktree and the isolated acceptance candidate remain intact as detached checkouts. A new `factory/f-002-my-work-row-density` worktree appeared concurrently during cutover; it remains untouched. At final inspection it is clean at `05108bf`, already an ancestor of master, with no additional commit or source change to merge. The two local branch heads are therefore master and that active new work branch. Both pre/post-consolidation all-ref bundles verified as complete history; all original branch tips remain recoverable.
 
 Read-only remote verification after the rejected push confirms its default is still `codex/sense-integration` at `05108bf`, remote master is still `2e46805`, and all14remote heads are unchanged. Remote consolidation is not claimed complete.
+
+## Owner-approved public publication — 2026-10-27
+
+The Owner answered YES to the explicit question approving public source/history exposure. This resolves the earlier automatic-approval block. An atomic regular push published master `71b01cd55aea60a192cccf3aae6b87ffac0e75fe` and aggregate archive tag `archive/20261027/branch-consolidation` at `4f3e9ed0442f4302c315fefeab9d0448c6916249`. Every inventoried original tip remains reachable through master and the archive;25original local-tip archive tags and verified bundles also remain. No force push occurred.
+
+Twelve unchanged historical remote heads were atomically deleted only after fresh remote-tip equality checks and ancestry checks against both master and the published archive. Remaining remote heads: master and codex/sense-integration (`05108bf`). The latter is still GitHub’s default and cannot be deleted until the default changes. The connected GitHub account vijaychintala05 has push=true,admin=false,maintain=false. `gh repo edit --default-branch master` returned HTTP404; the subsequent read-only API response confirmed the permission limitation and unchanged default. A repository administrator must select master as the default. This is a GitHub permission block, not another public-disclosure approval request.
+
+Hosted CI was queued for published master (run40550700011) and the archive tag (run40550700048) at inspection; no hosted pass is claimed. Final status-only documentation follows this source commit and changes no application/schema/test source. Concurrent untracked `docs/ui/PROJECTS_DESIGN_REVIEW_PLAN_2026-10-27.md` is preserved outside this commit. Local active F-002 worktree and retained application data/runtime remain untouched.

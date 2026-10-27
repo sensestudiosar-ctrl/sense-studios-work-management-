@@ -1,6 +1,6 @@
 # Sense Studios Work Management
 
-The verified canonical source is local **`master`**. Its publication to the public [sense-studios-work-management-](https://github.com/sensestudiosar-ctrl/sense-studios-work-management-) repository is awaiting explicit Owner approval after automatic approval review blocked the push. `origin` points to that new repository; its remote default and historical branches have not been changed.
+The verified canonical source is **[`master`](https://github.com/sensestudiosar-ctrl/sense-studios-work-management-/tree/master)**, now published to the public repository under the Owner’s explicit approval. Twelve redundant remote branch heads were retired after archive/ancestry verification. GitHub’s current default remains `codex/sense-integration` because the connected account lacks repository administration permission. A repository administrator must select `master` as the default, then the last historical integration head can be retired.
 
 Start application work from `master`. Historical feature/release branches have been reconciled into its history; their original tips and review decisions are recorded in the [consolidation audit](docs/operations/BRANCH_CONSOLIDATION_2026-10-27.md). Archived implementations and experiments remain recoverable in Git history.
 
