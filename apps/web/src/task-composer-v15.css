@@ -278,6 +278,9 @@
   .task-composer-v15 .task-people-menu__add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
   .task-composer-v15 .task-small-remove { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
   .task-composer-v15 .task-effort-input button { min-height: 44px; min-width: 44px; }
+  /* The 3-class timing-group rule (35px) out-specifies the 2-class mobile
+     override above, so restate it at matching depth for the compact target. */
+  .task-composer-v15 .task-timing-group .task-effort-input button { min-height: 44px; min-width: 44px; }
   .task-composer-v15 .task-review-cards { grid-template-columns: 1fr; }
   .task-composer-v15 .task-review-card { min-height: 62px; }
   /* New components on mobile: timing row stacks to one column, priority segmented

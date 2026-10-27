@@ -43,7 +43,7 @@
 .task-create-dialog__close { display: grid; flex: 0 0 44px; width: 44px; height: 44px; place-items: center; margin: -4px -8px 0 0; border: 1px solid var(--create-line); border-radius: 10px; background: #fff; color: var(--create-pine); font: inherit; font-size: 25px; cursor: pointer; }
 .task-create-dialog :is(button, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid #244f43; outline-offset: 2px; }
 .task-create-dialog__close:disabled { opacity: .5; cursor: not-allowed; }
-.task-create-dialog__body { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 22px 24px; }
+.task-create-dialog__body { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 16px 24px 18px; }
 .task-create-dialog .task-form { margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; }
 
 /* Refined composer: brief column on the left, assignment & timing panel on the right.

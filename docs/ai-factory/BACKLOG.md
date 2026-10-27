@@ -19,7 +19,7 @@ autonomous work only starts from rows below with `approved: yes`.)_
 ## BACKLOG — discovered, not yet approved
 | ID | Module | Problem | Evidence | Severity | Priority | Approved |
 |---|---|---|---|---|---|---|
-| F-001 | Factory | `CLAUDE.md` "Current branch and tree state" section is stale (claims `codex/s20-site-integration` + 369 changes; live git: `codex/sense-integration` + ~29). | live `git status` 2026-10-27 vs CLAUDE.md text | Low | Low | **YES — owner-approved 2026-10-27 ("fix F-001 now")** |
+| F-001 | Factory | `CLAUDE.md` "Current branch and tree state" section is stale (claims `codex/s20-site-integration` + 369 changes; live git: `codex/sense-integration` + ~29). | live `git status` 2026-10-27 vs CLAUDE.md text | Low | Low | **YES — owner-approved 2026-10-27** · **VERIFIED-LOCAL**: commit `2aacdd1` on `factory/f-001-claude-md-tree-state` (worktree `.claude/worktrees/f-001`), independent release review APPROVE; Owner chose to keep it local — no push/PR |
 | F-002 | My Work | Row still carries ~5 emphasis layers (status rail + tint + dot + priority marker + colored next-action). Presentation-only density fix. | `docs/design/tasks-tab-review-2026-10-25.md` F1/F8; `apps/web/src/my-work/my-work-parity.css:82-121` | Medium | High | no |
 | F-003 | Tasks | No global "New task" keyboard shortcut; employee variant doesn't default owner to self. | `docs/design/tasks-tab-review-2026-10-25.md` F7; grep of `app.tsx`/`dashboard.tsx` 2026-10-27 | Low | Medium | no |
 | F-004 | Shell | PWA "A new version is ready" banner pins over anonymous surfaces; two 401 session-poll console errors pre-auth. | live 59443 inspection 2026-10-27; `apps/web/src/pwa-delivery.tsx:68` | Medium | Medium | no |
@@ -31,7 +31,7 @@ autonomous work only starts from rows below with `approved: yes`.)_
 ## BLOCKED
 | ID | Module | Reason | Unblock condition |
 |---|---|---|---|
-| B-001 | Linear | Not connected; account/auth required from Owner. | Owner authenticates Linear MCP / provides access |
+| B-001 | Linear | Configured in `.mcp.json` (http, mcp.linear.app) but **not authenticated**; account/auth required from Owner (runbook in LINEAR.md §"How to connect"). | Owner completes OAuth via `/mcp` or adds a Bearer API key + verifies in a fresh session |
 | B-002 | MW-I02 stack | 59542/59543 prepared, not started. | Owner grants the one bounded approval under `docs/design/my-work-integration-audit/MW_I02_SEPARATE_PORT_ACCEPTANCE_PLAN_2026-10-14.md` |
 | B-003 | Cross-role audit | Only Owner session authenticated in 2026-10-25 audit. | Real Leader/employee/Site/Client personas in a session |
 

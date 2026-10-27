@@ -68,8 +68,14 @@ Historical duplicate branches are joined through explicit history-only merge par
 
 ## Verification and publication
 
-Pinned Node24.19.0/pnpm11.19.0. Fresh acceptance results and final commit will be recorded here before publication. Planned remote result: master is the sole active branch in `sensestudiosar-ctrl/sense-studios-work-management-`; original branch tips are retained under `archive/20261027/…` tags before redundant heads are retired. Old origin repository remains unchanged. Active local worktrees remain recoverable.
+Pinned Node24.19.0/pnpm11.19.0. Fresh acceptance results and final commit will be recorded here before publication. Planned remote result: master is the sole active branch in `sensestudiosar-ctrl/sense-studios-work-management-`; original branch tips are retained under local `archive/20261027/…` tags and an aggregate remote archive tag, with every inventoried tip reachable through master before redundant heads are retired. Old origin repository remains unchanged. Active local worktrees remain recoverable.
 
 This is source/repository consolidation. Canonical staging remains its previously accepted matched release; no retained migration, seed, reset, deployment, production or operational acceptance is implied.
 
 Reviewers: current GPT-6.1 Sol and independent GPT-6.1 Sol subagents for branch/source and factory review. Earlier generic GPT-6 attribution in chat was imprecise; no Opus/Sonnet execution is claimed.
+
+## Candidate verification boundary
+
+Reconciled history commit `4f3e9ed0442f4302c315fefeab9d0448c6916249` contains all 39 inventoried refs, including symbolic aliases, as ancestors. Its 65 selected source/test/document files were credential-pattern scanned before committing. Pinned acceptance passed typecheck, lint, API524/68 suites, web708/72 files, PostgreSQL423/64 suites and production compilation. The first combined fixture browser attempt failed its identity bootstrap (1 failed,58 not run): the API suites had left an ACTIVE Owner, correctly closing first-Owner bootstrap. Evidence and test data remain preserved; no application auth change or retained-data cleanup was made.
+
+Two later CSS-only composer changes (phone44px effort buttons and dialog body spacing) and two updated factory outcome documents were separately snapshotted/reviewed and included. Backend, schema, TS/JS application logic and unit tests are mechanically unchanged across that boundary. A fresh browser-only schema120 fixture and final production build verify this final source. The initial combined run is not relabelled as a passing full verify.
