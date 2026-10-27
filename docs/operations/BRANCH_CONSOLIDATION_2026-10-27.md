@@ -91,3 +91,11 @@ Publication receipts will record the remote master commit, actual default-branch
 ## Publication approval block
 
 The fully tested master was prepared at `1439036867e0b4728f7eb34b9c229e44e62293c8`. Automatic approval review rejected the attempted atomic push of master plus the aggregate archive because the destination is public and the current request did not explicitly approve public exposure of potentially sensitive source/history. The push was not executed. No alternative upload, remote default change or remote branch deletion was attempted. Explicit Owner approval to publish to the named public repository is required before retrying. Local source consolidation, branch reduction, working-file preservation and canonical origin configuration proceed independently. The old GitHub repository remains unchanged; all14branches on the new repository remain until authorized publication/cleanup.
+
+## Verified local cutover
+
+The main checkout is on clean `master`. Seventeen redundant local heads were retired only after ancestry checks and archival tags; original working files were saved in a named stash plus SHA-256 snapshots. Private measurement/trace/scratch files and completed factory checkpoint JSON were restored locally and excluded from Git status. Old local remote configuration is privately preserved; the single configured `origin` now points to the new repository. No retained environment, database or staging artifact was changed.
+
+The original F-001 worktree and the isolated acceptance candidate remain intact as detached checkouts. A new `factory/f-002-my-work-row-density` worktree appeared concurrently during cutover; it remains untouched. At final inspection it is clean at `05108bf`, already an ancestor of master, with no additional commit or source change to merge. The two local branch heads are therefore master and that active new work branch. Both pre/post-consolidation all-ref bundles verified as complete history; all original branch tips remain recoverable.
+
+Read-only remote verification after the rejected push confirms its default is still `codex/sense-integration` at `05108bf`, remote master is still `2e46805`, and all14remote heads are unchanged. Remote consolidation is not claimed complete.
