@@ -271,6 +271,7 @@
 }
 #root .dashboard-workspace .dv-summary-card {
   min-width: 0;
+  white-space: normal;
   min-height: 176px;
   height: auto;
   padding: 16px;
