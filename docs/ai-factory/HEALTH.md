@@ -65,6 +65,48 @@ checkpoint ids.
   stale section, so the F-001 branch was rooted at remote tip `283e22c`
   to keep a clean 1-commit docs diff independent of PR #3's unpushed work.
 
+## 2026-10-27 (later) — F-002 MERGED INTO MASTER; factory branch cleanup
+- Owner directed: "review required branches, merge into master … clean
+  up factory branches/worktrees (both)" + "MERGE F002".
+- Master consolidation state (run by a parallel session, verified):
+  main checkout cut over to `master`; F-001 already merged (2aacdd1 in
+  master); `codex/sense-integration` + `codex/sense-release` published
+  to remote `origin` (`new` org remote still holds pre-consolidation
+  history, unchanged).
+- F-002 merged into master: `a1e0f28` (no-ff, rebase-verified clean via
+  merge-tree; 3 files, +35/−33; `--state-rail`/`--row-tint` count in
+  master CSS now 0). `a094ad4` confirmed ancestor of master.
+- Cleanup: `factory/f-002-my-work-row-density` branch deleted; worktrees
+  `f-001` and `f-002` removed (both clean — f-001 work already merged
+  via 2aacdd1; f-002 via a1e0f28). Consolidation candidate worktree
+  (`.env.branch-consolidation-20261027/candidate`) left to the
+  consolidation session.
+- Local `master` is now ahead of `origin/master` (0824d27) — push is a
+  separate owner/consolidation action, not performed by the factory.
+- Task-composer uncommitted pair (`task-composer-fields.tsx/.js`)
+  belongs to the in-flight F-005 batch and was NOT committed by the
+  factory (preserve-uncommitted-work rule).
+
+## 2026-10-27 (night) — F-002 implemented to VERIFIED; first OBSERVED recovery event
+- F-002 (My Work row density, owner decisions: dot-only + 56/44)
+  implemented in worktree `.claude/worktrees/f-002`
+  (`factory/f-002-my-work-row-density` @ local base `05108bf`): commit
+  `a094ad4`, 3 files, +35/−33, CSS + 2 test-twin updates only.
+- Gates: **94/94** scoped vitest (my-work + task + task-ux), web
+  typecheck PASS, eslint PASS, web build PASS. Checkpoint
+  `f-002-implement` → **VERIFIED** (independent review running, verdict
+  pending). Draft-PR body staged: `pr-f-002-body.md`.
+- **First OBSERVED recovery (not simulated):** the 30-min checkpoint
+  lease expired across a 5-hour usage-limit gap; `checkpoint.mjs
+  steal` with justification recovered cleanly, no duplicate completed
+  ops, no lost state. RECOVERY.md §"Simulated vs observed" now has one
+  real event on record (usage-limit window + lease expiry + steal).
+- Linear: Owner re-asked connect procedure; confirmed `linear-server`
+  still **not registered on this machine** (~/.claude.json has no
+  mcpServers entries; `claude` CLI not on this host's PATH) and
+  unauthenticated. Runbook: LINEAR.md §"How to connect". Fallback
+  BACKLOG.md remains authoritative.
+
 ## Subsequent Owner master consolidation — 2026-10-27
 
 The later Owner instruction requests review/merger of all required branches into master. It supersedes the earlier local-only disposition of F-001 for this consolidation. Its original commit and dated outcome remain preserved; master carries the adapted current branch guidance. This authorizes no scheduler, external messages, application-data change or deployment. See ../operations/BRANCH_CONSOLIDATION_2026-10-27.md.

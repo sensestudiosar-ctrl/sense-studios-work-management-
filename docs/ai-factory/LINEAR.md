@@ -1,9 +1,19 @@
 # Linear Integration (Free tier) — configuration & fallback
 
-## Status (2026-10-27): NOT CONNECTED — fallback active
-No Linear MCP in `.mcp.json`. The version-controlled fallback backlog is
-`docs/ai-factory/BACKLOG.md` and is the authoritative issue store until
-Linear is connected. **Do not fabricate Linear issue IDs or updates.**
+## Status (2026-10-27): CONNECTED — OAuth, project scope
+`linear-server` (official Linear MCP at `https://mcp.linear.app/mcp`) is
+registered in `.mcp.json` and authenticated via OAuth (`claude mcp login`);
+health check reports `✔ Connected`, and a fresh-session live check
+confirmed end-to-end reads (MCP tools load via `WaitForMcpServers` when
+absent from the initial tool set). Free-tier discipline below still
+applies. **Do not fabricate Linear issue IDs or updates** — verify any
+referenced ID against the live server.
+
+**Actual workspace (checked 2026-10-27):** "SENSE STUDIOS"
+(https://linear.app/sense-studios) — currently **empty**: zero projects,
+one team "SENSE STUDIOS" (key `SEN`). The intended "Sense Studios
+Development" / "Application Engineering" structure below does not exist
+yet; create it progressively per the free-tier discipline when work lands.
 
 ## Intended target (for when the Owner authorizes)
 - **Server:** official Linear MCP at `https://mcp.linear.app/mcp`
