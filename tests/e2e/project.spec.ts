@@ -43,7 +43,7 @@ test("assigned staff sees only its project and a cancellation request persists a
     expect(inaccessibleBranch.ok()).toBe(true);
     expect((await inaccessibleBranch.json() as { items: Array<{ id: string }> }).items).toEqual([]);
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
-    await expect(workspace.getByText("Architecture", { exact: true })).toBeVisible();
+    await expect(workspace.locator(".project-detail .project-scope-list").getByText("Architecture", { exact: true })).toBeVisible();
     await workspace.getByLabel("Project action reason").fill("Delivery request needs Owner review");
     await workspace.getByRole("button", { name: "Request cancellation" }).click();
     await expect(workspace.getByText(/Cancellation request submitted/)).toBeVisible();

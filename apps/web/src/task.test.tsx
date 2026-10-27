@@ -320,7 +320,7 @@ describe("TaskWorkspace", () => {
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).includes("/creation-options") ? response(creationOptionsForSetup(nextSetup, String(input))) : String(input).endsWith("/setup") ? response(nextSetup) : response({ total: 1, items: [task] })));
     render(<TaskWorkspace csrfToken="csrf" owner={_label === "OWNER"} listFirst personalOnly />);
     fireEvent.click(await screen.findByRole("button", { name: "Create task" }));
-    const form = screen.getByRole("form", { name: "Create task" });
+    const form = await screen.findByRole("form", { name: "Create task" });
     await waitFor(() => expect(within(form).queryByText("Loading eligible task participants…")).not.toBeInTheDocument());
     expect(within(screen.getByRole("dialog")).getByRole("heading", { name: heading })).toBeInTheDocument();
     expect(within(form).getByLabelText("Task name")).toBeRequired();
