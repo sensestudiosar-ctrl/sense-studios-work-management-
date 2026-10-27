@@ -70,10 +70,10 @@ test("S24 dashboard reports freeze, export, history and schedule; staff retain p
   for (const summaryWidth of [1440, 1024, 859, 783, 600, 390, 320]) {
     await page.setViewportSize({ width: summaryWidth, height: 884 });
     await verifyDashboardSummaryLayout(page, testInfo, summaryWidth);
-    const summaryTrigger = page.locator("a.dv-summary-overdue");
+    const summaryTrigger = page.locator("button.dv-summary-overdue");
     await summaryTrigger.focus();
     await expect(summaryTrigger).toBeFocused();
-    await expect(summaryTrigger).toHaveAttribute("href", /tasks/);
+    await expect(summaryTrigger).toHaveAttribute("aria-haspopup", "dialog");
   }
   await page.setViewportSize(summaryViewport);
   const initialSource = await page.request.get("/api/v1/dashboard/sources/tasks");
