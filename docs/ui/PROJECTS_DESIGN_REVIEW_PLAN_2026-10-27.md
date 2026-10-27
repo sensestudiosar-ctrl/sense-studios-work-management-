@@ -335,17 +335,40 @@ These are mandatory planned tests, not fresh passing results. No silent failure 
 
 Sequential implementation, no parallelization opportunity: the changes share ProjectWorkspace/TaskWorkspace and scoped CSS. Stage 1 reconciles latest deployed source and implements focused frame/creation; Stage 2 implements the shared task panel and close path; Stage 3 completes task views/mobile selectors and section feedback; Stage 4 runs role/browser/visual acceptance and exact selected-file review. Existing eight tasks remain in scope; E2–E4 refine T2–T5/T7/T8. No separate deferred TODO is proposed.
 
-Architecture, code quality, tests and performance have been evaluated. Independent outside-voice review remains to be decided; engineering review is not yet logged as complete. No code changes or tests were executed as part of this plan review.
+Architecture, code quality, tests and performance have been evaluated. Independent Codex read-only review ran at HEAD d1c9241 and found one branch-context gap, resolved by Owner decision E6 below. No application code changes or tests were executed as part of this plan review.
+
+## Independent review and Owner decision E6
+
+The independent reviewer verified that `project.tsx` shares branchId between directory filtering and the create payload. This is an existing coupling that the focused creation design must accommodate, not a demonstrated regression. Reviewer recommended separate branch state; Owner selected B instead: retain shared branch state and restore it on every exit path. This explicit choice supersedes the reviewer's recommended separation.
+
+Before entering creation, capture the directory return context (branch, query, stage filter, sort, direction and page). Shared branch changes while creating must not overwrite that saved context. Use a single creation-exit restoration path for Cancel, Back and approved departure, keeping the visible directory controls, URL and page synchronized. An attempted exit rejected by dirty/pending guards must leave creation intact. Initializing or restoring branch state must not cause an unrelated directory effect to reset the saved page to zero.
+
+On confirmed creation, preserve the creation command's branch and canonical returned ID while restoring the directory context retained for a later Back to projects. Never mutate the frozen uncertain-command body while restoring directory state. If uncertainty prevents safe departure, retain the current recovery guard; only an authorized supported abandonment may proceed through restoration. Failed detail reads after confirmed creation retry the read, not the create command. Branch-dependent client/Won-lead candidates must follow the creation branch, and incompatible relationship drafts must be cleared through existing eligibility rules.
+
+Acceptance cases: directory branch A/page 2 → create branch B → Cancel returns A/page 2; submitting sends B; confirmed creation opens the returned ID and Back restores A/page 2; rejected dirty exit preserves B; browser Back/Forward and supported uncertain-write abandonment do not lose A or replay a changed command. Add these unit and real-browser cases to T2/T8 and the companion test plan. This rollback-based approach has more exit paths to verify than separate state; no path may be omitted to reduce implementation effort.
+
+## Engineering completion summary
+
+- Scope: full approved design retained in bounded sequential stages (E1).
+- Architecture: one state/command owner with shared drawer presentation (E2).
+- Code quality: one guarded task-close handler (E3).
+- Tests: diagram and failure matrix produced; focused authenticated Projects browser spec approved (E4). Companion: `docs/ui/PROJECTS_REDESIGN_TEST_PLAN_2026-10-28.md`.
+- Performance: existing bounded page, display-only switches and selected-section reads retained; no new defect established.
+- Outside voice: independent Codex review ran (E5); its branch-coupling finding resolved using Owner-selected shared-state restoration (E6).
+- NOT in scope and existing component reuse are documented. No separate deferred TODO is proposed. Sequential work avoids competing edits to the same shared modules.
+- Zero unresolved plan decisions; implementation tests, rendered QA, source review and matched-release acceptance remain future gates. Actual models: GPT-6.1 Sol and an independent Codex agent; no Opus/Sonnet result claimed.
+- Optional task JSONL aggregation remains unavailable because jq is absent; implementation tasks and their engineering refinements are recorded here rather than claiming an aggregation artifact exists.
 
 ## GSTACK REVIEW REPORT
 
-Engineering scope checkpoint, 28 October: Owner instructed continue after the recommendation to preserve full coverage in bounded stages. Proceed with that execution strategy; do not reduce approved page coverage. Live source is now HEAD 17eb1e4, beyond the prior design-log HEAD 71b01cd. CURRENT_STATE records subsequent directory, inner-project and task-composer releases. Reconcile each implementation task with that current source so accepted refinements are retained rather than reimplemented or overwritten. Architecture review is in progress; no engineering clearance is claimed.
+Engineering review source checkpoint: d1c9241, 28 October 2026. Source advanced beyond prior design-log HEAD 71b01cd; the bounded comparison from 17eb1e4 found no changes to the inspected Project/Task/drawer sources. Reconcile implementation with live source again before editing. Retain subsequent deployed directory, inner-project and composer refinements.
 
 | Review | Trigger | Why | Runs | Status | Findings |
 |---|---|---|---|---|---|
 | Design Review | /plan-design-review with Refero | Full Projects experience | 1 | design plan complete; visual verification pending | 4/10 → 8/10; D1–D8 settled; eight implementation tasks |
-| Eng Review | /plan-eng-review | Architecture, shared callers and tests | Not run for this plan | required | Validate task drawer reuse, route/draft recovery and affected contracts |
+| Eng Review | /plan-eng-review | Architecture, shared callers and tests | 1 | CLEAR (PLAN) | E1–E6 resolved; shared-state restoration requires explicit exit-path coverage |
+| Independent Codex | Read-only plan challenge | Shared callers and recovery | 1 | finding resolved by Owner E6 | One branch-state coupling gap; Owner selected restoration rather than state separation |
 
-VERDICT: Written design plan complete; engineering review required. Browser rendering and implementation acceptance remain unverified.
+VERDICT: Design and engineering plans cleared for implementation. This is not shipping clearance: application changes, tests, rendered validation and exact-candidate release acceptance remain unverified.
 
 NO UNRESOLVED DECISIONS
