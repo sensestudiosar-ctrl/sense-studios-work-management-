@@ -160,14 +160,14 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
   };
   const reviewValue = d.reviewRequirement === "CLIENT" ? "BOTH" : d.reviewRequirement;
   const dateField = (field: "targetDate" | "startDate", text: string) => <label className="task-calendar-field">
-    <span>{text}{field === "targetDate" ? <span className="task-field__req" aria-hidden="true">*</span> : <span className="task-field__optional">· optional</span>}</span>
+    <span>{text}{field === "targetDate" && <span className="task-field__req" aria-hidden="true">*</span>}</span>
     <span className={`task-calendar-control${d[field] ? " has-value" : ""}`}>
       <input {...attrs(field)} type="date" aria-label={text} required={field === "targetDate"} value={d[field]} disabled={busy}
         min={field === "targetDate" ? todayISO : undefined}
         title={d[field] ? `${text}: ${d[field].split("-").reverse().join("/")}` : `Choose ${text.toLowerCase()}`}
         onChange={event => change({ [field]: event.target.value })}
         onClick={event => { try { event.currentTarget.showPicker?.(); } catch { /* The native date field remains keyboard-editable if a browser blocks programmatic opening. */ } }} />
-      <RowIcon name="calendar" />
+      {d[field] ? <span className="task-calendar-value" aria-hidden="true">{d[field].split("-").reverse().join("/")}</span> : <RowIcon name="calendar" />}
     </span>
   </label>;
 
@@ -175,23 +175,25 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
   // visual companions — subtask drafts are staged separately by TaskWorkspace after
   // parent success, so they are shown here as a read-only count when editing a subtask.
   const canvas = <div className="task-composer__brief" aria-label="Task details">
-    <label className="task-field task-field--title"><span className="task-field__label">Task name <span className="task-field__req" aria-hidden="true">*</span></span>
-      <input {...attrs("title")} className="task-field--title-input" aria-label="Task name" value={d.title} onChange={event => change({ title: event.target.value })} minLength={2} maxLength={160} required placeholder="e.g. Revise the bedroom lighting plan" />
+    <div className="task-writing-fields">
+    <label className="task-field task-field--title"><span className="task-sr-only">Task name</span><span className="task-writing-required task-field__req" aria-hidden="true">*</span>
+      <input {...attrs("title")} className="task-field--title-input" aria-label="Task name" value={d.title} onChange={event => change({ title: event.target.value })} minLength={2} maxLength={160} required placeholder="Task Name" />
       {error("title")}
     </label>
-    <label className="task-field"><span className="task-field__label">Task brief <span className="task-field__optional">· optional</span></span>
-      <textarea {...attrs("description")} aria-label="Description (optional)" value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={3} placeholder="What needs to be delivered? Add scope, context and the expected result." />
+    <label className="task-field task-field--brief"><span className="task-sr-only">Task brief</span>
+      <textarea {...attrs("description")} aria-label="Description (optional)" value={d.description} onChange={event => change({ description: event.target.value })} maxLength={TASK_DESCRIPTION_MAX_LENGTH} rows={3} placeholder="Add description..." />
       {error("description")}
     </label>
+    </div>
     <label className="task-field"><span className="task-field__label">Why is this task needed? <span className="task-field__req" aria-hidden="true">*</span></span>
       <input {...attrs("reason")} aria-label="Reason" value={d.reason} onChange={event => change({ reason: event.target.value })} minLength={3} maxLength={1000} required placeholder="e.g. Incorporate the agreed client feedback" />
       {error("reason")}
     </label>
     {!compact && <details className="task-optional-planning">
       <summary>Optional planning</summary>
-      <label>Stage or milestone (optional)<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
-      <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder={"[ ] Confirm brief\n[x] Collect references"} rows={3} /></label>{error("checklistText")}
-      <label>Estimated hours (optional)<input {...attrs("estimatedHours")} type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} /><span className="task-effort-unit" aria-hidden="true">h</span>{error("estimatedHours")}</label>
+      <label>Stage or milestone<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
+      <label>Checklist (one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder={"[ ] Confirm brief\n[x] Collect references"} rows={3} /></label>{error("checklistText")}
+      <label>Estimated hours<input {...attrs("estimatedHours")} type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} /><span className="task-effort-unit" aria-hidden="true">h</span>{error("estimatedHours")}</label>
     </details>}
     <div className="task-post-creation" aria-label="After creation">
       <p className="task-post-creation__item"><span aria-hidden="true">◇</span> Discussion<span className="task-post-creation__note">Comment after creation</span></p>
@@ -285,7 +287,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
   </div>;
 
   const tagsSection = <div className="task-composer__tags">
-    <p className="task-composer__section-title">Tags <span className="task-field__optional">Optional · max 10</span></p>
+    <p className="task-composer__section-title">Tags <span className="task-field__optional">Max 10</span></p>
     <div className="task-tag-area">
       {tags.map(tag => (
         <span key={tag} className="task-tag-chip"><span>{tag}</span><button type="button" aria-label={`Remove tag ${tag}`} onClick={() => removeTag(tag)}>×</button></span>
@@ -305,11 +307,11 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
     </button>
     {planningOpen && <div className="task-accordion-content">
       {tagsSection}
-      <label>Stage or milestone (optional)<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
-      <label>Checklist (optional, one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder="One item per line" rows={3} /><small className="task-field__helper">Checklist progress does not complete the task automatically.</small>{error("checklistText")}</label>
+      <label>Stage or milestone<select aria-label={subtask ? "Subtask stage or milestone" : "Stage or milestone"} value={d.planItemId} onChange={event => change({ planItemId: event.target.value })} disabled={!d.projectId}><option value="">No plan item</option>{planItems.filter(item => item.projectId === d.projectId).map(item => <option key={item.id} value={item.id}>{item.kind === "STAGE" ? "Stage" : "Milestone"} · {item.label}</option>)}</select></label>
+      <label>Checklist (one item per line)<textarea {...attrs("checklistText")} aria-label={subtask ? "Subtask checklist" : "Checklist"} value={d.checklistText} onChange={event => change({ checklistText: event.target.value })} placeholder="One item per line" rows={3} /><small className="task-field__helper">Checklist progress does not complete the task automatically.</small>{error("checklistText")}</label>
       <details className="task-collaborator-details" open={planningOpen}>
         <div role="group" className="task-collaborator-group" aria-label="Collaborators (optional)">
-          <p className="task-composer__section-title">Collaborators <span className="task-field__optional">· optional</span></p>
+          <p className="task-composer__section-title">Collaborators</p>
           {(options?.collaborators ?? []).filter(person => person.id !== (explicit ? d.ownerId : options?.actorEmployeeId ?? "")).map(person => (
             <div key={person.id} className="task-collaborator-row">
               <span className="task-avatar__initials task-avatar__initials--sm" aria-hidden="true">{initials(person.name)}</span>
@@ -357,7 +359,7 @@ export function TaskComposerFields({ draft: d, onChange: change, projects, planI
             {error("targetDate")}
             {dateField("startDate", "Start date")}
             {error("startDate")}
-            <label>Estimated hours <span className="task-field__optional">· optional</span>
+            <label>Estimated hours
               <div className="task-effort-input"><button type="button" aria-label="Clear estimated effort" disabled={!d.estimatedHours || busy} onClick={() => change({ estimatedHours: "" })}>−</button>
                 <input {...attrs("estimatedHours")} aria-label="Estimated hours" type="number" min="0" max="100000" step="0.25" value={d.estimatedHours} onChange={event => change({ estimatedHours: event.target.value })} />
                 <span className="task-effort-unit" aria-hidden="true">h</span>

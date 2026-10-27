@@ -86,7 +86,7 @@ describe("shared task composer validation and fields", () => {
     expect([...group.querySelectorAll<HTMLButtonElement>('[role="radio"]')].filter(radio => radio.tabIndex === 0)).toHaveLength(1);
   });
 
-  it("keeps native date values, constraints, clear behavior and errors behind the calendar icons", () => {
+  it("keeps native date values, constraints, clear behavior and errors behind the date controls", () => {
     const onChange = vi.fn();
     render(<TaskComposerFields draft={{ ...draft, startDate: "2026-10-15" }} onChange={onChange} projects={[]} planItems={[]} options={undefined} optionsError={undefined} retryOptions={() => undefined} compact={false} busy={false} />);
     const target = screen.getByLabelText("Target date");
@@ -104,6 +104,28 @@ describe("shared task composer validation and fields", () => {
     expect(onChange).toHaveBeenCalledWith({ startDate: "" });
     fireEvent.change(target, { target: { value: "2026-11-06" } });
     expect(onChange).toHaveBeenCalledWith({ targetDate: "2026-11-06" });
+  });
+
+  it("replaces empty calendar icons with selected dates and restores them when cleared", () => {
+    function Composer() {
+      const [value, setValue] = useState({ ...draft, targetDate: "", startDate: "" });
+      return <TaskComposerFields draft={value} onChange={patch => setValue(current => ({ ...current, ...patch }))} projects={[]} planItems={[]} options={undefined} optionsError={undefined} retryOptions={() => undefined} compact={false} busy={false} />;
+    }
+    render(<Composer />);
+    for (const name of ["Target date", "Start date"]) {
+      const input = screen.getByLabelText(name), control = input.parentElement!;
+      expect(control.querySelector("svg")).not.toBeNull();
+      expect(control.querySelector(".task-calendar-value")).toBeNull();
+      fireEvent.change(input, { target: { value: "2026-11-06" } });
+      expect(control.querySelector(".task-calendar-value")).toHaveTextContent("06/11/2026");
+      expect(control.querySelector("svg")).toBeNull();
+      fireEvent.change(input, { target: { value: "" } });
+      expect(control.querySelector("svg")).not.toBeNull();
+      expect(control.querySelector(".task-calendar-value")).toBeNull();
+    }
+    expect(screen.getByPlaceholderText("Task Name")).toBeRequired();
+    expect(screen.getByPlaceholderText("Add description...")).not.toBeRequired();
+    expect(screen.queryByText("· optional")).not.toBeInTheDocument();
   });
 
 });

@@ -14,6 +14,7 @@ import { resolve } from "node:path";
  * No database writes in either mode.
  */
 const viewports = [
+  { width: 1395, height: 884, name: "reference-1395x884" },
   { width: 1440, height: 768, name: "desktop-1440x768" },
   { width: 1024, height: 768, name: "desktop-1024x768" },
   { width: 1075, height: 884, name: "marked-1075x884" },
@@ -120,6 +121,14 @@ test("captures the V15 task creation composer at all reference viewports", async
     await expect(dialog).toBeVisible({ timeout: 10_000 });
 
     await seed(page);
+    for (const name of ["Target date", "Start date"]) {
+      const control = dialog.getByLabel(name, { exact: true }).locator("..");
+      const value = control.locator(".task-calendar-value");
+      if (await value.count()) {
+        await expect(value).toBeVisible();
+        expect(await control.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
+      }
+    }
     await dialog.locator(".task-create-dialog__body").evaluate(element => { element.scrollTop = 0; });
     expect(await dialog.evaluate(element => element.scrollWidth <= element.clientWidth + 1)).toBe(true);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
@@ -146,6 +155,18 @@ test("marked task composer controls retain native dates, accessible priority sel
   await page.goto("/tasks?create=1", { waitUntil: "domcontentloaded" });
   const dialog = page.getByRole("dialog", { name: "Create or assign a task", exact: true });
   await expect(dialog).toBeVisible();
+  const title = dialog.getByPlaceholder("Task Name", { exact: true });
+  const brief = dialog.getByPlaceholder("Add description...", { exact: true });
+  await expect(title).toHaveAttribute("required", "");
+  await expect(title).toHaveCSS("font-size", "18px");
+  await expect(title).toHaveCSS("border-top-color", "rgba(0, 0, 0, 0)");
+  await expect(brief).toHaveCSS("border-top-color", "rgba(0, 0, 0, 0)");
+  await expect(dialog.getByText("· optional", { exact: true })).toHaveCount(0);
+  await dialog.screenshot({ path: resolve(process.env.TASK_V15_EVIDENCE_DIR ?? "artifacts/task-v15", "writing-empty.png") });
+  await title.fill("Prepare kitchen working drawings");
+  await brief.fill("Draw the kitchen elevations and hardware schedule.");
+  await expect(title).toHaveValue("Prepare kitchen working drawings");
+  await expect(brief).toHaveValue("Draw the kitchen elevations and hardware schedule.");
   const add = dialog.getByRole("button", { name: "Add people", exact: true });
   await expect(add).toHaveText("+");
   await expect(add).toHaveCSS("border-top-style", "none");
@@ -180,6 +201,9 @@ test("marked task composer controls retain native dates, accessible priority sel
     const date = dialog.getByLabel(name, { exact: true });
     await expect(date).toHaveAttribute("type", "date");
     await expect(date).toHaveCSS("opacity", "0");
+    await date.fill("");
+    await expect(date.locator("..").locator("svg")).toBeVisible();
+    await expect(date.locator("..").locator(".task-calendar-value")).toHaveCount(0);
     const box = await date.boundingBox();
     expect(box?.width).toBeGreaterThanOrEqual(44);
     expect(box?.height).toBeGreaterThanOrEqual(44);
@@ -189,6 +213,8 @@ test("marked task composer controls retain native dates, accessible priority sel
     await date.fill(name === "Target date" ? "2026-11-06" : "2026-11-05");
     await expect(date).toHaveAttribute("title", name === "Target date" ? "Target date: 06/11/2026" : "Start date: 05/11/2026");
     await expect(date.locator("..")).toHaveClass(/has-value/);
+    await expect(date.locator("..").locator(".task-calendar-value")).toHaveText(name === "Target date" ? "06/11/2026" : "05/11/2026");
+    await expect(date.locator("..").locator("svg")).toHaveCount(0);
   }
   await expect(dialog.locator(".task-composer__brief")).toHaveCSS("background-color", "rgb(255, 255, 255)");
   await expect(dialog.locator(".task-composer__aside")).not.toHaveCSS("background-color", "rgb(255, 255, 255)");

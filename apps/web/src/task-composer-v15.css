@@ -252,16 +252,28 @@
 
 /* Owner-marked refinements: quiet icon actions and a distinct writing surface. */
 .task-create-dialog .task-composer-v15 .task-composer__brief { background: #fff; border-radius: 10px; padding: 20px; }
+/* Owner's TASK.png reference: one quiet writing area, with focus/error feedback. */
+.task-composer-v15 .task-writing-fields { display: grid; gap: 2px; min-width: 0; }
+.task-composer-v15 .task-writing-fields .task-field { position: relative; margin: 0; gap: 4px; min-width: 0; }
+.task-composer-v15 .task-writing-fields .task-field .task-field--title-input { min-height: 44px; padding: 7px 16px 7px 0; font-size: 18px; font-weight: 600; letter-spacing: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; box-shadow: none; }
+.task-composer-v15 .task-writing-fields .task-field .task-field--title-input::placeholder { font-size: 18px; font-weight: 500; color: #758078; }
+.task-composer-v15 .task-writing-required { position: absolute; right: 4px; top: 10px; pointer-events: none; }
+.task-composer-v15 .task-writing-fields .task-field--brief textarea { min-height: 84px; padding: 3px 0 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; font-size: 14px; line-height: 1.6; box-shadow: none; resize: vertical; }
+.task-composer-v15 .task-writing-fields .task-field--brief textarea::placeholder { color: #758078; }
+.task-composer-v15 .task-writing-fields :is(.task-field--title-input, textarea):hover { background: #fafbf9; }
+.task-composer-v15 .task-writing-fields :is(.task-field--title-input, textarea):focus { outline: 2px solid #789987; outline-offset: 2px; border-color: transparent; background: #fff; box-shadow: none; }
+.task-composer-v15 .task-writing-fields :is(.task-field--title-input, textarea)[aria-invalid="true"] { border-color: #c97f7b; background: #fffafa; }
 .task-create-dialog .task-composer-v15 .task-avatar-add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 8px; box-shadow: none; background: transparent; color: #244f43; font-size: 26px; font-weight: 400; line-height: 1; }
 .task-create-dialog .task-composer-v15 .task-avatar-add:hover { background: #e8ede6; }
 .task-create-dialog .task-composer-v15 .task-composer__aside .task-property-row--priority { grid-template-columns: minmax(0, 1fr); gap: 8px; }
 .task-composer-v15 .task-calendar-control { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #d6ded4; border-radius: 8px; background: #fff; color: #526c5b; }
-.task-composer-v15 .task-calendar-control.has-value { background: #e8f0e8; border-color: #a4bca9; color: #244f43; }
+.task-composer-v15 .task-calendar-control.has-value { width: 100%; max-width: 124px; min-width: 0; padding: 0 5px; background: #e8f0e8; border-color: #a4bca9; color: #244f43; }
+.task-composer-v15 .task-calendar-value { font-size: 11px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; }
 .task-composer-v15 .task-calendar-control:hover { border-color: #789987; }
 .task-composer-v15 .task-calendar-control:focus-within { outline: 3px solid #244f43; outline-offset: 2px; }
 .task-composer-v15 .task-calendar-control:has(input[aria-invalid="true"]) { border-color: #aa2f3d; background: #fff3f2; }
 .task-composer-v15 .task-calendar-control:has(input:disabled) { opacity: .55; }
-.task-composer-v15 .task-calendar-control input[type="date"] { position: absolute; z-index: 1; inset: 0; width: 44px; height: 44px; min-width: 44px; min-height: 44px; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
+.task-composer-v15 .task-calendar-control input[type="date"] { position: absolute; z-index: 1; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); min-width: 44px; min-height: 44px; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
 .task-composer-v15 .task-calendar-control .task-row-icon { width: 19px; height: 19px; pointer-events: none; }
 .task-composer-v15 .task-calendar-control .task-row-icon svg { width: 19px; height: 19px; }
 @media (prefers-reduced-motion: reduce) {
@@ -283,7 +295,7 @@
   .task-composer-v15 .task-composer__aside .task-property-row--pair { grid-template-columns: 1fr; }
   .task-composer-v15 .task-composer__aside .task-property-row--pair label { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); display: grid; align-items: center; }
   .task-composer-v15 .task-composer__aside .task-property-row--pair .task-field-error { grid-column: 1 / -1; }
-  .task-composer-v15 .task-field.task-field--title .task-field--title-input { font-size: 21px; min-height: 44px; }
+  .task-composer-v15 .task-field.task-field--title .task-field--title-input { font-size: 18px; min-height: 44px; }
   /* Touch targets. */
   .task-composer-v15 .task-avatar, .task-composer-v15 .task-avatar-add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
   .task-composer-v15 .task-people-menu__add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
