@@ -1,6 +1,6 @@
 # Master branch consolidation — 27 October 2026
 
-Status: IN PROGRESS. Owner explicitly requested review of all branches, merger of required work and one master containing all work. This supersedes the earlier canonical integration-branch name.
+Status: source consolidation and verification COMPLETE; remote publication/default-branch cleanup IN PROGRESS. Owner explicitly requested review of all branches, merger of required work and one master containing all work. This supersedes the earlier canonical integration-branch name.
 
 ## Source selection and preservation
 
@@ -79,3 +79,11 @@ Reviewers: current GPT-6.1 Sol and independent GPT-6.1 Sol subagents for branch/
 Reconciled history commit `4f3e9ed0442f4302c315fefeab9d0448c6916249` contains all 39 inventoried refs, including symbolic aliases, as ancestors. Its 65 selected source/test/document files were credential-pattern scanned before committing. Pinned acceptance passed typecheck, lint, API524/68 suites, web708/72 files, PostgreSQL423/64 suites and production compilation. The first combined fixture browser attempt failed its identity bootstrap (1 failed,58 not run): the API suites had left an ACTIVE Owner, correctly closing first-Owner bootstrap. Evidence and test data remain preserved; no application auth change or retained-data cleanup was made.
 
 Two later CSS-only composer changes (phone44px effort buttons and dialog body spacing) and two updated factory outcome documents were separately snapshotted/reviewed and included. Backend, schema, TS/JS application logic and unit tests are mechanically unchanged across that boundary. A fresh browser-only schema120 fixture and final production build verify this final source. The initial combined run is not relabelled as a passing full verify.
+
+## Final acceptance
+
+Application source commit `904cd71557441011e0714da520488bb99257333e`, source SHA-256 `2a33fc3351261b76c1f0d0aecfa13c9d81f8d7ef90bab24dc591d150ee162089`. Final fresh browser-only run passed59/59 desktop/mobile cases with0failures,0skips and0retries. Final production web/API build passed. Production CSS computed checks passed at320/390/700/701/1440; phone effort controls are44×44px. API524/68suites, web708/72files and PostgreSQL423/64suites passed on mechanically unchanged application/backend/test sources before the final CSS-only delta. Typecheck/lint passed; staging operations12/12 and real factory subprocess tests8/8 passed, plus the factory self-test8/8. Independent branch/application/factory reviews found no remaining blockers.
+
+Both initial and later working snapshots remain preserved. The first browser attempt remains recorded as1failed/58not run due to its non-pristine API fixture, not an application auth failure. The first CSS probe used a closed dialog and produced0geometry; corrected open-state production CSS checks passed. Sandbox dependency/temporary-file attempts are preserved separately. These unsuccessful attempts are not relabelled as passing acceptance. No source migration, retained database/configuration, staging artifact or scheduler was changed.
+
+Publication receipts will record the remote master commit, actual default-branch setting and final branch count.
