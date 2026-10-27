@@ -72,7 +72,7 @@ test("time workspace persists timer and manual work through correction, approval
     await page.goto("/time");
     const workspace = page.locator(".time-workspace");
     await expect(workspace.getByRole("heading", { name: "Time", exact: true })).toBeVisible();
-    const timerPanel = workspace.locator(".time-panel").first();
+    const timerPanel = workspace.locator(".time-panel").filter({ has: page.getByRole("heading", { name: /^(Start a timer|Active timer)$/ }) });
     await expect(timerPanel.getByRole("heading", { name: "Start a timer" })).toBeVisible();
     await timerPanel.getByLabel("Activity label").fill("Studio administration");
     await timerPanel.getByLabel("Work note").fill(timerNote);
