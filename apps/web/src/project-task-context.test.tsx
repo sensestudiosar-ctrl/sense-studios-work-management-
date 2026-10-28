@@ -47,11 +47,14 @@ describe("fixed project task workspace", () => {
     const before = mock.mock.calls.filter(([value]) => new URL(String(value), "http://localhost").pathname === "/api/v1/tasks").length;
     fireEvent.click(screen.getByRole("button", { name: label }));
     expect(mock.mock.calls.filter(([value]) => new URL(String(value), "http://localhost").pathname === "/api/v1/tasks")).toHaveLength(before);
-    fireEvent.click(screen.getAllByRole("button", { name: new RegExp(task.title) })[0]!);
+    const opener = screen.getAllByRole("button", { name: new RegExp(task.title) })[0]!;
+    opener.focus(); fireEvent.click(opener);
+    expect(opener).toBeInTheDocument();
     const panel = await screen.findByRole("dialog", { name: task.title });
     expect(within(panel).getByRole("heading", { name: task.title })).toBeInTheDocument();
     fireEvent.click(within(panel).getByRole("button", { name: "Close task details" }));
     await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(opener).toHaveFocus();
     expect(screen.getByRole("button", { name: label })).toHaveAttribute("aria-pressed", "true");
     expect(mock.mock.calls.some(([, init]) => init?.method === "POST")).toBe(false);
   });

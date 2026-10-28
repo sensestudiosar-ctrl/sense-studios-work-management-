@@ -4,7 +4,7 @@ import { createRequire } from "node:module";
 import { resolve } from "node:path";
 
 test("Projects sections and every task view retain context with a native task panel", async ({ page, context, baseURL }, testInfo) => {
-  test.setTimeout(90_000);
+  test.setTimeout(120_000);
   test.skip(!process.env.DATABASE_URL, "Dedicated local test database required");
   const url = new URL(process.env.DATABASE_URL!);
   if (!["localhost", "127.0.0.1", "db"].includes(url.hostname) || !url.pathname.endsWith("_test")) throw new Error("Project browser fixture requires a dedicated test database");
@@ -60,6 +60,7 @@ test("Projects sections and every task view retain context with a native task pa
       await section(name);
       await expect(workspace.locator('.project-active-section')).toHaveText(name);
       await expect(workspace.getByRole('heading', { name: title, exact: true })).toBeVisible();
+      await page.screenshot({ path: testInfo.outputPath(`section-${name.toLowerCase()}.png`), fullPage: true });
     }
     await section('Tasks');
     const tasks = workspace.locator('.project-task-panel');
@@ -117,6 +118,37 @@ test("Projects sections and every task view retain context with a native task pa
     expect(new URL(page.url()).searchParams.get('branchId')).toBe(branchId);
     await workspace.getByRole('button', { name: '← Back to projects', exact: true }).click();
     await expect(workspace.getByLabel('Project branch', { exact: true })).toHaveValue(branchId);
+    const memberAccountId = randomUUID(), memberId = randomUUID();
+    await db.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES($1,$2,\'STAFF\',\'ACTIVE\',CURRENT_TIMESTAMP)', [memberAccountId, `member-${memberId}@example.test`]);
+    await db.query('INSERT INTO employees(id,"organizationId","accountId","homeBranchId","homeTeamId","hiredAt","updatedAt") VALUES($1,$2,$3,$4,$5,CURRENT_DATE,CURRENT_TIMESTAMP)', [memberId, organizationId, memberAccountId, branchId, teamId]);
+    await db.query('INSERT INTO project_assignments(id,"projectId","organizationId","employeeId","grantedById","grantReason") VALUES($1,$2,$3,$4,$5,$6)', [randomUUID(), projectId, organizationId, memberId, ownerId, 'Lead assignment browser fixture']);
+    for (const key of ['project.manage', 'task.assign']) await db.query('INSERT INTO employee_permission_overrides(id,"organizationId","employeeId","permissionKey",effect,"scopeKind","branchId",reason) VALUES($1,$2,$3,$4,\'ALLOW\',\'BRANCH\',$5,$6)', [randomUUID(), organizationId, employeeId, key, branchId, 'Explicit lead browser fixture authority']);
+    await page.goto(`/projects?projectId=${projectId}&projectSection=people`);
+    await workspace.getByLabel('Contributor', { exact: true }).selectOption(memberId);
+    await expect(workspace.getByLabel('Project lead', { exact: true })).toHaveValue('');
+    const lead = await page.request.post(`/api/v1/projects/${projectId}/lead`, { headers: { Cookie: `sense_sid=${ownerSession}`, Origin: baseURL!, 'X-CSRF-Token': ownerCsrf }, data: { employeeId, expectedVersion: 1, reason: 'Verify explicitly authorized project lead assignment' } });
+    expect(lead.ok()).toBe(true);
+    await context.addCookies([{ name: 'sense_sid', value: session, url: baseURL!, httpOnly: true, sameSite: 'Strict' }]);
+    await page.goto(`/projects?projectId=${projectId}&projectSection=tasks`);
+    await tasks.getByRole('button', { name: 'Create task', exact: true }).click();
+    const composer = page.getByRole('dialog');
+    const taskForm = composer.getByRole('form', { name: 'Create task', exact: true });
+    await taskForm.getByLabel('Primary owner', { exact: true }).selectOption(memberId);
+    await taskForm.getByLabel('Task name', { exact: true }).fill('Lead assigned task');
+    await taskForm.getByLabel('Target date', { exact: true }).fill('2026-12-31');
+    await taskForm.getByLabel('Reason', { exact: true }).fill('Assign project work directly during creation');
+    await composer.screenshot({ path: testInfo.outputPath('lead-assignment.png') });
+    await composer.getByRole('button', { name: 'Create task', exact: true }).click();
+    const assigned = page.getByRole('dialog', { name: 'Lead assigned task', exact: true });
+    await expect(assigned).toBeVisible();
+    const assignedId = new URL(page.url()).searchParams.get('projectTaskId');
+    expect((await db.query('SELECT "primaryOwnerEmployeeId" FROM tasks WHERE id=$1', [assignedId])).rows[0]?.primaryOwnerEmployeeId).toBe(memberId);
+    await assigned.getByRole('button', { name: /^Task actions/ }).click();
+    await assigned.getByLabel('New owner', { exact: true }).selectOption(employeeId);
+    await assigned.getByLabel('Reason for change', { exact: true }).last().fill('Reassign through the existing authorized task workflow');
+    await assigned.getByRole('button', { name: 'Reassign', exact: true }).click();
+    await expect(assigned.getByText('Task owner reassigned.', { exact: true })).toBeVisible();
+    expect((await db.query('SELECT "primaryOwnerEmployeeId" FROM tasks WHERE id=$1', [assignedId])).rows[0]?.primaryOwnerEmployeeId).toBe(employeeId);
   } finally {
     await db.query('UPDATE sessions SET "revokedAt"=CURRENT_TIMESTAMP WHERE "accountId"=$1', [accountId]);
     await db.query('UPDATE sessions SET "revokedAt"=CURRENT_TIMESTAMP WHERE "tokenHash"=$1', [hash(ownerSession)]);
