@@ -183,6 +183,13 @@
    filled pill background. */
 .task-workspace-personal .my-work-priority-cell .my-work-priority { background: transparent; border-color: transparent; padding: 0; }
 
+/* ---- F-002b: primary-owner avatar in the People column. Initials bubble
+   mirrors the shared task-avatar__initials treatment; the name stays as
+   the accessible text, the avatar is the visual marker. ---- */
+.task-workspace-personal .my-work-owner { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.task-workspace-personal .my-work-owner__initials { display: grid; place-items: center; flex: 0 0 auto; width: 22px; height: 22px; border-radius: 50%; background: #eef4ee; color: #2f614c; font-size: 9px; font-weight: 750; }
+.task-workspace-personal .my-work-owner__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: #576d5f; }
+
 /* ---- Pin ---- */
 .task-workspace-personal .my-work-pin { border: 0; background: transparent; color: #bc9c60; font-size: 15px; padding: 2px; line-height: 1; }
 .task-workspace-personal .my-work-pin[aria-pressed="false"] { color: #c5cfca; }

@@ -19,7 +19,7 @@ function readAssignedBy(value) {
     const kind = assignedBy.kind;
     return { name: name.trim(), kind: kind === "STAFF" ? "STAFF" : "OWNER" };
 }
-function initials(value) {
+export function initials(value) {
     const clean = value.trim();
     if (!clean || /^(unknown worker|task owner)$/i.test(clean))
         return "?";

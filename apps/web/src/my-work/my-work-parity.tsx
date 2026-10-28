@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { initials } from "../task-people.js";
 
 /**
  * My Work demo-parity row renderer.
@@ -228,6 +229,19 @@ function priorityKey(label: string): string {
   return label.toUpperCase();
 }
 
+/**
+ * F-002b: avatar initials for the primary-owner label. Reuses the shared
+ * `initials` primitive (task-people) for names and emails; the local
+ * "You" and empty-label edge cases get readable fallbacks. Pure, so it is
+ * unit-testable without the browser.
+ */
+export function ownerInitials(label: string): string {
+  const clean = label.trim();
+  if (!clean) return "?";
+  if (/^you$/i.test(clean)) return "Me";
+  return initials(clean);
+}
+
 function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction, onMove }: {
   row: MyWorkParityRow;
   today: string;
@@ -276,7 +290,7 @@ function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction
         </span>
       </span>
     </span>
-    <span className="my-work-row-cell">{row.people}</span>
+    <span className="my-work-row-cell my-work-owner-cell"><span className="my-work-owner" title={row.people} aria-label={`Owner: ${row.people}`} role="img"><span className="my-work-owner__initials" aria-hidden="true">{ownerInitials(row.people)}</span><span className="my-work-owner__name">{row.people}</span></span></span>
     <span className={`my-work-row-cell my-work-due${overdue ? " overdue" : ""}`}>{row.dueDate ?? "No date"}</span>
     <span className="my-work-status-cell"><span className={`my-work-status my-work-status-${state}`}>{parityStatusLabel(row.status)}</span></span>
     <span className="my-work-row-cell my-work-priority-cell"><span className={`my-work-priority priority-pill ${parityPriorityClass(row.priority)}`} title={`${parityPriorityLabel(row.priority)} priority`}>{parityPriorityLabel(row.priority)}</span></span>
