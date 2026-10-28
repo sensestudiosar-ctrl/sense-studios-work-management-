@@ -1,6 +1,6 @@
 ## Projects redesign — implementation and acceptance, 2026-10-28
 
-IN PROGRESS. Implements the approved D1–D8/E1–E6 plan in existing Projects routes: focused creation with shared-branch return restoration, native task drawer across four views, phone section/status selectors and scoped presentation. Original five usability fixes are preserved. Focused tests and web typecheck/lint/build passed; final broad regression and authenticated browser acceptance are running. No retained migration or staging deployment. See docs/ui/PROJECTS_REDESIGN_IMPLEMENTATION_2026-10-28.md.
+COMPLETE for bounded frontend implementation and isolated-fixture acceptance. Approved D1–D8/E1–E6 behavior is implemented in existing Projects routes. All five original findings are addressed; lead creation/reassignment and confidential PDF upload/refresh/download passed on desktop and phone. Web regression717, final affected/shared65, real Workforce PostgreSQL19, schedule unit1, browser5, web typecheck/scoped lint/build passed. Independent Codex review found and then accepted the command-focus correction in2525206. Concurrent navigation/task-people/My Work changes and aggregate master acceptance are excluded. No retained migration or staging deployment. See docs/ui/PROJECTS_REDESIGN_IMPLEMENTATION_2026-10-28.md.
 
 ## Task writing and selected dates — deployed, 2026-10-28
 

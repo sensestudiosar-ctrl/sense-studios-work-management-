@@ -551,9 +551,9 @@ Owner explicitly requested adding the completed Projects refinement to canonical
 ## Inner project workspace refinement — 2026-10-27
 
 COMPLETE for controlled local staging: R-011–017, R-006, R-099–102 and C-010–C-016/C-024. Eight existing project sections received scoped presentation improvements without changing permissions, business rules, evidence, commands or task leave guards. Selected release7f286689350c5aa024b592d3a8a2d7be5a35fe0a passed exact702web units,12staging tests,59browser journeys,32inner captures,224shared layouts and cache checks; matched web/API is READY. Retained identity/schema120 and all176table counts/1,128rows match; only active sessions hash changed. See docs/design/project-inner-workspaces-2026-10-27.md. No retained migration or production deployment.
-## Reported project, document, workload and task UX findings — IN PROGRESS (2026-10-27)
+## Reported project, document, workload and task UX findings — COMPLETE for isolated acceptance (2026-10-28)
 
-## Approved Projects redesign implementation — IN PROGRESS, 2026-10-28
+## Approved Projects redesign implementation — COMPLETE for bounded implementation and isolated acceptance, 2026-10-28
 
 Owner authorized implementation of docs/ui/PROJECTS_DESIGN_REVIEW_PLAN_2026-10-27.md and its companion acceptance plan after design D1–D8 and engineering E1–E6. Requirement slices: R-011.a/R-012.a–b/R-013.a project context and creation; R-018.a–b/R-019.a–c/R-020–R-024 canonical task ownership/workflow; R-027.a–b/R-028.a–b/R-029.a–b review/evidence presentation; R-006 access. Scope: focused creation with shared branch-state restoration, consistent task drawer, four task views, phone section/status selectors, section-local states and existing-token hierarchy. Dependencies: current PRJ/TSK/DOC/REV APIs and shared shell. No new permission, business rule, schema, migration or retained-data setup. Acceptance: focused units and real authenticated Projects browser journey, shared caller regressions, pinned type/lint/build/full applicable gates and independent exact-candidate review. Deployment requires a separately selected approved matched commit. Preserve current task-writing refinements.
 
