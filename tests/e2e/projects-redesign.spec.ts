@@ -37,8 +37,13 @@ test("Projects sections and every task view retain context with a native task pa
     await db.query('INSERT INTO project_assignments(id,"projectId","organizationId","employeeId","grantedById","grantReason") VALUES ($1,$2,$3,$4,$5,$6)', [randomUUID(), projectId, organizationId, employeeId, accountId, "Assigned project fixture"]);
     await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES ($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [randomUUID(), accountId, hash(session), hash(csrf)]);
     const owner = await db.query<{ id: string }>("SELECT id FROM accounts WHERE kind='OWNER' AND state='ACTIVE' LIMIT 1");
-    expect(owner.rows).toHaveLength(1);
-    await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES ($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [randomUUID(), owner.rows[0]!.id, hash(ownerSession), hash(ownerCsrf)]);
+    const ownerId = owner.rows[0]?.id ?? randomUUID();
+    if (!owner.rows[0]) {
+      await db.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES($1,$2,\'OWNER\',\'ACTIVE\',CURRENT_TIMESTAMP)', [ownerId, `projects-owner-${ownerId}@example.test`]);
+      await db.query('INSERT INTO passkey_credentials(id,"credentialId","accountId","publicKey") VALUES($1,$2,$3,$4),($5,$6,$3,$7)', [randomUUID(), randomUUID(), ownerId, randomBytes(32), randomUUID(), randomUUID(), randomBytes(32)]);
+      await db.query('INSERT INTO owner_recovery_codes(id,"accountId","codeHash","acknowledgedAt") VALUES($1,$2,$3,CURRENT_TIMESTAMP)', [randomUUID(), ownerId, hash(randomUUID())]);
+    }
+    await db.query('INSERT INTO sessions(id,"accountId","tokenHash","csrfTokenHash","expiresAt") VALUES ($1,$2,$3,$4,CURRENT_TIMESTAMP+interval \'1 hour\')', [randomUUID(), ownerId, hash(ownerSession), hash(ownerCsrf)]);
     await db.query("COMMIT");
     const created = await page.request.post('/api/v1/tasks', { headers: { Cookie: `sense_sid=${ownerSession}`, Origin: baseURL!, 'X-CSRF-Token': ownerCsrf }, data: { title: 'Redesign fixture task', type: 'PROJECT', projectId, ownerEmployeeId: employeeId, priority: 'MEDIUM', targetDate: '2026-12-31', reason: 'Verify the approved Projects presentation' } });
     expect(created.status()).toBe(201);

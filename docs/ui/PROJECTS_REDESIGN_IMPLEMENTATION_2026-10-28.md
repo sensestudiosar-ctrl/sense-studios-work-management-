@@ -31,3 +31,13 @@ The implementation base already contains these fixes; this slice preserves them 
 - The initial sandboxed database preparation hit a loopback EACCES error. Disposable fixtures were preserved. Subsequent provisioning uses ownership-checked fresh clusters outside the restricted networking sandbox. No retained staging database has been migrated or seeded.
 
 No schema, API contract, approval rule, permission policy or workload calculation changes are proposed. Canonical staging has not been updated by this slice. Actual operational and production limits remain unchanged.
+
+## Committed candidate acceptance
+
+Candidate: `c610612c144f241c0d97a8064512b2fe47819871` (implementation `22b7552`, asynchronous test waits `c610612`). Tests run in the Git-exported source for build `c610612c144f-1793164156062`, excluding concurrent shared-navigation/backlog changes in the original checkout.
+
+- Web regression: **717 passed / 72 files**, zero failures, on the isolated candidate. Report: `.env.staging/builds/c610612c144f-1793164156062/.env.projects-review-temp/web-acceptance.json`.
+- Candidate web typecheck and targeted ESLint: exit 0. Contracts/API/web production build and sealed release packaging: exit 0; artifact remains BUILT_NOT_PROMOTED.
+- Browser execution remains pending. A fixture setup error was corrected to create tasks through the authenticated API, preserving required initial task evidence. A later pnpm dependency-mode issue stopped the runner before tests; the disposable environment is being restored from the frozen offline lockfile and Playwright invoked directly.
+- No full `pnpm verify`, complete API/PostgreSQL regression, hosted CI or production acceptance is claimed for this frontend slice.
+- Actual routing: current Codex session for implementation and verification; the earlier independent read-only Codex plan review is recorded in the companion plan. No additional implementation agent or Opus/Sonnet acceptance is claimed.
