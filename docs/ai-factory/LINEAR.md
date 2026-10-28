@@ -1,13 +1,28 @@
 # Linear Integration (Free tier) — configuration & fallback
 
-## Status (2026-10-27): CONNECTED — OAuth, project scope
+## Status (updated 2026-10-28): REGISTERED in `.mcp.json`; connection is
+per-session and **not loaded in the 2026-10-28 factory session**
+
 `linear-server` (official Linear MCP at `https://mcp.linear.app/mcp`) is
-registered in `.mcp.json` and authenticated via OAuth (`claude mcp login`);
-health check reports `✔ Connected`, and a fresh-session live check
-confirmed end-to-end reads (MCP tools load via `WaitForMcpServers` when
-absent from the initial tool set). Free-tier discipline below still
-applies. **Do not fabricate Linear issue IDs or updates** — verify any
-referenced ID against the live server.
+registered in the project `.mcp.json`. **Connection state is not global —
+it depends on the running session's OAuth state.** Verified this session:
+- The `linear-server` MCP tools are **NOT loaded** in the current
+  Claude session (`ListMcpResources`/`WaitForMcpServers` report it
+  absent; only `refero`, `playwright`, `ccd_*`, `scheduled-tasks`,
+  `terminal`, `Claude Browser` are live).
+- No Linear OAuth token is stored on this host in `~/.claude.json`
+  (no `mcpOAuth` section; `linear-server` entry present in project
+  `.mcp.json`).
+
+So the factory **cannot** execute real `create_issue` calls right now.
+A session where the Owner has completed the OAuth (`/mcp` →
+linear-server, or `claude mcp` interactive login, or a Bearer key) will
+load the tools, and the ready payload
+`docs/ai-factory/linear-import-payload.md` executes in one step.
+
+Free-tier discipline below still applies. **Do not fabricate Linear
+issue IDs or updates** — verify any referenced ID against the live
+server.
 
 **Actual workspace (checked 2026-10-27):** "SENSE STUDIOS"
 (https://linear.app/sense-studios), one team "SENSE STUDIOS" (key `SEN`).
