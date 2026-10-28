@@ -1,7 +1,29 @@
 # Factory Schedules (registry)
 
 Timezone: Asia/Kolkata (local machine time). Off-minute picks avoid fleet
-:00/:30 collisions. **Status as of 2026-10-27: nothing autonomous is scheduled.**
+:00/:30 collisions.
+
+**Status as of 2026-10-28: ALL FOUR ROUTINES ARE CONFIGURED AND ENABLED**
+(verified live via `list_scheduled_tasks`; the 2026-10-27 "blocked"
+record below was superseded — the creates succeeded despite two earlier
+denied attempts):
+
+| id | Cron (local) | Enabled | Next run (verified) |
+|---|---|---|---|
+| nightly-dev | `23 1 * * *` | yes | 2026-10-28 20:01 UTC |
+| daily-qa-audit | `41 9 * * *` | yes | 2026-10-29 04:20 UTC |
+| factory-recovery | `17 12 * * *` | yes | 2026-10-29 06:50 UTC |
+| weekly-retro | `7 20 * * 0` | yes | 2026-11-01 14:46 UTC |
+
+Remaining F-008 verification tail: **no observed fire yet** (first
+nightly-dev run lands 2026-10-28 20:01 UTC); usage-limit denial
+behavior unobserved; cloud tool availability unverified. Each run's
+report lands in `docs/ai-factory/HEALTH.md` per the routine prompts.
+
+---
+
+## Historical (2026-10-27, superseded)
+**Status as of 2026-10-27: nothing autonomous is scheduled.**
 Two independent attempts were both denied by the session's permission
 policy (auto-mode classifier):
 1. `mcp__scheduled-tasks__create_scheduled_task` → "Blocked by

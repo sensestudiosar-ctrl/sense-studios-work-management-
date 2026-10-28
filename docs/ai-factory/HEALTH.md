@@ -3,7 +3,52 @@
 Newest first. Each entry: date · what ran · pass/block results ·
 checkpoint ids.
 
-## 2026-10-27 (latest) — Linear cutover (project 1 of 9)
+## 2026-10-28 (latest) — F-batch shipped to master + scheduler live + Linear close-batch
+- **Shipped (committed on master):** F-002b owner avatar fold `2731e11`
+  (35/35 my-work+task-people, typecheck, eslint, build); F-004 PWA
+  "Later" session-persistence `3041a26` (full web suite 733/733);
+  F-006 review-view human labels via shared `workState()` `bc4320a`
+  (14/14 review+revision); F-009 tasks-tab-review shipped-state
+  addendum `2c9ae3d`; ledger commits `67c6e94` + this batch.
+- **F-003 closed as verified-already-shipped:** "C" shortcut in
+  `d38e957`, composer employee self-default in `task.tsx` — both
+  test-covered (97/97 task-suite re-verified). No code change.
+- **F-008 scheduler now LIVE (unblocked):** 4 durable routines via
+  `mcp__scheduled-tasks__create_scheduled_task` — nightly-dev
+  (`23 1 * * *`), daily-qa-audit (`41 9 * * *`), factory-recovery
+  (`17 12 * * *`), weekly-retro (`7 20 * * 0`), all enabled, verified
+  via `list_scheduled_tasks`. The 2026-10-27 "blocked by classifier"
+  record in SCHEDULES.md was superseded — earlier create attempts had
+  actually persisted. Remaining F-008 tail: first observed fire
+  (nightly-dev next run 2026-10-28 20:01 UTC), usage-limit-denial
+  behavior, cloud tool availability.
+- **Projects T1–T7 (F-010…F-016) confirmed DONE + merged to master by
+  the Projects session:** `22b7552`…`d90240e`, final selected-source
+  `2525206` (ancestor of master, verified). Bounded isolated-fixture
+  acceptance on record (web regression 717, affected 65, Workforce PG
+  19, browser 5). F-017 (T8) stays open: full-shell/zoom/AT
+  acceptance + owner-gated matched staging release.
+- **Linear close-batch executed (linear-server live this session):**
+  12 issues closed to Done with read-back verification —
+  SEN-5/6/7/9/12/13/14/15/16/17/18/19 (F-002b, F-003, F-004, F-006,
+  F-009, T1–T7). 3 in-flight state updates (SEN-8, SEN-11, SEN-20 →
+  In Progress) DENIED by the auto-mode classifier
+  [External System Writes] — recorded as not-synced, retriable when
+  the permission is allowed. No Linear IDs fabricated; all 16 issue
+  IDs re-read live via `list_issues`.
+- **Lease hygiene observed:** 30-min checkpoint leases expired across
+  long turns → `steal --justification` used for f-002b-impl and
+  f-006-impl (legal VERIFIED → AWAITING_APPROVAL → COMPLETED path).
+  RECOVERY.md §3 already mandates the "checkpoints every ≤25 min"
+  convention; no doc change needed.
+- Not run / not claimed: `pnpm verify` full, authenticated acceptance,
+  any staging promote/deploy, MW-I02 stack start. F-005 release and
+  F-017 staging remain Owner-gated.
+- Checkpoint ledger: f-002b-impl COMPLETED, f-006-impl COMPLETED,
+  f-002-implement AWAITING_APPROVAL (merged to master `a1e0f28` —
+  record may be closed if the Owner confirms the merge is final).
+
+## 2026-10-27 — Linear cutover (project 1 of 9)
 - `linear-server` OAuth-connected; live read in fresh session
   (workspace SENSE STUDIOS, team `SEN`).
 - Owner ordered factory to use Linear: project 1 **Foundation &
