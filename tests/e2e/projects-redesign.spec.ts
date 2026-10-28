@@ -151,6 +151,7 @@ test("Projects sections and every task view retain context with a native task pa
     expect((await db.query('SELECT "primaryOwnerEmployeeId" FROM tasks WHERE id=$1', [assignedId])).rows[0]?.primaryOwnerEmployeeId).toBe(memberId);
     await expect(assigned.getByRole('button', { name: /^Task actions/ })).toBeEnabled();
     await assigned.getByRole('button', { name: /^Task actions/ }).click();
+    await expect(assigned.getByRole('heading', { name: 'Task actions', exact: true })).toBeFocused();
     await assigned.getByLabel('New owner', { exact: true }).selectOption(employeeId);
     await assigned.getByLabel('Reason for change', { exact: true }).last().fill('Reassign through the existing authorized task workflow');
     await assigned.getByRole('button', { name: 'Reassign', exact: true }).click();
