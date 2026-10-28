@@ -657,6 +657,7 @@
 .project-workspace.is-project-creating .project-create-panel select,
 .project-workspace.is-project-creating .project-create-panel textarea { font-size: 16px; min-height: 44px; }
 .project-create-outcome { padding-block: 16px; border-top: 1px solid var(--pj-line); color: var(--pj-muted); }
+.project-workspace.is-project-creating .project-create-cancel { justify-self: start; width: auto; }
 .project-workspace .project-panel:has(> .project-detail) { box-shadow: none; }
 .project-workspace .project-detail .project-history:not(.project-timeline) li { border: 0; border-bottom: 1px solid var(--pj-line-soft); border-radius: 0; background: transparent; padding-inline: 0; }
 @media(max-width:600px) {

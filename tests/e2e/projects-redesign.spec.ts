@@ -122,6 +122,7 @@ test("Projects sections and every task view retain context with a native task pa
     await db.query('INSERT INTO accounts(id,"normalizedEmail",kind,state,"updatedAt") VALUES($1,$2,\'STAFF\',\'ACTIVE\',CURRENT_TIMESTAMP)', [memberAccountId, `member-${memberId}@example.test`]);
     await db.query('INSERT INTO employees(id,"organizationId","accountId","homeBranchId","homeTeamId","hiredAt","updatedAt") VALUES($1,$2,$3,$4,$5,CURRENT_DATE,CURRENT_TIMESTAMP)', [memberId, organizationId, memberAccountId, branchId, teamId]);
     await db.query('INSERT INTO project_assignments(id,"projectId","organizationId","employeeId","grantedById","grantReason") VALUES($1,$2,$3,$4,$5,$6)', [randomUUID(), projectId, organizationId, memberId, ownerId, 'Lead assignment browser fixture']);
+    await db.query('INSERT INTO employee_permission_overrides(id,"organizationId","employeeId","permissionKey",effect,"scopeKind","branchId",reason) VALUES($1,$2,$3,\'project.view\',\'ALLOW\',\'BRANCH\',$4,$5)', [randomUUID(), organizationId, memberId, branchId, 'Explicit project-view grant for assigned contributor']);
     for (const key of ['project.manage', 'task.assign']) await db.query('INSERT INTO employee_permission_overrides(id,"organizationId","employeeId","permissionKey",effect,"scopeKind","branchId",reason) VALUES($1,$2,$3,$4,\'ALLOW\',\'BRANCH\',$5,$6)', [randomUUID(), organizationId, employeeId, key, branchId, 'Explicit lead browser fixture authority']);
     await page.goto(`/projects?projectId=${projectId}&projectSection=people`);
     await workspace.getByLabel('Contributor', { exact: true }).selectOption(memberId);
@@ -134,6 +135,7 @@ test("Projects sections and every task view retain context with a native task pa
     const composer = page.getByRole('dialog');
     const taskForm = composer.getByRole('form', { name: 'Create task', exact: true });
     await taskForm.getByLabel('Assign to another person', { exact: true }).check();
+    await expect(taskForm.getByLabel('Primary owner', { exact: true }).locator(`option[value="${memberId}"]`)).toHaveCount(1);
     await taskForm.getByLabel('Primary owner', { exact: true }).selectOption(memberId);
     await taskForm.getByLabel('Task name', { exact: true }).fill('Lead assigned task');
     await taskForm.getByLabel('Target date', { exact: true }).fill('2026-12-31');

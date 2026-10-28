@@ -35,6 +35,7 @@ describe("Project creation canonical results",()=>{
   const mock=api(), original=mock.getMockImplementation()!;
   mock.mockImplementation((input,init)=>String(input).endsWith("/projects/setup")?Promise.resolve(reply({branches:[branch,{id:"branch-b",name:"Pune"}],employees:[]})):original(input,init));
   render(<ProjectWorkspace csrfToken="csrf" owner listFirst/>);
+  expect(document.querySelector('.project-create-panel')).toBeNull();
   fireEvent.click(await screen.findByRole("button",{name:"New project"}));
   fireEvent.change(await screen.findByLabelText("Creation branch"),{target:{value:"branch-b"}});
   const confirm=vi.spyOn(window,"confirm").mockReturnValue(false);
