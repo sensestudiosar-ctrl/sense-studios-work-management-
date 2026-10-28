@@ -129,6 +129,9 @@ test("Projects sections and every task view retain context with a native task pa
     await expect(workspace.getByLabel('Project lead', { exact: true })).toHaveValue('');
     const lead = await page.request.post(`/api/v1/projects/${projectId}/lead`, { headers: { Cookie: `sense_sid=${ownerSession}`, Origin: baseURL!, 'X-CSRF-Token': ownerCsrf }, data: { employeeId, expectedVersion: 1, reason: 'Verify explicitly authorized project lead assignment' } });
     expect(lead.ok()).toBe(true);
+    const leadResult = await lead.json() as { version: number };
+    const activation = await page.request.post(`/api/v1/projects/${projectId}/status`, { headers: { Cookie: `sense_sid=${ownerSession}`, Origin: baseURL!, 'X-CSRF-Token': ownerCsrf }, data: { toStatus: 'ACTIVE', expectedVersion: leadResult.version, reason: 'Activate the assigned fixture through its ordinary lifecycle before task reassignment' } });
+    expect(activation.ok()).toBe(true);
     await context.addCookies([{ name: 'sense_sid', value: session, url: baseURL!, httpOnly: true, sameSite: 'Strict' }]);
     await page.goto(`/projects?projectId=${projectId}&projectSection=tasks`);
     await tasks.getByRole('button', { name: 'Create task', exact: true }).click();
@@ -146,6 +149,7 @@ test("Projects sections and every task view retain context with a native task pa
     await expect(assigned).toBeVisible();
     const assignedId = new URL(page.url()).searchParams.get('projectTaskId');
     expect((await db.query('SELECT "primaryOwnerEmployeeId" FROM tasks WHERE id=$1', [assignedId])).rows[0]?.primaryOwnerEmployeeId).toBe(memberId);
+    await expect(assigned.getByRole('button', { name: /^Task actions/ })).toBeEnabled();
     await assigned.getByRole('button', { name: /^Task actions/ }).click();
     await assigned.getByLabel('New owner', { exact: true }).selectOption(employeeId);
     await assigned.getByLabel('Reason for change', { exact: true }).last().fill('Reassign through the existing authorized task workflow');
