@@ -133,6 +133,7 @@ test("Projects sections and every task view retain context with a native task pa
     await tasks.getByRole('button', { name: 'Create task', exact: true }).click();
     const composer = page.getByRole('dialog');
     const taskForm = composer.getByRole('form', { name: 'Create task', exact: true });
+    await taskForm.getByLabel('Assign to another person', { exact: true }).check();
     await taskForm.getByLabel('Primary owner', { exact: true }).selectOption(memberId);
     await taskForm.getByLabel('Task name', { exact: true }).fill('Lead assigned task');
     await taskForm.getByLabel('Target date', { exact: true }).fill('2026-12-31');
