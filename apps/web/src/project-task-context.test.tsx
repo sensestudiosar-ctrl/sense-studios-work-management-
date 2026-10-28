@@ -13,7 +13,7 @@ beforeEach(() => {
   Object.defineProperty(HTMLDialogElement.prototype, "close", { configurable: true, value(this: HTMLDialogElement) { this.removeAttribute("open"); } });
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal"); Reflect.deleteProperty(HTMLDialogElement.prototype, "close"); });
-function api(options: { wrongProject?: boolean; site?: boolean } = {}) {
+function api(options: { wrongProject?: boolean; site?: boolean; populated?: boolean } = {}) {
   const mock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = new URL(String(input), "http://localhost");
     if (url.pathname === "/api/v1/project-templates") return reply({ templates: [], canManage: false, defaults: { DESIGN: [], TURNKEY: [] } });
@@ -24,7 +24,7 @@ function api(options: { wrongProject?: boolean; site?: boolean } = {}) {
     if (url.pathname === "/api/v1/tasks/setup") return reply({ actorEmployeeId: null, canAssign: true, employees: [person], projects: [project], planItems: [], ...(options.site ? { creationProfile: { version: 1, variant: "SITE", resolution: "EXPLICIT" } } : {}) });
     if (url.pathname === "/api/v1/tasks/creation-options") return reply({ actorEmployeeId: null, canAssign: true, canCreate: true, project, owners: [person], collaborators: [person], readAt: "2026-10-15T00:00:00Z" });
     if (url.pathname === "/api/v1/tasks" && init?.method === "POST") return reply(task, 201);
-    if (url.pathname === "/api/v1/tasks") return reply({ total: 0, items: [] });
+    if (url.pathname === "/api/v1/tasks") return reply({ total: options.populated ? 1 : 0, items: options.populated ? [task] : [] });
     if (url.pathname === `/api/v1/tasks/${task.id}`) return reply({ task: { ...task, ...(options.wrongProject ? { projectId: "project-b", title: "Other project secret" } : {}) }, collaborators: [], capabilities: {}, history: { statusChanges: [], ownerChanges: [] } });
     if (url.pathname.endsWith("/subtasks")) return reply({ items: [], parent: null, isSubtask: false, completionBlocked: false, canCreate: false, taskVersion: 1 });
     return reply({}, 404);
@@ -40,6 +40,21 @@ async function openComposer() {
 }
 
 describe("fixed project task workspace", () => {
+  it.each(["List", "Cards", "Kanban", "Timeline"])("opens and closes one shared task panel from %s without changing list data", async label => {
+    const mock = api({ populated: true });
+    render(<TaskWorkspace csrfToken="csrf" owner listFirst projectContext={project} />);
+    await screen.findByRole("button", { name: `Open task: ${task.title}` });
+    const before = mock.mock.calls.filter(([value]) => new URL(String(value), "http://localhost").pathname === "/api/v1/tasks").length;
+    fireEvent.click(screen.getByRole("button", { name: label }));
+    expect(mock.mock.calls.filter(([value]) => new URL(String(value), "http://localhost").pathname === "/api/v1/tasks")).toHaveLength(before);
+    fireEvent.click(screen.getAllByRole("button", { name: new RegExp(task.title) })[0]!);
+    const panel = await screen.findByRole("dialog", { name: task.title });
+    expect(within(panel).getByRole("heading", { name: task.title })).toBeInTheDocument();
+    fireEvent.click(within(panel).getByRole("button", { name: "Close task details" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(screen.getByRole("button", { name: label })).toHaveAttribute("aria-pressed", "true");
+    expect(mock.mock.calls.some(([, init]) => init?.method === "POST")).toBe(false);
+  });
   it("isolates task search/page/sort from project URL context and keeps project on reset", async () => {
     const mock = api(); render(<TaskWorkspace csrfToken="csrf" owner listFirst projectContext={project} />);
     await waitFor(() => expect(screen.getByRole("button", { name: "Apply filters" })).toBeEnabled());

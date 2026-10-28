@@ -357,3 +357,18 @@
 .task-workspace.task-detail-drawer .task-detail .task-create-recovery button { min-height: 44px; background: var(--task-accent, #29463d); color: #fff; border: 1px solid var(--task-accent, #29463d); }
 
 .task-review-requirements{display:grid;gap:.5rem;border:1px solid var(--task-line);border-radius:10px;padding:.75rem;min-width:0}.task-review-requirements legend{font-weight:650;padding:0 .25rem}.task-review-requirements label{display:flex!important;align-items:center;gap:.5rem;min-height:44px}.task-review-requirements input[type=checkbox]{width:18px!important;height:18px;flex:0 0 18px}.task-review-requirements small{line-height:1.5;color:var(--task-muted)}
+
+/* Project-specific presentation keeps the shared task data/commands intact. */
+.project-task-panel .project-phone-board-status { display: none; }
+.project-task-panel .task-board-columns { display: flex; gap: 16px; overflow-x: auto; align-items: stretch; padding-bottom: 12px; }
+.project-task-panel .task-board-column { flex: 0 0 288px; min-width: 0; border: 0; border-radius: var(--sense-radius-control,9px); }
+.project-task-panel .task-board-column h4 { text-transform: none; letter-spacing: 0; font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
+.project-task-panel .task-list-filters { border: 0; border-bottom: 1px solid var(--task-line); border-radius: 0; box-shadow: none; }
+.project-task-panel .task-board { min-width: 0; }
+@media(max-width:600px) {
+ .project-task-panel .project-phone-board-status { display: grid; gap: 6px; margin: 12px 0; font-size: 16px; }
+ .project-task-panel .project-phone-board-status select { width: 100%; min-height: 44px; font-size: 16px; }
+ .project-task-panel .task-board-columns { display: block; overflow: visible; }
+ .project-task-panel .task-board-column:not(.is-phone-column) { display: none; }
+ .project-task-panel .task-board-column { width: 100%; }
+}

@@ -23,7 +23,7 @@ function api(mode:"success"|"lost"|"malformed"|"detailDenied"|"denied"="success"
  });vi.stubGlobal("fetch",fetcher);return fetcher;
 }
 async function fill(){
- fireEvent.click(await screen.findByRole("button",{name:"New project"}));
+ const trigger=screen.queryByRole("button",{name:"New project"}); if(trigger) fireEvent.click(trigger);
  const form=await screen.findByRole("form",{name:"Create project"});
  fireEvent.change(within(form).getByLabelText("Project title"),{target:{value:project.title}});
  fireEvent.change(within(form).getByLabelText("Initial service scopes"),{target:{value:"Design"}});
@@ -31,9 +31,37 @@ async function fill(){
  return form;
 }
 describe("Project creation canonical results",()=>{
+ it("restores branch and page after cancelling creation under another branch",async()=>{
+  const mock=api(), original=mock.getMockImplementation()!;
+  mock.mockImplementation((input,init)=>String(input).endsWith("/projects/setup")?Promise.resolve(reply({branches:[branch,{id:"branch-b",name:"Pune"}],employees:[]})):original(input,init));
+  render(<ProjectWorkspace csrfToken="csrf" owner listFirst/>);
+  fireEvent.click(await screen.findByRole("button",{name:"New project"}));
+  fireEvent.change(await screen.findByLabelText("Creation branch"),{target:{value:"branch-b"}});
+  const confirm=vi.spyOn(window,"confirm").mockReturnValue(false);
+  fireEvent.click(screen.getByRole("button",{name:"Cancel"}));
+  expect(screen.getByLabelText("Creation branch")).toHaveValue("branch-b");
+  confirm.mockReturnValue(true);fireEvent.click(screen.getByRole("button",{name:"Cancel"}));
+  await screen.findByRole("button",{name:"New project"});
+  expect(screen.getByLabelText("Project branch")).toHaveValue(branch.id);
+  const query=new URL(location.href).searchParams;
+  expect(query.get("branchId")).toBe(branch.id);expect(query.get("offset")).toBe("50");expect(query.has("projectCreate")).toBe(false);
+  expect(mock.mock.calls.filter(([,init])=>init?.method==="POST")).toHaveLength(0);
+ });
+ it("submits the creation branch and restores the directory branch for a later return",async()=>{
+  const mock=api(), original=mock.getMockImplementation()!;
+  mock.mockImplementation((input,init)=>String(input).endsWith("/projects/setup")?Promise.resolve(reply({branches:[branch,{id:"branch-b",name:"Pune"}],employees:[]})):original(input,init));
+  render(<ProjectWorkspace csrfToken="csrf" owner listFirst/>);const form=await fill();
+  fireEvent.change(screen.getByLabelText("Creation branch"),{target:{value:"branch-b"}});fireEvent.submit(form);
+  await screen.findByRole("heading",{name:project.title});
+  const command=mock.mock.calls.find(([,init])=>init?.method==="POST")!;
+  expect(JSON.parse(String(command[1]?.body)).branchId).toBe("branch-b");
+  expect(new URL(location.href).searchParams.get("branchId")).toBe(branch.id);
+  fireEvent.click(screen.getByRole("button",{name:"← Back to projects"}));
+  expect(new URL(location.href).searchParams.get("offset")).toBe("50");
+ });
  it("opens the confirmed ID outside the current directory filter and preserves Back context",async()=>{
   const mock=api();render(<ProjectWorkspace csrfToken="csrf" owner listFirst/>);const form=await fill();
-  await screen.findByText("No projects match these filters.");expect(screen.getByRole("button",{name:"Previous"})).toBeDisabled();fireEvent.submit(form);
+  expect(screen.queryByRole("button",{name:"Previous"})).not.toBeInTheDocument();fireEvent.submit(form);
   await screen.findByRole("heading",{name:project.title});
   const query=new URL(location.href).searchParams;expect(query.get("projectId")).toBe(project.id);expect(query.get("q")).toBe("Existing");expect(query.get("sort")).toBe("milestone");expect(query.get("offset")).toBe("50");
   expect(screen.getByText("0 matching")).toBeInTheDocument();

@@ -5,6 +5,7 @@ import "./task-detail-drawer.css";
 export type TaskDetailDrawerTab = "overview" | "checklist" | "evidence" | "activity";
 
 export interface TaskDetailDrawerProps {
+  projectPresentation?: boolean | undefined;
   enabled: boolean;
   taskId: string;
   title: string;
@@ -73,6 +74,7 @@ export function TaskDetailDrawer({
   hasActions = true,
   hasData = true,
   layout = "single",
+  projectPresentation = false,
 }: TaskDetailDrawerProps) {
   const [activeTab, setActiveTab] = useState<TaskDetailDrawerTab>("overview");
   /**
@@ -230,7 +232,7 @@ export function TaskDetailDrawer({
   return createPortal(
     <dialog
       ref={dialogRef}
-      className="task-workspace task-detail-drawer"
+      className={`task-workspace task-detail-drawer${projectPresentation ? " task-detail-drawer--project" : ""}`}
       aria-labelledby="task-detail-drawer-title"
       aria-describedby="task-detail-drawer-context"
       aria-modal="true"

@@ -645,3 +645,23 @@
 @media (prefers-reduced-motion: reduce) {
   .project-workspace *, .project-workspace *::before, .project-workspace *::after { transition: none !important; animation: none !important; }
 }
+
+/* Approved Projects review: focused creation and phone navigation. */
+.project-workspace .project-phone-section { display: none; }
+.project-workspace.is-project-creating .project-columns { display: block; }
+.project-workspace.is-project-creating .project-create-panel { max-width: 68rem; margin-inline: auto; padding: 24px; background: var(--pj-surface); box-shadow: none; border: 0; border-radius: 0; }
+.project-workspace.is-project-creating .project-create-panel > section { max-width: 56rem; }
+.project-workspace.is-project-creating .project-create-panel .project-form { margin-top: 20px; }
+.project-workspace.is-project-creating .project-create-panel label { font-size: 16px; }
+.project-workspace.is-project-creating .project-create-panel input,
+.project-workspace.is-project-creating .project-create-panel select,
+.project-workspace.is-project-creating .project-create-panel textarea { font-size: 16px; min-height: 44px; }
+.project-create-outcome { padding-block: 16px; border-top: 1px solid var(--pj-line); color: var(--pj-muted); }
+.project-workspace .project-panel:has(> .project-detail) { box-shadow: none; }
+.project-workspace .project-detail .project-history:not(.project-timeline) li { border: 0; border-bottom: 1px solid var(--pj-line-soft); border-radius: 0; background: transparent; padding-inline: 0; }
+@media(max-width:600px) {
+ .project-workspace .project-section-nav { display: none !important; }
+ .project-workspace .project-phone-section { display: grid; gap: 6px; margin-bottom: 20px; font-size: 16px; font-weight: 600; }
+ .project-workspace .project-phone-section select { width: 100%; min-height: 44px; font-size: 16px; }
+ .project-workspace.is-project-creating .project-create-panel { padding: 16px 0; }
+}
