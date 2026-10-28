@@ -89,10 +89,17 @@ Owner wants on sign-off):
 
 Owner approval (name + timestamp, plus "minimum" or "full" acceptance scope from §4):
 
+- [x] Accepted scope: **full** — the 59 authenticated desktop/mobile journeys with
+      no skips/retries (S18/S27 battery as run for `7f286689` on 2026-10-27), plus
+      the §4 minimum gate. Owner instructed in-session on 28 October 2026: run the
+      full battery before promoting.
+- [ ] Promotion sign-off (name + timestamp, after the battery passes):
+
 ```
-Approved scope: ______
 Owner: ____________  Date: ______
 ```
 
-Until signed, nothing in §1 executes. A later entry in `CURRENT_STATE.md` records the
+The battery runs after PR #1 is green and merged; promotion executes only after the
+battery passes and the promotion sign-off above is completed. Until then, nothing in
+§1 beyond the build exports executes. A later entry in `CURRENT_STATE.md` records the
 executed acceptance and promotion, or the reason the cycle was not run.
