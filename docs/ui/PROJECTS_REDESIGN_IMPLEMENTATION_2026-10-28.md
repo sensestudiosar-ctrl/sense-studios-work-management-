@@ -26,6 +26,7 @@ The implementation base already contains these fixes; this slice preserves them 
 - Focused project creation tests: 9 passed; project task context tests: 17 passed; task creation recovery tests: 9 passed. These are bounded runs, not full-suite acceptance.
 - Earlier web typecheck, targeted lint and production build passed. A later typecheck caught unsupported Testing Library `exact` test options; these were removed and recheck passed.
 - First broad web run: 715 passed, 2 creation-recovery timing failures. Both recovery tests passed in the isolated nine-test run. A settled-source single-worker full run is pending; the failed run is not acceptance evidence.
+- A second broad run also returned 715/717, with two different post-create title waits exceeding Testing Library's one-second default. The isolated creation suite passed 9/9. The four asynchronous post-create title waits now allow five seconds while retaining identical canonical ID, exact command, write-count and queue assertions. Final acceptance runs in a committed isolated checkout because concurrent shared-navigation edits appeared in the original checkout.
 - Authenticated desktop/mobile browser acceptance, rendered screenshots and final selected-file review are pending.
 - The initial sandboxed database preparation hit a loopback EACCES error. Disposable fixtures were preserved. Subsequent provisioning uses ownership-checked fresh clusters outside the restricted networking sandbox. No retained staging database has been migrated or seeded.
 
