@@ -73,7 +73,7 @@ test("Projects sections and every task view retain context with a native task pa
         await picker.selectOption('NOT_STARTED');
         await expect(tasks.locator('.task-board-column:visible')).toHaveCount(1);
       }
-      const opener = tasks.getByRole('button', { name: value === 'timeline' ? 'Redesign fixture task' : 'Open task: Redesign fixture task', exact: true });
+      const opener = tasks.getByRole('button', { name: 'Open task: Redesign fixture task', exact: true });
       await opener.click();
       const panel = page.getByRole('dialog', { name: 'Redesign fixture task', exact: true });
       await expect(panel).toBeVisible();
