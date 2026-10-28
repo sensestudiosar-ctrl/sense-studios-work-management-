@@ -27,6 +27,12 @@
 }
 
 .task-detail-drawer:not([open]) { display: none; }
+.task-workspace.task-detail-drawer--project { font-size: 16px; }
+.task-workspace.task-detail-drawer--project .task-detail :is(p, li, a),
+.task-workspace.task-detail-drawer--project .task-detail :is(input, select, textarea, button),
+.task-workspace.task-detail-drawer--project .task-facts dd { font-size: 16px; }
+.task-workspace.task-detail-drawer--project .task-facts dt { font-size: 14px; }
+.task-detail-drawer--project :is(button, input, select) { min-height: 44px; }
 .task-detail-drawer .task-detail { border: 0; padding: 0; border-radius: 0; }
 .task-detail-drawer .task-detail-heading { display: none; }
 .task-detail-drawer .task-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 0; }

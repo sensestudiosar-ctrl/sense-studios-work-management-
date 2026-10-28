@@ -45,18 +45,22 @@ export function V15Preview() {
           </div>
           <button style={{ border: "none", background: "transparent", fontSize: 22, cursor: "pointer", color: "#68796f" }} aria-label="Close">×</button>
         </div>
-        {/* Composer */}
-        <TaskComposerFields
-          draft={draft}
-          onChange={(patch) => setDraft((prev) => ({ ...prev, ...patch }))}
-          projects={[{ id: "project-a", title: "Aadi3 Apartment — 8th Floor Interiors", status: "ACTIVE" }]}
-          planItems={[]}
-          options={mockOptions as never}
-          optionsError={undefined}
-          retryOptions={() => {}}
-          compact={false}
-          busy={false}
-        />
+        {/* Composer — wrapped in the same .task-create-dialog__body section the
+            production <dialog> uses, so the 22px 24px padding and overflow:auto
+            budget match the real surface exactly. */}
+        <section className="task-create-dialog__body">
+          <TaskComposerFields
+            draft={draft}
+            onChange={(patch) => setDraft((prev) => ({ ...prev, ...patch }))}
+            projects={[{ id: "project-a", title: "Aadi3 Apartment — 8th Floor Interiors", status: "ACTIVE" }]}
+            planItems={[]}
+            options={mockOptions as never}
+            optionsError={undefined}
+            retryOptions={() => {}}
+            compact={false}
+            busy={false}
+          />
+        </section>
         {/* Footer */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 20px 11px", borderTop: "1px solid #e5e9e3", background: "#fff" }}>
           <span style={{ fontSize: 12, color: "#7a877c" }}>Complete required fields&nbsp;&nbsp;Ctrl / ⌘ + Enter</span>

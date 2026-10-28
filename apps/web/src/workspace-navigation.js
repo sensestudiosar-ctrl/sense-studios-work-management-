@@ -28,11 +28,15 @@ const destinations = [
 ];
 const primaryDestinationPaths = ["/dashboard", "/my-work", "/projects", "/decisions"];
 const primaryPaths = new Set(primaryDestinationPaths);
+/* The eight project-scoped routes live under a single "Project queues"
+   disclosure. They remain reachable routes (deep links + page finder); only
+   their default disclosure changes so the rail reads short. */
 const destinationGroups = [
-    { label: "Work", paths: ["/my-work", "/decisions", "/notifications", "/tasks", "/projects", "/documents", "/revisions", "/reviews", "/client-reviews", "/assistance", "/turnkey", "/site"] },
+    { label: "Work", paths: ["/my-work", "/decisions", "/notifications", "/tasks", "/projects"] },
+    { label: "Project queues", paths: ["/documents", "/revisions", "/reviews", "/client-reviews", "/turnkey", "/site", "/external-access", "/assistance"] },
     { label: "People", paths: ["/people", "/time", "/workforce", "/learning"] },
     { label: "Insights", paths: ["/performance"] },
-    { label: "Manage", paths: ["/settings", "/integrations", "/automation", "/external-access"] },
+    { label: "Manage", paths: ["/settings", "/integrations", "/automation"] },
 ];
 /** Shared page context for internal routes, including secondary navigation homes. */
 export function workspaceContextLabel(pathname) {

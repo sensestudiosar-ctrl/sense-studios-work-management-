@@ -143,6 +143,9 @@ describe("ProjectWorkspace", () => {
         expect(await screen.findByRole("option", { name: "Owner" })).toHaveValue("owner-acct");
         fireEvent.change(await screen.findByLabelText("Project action reason"), { target: { value: "Appoint accountable lead" } });
         fireEvent.click(screen.getByRole("button", { name: "People" }));
+        fireEvent.change(screen.getByLabelText("Contributor"), { target: { value: "emp-1" } });
+        expect(screen.getByLabelText("Project lead")).toHaveValue("");
+        expect(screen.getByRole("button", { name: "Set lead" })).toBeDisabled();
         fireEvent.change(screen.getByLabelText("Project lead"), { target: { value: "emp-1" } });
         fireEvent.click(screen.getByRole("button", { name: "Set lead" }));
         expect(await screen.findByRole("alert")).toHaveTextContent("The latest details are loaded");

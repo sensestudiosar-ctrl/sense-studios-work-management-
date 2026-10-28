@@ -62,6 +62,24 @@ describe("WorkforceWorkspace", () => {
     expect(screen.getByText("NearCapacity")).toBeInTheDocument();
     expect(screen.getByText(/capacity is scheduled minus approved leave, before task allocations/)).toBeInTheDocument();
   });
+  it("does not present missing setup as zero capacity", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).endsWith("/setup") ? response(setup) : response({ ...data, workloadPeriods: [{ employeeId: "employee-1", from: "2026-10-02", to: "2026-10-08", policyId: null, scheduledMinutes: 0, leaveMinutes: 0, capacityMinutes: 0, allocatedMinutes: 30, availableMinutes: 0, category: "SETUP_REQUIRED" }] })));
+    render(<WorkforceWorkspace csrfToken="csrf" owner={false} />);
+    const row = (await screen.findByText("2026-10-02 – 2026-10-08")).closest("tr")!;
+    expect(within(row).getAllByText("Not ready")).toHaveLength(3);
+    expect(within(row).getByText("30 min")).toBeInTheDocument();
+    expect(within(row).getByText("Setup required")).toBeInTheDocument();
+  });
+  it("marks capacity unavailable when policy exists but a schedule is missing", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).endsWith("/setup") ? response(setup) : response({ ...data, workload: [{ id: "day", version: 1, employeeId: "employee-1", date: "2026-10-02", category: "Under-utilized", scheduleSetupRequired: true, expectedLocation: "SCHEDULED" }], workloadPeriods: [{ employeeId: "employee-1", from: "2026-10-02", to: "2026-10-08", policyId: "policy-1", scheduledMinutes: 0, leaveMinutes: 0, capacityMinutes: 0, allocatedMinutes: 0, availableMinutes: 0, category: "Under-utilized", scheduleSetupRequired: true }] })));
+    render(<WorkforceWorkspace csrfToken="csrf" owner={false} />);
+    const row = (await screen.findByText("2026-10-02 – 2026-10-08")).closest("tr")!;
+    expect(within(row).getAllByText("Not ready")).toHaveLength(3);
+    expect(within(row).getByText("Setup required")).toBeInTheDocument();
+    expect(within(row).queryByText("Under-utilized")).not.toBeInTheDocument();
+    const daily = screen.getByText("2026-10-02", { selector: "td" }).closest("tr")!;
+    expect(within(daily).getAllByText("Not ready")).toHaveLength(3);
+  });
   it("shows the persisted remote work location for attendance during approved WFH", async () => {
     vi.stubGlobal("fetch", vi.fn(async (input: RequestInfo | URL) => String(input).endsWith("/setup") ? response(setup) : response({ ...data, attendance: [{ id: "attendance-wfh", version: 1, state: "OPEN", workLocation: "REMOTE", checkedInAt: "2026-10-02T09:00:00.000Z", late: false, early: null, missingPunch: false }] })));
     render(<WorkforceWorkspace csrfToken="csrf" owner={false} />);

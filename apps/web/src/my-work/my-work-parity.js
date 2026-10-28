@@ -1,5 +1,6 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { initials } from "../task-people.js";
 /** Prototype due buckets, in display order. */
 export const DUE_BUCKETS = ["Overdue", "Today", "This week", "Next week", "This month", "Later", "Without a date"];
 /** Prototype priority order. */
@@ -140,6 +141,20 @@ function priorityKey(label) {
         return "MEDIUM";
     return label.toUpperCase();
 }
+/**
+ * F-002b: avatar initials for the primary-owner label. Reuses the shared
+ * `initials` primitive (task-people) for names and emails; the local
+ * "You" and empty-label edge cases get readable fallbacks. Pure, so it is
+ * unit-testable without the browser.
+ */
+export function ownerInitials(label) {
+    const clean = label.trim();
+    if (!clean)
+        return "?";
+    if (/^you$/i.test(clean))
+        return "Me";
+    return initials(clean);
+}
 function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction, onMove }) {
     const state = parityState(row.status);
     const overdue = row.dueDate !== null && row.dueDate < today && row.status !== "COMPLETED";
@@ -165,7 +180,7 @@ function ParityRow({ row, today, selected, rowRefs, onOpen, onPin, onQuickAction
                         event.preventDefault();
                         onMove(row.id, -1);
                     }
-                } }), _jsxs("span", { className: "my-work-row-task", children: [onPin && _jsx("button", { type: "button", className: "my-work-pin", "aria-pressed": Boolean(row.pinned), "aria-label": `${row.pinned ? "Unpin" : "Pin"} ${row.title}`, title: `${row.pinned ? "Unpin" : "Pin"} task`, onClick: () => onPin(row.id, !row.pinned), children: row.pinned ? "◆" : "◇" }), _jsx("span", { className: "my-work-status-dot", "aria-hidden": "true" }), _jsxs("span", { className: "my-work-row-text", children: [_jsxs("span", { className: "my-work-titleline", children: [_jsx("strong", { children: row.title }), _jsx("span", { className: `my-work-priority ${parityPriorityClass(row.priority)}`, title: `${parityPriorityLabel(row.priority)} priority`, children: parityPriorityLabel(row.priority) })] }), _jsxs("small", { children: [row.context || row.project, row.context ? "" : ` · ${row.stage}`] }), _jsxs("small", { children: [row.isSubtask ? "Subtask · " : "", "Next: ", row.nextAction] }), row.requiresReassignment && _jsx("small", { className: "my-work-row-reassignment", children: "Needs reassignment after employee exit" }), _jsxs("span", { className: "my-work-mobile-state", children: [_jsx("span", { className: `my-work-status my-work-status-${state}`, children: parityStatusLabel(row.status) }), _jsx("span", { className: `my-work-mobile-due${overdue ? " overdue" : ""}`, children: row.dueDate ?? "No date" })] })] })] }), _jsx("span", { className: "my-work-row-cell", children: row.people }), _jsx("span", { className: `my-work-row-cell my-work-due${overdue ? " overdue" : ""}`, children: row.dueDate ?? "No date" }), _jsx("span", { className: "my-work-status-cell", children: _jsx("span", { className: `my-work-status my-work-status-${state}`, children: parityStatusLabel(row.status) }) }), _jsx("span", { className: "my-work-row-cell my-work-priority-cell", children: _jsx("span", { className: `my-work-priority priority-pill ${parityPriorityClass(row.priority)}`, title: `${parityPriorityLabel(row.priority)} priority`, children: parityPriorityLabel(row.priority) }) }), _jsx("span", { className: "my-work-row-action", children: isOpenOnly
+                } }), _jsxs("span", { className: "my-work-row-task", children: [onPin && _jsx("button", { type: "button", className: "my-work-pin", "aria-pressed": Boolean(row.pinned), "aria-label": `${row.pinned ? "Unpin" : "Pin"} ${row.title}`, title: `${row.pinned ? "Unpin" : "Pin"} task`, onClick: () => onPin(row.id, !row.pinned), children: row.pinned ? "◆" : "◇" }), _jsx("span", { className: "my-work-status-dot", "aria-hidden": "true" }), _jsxs("span", { className: "my-work-row-text", children: [_jsxs("span", { className: "my-work-titleline", children: [_jsx("strong", { children: row.title }), _jsx("span", { className: `my-work-priority ${parityPriorityClass(row.priority)}`, title: `${parityPriorityLabel(row.priority)} priority`, children: parityPriorityLabel(row.priority) })] }), _jsxs("small", { children: [row.context || row.project, row.context ? "" : ` · ${row.stage}`] }), _jsxs("small", { children: [row.isSubtask ? "Subtask · " : "", "Next: ", row.nextAction] }), row.requiresReassignment && _jsx("small", { className: "my-work-row-reassignment", children: "Needs reassignment after employee exit" }), _jsxs("span", { className: "my-work-mobile-state", children: [_jsx("span", { className: `my-work-status my-work-status-${state}`, children: parityStatusLabel(row.status) }), _jsx("span", { className: `my-work-mobile-due${overdue ? " overdue" : ""}`, children: row.dueDate ?? "No date" })] })] })] }), _jsx("span", { className: "my-work-row-cell my-work-owner-cell", children: _jsxs("span", { className: "my-work-owner", title: row.people, "aria-label": `Owner: ${row.people}`, role: "img", children: [_jsx("span", { className: "my-work-owner__initials", "aria-hidden": "true", children: ownerInitials(row.people) }), _jsx("span", { className: "my-work-owner__name", children: row.people })] }) }), _jsx("span", { className: `my-work-row-cell my-work-due${overdue ? " overdue" : ""}`, children: row.dueDate ?? "No date" }), _jsx("span", { className: "my-work-status-cell", children: _jsx("span", { className: `my-work-status my-work-status-${state}`, children: parityStatusLabel(row.status) }) }), _jsx("span", { className: "my-work-row-cell my-work-priority-cell", children: _jsx("span", { className: `my-work-priority priority-pill ${parityPriorityClass(row.priority)}`, title: `${parityPriorityLabel(row.priority)} priority`, children: parityPriorityLabel(row.priority) }) }), _jsx("span", { className: "my-work-row-action", children: isOpenOnly
                     ? _jsx("span", { className: "my-work-row-open", "aria-hidden": "true", children: "\u2192" })
                     : _jsx("button", { type: "button", onClick: () => (onQuickAction ?? onOpen)(row.id), children: row.nextAction }) })] });
 }

@@ -13,6 +13,12 @@ function register(id: string, title: string, fileName = ""): unknown { return { 
 afterEach(() => vi.unstubAllGlobals());
 
 describe("DocumentWorkspace authorized project picker", () => {
+  it("explains an empty document picker without claiming project access", async () => {
+    window.history.replaceState({}, "", "/documents");
+    vi.stubGlobal("fetch", vi.fn(async () => response({ branches: [], total: 0, items: [] })));
+    render(<DocumentWorkspace csrfToken="csrf" owner={false} />);
+    expect(await screen.findByText(/Project access and document access are separate/)).toBeInTheDocument();
+  });
   it("opens an authorized project deep link beyond the first picker page using the protected register identity", async () => {
     const originalUrl = `${window.location.pathname}${window.location.search}`;
     window.history.replaceState({}, "", "/documents?projectId=project-55");

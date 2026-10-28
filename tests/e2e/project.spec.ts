@@ -37,7 +37,12 @@ test("assigned staff sees only its project and a cancellation request persists a
     await context.addCookies([{ name: "sense_sid", value: session, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workspace");
     const workspace = page.locator(".project-workspace");
-    await expect(workspace.getByRole("heading", { name: "Projects", exact: true, level: 1 })).toBeVisible();
+    // Mobile phones hide the section buttons in favor of the "Project section" select
+    // (project.css max-width:600px). Drive section changes through whichever control is visible.
+    const mobile = page.viewportSize()!.width <= 600;
+    const selectSection = (name: string) => mobile
+      ? workspace.getByLabel("Project section", { exact: true }).selectOption(name.toLowerCase())
+      : workspace.getByRole("button", { name: name, exact: true }).click();
     expect(await workspace.getByLabel("Project branch").locator("option").allTextContents()).not.toContain(`Project hidden ${otherBranchId}`);
     const inaccessibleBranch = await page.request.get(`/api/v1/projects?branchId=${otherBranchId}`);
     expect(inaccessibleBranch.ok()).toBe(true);
@@ -49,7 +54,7 @@ test("assigned staff sees only its project and a cancellation request persists a
     await expect(workspace.getByText(/Cancellation request submitted/)).toBeVisible();
     await page.reload();
     await workspace.getByRole("button", { name: new RegExp(title) }).click();
-    await workspace.getByRole("button", { name: "Activity", exact: true }).click();
+    await selectSection("Activity");
     await expect(workspace.getByText(/Cancellation request · PENDING · Delivery request needs Owner review/)).toBeVisible();
     const evidence = await db.query<{ count: string }>('SELECT count(*) FROM project_cancellation_requests WHERE "projectId"=$1', [projectId]);
     expect(evidence.rows[0]?.count).toBe("1");

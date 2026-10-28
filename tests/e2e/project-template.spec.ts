@@ -45,6 +45,12 @@ test("Owner applies a versioned template and required milestone gates survive re
     await context.addCookies([{ name: "sense_sid", value: secret, url: baseURL!, httpOnly: true, sameSite: "Strict" }]);
     await page.goto("/workspace");
     const workspace = page.locator(".project-workspace");
+    // Mobile phones hide the section buttons in favor of the "Project section" select
+    // (project.css max-width:600px). Drive section changes through whichever control is visible.
+    const mobile = page.viewportSize()!.width <= 600;
+    const selectSection = (name: string) => mobile
+      ? workspace.getByLabel("Project section", { exact: true }).selectOption(name.toLowerCase())
+      : workspace.getByRole("button", { name: name, exact: true }).click();
     await workspace.getByLabel("Project branch").selectOption(branchId);
     await workspace.getByText("Project template (optional)", { exact: true }).click();
     const templates = workspace.locator(".project-template-panel");
@@ -72,7 +78,7 @@ test("Owner applies a versioned template and required milestone gates survive re
     await expect(workspace.getByText("Draft project created.", { exact: true })).toBeVisible();
     await expect(templates.getByLabel("Project template")).toHaveValue("");
     await workspace.getByRole("button", { name: new RegExp(projectTitle) }).click();
-    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
+    await selectSection("Plan");
     const plan = workspace.getByRole("region", { name: "Project plan" });
     await expect(plan.getByText(`${templateName} · version 1`)).toBeVisible();
     await expect(plan.getByText("Design/Working drawings", { exact: true })).toBeVisible();
@@ -81,12 +87,12 @@ test("Owner applies a versioned template and required milestone gates survive re
     await expect(workspace.getByText("Loading projects…", { exact: true })).toBeHidden();
     await expect(workspace.getByRole("button", { name: new RegExp(projectTitle) })).toBeVisible();
     await workspace.getByRole("button", { name: new RegExp(projectTitle) }).click();
-    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
+    await selectSection("Plan");
     await expect(plan.getByText(`${templateName} · version 1`)).toBeVisible();
-    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
+    await selectSection("Overview");
     const reason = workspace.getByLabel("Project action reason");
     await reason.fill("Assign eligible delivery lead");
-    await workspace.getByRole("button", { name: "People", exact: true }).click();
+    await selectSection("People");
     await workspace.getByLabel("Contributor", { exact: true }).selectOption(employeeId);
     await workspace.getByRole("button", { name: "Assign contributor" }).click();
     await expect(reason).toHaveValue("");
@@ -95,25 +101,25 @@ test("Owner applies a versioned template and required milestone gates survive re
     await workspace.getByRole("button", { name: "Set lead" }).click();
     await expect(reason).toHaveValue("");
     const status = workspace.getByLabel("New project status");
-    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
+    await selectSection("Overview");
     await reason.fill("Activate templated delivery");
     await status.selectOption("ACTIVE");
     await workspace.getByRole("button", { name: "Change status" }).click();
-    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
+    await selectSection("Plan");
     await expect(plan.getByLabel("Reason for plan update")).toBeVisible();
     const projectId = (await db.query<{ id: string }>('SELECT id FROM projects WHERE title=$1 AND "createdById"=$2', [projectTitle, ownerId])).rows[0]!.id;
-    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
+    await selectSection("Overview");
     await reason.fill("Required milestone must block completion");
     await status.selectOption("COMPLETED");
     const denial = page.waitForResponse((response) => response.url().includes(`/projects/${projectId}/status`) && response.request().method() === "POST");
     await workspace.getByRole("button", { name: "Change status" }).click();
     expect((await denial).status()).toBe(409);
-    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
+    await selectSection("Plan");
     await expect(plan.getByLabel("Reason for plan update")).toBeVisible();
     await plan.getByLabel("Reason for plan update").fill("Record completed brief milestone");
     await plan.locator("li").filter({ has: page.getByText("Brief approved", { exact: true }) }).getByRole("button", { name: "Mark complete" }).click();
     await expect(plan.locator("li").filter({ has: page.getByText("Brief approved", { exact: true }) }).getByText("Complete", { exact: true })).toBeVisible();
-    await workspace.getByRole("button", { name: "Overview", exact: true }).click();
+    await selectSection("Overview");
     await reason.fill("Complete delivery after required milestone");
     await status.selectOption("COMPLETED");
     await workspace.getByRole("button", { name: "Change status" }).click();
@@ -124,7 +130,7 @@ test("Owner applies a versioned template and required milestone gates survive re
       (SELECT count(*) FROM project_gate_overrides WHERE "projectId"=p.id)::text AS "overrideCount" FROM projects p WHERE p.id=$1`, [projectId]);
     expect(persisted.rows[0]).toEqual({ status: "COMPLETED", planCount: "1", completed: true, overrideCount: "0" });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-    await workspace.getByRole("button", { name: "Plan", exact: true }).click();
+    await selectSection("Plan");
     await plan.scrollIntoViewIfNeeded();
     await page.screenshot({ path: testInfo.outputPath("s08-plan.png") });
   } finally {

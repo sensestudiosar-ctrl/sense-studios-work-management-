@@ -109,7 +109,7 @@ describe("workspace navigation", () => {
         expect(activeDrawingRegisterLinks.some((link) => link.getAttribute("aria-current") === "page")).toBe(true);
         const destinations = ["Account & settings", "My Work", "Decisions", "Notifications", "Tasks", "Projects", "People", "Project documents", "Drawing register", "Internal reviews", "Client reviews", "Dashboard", "Integrations", "Automation & reports", "Evidence assistance", "Performance", "External access", "Turnkey operations", "Site delivery", "Time", "Workforce", "Learning"];
         const desktopNav = screen.getByRole("navigation", { name: "Workspace navigation" });
-        for (const label of ["Work", "People", "Insights", "Manage"]) {
+        for (const label of ["Work", "Project queues", "People", "Insights", "Manage"]) {
             const disclosure = within(desktopNav).getByRole("button", { name: label });
             expect(disclosure).toBeInTheDocument();
             if (disclosure.getAttribute("aria-expanded") !== "true")
@@ -137,7 +137,8 @@ describe("workspace navigation", () => {
         const close = screen.getByRole("button", { name: "Close navigation" });
         expect(close).toHaveFocus();
         fireEvent.keyDown(close, { key: "Tab", shiftKey: true });
-        expect(within(dialog).getByRole("link", { name: "External access" })).toHaveFocus();
+        /* Last focusable item in the dialog: the final link of the "Manage" group. */
+        expect(within(dialog).getByRole("link", { name: "Automation & reports" })).toHaveFocus();
         fireEvent.keyDown(document.activeElement, { key: "Escape" });
         expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
         expect(more).toHaveFocus();

@@ -33,6 +33,20 @@
      matching 3-class depth so the V15 inspector stays gap-free: each property
      row carries its own 13/14px rhythm and the panel is borderless on canvas. */
   .task-create-dialog .task-composer-v15 .task-composer__aside { display: grid; grid-template-columns: 1fr; gap: 0; padding: 4px 0; background: transparent; border: 0; border-radius: 0; }
+
+  /* Desktop-only compaction: slim controls + tighter rhythm keep the essentials
+     inside the 92dvh body budget at common desktop sizes. Mobile (≤700px) keeps
+     44px touch targets — the later max-width block re-asserts them, and these
+     rules are scoped to min-width: 701px, so they never reach phones. */
+  .task-create-dialog .task-composer-v15 .task-composer__aside :is(select, input) { min-height: 38px; }
+  .task-create-dialog .task-composer-v15 .task-avatar,
+  .task-create-dialog .task-composer-v15 .task-avatar-add { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+  .task-create-dialog .task-composer-v15 .task-avatar__initials--sm { width: 24px; height: 24px; min-width: 24px; font-size: 9px; }
+  .task-create-dialog .task-composer-v15 .task-collaborator-chip__remove { width: 20px; height: 20px; min-width: 20px; min-height: 20px; }
+  .task-create-dialog .task-composer-v15 .task-composer__context-header { padding-bottom: 6px; }
+  .task-create-dialog .task-composer-v15 .task-review-card { min-height: 40px; padding: 6px 9px; }
+  .task-create-dialog .task-composer-v15 .task-accordion-toggle { min-height: 46px; padding: 8px 0 10px; }
+  .task-create-dialog .task-composer-v15 .task-composer__aside .task-composer__section-title { margin: 0 0 6px; }
 }
 
 .task-composer-v15 .task-composer__context-line { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
@@ -88,7 +102,7 @@
 
 /* Timing group: Target, Start and Effort as one compact horizontal row.
    Keeps the essentials panel inside the 92dvh budget at 900px-tall viewports. */
-.task-composer-v15 .task-timing-group { display: grid; gap: 8px; padding: 10px 0 12px; border-bottom: 1px solid #e6eae4; margin-bottom: 0; }
+.task-composer-v15 .task-timing-group { display: grid; gap: 7px; padding: 8px 0 10px; border-bottom: 1px solid #e6eae4; margin-bottom: 0; }
 .task-composer-v15 .task-timing-group__header { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 740; color: #536556; }
 .task-composer-v15 .task-timing-group label { display: grid; gap: 4px; font-size: 11px; font-weight: 740; color: #536556; min-width: 0; }
 .task-composer-v15 .task-timing-group .task-field__req { color: #ad655a; margin-left: 2px; }
@@ -100,33 +114,31 @@
 .task-composer-v15 .task-timing-group .task-effort-input input { min-height: 35px; padding: 4px 8px; font-size: 11px; }
 
 /* Priority segmented control: one row, four tone-tinted options. */
-.task-composer-v15 .task-priority-segmented { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; --tone: #8c6b21; }
-.task-composer-v15 .task-priority-segmented.tone-low { --tone: #36775a; }
-.task-composer-v15 .task-priority-segmented.tone-medium { --tone: #8c6b21; }
-.task-composer-v15 .task-priority-segmented.tone-high { --tone: #9e552b; }
-.task-composer-v15 .task-priority-segmented.tone-critical { --tone: #a73744; }
-.task-composer-v15 .task-priority-segmented__option { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 0 6px; border: 1px solid #e6eae4; border-radius: 8px; background: #fff; color: #536556; font-size: 11px; font-weight: 650; cursor: pointer; transition: border-color .12s, background .12s; }
-.task-composer-v15 .task-priority-segmented__option:hover { border-color: #c8d4c4; background: #f8faf6; }
-.task-composer-v15 .task-priority-segmented__option--active.tone-low { border-color: #a0cbb0; background: #eaf6ef; color: #36775a; }
-.task-composer-v15 .task-priority-segmented__option--active.tone-medium { border-color: #e0c995; background: #fff7e6; color: #8c6b21; }
-.task-composer-v15 .task-priority-segmented__option--active.tone-high { border-color: #dfb38c; background: #fff0e5; color: #9e552b; }
-.task-composer-v15 .task-priority-segmented__option--active.tone-critical { border-color: #e3abb0; background: #fff0ef; color: #a73744; }
+.task-composer-v15 .task-priority-segmented { position: relative; isolation: isolate; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; padding: 4px; border: 1px solid #e3e5de; border-radius: 10px; background: #eeeee8; --tone: #6c5015; --selection-fill: #f6e8bd; --selection-edge: #d8bd76; }
+.task-composer-v15 .task-priority-segmented.tone-low { --tone: #244f43; --selection-fill: #e2eee5; --selection-edge: #a5bfb0; }
+.task-composer-v15 .task-priority-segmented.tone-high { --tone: #7f3e18; --selection-fill: #f5dcc7; --selection-edge: #d5a37e; }
+.task-composer-v15 .task-priority-segmented.tone-critical { --tone: #8d2635; --selection-fill: #f3d7db; --selection-edge: #d49aa4; }
+.task-composer-v15 .task-priority-segmented__selection { position: absolute; z-index: -1; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 4); border: 1px solid var(--selection-edge); border-radius: 7px; background: var(--selection-fill); transform: translateX(calc(var(--priority-index, 1) * 100%)); transition: transform 180ms cubic-bezier(.2,.8,.2,1), background-color 180ms, border-color 180ms; pointer-events: none; }
+.task-composer-v15 .task-priority-segmented__option { position: relative; display: inline-flex; align-items: center; justify-content: center; min-width: 0; min-height: 44px; padding: 0 4px; border: 0; border-radius: 7px; background: transparent; color: #536556; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.task-composer-v15 .task-priority-segmented__option:hover { color: #233c2e; }
+.task-composer-v15 .task-priority-segmented__option--active { color: var(--tone); font-weight: 750; }
+.task-composer-v15 .task-priority-segmented__option:focus-visible { outline: 2px solid #244f43; outline-offset: -2px; }
 .task-composer-v15 .task-priority-segmented__option:disabled { opacity: .55; cursor: not-allowed; }
-.task-composer-v15 .task-priority-segmented__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--tone, #8c6b21); flex: 0 0 7px; }
-.task-composer-v15 .task-priority-segmented.tone-low .task-priority-segmented__dot { background: #36775a; }
-.task-composer-v15 .task-priority-segmented.tone-medium .task-priority-segmented__dot { background: #8c6b21; }
-.task-composer-v15 .task-priority-segmented.tone-high .task-priority-segmented__dot { background: #9e552b; }
-.task-composer-v15 .task-priority-segmented.tone-critical .task-priority-segmented__dot { background: #a73744; }
 
 /* Right property rows: aligned icon + label, compact controls. */
 .task-composer-v15 .task-composer__aside .task-composer__section-title { font-size: 12px; font-weight: 740; color: #4f6055; margin: 0 0 10px; }
 .task-composer-v15 .task-composer__aside .task-composer__section-title .task-field__optional { font-size: 11px; font-weight: 500; color: #98a49b; margin-left: 6px; }
-.task-composer-v15 .task-property-row { display: grid; grid-template-columns: minmax(86px, 34%) minmax(0, 1fr); align-items: center; gap: 4px 10px; padding: 13px 0 14px; border-bottom: 1px solid #e6eae4; margin-bottom: 0; }
+.task-composer-v15 .task-property-row { display: grid; grid-template-columns: minmax(86px, 34%) minmax(0, 1fr); align-items: center; gap: 4px 10px; padding: 8px 0; border-bottom: 1px solid #e6eae4; margin-bottom: 0; }
 .task-composer-v15 .task-property-row:last-child { border-bottom: 0; }
 .task-composer-v15 .task-property-row__label { display: inline-flex; align-items: center; gap: 7px; font-size: 11px; font-weight: 740; color: #536556; }
 .task-composer-v15 .task-property-row__label > span:first-child { color: #7e8f82; font-size: 12px; width: 14px; text-align: center; }
 .task-composer-v15 .task-property-row--pair { grid-template-columns: 1fr 1fr; }
 .task-composer-v15 .task-property-row--pair label { display: grid; gap: 5px; font-size: 11px; font-weight: 740; color: #536556; }
+/* The base task-create-dialog.css (loaded later at equal depth) restates a
+   legacy 2-column label|control sub-grid on --pair labels, which squeezes the
+   new stacked halves down to ~30% of the panel. Restate at matching depth so
+   each half stacks label-above-control at full width. */
+.task-create-dialog .task-composer-v15 .task-property-row--pair label { display: grid; grid-template-columns: minmax(0, 1fr); gap: 5px; align-items: start; font-size: 11px; font-weight: 740; color: #536556; }
 .task-composer-v15 .task-property-row--pair .task-field__req { color: #ad655a; margin-left: 2px; }
 .task-composer-v15 .task-property-row--pair .task-field-error { grid-column: 1 / -1; margin: 0; }
 .task-composer-v15 .task-property-row > .task-field-error { grid-column: 1 / -1; margin: 0; }
@@ -149,8 +161,8 @@
 .task-composer-v15 .task-priority-hint { grid-column: 1 / -1; margin: 2px 0 0; font-size: 10px; color: #98a49b; font-weight: 400; }
 
 /* Assign to: horizontal avatar strip + inline people menu. */
-.task-composer-v15 .task-composer__assign { padding: 4px 0 14px; border-bottom: 1px solid #e6eae4; }
-.task-composer-v15 .task-avatar-strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
+.task-composer-v15 .task-composer__assign { padding: 2px 0 10px; border-bottom: 1px solid #e6eae4; }
+.task-composer-v15 .task-avatar-strip { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
 .task-composer-v15 .task-avatar { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid #e0e6df; background: #e7eee3; color: #153f35; font-size: 11px; font-weight: 750; cursor: pointer; padding: 0; font-family: inherit; }
 .task-composer-v15 .task-avatar:hover { border-color: #80a08c; }
 .task-composer-v15 .task-avatar--main { border: 2px solid #244f43; }
@@ -172,6 +184,12 @@
 .task-composer-v15 .task-people-menu__add:hover { background: #eef4ee; border-color: #80a08c; }
 .task-composer-v15 .task-people-menu__empty { font-size: 11px; color: #87958a; padding: 10px 12px; margin: 0; }
 
+/* Selected collaborators: one compact chip strip instead of stacked rows. */
+.task-composer-v15 .task-collaborator-chips { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.task-composer-v15 .task-collaborator-chip { display: inline-flex; align-items: center; gap: 5px; background: #fff; border: 1px solid #e4eae2; border-radius: 8px; padding: 4px 4px 4px 5px; min-width: 0; max-width: 100%; }
+.task-composer-v15 .task-collaborator-chip__name { font-size: 11px; font-weight: 500; color: #283b30; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.task-composer-v15 .task-collaborator-chip__remove { display: grid; place-items: center; width: 22px; height: 22px; min-width: 22px; border: 0; border-radius: 5px; background: transparent; color: #8c9a8f; font-size: 14px; cursor: pointer; font-family: inherit; }
+.task-composer-v15 .task-collaborator-chip__remove:hover { background: #f4eae9; color: #b04445; }
 .task-composer-v15 .task-collaborator-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
 .task-composer-v15 .task-collaborator-row { display: flex; align-items: center; gap: 9px; padding: 7px 9px; background: #fff; border: 1px solid #e4eae2; border-radius: 8px; min-width: 0; }
 .task-composer-v15 .task-collaborator-row__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; font-weight: 500; color: #283b30; }
@@ -232,6 +250,36 @@
 .task-composer-v15 .task-options-retry p { margin: 0; line-height: 1.5; }
 .task-composer-v15 .task-options-retry button { justify-self: start; min-height: 34px; padding: 0 12px; border: 1px solid #c97f7b; border-radius: 7px; background: #fff; color: #9c4140; font-size: 11px; font-weight: 650; cursor: pointer; font-family: inherit; }
 
+/* Owner-marked refinements: quiet icon actions and a distinct writing surface. */
+.task-create-dialog .task-composer-v15 .task-composer__brief { background: #fff; border-radius: 10px; padding: 20px; }
+/* Owner's TASK.png reference: one quiet writing area, with focus/error feedback. */
+.task-composer-v15 .task-writing-fields { display: grid; gap: 2px; min-width: 0; }
+.task-composer-v15 .task-writing-fields .task-field { position: relative; margin: 0; gap: 4px; min-width: 0; }
+.task-composer-v15 .task-writing-fields .task-field .task-field--title-input { min-height: 44px; padding: 7px 16px 7px 0; font-size: 18px; font-weight: 600; letter-spacing: 0; border: 1px solid transparent; border-radius: 4px; background: transparent; box-shadow: none; }
+.task-composer-v15 .task-writing-fields .task-field .task-field--title-input::placeholder { font-size: 18px; font-weight: 500; color: #758078; }
+.task-composer-v15 .task-writing-required { position: absolute; right: 4px; top: 10px; pointer-events: none; }
+.task-composer-v15 .task-writing-fields .task-field--brief textarea { min-height: 84px; padding: 3px 0 8px; border: 1px solid transparent; border-radius: 4px; background: transparent; font-size: 14px; line-height: 1.6; box-shadow: none; resize: vertical; }
+.task-composer-v15 .task-writing-fields .task-field--brief textarea::placeholder { color: #758078; }
+.task-composer-v15 .task-writing-fields :is(.task-field--title-input, textarea):hover { background: #fafbf9; }
+.task-composer-v15 .task-writing-fields :is(.task-field--title-input, textarea):focus { outline: 2px solid #789987; outline-offset: 2px; border-color: transparent; background: #fff; box-shadow: none; }
+.task-composer-v15 .task-writing-fields :is(.task-field--title-input, textarea)[aria-invalid="true"] { border-color: #c97f7b; background: #fffafa; }
+.task-create-dialog .task-composer-v15 .task-avatar-add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; padding: 0; border: 0; border-radius: 8px; box-shadow: none; background: transparent; color: #244f43; font-size: 26px; font-weight: 400; line-height: 1; }
+.task-create-dialog .task-composer-v15 .task-avatar-add:hover { background: #e8ede6; }
+.task-create-dialog .task-composer-v15 .task-composer__aside .task-property-row--priority { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.task-composer-v15 .task-calendar-control { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #d6ded4; border-radius: 8px; background: #fff; color: #526c5b; }
+.task-composer-v15 .task-calendar-control.has-value { width: 100%; max-width: 124px; min-width: 0; padding: 0 5px; background: #e8f0e8; border-color: #a4bca9; color: #244f43; }
+.task-composer-v15 .task-calendar-value { font-size: 11px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; }
+.task-composer-v15 .task-calendar-control:hover { border-color: #789987; }
+.task-composer-v15 .task-calendar-control:focus-within { outline: 3px solid #244f43; outline-offset: 2px; }
+.task-composer-v15 .task-calendar-control:has(input[aria-invalid="true"]) { border-color: #aa2f3d; background: #fff3f2; }
+.task-composer-v15 .task-calendar-control:has(input:disabled) { opacity: .55; }
+.task-composer-v15 .task-calendar-control input[type="date"] { position: absolute; z-index: 1; inset: -1px; width: calc(100% + 2px); height: calc(100% + 2px); min-width: 44px; min-height: 44px; margin: 0; padding: 0; opacity: 0; cursor: pointer; }
+.task-composer-v15 .task-calendar-control .task-row-icon { width: 19px; height: 19px; pointer-events: none; }
+.task-composer-v15 .task-calendar-control .task-row-icon svg { width: 19px; height: 19px; }
+@media (prefers-reduced-motion: reduce) {
+  .task-composer-v15 .task-priority-segmented__selection { transition: none; }
+}
+
 /* ============================================================
    Mobile presentation (<= 700px): single column, V15 order.
    Task name -> Description -> Assign to -> Target -> Reason ->
@@ -244,21 +292,24 @@
   .task-composer-v15 .task-composer__aside { display: grid; gap: 13px; border-top: 1px solid #e4e8e0; padding: 8px 0 0; }
   /* Reorder: properties rows follow the mobile order from docs/01 section C. */
   .task-composer-v15 .task-composer__aside .task-property-row { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); gap: 8px; padding: 13px 0 14px; }
-  .task-composer-v15 .task-composer__aside .task-property-row--pair { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); }
+  .task-composer-v15 .task-composer__aside .task-property-row--pair { grid-template-columns: 1fr; }
   .task-composer-v15 .task-composer__aside .task-property-row--pair label { grid-template-columns: minmax(96px, 39%) minmax(0, 1fr); display: grid; align-items: center; }
   .task-composer-v15 .task-composer__aside .task-property-row--pair .task-field-error { grid-column: 1 / -1; }
-  .task-composer-v15 .task-field.task-field--title .task-field--title-input { font-size: 21px; min-height: 44px; }
+  .task-composer-v15 .task-field.task-field--title .task-field--title-input { font-size: 18px; min-height: 44px; }
   /* Touch targets. */
   .task-composer-v15 .task-avatar, .task-composer-v15 .task-avatar-add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
   .task-composer-v15 .task-people-menu__add { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
   .task-composer-v15 .task-small-remove { width: 44px; height: 44px; min-width: 44px; min-height: 44px; }
   .task-composer-v15 .task-effort-input button { min-height: 44px; min-width: 44px; }
+  /* The 3-class timing-group rule (35px) out-specifies the 2-class mobile
+     override above, so restate it at matching depth for the compact target. */
+  .task-composer-v15 .task-timing-group .task-effort-input button { min-height: 44px; min-width: 44px; }
   .task-composer-v15 .task-review-cards { grid-template-columns: 1fr; }
   .task-composer-v15 .task-review-card { min-height: 62px; }
-  /* New components on mobile: timing row stacks to one column, priority segmented
-     wraps to 2×2 so labels never truncate. */
+  /* Keep one continuous four-position priority track on phones too. */
   .task-composer-v15 .task-timing-group { padding: 13px 0 14px; gap: 10px; }
   .task-composer-v15 .task-timing-group .task-timing-group__row { grid-template-columns: 1fr; }
-  .task-composer-v15 .task-priority-segmented { grid-template-columns: 1fr 1fr; }
+  .task-composer-v15 .task-collaborator-chip__remove { width: 44px; height: 44px; min-width: 44px; min-height: 44px; border-radius: 0; }
+  .task-composer-v15 .task-priority-segmented { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .task-composer-v15 .task-priority-segmented__option { min-height: 44px; }
 }

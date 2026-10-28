@@ -1,6 +1,6 @@
 # CLAUDE.md — entrypoint for Claude Code
 
-This is a NestJS + Next.js monorepo for a work-management app. The
+This is a NestJS API + React/Vite monorepo for a work-management app. The
 full agent rules live in [AGENTS.md](./AGENTS.md); read it first and
 treat its rules as binding. This file only adds what Claude Code
 specifically needs to know.
@@ -33,26 +33,12 @@ with `pnpm verify`.
 
 ## Current branch and tree state
 
-- Branch: `codex/s20-site-integration`
-- The working tree has **369 uncommitted changes** (280 modified, 89
-  untracked). They are preserved as-is — do not commit, stash, or reset
-  them without the Owner's direction. Run `git status` first.
-- Source migrations: **118**. Current source has 118 migrations; they
-  were applied to the fresh isolated test database on 2026-10-14, but
-  are **not yet deployed** to the retained preview or any accepted
-  environment.
-- Three things are easy to confuse — see "Servers" below for the
-  live-vs-prepared distinction:
-  - **Retained preview** (system `7693570241708228348`, OID 32768,
-    115 migrations, 50 tasks, 5 staff, Owner credentials) — live on
-    59443. Do not migrate, reseed, or reset it.
-  - **MW-I02 acceptance database** — to be created fresh on 59542/59543
-    when that stack is approved and started. Does not exist yet.
-  - **Fresh isolated test database**
-    (`sense_app_completion_20261013_ac13_test`, all 118 migrations
-    applied, starts empty).
-- `.env*` files are gitignored. Five ACTIVE staff personas and 50 exact
-  task IDs are retained; do not reseed or rewrite fixtures.
+- Owner authorized one consolidated `master` on 2026-10-27. Read the live branch, HEAD and dirty state with `git status`; do not rely on historical counts.
+- This is a NestJS API, React/Vite frontend and shared-contracts monorepo.
+- Source contains 120 migrations. The 120th is accepted task-review work routing `20261023000000_task_review_work_routing`. The unaccepted client-password migration and ArchiFlow remain excluded.
+- Retained staging is separate from current source and from disposable acceptance databases. See the latest CURRENT_STATE.md entry and `docs/operations/BRANCH_CONSOLIDATION_2026-10-27.md` for exact verified commits. Never migrate, seed or reset retained data automatically.
+- Historical branches and alternative work remain recoverable through archived refs and merge ancestry. New application work starts from master.
+- The original integration checkout may retain concurrent uncommitted changes; preserve them and inspect live state before any operation.
 
 ## Servers — three, don't confuse them
 

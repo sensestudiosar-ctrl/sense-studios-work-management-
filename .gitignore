@@ -29,3 +29,6 @@ verify-run.txt
 /.artifacts/v1/
 /.artifacts/nas/
 /.artifacts/login-auth-tests/
+
+# Factory execution leases/checkpoints are local operational state.
+/docs/ai-factory/checkpoints/*.json

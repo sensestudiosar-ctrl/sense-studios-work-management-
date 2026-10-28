@@ -8,7 +8,7 @@ const tabs = [
     { id: "evidence", label: "Evidence" },
     { id: "activity", label: "Activity" },
 ];
-export function TaskDetailDrawer({ enabled, taskId, title, taskType, contextLabel, statusLabel, priorityLabel, targetLabel, waitingLabel, checklistCompleted, checklistTotal, overview, checklist, evidence, activity, onClose, onPrevious, onNext, busy = false, loading = false, errors, feedback, actions, hasActions = true, hasData = true, layout = "single", }) {
+export function TaskDetailDrawer({ enabled, taskId, title, taskType, contextLabel, statusLabel, priorityLabel, targetLabel, waitingLabel, checklistCompleted, checklistTotal, overview, checklist, evidence, activity, onClose, onPrevious, onNext, busy = false, loading = false, errors, feedback, actions, hasActions = true, hasData = true, layout = "single", projectPresentation = false, }) {
     const [activeTab, setActiveTab] = useState("overview");
     /**
      * Which section layout is on screen. The default is the single scroll;
@@ -178,7 +178,7 @@ export function TaskDetailDrawer({ enabled, taskId, title, taskType, contextLabe
             return details.querySelector("input, select, textarea") ?? details;
         return null;
     });
-    return createPortal(_jsxs("dialog", { ref: dialogRef, className: "task-workspace task-detail-drawer", "aria-labelledby": "task-detail-drawer-title", "aria-describedby": "task-detail-drawer-context", "aria-modal": "true", onCancel: (event) => {
+    return createPortal(_jsxs("dialog", { ref: dialogRef, className: `task-workspace task-detail-drawer${projectPresentation ? " task-detail-drawer--project" : ""}`, "aria-labelledby": "task-detail-drawer-title", "aria-describedby": "task-detail-drawer-context", "aria-modal": "true", onCancel: (event) => {
             event.preventDefault();
             requestClose();
         }, onClose: () => {

@@ -36,7 +36,7 @@ function readAssignedBy(value: unknown): { name: string; kind: "OWNER" | "STAFF"
   return { name: name.trim(), kind: kind === "STAFF" ? "STAFF" : "OWNER" };
 }
 
-function initials(value: string): string {
+export function initials(value: string): string {
   const clean = value.trim();
   if (!clean || /^(unknown worker|task owner)$/i.test(clean)) return "?";
   const words = (clean.includes("@") ? clean.split("@")[0]! : clean).split(/[\s._+-]+/).filter(Boolean);

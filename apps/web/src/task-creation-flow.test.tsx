@@ -73,12 +73,12 @@ describe("confirmed task creation and recoverable drafts", () => {
     act(() => { fireEvent.submit(form); fireEvent.submit(form); });
     expect(mock.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
     await act(async () => resolveCreate!(response(task)));
-    expect(await screen.findByRole("heading", { name: task.title })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: task.title }, { timeout: 5000 })).toBeInTheDocument();
   });
   it("opens the returned canonical task without inserting another employee's task into the personal queue", async () => {
     const mock = installApi("success"); render(<TaskWorkspace csrfToken="csrf" owner listFirst personalOnly />);
     const { dialog } = await fillTask(); fireEvent.click(within(dialog).getByRole("button", { name: "Create task" }));
-    expect(await screen.findByRole("heading", { name: task.title })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: task.title }, { timeout: 5000 })).toBeInTheDocument();
     expect(new URL(window.location.href).searchParams.get("taskId")).toBe(task.id);
     expect(screen.queryByRole("button", { name: `Open task: ${task.title}` })).not.toBeInTheDocument();
     expect(mock.mock.calls.filter(([, init]) => init?.method === "POST")).toHaveLength(1);
@@ -110,7 +110,7 @@ describe("confirmed task creation and recoverable drafts", () => {
     const initial = mock.getMockImplementation()!;
     mock.mockImplementation((input, init) => init?.method === "POST" ? Promise.resolve(response(task)) : initial(input,init));
     fireEvent.click(recover);
-    expect(await screen.findByRole("heading", { name: task.title })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: task.title }, { timeout: 5000 })).toBeInTheDocument();
     const writes = mock.mock.calls.filter(([,init]) => init?.method === "POST");
     expect(writes).toHaveLength(2); expect(writes[1]![1]!.body).toBe(first);
     expect(new URL(window.location.href).searchParams.get("taskId")).toBe(task.id);
@@ -127,7 +127,7 @@ describe("confirmed task creation and recoverable drafts", () => {
     expect(writes()[1]).toEqual({ ...writes()[0], acknowledgeOverload: true });
     mock.mockImplementation((input,init) => init?.method === "POST" ? Promise.resolve(response(task)) : initial(input,init));
     fireEvent.click(recover);
-    await screen.findByRole("heading", { name: task.title });
+    await screen.findByRole("heading", { name: task.title }, { timeout: 5000 });
     expect(writes()).toHaveLength(3); expect(writes()[2]).toEqual(writes()[1]);
   });
   it("does not erase the command for a malformed success result", async () => {

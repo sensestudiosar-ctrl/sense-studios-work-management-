@@ -135,7 +135,7 @@ describe("identity authentication shell", () => {
         expect(await screen.findByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
         expect(screen.queryByRole("heading", { name: "You’re signed in." })).not.toBeInTheDocument();
         const desktopNav = screen.getByRole("navigation", { name: "Workspace navigation" });
-        for (const group of ["Work", "People", "Insights", "Manage"]) {
+        for (const group of ["Work", "Project queues", "People", "Insights", "Manage"]) {
             const disclosure = within(desktopNav).getByRole("button", { name: group });
             if (disclosure.getAttribute("aria-expanded") !== "true")
                 fireEvent.click(disclosure);
