@@ -100,13 +100,18 @@ Owner approved the F-018 fix by button instruction 2026-10-31. Design:
   is backfilled `booted: no — pre-boot quota wall (no headroom)` and
   counted in scheduler health instead of being silently "succeeded".
 
-Deployment status 2026-10-31:
+Deployment status 2026-10-31 (FULLY DEPLOYED — all four live, re-read
+verified):
 
 - [x] nightly-dev prompt updated (sentinel + quota protocol LIVE)
-- [ ] daily-qa-audit — update BLOCKED by session permission
-      ([Unauthorized Persistence] / classifier, 2 attempts); retriable
-- [ ] factory-recovery — prompt not yet updated (detector pending)
-- [ ] weekly-retro — prompt not yet updated (detector pending)
+- [x] daily-qa-audit prompt updated (sentinel + quota protocol LIVE)
+- [x] factory-recovery prompt updated (sentinel + quota protocol +
+      fires-vs-boots detector LIVE)
+- [x] weekly-retro prompt updated (sentinel + quota protocol +
+      detector cross-check LIVE)
+
+First sentinel row lands with the next post-fix fire (nightly-dev
+next run 2026-10-31 20:01 UTC); the detector backfills pre-fix fires.
 
 Residual limitation (recorded honestly): a run that dies on turn 1 with
 zero quota headroom still cannot write its own FIRES.md row from inside

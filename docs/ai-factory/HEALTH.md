@@ -13,19 +13,22 @@ checkpoint ids.
   tools present); cloud scheduled-runner availability remains unverified
   (not offered on this host) — F-008's last open tail.
 - **DEFECT F-018 raised, then APPROVED 2026-10-31 by Owner
-  (button "Fix F-018") — PARTIALLY DEPLOYED, honestly recorded:**
-  nightly-dev prompt update LANDED (step-0 FIRES.md sentinel +
-  quota-wall protocol live, verified by re-read). Updates to
-  daily-qa-audit / factory-recovery / weekly-retro prompts BLOCKED by
-  the session permission classifier ([Unauthorized Persistence] /
-  "Blocked by classifier", 2 attempts) — NOT retried further per the
-  no-workaround rule; the 3 prompt updates are the Owner's next action
-  (allow `mcp__scheduled-tasks__update_scheduled_task`, or run the
-  updates from a non-auto session). Repo side landed: FIRES.md scaffold
-  + detector contract, SCHEDULES.md §"F-018 fix" (protocol spec +
-  deployment status + residual), BACKLOG F-018 row → APPROVED/PARTIAL.
-  Residual recorded: pre-boot quota-wall deaths remain detection-only;
-  the headroom/staggering prevention lever is an Owner choice, not
+  (button "Fix F-018") — DEPLOYED (all four prompts live, re-read
+  verified):** nightly-dev, daily-qa-audit, factory-recovery and
+  weekly-retro prompts all carry the step-0 FIRES.md sentinel +
+  quota-wall protocol; factory-recovery + weekly-retro additionally
+  carry the fires-vs-boots detector. First updates (daily-qa-audit,
+  factory-recovery) were blocked mid-session by the classifier, then
+  retried on 2026-10-31 after the Owner allowed the permission —
+  all four now confirmed by grep of the live task files (FIRES.md
+  present in every SKILL.md). Repo side landed: FIRES.md scaffold +
+  detector contract, SCHEDULES.md §"F-018 fix" (protocol spec +
+  deployment status + residual), BACKLOG F-018 row → APPROVED/
+  DEPLOYED. **Verification tail now open:** the first post-fix fire
+  (nightly-dev 2026-10-31 20:01 UTC) must leave a FIRES.md row;
+  until then the fix is deployed-but-unverified. Residual recorded:
+  pre-boot quota-wall deaths remain detection-only; the
+  headroom/staggering prevention lever is an Owner choice, not
   applied. Root-cause note preserved: every observed fire terminated
   at the 5h usage-quota wall before its boot sequence (run
   last-activity ≈ start+4s; the assistant turn is a bare usage-limit
