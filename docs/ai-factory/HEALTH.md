@@ -3,7 +3,106 @@
 Newest first. Each entry: date · what ran · pass/block results ·
 checkpoint ids.
 
-## 2026-10-27 (latest) — Linear cutover (project 1 of 9)
+## 2026-10-31 (latest) — Factory audit: F-008 tail verified, F-018 scheduler-observability defect discovered, Linear in-flight syncs retried
+- **F-008 verification tails now OBSERVED (recorded in SCHEDULES.md §"Verified fires"):**
+  first scheduler fire confirmed (nightly-dev ×3, daily-qa-audit ×3,
+  factory-recovery ×3, 2026-10-29→10-31, all "succeeded"); usage-limit
+  denial behavior observed as a NEGATIVE result — see F-018; local
+  Refero/Playwright-MCP/Linear re-verified working in-session 2026-10-31
+  (Refero live search, linear-server live read of P-SEN-1, Playwright MCP
+  tools present); cloud scheduled-runner availability remains unverified
+  (not offered on this host) — F-008's last open tail.
+- **DEFECT F-018 raised, then APPROVED 2026-10-31 by Owner
+  (button "Fix F-018") — DEPLOYED (all four prompts live, re-read
+  verified):** nightly-dev, daily-qa-audit, factory-recovery and
+  weekly-retro prompts all carry the step-0 FIRES.md sentinel +
+  quota-wall protocol; factory-recovery + weekly-retro additionally
+  carry the fires-vs-boots detector. First updates (daily-qa-audit,
+  factory-recovery) were blocked mid-session by the classifier, then
+  retried on 2026-10-31 after the Owner allowed the permission —
+  all four now confirmed by grep of the live task files (FIRES.md
+  present in every SKILL.md). Repo side landed: FIRES.md scaffold +
+  detector contract, SCHEDULES.md §"F-018 fix" (protocol spec +
+  deployment status + residual), BACKLOG F-018 row → APPROVED/
+  DEPLOYED. **Verification tail now open:** the first post-fix fire
+  (nightly-dev 2026-10-31 20:01 UTC) must leave a FIRES.md row;
+  until then the fix is deployed-but-unverified. Residual recorded:
+  pre-boot quota-wall deaths remain detection-only; the
+  headroom/staggering prevention lever is an Owner choice, not
+  applied. Root-cause note preserved: every observed fire terminated
+  at the 5h usage-quota wall before its boot sequence (run
+  last-activity ≈ start+4s; the assistant turn is a bare usage-limit
+  line), so no checkpoint, no HEALTH note, no issue pickup;
+  weekly-retro has 0 runs.
+- **Linear in-flight state syncs (retry of the 2026-10-28 denied batch):**
+  SEN-8 (F-005) → In Progress LANDED + read back (status "In Progress",
+  startedAt 2026-10-31). SEN-11 (F-008) and SEN-20 (F-017) → In Progress
+  DENIED again by the auto-mode classifier [External System Writes] —
+  recorded as still-not-synced, retriable. No IDs fabricated; all three
+  keys re-read live via `list_issues` (open set = SEN-8/10/11/20).
+- **Checkpoint ledger:** 6/6 records COMPLETED, no PAUSED/RECOVERABLE/
+  RUNNING-with-stale-lease rows — nothing recoverable, no recovery
+  actions needed (verified via `checkpoint.mjs list`,
+  FACTORY_WORKER_ID=factory-audit).
+- **Live git/PR context re-derived (docs never trusted):** main checkout
+  now on `codex/tasks-kanban-v42` @ `180688e` (moved since 10-28;
+  parallel Kanban work merged); master tip `9240d7d`;
+  origin/master `b3f3f04`; PR #1 (master→codex/sense-integration) still
+  OPEN/unmerged with the full test battery's last gate (59-journey S27)
+  stalled on usage limits in session local_f7bdf0d3 (5/6 gates PASS on
+  record). No factory write to app source, schema, permissions, CI or
+  deploy in this audit; only the four factory ledger files touched.
+- Not run / not claimed: pnpm verify, any staging build/promote,
+  F-005 release, F-017 authenticated acceptance tail, B-002 MW-I02
+  start, B-003 cross-role personas — all remain Owner-gated.
+- Checkpoint ledger: no new records this audit (read-only audit + docs).
+
+## 2026-10-28 — F-batch shipped to master + scheduler live + Linear close-batch
+- **Shipped (committed on master):** F-002b owner avatar fold `2731e11`
+  (35/35 my-work+task-people, typecheck, eslint, build); F-004 PWA
+  "Later" session-persistence `3041a26` (full web suite 733/733);
+  F-006 review-view human labels via shared `workState()` `bc4320a`
+  (14/14 review+revision); F-009 tasks-tab-review shipped-state
+  addendum `2c9ae3d`; ledger commits `67c6e94` + this batch.
+- **F-003 closed as verified-already-shipped:** "C" shortcut in
+  `d38e957`, composer employee self-default in `task.tsx` — both
+  test-covered (97/97 task-suite re-verified). No code change.
+- **F-008 scheduler now LIVE (unblocked):** 4 durable routines via
+  `mcp__scheduled-tasks__create_scheduled_task` — nightly-dev
+  (`23 1 * * *`), daily-qa-audit (`41 9 * * *`), factory-recovery
+  (`17 12 * * *`), weekly-retro (`7 20 * * 0`), all enabled, verified
+  via `list_scheduled_tasks`. The 2026-10-27 "blocked by classifier"
+  record in SCHEDULES.md was superseded — earlier create attempts had
+  actually persisted. Remaining F-008 tail: first observed fire
+  (nightly-dev next run 2026-10-28 20:01 UTC), usage-limit-denial
+  behavior, cloud tool availability.
+- **Projects T1–T7 (F-010…F-016) confirmed DONE + merged to master by
+  the Projects session:** `22b7552`…`d90240e`, final selected-source
+  `2525206` (ancestor of master, verified). Bounded isolated-fixture
+  acceptance on record (web regression 717, affected 65, Workforce PG
+  19, browser 5). F-017 (T8) stays open: full-shell/zoom/AT
+  acceptance + owner-gated matched staging release.
+- **Linear close-batch executed (linear-server live this session):**
+  12 issues closed to Done with read-back verification —
+  SEN-5/6/7/9/12/13/14/15/16/17/18/19 (F-002b, F-003, F-004, F-006,
+  F-009, T1–T7). 3 in-flight state updates (SEN-8, SEN-11, SEN-20 →
+  In Progress) DENIED by the auto-mode classifier
+  [External System Writes] — recorded as not-synced, retriable when
+  the permission is allowed. No Linear IDs fabricated; all 16 issue
+  IDs re-read live via `list_issues`.
+- **Lease hygiene observed:** 30-min checkpoint leases expired across
+  long turns → `steal --justification` used for f-002b-impl and
+  f-006-impl (legal VERIFIED → AWAITING_APPROVAL → COMPLETED path).
+  RECOVERY.md §3 already mandates the "checkpoints every ≤25 min"
+  convention; no doc change needed.
+- Not run / not claimed: `pnpm verify` full, authenticated acceptance,
+  any staging promote/deploy, MW-I02 stack start. F-005 release and
+  F-017 staging remain Owner-gated.
+- Checkpoint ledger: f-002b-impl COMPLETED, f-006-impl COMPLETED,
+  f-002-implement AWAITING_APPROVAL (merged to master `a1e0f28` —
+  record may be closed if the Owner confirms the merge is final).
+
+## 2026-10-27 — Linear cutover (project 1 of 9)
 - `linear-server` OAuth-connected; live read in fresh session
   (workspace SENSE STUDIOS, team `SEN`).
 - Owner ordered factory to use Linear: project 1 **Foundation &
