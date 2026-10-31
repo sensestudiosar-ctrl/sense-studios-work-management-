@@ -38,6 +38,24 @@ SEN-8/F-005 is the only non-Backlog state; SEN-11/F-008 carries no label,
 matching the payload). Issue keys are now recorded on the `BACKLOG.md` rows
 F-002b…F-009 and F-010…F-017.
 
+## Live sync state (2026-10-31, verified via `list_issues` read-back)
+
+- **Closed 2026-10-28 (12, all Done + read back):** SEN-5, SEN-6, SEN-7,
+  SEN-9, SEN-12, SEN-13…SEN-19 (F-002b, F-003, F-004, F-006, F-009,
+  T1–T7).
+- **In-flight sync retries 2026-10-31:**
+  - SEN-8 (F-005) → **In Progress LANDED** (status "In Progress",
+    startedAt 2026-10-31, read back live).
+  - SEN-11 (F-008), SEN-20 (F-017) → In Progress **DENIED again** by the
+    auto-mode classifier [External System Writes] (second occurrence of the
+    2026-10-28 denial); live status still **Backlog**. Retriable when the
+    write is permitted — Owner may allow `mcp__linear-server__save_issue`
+    state writes or perform them in the Linear UI.
+- **Unchanged by design:** SEN-10 (F-007) remains Backlog — unapproved /
+  not owner-ready (structural, needs Owner naming + cross-role sessions).
+- Open set after this audit: SEN-8 (In Progress), SEN-10, SEN-11, SEN-20
+  (Backlog). No issue IDs fabricated; all states read live.
+
 **Priority scale caveat (recorded truthfully):** the payload documents a
 "0–3" mapping (0 Urgent · 1 High · 2 Med · 3 Low), but the live Linear API
 uses a 5-value scale (0 None · 1 Urgent · 2 High · 3 Medium · 4 Low). The

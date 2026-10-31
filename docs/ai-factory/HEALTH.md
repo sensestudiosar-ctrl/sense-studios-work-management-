@@ -3,7 +3,49 @@
 Newest first. Each entry: date · what ran · pass/block results ·
 checkpoint ids.
 
-## 2026-10-28 (latest) — F-batch shipped to master + scheduler live + Linear close-batch
+## 2026-10-31 (latest) — Factory audit: F-008 tail verified, F-018 scheduler-observability defect discovered, Linear in-flight syncs retried
+- **F-008 verification tails now OBSERVED (recorded in SCHEDULES.md §"Verified fires"):**
+  first scheduler fire confirmed (nightly-dev ×3, daily-qa-audit ×3,
+  factory-recovery ×3, 2026-10-29→10-31, all "succeeded"); usage-limit
+  denial behavior observed as a NEGATIVE result — see F-018; local
+  Refero/Playwright-MCP/Linear re-verified working in-session 2026-10-31
+  (Refero live search, linear-server live read of P-SEN-1, Playwright MCP
+  tools present); cloud scheduled-runner availability remains unverified
+  (not offered on this host) — F-008's last open tail.
+- **NEW DEFECT F-018 raised (discovery, NOT auto-approved):** the
+  unattended scheduler loop is non-operational in effect. Every fired run
+  terminates at the 5h usage-quota wall *before* its boot sequence (run
+  last-activity ≈ start+4s; the assistant turn is a bare usage-limit
+  line), so no checkpoint, no HEALTH note, no issue pickup, and
+  weekly-retro has 0 runs. Violates the prompt contract "every run writes
+  a progress note". Fix = scheduled-run prompt self-modification → routed
+  through isolated change → review → Owner approval (FACTORY.md §3/§8);
+  NOT applied autonomously. Backlog row added; no Linear issue yet
+  (record-only until Owner approves).
+- **Linear in-flight state syncs (retry of the 2026-10-28 denied batch):**
+  SEN-8 (F-005) → In Progress LANDED + read back (status "In Progress",
+  startedAt 2026-10-31). SEN-11 (F-008) and SEN-20 (F-017) → In Progress
+  DENIED again by the auto-mode classifier [External System Writes] —
+  recorded as still-not-synced, retriable. No IDs fabricated; all three
+  keys re-read live via `list_issues` (open set = SEN-8/10/11/20).
+- **Checkpoint ledger:** 6/6 records COMPLETED, no PAUSED/RECOVERABLE/
+  RUNNING-with-stale-lease rows — nothing recoverable, no recovery
+  actions needed (verified via `checkpoint.mjs list`,
+  FACTORY_WORKER_ID=factory-audit).
+- **Live git/PR context re-derived (docs never trusted):** main checkout
+  now on `codex/tasks-kanban-v42` @ `180688e` (moved since 10-28;
+  parallel Kanban work merged); master tip `9240d7d`;
+  origin/master `b3f3f04`; PR #1 (master→codex/sense-integration) still
+  OPEN/unmerged with the full test battery's last gate (59-journey S27)
+  stalled on usage limits in session local_f7bdf0d3 (5/6 gates PASS on
+  record). No factory write to app source, schema, permissions, CI or
+  deploy in this audit; only the four factory ledger files touched.
+- Not run / not claimed: pnpm verify, any staging build/promote,
+  F-005 release, F-017 authenticated acceptance tail, B-002 MW-I02
+  start, B-003 cross-role personas — all remain Owner-gated.
+- Checkpoint ledger: no new records this audit (read-only audit + docs).
+
+## 2026-10-28 — F-batch shipped to master + scheduler live + Linear close-batch
 - **Shipped (committed on master):** F-002b owner avatar fold `2731e11`
   (35/35 my-work+task-people, typecheck, eslint, build); F-004 PWA
   "Later" session-persistence `3041a26` (full web suite 733/733);

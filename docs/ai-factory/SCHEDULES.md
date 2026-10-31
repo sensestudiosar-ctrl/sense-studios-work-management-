@@ -20,6 +20,26 @@ nightly-dev run lands 2026-10-28 20:01 UTC); usage-limit denial
 behavior unobserved; cloud tool availability unverified. Each run's
 report lands in `docs/ai-factory/HEALTH.md` per the routine prompts.
 
+## Verified fires (2026-10-31, via `list_task_runs`)
+
+- **First observed scheduler fire: CONFIRMED.** nightly-dev ×3
+  (10-29, 10-30, 10-31), daily-qa-audit ×3, factory-recovery ×3, all
+  reported "succeeded". weekly-retro still 0 runs (Sunday slot not
+  hit yet on a live host).
+- **Usage-limit denial behavior: OBSERVED (negative result).** Every
+  run's session terminated at the 5h usage-quota wall *before* the boot
+  sequence ran — run last-activity is ~4s after start, the assistant
+  turn is a bare "usage limit reached" line, so no checkpoint, no
+  HEALTH.md note, no issue pickup. The unattended loop is therefore
+  non-operational in effect despite "enabled + fired". Raised as
+  **F-018** (backlog; owner approval required — it's scheduled-run
+  prompt self-modification).
+- **Cloud tool availability:** local Refero/Playwright-MCP/Linear
+  verified working in-session 2026-10-31 (Refero search live,
+  linear-server live read of P-SEN-1, Playwright MCP present). Cloud
+  scheduled sessions remain unverified (not offered on this host) —
+  the local-runner limitation in §"Honest limitations" stands.
+
 ---
 
 ## Historical (2026-10-27, superseded)
