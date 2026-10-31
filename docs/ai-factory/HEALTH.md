@@ -12,16 +12,25 @@ checkpoint ids.
   (Refero live search, linear-server live read of P-SEN-1, Playwright MCP
   tools present); cloud scheduled-runner availability remains unverified
   (not offered on this host) — F-008's last open tail.
-- **NEW DEFECT F-018 raised (discovery, NOT auto-approved):** the
-  unattended scheduler loop is non-operational in effect. Every fired run
-  terminates at the 5h usage-quota wall *before* its boot sequence (run
+- **DEFECT F-018 raised, then APPROVED 2026-10-31 by Owner
+  (button "Fix F-018") — PARTIALLY DEPLOYED, honestly recorded:**
+  nightly-dev prompt update LANDED (step-0 FIRES.md sentinel +
+  quota-wall protocol live, verified by re-read). Updates to
+  daily-qa-audit / factory-recovery / weekly-retro prompts BLOCKED by
+  the session permission classifier ([Unauthorized Persistence] /
+  "Blocked by classifier", 2 attempts) — NOT retried further per the
+  no-workaround rule; the 3 prompt updates are the Owner's next action
+  (allow `mcp__scheduled-tasks__update_scheduled_task`, or run the
+  updates from a non-auto session). Repo side landed: FIRES.md scaffold
+  + detector contract, SCHEDULES.md §"F-018 fix" (protocol spec +
+  deployment status + residual), BACKLOG F-018 row → APPROVED/PARTIAL.
+  Residual recorded: pre-boot quota-wall deaths remain detection-only;
+  the headroom/staggering prevention lever is an Owner choice, not
+  applied. Root-cause note preserved: every observed fire terminated
+  at the 5h usage-quota wall before its boot sequence (run
   last-activity ≈ start+4s; the assistant turn is a bare usage-limit
-  line), so no checkpoint, no HEALTH note, no issue pickup, and
-  weekly-retro has 0 runs. Violates the prompt contract "every run writes
-  a progress note". Fix = scheduled-run prompt self-modification → routed
-  through isolated change → review → Owner approval (FACTORY.md §3/§8);
-  NOT applied autonomously. Backlog row added; no Linear issue yet
-  (record-only until Owner approves).
+  line), so no checkpoint, no HEALTH note, no issue pickup;
+  weekly-retro has 0 runs.
 - **Linear in-flight state syncs (retry of the 2026-10-28 denied batch):**
   SEN-8 (F-005) → In Progress LANDED + read back (status "In Progress",
   startedAt 2026-10-31). SEN-11 (F-008) and SEN-20 (F-017) → In Progress

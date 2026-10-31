@@ -79,6 +79,44 @@ on recurring jobs applies on the app scheduler)
   RECOVERABLE checkpoint and let a later trigger retry — no aggressive
   retry loop.
 
+## F-018 fix — fire-sentinel + quota-wall protocol (2026-10-31, Owner-approved)
+
+Owner approved the F-018 fix by button instruction 2026-10-31. Design:
+
+- **FIRES.md (new)** — `docs/ai-factory/FIRES.md`: one row per fire,
+  appended by the run itself at step 0 (before any boot work), so a fire
+  that has quota headroom always leaves a trace. Format:
+  `| <ISO now> | <task-id> | <session/run id if known> | running |`
+  with the outcome cell updated at end-of-run (`done` or
+  `died-at-<step> (quota wall)`).
+- **Quota-wall protocol (embedded in each prompt)** — on a 5h
+  usage-limit notice at ANY step: mark the FIRES.md row
+  `died-at-<step> (quota wall)`, leave a clean RECOVERABLE checkpoint
+  (or "no work in progress"), stop the run. No retry loop, no paid
+  fallback; the next fire after the window reset recovers via the
+  checkpoint loop.
+- **Fires-vs-boots detector (factory-recovery + weekly-retro prompts)**
+  — diff `list_task_runs` against FIRES.md: a fire with no FIRES.md row
+  is backfilled `booted: no — pre-boot quota wall (no headroom)` and
+  counted in scheduler health instead of being silently "succeeded".
+
+Deployment status 2026-10-31:
+
+- [x] nightly-dev prompt updated (sentinel + quota protocol LIVE)
+- [ ] daily-qa-audit — update BLOCKED by session permission
+      ([Unauthorized Persistence] / classifier, 2 attempts); retriable
+- [ ] factory-recovery — prompt not yet updated (detector pending)
+- [ ] weekly-retro — prompt not yet updated (detector pending)
+
+Residual limitation (recorded honestly): a run that dies on turn 1 with
+zero quota headroom still cannot write its own FIRES.md row from inside
+the run — the sentinel protects runs that got past turn 1. Pre-boot
+deaths are now *detected* (fire with no boot note) rather than
+*prevented*. Prevention lever is an Owner choice, not applied: move the
+four schedules to fire at moments with quota headroom, or reduce per-run
+cost so turn-1 wall is avoided. Staggering off-minute picks across
+sessions is a free first step.
+
 ## Honest limitations
 - Durable jobs run while the app/session environment is available; a
   machine that's off cannot host a local scheduled run. This is a
